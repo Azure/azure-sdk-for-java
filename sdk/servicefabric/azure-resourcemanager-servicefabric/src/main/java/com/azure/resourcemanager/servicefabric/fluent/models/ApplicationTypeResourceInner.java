@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The application type name resource. */
+/**
+ * The application type name resource.
+ */
 @Fluent
 public final class ApplicationTypeResourceInner extends ProxyResource {
     /*
@@ -45,13 +47,15 @@ public final class ApplicationTypeResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ApplicationTypeResourceInner class. */
+    /**
+     * Creates an instance of ApplicationTypeResourceInner class.
+     */
     public ApplicationTypeResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The application type name properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationTypeResourceProperties innerProperties() {
@@ -60,7 +64,7 @@ public final class ApplicationTypeResourceInner extends ProxyResource {
 
     /**
      * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -69,7 +73,7 @@ public final class ApplicationTypeResourceInner extends ProxyResource {
 
     /**
      * Set the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the ApplicationTypeResourceInner object itself.
      */
@@ -80,7 +84,7 @@ public final class ApplicationTypeResourceInner extends ProxyResource {
 
     /**
      * Get the tags property: Azure resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -89,7 +93,7 @@ public final class ApplicationTypeResourceInner extends ProxyResource {
 
     /**
      * Set the tags property: Azure resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ApplicationTypeResourceInner object itself.
      */
@@ -100,7 +104,7 @@ public final class ApplicationTypeResourceInner extends ProxyResource {
 
     /**
      * Get the etag property: Azure resource etag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -109,7 +113,7 @@ public final class ApplicationTypeResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -119,7 +123,7 @@ public final class ApplicationTypeResourceInner extends ProxyResource {
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -128,7 +132,7 @@ public final class ApplicationTypeResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

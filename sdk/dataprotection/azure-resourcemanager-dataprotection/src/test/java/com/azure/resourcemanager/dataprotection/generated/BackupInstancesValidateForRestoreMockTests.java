@@ -36,56 +36,34 @@ public final class BackupInstancesValidateForRestoreMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"asflvg\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"cyrcmjdmspo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataProtectionManager manager =
-            DataProtectionManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataProtectionManager manager = DataProtectionManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationJobExtendedInfo response =
-            manager
-                .backupInstances()
-                .validateForRestore(
-                    "kpzvcpopmxelnwc",
-                    "tyjedex",
-                    "mlfmkqs",
-                    new ValidateRestoreRequestObject()
-                        .withRestoreRequestObject(
-                            new AzureBackupRestoreRequest()
-                                .withRestoreTargetInfo(
-                                    new RestoreTargetInfoBase()
-                                        .withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                                        .withRestoreLocation("uawxtzx"))
-                                .withSourceDataStoreType(SourceDataStoreType.OPERATIONAL_STORE)
-                                .withSourceResourceId("mwabzxrvxc")
-                                .withIdentityDetails(
-                                    new IdentityDetails()
-                                        .withUseSystemAssignedIdentity(true)
-                                        .withUserAssignedIdentityArmUrl("haivm"))),
+        OperationJobExtendedInfo response
+            = manager.backupInstances()
+                .validateForRestore("qpofvwbc", "lembnkbwvqvxkdi", "qihebw",
+                    new ValidateRestoreRequestObject().withRestoreRequestObject(new AzureBackupRestoreRequest()
+                        .withRestoreTargetInfo(new RestoreTargetInfoBase()
+                            .withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS).withRestoreLocation("bzuwfmdurag"))
+                        .withSourceDataStoreType(SourceDataStoreType.ARCHIVE_STORE)
+                        .withSourceResourceId("zvcjfelisdjubggb").withIdentityDetails(new IdentityDetails()
+                            .withUseSystemAssignedIdentity(true).withUserAssignedIdentityArmUrl("kbsazgak"))),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("asflvg", response.jobId());
+        Assertions.assertEquals("cyrcmjdmspo", response.jobId());
     }
 }

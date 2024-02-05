@@ -135,7 +135,7 @@ public final class BlocklistAsyncClient {
     public Mono<Response<BinaryData>> createOrUpdateTextBlocklistWithResponse(String name, BinaryData options,
         RequestOptions requestOptions) {
         // Convenience API is not generated, as operation 'createOrUpdateTextBlocklist' is
-        // 'application/merge-patch+json'
+        // 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.createOrUpdateTextBlocklistWithResponseAsync(name, options, requestOptions);
     }
 

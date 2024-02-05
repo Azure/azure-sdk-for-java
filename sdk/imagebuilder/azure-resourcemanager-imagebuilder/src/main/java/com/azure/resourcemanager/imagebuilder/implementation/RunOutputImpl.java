@@ -14,8 +14,8 @@ public final class RunOutputImpl implements RunOutput {
 
     private final com.azure.resourcemanager.imagebuilder.ImageBuilderManager serviceManager;
 
-    RunOutputImpl(
-        RunOutputInner innerObject, com.azure.resourcemanager.imagebuilder.ImageBuilderManager serviceManager) {
+    RunOutputImpl(RunOutputInner innerObject,
+        com.azure.resourcemanager.imagebuilder.ImageBuilderManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

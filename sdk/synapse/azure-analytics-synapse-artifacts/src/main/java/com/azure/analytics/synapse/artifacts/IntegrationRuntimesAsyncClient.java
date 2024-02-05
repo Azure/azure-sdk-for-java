@@ -15,14 +15,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the asynchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class IntegrationRuntimesAsyncClient {
-    @Generated private final IntegrationRuntimesImpl serviceClient;
+    @Generated
+    private final IntegrationRuntimesImpl serviceClient;
 
     /**
      * Initializes an instance of IntegrationRuntimesAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -32,11 +35,11 @@ public final class IntegrationRuntimesAsyncClient {
 
     /**
      * List Integration Runtimes.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a list of integration runtime resources along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -46,7 +49,7 @@ public final class IntegrationRuntimesAsyncClient {
 
     /**
      * List Integration Runtimes.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources on successful completion of {@link Mono}.
@@ -59,7 +62,7 @@ public final class IntegrationRuntimesAsyncClient {
 
     /**
      * Get Integration Runtime.
-     *
+     * 
      * @param integrationRuntimeName The Integration Runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -74,7 +77,7 @@ public final class IntegrationRuntimesAsyncClient {
 
     /**
      * Get Integration Runtime.
-     *
+     * 
      * @param integrationRuntimeName The Integration Runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.

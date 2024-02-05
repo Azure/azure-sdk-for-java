@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The health status of credential. */
+/**
+ * The health status of credential.
+ */
 public final class CredentialHealthStatus extends ExpandableStringEnum<CredentialHealthStatus> {
-    /** Static value Healthy for CredentialHealthStatus. */
+    /**
+     * Static value Healthy for CredentialHealthStatus.
+     */
     public static final CredentialHealthStatus HEALTHY = fromString("Healthy");
 
-    /** Static value Unhealthy for CredentialHealthStatus. */
+    /**
+     * Static value Unhealthy for CredentialHealthStatus.
+     */
     public static final CredentialHealthStatus UNHEALTHY = fromString("Unhealthy");
 
     /**
      * Creates a new instance of CredentialHealthStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class CredentialHealthStatus extends ExpandableStringEnum<Credentia
 
     /**
      * Creates or finds a CredentialHealthStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CredentialHealthStatus.
      */
@@ -38,7 +44,7 @@ public final class CredentialHealthStatus extends ExpandableStringEnum<Credentia
 
     /**
      * Gets known CredentialHealthStatus values.
-     *
+     * 
      * @return known CredentialHealthStatus values.
      */
     public static Collection<CredentialHealthStatus> values() {

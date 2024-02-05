@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.NetworkManagerConnectionI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of network manager connections. */
+/**
+ * List of network manager connections.
+ */
 @Fluent
 public final class NetworkManagerConnectionListResult {
     /*
@@ -24,13 +26,15 @@ public final class NetworkManagerConnectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkManagerConnectionListResult class. */
+    /**
+     * Creates an instance of NetworkManagerConnectionListResult class.
+     */
     public NetworkManagerConnectionListResult() {
     }
 
     /**
      * Get the value property: List of network manager connections.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkManagerConnectionInner> value() {
@@ -39,7 +43,7 @@ public final class NetworkManagerConnectionListResult {
 
     /**
      * Set the value property: List of network manager connections.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkManagerConnectionListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class NetworkManagerConnectionListResult {
 
     /**
      * Get the nextLink property: Gets the URL to get the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NetworkManagerConnectionListResult {
 
     /**
      * Set the nextLink property: Gets the URL to get the next page of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkManagerConnectionListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class NetworkManagerConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

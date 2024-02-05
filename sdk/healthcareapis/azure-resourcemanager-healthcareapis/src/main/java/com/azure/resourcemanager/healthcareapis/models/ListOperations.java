@@ -9,7 +9,9 @@ import com.azure.resourcemanager.healthcareapis.fluent.models.OperationDetailInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Available operations of the service. */
+/**
+ * Available operations of the service.
+ */
 @Fluent
 public final class ListOperations {
     /*
@@ -26,8 +28,14 @@ public final class ListOperations {
     private String nextLink;
 
     /**
+     * Creates an instance of ListOperations class.
+     */
+    public ListOperations() {
+    }
+
+    /**
      * Get the value property: Collection of available operation details.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationDetailInner> value() {
@@ -35,9 +43,9 @@ public final class ListOperations {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -45,9 +53,9 @@ public final class ListOperations {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListOperations object itself.
      */
@@ -58,7 +66,7 @@ public final class ListOperations {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

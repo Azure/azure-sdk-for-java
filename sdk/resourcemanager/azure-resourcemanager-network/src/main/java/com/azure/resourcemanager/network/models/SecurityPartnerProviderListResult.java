@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.SecurityPartnerProviderIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListSecurityPartnerProviders API service call. */
+/**
+ * Response for ListSecurityPartnerProviders API service call.
+ */
 @Fluent
 public final class SecurityPartnerProviderListResult {
     /*
@@ -24,13 +26,15 @@ public final class SecurityPartnerProviderListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SecurityPartnerProviderListResult class. */
+    /**
+     * Creates an instance of SecurityPartnerProviderListResult class.
+     */
     public SecurityPartnerProviderListResult() {
     }
 
     /**
      * Get the value property: List of Security Partner Providers in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<SecurityPartnerProviderInner> value() {
@@ -39,7 +43,7 @@ public final class SecurityPartnerProviderListResult {
 
     /**
      * Set the value property: List of Security Partner Providers in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecurityPartnerProviderListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class SecurityPartnerProviderListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SecurityPartnerProviderListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SecurityPartnerProviderListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class SecurityPartnerProviderListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

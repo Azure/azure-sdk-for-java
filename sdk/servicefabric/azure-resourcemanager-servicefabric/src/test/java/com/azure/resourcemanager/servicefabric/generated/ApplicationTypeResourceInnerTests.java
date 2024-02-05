@@ -13,35 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationTypeResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationTypeResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"c\"},\"location\":\"xhvpmoue\",\"tags\":{\"xqbzvddntwnd\":\"zxibqeoj\",\"vuhrhcffcyddgl\":\"icbtwnpzao\",\"xmqci\":\"jthjqkwpyei\",\"hkh\":\"q\"},\"etag\":\"uigdtopbobjog\",\"id\":\"e\",\"name\":\"u\",\"type\":\"m\"}")
-                .toObject(ApplicationTypeResourceInner.class);
-        Assertions.assertEquals("xhvpmoue", model.location());
-        Assertions.assertEquals("zxibqeoj", model.tags().get("xqbzvddntwnd"));
+        ApplicationTypeResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"dfgiot\"},\"location\":\"tutqxlngxlefgug\",\"tags\":{\"i\":\"rxdq\"},\"etag\":\"thz\",\"id\":\"qdrabhjybigehoqf\",\"name\":\"owskanyktz\",\"type\":\"cuiywgqyw\"}")
+            .toObject(ApplicationTypeResourceInner.class);
+        Assertions.assertEquals("tutqxlngxlefgug", model.location());
+        Assertions.assertEquals("rxdq", model.tags().get("i"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeResourceInner model =
-            new ApplicationTypeResourceInner()
-                .withLocation("xhvpmoue")
-                .withTags(
-                    mapOf(
-                        "xqbzvddntwnd",
-                        "zxibqeoj",
-                        "vuhrhcffcyddgl",
-                        "icbtwnpzao",
-                        "xmqci",
-                        "jthjqkwpyei",
-                        "hkh",
-                        "q"));
+        ApplicationTypeResourceInner model
+            = new ApplicationTypeResourceInner().withLocation("tutqxlngxlefgug").withTags(mapOf("i", "rxdq"));
         model = BinaryData.fromObject(model).toObject(ApplicationTypeResourceInner.class);
-        Assertions.assertEquals("xhvpmoue", model.location());
-        Assertions.assertEquals("zxibqeoj", model.tags().get("xqbzvddntwnd"));
+        Assertions.assertEquals("tutqxlngxlefgug", model.location());
+        Assertions.assertEquals("rxdq", model.tags().get("i"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

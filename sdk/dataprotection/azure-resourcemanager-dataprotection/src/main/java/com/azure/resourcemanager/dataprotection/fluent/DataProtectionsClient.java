@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.fluent.models.FeatureValidationResponseBaseInner;
 import com.azure.resourcemanager.dataprotection.models.FeatureValidationRequestBase;
 
-/** An instance of this class provides access to all the operations defined in DataProtectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataProtectionsClient.
+ */
 public interface DataProtectionsClient {
     /**
      * Validates if a feature is supported.
-     *
+     * 
      * @param location The location parameter.
      * @param parameters Feature support request object.
      * @param context The context to associate with this operation.
@@ -25,12 +27,12 @@ public interface DataProtectionsClient {
      * @return base class for Backup Feature support along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FeatureValidationResponseBaseInner> checkFeatureSupportWithResponse(
-        String location, FeatureValidationRequestBase parameters, Context context);
+    Response<FeatureValidationResponseBaseInner> checkFeatureSupportWithResponse(String location,
+        FeatureValidationRequestBase parameters, Context context);
 
     /**
      * Validates if a feature is supported.
-     *
+     * 
      * @param location The location parameter.
      * @param parameters Feature support request object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

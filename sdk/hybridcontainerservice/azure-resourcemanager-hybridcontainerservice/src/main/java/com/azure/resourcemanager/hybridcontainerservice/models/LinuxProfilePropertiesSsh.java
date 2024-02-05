@@ -9,13 +9,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * SSH - SSH configuration for Linux-based VMs running on Azure.
+ * SSH configuration for VMs of the provisioned cluster.
  */
 @Fluent
 public final class LinuxProfilePropertiesSsh {
     /*
-     * PublicKeys - The list of SSH public keys used to authenticate with Linux-based VMs. Only expect one key
-     * specified.
+     * The list of SSH public keys used to authenticate with VMs. A maximum of 1 key may be specified.
      */
     @JsonProperty(value = "publicKeys")
     private List<LinuxProfilePropertiesSshPublicKeysItem> publicKeys;
@@ -27,8 +26,8 @@ public final class LinuxProfilePropertiesSsh {
     }
 
     /**
-     * Get the publicKeys property: PublicKeys - The list of SSH public keys used to authenticate with Linux-based VMs.
-     * Only expect one key specified.
+     * Get the publicKeys property: The list of SSH public keys used to authenticate with VMs. A maximum of 1 key may
+     * be specified.
      * 
      * @return the publicKeys value.
      */
@@ -37,8 +36,8 @@ public final class LinuxProfilePropertiesSsh {
     }
 
     /**
-     * Set the publicKeys property: PublicKeys - The list of SSH public keys used to authenticate with Linux-based VMs.
-     * Only expect one key specified.
+     * Set the publicKeys property: The list of SSH public keys used to authenticate with VMs. A maximum of 1 key may
+     * be specified.
      * 
      * @param publicKeys the publicKeys value to set.
      * @return the LinuxProfilePropertiesSsh object itself.

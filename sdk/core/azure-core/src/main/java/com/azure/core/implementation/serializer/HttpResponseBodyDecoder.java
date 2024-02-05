@@ -15,6 +15,7 @@ import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
@@ -58,6 +59,11 @@ public final class HttpResponseBodyDecoder {
             return null;
         } else if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
             try {
+                // Deserialize will return null if the body is empty. Early out.
+                if (body == null || body.length == 0) {
+                    return null;
+                }
+
                 return deserializeBody(body,
                     decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
                     null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
@@ -69,7 +75,7 @@ public final class HttpResponseBodyDecoder {
                 // return.
                 //
                 // Return the exception as the body type, RestProxyBase will handle this later.
-                LOGGER.warning("Failed to deserialize the error entity.", ex);
+                LOGGER.log(LogLevel.WARNING, () -> "Failed to deserialize the error entity.", ex);
                 return ex;
             }
         } else {
@@ -79,6 +85,11 @@ public final class HttpResponseBodyDecoder {
 
             byte[] bodyAsByteArray = body == null ? httpResponse.getBodyAsBinaryData().toBytes() : body;
             try {
+                // Deserialize will return null if the body is empty. Early out.
+                if (bodyAsByteArray == null || bodyAsByteArray.length == 0) {
+                    return null;
+                }
+
                 return deserializeBody(bodyAsByteArray,
                     extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
                     serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));

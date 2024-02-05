@@ -74,6 +74,13 @@ public class ClientAssertionCredentialBuilder extends AadCredentialBuilderBase<C
     private Supplier<String> clientAssertionSupplier;
 
     /**
+     * Constructs an instance of ClientAssertionCredentialBuilder.
+     */
+    public ClientAssertionCredentialBuilder() {
+        super();
+    }
+
+    /**
      * Sets the supplier containing the logic to supply the client assertion when invoked.
      *
      * @param clientAssertionSupplier the supplier supplying client assertion.

@@ -25,22 +25,28 @@ import com.azure.resourcemanager.compute.fluent.models.CommunityGalleryInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CommunityGalleriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CommunityGalleriesClient.
+ */
 public final class CommunityGalleriesClientImpl implements CommunityGalleriesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CommunityGalleriesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of CommunityGalleriesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CommunityGalleriesClientImpl(ComputeManagementClientImpl client) {
-        this.service =
-            RestProxy.create(CommunityGalleriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CommunityGalleriesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,45 +57,36 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     public interface CommunityGalleriesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries/{publicGalleryName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries/{publicGalleryName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<CommunityGalleryInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @PathParam("publicGalleryName") String publicGalleryName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CommunityGalleryInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @PathParam("publicGalleryName") String publicGalleryName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a community gallery by gallery public name.
-     *
+     * 
      * @param location Resource location.
      * @param publicGalleryName The public name of the community gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery by gallery public name along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a community gallery by gallery public name along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunityGalleryInner>> getWithResponseAsync(String location, String publicGalleryName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -98,49 +95,36 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter publicGalleryName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-03";
+        final String apiVersion = "2022-08-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            publicGalleryName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+                publicGalleryName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a community gallery by gallery public name.
-     *
+     * 
      * @param location Resource location.
      * @param publicGalleryName The public name of the community gallery.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery by gallery public name along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a community gallery by gallery public name along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommunityGalleryInner>> getWithResponseAsync(
-        String location, String publicGalleryName, Context context) {
+    private Mono<Response<CommunityGalleryInner>> getWithResponseAsync(String location, String publicGalleryName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -149,23 +133,16 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter publicGalleryName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-03";
+        final String apiVersion = "2022-08-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                publicGalleryName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location, publicGalleryName,
+            apiVersion, accept, context);
     }
 
     /**
      * Get a community gallery by gallery public name.
-     *
+     * 
      * @param location Resource location.
      * @param publicGalleryName The public name of the community gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,7 +157,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
 
     /**
      * Get a community gallery by gallery public name.
-     *
+     * 
      * @param location Resource location.
      * @param publicGalleryName The public name of the community gallery.
      * @param context The context to associate with this operation.
@@ -196,7 +173,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
 
     /**
      * Get a community gallery by gallery public name.
-     *
+     * 
      * @param location Resource location.
      * @param publicGalleryName The public name of the community gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

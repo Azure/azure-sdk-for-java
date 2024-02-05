@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity source for SAP Cloud for Customer source. */
+/**
+ * A copy activity source for SAP Cloud for Customer source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapCloudForCustomerSource")
 @Fluent
@@ -28,13 +30,16 @@ public final class SapCloudForCustomerSource extends TabularSource {
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
-    /** Creates an instance of SapCloudForCustomerSource class. */
-    public SapCloudForCustomerSource() {}
+    /**
+     * Creates an instance of SapCloudForCustomerSource class.
+     */
+    public SapCloudForCustomerSource() {
+    }
 
     /**
      * Get the query property: SAP Cloud for Customer OData query. For example, "$top=1". Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -44,7 +49,7 @@ public final class SapCloudForCustomerSource extends TabularSource {
     /**
      * Set the query property: SAP Cloud for Customer OData query. For example, "$top=1". Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the SapCloudForCustomerSource object itself.
      */
@@ -57,7 +62,7 @@ public final class SapCloudForCustomerSource extends TabularSource {
      * Get the httpRequestTimeout property: The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a
      * response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the httpRequestTimeout value.
      */
     public Object getHttpRequestTimeout() {
@@ -68,7 +73,7 @@ public final class SapCloudForCustomerSource extends TabularSource {
      * Set the httpRequestTimeout property: The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a
      * response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param httpRequestTimeout the httpRequestTimeout value to set.
      * @return the SapCloudForCustomerSource object itself.
      */
@@ -77,35 +82,45 @@ public final class SapCloudForCustomerSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

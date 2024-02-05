@@ -5,6 +5,8 @@ package com.azure.search.documents;
 
 import com.azure.core.models.GeoPoint;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Functional tests that ensure expected behavior of deserializing a document.
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class SearchDocumentConverterTests {
 
     private static final String TEST_DATE_STRING = "2016-10-10T17:41:05.123-07:00";

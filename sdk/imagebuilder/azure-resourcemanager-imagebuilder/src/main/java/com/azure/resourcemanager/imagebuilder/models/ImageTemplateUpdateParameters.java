@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters for updating an image template. */
+/**
+ * Parameters for updating an image template.
+ */
 @Fluent
 public final class ImageTemplateUpdateParameters {
     /*
@@ -25,13 +27,21 @@ public final class ImageTemplateUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ImageTemplateUpdateParameters class. */
+    /*
+     * Parameters for updating an image template.
+     */
+    @JsonProperty(value = "properties")
+    private ImageTemplateUpdateParametersProperties properties;
+
+    /**
+     * Creates an instance of ImageTemplateUpdateParameters class.
+     */
     public ImageTemplateUpdateParameters() {
     }
 
     /**
      * Get the identity property: The identity of the image template, if configured.
-     *
+     * 
      * @return the identity value.
      */
     public ImageTemplateIdentity identity() {
@@ -40,7 +50,7 @@ public final class ImageTemplateUpdateParameters {
 
     /**
      * Set the identity property: The identity of the image template, if configured.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ImageTemplateUpdateParameters object itself.
      */
@@ -51,7 +61,7 @@ public final class ImageTemplateUpdateParameters {
 
     /**
      * Get the tags property: The user-specified tags associated with the image template.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -60,7 +70,7 @@ public final class ImageTemplateUpdateParameters {
 
     /**
      * Set the tags property: The user-specified tags associated with the image template.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ImageTemplateUpdateParameters object itself.
      */
@@ -70,13 +80,36 @@ public final class ImageTemplateUpdateParameters {
     }
 
     /**
+     * Get the properties property: Parameters for updating an image template.
+     * 
+     * @return the properties value.
+     */
+    public ImageTemplateUpdateParametersProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Parameters for updating an image template.
+     * 
+     * @param properties the properties value to set.
+     * @return the ImageTemplateUpdateParameters object itself.
+     */
+    public ImageTemplateUpdateParameters withProperties(ImageTemplateUpdateParametersProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (identity() != null) {
             identity().validate();
+        }
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupResourceConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupResourceConfig model =
-            BinaryData
-                .fromString(
-                    "{\"storageModelType\":\"Invalid\",\"storageType\":\"GeoRedundant\",\"storageTypeState\":\"Unlocked\",\"crossRegionRestoreFlag\":true,\"dedupState\":\"Enabled\",\"xcoolState\":\"Invalid\"}")
-                .toObject(BackupResourceConfig.class);
+        BackupResourceConfig model = BinaryData.fromString(
+            "{\"storageModelType\":\"Invalid\",\"storageType\":\"GeoRedundant\",\"storageTypeState\":\"Unlocked\",\"crossRegionRestoreFlag\":true,\"dedupState\":\"Enabled\",\"xcoolState\":\"Invalid\"}")
+            .toObject(BackupResourceConfig.class);
         Assertions.assertEquals(StorageType.INVALID, model.storageModelType());
         Assertions.assertEquals(StorageType.GEO_REDUNDANT, model.storageType());
         Assertions.assertEquals(StorageTypeState.UNLOCKED, model.storageTypeState());
@@ -30,14 +28,9 @@ public final class BackupResourceConfigTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupResourceConfig model =
-            new BackupResourceConfig()
-                .withStorageModelType(StorageType.INVALID)
-                .withStorageType(StorageType.GEO_REDUNDANT)
-                .withStorageTypeState(StorageTypeState.UNLOCKED)
-                .withCrossRegionRestoreFlag(true)
-                .withDedupState(DedupState.ENABLED)
-                .withXcoolState(XcoolState.INVALID);
+        BackupResourceConfig model = new BackupResourceConfig().withStorageModelType(StorageType.INVALID)
+            .withStorageType(StorageType.GEO_REDUNDANT).withStorageTypeState(StorageTypeState.UNLOCKED)
+            .withCrossRegionRestoreFlag(true).withDedupState(DedupState.ENABLED).withXcoolState(XcoolState.INVALID);
         model = BinaryData.fromObject(model).toObject(BackupResourceConfig.class);
         Assertions.assertEquals(StorageType.INVALID, model.storageModelType());
         Assertions.assertEquals(StorageType.GEO_REDUNDANT, model.storageType());

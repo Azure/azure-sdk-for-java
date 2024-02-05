@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes a partitioning scheme where an integer range is allocated evenly across a number of partitions. */
+/**
+ * Describes a partitioning scheme where an integer range is allocated evenly across a number of partitions.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "partitionScheme")
 @JsonTypeName("UniformInt64Range")
 @Fluent
@@ -24,7 +26,7 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
     /*
      * String indicating the lower bound of the partition key range that
      * should be split between the partition ‘count’
-     *
+     * 
      */
     @JsonProperty(value = "lowKey", required = true)
     private String lowKey;
@@ -32,18 +34,20 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
     /*
      * String indicating the upper bound of the partition key range that
      * should be split between the partition ‘count’
-     *
+     * 
      */
     @JsonProperty(value = "highKey", required = true)
     private String highKey;
 
-    /** Creates an instance of UniformInt64RangePartitionSchemeDescription class. */
+    /**
+     * Creates an instance of UniformInt64RangePartitionSchemeDescription class.
+     */
     public UniformInt64RangePartitionSchemeDescription() {
     }
 
     /**
      * Get the count property: The number of partitions.
-     *
+     * 
      * @return the count value.
      */
     public int count() {
@@ -52,7 +56,7 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
 
     /**
      * Set the count property: The number of partitions.
-     *
+     * 
      * @param count the count value to set.
      * @return the UniformInt64RangePartitionSchemeDescription object itself.
      */
@@ -62,9 +66,9 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
     }
 
     /**
-     * Get the lowKey property: String indicating the lower bound of the partition key range that should be split
-     * between the partition ‘count’.
-     *
+     * Get the lowKey property: String indicating the lower bound of the partition key range that
+     * should be split between the partition ‘count’.
+     * 
      * @return the lowKey value.
      */
     public String lowKey() {
@@ -72,9 +76,9 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
     }
 
     /**
-     * Set the lowKey property: String indicating the lower bound of the partition key range that should be split
-     * between the partition ‘count’.
-     *
+     * Set the lowKey property: String indicating the lower bound of the partition key range that
+     * should be split between the partition ‘count’.
+     * 
      * @param lowKey the lowKey value to set.
      * @return the UniformInt64RangePartitionSchemeDescription object itself.
      */
@@ -84,9 +88,9 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
     }
 
     /**
-     * Get the highKey property: String indicating the upper bound of the partition key range that should be split
-     * between the partition ‘count’.
-     *
+     * Get the highKey property: String indicating the upper bound of the partition key range that
+     * should be split between the partition ‘count’.
+     * 
      * @return the highKey value.
      */
     public String highKey() {
@@ -94,9 +98,9 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
     }
 
     /**
-     * Set the highKey property: String indicating the upper bound of the partition key range that should be split
-     * between the partition ‘count’.
-     *
+     * Set the highKey property: String indicating the upper bound of the partition key range that
+     * should be split between the partition ‘count’.
+     * 
      * @param highKey the highKey value to set.
      * @return the UniformInt64RangePartitionSchemeDescription object itself.
      */
@@ -107,23 +111,19 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (lowKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property lowKey in model UniformInt64RangePartitionSchemeDescription"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property lowKey in model UniformInt64RangePartitionSchemeDescription"));
         }
         if (highKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property highKey in model UniformInt64RangePartitionSchemeDescription"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property highKey in model UniformInt64RangePartitionSchemeDescription"));
         }
     }
 

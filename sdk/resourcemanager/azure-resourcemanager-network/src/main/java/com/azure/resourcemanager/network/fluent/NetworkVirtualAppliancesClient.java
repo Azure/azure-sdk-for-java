@@ -22,14 +22,14 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkVirtualAppliancesClient. */
-public interface NetworkVirtualAppliancesClient
-    extends InnerSupportsGet<NetworkVirtualApplianceInner>,
-        InnerSupportsListing<NetworkVirtualApplianceInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in NetworkVirtualAppliancesClient.
+ */
+public interface NetworkVirtualAppliancesClient extends InnerSupportsGet<NetworkVirtualApplianceInner>,
+    InnerSupportsListing<NetworkVirtualApplianceInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,12 +38,12 @@ public interface NetworkVirtualAppliancesClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkVirtualApplianceName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName);
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,7 +56,7 @@ public interface NetworkVirtualAppliancesClient
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -69,7 +69,7 @@ public interface NetworkVirtualAppliancesClient
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param context The context to associate with this operation.
@@ -79,12 +79,12 @@ public interface NetworkVirtualAppliancesClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkVirtualApplianceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkVirtualApplianceName,
+        Context context);
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,7 +97,7 @@ public interface NetworkVirtualAppliancesClient
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,7 +109,7 @@ public interface NetworkVirtualAppliancesClient
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param context The context to associate with this operation.
@@ -122,23 +122,23 @@ public interface NetworkVirtualAppliancesClient
 
     /**
      * Gets the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Network Virtual Appliance along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified Network Virtual Appliance along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NetworkVirtualApplianceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkVirtualApplianceName, String expand);
+    Mono<Response<NetworkVirtualApplianceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, String expand);
 
     /**
      * Gets the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,12 +147,12 @@ public interface NetworkVirtualAppliancesClient
      * @return the specified Network Virtual Appliance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkVirtualApplianceInner> getByResourceGroupAsync(
-        String resourceGroupName, String networkVirtualApplianceName);
+    Mono<NetworkVirtualApplianceInner> getByResourceGroupAsync(String resourceGroupName,
+        String networkVirtualApplianceName);
 
     /**
      * Gets the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param expand Expands referenced resources.
@@ -163,12 +163,12 @@ public interface NetworkVirtualAppliancesClient
      * @return the specified Network Virtual Appliance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkVirtualApplianceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkVirtualApplianceName, String expand, Context context);
+    Response<NetworkVirtualApplianceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkVirtualApplianceName, String expand, Context context);
 
     /**
      * Gets the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +181,7 @@ public interface NetworkVirtualAppliancesClient
 
     /**
      * Updates a Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The resource group name of Network Virtual Appliance.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance being updated.
      * @param parameters Parameters supplied to Update Network Virtual Appliance Tags.
@@ -191,12 +191,12 @@ public interface NetworkVirtualAppliancesClient
      * @return networkVirtualAppliance Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NetworkVirtualApplianceInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkVirtualApplianceName, TagsObject parameters);
+    Mono<Response<NetworkVirtualApplianceInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, TagsObject parameters);
 
     /**
      * Updates a Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The resource group name of Network Virtual Appliance.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance being updated.
      * @param parameters Parameters supplied to Update Network Virtual Appliance Tags.
@@ -206,12 +206,12 @@ public interface NetworkVirtualAppliancesClient
      * @return networkVirtualAppliance Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkVirtualApplianceInner> updateTagsAsync(
-        String resourceGroupName, String networkVirtualApplianceName, TagsObject parameters);
+    Mono<NetworkVirtualApplianceInner> updateTagsAsync(String resourceGroupName, String networkVirtualApplianceName,
+        TagsObject parameters);
 
     /**
      * Updates a Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The resource group name of Network Virtual Appliance.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance being updated.
      * @param parameters Parameters supplied to Update Network Virtual Appliance Tags.
@@ -222,12 +222,12 @@ public interface NetworkVirtualAppliancesClient
      * @return networkVirtualAppliance Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkVirtualApplianceInner> updateTagsWithResponse(
-        String resourceGroupName, String networkVirtualApplianceName, TagsObject parameters, Context context);
+    Response<NetworkVirtualApplianceInner> updateTagsWithResponse(String resourceGroupName,
+        String networkVirtualApplianceName, TagsObject parameters, Context context);
 
     /**
      * Updates a Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The resource group name of Network Virtual Appliance.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance being updated.
      * @param parameters Parameters supplied to Update Network Virtual Appliance Tags.
@@ -237,12 +237,12 @@ public interface NetworkVirtualAppliancesClient
      * @return networkVirtualAppliance Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkVirtualApplianceInner updateTags(
-        String resourceGroupName, String networkVirtualApplianceName, TagsObject parameters);
+    NetworkVirtualApplianceInner updateTags(String resourceGroupName, String networkVirtualApplianceName,
+        TagsObject parameters);
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -252,12 +252,12 @@ public interface NetworkVirtualAppliancesClient
      * @return networkVirtualAppliance Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String networkVirtualApplianceName, NetworkVirtualApplianceInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceInner parameters);
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -272,7 +272,7 @@ public interface NetworkVirtualAppliancesClient
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -287,7 +287,7 @@ public interface NetworkVirtualAppliancesClient
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -299,14 +299,12 @@ public interface NetworkVirtualAppliancesClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkVirtualApplianceInner>, NetworkVirtualApplianceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String networkVirtualApplianceName,
-        NetworkVirtualApplianceInner parameters,
+        String resourceGroupName, String networkVirtualApplianceName, NetworkVirtualApplianceInner parameters,
         Context context);
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -316,12 +314,12 @@ public interface NetworkVirtualAppliancesClient
      * @return networkVirtualAppliance Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkVirtualApplianceInner> createOrUpdateAsync(
-        String resourceGroupName, String networkVirtualApplianceName, NetworkVirtualApplianceInner parameters);
+    Mono<NetworkVirtualApplianceInner> createOrUpdateAsync(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceInner parameters);
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -331,12 +329,12 @@ public interface NetworkVirtualAppliancesClient
      * @return networkVirtualAppliance Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkVirtualApplianceInner createOrUpdate(
-        String resourceGroupName, String networkVirtualApplianceName, NetworkVirtualApplianceInner parameters);
+    NetworkVirtualApplianceInner createOrUpdate(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceInner parameters);
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -347,15 +345,12 @@ public interface NetworkVirtualAppliancesClient
      * @return networkVirtualAppliance Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkVirtualApplianceInner createOrUpdate(
-        String resourceGroupName,
-        String networkVirtualApplianceName,
-        NetworkVirtualApplianceInner parameters,
-        Context context);
+    NetworkVirtualApplianceInner createOrUpdate(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceInner parameters, Context context);
 
     /**
      * Lists all Network Virtual Appliances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -367,34 +362,34 @@ public interface NetworkVirtualAppliancesClient
 
     /**
      * Lists all Network Virtual Appliances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkVirtualAppliances API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for ListNetworkVirtualAppliances API service call as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkVirtualApplianceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all Network Virtual Appliances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkVirtualAppliances API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for ListNetworkVirtualAppliances API service call as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkVirtualApplianceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets all Network Virtual Appliances in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Network Virtual Appliances in a subscription as paginated response with {@link PagedFlux}.
@@ -404,7 +399,7 @@ public interface NetworkVirtualAppliancesClient
 
     /**
      * Gets all Network Virtual Appliances in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Network Virtual Appliances in a subscription as paginated response with {@link PagedIterable}.
@@ -414,7 +409,7 @@ public interface NetworkVirtualAppliancesClient
 
     /**
      * Gets all Network Virtual Appliances in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

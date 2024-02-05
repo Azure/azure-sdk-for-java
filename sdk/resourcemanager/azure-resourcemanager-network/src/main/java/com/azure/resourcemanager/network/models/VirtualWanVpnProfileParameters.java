@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Wan Vpn profile parameters Vpn profile generation. */
+/**
+ * Virtual Wan Vpn profile parameters Vpn profile generation.
+ */
 @Fluent
 public final class VirtualWanVpnProfileParameters {
     /*
@@ -22,14 +24,16 @@ public final class VirtualWanVpnProfileParameters {
     @JsonProperty(value = "authenticationMethod")
     private AuthenticationMethod authenticationMethod;
 
-    /** Creates an instance of VirtualWanVpnProfileParameters class. */
+    /**
+     * Creates an instance of VirtualWanVpnProfileParameters class.
+     */
     public VirtualWanVpnProfileParameters() {
     }
 
     /**
      * Get the vpnServerConfigurationResourceId property: VpnServerConfiguration partial resource uri with which
      * VirtualWan is associated to.
-     *
+     * 
      * @return the vpnServerConfigurationResourceId value.
      */
     public String vpnServerConfigurationResourceId() {
@@ -39,19 +43,19 @@ public final class VirtualWanVpnProfileParameters {
     /**
      * Set the vpnServerConfigurationResourceId property: VpnServerConfiguration partial resource uri with which
      * VirtualWan is associated to.
-     *
+     * 
      * @param vpnServerConfigurationResourceId the vpnServerConfigurationResourceId value to set.
      * @return the VirtualWanVpnProfileParameters object itself.
      */
-    public VirtualWanVpnProfileParameters withVpnServerConfigurationResourceId(
-        String vpnServerConfigurationResourceId) {
+    public VirtualWanVpnProfileParameters
+        withVpnServerConfigurationResourceId(String vpnServerConfigurationResourceId) {
         this.vpnServerConfigurationResourceId = vpnServerConfigurationResourceId;
         return this;
     }
 
     /**
      * Get the authenticationMethod property: VPN client authentication method.
-     *
+     * 
      * @return the authenticationMethod value.
      */
     public AuthenticationMethod authenticationMethod() {
@@ -60,7 +64,7 @@ public final class VirtualWanVpnProfileParameters {
 
     /**
      * Set the authenticationMethod property: VPN client authentication method.
-     *
+     * 
      * @param authenticationMethod the authenticationMethod value to set.
      * @return the VirtualWanVpnProfileParameters object itself.
      */
@@ -71,7 +75,7 @@ public final class VirtualWanVpnProfileParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

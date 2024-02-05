@@ -29,13 +29,13 @@ public final class DatasetsImpl implements Datasets {
 
     public PagedIterable<DatasetResource> listByFactory(String resourceGroupName, String factoryName) {
         PagedIterable<DatasetResourceInner> inner = this.serviceClient().listByFactory(resourceGroupName, factoryName);
-        return Utils.mapPage(inner, inner1 -> new DatasetResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatasetResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DatasetResource> listByFactory(String resourceGroupName, String factoryName, Context context) {
         PagedIterable<DatasetResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
-        return Utils.mapPage(inner, inner1 -> new DatasetResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatasetResourceImpl(inner1, this.manager()));
     }
 
     public Response<DatasetResource> getWithResponse(String resourceGroupName, String factoryName, String datasetName,
@@ -69,17 +69,17 @@ public final class DatasetsImpl implements Datasets {
     }
 
     public DatasetResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String datasetName = Utils.getValueFromIdByName(id, "datasets");
+        String datasetName = ResourceManagerUtils.getValueFromIdByName(id, "datasets");
         if (datasetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'datasets'.", id)));
@@ -90,17 +90,17 @@ public final class DatasetsImpl implements Datasets {
     }
 
     public Response<DatasetResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String datasetName = Utils.getValueFromIdByName(id, "datasets");
+        String datasetName = ResourceManagerUtils.getValueFromIdByName(id, "datasets");
         if (datasetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'datasets'.", id)));
@@ -109,17 +109,17 @@ public final class DatasetsImpl implements Datasets {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String datasetName = Utils.getValueFromIdByName(id, "datasets");
+        String datasetName = ResourceManagerUtils.getValueFromIdByName(id, "datasets");
         if (datasetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'datasets'.", id)));
@@ -128,17 +128,17 @@ public final class DatasetsImpl implements Datasets {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String datasetName = Utils.getValueFromIdByName(id, "datasets");
+        String datasetName = ResourceManagerUtils.getValueFromIdByName(id, "datasets");
         if (datasetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'datasets'.", id)));

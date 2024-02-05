@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Replication properties. */
+/**
+ * Replication properties.
+ */
 @Fluent
 public final class ReplicationObject {
     /*
@@ -30,10 +32,16 @@ public final class ReplicationObject {
     private ReplicationSchedule replicationSchedule;
 
     /*
-     * The resource ID of the remote volume.
+     * The resource ID of the remote volume. Required for cross region and cross zone replication
      */
     @JsonProperty(value = "remoteVolumeResourceId", required = true)
     private String remoteVolumeResourceId;
+
+    /*
+     * The full path to a volume that is to be migrated into ANF. Required for Migration volumes
+     */
+    @JsonProperty(value = "remotePath")
+    private RemotePath remotePath;
 
     /*
      * The remote region for the other end of the Volume Replication.
@@ -41,13 +49,15 @@ public final class ReplicationObject {
     @JsonProperty(value = "remoteVolumeRegion")
     private String remoteVolumeRegion;
 
-    /** Creates an instance of ReplicationObject class. */
+    /**
+     * Creates an instance of ReplicationObject class.
+     */
     public ReplicationObject() {
     }
 
     /**
      * Get the replicationId property: Id.
-     *
+     * 
      * @return the replicationId value.
      */
     public String replicationId() {
@@ -57,7 +67,7 @@ public final class ReplicationObject {
     /**
      * Get the endpointType property: Indicates whether the local volume is the source or destination for the Volume
      * Replication.
-     *
+     * 
      * @return the endpointType value.
      */
     public EndpointType endpointType() {
@@ -67,7 +77,7 @@ public final class ReplicationObject {
     /**
      * Set the endpointType property: Indicates whether the local volume is the source or destination for the Volume
      * Replication.
-     *
+     * 
      * @param endpointType the endpointType value to set.
      * @return the ReplicationObject object itself.
      */
@@ -78,7 +88,7 @@ public final class ReplicationObject {
 
     /**
      * Get the replicationSchedule property: Schedule.
-     *
+     * 
      * @return the replicationSchedule value.
      */
     public ReplicationSchedule replicationSchedule() {
@@ -87,7 +97,7 @@ public final class ReplicationObject {
 
     /**
      * Set the replicationSchedule property: Schedule.
-     *
+     * 
      * @param replicationSchedule the replicationSchedule value to set.
      * @return the ReplicationObject object itself.
      */
@@ -97,8 +107,9 @@ public final class ReplicationObject {
     }
 
     /**
-     * Get the remoteVolumeResourceId property: The resource ID of the remote volume.
-     *
+     * Get the remoteVolumeResourceId property: The resource ID of the remote volume. Required for cross region and
+     * cross zone replication.
+     * 
      * @return the remoteVolumeResourceId value.
      */
     public String remoteVolumeResourceId() {
@@ -106,8 +117,9 @@ public final class ReplicationObject {
     }
 
     /**
-     * Set the remoteVolumeResourceId property: The resource ID of the remote volume.
-     *
+     * Set the remoteVolumeResourceId property: The resource ID of the remote volume. Required for cross region and
+     * cross zone replication.
+     * 
      * @param remoteVolumeResourceId the remoteVolumeResourceId value to set.
      * @return the ReplicationObject object itself.
      */
@@ -117,8 +129,30 @@ public final class ReplicationObject {
     }
 
     /**
+     * Get the remotePath property: The full path to a volume that is to be migrated into ANF. Required for Migration
+     * volumes.
+     * 
+     * @return the remotePath value.
+     */
+    public RemotePath remotePath() {
+        return this.remotePath;
+    }
+
+    /**
+     * Set the remotePath property: The full path to a volume that is to be migrated into ANF. Required for Migration
+     * volumes.
+     * 
+     * @param remotePath the remotePath value to set.
+     * @return the ReplicationObject object itself.
+     */
+    public ReplicationObject withRemotePath(RemotePath remotePath) {
+        this.remotePath = remotePath;
+        return this;
+    }
+
+    /**
      * Get the remoteVolumeRegion property: The remote region for the other end of the Volume Replication.
-     *
+     * 
      * @return the remoteVolumeRegion value.
      */
     public String remoteVolumeRegion() {
@@ -127,7 +161,7 @@ public final class ReplicationObject {
 
     /**
      * Set the remoteVolumeRegion property: The remote region for the other end of the Volume Replication.
-     *
+     * 
      * @param remoteVolumeRegion the remoteVolumeRegion value to set.
      * @return the ReplicationObject object itself.
      */
@@ -138,15 +172,16 @@ public final class ReplicationObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (remoteVolumeResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property remoteVolumeResourceId in model ReplicationObject"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property remoteVolumeResourceId in model ReplicationObject"));
+        }
+        if (remotePath() != null) {
+            remotePath().validate();
         }
     }
 

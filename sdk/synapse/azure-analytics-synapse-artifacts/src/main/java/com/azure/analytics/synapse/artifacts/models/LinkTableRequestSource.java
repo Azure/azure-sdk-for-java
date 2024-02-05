@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LinkTableRequestSource model. */
+/**
+ * The LinkTableRequestSource model.
+ */
 @Fluent
 public final class LinkTableRequestSource {
     /*
@@ -22,12 +24,15 @@ public final class LinkTableRequestSource {
     @JsonProperty(value = "schemaName")
     private String schemaName;
 
-    /** Creates an instance of LinkTableRequestSource class. */
-    public LinkTableRequestSource() {}
+    /**
+     * Creates an instance of LinkTableRequestSource class.
+     */
+    public LinkTableRequestSource() {
+    }
 
     /**
      * Get the tableName property: Source table table name.
-     *
+     * 
      * @return the tableName value.
      */
     public String getTableName() {
@@ -36,7 +41,7 @@ public final class LinkTableRequestSource {
 
     /**
      * Set the tableName property: Source table table name.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the LinkTableRequestSource object itself.
      */
@@ -47,7 +52,7 @@ public final class LinkTableRequestSource {
 
     /**
      * Get the schemaName property: Source table schema name.
-     *
+     * 
      * @return the schemaName value.
      */
     public String getSchemaName() {
@@ -56,7 +61,7 @@ public final class LinkTableRequestSource {
 
     /**
      * Set the schemaName property: Source table schema name.
-     *
+     * 
      * @param schemaName the schemaName value to set.
      * @return the LinkTableRequestSource object itself.
      */

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data used for requesting a SAS. */
+/**
+ * Data used for requesting a SAS.
+ */
 @Fluent
 public final class GrantAccessData {
     /*
@@ -35,13 +37,15 @@ public final class GrantAccessData {
     @JsonProperty(value = "fileFormat")
     private FileFormat fileFormat;
 
-    /** Creates an instance of GrantAccessData class. */
+    /**
+     * Creates an instance of GrantAccessData class.
+     */
     public GrantAccessData() {
     }
 
     /**
      * Get the access property: The access property.
-     *
+     * 
      * @return the access value.
      */
     public AccessLevel access() {
@@ -50,7 +54,7 @@ public final class GrantAccessData {
 
     /**
      * Set the access property: The access property.
-     *
+     * 
      * @param access the access value to set.
      * @return the GrantAccessData object itself.
      */
@@ -61,7 +65,7 @@ public final class GrantAccessData {
 
     /**
      * Get the durationInSeconds property: Time duration in seconds until the SAS access expires.
-     *
+     * 
      * @return the durationInSeconds value.
      */
     public int durationInSeconds() {
@@ -70,7 +74,7 @@ public final class GrantAccessData {
 
     /**
      * Set the durationInSeconds property: Time duration in seconds until the SAS access expires.
-     *
+     * 
      * @param durationInSeconds the durationInSeconds value to set.
      * @return the GrantAccessData object itself.
      */
@@ -81,7 +85,7 @@ public final class GrantAccessData {
 
     /**
      * Get the getSecureVMGuestStateSas property: Set this flag to true to get additional SAS for VM guest state.
-     *
+     * 
      * @return the getSecureVMGuestStateSas value.
      */
     public Boolean getSecureVMGuestStateSas() {
@@ -90,7 +94,7 @@ public final class GrantAccessData {
 
     /**
      * Set the getSecureVMGuestStateSas property: Set this flag to true to get additional SAS for VM guest state.
-     *
+     * 
      * @param getSecureVMGuestStateSas the getSecureVMGuestStateSas value to set.
      * @return the GrantAccessData object itself.
      */
@@ -102,7 +106,7 @@ public final class GrantAccessData {
     /**
      * Get the fileFormat property: Used to specify the file format when making request for SAS on a VHDX file format
      * snapshot.
-     *
+     * 
      * @return the fileFormat value.
      */
     public FileFormat fileFormat() {
@@ -112,7 +116,7 @@ public final class GrantAccessData {
     /**
      * Set the fileFormat property: Used to specify the file format when making request for SAS on a VHDX file format
      * snapshot.
-     *
+     * 
      * @param fileFormat the fileFormat value to set.
      * @return the GrantAccessData object itself.
      */
@@ -123,14 +127,13 @@ public final class GrantAccessData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (access() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property access in model GrantAccessData"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property access in model GrantAccessData"));
         }
     }
 

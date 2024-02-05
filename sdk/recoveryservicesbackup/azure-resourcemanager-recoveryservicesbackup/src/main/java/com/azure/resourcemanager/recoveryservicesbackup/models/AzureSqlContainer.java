@@ -8,44 +8,58 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure Sql workload-specific container. */
+/**
+ * Azure Sql workload-specific container.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
 @JsonTypeName("AzureSqlContainer")
 @Fluent
 public final class AzureSqlContainer extends ProtectionContainer {
-    /** Creates an instance of AzureSqlContainer class. */
+    /**
+     * Creates an instance of AzureSqlContainer class.
+     */
     public AzureSqlContainer() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlContainer withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlContainer withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlContainer withRegistrationStatus(String registrationStatus) {
         super.withRegistrationStatus(registrationStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlContainer withProtectableObjectType(String protectableObjectType) {
         super.withProtectableObjectType(protectableObjectType);
@@ -54,7 +68,7 @@ public final class AzureSqlContainer extends ProtectionContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

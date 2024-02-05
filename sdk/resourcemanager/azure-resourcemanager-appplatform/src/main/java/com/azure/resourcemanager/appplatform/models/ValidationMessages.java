@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Validate messages of the configuration service git repositories. */
+/**
+ * Validate messages of the configuration service git repositories.
+ */
 @Fluent
 public final class ValidationMessages {
     /*
@@ -24,8 +26,14 @@ public final class ValidationMessages {
     private List<String> messages;
 
     /**
+     * Creates an instance of ValidationMessages class.
+     */
+    public ValidationMessages() {
+    }
+
+    /**
      * Get the name property: The name of the configuration service git repository.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -34,7 +42,7 @@ public final class ValidationMessages {
 
     /**
      * Set the name property: The name of the configuration service git repository.
-     *
+     * 
      * @param name the name value to set.
      * @return the ValidationMessages object itself.
      */
@@ -45,7 +53,7 @@ public final class ValidationMessages {
 
     /**
      * Get the messages property: Detailed validation messages.
-     *
+     * 
      * @return the messages value.
      */
     public List<String> messages() {
@@ -54,7 +62,7 @@ public final class ValidationMessages {
 
     /**
      * Set the messages property: Detailed validation messages.
-     *
+     * 
      * @param messages the messages value to set.
      * @return the ValidationMessages object itself.
      */
@@ -65,7 +73,7 @@ public final class ValidationMessages {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

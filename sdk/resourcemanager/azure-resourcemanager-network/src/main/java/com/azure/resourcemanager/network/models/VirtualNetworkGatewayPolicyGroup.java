@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayPoli
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for VirtualNetworkGatewayPolicyGroup. */
+/**
+ * Parameters for VirtualNetworkGatewayPolicyGroup.
+ */
 @Fluent
 public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
     /*
@@ -31,13 +33,15 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of VirtualNetworkGatewayPolicyGroup class. */
+    /**
+     * Creates an instance of VirtualNetworkGatewayPolicyGroup class.
+     */
     public VirtualNetworkGatewayPolicyGroup() {
     }
 
     /**
      * Get the innerProperties property: Properties of tVirtualNetworkGatewayPolicyGroup.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualNetworkGatewayPolicyGroupProperties innerProperties() {
@@ -47,7 +51,7 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +61,7 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualNetworkGatewayPolicyGroup object itself.
      */
@@ -68,14 +72,16 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkGatewayPolicyGroup withId(String id) {
         super.withId(id);
@@ -84,7 +90,7 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
 
     /**
      * Get the isDefault property: Shows if this is a Default VirtualNetworkGatewayPolicyGroup or not.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -93,7 +99,7 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
 
     /**
      * Set the isDefault property: Shows if this is a Default VirtualNetworkGatewayPolicyGroup or not.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the VirtualNetworkGatewayPolicyGroup object itself.
      */
@@ -107,7 +113,7 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
 
     /**
      * Get the priority property: Priority for VirtualNetworkGatewayPolicyGroup.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -116,7 +122,7 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
 
     /**
      * Set the priority property: Priority for VirtualNetworkGatewayPolicyGroup.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the VirtualNetworkGatewayPolicyGroup object itself.
      */
@@ -130,7 +136,7 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
 
     /**
      * Get the policyMembers property: Multiple PolicyMembers for VirtualNetworkGatewayPolicyGroup.
-     *
+     * 
      * @return the policyMembers value.
      */
     public List<VirtualNetworkGatewayPolicyGroupMember> policyMembers() {
@@ -139,12 +145,12 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
 
     /**
      * Set the policyMembers property: Multiple PolicyMembers for VirtualNetworkGatewayPolicyGroup.
-     *
+     * 
      * @param policyMembers the policyMembers value to set.
      * @return the VirtualNetworkGatewayPolicyGroup object itself.
      */
-    public VirtualNetworkGatewayPolicyGroup withPolicyMembers(
-        List<VirtualNetworkGatewayPolicyGroupMember> policyMembers) {
+    public VirtualNetworkGatewayPolicyGroup
+        withPolicyMembers(List<VirtualNetworkGatewayPolicyGroupMember> policyMembers) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkGatewayPolicyGroupProperties();
         }
@@ -154,7 +160,7 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
 
     /**
      * Get the vngClientConnectionConfigurations property: List of references to vngClientConnectionConfigurations.
-     *
+     * 
      * @return the vngClientConnectionConfigurations value.
      */
     public List<SubResource> vngClientConnectionConfigurations() {
@@ -163,7 +169,7 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the VirtualNetworkGatewayPolicyGroup resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -172,7 +178,7 @@ public final class VirtualNetworkGatewayPolicyGroup extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

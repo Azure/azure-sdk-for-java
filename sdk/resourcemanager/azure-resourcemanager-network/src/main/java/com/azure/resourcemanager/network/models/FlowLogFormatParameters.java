@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define the flow log format. */
+/**
+ * Parameters that define the flow log format.
+ */
 @Fluent
 public final class FlowLogFormatParameters {
     /*
@@ -22,13 +24,15 @@ public final class FlowLogFormatParameters {
     @JsonProperty(value = "version")
     private Integer version;
 
-    /** Creates an instance of FlowLogFormatParameters class. */
+    /**
+     * Creates an instance of FlowLogFormatParameters class.
+     */
     public FlowLogFormatParameters() {
     }
 
     /**
      * Get the type property: The file type of flow log.
-     *
+     * 
      * @return the type value.
      */
     public FlowLogFormatType type() {
@@ -37,7 +41,7 @@ public final class FlowLogFormatParameters {
 
     /**
      * Set the type property: The file type of flow log.
-     *
+     * 
      * @param type the type value to set.
      * @return the FlowLogFormatParameters object itself.
      */
@@ -48,7 +52,7 @@ public final class FlowLogFormatParameters {
 
     /**
      * Get the version property: The version (revision) of the flow log.
-     *
+     * 
      * @return the version value.
      */
     public Integer version() {
@@ -57,7 +61,7 @@ public final class FlowLogFormatParameters {
 
     /**
      * Set the version property: The version (revision) of the flow log.
-     *
+     * 
      * @param version the version value to set.
      * @return the FlowLogFormatParameters object itself.
      */
@@ -68,7 +72,7 @@ public final class FlowLogFormatParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

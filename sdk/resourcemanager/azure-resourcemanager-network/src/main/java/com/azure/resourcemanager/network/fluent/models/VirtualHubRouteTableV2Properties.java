@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.VirtualHubRouteV2;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for VirtualHubRouteTableV2. */
+/**
+ * Parameters for VirtualHubRouteTableV2.
+ */
 @Fluent
 public final class VirtualHubRouteTableV2Properties {
     /*
@@ -31,13 +33,15 @@ public final class VirtualHubRouteTableV2Properties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VirtualHubRouteTableV2Properties class. */
+    /**
+     * Creates an instance of VirtualHubRouteTableV2Properties class.
+     */
     public VirtualHubRouteTableV2Properties() {
     }
 
     /**
      * Get the routes property: List of all routes.
-     *
+     * 
      * @return the routes value.
      */
     public List<VirtualHubRouteV2> routes() {
@@ -46,7 +50,7 @@ public final class VirtualHubRouteTableV2Properties {
 
     /**
      * Set the routes property: List of all routes.
-     *
+     * 
      * @param routes the routes value to set.
      * @return the VirtualHubRouteTableV2Properties object itself.
      */
@@ -57,7 +61,7 @@ public final class VirtualHubRouteTableV2Properties {
 
     /**
      * Get the attachedConnections property: List of all connections attached to this route table v2.
-     *
+     * 
      * @return the attachedConnections value.
      */
     public List<String> attachedConnections() {
@@ -66,7 +70,7 @@ public final class VirtualHubRouteTableV2Properties {
 
     /**
      * Set the attachedConnections property: List of all connections attached to this route table v2.
-     *
+     * 
      * @param attachedConnections the attachedConnections value to set.
      * @return the VirtualHubRouteTableV2Properties object itself.
      */
@@ -77,7 +81,7 @@ public final class VirtualHubRouteTableV2Properties {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual hub route table v2 resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -86,7 +90,7 @@ public final class VirtualHubRouteTableV2Properties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

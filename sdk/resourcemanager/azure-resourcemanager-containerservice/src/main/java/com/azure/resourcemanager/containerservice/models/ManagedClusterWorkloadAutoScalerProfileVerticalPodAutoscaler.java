@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VPA (Vertical Pod Autoscaler) settings for the workload auto-scaler profile. */
+/**
+ * VPA (Vertical Pod Autoscaler) settings for the workload auto-scaler profile.
+ */
 @Fluent
 public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler {
     /*
@@ -16,13 +18,15 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler 
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
-    /** Creates an instance of ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler class. */
+    /**
+     * Creates an instance of ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler class.
+     */
     public ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler() {
     }
 
     /**
      * Get the enabled property: Whether to enable VPA. Default value is false.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -31,7 +35,7 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler 
 
     /**
      * Set the enabled property: Whether to enable VPA. Default value is false.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler object itself.
      */
@@ -42,7 +46,7 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

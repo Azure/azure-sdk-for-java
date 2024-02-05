@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Country details. */
+/**
+ * Country details.
+ */
 @Fluent
 public final class AvailableProvidersListCountry {
     /*
@@ -29,13 +31,15 @@ public final class AvailableProvidersListCountry {
     @JsonProperty(value = "states")
     private List<AvailableProvidersListState> states;
 
-    /** Creates an instance of AvailableProvidersListCountry class. */
+    /**
+     * Creates an instance of AvailableProvidersListCountry class.
+     */
     public AvailableProvidersListCountry() {
     }
 
     /**
      * Get the countryName property: The country name.
-     *
+     * 
      * @return the countryName value.
      */
     public String countryName() {
@@ -44,7 +48,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Set the countryName property: The country name.
-     *
+     * 
      * @param countryName the countryName value to set.
      * @return the AvailableProvidersListCountry object itself.
      */
@@ -55,7 +59,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Get the providers property: A list of Internet service providers.
-     *
+     * 
      * @return the providers value.
      */
     public List<String> providers() {
@@ -64,7 +68,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Set the providers property: A list of Internet service providers.
-     *
+     * 
      * @param providers the providers value to set.
      * @return the AvailableProvidersListCountry object itself.
      */
@@ -75,7 +79,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Get the states property: List of available states in the country.
-     *
+     * 
      * @return the states value.
      */
     public List<AvailableProvidersListState> states() {
@@ -84,7 +88,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Set the states property: List of available states in the country.
-     *
+     * 
      * @param states the states value to set.
      * @return the AvailableProvidersListCountry object itself.
      */
@@ -95,7 +99,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

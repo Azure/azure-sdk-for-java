@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.elasticsan.fluent.models.SnapshotInner;
 
-/** An instance of this class provides access to all the operations defined in VolumeSnapshotsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VolumeSnapshotsClient.
+ */
 public interface VolumeSnapshotsClient {
     /**
      * List Snapshots in a VolumeGroup or List Snapshots by Volume (name) in a VolumeGroup using filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -27,12 +29,12 @@ public interface VolumeSnapshotsClient {
      * @return list of Snapshots as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SnapshotInner> listByVolumeGroup(
-        String resourceGroupName, String elasticSanName, String volumeGroupName);
+    PagedIterable<SnapshotInner> listByVolumeGroup(String resourceGroupName, String elasticSanName,
+        String volumeGroupName);
 
     /**
      * List Snapshots in a VolumeGroup or List Snapshots by Volume (name) in a VolumeGroup using filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -44,12 +46,12 @@ public interface VolumeSnapshotsClient {
      * @return list of Snapshots as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SnapshotInner> listByVolumeGroup(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String filter, Context context);
+    PagedIterable<SnapshotInner> listByVolumeGroup(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String filter, Context context);
 
     /**
      * Create a Volume Snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -61,16 +63,12 @@ public interface VolumeSnapshotsClient {
      * @return the {@link SyncPoller} for polling of response for Volume Snapshot request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String snapshotName,
-        SnapshotInner parameters);
+    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String snapshotName, SnapshotInner parameters);
 
     /**
      * Create a Volume Snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -83,17 +81,12 @@ public interface VolumeSnapshotsClient {
      * @return the {@link SyncPoller} for polling of response for Volume Snapshot request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String snapshotName,
-        SnapshotInner parameters,
-        Context context);
+    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String snapshotName, SnapshotInner parameters, Context context);
 
     /**
      * Create a Volume Snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -105,16 +98,12 @@ public interface VolumeSnapshotsClient {
      * @return response for Volume Snapshot request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotInner create(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String snapshotName,
+    SnapshotInner create(String resourceGroupName, String elasticSanName, String volumeGroupName, String snapshotName,
         SnapshotInner parameters);
 
     /**
      * Create a Volume Snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -127,17 +116,12 @@ public interface VolumeSnapshotsClient {
      * @return response for Volume Snapshot request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotInner create(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String snapshotName,
-        SnapshotInner parameters,
-        Context context);
+    SnapshotInner create(String resourceGroupName, String elasticSanName, String volumeGroupName, String snapshotName,
+        SnapshotInner parameters, Context context);
 
     /**
      * Delete a Volume Snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -148,12 +132,12 @@ public interface VolumeSnapshotsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String snapshotName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String snapshotName);
 
     /**
      * Delete a Volume Snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -165,12 +149,12 @@ public interface VolumeSnapshotsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String snapshotName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String snapshotName, Context context);
 
     /**
      * Delete a Volume Snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -184,7 +168,7 @@ public interface VolumeSnapshotsClient {
 
     /**
      * Delete a Volume Snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -195,12 +179,12 @@ public interface VolumeSnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String snapshotName, Context context);
+    void delete(String resourceGroupName, String elasticSanName, String volumeGroupName, String snapshotName,
+        Context context);
 
     /**
      * Get a Volume Snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -212,12 +196,12 @@ public interface VolumeSnapshotsClient {
      * @return a Volume Snapshot along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SnapshotInner> getWithResponse(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String snapshotName, Context context);
+    Response<SnapshotInner> getWithResponse(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String snapshotName, Context context);
 
     /**
      * Get a Volume Snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.

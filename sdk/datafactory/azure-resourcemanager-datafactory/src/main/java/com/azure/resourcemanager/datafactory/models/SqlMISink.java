@@ -60,8 +60,7 @@ public final class SqlMISink extends CopySink {
     private Object sqlWriterUseTableLock;
 
     /*
-     * White behavior when copying data into azure SQL MI. Type: SqlWriteBehaviorEnum (or Expression with resultType
-     * SqlWriteBehaviorEnum)
+     * White behavior when copying data into azure SQL MI. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
@@ -227,8 +226,8 @@ public final class SqlMISink extends CopySink {
     }
 
     /**
-     * Get the writeBehavior property: White behavior when copying data into azure SQL MI. Type: SqlWriteBehaviorEnum
-     * (or Expression with resultType SqlWriteBehaviorEnum).
+     * Get the writeBehavior property: White behavior when copying data into azure SQL MI. Type: string (or Expression
+     * with resultType string).
      * 
      * @return the writeBehavior value.
      */
@@ -237,8 +236,8 @@ public final class SqlMISink extends CopySink {
     }
 
     /**
-     * Set the writeBehavior property: White behavior when copying data into azure SQL MI. Type: SqlWriteBehaviorEnum
-     * (or Expression with resultType SqlWriteBehaviorEnum).
+     * Set the writeBehavior property: White behavior when copying data into azure SQL MI. Type: string (or Expression
+     * with resultType string).
      * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the SqlMISink object itself.

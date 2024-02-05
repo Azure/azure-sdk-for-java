@@ -13,10 +13,8 @@ import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.PrivateLinkServiceConnectionState;
 
-public final class PrivateEndpointConnectionDescriptionImpl
-    implements PrivateEndpointConnectionDescription,
-        PrivateEndpointConnectionDescription.Definition,
-        PrivateEndpointConnectionDescription.Update {
+public final class PrivateEndpointConnectionDescriptionImpl implements PrivateEndpointConnectionDescription,
+    PrivateEndpointConnectionDescription.Definition, PrivateEndpointConnectionDescription.Update {
     private PrivateEndpointConnectionDescriptionInner innerObject;
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
@@ -49,6 +47,10 @@ public final class PrivateEndpointConnectionDescriptionImpl
         return this.innerModel().systemData();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PrivateEndpointConnectionDescriptionInner innerModel() {
         return this.innerObject;
     }
@@ -74,27 +76,19 @@ public final class PrivateEndpointConnectionDescriptionImpl
     }
 
     public PrivateEndpointConnectionDescription create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .createOrUpdate(
-                    resourceGroupName, resourceName, privateEndpointConnectionName, createProperties, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().createOrUpdate(
+            resourceGroupName, resourceName, privateEndpointConnectionName, createProperties, Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnectionDescription create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .createOrUpdate(
-                    resourceGroupName, resourceName, privateEndpointConnectionName, createProperties, context);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
+            .createOrUpdate(resourceGroupName, resourceName, privateEndpointConnectionName, createProperties, context);
         return this;
     }
 
-    PrivateEndpointConnectionDescriptionImpl(
-        String name, com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
+    PrivateEndpointConnectionDescriptionImpl(String name,
+        com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerObject = new PrivateEndpointConnectionDescriptionInner();
         this.serviceManager = serviceManager;
         this.privateEndpointConnectionName = name;
@@ -107,27 +101,18 @@ public final class PrivateEndpointConnectionDescriptionImpl
     }
 
     public PrivateEndpointConnectionDescription apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .createOrUpdate(
-                    resourceGroupName, resourceName, privateEndpointConnectionName, updateProperties, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().createOrUpdate(
+            resourceGroupName, resourceName, privateEndpointConnectionName, updateProperties, Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnectionDescription apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .createOrUpdate(
-                    resourceGroupName, resourceName, privateEndpointConnectionName, updateProperties, context);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
+            .createOrUpdate(resourceGroupName, resourceName, privateEndpointConnectionName, updateProperties, context);
         return this;
     }
 
-    PrivateEndpointConnectionDescriptionImpl(
-        PrivateEndpointConnectionDescriptionInner innerObject,
+    PrivateEndpointConnectionDescriptionImpl(PrivateEndpointConnectionDescriptionInner innerObject,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -137,22 +122,14 @@ public final class PrivateEndpointConnectionDescriptionImpl
     }
 
     public PrivateEndpointConnectionDescription refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE).getValue();
         return this;
     }
 
     public PrivateEndpointConnectionDescription refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, context).getValue();
         return this;
     }
 
@@ -166,8 +143,8 @@ public final class PrivateEndpointConnectionDescriptionImpl
         }
     }
 
-    public PrivateEndpointConnectionDescriptionImpl withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionDescriptionImpl
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         if (isInCreateMode()) {
             this.createProperties.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
             return this;

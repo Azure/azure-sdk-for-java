@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The status of virtual machine patch operations. */
+/**
+ * The status of virtual machine patch operations.
+ */
 @Fluent
 public final class VirtualMachinePatchStatus {
     /*
@@ -29,14 +31,16 @@ public final class VirtualMachinePatchStatus {
     @JsonProperty(value = "configurationStatuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<InstanceViewStatus> configurationStatuses;
 
-    /** Creates an instance of VirtualMachinePatchStatus class. */
+    /**
+     * Creates an instance of VirtualMachinePatchStatus class.
+     */
     public VirtualMachinePatchStatus() {
     }
 
     /**
      * Get the availablePatchSummary property: The available patch summary of the latest assessment operation for the
      * virtual machine.
-     *
+     * 
      * @return the availablePatchSummary value.
      */
     public AvailablePatchSummary availablePatchSummary() {
@@ -46,7 +50,7 @@ public final class VirtualMachinePatchStatus {
     /**
      * Set the availablePatchSummary property: The available patch summary of the latest assessment operation for the
      * virtual machine.
-     *
+     * 
      * @param availablePatchSummary the availablePatchSummary value to set.
      * @return the VirtualMachinePatchStatus object itself.
      */
@@ -58,7 +62,7 @@ public final class VirtualMachinePatchStatus {
     /**
      * Get the lastPatchInstallationSummary property: The installation summary of the latest installation operation for
      * the virtual machine.
-     *
+     * 
      * @return the lastPatchInstallationSummary value.
      */
     public LastPatchInstallationSummary lastPatchInstallationSummary() {
@@ -68,19 +72,19 @@ public final class VirtualMachinePatchStatus {
     /**
      * Set the lastPatchInstallationSummary property: The installation summary of the latest installation operation for
      * the virtual machine.
-     *
+     * 
      * @param lastPatchInstallationSummary the lastPatchInstallationSummary value to set.
      * @return the VirtualMachinePatchStatus object itself.
      */
-    public VirtualMachinePatchStatus withLastPatchInstallationSummary(
-        LastPatchInstallationSummary lastPatchInstallationSummary) {
+    public VirtualMachinePatchStatus
+        withLastPatchInstallationSummary(LastPatchInstallationSummary lastPatchInstallationSummary) {
         this.lastPatchInstallationSummary = lastPatchInstallationSummary;
         return this;
     }
 
     /**
      * Get the configurationStatuses property: The enablement status of the specified patchMode.
-     *
+     * 
      * @return the configurationStatuses value.
      */
     public List<InstanceViewStatus> configurationStatuses() {
@@ -89,7 +93,7 @@ public final class VirtualMachinePatchStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

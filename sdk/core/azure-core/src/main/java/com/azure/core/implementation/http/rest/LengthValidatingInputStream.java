@@ -15,7 +15,7 @@ import static com.azure.core.implementation.http.rest.RestProxyUtils.BODY_TOO_SM
 /**
  * An {@link InputStream} decorator that tracks the number of bytes read from an inner {@link InputStream} and throws
  * an exception if the number of bytes read doesn't match what was expected.
- *
+ * <p>
  * This implementation assumes that reader is going to read until EOF.
  */
 final class LengthValidatingInputStream extends InputStream {
@@ -113,11 +113,11 @@ final class LengthValidatingInputStream extends InputStream {
         if (readSize == -1) {
             // If the inner InputStream has reached termination validate that the read bytes matches what was expected.
             if (position > expectedReadSize) {
-                throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                    position, expectedReadSize), position, expectedReadSize);
+                throw LOGGER.logExceptionAsError(new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                    position, expectedReadSize), position, expectedReadSize));
             } else if (position < expectedReadSize) {
-                throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                    position, expectedReadSize), position, expectedReadSize);
+                throw LOGGER.logExceptionAsError(new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                    position, expectedReadSize), position, expectedReadSize));
             }
         } else {
             position += readSize;

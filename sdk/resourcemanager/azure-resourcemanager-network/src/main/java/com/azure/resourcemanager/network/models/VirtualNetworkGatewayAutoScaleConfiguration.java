@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Network Gateway Autoscale Configuration details. */
+/**
+ * Virtual Network Gateway Autoscale Configuration details.
+ */
 @Fluent
 public final class VirtualNetworkGatewayAutoScaleConfiguration {
     /*
@@ -16,13 +18,15 @@ public final class VirtualNetworkGatewayAutoScaleConfiguration {
     @JsonProperty(value = "bounds")
     private VirtualNetworkGatewayAutoScaleBounds bounds;
 
-    /** Creates an instance of VirtualNetworkGatewayAutoScaleConfiguration class. */
+    /**
+     * Creates an instance of VirtualNetworkGatewayAutoScaleConfiguration class.
+     */
     public VirtualNetworkGatewayAutoScaleConfiguration() {
     }
 
     /**
      * Get the bounds property: The bounds of the autoscale configuration.
-     *
+     * 
      * @return the bounds value.
      */
     public VirtualNetworkGatewayAutoScaleBounds bounds() {
@@ -31,7 +35,7 @@ public final class VirtualNetworkGatewayAutoScaleConfiguration {
 
     /**
      * Set the bounds property: The bounds of the autoscale configuration.
-     *
+     * 
      * @param bounds the bounds value to set.
      * @return the VirtualNetworkGatewayAutoScaleConfiguration object itself.
      */
@@ -42,7 +46,7 @@ public final class VirtualNetworkGatewayAutoScaleConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

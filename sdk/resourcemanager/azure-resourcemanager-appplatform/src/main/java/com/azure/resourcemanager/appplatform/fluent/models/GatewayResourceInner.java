@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appplatform.models.GatewayProperties;
 import com.azure.resourcemanager.appplatform.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Spring Cloud Gateway resource. */
+/**
+ * Spring Cloud Gateway resource.
+ */
 @Fluent
 public final class GatewayResourceInner extends ProxyResource {
     /*
@@ -33,8 +35,14 @@ public final class GatewayResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of GatewayResourceInner class.
+     */
+    public GatewayResourceInner() {
+    }
+
+    /**
      * Get the properties property: Spring Cloud Gateway properties payload.
-     *
+     * 
      * @return the properties value.
      */
     public GatewayProperties properties() {
@@ -43,7 +51,7 @@ public final class GatewayResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: Spring Cloud Gateway properties payload.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the GatewayResourceInner object itself.
      */
@@ -54,7 +62,7 @@ public final class GatewayResourceInner extends ProxyResource {
 
     /**
      * Get the sku property: Sku of the Spring Cloud Gateway resource.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -63,7 +71,7 @@ public final class GatewayResourceInner extends ProxyResource {
 
     /**
      * Set the sku property: Sku of the Spring Cloud Gateway resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the GatewayResourceInner object itself.
      */
@@ -74,7 +82,7 @@ public final class GatewayResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -83,7 +91,7 @@ public final class GatewayResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

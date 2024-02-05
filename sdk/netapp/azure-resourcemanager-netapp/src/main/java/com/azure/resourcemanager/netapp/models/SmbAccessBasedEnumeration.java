@@ -10,19 +10,23 @@ import java.util.Collection;
 
 /**
  * smbAccessBasedEnumeration
- *
- * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+ * 
+ * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
  */
 public final class SmbAccessBasedEnumeration extends ExpandableStringEnum<SmbAccessBasedEnumeration> {
-    /** Static value Disabled for SmbAccessBasedEnumeration. */
+    /**
+     * Static value Disabled for SmbAccessBasedEnumeration.
+     */
     public static final SmbAccessBasedEnumeration DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for SmbAccessBasedEnumeration. */
+    /**
+     * Static value Enabled for SmbAccessBasedEnumeration.
+     */
     public static final SmbAccessBasedEnumeration ENABLED = fromString("Enabled");
 
     /**
      * Creates a new instance of SmbAccessBasedEnumeration value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +35,7 @@ public final class SmbAccessBasedEnumeration extends ExpandableStringEnum<SmbAcc
 
     /**
      * Creates or finds a SmbAccessBasedEnumeration from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SmbAccessBasedEnumeration.
      */
@@ -42,7 +46,7 @@ public final class SmbAccessBasedEnumeration extends ExpandableStringEnum<SmbAcc
 
     /**
      * Gets known SmbAccessBasedEnumeration values.
-     *
+     * 
      * @return known SmbAccessBasedEnumeration values.
      */
     public static Collection<SmbAccessBasedEnumeration> values() {

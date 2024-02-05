@@ -5,17 +5,62 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NodePoolRollingStarted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NodePoolRollingStarted event.
+ */
 @Fluent
 public final class ContainerServiceNodePoolRollingStartedEventData extends ContainerServiceNodePoolRollingEventData {
-    /** Creates an instance of ContainerServiceNodePoolRollingStartedEventData class. */
-    public ContainerServiceNodePoolRollingStartedEventData() {}
+    /**
+     * Creates an instance of ContainerServiceNodePoolRollingStartedEventData class.
+     */
+    public ContainerServiceNodePoolRollingStartedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerServiceNodePoolRollingStartedEventData setNodePoolName(String nodePoolName) {
         super.setNodePoolName(nodePoolName);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nodePoolName", getNodePoolName());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerServiceNodePoolRollingStartedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerServiceNodePoolRollingStartedEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerServiceNodePoolRollingStartedEventData.
+     */
+    public static ContainerServiceNodePoolRollingStartedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerServiceNodePoolRollingStartedEventData deserializedContainerServiceNodePoolRollingStartedEventData
+                = new ContainerServiceNodePoolRollingStartedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nodePoolName".equals(fieldName)) {
+                    deserializedContainerServiceNodePoolRollingStartedEventData.setNodePoolName(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerServiceNodePoolRollingStartedEventData;
+        });
     }
 }

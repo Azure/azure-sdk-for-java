@@ -8,13 +8,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -33,10 +28,11 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
+import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.LeaseStateType;
@@ -46,32 +42,21 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder;
-import okhttp3.ConnectionPool;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-import java.util.zip.CRC32;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -102,10 +87,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
     protected static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
 
     protected static final String ENCRYPTION_SCOPE_STRING = "testscope1";
-
-    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build();
-    private static final HttpClient OK_HTTP_CLIENT =
-        new OkHttpAsyncHttpClientBuilder().connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES)).build();
 
     protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
         HttpHeaderName.fromString(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED);
@@ -142,7 +123,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
     @Override
     public void beforeTest() {
         super.beforeTest();
-        prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
+        prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(Arrays.asList(
@@ -169,12 +150,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
         dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(fileSystemName);
         dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName);
         dataLakeFileSystemClient.createIfNotExists();
-    }
-
-    private static String getCrc32(String input) {
-        CRC32 crc32 = new CRC32();
-        crc32.update(input.getBytes(StandardCharsets.UTF_8));
-        return String.format(Locale.US, "%08X", crc32.getValue()).toLowerCase();
     }
 
     /**
@@ -252,12 +227,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected DataLakeServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint) {
         return getServiceClientBuilder(credential, endpoint).buildClient();
-    }
-
-    protected DataLakeServiceClient getServiceClient(StorageSharedKeyCredential credential,
-        String endpoint,
-        HttpPipelinePolicy... policies) {
-        return getServiceClientBuilder(credential, endpoint, policies).buildClient();
     }
 
     protected DataLakeServiceClient getServiceClient(String sasToken, String endpoint) {
@@ -548,17 +517,13 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected byte[] getRandomByteArray(int size) {
-        long seed = UUID.fromString(testResourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE;
-        Random rand = new Random(seed);
-        byte[] data = new byte[size];
-        rand.nextBytes(data);
-        return data;
+        return StorageCommonTestUtils.getRandomByteArray(size, testResourceNamer);
     }
 
 
     // Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
     protected ByteBuffer getRandomData(int size) {
-        return ByteBuffer.wrap(getRandomByteArray(size));
+        return StorageCommonTestUtils.getRandomData(size, testResourceNamer);
     }
 
     /**
@@ -578,12 +543,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
         assertNotNull(headers.getValue(X_MS_VERSION));
     }
 
-    protected void validatePathProperties(Response<PathProperties> response,
-        String cacheControl,
-        String contentDisposition,
-        String contentEncoding,
-        String contentLanguage,
-        byte[] contentMD5,
+    protected void validatePathProperties(Response<PathProperties> response, String cacheControl,
+        String contentDisposition, String contentEncoding, String contentLanguage, byte[] contentMD5,
         String contentType) {
 
         assertEquals(cacheControl, response.getValue().getCacheControl());
@@ -676,25 +637,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
     // We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
     protected File getRandomFile(int size) {
         try {
-            File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
-            file.deleteOnExit();
-            try (FileOutputStream fos = new FileOutputStream(file)) {
-                if (size > Constants.MB) {
-                    byte[] data = getRandomByteArray(Constants.MB);
-                    int mbChunks = size / Constants.MB;
-                    int remaining = size % Constants.MB;
-                    for (int i = 0; i < mbChunks; i++) {
-                        fos.write(data);
-                    }
-
-                    if (remaining > 0) {
-                        fos.write(data, 0, remaining);
-                    }
-                } else {
-                    fos.write(getRandomByteArray(size));
-                }
-                return file;
-            }
+            return StorageCommonTestUtils.getRandomFile(size, testResourceNamer);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -709,35 +652,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
      * @param count Size of the download from the service
      */
     protected void compareFiles(File file1, File file2, long offset, long count) {
-        long pos = 0L;
-        int defaultBufferSize = 128 * Constants.KB;
-
-        try (FileInputStream stream1 = new FileInputStream(file1);
-             FileInputStream stream2 = new FileInputStream(file2)) {
-
-            stream1.skip(offset);
-
-            // If the amount we are going to read is smaller than the default buffer size use that instead.
-            int bufferSize = (int) Math.min(defaultBufferSize, count);
-
-            while (pos < count) {
-                // Number of bytes we expect to read.
-                int expectedReadCount = (int) Math.min(bufferSize, count - pos);
-                byte[] buffer1 = new byte[expectedReadCount];
-                byte[] buffer2 = new byte[expectedReadCount];
-
-                int readCount1 = stream1.read(buffer1);
-                int readCount2 = stream2.read(buffer2);
-
-                assertEquals(readCount1, readCount2);
-                assertArraysEqual(buffer1, buffer2);
-
-                pos += expectedReadCount;
-            }
-
-            int verificationRead = stream2.read();
-            assertEquals(count, pos);
-            assertEquals(-1, verificationRead);
+        try {
+            StorageCommonTestUtils.compareFiles(file1, file2, offset, count);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
@@ -760,99 +676,17 @@ public class DataLakeTestBase extends TestProxyTestBase {
         assertEquals(expectedTime.truncatedTo(ChronoUnit.MINUTES), actualTime.truncatedTo(ChronoUnit.MINUTES));
     }
 
-    /**
-     * Injects one retry-able IOException failure per url.
-     */
-    protected static final class TransientFailureInjectingHttpPipelinePolicy implements HttpPipelinePolicy {
-
-        private final ConcurrentHashMap<String, Boolean> failureTracker = new ConcurrentHashMap<>();
-
-        @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext,
-            HttpPipelineNextPolicy httpPipelineNextPolicy) {
-            HttpRequest request = httpPipelineCallContext.getHttpRequest();
-            String key = request.getUrl().toString();
-
-            // Make sure that failure happens once per url.
-            if (!failureTracker.computeIfAbsent(key, ignored -> false)) {
-                return httpPipelineNextPolicy.process();
-            }
-
-            failureTracker.put(key, true);
-            if (request.getBody() != null) {
-                return request
-                    .getBody()
-                    .map(byteBuffer -> {
-                        // Read a byte from each buffer to simulate that failure occurred in the middle of transfer.
-                        byteBuffer.get();
-                        return byteBuffer;
-                    })
-                    .reduce(0L, (a, byteBuffer) -> a + byteBuffer.remaining())
-                    .flatMap(aLong -> Mono.error(new IOException("KABOOM!")));
-            } else {
-                return Mono.error(new IOException("KABOOM!"));
-            }
-        }
-    }
-
     protected HttpPipelinePolicy getPerCallVersionPolicy() {
-        return new HttpPipelinePolicy() {
-            @Override
-            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                context.getHttpRequest().setHeader(X_MS_VERSION, "2019-02-02");
-                return next.process();
-            }
-
-            @Override
-            public HttpPipelinePosition getPipelinePosition() {
-                return HttpPipelinePosition.PER_CALL;
-            }
-        };
+        return new PerCallVersionPolicy("2019-02-02");
     }
 
     protected <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
-        // Groovy style reflection. All our builders follow this pattern.
-        builder.httpClient(getHttpClient());
-
-        if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        if (ENVIRONMENT.getServiceVersion() != null) {
-            String serviceVersion = ENVIRONMENT.getServiceVersion();
-            boolean foundMatchingEnum = false;
-            for (DataLakeServiceVersion version : DataLakeServiceVersion.values()) {
-                if (version.name().equals(serviceVersion)) {
-                    builder.addPolicy(new ServiceVersionValidationPolicy(version.getVersion()));
-                    foundMatchingEnum = true;
-                    break;
-                }
-            }
-
-            if (!foundMatchingEnum) {
-                throw new IllegalArgumentException(
-                    "Unable to find matching DataLakeServiceVersion for service version: " + serviceVersion);
-            }
-        }
-
-        builder.httpLogOptions(DataLakeServiceClientBuilder.getDefaultHttpLogOptions());
-
-        return builder;
+        return StorageCommonTestUtils.instrument(builder, DataLakeServiceClientBuilder.getDefaultHttpLogOptions(),
+            interceptorManager);
     }
 
     protected HttpClient getHttpClient() {
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            switch (ENVIRONMENT.getHttpClientType()) {
-                case NETTY:
-                    return NETTY_HTTP_CLIENT;
-                case OK_HTTP:
-                    return OK_HTTP_CLIENT;
-                default:
-                    throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());
-            }
-        } else {
-            return interceptorManager.getPlaybackClient();
-        }
+        return StorageCommonTestUtils.getHttpClient(interceptorManager);
     }
 
     protected static boolean olderThan(DataLakeServiceVersion targetVersion) {
@@ -885,16 +719,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
             .verifyComplete();
     }
 
-    public static byte[] convertInputStreamToByteArray(InputStream inputStream, int expectedSize) throws IOException {
-        int b;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(expectedSize);
-        byte[] buffer = new byte[8192];
-
-        while ((b = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, b);
-        }
-
-        return outputStream.toByteArray();
+    public static byte[] convertInputStreamToByteArray(InputStream inputStream, int expectedSize) {
+        return StorageCommonTestUtils.convertInputStreamToByteArray(inputStream, expectedSize);
     }
 
     /**
@@ -935,46 +761,4 @@ public class DataLakeTestBase extends TestProxyTestBase {
             sleepIfLiveTesting(delayMillis);
         }
     }
-
-    public static boolean isLiveMode() {
-        return ENVIRONMENT.getTestMode() == TestMode.LIVE;
-    }
-
-    private static boolean olderThan20200210ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_02_10);
-    }
-
-    private static boolean olderThan20201206ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_12_06);
-    }
-
-    private static boolean olderThan20200612ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_06_12);
-    }
-
-    private static boolean olderThan20210608ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2021_06_08);
-    }
-
-    private static boolean olderThan20230803ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2023_08_03);
-    }
-
-    private static boolean olderThan20200804ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_08_04);
-    }
-
-    private static boolean olderThan20191212ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2019_12_12);
-    }
-
-    private static boolean olderThan20201002ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_10_02);
-    }
-
-    private static boolean olderThan20210410ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2021_04_10);
-    }
-
-
 }

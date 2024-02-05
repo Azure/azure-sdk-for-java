@@ -13,20 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ListPrivateLinkResourcesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListPrivateLinkResourcesResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"ukgjnpiucgygevq\",\"requiredMembers\":[\"yp\",\"rbpizc\",\"r\",\"j\"],\"requiredZoneNames\":[\"ydnfyhxdeoejz\"]},\"etag\":\"w\",\"id\":\"fsj\",\"name\":\"tgzfbishcbkh\",\"type\":\"jdeyeamdpha\"}],\"nextLink\":\"lpbuxwgipwhonowk\"}")
-                .toObject(ListPrivateLinkResourcesResult.class);
+        ListPrivateLinkResourcesResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"groupId\":\"ukgjnpiucgygevq\",\"requiredMembers\":[\"yp\",\"rbpizc\",\"r\",\"j\"],\"requiredZoneNames\":[\"ydnfyhxdeoejz\"]},\"etag\":\"w\",\"id\":\"fsj\",\"name\":\"tgzfbishcbkh\",\"type\":\"jdeyeamdpha\"}],\"nextLink\":\"lpbuxwgipwhonowk\"}")
+            .toObject(ListPrivateLinkResourcesResult.class);
         Assertions.assertEquals("lpbuxwgipwhonowk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListPrivateLinkResourcesResult model =
-            new ListPrivateLinkResourcesResult()
-                .withValue(Arrays.asList(new PrivateLinkResourceInner()))
-                .withNextLink("lpbuxwgipwhonowk");
+        ListPrivateLinkResourcesResult model = new ListPrivateLinkResourcesResult()
+            .withValue(Arrays.asList(new PrivateLinkResourceInner())).withNextLink("lpbuxwgipwhonowk");
         model = BinaryData.fromObject(model).toObject(ListPrivateLinkResourcesResult.class);
         Assertions.assertEquals("lpbuxwgipwhonowk", model.nextLink());
     }

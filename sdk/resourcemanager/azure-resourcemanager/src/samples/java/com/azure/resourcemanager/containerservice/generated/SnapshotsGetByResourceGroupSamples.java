@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-/** Samples for Snapshots GetByResourceGroup. */
+/**
+ * Samples for Snapshots GetByResourceGroup.
+ */
 public final class SnapshotsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/SnapshotsGet.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
+     * SnapshotsGet.json
      */
     /**
      * Sample code: Get Snapshot.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getSnapshots()
-            .getByResourceGroupWithResponse("rg1", "snapshot1", com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters().manager().serviceClient().getSnapshots().getByResourceGroupWithResponse("rg1",
+            "snapshot1", com.azure.core.util.Context.NONE);
     }
 }

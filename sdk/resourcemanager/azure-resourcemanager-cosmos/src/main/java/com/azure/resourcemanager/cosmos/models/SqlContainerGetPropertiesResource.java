@@ -6,8 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** The SqlContainerGetPropertiesResource model. */
+/**
+ * The SqlContainerGetPropertiesResource model.
+ */
 @Fluent
 public final class SqlContainerGetPropertiesResource extends SqlContainerResource {
     /*
@@ -28,13 +31,15 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of SqlContainerGetPropertiesResource class. */
+    /**
+     * Creates an instance of SqlContainerGetPropertiesResource class.
+     */
     public SqlContainerGetPropertiesResource() {
     }
 
     /**
      * Get the rid property: A system generated property. A unique identifier.
-     *
+     * 
      * @return the rid value.
      */
     public String rid() {
@@ -43,7 +48,7 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
 
     /**
      * Get the ts property: A system generated property that denotes the last updated timestamp of the resource.
-     *
+     * 
      * @return the ts value.
      */
     public Float ts() {
@@ -53,64 +58,80 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
     /**
      * Get the etag property: A system generated property representing the resource etag required for optimistic
      * concurrency control.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withIndexingPolicy(IndexingPolicy indexingPolicy) {
         super.withIndexingPolicy(indexingPolicy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withPartitionKey(ContainerPartitionKey partitionKey) {
         super.withPartitionKey(partitionKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withDefaultTtl(Integer defaultTtl) {
         super.withDefaultTtl(defaultTtl);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
         super.withUniqueKeyPolicy(uniqueKeyPolicy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public SqlContainerGetPropertiesResource withConflictResolutionPolicy(
-        ConflictResolutionPolicy conflictResolutionPolicy) {
+    public SqlContainerGetPropertiesResource
+        withConflictResolutionPolicy(ConflictResolutionPolicy conflictResolutionPolicy) {
         super.withConflictResolutionPolicy(conflictResolutionPolicy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withClientEncryptionPolicy(ClientEncryptionPolicy clientEncryptionPolicy) {
         super.withClientEncryptionPolicy(clientEncryptionPolicy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withAnalyticalStorageTtl(Long analyticalStorageTtl) {
         super.withAnalyticalStorageTtl(analyticalStorageTtl);
@@ -118,8 +139,35 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlContainerGetPropertiesResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlContainerGetPropertiesResource withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlContainerGetPropertiesResource withComputedProperties(List<ComputedProperty> computedProperties) {
+        super.withComputedProperties(computedProperties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

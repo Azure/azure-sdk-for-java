@@ -3,9 +3,8 @@
 
 package com.azure.storage.blob.perf.core;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.perf.BlobPerfStressOptions;
-
-import java.util.UUID;
 
 public abstract class AbstractUploadTest<TOptions extends BlobPerfStressOptions> extends BlobTestBase<TOptions> {
 
@@ -14,6 +13,6 @@ public abstract class AbstractUploadTest<TOptions extends BlobPerfStressOptions>
      * @param options options
      */
     public AbstractUploadTest(TOptions options) {
-        super(options, BLOB_NAME_PREFIX + UUID.randomUUID());
+        super(options, BLOB_NAME_PREFIX + CoreUtils.randomUuid());
     }
 }

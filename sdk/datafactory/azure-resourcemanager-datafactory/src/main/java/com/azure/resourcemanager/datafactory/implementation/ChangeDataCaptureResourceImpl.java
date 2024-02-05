@@ -158,9 +158,9 @@ public final class ChangeDataCaptureResourceImpl
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.changeDataCaptureName = Utils.getValueFromIdByName(innerObject.id(), "adfcdcs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.changeDataCaptureName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "adfcdcs");
     }
 
     public ChangeDataCaptureResource refresh() {

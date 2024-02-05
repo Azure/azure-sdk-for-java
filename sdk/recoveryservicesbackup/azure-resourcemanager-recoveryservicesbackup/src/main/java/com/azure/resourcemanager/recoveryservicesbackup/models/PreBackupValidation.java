@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Pre-backup validation for Azure VM Workload provider. */
+/**
+ * Pre-backup validation for Azure VM Workload provider.
+ */
 @Fluent
 public final class PreBackupValidation {
     /*
@@ -28,13 +30,15 @@ public final class PreBackupValidation {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of PreBackupValidation class. */
+    /**
+     * Creates an instance of PreBackupValidation class.
+     */
     public PreBackupValidation() {
     }
 
     /**
      * Get the status property: Status of protectable item, i.e. InProgress,Succeeded,Failed.
-     *
+     * 
      * @return the status value.
      */
     public InquiryStatus status() {
@@ -43,7 +47,7 @@ public final class PreBackupValidation {
 
     /**
      * Set the status property: Status of protectable item, i.e. InProgress,Succeeded,Failed.
-     *
+     * 
      * @param status the status value to set.
      * @return the PreBackupValidation object itself.
      */
@@ -54,7 +58,7 @@ public final class PreBackupValidation {
 
     /**
      * Get the code property: Error code of protectable item.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -63,7 +67,7 @@ public final class PreBackupValidation {
 
     /**
      * Set the code property: Error code of protectable item.
-     *
+     * 
      * @param code the code value to set.
      * @return the PreBackupValidation object itself.
      */
@@ -74,7 +78,7 @@ public final class PreBackupValidation {
 
     /**
      * Get the message property: Message corresponding to the error code for the protectable item.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -83,7 +87,7 @@ public final class PreBackupValidation {
 
     /**
      * Set the message property: Message corresponding to the error code for the protectable item.
-     *
+     * 
      * @param message the message value to set.
      * @return the PreBackupValidation object itself.
      */
@@ -94,7 +98,7 @@ public final class PreBackupValidation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

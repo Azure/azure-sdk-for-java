@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes scaling information of a SKU. */
+/**
+ * Describes scaling information of a SKU.
+ */
 @Immutable
 public final class ResourceSkuRestrictions {
     /*
@@ -36,13 +38,15 @@ public final class ResourceSkuRestrictions {
     @JsonProperty(value = "reasonCode", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceSkuRestrictionsReasonCode reasonCode;
 
-    /** Creates an instance of ResourceSkuRestrictions class. */
+    /**
+     * Creates an instance of ResourceSkuRestrictions class.
+     */
     public ResourceSkuRestrictions() {
     }
 
     /**
      * Get the type property: The type of restrictions.
-     *
+     * 
      * @return the type value.
      */
     public ResourceSkuRestrictionsType type() {
@@ -52,7 +56,7 @@ public final class ResourceSkuRestrictions {
     /**
      * Get the values property: The value of restrictions. If the restriction type is set to location. This would be
      * different locations where the SKU is restricted.
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -61,7 +65,7 @@ public final class ResourceSkuRestrictions {
 
     /**
      * Get the restrictionInfo property: The information about the restriction where the SKU cannot be used.
-     *
+     * 
      * @return the restrictionInfo value.
      */
     public ResourceSkuRestrictionInfo restrictionInfo() {
@@ -70,7 +74,7 @@ public final class ResourceSkuRestrictions {
 
     /**
      * Get the reasonCode property: The reason for restriction.
-     *
+     * 
      * @return the reasonCode value.
      */
     public ResourceSkuRestrictionsReasonCode reasonCode() {
@@ -79,7 +83,7 @@ public final class ResourceSkuRestrictions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

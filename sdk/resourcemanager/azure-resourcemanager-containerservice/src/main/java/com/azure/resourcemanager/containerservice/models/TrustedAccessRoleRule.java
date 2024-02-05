@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Rule for trusted access role. */
+/**
+ * Rule for trusted access role.
+ */
 @Immutable
 public final class TrustedAccessRoleRule {
     /*
@@ -41,13 +43,15 @@ public final class TrustedAccessRoleRule {
     @JsonProperty(value = "nonResourceURLs", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> nonResourceUrls;
 
-    /** Creates an instance of TrustedAccessRoleRule class. */
+    /**
+     * Creates an instance of TrustedAccessRoleRule class.
+     */
     public TrustedAccessRoleRule() {
     }
 
     /**
      * Get the verbs property: List of allowed verbs.
-     *
+     * 
      * @return the verbs value.
      */
     public List<String> verbs() {
@@ -56,7 +60,7 @@ public final class TrustedAccessRoleRule {
 
     /**
      * Get the apiGroups property: List of allowed apiGroups.
-     *
+     * 
      * @return the apiGroups value.
      */
     public List<String> apiGroups() {
@@ -65,7 +69,7 @@ public final class TrustedAccessRoleRule {
 
     /**
      * Get the resources property: List of allowed resources.
-     *
+     * 
      * @return the resources value.
      */
     public List<String> resources() {
@@ -74,7 +78,7 @@ public final class TrustedAccessRoleRule {
 
     /**
      * Get the resourceNames property: List of allowed names.
-     *
+     * 
      * @return the resourceNames value.
      */
     public List<String> resourceNames() {
@@ -83,7 +87,7 @@ public final class TrustedAccessRoleRule {
 
     /**
      * Get the nonResourceUrls property: List of allowed nonResourceURLs.
-     *
+     * 
      * @return the nonResourceUrls value.
      */
     public List<String> nonResourceUrls() {
@@ -92,7 +96,7 @@ public final class TrustedAccessRoleRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The virtual network connection reset shared key. */
+/**
+ * The virtual network connection reset shared key.
+ */
 @Fluent
 public final class ConnectionResetSharedKeyInner {
     /*
@@ -16,13 +18,15 @@ public final class ConnectionResetSharedKeyInner {
     @JsonProperty(value = "keyLength", required = true)
     private int keyLength;
 
-    /** Creates an instance of ConnectionResetSharedKeyInner class. */
+    /**
+     * Creates an instance of ConnectionResetSharedKeyInner class.
+     */
     public ConnectionResetSharedKeyInner() {
     }
 
     /**
      * Get the keyLength property: The virtual network connection reset shared key length, should between 1 and 128.
-     *
+     * 
      * @return the keyLength value.
      */
     public int keyLength() {
@@ -31,7 +35,7 @@ public final class ConnectionResetSharedKeyInner {
 
     /**
      * Set the keyLength property: The virtual network connection reset shared key length, should between 1 and 128.
-     *
+     * 
      * @param keyLength the keyLength value to set.
      * @return the ConnectionResetSharedKeyInner object itself.
      */
@@ -42,7 +46,7 @@ public final class ConnectionResetSharedKeyInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

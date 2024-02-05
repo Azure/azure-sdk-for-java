@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.GremlinGraphResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties to create and update Azure Cosmos DB Gremlin graph. */
+/**
+ * Properties to create and update Azure Cosmos DB Gremlin graph.
+ */
 @Fluent
 public final class GremlinGraphCreateUpdateProperties {
     /*
@@ -26,13 +28,15 @@ public final class GremlinGraphCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
-    /** Creates an instance of GremlinGraphCreateUpdateProperties class. */
+    /**
+     * Creates an instance of GremlinGraphCreateUpdateProperties class.
+     */
     public GremlinGraphCreateUpdateProperties() {
     }
 
     /**
      * Get the resource property: The standard JSON format of a Gremlin graph.
-     *
+     * 
      * @return the resource value.
      */
     public GremlinGraphResource resource() {
@@ -41,7 +45,7 @@ public final class GremlinGraphCreateUpdateProperties {
 
     /**
      * Set the resource property: The standard JSON format of a Gremlin graph.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the GremlinGraphCreateUpdateProperties object itself.
      */
@@ -53,7 +57,7 @@ public final class GremlinGraphCreateUpdateProperties {
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -63,7 +67,7 @@ public final class GremlinGraphCreateUpdateProperties {
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the GremlinGraphCreateUpdateProperties object itself.
      */
@@ -74,15 +78,13 @@ public final class GremlinGraphCreateUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model GremlinGraphCreateUpdateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resource in model GremlinGraphCreateUpdateProperties"));
         } else {
             resource().validate();
         }

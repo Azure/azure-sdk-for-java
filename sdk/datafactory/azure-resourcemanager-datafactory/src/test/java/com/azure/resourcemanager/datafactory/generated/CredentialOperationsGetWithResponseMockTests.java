@@ -31,7 +31,7 @@ public final class CredentialOperationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"vaxyitnzpfdoete\"},\"description\":\"skqx\",\"annotations\":[\"datawl\",\"dataodrdnfmxomupdqp\",\"dataxivktdvwmefjpo\"],\"\":{\"trlo\":\"datayvbvxlrltr\",\"yr\":\"datarjvr\",\"trzlvfncph\":\"datahfrsyckqwefmq\",\"zg\":\"datalnbawff\"}},\"name\":\"bzmxzrai\",\"type\":\"zgrojpnxzj\",\"etag\":\"cyysyceyk\",\"id\":\"lxhymc\"}";
+            = "{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"sxajrnqouj\"},\"description\":\"pvisqflmalm\",\"annotations\":[\"datardpfanjkenrlcjms\"],\"\":{\"hhiiduogakr\":\"datamebxwd\",\"qdtfjctvoh\":\"datamjodbdcyijnoibcl\",\"vstvpkslq\":\"dataw\"}},\"name\":\"abgo\",\"type\":\"ryli\",\"etag\":\"fnhcklll\",\"id\":\"rkvlqqkpxve\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,10 +49,11 @@ public final class CredentialOperationsGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedIdentityCredentialResource response = manager.credentialOperations()
-            .getWithResponse("k", "udxvjr", "dbinqqrkkgawnae", "eui", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("zhidpxvkpbaftf", "xhfusjxnadiese", "zfh", "ihrxg", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("lxhymc", response.id());
-        Assertions.assertEquals("skqx", response.properties().description());
-        Assertions.assertEquals("vaxyitnzpfdoete", response.properties().resourceId());
+        Assertions.assertEquals("rkvlqqkpxve", response.id());
+        Assertions.assertEquals("pvisqflmalm", response.properties().description());
+        Assertions.assertEquals("sxajrnqouj", response.properties().resourceId());
     }
 }

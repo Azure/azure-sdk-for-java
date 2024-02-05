@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about the number of virtual machine instances in each upgrade state. */
+/**
+ * Information about the number of virtual machine instances in each upgrade state.
+ */
 @Immutable
 public final class RollingUpgradeProgressInfo {
     /*
@@ -34,13 +36,15 @@ public final class RollingUpgradeProgressInfo {
     @JsonProperty(value = "pendingInstanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer pendingInstanceCount;
 
-    /** Creates an instance of RollingUpgradeProgressInfo class. */
+    /**
+     * Creates an instance of RollingUpgradeProgressInfo class.
+     */
     public RollingUpgradeProgressInfo() {
     }
 
     /**
      * Get the successfulInstanceCount property: The number of instances that have been successfully upgraded.
-     *
+     * 
      * @return the successfulInstanceCount value.
      */
     public Integer successfulInstanceCount() {
@@ -49,7 +53,7 @@ public final class RollingUpgradeProgressInfo {
 
     /**
      * Get the failedInstanceCount property: The number of instances that have failed to be upgraded successfully.
-     *
+     * 
      * @return the failedInstanceCount value.
      */
     public Integer failedInstanceCount() {
@@ -58,7 +62,7 @@ public final class RollingUpgradeProgressInfo {
 
     /**
      * Get the inProgressInstanceCount property: The number of instances that are currently being upgraded.
-     *
+     * 
      * @return the inProgressInstanceCount value.
      */
     public Integer inProgressInstanceCount() {
@@ -67,7 +71,7 @@ public final class RollingUpgradeProgressInfo {
 
     /**
      * Get the pendingInstanceCount property: The number of instances that have not yet begun to be upgraded.
-     *
+     * 
      * @return the pendingInstanceCount value.
      */
     public Integer pendingInstanceCount() {
@@ -76,7 +80,7 @@ public final class RollingUpgradeProgressInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

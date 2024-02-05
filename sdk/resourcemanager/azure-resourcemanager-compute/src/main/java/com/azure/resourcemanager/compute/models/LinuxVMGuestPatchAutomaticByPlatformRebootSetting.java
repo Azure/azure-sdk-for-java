@@ -8,24 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the reboot setting for all AutomaticByPlatform patch installation operations. */
+/**
+ * Specifies the reboot setting for all AutomaticByPlatform patch installation operations.
+ */
 public final class LinuxVMGuestPatchAutomaticByPlatformRebootSetting
     extends ExpandableStringEnum<LinuxVMGuestPatchAutomaticByPlatformRebootSetting> {
-    /** Static value Unknown for LinuxVMGuestPatchAutomaticByPlatformRebootSetting. */
+    /**
+     * Static value Unknown for LinuxVMGuestPatchAutomaticByPlatformRebootSetting.
+     */
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting UNKNOWN = fromString("Unknown");
 
-    /** Static value IfRequired for LinuxVMGuestPatchAutomaticByPlatformRebootSetting. */
+    /**
+     * Static value IfRequired for LinuxVMGuestPatchAutomaticByPlatformRebootSetting.
+     */
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting IF_REQUIRED = fromString("IfRequired");
 
-    /** Static value Never for LinuxVMGuestPatchAutomaticByPlatformRebootSetting. */
+    /**
+     * Static value Never for LinuxVMGuestPatchAutomaticByPlatformRebootSetting.
+     */
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting NEVER = fromString("Never");
 
-    /** Static value Always for LinuxVMGuestPatchAutomaticByPlatformRebootSetting. */
+    /**
+     * Static value Always for LinuxVMGuestPatchAutomaticByPlatformRebootSetting.
+     */
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting ALWAYS = fromString("Always");
 
     /**
      * Creates a new instance of LinuxVMGuestPatchAutomaticByPlatformRebootSetting value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +44,7 @@ public final class LinuxVMGuestPatchAutomaticByPlatformRebootSetting
 
     /**
      * Creates or finds a LinuxVMGuestPatchAutomaticByPlatformRebootSetting from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LinuxVMGuestPatchAutomaticByPlatformRebootSetting.
      */
@@ -45,7 +55,7 @@ public final class LinuxVMGuestPatchAutomaticByPlatformRebootSetting
 
     /**
      * Gets known LinuxVMGuestPatchAutomaticByPlatformRebootSetting values.
-     *
+     * 
      * @return known LinuxVMGuestPatchAutomaticByPlatformRebootSetting values.
      */
     public static Collection<LinuxVMGuestPatchAutomaticByPlatformRebootSetting> values() {

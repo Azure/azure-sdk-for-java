@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VirtualHubRouteTableV2 route. */
+/**
+ * VirtualHubRouteTableV2 route.
+ */
 @Fluent
 public final class VirtualHubRouteV2 {
     /*
@@ -35,13 +37,15 @@ public final class VirtualHubRouteV2 {
     @JsonProperty(value = "nextHops")
     private List<String> nextHops;
 
-    /** Creates an instance of VirtualHubRouteV2 class. */
+    /**
+     * Creates an instance of VirtualHubRouteV2 class.
+     */
     public VirtualHubRouteV2() {
     }
 
     /**
      * Get the destinationType property: The type of destinations.
-     *
+     * 
      * @return the destinationType value.
      */
     public String destinationType() {
@@ -50,7 +54,7 @@ public final class VirtualHubRouteV2 {
 
     /**
      * Set the destinationType property: The type of destinations.
-     *
+     * 
      * @param destinationType the destinationType value to set.
      * @return the VirtualHubRouteV2 object itself.
      */
@@ -61,7 +65,7 @@ public final class VirtualHubRouteV2 {
 
     /**
      * Get the destinations property: List of all destinations.
-     *
+     * 
      * @return the destinations value.
      */
     public List<String> destinations() {
@@ -70,7 +74,7 @@ public final class VirtualHubRouteV2 {
 
     /**
      * Set the destinations property: List of all destinations.
-     *
+     * 
      * @param destinations the destinations value to set.
      * @return the VirtualHubRouteV2 object itself.
      */
@@ -81,7 +85,7 @@ public final class VirtualHubRouteV2 {
 
     /**
      * Get the nextHopType property: The type of next hops.
-     *
+     * 
      * @return the nextHopType value.
      */
     public String nextHopType() {
@@ -90,7 +94,7 @@ public final class VirtualHubRouteV2 {
 
     /**
      * Set the nextHopType property: The type of next hops.
-     *
+     * 
      * @param nextHopType the nextHopType value to set.
      * @return the VirtualHubRouteV2 object itself.
      */
@@ -101,7 +105,7 @@ public final class VirtualHubRouteV2 {
 
     /**
      * Get the nextHops property: NextHops ip address.
-     *
+     * 
      * @return the nextHops value.
      */
     public List<String> nextHops() {
@@ -110,7 +114,7 @@ public final class VirtualHubRouteV2 {
 
     /**
      * Set the nextHops property: NextHops ip address.
-     *
+     * 
      * @param nextHops the nextHops value to set.
      * @return the VirtualHubRouteV2 object itself.
      */
@@ -121,7 +125,7 @@ public final class VirtualHubRouteV2 {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

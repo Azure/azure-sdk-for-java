@@ -30,14 +30,14 @@ public final class GlobalParametersImpl implements GlobalParameters {
     public PagedIterable<GlobalParameterResource> listByFactory(String resourceGroupName, String factoryName) {
         PagedIterable<GlobalParameterResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName);
-        return Utils.mapPage(inner, inner1 -> new GlobalParameterResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GlobalParameterResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<GlobalParameterResource> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
         PagedIterable<GlobalParameterResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
-        return Utils.mapPage(inner, inner1 -> new GlobalParameterResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GlobalParameterResourceImpl(inner1, this.manager()));
     }
 
     public Response<GlobalParameterResource> getWithResponse(String resourceGroupName, String factoryName,
@@ -72,17 +72,17 @@ public final class GlobalParametersImpl implements GlobalParameters {
     }
 
     public GlobalParameterResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String globalParameterName = Utils.getValueFromIdByName(id, "globalParameters");
+        String globalParameterName = ResourceManagerUtils.getValueFromIdByName(id, "globalParameters");
         if (globalParameterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'globalParameters'.", id)));
@@ -91,17 +91,17 @@ public final class GlobalParametersImpl implements GlobalParameters {
     }
 
     public Response<GlobalParameterResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String globalParameterName = Utils.getValueFromIdByName(id, "globalParameters");
+        String globalParameterName = ResourceManagerUtils.getValueFromIdByName(id, "globalParameters");
         if (globalParameterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'globalParameters'.", id)));
@@ -110,17 +110,17 @@ public final class GlobalParametersImpl implements GlobalParameters {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String globalParameterName = Utils.getValueFromIdByName(id, "globalParameters");
+        String globalParameterName = ResourceManagerUtils.getValueFromIdByName(id, "globalParameters");
         if (globalParameterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'globalParameters'.", id)));
@@ -129,17 +129,17 @@ public final class GlobalParametersImpl implements GlobalParameters {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String globalParameterName = Utils.getValueFromIdByName(id, "globalParameters");
+        String globalParameterName = ResourceManagerUtils.getValueFromIdByName(id, "globalParameters");
         if (globalParameterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'globalParameters'.", id)));
