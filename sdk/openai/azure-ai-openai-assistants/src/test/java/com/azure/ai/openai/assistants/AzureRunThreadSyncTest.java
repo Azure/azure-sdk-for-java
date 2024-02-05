@@ -75,7 +75,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void submitMessageAndRunWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
