@@ -421,7 +421,9 @@ private class BulkWriter(container: CosmosAsyncContainer,
                                 + s"${readManyOperation.cosmosItemIdentity.getId}'. This can happen when "
                                 + s"retries get re-enqueued.")
 
-                              pendingReadManyRetries.remove(readManyOperation)
+                              if (pendingReadManyRetries.remove(readManyOperation)) {
+                                pendingRetries.decrementAndGet()
+                              }
                             }
                           }
                       })
@@ -485,14 +487,15 @@ private class BulkWriter(container: CosmosAsyncContainer,
   }
 
   private def scheduleRetry(
-                               trackPendingRetryAction: () => Unit,
-                               clearPendingRetryAction: () => Unit,
+                               trackPendingRetryAction: () => Boolean,
+                               clearPendingRetryAction: () => Boolean,
                                partitionKey: PartitionKey,
                                objectNode: ObjectNode,
                                operationContext: OperationContext,
                                statusCode: Int): Unit = {
-      this.pendingRetries.incrementAndGet()
-      trackPendingRetryAction()
+      if (trackPendingRetryAction()) {
+        this.pendingRetries.incrementAndGet()
+      }
       // this is to ensure the submission will happen on a different thread in background
       // and doesn't block the active thread
       val deferredRetryMono = SMono.defer(() => {
@@ -504,8 +507,9 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   operationContext.partitionKeyValue,
                   operationContext.eTag,
                   operationContext.attemptNumber + 1))
-          clearPendingRetryAction()
-          this.pendingRetries.decrementAndGet()
+          if (clearPendingRetryAction()) {
+            this.pendingRetries.decrementAndGet()
+          }
           SMono.empty
       })
 
@@ -551,7 +555,9 @@ private class BulkWriter(container: CosmosAsyncContainer,
             s"${itemOperation.getPartitionKeyValue}/${itemOperation.getId}'. This can happen when " +
             s"retries get re-enqueued.")
 
-            pendingBulkWriteRetries.remove(itemOperation)
+            if (pendingBulkWriteRetries.remove(itemOperation)) {
+              pendingRetries.decrementAndGet()
+            }
           } else {
             val context = itemOperation.getContext[OperationContext]
             val itemResponse = resp.getResponse
