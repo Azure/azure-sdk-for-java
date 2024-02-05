@@ -91,6 +91,8 @@ private class BulkWriter(container: CosmosAsyncContainer,
   private val lock = new ReentrantLock
   private val pendingTasksCompleted = lock.newCondition
   private val pendingRetries = new AtomicLong(0)
+  private val pendingBulkWriteRetries = java.util.concurrent.ConcurrentHashMap.newKeySet[CosmosItemOperation]().asScala
+  private val pendingReadManyRetries = java.util.concurrent.ConcurrentHashMap.newKeySet[ReadManyOperation]().asScala
   private val activeTasks = new AtomicInteger(0)
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
@@ -409,9 +411,18 @@ private class BulkWriter(container: CosmosAsyncContainer,
                       })
                       .doFinally(_ => {
                           for (readManyOperation <- readManyOperations) {
-                              activeReadManyOperations.remove(readManyOperation)
+                              val activeReadManyOperationFound = activeReadManyOperations.remove(readManyOperation)
                               // for ItemBulkUpdate strategy, each active task includes two stages: ReadMany + BulkWrite
                               // so we are not going to make task complete here
+                            if (!activeReadManyOperationFound) {
+                              // can't find the read-many operation in list of active operations!
+                              log.logInfo(s"Cannot find active read-many for '"
+                                + s"${readManyOperation.cosmosItemIdentity.getPartitionKey}/"
+                                + s"${readManyOperation.cosmosItemIdentity.getId}'. This can happen when "
+                                + s"retries get re-enqueued.")
+
+                              pendingReadManyRetries.remove(readManyOperation)
+                            }
                           }
                       })
                       .`then`(Mono.empty())
@@ -440,6 +451,8 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   markTaskCompletion()
 
                   this.scheduleRetry(
+                      trackPendingRetryAction = () => pendingReadManyRetries.add(ReadManyOperation),
+                      clearPendingRetryAction = () => pendingReadManyRetries.remove(ReadManyOperation),
                       ReadManyOperation.cosmosItemIdentity.getPartitionKey,
                       ReadManyOperation.objectNode,
                       ReadManyOperation.operationContext,
@@ -472,11 +485,14 @@ private class BulkWriter(container: CosmosAsyncContainer,
   }
 
   private def scheduleRetry(
+                               trackPendingRetryAction: () => Unit,
+                               clearPendingRetryAction: () => Unit,
                                partitionKey: PartitionKey,
                                objectNode: ObjectNode,
                                operationContext: OperationContext,
                                statusCode: Int): Unit = {
       this.pendingRetries.incrementAndGet()
+      trackPendingRetryAction()
       // this is to ensure the submission will happen on a different thread in background
       // and doesn't block the active thread
       val deferredRetryMono = SMono.defer(() => {
@@ -488,6 +504,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   operationContext.partitionKeyValue,
                   operationContext.eTag,
                   operationContext.attemptNumber + 1))
+          clearPendingRetryAction()
           this.pendingRetries.decrementAndGet()
           SMono.empty
       })
@@ -533,30 +550,33 @@ private class BulkWriter(container: CosmosAsyncContainer,
             log.logInfo(s"Cannot find active operation for '${itemOperation.getOperationType} " +
             s"${itemOperation.getPartitionKeyValue}/${itemOperation.getId}'. This can happen when " +
             s"retries get re-enqueued.")
-          }
-          val context = itemOperation.getContext[OperationContext]
-          val itemResponse = resp.getResponse
 
-          if (resp.getException != null) {
-            Option(resp.getException) match {
-              case Some(cosmosException: CosmosException) =>
-                handleNonSuccessfulStatusCode(
-                  context, itemOperation, itemResponse, isGettingRetried, Some(cosmosException))
-              case _ =>
-                log.logWarning(
-                  s"unexpected failure: itemId=[${context.itemId}], partitionKeyValue=[" +
-                    s"${context.partitionKeyValue}], encountered , attemptNumber=${context.attemptNumber}, " +
-                    s"exceptionMessage=${resp.getException.getMessage}, " +
-                  s"Context: ${operationContext.toString} $getThreadInfo", resp.getException)
-                captureIfFirstFailure(resp.getException)
-                cancelWork()
-            }
-          } else if (Option(itemResponse).isEmpty || !itemResponse.isSuccessStatusCode) {
-            handleNonSuccessfulStatusCode(context, itemOperation, itemResponse, isGettingRetried, None)
+            pendingBulkWriteRetries.remove(itemOperation)
           } else {
-            // no error case
-            outputMetricsPublisher.trackWriteOperation(1, None)
-            totalSuccessfulIngestionMetrics.getAndIncrement()
+            val context = itemOperation.getContext[OperationContext]
+            val itemResponse = resp.getResponse
+
+            if (resp.getException != null) {
+              Option(resp.getException) match {
+                case Some(cosmosException: CosmosException) =>
+                  handleNonSuccessfulStatusCode(
+                    context, itemOperation, itemResponse, isGettingRetried, Some(cosmosException))
+                case _ =>
+                  log.logWarning(
+                    s"unexpected failure: itemId=[${context.itemId}], partitionKeyValue=[" +
+                      s"${context.partitionKeyValue}], encountered , attemptNumber=${context.attemptNumber}, " +
+                      s"exceptionMessage=${resp.getException.getMessage}, " +
+                      s"Context: ${operationContext.toString} $getThreadInfo", resp.getException)
+                  captureIfFirstFailure(resp.getException)
+                  cancelWork()
+              }
+            } else if (Option(itemResponse).isEmpty || !itemResponse.isSuccessStatusCode) {
+              handleNonSuccessfulStatusCode(context, itemOperation, itemResponse, isGettingRetried, None)
+            } else {
+              // no error case
+              outputMetricsPublisher.trackWriteOperation(1, None)
+              totalSuccessfulIngestionMetrics.getAndIncrement()
+            }
           }
         }
         finally {
@@ -789,7 +809,13 @@ private class BulkWriter(container: CosmosAsyncContainer,
           case _ => itemOperation.getItem.asInstanceOf[ObjectNode]
       }
 
-      this.scheduleRetry(itemOperation.getPartitionKeyValue, sourceItem, context, effectiveStatusCode)
+      this.scheduleRetry(
+        trackPendingRetryAction = () => pendingBulkWriteRetries.add(itemOperation),
+        clearPendingRetryAction = () => pendingBulkWriteRetries.remove(itemOperation),
+        itemOperation.getPartitionKeyValue,
+        sourceItem,
+        context,
+        effectiveStatusCode)
       isGettingRetried.set(true)
     } else {
       log.logError(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
