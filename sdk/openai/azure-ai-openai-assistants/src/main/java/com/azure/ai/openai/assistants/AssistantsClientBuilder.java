@@ -311,7 +311,6 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
      *
      * @return an instance of AssistantsAsyncClient.
      */
-    @Generated
     public AssistantsAsyncClient buildAsyncClient() {
         return new AssistantsAsyncClient(buildInnerClient());
     }
@@ -349,13 +348,14 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
      *
      * @return an instance of AssistantsClientImpl.
      */
-    @Generated
     private AssistantsClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         AssistantsServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AssistantsServiceVersion.getLatest();
         AssistantsClientImpl client = new AssistantsClientImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
+            JacksonAdapter.createDefaultSerializerAdapter(),
+            useNonAzureOpenAIService()? OPEN_AI_ENDPOINT : (this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"))
+            , localServiceVersion);
         return client;
     }
 }
