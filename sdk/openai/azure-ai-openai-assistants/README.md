@@ -164,7 +164,7 @@ Path filePath = Paths.get("src", "samples", "resources", fileName);
 BinaryData fileData = BinaryData.fromFile(filePath);
 FileDetails fileDetails = new FileDetails(fileData).setFilename(fileName);
 
-OpenAIFile openAIFile = client.uploadFile(new UploadFileRequest(fileDetails, FilePurpose.ASSISTANTS));
+OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
 ```
 
 Once uploaded, the file ID can then be provided to an assistant upon creation. Note that file IDs will only be used if 

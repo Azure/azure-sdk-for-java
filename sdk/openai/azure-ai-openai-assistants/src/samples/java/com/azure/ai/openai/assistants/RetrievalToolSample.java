@@ -19,7 +19,6 @@ import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
-import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -51,7 +50,7 @@ public class RetrievalToolSample {
                 .buildClient();
 
         // Upload file for assistant
-        OpenAIFile openAIFile = client.uploadFile(new UploadFileRequest(fileDetails, FilePurpose.ASSISTANTS));
+        OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
 
 
         // Create assistant passing the file ID
