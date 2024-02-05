@@ -930,7 +930,24 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   activeReadManyOperationsSnapshot,
                   numberOfIntervalsWithIdenticalActiveOperationSnapshots
                 )
+
+                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get == 1L) {
+                  val activeWriteOperationsSnapshot = activeBulkWriteOperations.clone()
+                  activeWriteOperationsSnapshot.foreach(operation => {
+                    if (activeBulkWriteOperations.contains(operation)) {
+                      // re-validating whether the operation is still active - if so, just re-enqueue another retry
+                      // this is harmless - because all bulkItemOperations from Spark connector are always idempotent
+
+                      // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
+                      bulkInputEmitter.emitNext(operation, emitFailureHandler)
+                      log.logInfo(s"Re-enqueued a retry for pending active task '${operation.getOperationType} "
+                        + s"(${operation.getPartitionKeyValue}/${operation.getId})' "
+                        + s"Context: ${operationContext.toString} $getThreadInfo")
+                    }
+                  })
+                }
               }
+
               activeTasksSnapshot = activeTasks.get()
               pendingRetriesSnapshot = pendingRetries.get()
               val semaphoreAvailablePermitsSnapshot = semaphore.availablePermits()
