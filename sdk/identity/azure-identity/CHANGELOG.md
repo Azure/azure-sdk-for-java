@@ -1,14 +1,17 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.11.2 (2024-02-05)
 
 ### Bugs Fixed
 
+- Lowered logging level of token cache misses from `ERROR` to `DEBUG`.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`
 
 ## 1.11.1 (2023-12-01)
 
