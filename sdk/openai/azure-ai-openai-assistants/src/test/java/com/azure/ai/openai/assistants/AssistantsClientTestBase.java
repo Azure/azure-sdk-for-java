@@ -186,19 +186,17 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     }
 
-    void createRetrievalRunner(BiConsumer<UploadFileRequest, AssistantCreationOptions> testRunner) {
-        UploadFileRequest uploadRequest = new UploadFileRequest(
-            new FileDetails(
-                BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")))
-                    .setFilename("java_sdk_tests_assistants.txt"),
-                FilePurpose.ASSISTANTS);
+    void createRetrievalRunner(BiConsumer<FileDetails, AssistantCreationOptions> testRunner) {
+        FileDetails fileDetails = new FileDetails(
+            BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))
+        ).setFilename("java_sdk_tests_assistants.txt");
 
         AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
             .setName("Java SDK Retrieval Sample")
             .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
             .setTools(Arrays.asList(new RetrievalToolDefinition()));
 
-        testRunner.accept(uploadRequest, assistantOptions);
+        testRunner.accept(fileDetails, assistantOptions);
     }
 
     void createFunctionToolCallRunner(BiConsumer<AssistantCreationOptions, AssistantThreadCreationOptions> testRunner) {

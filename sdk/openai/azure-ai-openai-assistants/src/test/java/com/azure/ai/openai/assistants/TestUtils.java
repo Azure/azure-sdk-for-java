@@ -31,7 +31,7 @@ public class TestUtils {
      * @return A stream of HttpClient and service version combinations to test.
      */
     static Stream<Arguments> getTestParameters() {
-        // when this issues is closed, the newer version of junit will have better support for
+        // when this issue is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
         getHttpClients().forEach(httpClient -> Arrays.stream(AssistantsServiceVersion.values())
@@ -58,7 +58,7 @@ public class TestUtils {
      */
     private static boolean shouldServiceVersionBeTested(AssistantsServiceVersion serviceVersion) {
         if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
-            return serviceVersion.getLatest().equals(serviceVersion);
+            return AssistantsServiceVersion.getLatest().equals(serviceVersion);
         }
         if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
             return true;
