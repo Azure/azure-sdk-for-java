@@ -1753,7 +1753,6 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         thrown.getPartitionKey.equals(partitionKey)
 
         val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
-
         // since the condition is always false, so the item should not be updated
         objectMapper.writeValueAsString(updatedItem) shouldEqual objectMapper.writeValueAsString(originalItem)
     }
