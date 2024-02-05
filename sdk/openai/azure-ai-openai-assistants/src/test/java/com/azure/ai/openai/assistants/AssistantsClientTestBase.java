@@ -64,7 +64,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
             .buildAsyncClient();
     }
 
-    AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         return getAzureAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
                 false), serviceVersion)
@@ -77,14 +77,14 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                 .buildClient();
     }
 
-    AssistantsClient getAssistantsClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    AssistantsClient getAssistantsClient(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         return getAzureAssistantsClientBuilder(buildAssertingClient(
                         interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true),
                 serviceVersion)
                 .buildClient();
     }
 
-    AssistantsClientBuilder getAzureAssistantsClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    AssistantsClientBuilder getAzureAssistantsClientBuilder(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         AssistantsClientBuilder builder = new AssistantsClientBuilder()
                 .httpClient(httpClient)
                 .serviceVersion(serviceVersion);

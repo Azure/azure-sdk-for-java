@@ -25,7 +25,7 @@ public class AzureThreadSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void threadCRUD(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void threadCRUD(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         createThreadRunner(threadCreationOptions -> {
             // Create a thread
@@ -61,7 +61,7 @@ public class AzureThreadSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void threadCRUDWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void threadCRUDWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         createThreadRunner(threadCreationOptions -> {
             // Create a thread

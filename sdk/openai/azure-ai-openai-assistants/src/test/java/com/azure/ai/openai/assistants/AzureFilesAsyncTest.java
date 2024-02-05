@@ -28,7 +28,7 @@ public class AzureFilesAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantTextFileOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantTextFileOperations(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
         uploadAssistantTextFileRunner((fileDetails, filePurpose) -> {
             StepVerifier.create(
@@ -73,7 +73,7 @@ public class AzureFilesAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantImageFileOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantImageFileOperations(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
         uploadAssistantImageFileRunner((fileDetails, filePurpose) -> {
             StepVerifier.create(
@@ -119,7 +119,7 @@ public class AzureFilesAsyncTest extends AssistantsClientTestBase {
     @Disabled("Support in Azure OpenAI for FINE_TUNE files is not yet available")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void fineTuningJsonFileOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void fineTuningJsonFileOperations(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
         uploadFineTuningJsonFileRunner((fileDetails, filePurpose) -> {
             StepVerifier.create(
@@ -164,7 +164,7 @@ public class AzureFilesAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantTextFileOperationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantTextFileOperationsWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
         uploadAssistantTextFileRunner((fileDetails, filePurpose) -> {
             StepVerifier.create(
@@ -219,7 +219,7 @@ public class AzureFilesAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantImageFileOperationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantImageFileOperationsWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
         uploadAssistantImageFileRunner((fileDetails, filePurpose) -> {
             StepVerifier.create(
@@ -275,7 +275,7 @@ public class AzureFilesAsyncTest extends AssistantsClientTestBase {
     @Disabled("Support in Azure OpenAI for FINE_TUNE files is not yet available")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void fineTuningJsonFileOperationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void fineTuningJsonFileOperationsWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
         uploadFineTuningJsonFileRunner((fileDetails, filePurpose) -> {
             StepVerifier.create(

@@ -29,7 +29,7 @@ public class FunctionsSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void parallelFunctionCallTest(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void parallelFunctionCallTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
 
         createFunctionToolCallRunner((assistantCreationOptions, assistantThreadCreationOptions) -> {
