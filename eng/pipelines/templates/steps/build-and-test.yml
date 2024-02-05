@@ -169,7 +169,7 @@ steps:
       parameters:
         OomArtifactName: 'oom-vo-${{ parameters.VersionOverride }}'
   - ${{ else }}:
-    - template: /eng/pipelines/templates/steps/reatain-test-logs.yml
+    - template: /eng/pipelines/templates/steps/retain-test-logs.yml
     - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
 
   - task: PublishTestResults@2
