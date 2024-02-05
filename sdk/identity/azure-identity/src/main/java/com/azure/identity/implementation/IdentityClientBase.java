@@ -667,7 +667,7 @@ public abstract class IdentityClientBase {
         return tokenExpiry;
     }
 
-    private static OffsetDateTime parseExpiresOnTime(String time) {
+    static OffsetDateTime parseExpiresOnTime(String time) {
         OffsetDateTime tokenExpiry;
         String timeToSecond = time.substring(0, time.indexOf("."));
         String timeJoinedWithT = String.join("T", timeToSecond.split(" "));

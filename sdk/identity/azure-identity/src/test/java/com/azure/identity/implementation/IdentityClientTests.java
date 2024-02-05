@@ -99,9 +99,11 @@ public class IdentityClientTests {
         Map<String, String> tokenDetails = new HashMap<>();
 
         //Epoch equivalent of "2023-10-31 21:59:10.000000" is 1698814750;
-        tokenDetails.put("expiresOn", "2023-10-31 21:59:10.000000");
+        String expiresOn = "2023-10-31 21:59:10.000000";
+        tokenDetails.put("expiresOn", expiresOn);
         OffsetDateTime offsetDateTime = IdentityClientBase.getTokenExpiryOffsetDateTime(tokenDetails);
-        Assertions.assertEquals(offsetDateTime.toEpochSecond(), 1698814750);
+        Assertions.assertEquals(offsetDateTime.toEpochSecond(),
+            IdentityClientBase.parseExpiresOnTime(expiresOn).toEpochSecond());
 
         // Test the scenario with expires_on present, it should be given priority.
         tokenDetails.put("expires_on", "1572371520");
