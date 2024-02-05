@@ -251,11 +251,6 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         return this;
     }
 
-    /*
-     * Service version
-     */
-    private OpenAIServiceVersion serviceVersion;
-
     /**
      * Sets Service version.
      *
@@ -357,4 +352,10 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
     public AssistantsClient buildClient() {
         return new AssistantsClient(buildInnerClient());
     }
+
+    /*
+     * Service version
+     */
+    @Generated
+    private AssistantsServiceVersion serviceVersion;
 }

@@ -53,11 +53,10 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the asynchronous AssistantsClient type.
