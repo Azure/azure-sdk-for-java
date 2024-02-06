@@ -220,9 +220,9 @@ public class SampleCriticalResultInferenceAsync {
         patientDocument.setAdministrativeMetadata(adminMetadata);
 
         // Define a formatter to handle milliseconds
-        DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
-        OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter3);
+        OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter);
         patientDocument.setCreatedDateTime(createdDateTime);
 
         patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
