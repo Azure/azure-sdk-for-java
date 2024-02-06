@@ -3,7 +3,7 @@
 
 package com.azure.health.insights.radiologyinsights;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -85,22 +85,17 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
 
         PatientDetails patientDetails = new PatientDetails();
         patientDetails.setSex(PatientSex.FEMALE);
-        // Define a formatter that matches the input pattern
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
 
-        // Parse the string to LocalDateTime
-        LocalDateTime dateTime = LocalDateTime.parse("1959-11-11T19:00:00+00:00", formatter);
-        patientDetails.setBirthDate(dateTime.toLocalDate());
+        patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
         
         patientRecord.setInfo(patientDetails);
 
         Encounter encounter = new Encounter("encounterid1");
 
         TimePeriod period = new TimePeriod();
-        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-M-d'T'HH:mm:ssXXX");
 
-        OffsetDateTime startTime = OffsetDateTime.parse("2021-8-28T00:00:00" + "+00:00", formatter2);
-        OffsetDateTime endTime = OffsetDateTime.parse("2021-8-28T00:00:00" + "+00:00", formatter2);
+        OffsetDateTime startTime = OffsetDateTime.parse("2021-08-28T00:00:00Z");
+        OffsetDateTime endTime = OffsetDateTime.parse("2021-08-28T00:00:00Z");
 
         period.setStart(startTime);
         period.setEnd(endTime);
