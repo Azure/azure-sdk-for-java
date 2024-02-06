@@ -6,8 +6,10 @@ import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
 module com.azure.core.http.vertx {
     requires transitive com.azure.core;
 
+    requires reactor.core;
     requires io.netty.buffer;
     requires io.vertx.core;
+    requires org.reactivestreams;
 
     exports com.azure.core.http.vertx;
 

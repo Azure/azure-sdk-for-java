@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class VerificationParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VerificationParameter model =
-            BinaryData.fromString("{\"verificationType\":\"DKIM\"}").toObject(VerificationParameter.class);
+        VerificationParameter model
+            = BinaryData.fromString("{\"verificationType\":\"DKIM\"}").toObject(VerificationParameter.class);
         Assertions.assertEquals(VerificationType.DKIM, model.verificationType());
     }
 

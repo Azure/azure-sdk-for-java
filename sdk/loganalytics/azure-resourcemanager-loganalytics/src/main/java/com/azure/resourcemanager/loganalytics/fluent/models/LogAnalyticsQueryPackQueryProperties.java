@@ -77,6 +77,10 @@ public final class LogAnalyticsQueryPackQueryProperties {
     @JsonProperty(value = "properties")
     private Object properties;
 
+    /** Creates an instance of LogAnalyticsQueryPackQueryProperties class. */
+    public LogAnalyticsQueryPackQueryProperties() {
+    }
+
     /**
      * Get the id property: The unique ID of your application. This field cannot be changed.
      *

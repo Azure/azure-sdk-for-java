@@ -13,21 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchResourceGuardInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchResourceGuardInput model =
-            BinaryData
-                .fromString("{\"tags\":{\"mrv\":\"kdwbwhkszz\",\"owtlmnguxawqald\":\"xztvbtqgsfraoyzk\"}}")
-                .toObject(PatchResourceGuardInput.class);
-        Assertions.assertEquals("kdwbwhkszz", model.tags().get("mrv"));
+        PatchResourceGuardInput model = BinaryData.fromString("{\"tags\":{\"ztppriolxorjalto\":\"xzfe\"}}")
+            .toObject(PatchResourceGuardInput.class);
+        Assertions.assertEquals("xzfe", model.tags().get("ztppriolxorjalto"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchResourceGuardInput model =
-            new PatchResourceGuardInput().withTags(mapOf("mrv", "kdwbwhkszz", "owtlmnguxawqald", "xztvbtqgsfraoyzk"));
+        PatchResourceGuardInput model = new PatchResourceGuardInput().withTags(mapOf("ztppriolxorjalto", "xzfe"));
         model = BinaryData.fromObject(model).toObject(PatchResourceGuardInput.class);
-        Assertions.assertEquals("kdwbwhkszz", model.tags().get("mrv"));
+        Assertions.assertEquals("xzfe", model.tags().get("ztppriolxorjalto"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

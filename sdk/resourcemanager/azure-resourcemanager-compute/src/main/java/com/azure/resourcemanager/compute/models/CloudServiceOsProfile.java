@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the OS profile for the cloud service. */
+/**
+ * Describes the OS profile for the cloud service.
+ */
 @Fluent
 public final class CloudServiceOsProfile {
     /*
@@ -17,13 +19,15 @@ public final class CloudServiceOsProfile {
     @JsonProperty(value = "secrets")
     private List<CloudServiceVaultSecretGroup> secrets;
 
-    /** Creates an instance of CloudServiceOsProfile class. */
+    /**
+     * Creates an instance of CloudServiceOsProfile class.
+     */
     public CloudServiceOsProfile() {
     }
 
     /**
      * Get the secrets property: Specifies set of certificates that should be installed onto the role instances.
-     *
+     * 
      * @return the secrets value.
      */
     public List<CloudServiceVaultSecretGroup> secrets() {
@@ -32,7 +36,7 @@ public final class CloudServiceOsProfile {
 
     /**
      * Set the secrets property: Specifies set of certificates that should be installed onto the role instances.
-     *
+     * 
      * @param secrets the secrets value to set.
      * @return the CloudServiceOsProfile object itself.
      */
@@ -43,7 +47,7 @@ public final class CloudServiceOsProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

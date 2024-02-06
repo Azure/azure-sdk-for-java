@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,108 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2023-10-23)
+
+- Azure Resource Manager ResourceMover client library for Java. This package contains Microsoft Azure SDK for ResourceMover Management SDK. A first party Azure service orchestrating the move of Azure resources from one Azure region to another or between zones within a region. Package tag package-2023-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.MoveType` was added
+
+#### `models.AvailabilitySetResourceSettings` was modified
+
+* `withTags(java.util.Map)` was added
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `tags()` was added
+
+#### `models.ResourceSettings` was modified
+
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `targetResourceGroupName()` was added
+
+#### `models.LoadBalancerResourceSettings` was modified
+
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `withTags(java.util.Map)` was added
+* `tags()` was added
+
+#### `models.SqlElasticPoolResourceSettings` was modified
+
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `withTags(java.util.Map)` was added
+* `tags()` was added
+
+#### `models.MoveCollectionProperties` was modified
+
+* `withMoveRegion(java.lang.String)` was added
+* `withVersion(java.lang.String)` was added
+* `moveRegion()` was added
+* `withMoveType(models.MoveType)` was added
+* `version()` was added
+* `moveType()` was added
+
+#### `models.ResourceGroupResourceSettings` was modified
+
+* `withTargetResourceGroupName(java.lang.String)` was added
+
+#### `models.PublicIpAddressResourceSettings` was modified
+
+* `withTags(java.util.Map)` was added
+* `tags()` was added
+* `withTargetResourceGroupName(java.lang.String)` was added
+
+#### `models.SqlServerResourceSettings` was modified
+
+* `withTargetResourceGroupName(java.lang.String)` was added
+
+#### `models.VirtualNetworkResourceSettings` was modified
+
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `tags()` was added
+* `withTags(java.util.Map)` was added
+
+#### `models.KeyVaultResourceSettings` was modified
+
+* `withTargetResourceGroupName(java.lang.String)` was added
+
+#### `models.DiskEncryptionSetResourceSettings` was modified
+
+* `withTargetResourceGroupName(java.lang.String)` was added
+
+#### `models.NetworkSecurityGroupResourceSettings` was modified
+
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `tags()` was added
+* `withTags(java.util.Map)` was added
+
+#### `models.SqlDatabaseResourceSettings` was modified
+
+* `withTags(java.util.Map)` was added
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `tags()` was added
+
+#### `models.VirtualMachineResourceSettings` was modified
+
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `userManagedIdentities()` was added
+* `withTags(java.util.Map)` was added
+* `tags()` was added
+* `withUserManagedIdentities(java.util.List)` was added
+
+#### `models.MoveResource` was modified
+
+* `systemData()` was added
+
+#### `models.MoveCollection` was modified
+
+* `systemData()` was added
+
+#### `models.NetworkInterfaceResourceSettings` was modified
+
+* `tags()` was added
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `withTags(java.util.Map)` was added
 
 ## 1.0.0 (2023-02-24)
 

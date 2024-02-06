@@ -20,6 +20,15 @@ public final class MicrosoftGraphAttachmentType extends ExpandableStringEnum<Mic
     public static final MicrosoftGraphAttachmentType REFERENCE = fromString("reference");
 
     /**
+     * Creates a new instance of MicrosoftGraphAttachmentType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphAttachmentType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphAttachmentType from its string representation.
      *
      * @param name a name to look for.

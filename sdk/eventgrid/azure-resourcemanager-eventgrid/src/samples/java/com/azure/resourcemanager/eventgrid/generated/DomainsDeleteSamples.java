@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-/** Samples for Domains Delete. */
+/**
+ * Samples for Domains Delete.
+ */
 public final class DomainsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Domains_Delete.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Domains_Delete.
+     * json
      */
     /**
      * Sample code: Domains_Delete.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void domainsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {

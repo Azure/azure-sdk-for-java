@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DpmContainerExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DpmContainerExtendedInfo model =
-            BinaryData
-                .fromString("{\"lastRefreshedAt\":\"2021-11-08T19:03:48Z\"}")
-                .toObject(DpmContainerExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T19:03:48Z"), model.lastRefreshedAt());
+        DpmContainerExtendedInfo model = BinaryData.fromString("{\"lastRefreshedAt\":\"2021-10-09T13:48:10Z\"}")
+            .toObject(DpmContainerExtendedInfo.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-09T13:48:10Z"), model.lastRefreshedAt());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DpmContainerExtendedInfo model =
-            new DpmContainerExtendedInfo().withLastRefreshedAt(OffsetDateTime.parse("2021-11-08T19:03:48Z"));
+        DpmContainerExtendedInfo model
+            = new DpmContainerExtendedInfo().withLastRefreshedAt(OffsetDateTime.parse("2021-10-09T13:48:10Z"));
         model = BinaryData.fromObject(model).toObject(DpmContainerExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T19:03:48Z"), model.lastRefreshedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-09T13:48:10Z"), model.lastRefreshedAt());
     }
 }

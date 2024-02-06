@@ -55,7 +55,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
-    private interface OperationsService {
+    public interface OperationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Insights/operations")
         @ExpectedResponses({200})
@@ -82,8 +82,8 @@ public final class OperationsClientImpl implements OperationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN operations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return result of the request to list Azure Workbooks operations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
@@ -93,7 +93,7 @@ public final class OperationsClientImpl implements OperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2015-05-01";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
@@ -116,8 +116,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN operations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return result of the request to list Azure Workbooks operations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
@@ -127,7 +127,7 @@ public final class OperationsClientImpl implements OperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2015-05-01";
+        final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -148,7 +148,7 @@ public final class OperationsClientImpl implements OperationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN operations as paginated response with {@link PagedFlux}.
+     * @return result of the request to list Azure Workbooks operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationInner> listAsync() {
@@ -162,7 +162,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN operations as paginated response with {@link PagedFlux}.
+     * @return result of the request to list Azure Workbooks operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationInner> listAsync(Context context) {
@@ -175,7 +175,8 @@ public final class OperationsClientImpl implements OperationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN operations as paginated response with {@link PagedIterable}.
+     * @return result of the request to list Azure Workbooks operations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> list() {
@@ -189,7 +190,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN operations as paginated response with {@link PagedIterable}.
+     * @return result of the request to list Azure Workbooks operations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> list(Context context) {
@@ -199,12 +201,13 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN operations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return result of the request to list Azure Workbooks operations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink) {
@@ -235,13 +238,14 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN operations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return result of the request to list Azure Workbooks operations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink, Context context) {

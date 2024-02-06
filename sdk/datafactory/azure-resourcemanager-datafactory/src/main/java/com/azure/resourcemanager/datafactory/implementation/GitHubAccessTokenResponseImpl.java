@@ -12,8 +12,7 @@ public final class GitHubAccessTokenResponseImpl implements GitHubAccessTokenRes
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    GitHubAccessTokenResponseImpl(
-        GitHubAccessTokenResponseInner innerObject,
+    GitHubAccessTokenResponseImpl(GitHubAccessTokenResponseInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

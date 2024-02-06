@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.TableCreateUpdatePropertie
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to create and update Cosmos DB Table. */
+/**
+ * Parameters to create and update Cosmos DB Table.
+ */
 @Fluent
 public final class TableCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,27 +21,33 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
     @JsonProperty(value = "properties", required = true)
     private TableCreateUpdateProperties innerProperties = new TableCreateUpdateProperties();
 
-    /** Creates an instance of TableCreateUpdateParameters class. */
+    /**
+     * Creates an instance of TableCreateUpdateParameters class.
+     */
     public TableCreateUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB Table.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TableCreateUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TableCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TableCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
 
     /**
      * Get the resource property: The standard JSON format of a Table.
-     *
+     * 
      * @return the resource value.
      */
     public TableResource resource() {
@@ -57,7 +65,7 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
 
     /**
      * Set the resource property: The standard JSON format of a Table.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the TableCreateUpdateParameters object itself.
      */
@@ -72,7 +80,7 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -82,7 +90,7 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the TableCreateUpdateParameters object itself.
      */
@@ -96,17 +104,15 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model TableCreateUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model TableCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

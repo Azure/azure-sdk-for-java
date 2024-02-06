@@ -18,6 +18,15 @@ public final class IsDeviceMatchConditionParametersMatchValuesItem
     public static final IsDeviceMatchConditionParametersMatchValuesItem DESKTOP = fromString("Desktop");
 
     /**
+     * Creates a new instance of IsDeviceMatchConditionParametersMatchValuesItem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IsDeviceMatchConditionParametersMatchValuesItem() {
+    }
+
+    /**
      * Creates or finds a IsDeviceMatchConditionParametersMatchValuesItem from its string representation.
      *
      * @param name a name to look for.

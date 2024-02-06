@@ -8,22 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Trigger reference type. */
+/**
+ * Trigger reference type.
+ */
 public final class TriggerReferenceType extends ExpandableStringEnum<TriggerReferenceType> {
-    /** Static value TriggerReference for TriggerReferenceType. */
+    /**
+     * Static value TriggerReference for TriggerReferenceType.
+     */
     public static final TriggerReferenceType TRIGGER_REFERENCE = fromString("TriggerReference");
 
     /**
      * Creates a new instance of TriggerReferenceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public TriggerReferenceType() {}
+    public TriggerReferenceType() {
+    }
 
     /**
      * Creates or finds a TriggerReferenceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TriggerReferenceType.
      */
@@ -34,7 +39,7 @@ public final class TriggerReferenceType extends ExpandableStringEnum<TriggerRefe
 
     /**
      * Gets known TriggerReferenceType values.
-     *
+     * 
      * @return known TriggerReferenceType values.
      */
     public static Collection<TriggerReferenceType> values() {

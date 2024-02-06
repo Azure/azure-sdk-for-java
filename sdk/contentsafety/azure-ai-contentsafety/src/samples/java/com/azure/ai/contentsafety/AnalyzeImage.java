@@ -6,8 +6,10 @@ package com.azure.ai.contentsafety;
 
 import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
 import com.azure.ai.contentsafety.models.AnalyzeImageResult;
-import com.azure.ai.contentsafety.models.ImageData;
+import com.azure.ai.contentsafety.models.ContentSafetyImageData;
+import com.azure.ai.contentsafety.models.ImageCategoriesAnalysis;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
 import java.io.IOException;
@@ -24,18 +26,17 @@ public class AnalyzeImage {
             .credential(new KeyCredential(key))
             .endpoint(endpoint).buildClient();
 
-        ImageData image = new ImageData();
+        ContentSafetyImageData image = new ContentSafetyImageData();
         String cwd = System.getProperty("user.dir");
-        String source = "/src/samples/resources/image.jpg";
-        image.setContent(Files.readAllBytes(Paths.get(cwd, source)));
+        String source = "/src/samples/resources/image.png";
+        image.setContent(BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source))));
 
         AnalyzeImageResult response =
-                contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
+            contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
 
-        System.out.println("Hate severity: " + response.getHateResult().getSeverity());
-        System.out.println("SelfHarm severity: " + response.getSelfHarmResult().getSeverity());
-        System.out.println("Sexual severity: " + response.getSexualResult().getSeverity());
-        System.out.println("Violence severity: " + response.getViolenceResult().getSeverity());
+        for (ImageCategoriesAnalysis result : response.getCategoriesAnalysis()) {
+            System.out.println(result.getCategory() + " severity: " + result.getSeverity());
+        }
         // END:com.azure.ai.contentsafety.analyzeimage
     }
 }

@@ -24,6 +24,10 @@ public final class DeepCreatedCustomDomain {
     @JsonProperty(value = "properties")
     private DeepCreatedCustomDomainProperties innerProperties;
 
+    /** Creates an instance of DeepCreatedCustomDomain class. */
+    public DeepCreatedCustomDomain() {
+    }
+
     /**
      * Get the name property: Custom domain name.
      *

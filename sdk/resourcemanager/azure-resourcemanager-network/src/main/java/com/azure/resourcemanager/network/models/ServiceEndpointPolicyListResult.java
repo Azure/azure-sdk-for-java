@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.ServiceEndpointPolicyInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListServiceEndpointPolicies API service call. */
+/**
+ * Response for ListServiceEndpointPolicies API service call.
+ */
 @Fluent
 public final class ServiceEndpointPolicyListResult {
     /*
@@ -24,13 +26,15 @@ public final class ServiceEndpointPolicyListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ServiceEndpointPolicyListResult class. */
+    /**
+     * Creates an instance of ServiceEndpointPolicyListResult class.
+     */
     public ServiceEndpointPolicyListResult() {
     }
 
     /**
      * Get the value property: A list of ServiceEndpointPolicy resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ServiceEndpointPolicyInner> value() {
@@ -39,7 +43,7 @@ public final class ServiceEndpointPolicyListResult {
 
     /**
      * Set the value property: A list of ServiceEndpointPolicy resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServiceEndpointPolicyListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ServiceEndpointPolicyListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ServiceEndpointPolicyListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

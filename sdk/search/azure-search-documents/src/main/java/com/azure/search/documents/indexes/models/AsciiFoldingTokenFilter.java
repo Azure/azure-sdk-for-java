@@ -11,8 +11,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Converts alphabetic, numeric, and symbolic Unicode characters which are not in the first 127 ASCII characters (the
@@ -22,18 +20,13 @@ import java.util.List;
 @Fluent
 public final class AsciiFoldingTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.AsciiFoldingTokenFilter";
-
-    /*
      * A value indicating whether the original token will be kept. Default is false.
      */
     private Boolean preserveOriginal;
 
     /**
      * Creates an instance of AsciiFoldingTokenFilter class.
-     *
+     * 
      * @param name the name value to set.
      */
     public AsciiFoldingTokenFilter(String name) {
@@ -42,7 +35,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
 
     /**
      * Get the preserveOriginal property: A value indicating whether the original token will be kept. Default is false.
-     *
+     * 
      * @return the preserveOriginal value.
      */
     public Boolean isPreserveOriginal() {
@@ -51,7 +44,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
 
     /**
      * Set the preserveOriginal property: A value indicating whether the original token will be kept. Default is false.
-     *
+     * 
      * @param preserveOriginal the preserveOriginal value to set.
      * @return the AsciiFoldingTokenFilter object itself.
      */
@@ -63,7 +56,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.AsciiFoldingTokenFilter");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeBooleanField("preserveOriginal", this.preserveOriginal);
         return jsonWriter.writeEndObject();
@@ -71,56 +64,46 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
 
     /**
      * Reads an instance of AsciiFoldingTokenFilter from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AsciiFoldingTokenFilter if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the AsciiFoldingTokenFilter.
      */
     public static AsciiFoldingTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    Boolean preserveOriginal = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            Boolean preserveOriginal = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("preserveOriginal".equals(fieldName)) {
-                            preserveOriginal = reader.getNullable(JsonReader::getBoolean);
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("@odata.type".equals(fieldName)) {
+                    String odataType = reader.getString();
+                    if (!"#Microsoft.Azure.Search.AsciiFoldingTokenFilter".equals(odataType)) {
+                        throw new IllegalStateException(
+                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.AsciiFoldingTokenFilter'. The found '@odata.type' was '"
+                                + odataType + "'.");
                     }
-                    if (nameFound) {
-                        AsciiFoldingTokenFilter deserializedAsciiFoldingTokenFilter = new AsciiFoldingTokenFilter(name);
-                        deserializedAsciiFoldingTokenFilter.preserveOriginal = preserveOriginal;
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("preserveOriginal".equals(fieldName)) {
+                    preserveOriginal = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound) {
+                AsciiFoldingTokenFilter deserializedAsciiFoldingTokenFilter = new AsciiFoldingTokenFilter(name);
+                deserializedAsciiFoldingTokenFilter.preserveOriginal = preserveOriginal;
 
-                        return deserializedAsciiFoldingTokenFilter;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+                return deserializedAsciiFoldingTokenFilter;
+            }
+            throw new IllegalStateException("Missing required property: name");
+        });
     }
 }

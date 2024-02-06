@@ -41,15 +41,13 @@ public class EventHubsMetricsProvider {
                 commonAttributesMap.put(CONSUMER_GROUP_KEY, consumerGroup);
             }
 
-            Map<String, Object> successMap = new HashMap<>(commonAttributesMap);
-            successMap.put(GENERIC_STATUS_KEY, "ok");
-            this.sendAttributeCacheSuccess = new AttributeCache(PARTITION_ID_KEY,  successMap);
+            this.sendAttributeCacheSuccess = new AttributeCache(PARTITION_ID_KEY, new HashMap<>(commonAttributesMap));
 
             Map<String, Object> failureMap = new HashMap<>(commonAttributesMap);
             failureMap.put(GENERIC_STATUS_KEY, "error");
-            this.sendAttributeCacheFailure = new AttributeCache(PARTITION_ID_KEY,  failureMap);
+            this.sendAttributeCacheFailure = new AttributeCache(PARTITION_ID_KEY, failureMap);
 
-            this.receiveAttributeCache = new AttributeCache(PARTITION_ID_KEY,  commonAttributesMap);
+            this.receiveAttributeCache = new AttributeCache(PARTITION_ID_KEY, commonAttributesMap);
             this.sentEventsCounter = meter.createLongCounter("messaging.eventhubs.events.sent", "Number of sent events", "events");
             this.consumerLag = meter.createDoubleHistogram("messaging.eventhubs.consumer.lag", "Difference between local time when event was received and the local time it was enqueued on broker.", "sec");
         }

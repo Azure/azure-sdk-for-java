@@ -25,8 +25,8 @@ public class AuthenticateWithTokenCache {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-        // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
-        // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
+        // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
+        // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
         TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
         TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
         AccessToken accessToken = tokenRefreshCache.getAccessToken();
@@ -37,7 +37,7 @@ public class AuthenticateWithTokenCache {
         String cacheHostname = "<HOST_NAME>";
 
         // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
-        // Note: Cache Host Name, Port, Username, Azure AD Access Token and ssl connections are required below.
+        // Note: Cache Host Name, Port, Username, Microsoft Entra access token, and SSL connections are required below.
         Jedis jedis = createJedisClient(cacheHostname, 6380, "<USERNAME>", accessToken, useSsl);
 
         // Configure the jedis instance for proactive authentication before token expires.

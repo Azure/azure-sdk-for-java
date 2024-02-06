@@ -18,37 +18,22 @@ public final class BackupsImpl implements Backups {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public BackupsImpl(
-        BackupsClient innerClient,
+    public BackupsImpl(BackupsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> triggerWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        BackupRequestResource parameters,
-        Context context) {
-        return this
-            .serviceClient()
-            .triggerWithResponse(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, context);
+    public Response<Void> triggerWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, BackupRequestResource parameters, Context context) {
+        return this.serviceClient().triggerWithResponse(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, parameters, context);
     }
 
-    public void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        BackupRequestResource parameters) {
-        this
-            .serviceClient()
-            .trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters);
+    public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, BackupRequestResource parameters) {
+        this.serviceClient().trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            parameters);
     }
 
     private BackupsClient serviceClient() {

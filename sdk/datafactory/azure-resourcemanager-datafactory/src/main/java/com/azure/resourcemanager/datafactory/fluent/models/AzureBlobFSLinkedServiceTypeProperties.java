@@ -9,7 +9,9 @@ import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Data Lake Storage Gen2 linked service properties. */
+/**
+ * Azure Data Lake Storage Gen2 linked service properties.
+ */
 @Fluent
 public final class AzureBlobFSLinkedServiceTypeProperties {
     /*
@@ -54,10 +56,10 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
@@ -93,14 +95,16 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     @JsonProperty(value = "sasToken")
     private SecretBase sasToken;
 
-    /** Creates an instance of AzureBlobFSLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AzureBlobFSLinkedServiceTypeProperties class.
+     */
     public AzureBlobFSLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the url property: Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object url() {
@@ -110,7 +114,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     /**
      * Set the url property: Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
@@ -122,7 +126,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     /**
      * Get the accountKey property: Account key for the Azure Data Lake Storage Gen2 service. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the accountKey value.
      */
     public Object accountKey() {
@@ -132,7 +136,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     /**
      * Set the accountKey property: Account key for the Azure Data Lake Storage Gen2 service. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
@@ -144,7 +148,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     /**
      * Get the servicePrincipalId property: The ID of the application used to authenticate against the Azure Data Lake
      * Storage Gen2 account. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object servicePrincipalId() {
@@ -154,7 +158,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     /**
      * Set the servicePrincipalId property: The ID of the application used to authenticate against the Azure Data Lake
      * Storage Gen2 account. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
@@ -164,9 +168,9 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
-     * Storage Gen2 account.
-     *
+     * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data
+     * Lake Storage Gen2 account.
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase servicePrincipalKey() {
@@ -174,9 +178,9 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
-     * Storage Gen2 account.
-     *
+     * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data
+     * Lake Storage Gen2 account.
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
@@ -188,7 +192,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     /**
      * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object tenant() {
@@ -198,7 +202,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     /**
      * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
@@ -208,10 +212,10 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
+     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
+     * type. Type: string (or Expression with resultType string).
+     * 
      * @return the azureCloudType value.
      */
     public Object azureCloudType() {
@@ -219,10 +223,10 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
+     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
+     * type. Type: string (or Expression with resultType string).
+     * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
@@ -232,30 +236,30 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
-    public AzureBlobFSLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureBlobFSLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference credential() {
@@ -264,7 +268,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
@@ -274,10 +278,10 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
-     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
-     * Expression with resultType string).
-     *
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in
+     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
+     * Type: string (or Expression with resultType string).
+     * 
      * @return the servicePrincipalCredentialType value.
      */
     public Object servicePrincipalCredentialType() {
@@ -285,15 +289,15 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
-     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
-     * Expression with resultType string).
-     *
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in
+     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
+     * Type: string (or Expression with resultType string).
+     * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
-    public AzureBlobFSLinkedServiceTypeProperties withServicePrincipalCredentialType(
-        Object servicePrincipalCredentialType) {
+    public AzureBlobFSLinkedServiceTypeProperties
+        withServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
         this.servicePrincipalCredentialType = servicePrincipalCredentialType;
         return this;
     }
@@ -303,7 +307,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the servicePrincipalCredential value.
      */
     public SecretBase servicePrincipalCredential() {
@@ -315,12 +319,12 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @param servicePrincipalCredential the servicePrincipalCredential value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
-    public AzureBlobFSLinkedServiceTypeProperties withServicePrincipalCredential(
-        SecretBase servicePrincipalCredential) {
+    public AzureBlobFSLinkedServiceTypeProperties
+        withServicePrincipalCredential(SecretBase servicePrincipalCredential) {
         this.servicePrincipalCredential = servicePrincipalCredential;
         return this;
     }
@@ -328,7 +332,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     /**
      * Get the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the sasUri value.
      */
     public Object sasUri() {
@@ -338,7 +342,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     /**
      * Set the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param sasUri the sasUri value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
@@ -349,7 +353,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
 
     /**
      * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
+     * 
      * @return the sasToken value.
      */
     public SecretBase sasToken() {
@@ -358,7 +362,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
 
     /**
      * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
@@ -369,7 +373,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

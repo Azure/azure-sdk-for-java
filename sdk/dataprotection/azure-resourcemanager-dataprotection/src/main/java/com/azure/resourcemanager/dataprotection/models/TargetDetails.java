@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Class encapsulating target details, used where the destination is not a datasource. */
+/**
+ * Class encapsulating target details, used where the destination is not a datasource.
+ */
 @Fluent
 public final class TargetDetails {
     /*
@@ -40,14 +42,16 @@ public final class TargetDetails {
     @JsonProperty(value = "targetResourceArmId")
     private String targetResourceArmId;
 
-    /** Creates an instance of TargetDetails class. */
+    /**
+     * Creates an instance of TargetDetails class.
+     */
     public TargetDetails() {
     }
 
     /**
-     * Get the filePrefix property: Restore operation may create multiple files inside location pointed by Url Below
-     * will be the common prefix for all of them.
-     *
+     * Get the filePrefix property: Restore operation may create multiple files inside location pointed by Url
+     * Below will be the common prefix for all of them.
+     * 
      * @return the filePrefix value.
      */
     public String filePrefix() {
@@ -55,9 +59,9 @@ public final class TargetDetails {
     }
 
     /**
-     * Set the filePrefix property: Restore operation may create multiple files inside location pointed by Url Below
-     * will be the common prefix for all of them.
-     *
+     * Set the filePrefix property: Restore operation may create multiple files inside location pointed by Url
+     * Below will be the common prefix for all of them.
+     * 
      * @param filePrefix the filePrefix value to set.
      * @return the TargetDetails object itself.
      */
@@ -67,9 +71,10 @@ public final class TargetDetails {
     }
 
     /**
-     * Get the restoreTargetLocationType property: Denotes the target location where the data will be restored, string
-     * value for the enum {Microsoft.Internal.AzureBackup.DataProtection.Common.Interface.RestoreTargetLocationType}.
-     *
+     * Get the restoreTargetLocationType property: Denotes the target location where the data will be restored,
+     * string value for the enum
+     * {Microsoft.Internal.AzureBackup.DataProtection.Common.Interface.RestoreTargetLocationType}.
+     * 
      * @return the restoreTargetLocationType value.
      */
     public RestoreTargetLocationType restoreTargetLocationType() {
@@ -77,9 +82,10 @@ public final class TargetDetails {
     }
 
     /**
-     * Set the restoreTargetLocationType property: Denotes the target location where the data will be restored, string
-     * value for the enum {Microsoft.Internal.AzureBackup.DataProtection.Common.Interface.RestoreTargetLocationType}.
-     *
+     * Set the restoreTargetLocationType property: Denotes the target location where the data will be restored,
+     * string value for the enum
+     * {Microsoft.Internal.AzureBackup.DataProtection.Common.Interface.RestoreTargetLocationType}.
+     * 
      * @param restoreTargetLocationType the restoreTargetLocationType value to set.
      * @return the TargetDetails object itself.
      */
@@ -90,7 +96,7 @@ public final class TargetDetails {
 
     /**
      * Get the url property: Url denoting the restore destination. It can point to container / file share etc.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -99,7 +105,7 @@ public final class TargetDetails {
 
     /**
      * Set the url property: Url denoting the restore destination. It can point to container / file share etc.
-     *
+     * 
      * @param url the url value to set.
      * @return the TargetDetails object itself.
      */
@@ -110,9 +116,10 @@ public final class TargetDetails {
 
     /**
      * Get the targetResourceArmId property: Full ARM Id denoting the restore destination. It is the ARM Id pointing to
-     * container / file share This is optional if the target subscription can be identified with the URL field. If not
+     * container / file share
+     * This is optional if the target subscription can be identified with the URL field. If not
      * then this is needed if CrossSubscriptionRestore field of BackupVault is in any of the disabled states.
-     *
+     * 
      * @return the targetResourceArmId value.
      */
     public String targetResourceArmId() {
@@ -121,9 +128,10 @@ public final class TargetDetails {
 
     /**
      * Set the targetResourceArmId property: Full ARM Id denoting the restore destination. It is the ARM Id pointing to
-     * container / file share This is optional if the target subscription can be identified with the URL field. If not
+     * container / file share
+     * This is optional if the target subscription can be identified with the URL field. If not
      * then this is needed if CrossSubscriptionRestore field of BackupVault is in any of the disabled states.
-     *
+     * 
      * @param targetResourceArmId the targetResourceArmId value to set.
      * @return the TargetDetails object itself.
      */
@@ -134,25 +142,21 @@ public final class TargetDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filePrefix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property filePrefix in model TargetDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property filePrefix in model TargetDetails"));
         }
         if (restoreTargetLocationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property restoreTargetLocationType in model TargetDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property restoreTargetLocationType in model TargetDetails"));
         }
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model TargetDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property url in model TargetDetails"));
         }
     }
 

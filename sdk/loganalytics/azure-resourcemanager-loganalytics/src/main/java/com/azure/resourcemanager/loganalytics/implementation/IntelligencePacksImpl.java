@@ -30,10 +30,6 @@ public final class IntelligencePacksImpl implements IntelligencePacks {
         this.serviceManager = serviceManager;
     }
 
-    public void disable(String resourceGroupName, String workspaceName, String intelligencePackName) {
-        this.serviceClient().disable(resourceGroupName, workspaceName, intelligencePackName);
-    }
-
     public Response<Void> disableWithResponse(
         String resourceGroupName, String workspaceName, String intelligencePackName, Context context) {
         return this
@@ -41,8 +37,8 @@ public final class IntelligencePacksImpl implements IntelligencePacks {
             .disableWithResponse(resourceGroupName, workspaceName, intelligencePackName, context);
     }
 
-    public void enable(String resourceGroupName, String workspaceName, String intelligencePackName) {
-        this.serviceClient().enable(resourceGroupName, workspaceName, intelligencePackName);
+    public void disable(String resourceGroupName, String workspaceName, String intelligencePackName) {
+        this.serviceClient().disable(resourceGroupName, workspaceName, intelligencePackName);
     }
 
     public Response<Void> enableWithResponse(
@@ -50,18 +46,8 @@ public final class IntelligencePacksImpl implements IntelligencePacks {
         return this.serviceClient().enableWithResponse(resourceGroupName, workspaceName, intelligencePackName, context);
     }
 
-    public List<IntelligencePack> list(String resourceGroupName, String workspaceName) {
-        List<IntelligencePackInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new IntelligencePackImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
+    public void enable(String resourceGroupName, String workspaceName, String intelligencePackName) {
+        this.serviceClient().enable(resourceGroupName, workspaceName, intelligencePackName);
     }
 
     public Response<List<IntelligencePack>> listWithResponse(
@@ -80,6 +66,20 @@ public final class IntelligencePacksImpl implements IntelligencePacks {
                     .collect(Collectors.toList()));
         } else {
             return null;
+        }
+    }
+
+    public List<IntelligencePack> list(String resourceGroupName, String workspaceName) {
+        List<IntelligencePackInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new IntelligencePackImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
         }
     }
 

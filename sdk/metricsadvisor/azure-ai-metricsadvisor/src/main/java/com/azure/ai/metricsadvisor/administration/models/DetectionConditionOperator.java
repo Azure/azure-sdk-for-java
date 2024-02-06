@@ -12,6 +12,15 @@ import java.util.Collection;
  */
 public final class DetectionConditionOperator
     extends ExpandableStringEnum<DetectionConditionOperator> {
+
+    /**
+     * Constructs a {@link DetectionConditionOperator} object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DetectionConditionOperator() {
+    }
+
     /**
      * The logical operator AND, indicate that all conditions should be satisfied
      * to detect a data point as anomaly.

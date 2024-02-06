@@ -12,9 +12,8 @@ import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
-import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
-import com.azure.communication.callautomation.models.events.SendDtmfCompleted;
+import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
@@ -25,7 +24,7 @@ import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.annotation.DoNotRecord;
+
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -42,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
-    @DoNotRecord(skipInPlayback = true)
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -129,7 +128,6 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -213,16 +211,10 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             callMediaAsync.startContinuousDtmfRecognition(receiver).block();
 
             // send Dtmf tones to target
-            callMediaAsync.sendDtmf(Stream.of(DtmfTone.A, DtmfTone.B).collect(Collectors.toList()), receiver).block();
-
-            // wait for ContinuousDtmfRecognitionToneReceived
-            ContinuousDtmfRecognitionToneReceived continuousDtmfRecognitionToneReceived = waitForEvent(
-                ContinuousDtmfRecognitionToneReceived.class, targetConnectionId, Duration.ofSeconds(20)
-            );
-            assertNotNull(continuousDtmfRecognitionToneReceived);
+            callMediaAsync.sendDtmfTones(Stream.of(DtmfTone.A, DtmfTone.B).collect(Collectors.toList()), receiver).block();
 
             // validate SendDtmfCompleted
-            SendDtmfCompleted sendDtmfCompleted = waitForEvent(SendDtmfCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            SendDtmfTonesCompleted sendDtmfCompleted = waitForEvent(SendDtmfTonesCompleted.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(sendDtmfCompleted);
 
             // stop continuous dtmf

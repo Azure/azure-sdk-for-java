@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB Gremlin graph resource object. */
+/**
+ * Cosmos DB Gremlin graph resource object.
+ */
 @Fluent
 public class GremlinGraphResource {
     /*
@@ -55,13 +57,27 @@ public class GremlinGraphResource {
     @JsonProperty(value = "analyticalStorageTtl")
     private Long analyticalStorageTtl;
 
-    /** Creates an instance of GremlinGraphResource class. */
+    /*
+     * Parameters to indicate the information about the restore
+     */
+    @JsonProperty(value = "restoreParameters")
+    private ResourceRestoreParameters restoreParameters;
+
+    /*
+     * Enum to indicate the mode of resource creation.
+     */
+    @JsonProperty(value = "createMode")
+    private CreateMode createMode;
+
+    /**
+     * Creates an instance of GremlinGraphResource class.
+     */
     public GremlinGraphResource() {
     }
 
     /**
      * Get the id property: Name of the Cosmos DB Gremlin graph.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -70,7 +86,7 @@ public class GremlinGraphResource {
 
     /**
      * Set the id property: Name of the Cosmos DB Gremlin graph.
-     *
+     * 
      * @param id the id value to set.
      * @return the GremlinGraphResource object itself.
      */
@@ -82,7 +98,7 @@ public class GremlinGraphResource {
     /**
      * Get the indexingPolicy property: The configuration of the indexing policy. By default, the indexing is automatic
      * for all document paths within the graph.
-     *
+     * 
      * @return the indexingPolicy value.
      */
     public IndexingPolicy indexingPolicy() {
@@ -92,7 +108,7 @@ public class GremlinGraphResource {
     /**
      * Set the indexingPolicy property: The configuration of the indexing policy. By default, the indexing is automatic
      * for all document paths within the graph.
-     *
+     * 
      * @param indexingPolicy the indexingPolicy value to set.
      * @return the GremlinGraphResource object itself.
      */
@@ -104,7 +120,7 @@ public class GremlinGraphResource {
     /**
      * Get the partitionKey property: The configuration of the partition key to be used for partitioning data into
      * multiple partitions.
-     *
+     * 
      * @return the partitionKey value.
      */
     public ContainerPartitionKey partitionKey() {
@@ -114,7 +130,7 @@ public class GremlinGraphResource {
     /**
      * Set the partitionKey property: The configuration of the partition key to be used for partitioning data into
      * multiple partitions.
-     *
+     * 
      * @param partitionKey the partitionKey value to set.
      * @return the GremlinGraphResource object itself.
      */
@@ -125,7 +141,7 @@ public class GremlinGraphResource {
 
     /**
      * Get the defaultTtl property: Default time to live.
-     *
+     * 
      * @return the defaultTtl value.
      */
     public Integer defaultTtl() {
@@ -134,7 +150,7 @@ public class GremlinGraphResource {
 
     /**
      * Set the defaultTtl property: Default time to live.
-     *
+     * 
      * @param defaultTtl the defaultTtl value to set.
      * @return the GremlinGraphResource object itself.
      */
@@ -146,7 +162,7 @@ public class GremlinGraphResource {
     /**
      * Get the uniqueKeyPolicy property: The unique key policy configuration for specifying uniqueness constraints on
      * documents in the collection in the Azure Cosmos DB service.
-     *
+     * 
      * @return the uniqueKeyPolicy value.
      */
     public UniqueKeyPolicy uniqueKeyPolicy() {
@@ -156,7 +172,7 @@ public class GremlinGraphResource {
     /**
      * Set the uniqueKeyPolicy property: The unique key policy configuration for specifying uniqueness constraints on
      * documents in the collection in the Azure Cosmos DB service.
-     *
+     * 
      * @param uniqueKeyPolicy the uniqueKeyPolicy value to set.
      * @return the GremlinGraphResource object itself.
      */
@@ -167,7 +183,7 @@ public class GremlinGraphResource {
 
     /**
      * Get the conflictResolutionPolicy property: The conflict resolution policy for the graph.
-     *
+     * 
      * @return the conflictResolutionPolicy value.
      */
     public ConflictResolutionPolicy conflictResolutionPolicy() {
@@ -176,7 +192,7 @@ public class GremlinGraphResource {
 
     /**
      * Set the conflictResolutionPolicy property: The conflict resolution policy for the graph.
-     *
+     * 
      * @param conflictResolutionPolicy the conflictResolutionPolicy value to set.
      * @return the GremlinGraphResource object itself.
      */
@@ -187,7 +203,7 @@ public class GremlinGraphResource {
 
     /**
      * Get the analyticalStorageTtl property: Analytical TTL.
-     *
+     * 
      * @return the analyticalStorageTtl value.
      */
     public Long analyticalStorageTtl() {
@@ -196,7 +212,7 @@ public class GremlinGraphResource {
 
     /**
      * Set the analyticalStorageTtl property: Analytical TTL.
-     *
+     * 
      * @param analyticalStorageTtl the analyticalStorageTtl value to set.
      * @return the GremlinGraphResource object itself.
      */
@@ -206,15 +222,54 @@ public class GremlinGraphResource {
     }
 
     /**
+     * Get the restoreParameters property: Parameters to indicate the information about the restore.
+     * 
+     * @return the restoreParameters value.
+     */
+    public ResourceRestoreParameters restoreParameters() {
+        return this.restoreParameters;
+    }
+
+    /**
+     * Set the restoreParameters property: Parameters to indicate the information about the restore.
+     * 
+     * @param restoreParameters the restoreParameters value to set.
+     * @return the GremlinGraphResource object itself.
+     */
+    public GremlinGraphResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        this.restoreParameters = restoreParameters;
+        return this;
+    }
+
+    /**
+     * Get the createMode property: Enum to indicate the mode of resource creation.
+     * 
+     * @return the createMode value.
+     */
+    public CreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
+     * Set the createMode property: Enum to indicate the mode of resource creation.
+     * 
+     * @param createMode the createMode value to set.
+     * @return the GremlinGraphResource object itself.
+     */
+    public GremlinGraphResource withCreateMode(CreateMode createMode) {
+        this.createMode = createMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model GremlinGraphResource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model GremlinGraphResource"));
         }
         if (indexingPolicy() != null) {
             indexingPolicy().validate();
@@ -227,6 +282,9 @@ public class GremlinGraphResource {
         }
         if (conflictResolutionPolicy() != null) {
             conflictResolutionPolicy().validate();
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
         }
     }
 

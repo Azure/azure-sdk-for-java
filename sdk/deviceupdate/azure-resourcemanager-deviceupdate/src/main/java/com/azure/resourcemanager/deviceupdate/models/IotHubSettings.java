@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Device Update account integration with IoT Hub settings. */
+/**
+ * Device Update account integration with IoT Hub settings.
+ */
 @Fluent
 public final class IotHubSettings {
     /*
@@ -18,8 +20,14 @@ public final class IotHubSettings {
     private String resourceId;
 
     /**
+     * Creates an instance of IotHubSettings class.
+     */
+    public IotHubSettings() {
+    }
+
+    /**
      * Get the resourceId property: IoTHub resource ID.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -28,7 +36,7 @@ public final class IotHubSettings {
 
     /**
      * Set the resourceId property: IoTHub resource ID.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the IotHubSettings object itself.
      */
@@ -39,14 +47,13 @@ public final class IotHubSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model IotHubSettings"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property resourceId in model IotHubSettings"));
         }
     }
 

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the credentials that will be used to access a custom registry during a run. */
+/**
+ * Describes the credentials that will be used to access a custom registry during a run.
+ */
 @Fluent
 public final class CustomRegistryCredentials {
     /*
@@ -33,13 +35,15 @@ public final class CustomRegistryCredentials {
     @JsonProperty(value = "identity")
     private String identity;
 
-    /** Creates an instance of CustomRegistryCredentials class. */
+    /**
+     * Creates an instance of CustomRegistryCredentials class.
+     */
     public CustomRegistryCredentials() {
     }
 
     /**
      * Get the username property: The username for logging into the custom registry.
-     *
+     * 
      * @return the username value.
      */
     public SecretObject username() {
@@ -48,7 +52,7 @@ public final class CustomRegistryCredentials {
 
     /**
      * Set the username property: The username for logging into the custom registry.
-     *
+     * 
      * @param username the username value to set.
      * @return the CustomRegistryCredentials object itself.
      */
@@ -58,9 +62,9 @@ public final class CustomRegistryCredentials {
     }
 
     /**
-     * Get the password property: The password for logging into the custom registry. The password is a secret object
-     * that allows multiple ways of providing the value for it.
-     *
+     * Get the password property: The password for logging into the custom registry. The password is a secret
+     * object that allows multiple ways of providing the value for it.
+     * 
      * @return the password value.
      */
     public SecretObject password() {
@@ -68,9 +72,9 @@ public final class CustomRegistryCredentials {
     }
 
     /**
-     * Set the password property: The password for logging into the custom registry. The password is a secret object
-     * that allows multiple ways of providing the value for it.
-     *
+     * Set the password property: The password for logging into the custom registry. The password is a secret
+     * object that allows multiple ways of providing the value for it.
+     * 
      * @param password the password value to set.
      * @return the CustomRegistryCredentials object itself.
      */
@@ -81,11 +85,12 @@ public final class CustomRegistryCredentials {
 
     /**
      * Get the identity property: Indicates the managed identity assigned to the custom credential. If a user-assigned
-     * identity this value is the Client ID. If a system-assigned identity, the value will be `system`. In the case of a
-     * system-assigned identity, the Client ID will be determined by the runner. This identity may be used to
-     * authenticate to key vault to retrieve credentials or it may be the only source of authentication used for
-     * accessing the registry.
-     *
+     * identity
+     * this value is the Client ID. If a system-assigned identity, the value will be `system`. In
+     * the case of a system-assigned identity, the Client ID will be determined by the runner. This
+     * identity may be used to authenticate to key vault to retrieve credentials or it may be the only
+     * source of authentication used for accessing the registry.
+     * 
      * @return the identity value.
      */
     public String identity() {
@@ -94,11 +99,12 @@ public final class CustomRegistryCredentials {
 
     /**
      * Set the identity property: Indicates the managed identity assigned to the custom credential. If a user-assigned
-     * identity this value is the Client ID. If a system-assigned identity, the value will be `system`. In the case of a
-     * system-assigned identity, the Client ID will be determined by the runner. This identity may be used to
-     * authenticate to key vault to retrieve credentials or it may be the only source of authentication used for
-     * accessing the registry.
-     *
+     * identity
+     * this value is the Client ID. If a system-assigned identity, the value will be `system`. In
+     * the case of a system-assigned identity, the Client ID will be determined by the runner. This
+     * identity may be used to authenticate to key vault to retrieve credentials or it may be the only
+     * source of authentication used for accessing the registry.
+     * 
      * @param identity the identity value to set.
      * @return the CustomRegistryCredentials object itself.
      */
@@ -109,7 +115,7 @@ public final class CustomRegistryCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

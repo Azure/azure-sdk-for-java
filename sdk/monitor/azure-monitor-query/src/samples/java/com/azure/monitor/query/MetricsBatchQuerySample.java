@@ -5,7 +5,7 @@ package com.azure.monitor.query;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.MetricResult;
-import com.azure.monitor.query.models.MetricsBatchResult;
+import com.azure.monitor.query.models.MetricsBatchQueryResult;
 import com.azure.monitor.query.models.MetricsQueryResult;
 
 import java.util.Arrays;
@@ -26,12 +26,12 @@ public class MetricsBatchQuerySample {
             .endpoint("https://westus2.monitoring.azure.com")
             .buildClient();
 
-        MetricsBatchResult metricsBatchResult = metricsBatchQueryClient.queryBatch(
+        MetricsBatchQueryResult metricsBatchQueryResult = metricsBatchQueryClient.queryBatch(
             Arrays.asList("{resourceId1}", "{resourceId2}"),
             Arrays.asList("{metric1}", "{metric2}"),
             "{metricNamespace}");
 
-        for (MetricsQueryResult metricsQueryResult : metricsBatchResult.getMetricsQueryResults()) {
+        for (MetricsQueryResult metricsQueryResult : metricsBatchQueryResult.getMetricsQueryResults()) {
             // Each MetricsQueryResult corresponds to one of the resourceIds in the batch request.
             List<MetricResult> metrics = metricsQueryResult.getMetrics();
             metrics.forEach(metric -> {

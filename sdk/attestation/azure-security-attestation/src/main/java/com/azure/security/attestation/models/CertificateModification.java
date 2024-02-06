@@ -17,6 +17,11 @@ public final class CertificateModification extends ExpandableStringEnum<Certific
     public static final CertificateModification IS_ABSENT = fromString("IsAbsent");
 
     /**
+     * Creates an instance of {@link CertificateModification}
+     */
+    public CertificateModification() { }
+
+    /**
      * Creates or finds a CertificateModification from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +32,11 @@ public final class CertificateModification extends ExpandableStringEnum<Certific
         return fromString(name, CertificateModification.class);
     }
 
-    /** @return known CertificateModification values. */
+    /**
+     * Returns the collection of {@link CertificateModification} values.
+     *
+     * @return the known CertificateModification values.
+     */
     public static Collection<CertificateModification> values() {
         return values(CertificateModification.class);
     }

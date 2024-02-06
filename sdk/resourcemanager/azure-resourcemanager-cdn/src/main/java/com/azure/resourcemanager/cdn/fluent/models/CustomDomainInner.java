@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cdn.models.CustomDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.CustomDomainResourceState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningState;
@@ -25,11 +24,9 @@ public final class CustomDomainInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private CustomDomainProperties innerProperties;
 
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of CustomDomainInner class. */
+    public CustomDomainInner() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the custom domain to create.
@@ -38,15 +35,6 @@ public final class CustomDomainInner extends ProxyResource {
      */
     private CustomDomainProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

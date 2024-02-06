@@ -37,6 +37,7 @@ custom-types: AnomalyStatus,AnomalyValue,ChangePointValue,EnrichmentStatus,Feedb
 default-http-exception-type: com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException
 enable-sync-stack: true
 polling: {} 
+stream-style-serialization: true
 ```
 
 ### Generated types renamed and moved to model

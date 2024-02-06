@@ -22,6 +22,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -30,7 +31,8 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironment = AzureEnvironment.AZURE,
+      sparkEnvironmentInfo = "")
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -90,6 +92,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -98,7 +101,8 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironment = AzureEnvironment.AZURE,
+      sparkEnvironmentInfo = "")
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -158,6 +162,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -166,7 +171,8 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironment = AzureEnvironment.AZURE,
+      sparkEnvironmentInfo = "")
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -226,6 +232,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -234,7 +241,8 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironment = AzureEnvironment.AZURE,
+      sparkEnvironmentInfo = "")
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -292,6 +300,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -300,7 +309,8 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironment = AzureEnvironment.AZURE,
+      sparkEnvironmentInfo = "")
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -374,6 +384,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -382,7 +393,8 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironment = AzureEnvironment.AZURE,
+      sparkEnvironmentInfo = "")
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** File system linked service properties. */
+/**
+ * File system linked service properties.
+ */
 @Fluent
 public final class FileServerLinkedServiceTypeProperties {
     /*
@@ -32,18 +34,20 @@ public final class FileServerLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of FileServerLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of FileServerLinkedServiceTypeProperties class.
+     */
     public FileServerLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the host value.
      */
     public Object host() {
@@ -52,7 +56,7 @@ public final class FileServerLinkedServiceTypeProperties {
 
     /**
      * Set the host property: Host name of the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param host the host value to set.
      * @return the FileServerLinkedServiceTypeProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class FileServerLinkedServiceTypeProperties {
 
     /**
      * Get the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the userId value.
      */
     public Object userId() {
@@ -72,7 +76,7 @@ public final class FileServerLinkedServiceTypeProperties {
 
     /**
      * Set the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param userId the userId value to set.
      * @return the FileServerLinkedServiceTypeProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class FileServerLinkedServiceTypeProperties {
 
     /**
      * Get the password property: Password to logon the server.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -92,7 +96,7 @@ public final class FileServerLinkedServiceTypeProperties {
 
     /**
      * Set the password property: Password to logon the server.
-     *
+     * 
      * @param password the password value to set.
      * @return the FileServerLinkedServiceTypeProperties object itself.
      */
@@ -102,38 +106,36 @@ public final class FileServerLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the FileServerLinkedServiceTypeProperties object itself.
      */
-    public FileServerLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public FileServerLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (host() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property host in model FileServerLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property host in model FileServerLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

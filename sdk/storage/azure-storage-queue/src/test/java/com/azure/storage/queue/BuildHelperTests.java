@@ -88,7 +88,7 @@ public class BuildHelperTests {
     private static HttpPipeline buildPipeline(HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient
         httpClient) {
         return BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
-            logOptions, clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(), Configuration.NONE, LOGGER);
+            logOptions, clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(), Configuration.NONE, null, LOGGER);
     }
 
     /**

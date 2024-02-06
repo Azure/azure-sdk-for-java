@@ -18,6 +18,8 @@ import com.azure.resourcemanager.containerservice.fluent.models.KubernetesVersio
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterAccessProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterUpgradeProfileInner;
+import com.azure.resourcemanager.containerservice.fluent.models.MeshRevisionProfileInner;
+import com.azure.resourcemanager.containerservice.fluent.models.MeshUpgradeProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.OSOptionProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.containerservice.fluent.models.RunCommandResultInner;
@@ -34,29 +36,29 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedClustersClient. */
-public interface ManagedClustersClient
-    extends InnerSupportsGet<ManagedClusterInner>,
-        InnerSupportsListing<ManagedClusterInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in ManagedClustersClient.
+ */
+public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterInner>,
+    InnerSupportsListing<ManagedClusterInner>, InnerSupportsDelete<Void> {
     /**
      * Gets supported OS options in the specified subscription.
-     *
-     * @param location The name of Azure region.
+     * 
+     * @param location The name of the Azure region.
      * @param resourceType The resource type for which the OS options needs to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return supported OS options in the specified subscription along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<OSOptionProfileInner>> getOSOptionsWithResponseAsync(String location, String resourceType);
 
     /**
      * Gets supported OS options in the specified subscription.
-     *
-     * @param location The name of Azure region.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -67,8 +69,8 @@ public interface ManagedClustersClient
 
     /**
      * Gets supported OS options in the specified subscription.
-     *
-     * @param location The name of Azure region.
+     * 
+     * @param location The name of the Azure region.
      * @param resourceType The resource type for which the OS options needs to be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,8 +83,8 @@ public interface ManagedClustersClient
 
     /**
      * Gets supported OS options in the specified subscription.
-     *
-     * @param location The name of Azure region.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -93,27 +95,27 @@ public interface ManagedClustersClient
 
     /**
      * Gets a list of supported Kubernetes versions in the specified subscription.
-     *
-     * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
-     * and details on preview status of the version.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades, and
+     * details on preview status of the version.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hold values properties, which is array of KubernetesVersion along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<KubernetesVersionListResultInner>> listKubernetesVersionsWithResponseAsync(String location);
 
     /**
      * Gets a list of supported Kubernetes versions in the specified subscription.
-     *
-     * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
-     * and details on preview status of the version.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades, and
+     * details on preview status of the version.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -124,11 +126,11 @@ public interface ManagedClustersClient
 
     /**
      * Gets a list of supported Kubernetes versions in the specified subscription.
-     *
-     * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
-     * and details on preview status of the version.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades, and
+     * details on preview status of the version.
+     * 
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,11 +142,11 @@ public interface ManagedClustersClient
 
     /**
      * Gets a list of supported Kubernetes versions in the specified subscription.
-     *
-     * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
-     * and details on preview status of the version.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades, and
+     * details on preview status of the version.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -155,7 +157,7 @@ public interface ManagedClustersClient
 
     /**
      * Gets a list of managed clusters in the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed clusters in the specified subscription as paginated response with {@link PagedFlux}.
@@ -165,31 +167,31 @@ public interface ManagedClustersClient
 
     /**
      * Gets a list of managed clusters in the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed clusters in the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of managed clusters in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedClusterInner> list();
 
     /**
      * Gets a list of managed clusters in the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed clusters in the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of managed clusters in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedClusterInner> list(Context context);
 
     /**
      * Lists managed clusters in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -201,7 +203,7 @@ public interface ManagedClustersClient
 
     /**
      * Lists managed clusters in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -213,7 +215,7 @@ public interface ManagedClustersClient
 
     /**
      * Lists managed clusters in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,22 +228,22 @@ public interface ManagedClustersClient
 
     /**
      * Gets the upgrade profile of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile of a managed cluster along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the upgrade profile of a managed cluster along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ManagedClusterUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(
-        String resourceGroupName, String resourceName);
+    Mono<Response<ManagedClusterUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(String resourceGroupName,
+        String resourceName);
 
     /**
      * Gets the upgrade profile of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -254,7 +256,7 @@ public interface ManagedClustersClient
 
     /**
      * Gets the upgrade profile of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -264,12 +266,12 @@ public interface ManagedClustersClient
      * @return the upgrade profile of a managed cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedClusterUpgradeProfileInner> getUpgradeProfileWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ManagedClusterUpgradeProfileInner> getUpgradeProfileWithResponse(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Gets the upgrade profile of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,13 +284,13 @@ public interface ManagedClustersClient
 
     /**
      * Gets an access profile of a managed cluster.
-     *
-     * <p>**WARNING**: This API will be deprecated. Instead use
+     * 
+     * **WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
@@ -298,18 +300,18 @@ public interface ManagedClustersClient
      * @return managed cluster Access Profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ManagedClusterAccessProfileInner>> getAccessProfileWithResponseAsync(
-        String resourceGroupName, String resourceName, String roleName);
+    Mono<Response<ManagedClusterAccessProfileInner>> getAccessProfileWithResponseAsync(String resourceGroupName,
+        String resourceName, String roleName);
 
     /**
      * Gets an access profile of a managed cluster.
-     *
-     * <p>**WARNING**: This API will be deprecated. Instead use
+     * 
+     * **WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
@@ -319,18 +321,18 @@ public interface ManagedClustersClient
      * @return managed cluster Access Profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedClusterAccessProfileInner> getAccessProfileAsync(
-        String resourceGroupName, String resourceName, String roleName);
+    Mono<ManagedClusterAccessProfileInner> getAccessProfileAsync(String resourceGroupName, String resourceName,
+        String roleName);
 
     /**
      * Gets an access profile of a managed cluster.
-     *
-     * <p>**WARNING**: This API will be deprecated. Instead use
+     * 
+     * **WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
@@ -341,18 +343,18 @@ public interface ManagedClustersClient
      * @return managed cluster Access Profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedClusterAccessProfileInner> getAccessProfileWithResponse(
-        String resourceGroupName, String resourceName, String roleName, Context context);
+    Response<ManagedClusterAccessProfileInner> getAccessProfileWithResponse(String resourceGroupName,
+        String resourceName, String roleName, Context context);
 
     /**
      * Gets an access profile of a managed cluster.
-     *
-     * <p>**WARNING**: This API will be deprecated. Instead use
+     * 
+     * **WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
@@ -366,7 +368,7 @@ public interface ManagedClustersClient
 
     /**
      * Lists the admin credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -376,12 +378,12 @@ public interface ManagedClustersClient
      * @return the list credential result response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CredentialResultsInner>> listClusterAdminCredentialsWithResponseAsync(
-        String resourceGroupName, String resourceName, String serverFqdn);
+    Mono<Response<CredentialResultsInner>> listClusterAdminCredentialsWithResponseAsync(String resourceGroupName,
+        String resourceName, String serverFqdn);
 
     /**
      * Lists the admin credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -394,7 +396,7 @@ public interface ManagedClustersClient
 
     /**
      * Lists the admin credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -405,12 +407,12 @@ public interface ManagedClustersClient
      * @return the list credential result response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CredentialResultsInner> listClusterAdminCredentialsWithResponse(
-        String resourceGroupName, String resourceName, String serverFqdn, Context context);
+    Response<CredentialResultsInner> listClusterAdminCredentialsWithResponse(String resourceGroupName,
+        String resourceName, String serverFqdn, Context context);
 
     /**
      * Lists the admin credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,25 +425,25 @@ public interface ManagedClustersClient
 
     /**
      * Lists the user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return
-     *     azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin
-     *     binary in the path.
+     * azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary
+     * in the path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list credential result response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CredentialResultsInner>> listClusterUserCredentialsWithResponseAsync(
-        String resourceGroupName, String resourceName, String serverFqdn, Format format);
+    Mono<Response<CredentialResultsInner>> listClusterUserCredentialsWithResponseAsync(String resourceGroupName,
+        String resourceName, String serverFqdn, Format format);
 
     /**
      * Lists the user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -454,13 +456,13 @@ public interface ManagedClustersClient
 
     /**
      * Lists the user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return
-     *     azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin
-     *     binary in the path.
+     * azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary
+     * in the path.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -468,12 +470,12 @@ public interface ManagedClustersClient
      * @return the list credential result response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CredentialResultsInner> listClusterUserCredentialsWithResponse(
-        String resourceGroupName, String resourceName, String serverFqdn, Format format, Context context);
+    Response<CredentialResultsInner> listClusterUserCredentialsWithResponse(String resourceGroupName,
+        String resourceName, String serverFqdn, Format format, Context context);
 
     /**
      * Lists the user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -486,7 +488,7 @@ public interface ManagedClustersClient
 
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -501,7 +503,7 @@ public interface ManagedClustersClient
 
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -510,12 +512,12 @@ public interface ManagedClustersClient
      * @return the list credential result response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CredentialResultsInner> listClusterMonitoringUserCredentialsAsync(
-        String resourceGroupName, String resourceName);
+    Mono<CredentialResultsInner> listClusterMonitoringUserCredentialsAsync(String resourceGroupName,
+        String resourceName);
 
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
@@ -526,12 +528,12 @@ public interface ManagedClustersClient
      * @return the list credential result response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CredentialResultsInner> listClusterMonitoringUserCredentialsWithResponse(
-        String resourceGroupName, String resourceName, String serverFqdn, Context context);
+    Response<CredentialResultsInner> listClusterMonitoringUserCredentialsWithResponse(String resourceGroupName,
+        String resourceName, String serverFqdn, Context context);
 
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -544,7 +546,7 @@ public interface ManagedClustersClient
 
     /**
      * Gets a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -553,12 +555,12 @@ public interface ManagedClustersClient
      * @return a managed cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ManagedClusterInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName);
+    Mono<Response<ManagedClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName);
 
     /**
      * Gets a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -571,7 +573,7 @@ public interface ManagedClustersClient
 
     /**
      * Gets a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -581,12 +583,12 @@ public interface ManagedClustersClient
      * @return a managed cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ManagedClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -599,7 +601,7 @@ public interface ManagedClustersClient
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -609,12 +611,12 @@ public interface ManagedClustersClient
      * @return managed cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, ManagedClusterInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName,
+        ManagedClusterInner parameters);
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -624,12 +626,12 @@ public interface ManagedClustersClient
      * @return the {@link PollerFlux} for polling of managed cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String resourceName, ManagedClusterInner parameters);
+    PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String resourceName, ManagedClusterInner parameters);
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -639,12 +641,12 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of managed cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, ManagedClusterInner parameters);
+    SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, ManagedClusterInner parameters);
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -655,12 +657,12 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of managed cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context);
+    SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, ManagedClusterInner parameters, Context context);
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -670,12 +672,12 @@ public interface ManagedClustersClient
      * @return managed cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedClusterInner> createOrUpdateAsync(
-        String resourceGroupName, String resourceName, ManagedClusterInner parameters);
+    Mono<ManagedClusterInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        ManagedClusterInner parameters);
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -689,7 +691,7 @@ public interface ManagedClustersClient
 
     /**
      * Creates or updates a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
@@ -700,12 +702,12 @@ public interface ManagedClustersClient
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedClusterInner createOrUpdate(
-        String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context);
+    ManagedClusterInner createOrUpdate(String resourceGroupName, String resourceName, ManagedClusterInner parameters,
+        Context context);
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -715,12 +717,12 @@ public interface ManagedClustersClient
      * @return managed cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String resourceName, TagsObject parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String resourceName,
+        TagsObject parameters);
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -730,12 +732,12 @@ public interface ManagedClustersClient
      * @return the {@link PollerFlux} for polling of managed cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTagsAsync(
-        String resourceGroupName, String resourceName, TagsObject parameters);
+    PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTagsAsync(String resourceGroupName,
+        String resourceName, TagsObject parameters);
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -745,12 +747,12 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of managed cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(
-        String resourceGroupName, String resourceName, TagsObject parameters);
+    SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(String resourceGroupName,
+        String resourceName, TagsObject parameters);
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -761,12 +763,12 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of managed cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(
-        String resourceGroupName, String resourceName, TagsObject parameters, Context context);
+    SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(String resourceGroupName,
+        String resourceName, TagsObject parameters, Context context);
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -780,7 +782,7 @@ public interface ManagedClustersClient
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -794,7 +796,7 @@ public interface ManagedClustersClient
 
     /**
      * Updates tags on a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -805,12 +807,12 @@ public interface ManagedClustersClient
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedClusterInner updateTags(
-        String resourceGroupName, String resourceName, TagsObject parameters, Context context);
+    ManagedClusterInner updateTags(String resourceGroupName, String resourceName, TagsObject parameters,
+        Context context);
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -823,7 +825,7 @@ public interface ManagedClustersClient
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -836,7 +838,7 @@ public interface ManagedClustersClient
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -849,7 +851,7 @@ public interface ManagedClustersClient
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -863,7 +865,7 @@ public interface ManagedClustersClient
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -876,7 +878,7 @@ public interface ManagedClustersClient
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -888,7 +890,7 @@ public interface ManagedClustersClient
 
     /**
      * Deletes a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -901,9 +903,9 @@ public interface ManagedClustersClient
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
-     * <p>This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
+     * This action cannot be performed on a cluster that is not using a service principal.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -913,14 +915,14 @@ public interface ManagedClustersClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> resetServicePrincipalProfileWithResponseAsync(
-        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters);
+    Mono<Response<Flux<ByteBuffer>>> resetServicePrincipalProfileWithResponseAsync(String resourceGroupName,
+        String resourceName, ManagedClusterServicePrincipalProfile parameters);
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
-     * <p>This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
+     * This action cannot be performed on a cluster that is not using a service principal.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -930,14 +932,14 @@ public interface ManagedClustersClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginResetServicePrincipalProfileAsync(
-        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters);
+    PollerFlux<PollResult<Void>, Void> beginResetServicePrincipalProfileAsync(String resourceGroupName,
+        String resourceName, ManagedClusterServicePrincipalProfile parameters);
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
-     * <p>This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
+     * This action cannot be performed on a cluster that is not using a service principal.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -947,14 +949,14 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(
-        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters);
+    SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(String resourceGroupName, String resourceName,
+        ManagedClusterServicePrincipalProfile parameters);
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
-     * <p>This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
+     * This action cannot be performed on a cluster that is not using a service principal.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -965,17 +967,14 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(
-        String resourceGroupName,
-        String resourceName,
-        ManagedClusterServicePrincipalProfile parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(String resourceGroupName, String resourceName,
+        ManagedClusterServicePrincipalProfile parameters, Context context);
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
-     * <p>This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
+     * This action cannot be performed on a cluster that is not using a service principal.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -985,14 +984,14 @@ public interface ManagedClustersClient
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> resetServicePrincipalProfileAsync(
-        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters);
+    Mono<Void> resetServicePrincipalProfileAsync(String resourceGroupName, String resourceName,
+        ManagedClusterServicePrincipalProfile parameters);
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
-     * <p>This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
+     * This action cannot be performed on a cluster that is not using a service principal.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -1001,14 +1000,14 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void resetServicePrincipalProfile(
-        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters);
+    void resetServicePrincipalProfile(String resourceGroupName, String resourceName,
+        ManagedClusterServicePrincipalProfile parameters);
 
     /**
      * Reset the Service Principal Profile of a managed cluster.
-     *
-     * <p>This action cannot be performed on a cluster that is not using a service principal.
-     *
+     * 
+     * This action cannot be performed on a cluster that is not using a service principal.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
@@ -1018,18 +1017,15 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void resetServicePrincipalProfile(
-        String resourceGroupName,
-        String resourceName,
-        ManagedClusterServicePrincipalProfile parameters,
-        Context context);
+    void resetServicePrincipalProfile(String resourceGroupName, String resourceName,
+        ManagedClusterServicePrincipalProfile parameters, Context context);
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
-     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * 
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1039,15 +1035,15 @@ public interface ManagedClustersClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> resetAadProfileWithResponseAsync(
-        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters);
+    Mono<Response<Flux<ByteBuffer>>> resetAadProfileWithResponseAsync(String resourceGroupName, String resourceName,
+        ManagedClusterAadProfile parameters);
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
-     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * 
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1057,15 +1053,15 @@ public interface ManagedClustersClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginResetAadProfileAsync(
-        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters);
+    PollerFlux<PollResult<Void>, Void> beginResetAadProfileAsync(String resourceGroupName, String resourceName,
+        ManagedClusterAadProfile parameters);
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
-     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * 
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1075,15 +1071,15 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResetAadProfile(
-        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters);
+    SyncPoller<PollResult<Void>, Void> beginResetAadProfile(String resourceGroupName, String resourceName,
+        ManagedClusterAadProfile parameters);
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
-     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * 
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1094,15 +1090,15 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResetAadProfile(
-        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginResetAadProfile(String resourceGroupName, String resourceName,
+        ManagedClusterAadProfile parameters, Context context);
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
-     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * 
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1116,10 +1112,10 @@ public interface ManagedClustersClient
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
-     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * 
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1132,10 +1128,10 @@ public interface ManagedClustersClient
 
     /**
      * Reset the AAD Profile of a managed cluster.
-     *
-     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * 
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1145,15 +1141,15 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void resetAadProfile(
-        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context);
+    void resetAadProfile(String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters,
+        Context context);
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
-     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * 
+     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1162,15 +1158,15 @@ public interface ManagedClustersClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> rotateClusterCertificatesWithResponseAsync(
-        String resourceGroupName, String resourceName);
+    Mono<Response<Flux<ByteBuffer>>> rotateClusterCertificatesWithResponseAsync(String resourceGroupName,
+        String resourceName);
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
-     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * 
+     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1179,15 +1175,15 @@ public interface ManagedClustersClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginRotateClusterCertificatesAsync(
-        String resourceGroupName, String resourceName);
+    PollerFlux<PollResult<Void>, Void> beginRotateClusterCertificatesAsync(String resourceGroupName,
+        String resourceName);
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
-     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * 
+     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1200,10 +1196,10 @@ public interface ManagedClustersClient
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
-     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * 
+     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1213,15 +1209,15 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(
-        String resourceGroupName, String resourceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
-     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * 
+     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1234,10 +1230,10 @@ public interface ManagedClustersClient
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
-     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * 
+     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1249,10 +1245,10 @@ public interface ManagedClustersClient
 
     /**
      * Rotates the certificates of a managed cluster.
-     *
-     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * 
+     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1265,11 +1261,11 @@ public interface ManagedClustersClient
 
     /**
      * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * 
+     * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
+     * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1278,16 +1274,16 @@ public interface ManagedClustersClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(
-        String resourceGroupName, String resourceName);
+    Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(String resourceGroupName,
+        String resourceName);
 
     /**
      * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * 
+     * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
+     * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1300,11 +1296,11 @@ public interface ManagedClustersClient
 
     /**
      * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * 
+     * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
+     * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1317,11 +1313,11 @@ public interface ManagedClustersClient
 
     /**
      * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * 
+     * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
+     * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1331,16 +1327,16 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(
-        String resourceGroupName, String resourceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * 
+     * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
+     * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1353,11 +1349,11 @@ public interface ManagedClustersClient
 
     /**
      * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * 
+     * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
+     * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1369,11 +1365,11 @@ public interface ManagedClustersClient
 
     /**
      * Aborts last operation running on managed cluster.
-     *
-     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
-     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * 
+     * Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a Canceling
+     * state and eventually to a Canceled state when cancellation finishes. If the operation completes before
      * cancellation can take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1386,7 +1382,7 @@ public interface ManagedClustersClient
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1395,12 +1391,12 @@ public interface ManagedClustersClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> rotateServiceAccountSigningKeysWithResponseAsync(
-        String resourceGroupName, String resourceName);
+    Mono<Response<Flux<ByteBuffer>>> rotateServiceAccountSigningKeysWithResponseAsync(String resourceGroupName,
+        String resourceName);
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1409,12 +1405,12 @@ public interface ManagedClustersClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginRotateServiceAccountSigningKeysAsync(
-        String resourceGroupName, String resourceName);
+    PollerFlux<PollResult<Void>, Void> beginRotateServiceAccountSigningKeysAsync(String resourceGroupName,
+        String resourceName);
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1423,12 +1419,12 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRotateServiceAccountSigningKeys(
-        String resourceGroupName, String resourceName);
+    SyncPoller<PollResult<Void>, Void> beginRotateServiceAccountSigningKeys(String resourceGroupName,
+        String resourceName);
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1438,12 +1434,12 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRotateServiceAccountSigningKeys(
-        String resourceGroupName, String resourceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRotateServiceAccountSigningKeys(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1456,7 +1452,7 @@ public interface ManagedClustersClient
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1468,7 +1464,7 @@ public interface ManagedClustersClient
 
     /**
      * Rotates the service account signing keys of a managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1481,12 +1477,12 @@ public interface ManagedClustersClient
 
     /**
      * Stops a Managed Cluster
-     *
-     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * 
+     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1499,12 +1495,12 @@ public interface ManagedClustersClient
 
     /**
      * Stops a Managed Cluster
-     *
-     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * 
+     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1517,12 +1513,12 @@ public interface ManagedClustersClient
 
     /**
      * Stops a Managed Cluster
-     *
-     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * 
+     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1535,12 +1531,12 @@ public interface ManagedClustersClient
 
     /**
      * Stops a Managed Cluster
-     *
-     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * 
+     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1554,12 +1550,12 @@ public interface ManagedClustersClient
 
     /**
      * Stops a Managed Cluster
-     *
-     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * 
+     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1572,12 +1568,12 @@ public interface ManagedClustersClient
 
     /**
      * Stops a Managed Cluster
-     *
-     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * 
+     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1589,12 +1585,12 @@ public interface ManagedClustersClient
 
     /**
      * Stops a Managed Cluster
-     *
-     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * 
+     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1607,10 +1603,10 @@ public interface ManagedClustersClient
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
-     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
-     * starting a cluster.
-     *
+     * 
+     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
+     * a cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1623,10 +1619,10 @@ public interface ManagedClustersClient
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
-     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
-     * starting a cluster.
-     *
+     * 
+     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
+     * a cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1639,10 +1635,10 @@ public interface ManagedClustersClient
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
-     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
-     * starting a cluster.
-     *
+     * 
+     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
+     * a cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1655,10 +1651,10 @@ public interface ManagedClustersClient
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
-     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
-     * starting a cluster.
-     *
+     * 
+     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
+     * a cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1672,10 +1668,10 @@ public interface ManagedClustersClient
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
-     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
-     * starting a cluster.
-     *
+     * 
+     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
+     * a cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1688,10 +1684,10 @@ public interface ManagedClustersClient
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
-     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
-     * starting a cluster.
-     *
+     * 
+     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
+     * a cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1703,10 +1699,10 @@ public interface ManagedClustersClient
 
     /**
      * Starts a previously stopped Managed Cluster
-     *
-     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
-     * starting a cluster.
-     *
+     * 
+     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
+     * a cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1719,10 +1715,10 @@ public interface ManagedClustersClient
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
-     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
-     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
+     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
+     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -1732,15 +1728,15 @@ public interface ManagedClustersClient
      * @return run command result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(
-        String resourceGroupName, String resourceName, RunCommandRequest requestPayload);
+    Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(String resourceGroupName, String resourceName,
+        RunCommandRequest requestPayload);
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
-     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
-     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
+     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
+     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -1750,15 +1746,15 @@ public interface ManagedClustersClient
      * @return the {@link PollerFlux} for polling of run command result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(
-        String resourceGroupName, String resourceName, RunCommandRequest requestPayload);
+    PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(String resourceGroupName,
+        String resourceName, RunCommandRequest requestPayload);
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
-     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
-     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
+     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
+     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -1768,15 +1764,15 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of run command result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
-        String resourceGroupName, String resourceName, RunCommandRequest requestPayload);
+    SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(String resourceGroupName,
+        String resourceName, RunCommandRequest requestPayload);
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
-     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
-     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
+     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
+     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -1787,15 +1783,15 @@ public interface ManagedClustersClient
      * @return the {@link SyncPoller} for polling of run command result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
-        String resourceGroupName, String resourceName, RunCommandRequest requestPayload, Context context);
+    SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(String resourceGroupName,
+        String resourceName, RunCommandRequest requestPayload, Context context);
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
-     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
-     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
+     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
+     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -1805,15 +1801,15 @@ public interface ManagedClustersClient
      * @return run command result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RunCommandResultInner> runCommandAsync(
-        String resourceGroupName, String resourceName, RunCommandRequest requestPayload);
+    Mono<RunCommandResultInner> runCommandAsync(String resourceGroupName, String resourceName,
+        RunCommandRequest requestPayload);
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
-     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
-     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
+     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
+     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -1827,10 +1823,10 @@ public interface ManagedClustersClient
 
     /**
      * Submits a command to run against the Managed Cluster.
-     *
-     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
-     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
-     *
+     * 
+     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
+     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
@@ -1841,43 +1837,43 @@ public interface ManagedClustersClient
      * @return run command result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RunCommandResultInner runCommand(
-        String resourceGroupName, String resourceName, RunCommandRequest requestPayload, Context context);
+    RunCommandResultInner runCommand(String resourceGroupName, String resourceName, RunCommandRequest requestPayload,
+        Context context);
 
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a command which has been run on the Managed Cluster on successful completion of {@link
-     *     Mono}.
+     * @return the results of a command which has been run on the Managed Cluster on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedClustersGetCommandResultResponse> getCommandResultWithResponseAsync(
-        String resourceGroupName, String resourceName, String commandId);
+    Mono<ManagedClustersGetCommandResultResponse> getCommandResultWithResponseAsync(String resourceGroupName,
+        String resourceName, String commandId);
 
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a command which has been run on the Managed Cluster on successful completion of {@link
-     *     Mono}.
+     * @return the results of a command which has been run on the Managed Cluster on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RunCommandResultInner> getCommandResultAsync(String resourceGroupName, String resourceName, String commandId);
 
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
@@ -1888,12 +1884,12 @@ public interface ManagedClustersClient
      * @return the results of a command which has been run on the Managed Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedClustersGetCommandResultResponse getCommandResultWithResponse(
-        String resourceGroupName, String resourceName, String commandId, Context context);
+    ManagedClustersGetCommandResultResponse getCommandResultWithResponse(String resourceGroupName, String resourceName,
+        String commandId, Context context);
 
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
@@ -1908,48 +1904,48 @@ public interface ManagedClustersClient
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster.
-     *
-     * <p>Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
+     * 
+     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
-     *     cluster as paginated response with {@link PagedFlux}.
+     * cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String resourceName);
+    PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName,
+        String resourceName);
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster.
-     *
-     * <p>Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
+     * 
+     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
-     *     cluster as paginated response with {@link PagedIterable}.
+     * cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String resourceName);
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String resourceName);
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster.
-     *
-     * <p>Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
+     * 
+     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1957,9 +1953,223 @@ public interface ManagedClustersClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
-     *     cluster as paginated response with {@link PagedIterable}.
+     * cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String resourceName, Context context);
+
+    /**
+     * Lists mesh revision profiles for all meshes in the specified location.
+     * 
+     * Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     * 
+     * @param location The name of the Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return holds an array of MeshRevisionsProfiles as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MeshRevisionProfileInner> listMeshRevisionProfilesAsync(String location);
+
+    /**
+     * Lists mesh revision profiles for all meshes in the specified location.
+     * 
+     * Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     * 
+     * @param location The name of the Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return holds an array of MeshRevisionsProfiles as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MeshRevisionProfileInner> listMeshRevisionProfiles(String location);
+
+    /**
+     * Lists mesh revision profiles for all meshes in the specified location.
+     * 
+     * Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     * 
+     * @param location The name of the Azure region.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return holds an array of MeshRevisionsProfiles as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MeshRevisionProfileInner> listMeshRevisionProfiles(String location, Context context);
+
+    /**
+     * Gets a mesh revision profile for a specified mesh in the specified location.
+     * 
+     * Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     * 
+     * @param location The name of the Azure region.
+     * @param mode The mode of the mesh.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mesh revision profile for a mesh along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MeshRevisionProfileInner>> getMeshRevisionProfileWithResponseAsync(String location, String mode);
+
+    /**
+     * Gets a mesh revision profile for a specified mesh in the specified location.
+     * 
+     * Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     * 
+     * @param location The name of the Azure region.
+     * @param mode The mode of the mesh.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mesh revision profile for a mesh on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MeshRevisionProfileInner> getMeshRevisionProfileAsync(String location, String mode);
+
+    /**
+     * Gets a mesh revision profile for a specified mesh in the specified location.
+     * 
+     * Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     * 
+     * @param location The name of the Azure region.
+     * @param mode The mode of the mesh.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mesh revision profile for a mesh along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MeshRevisionProfileInner> getMeshRevisionProfileWithResponse(String location, String mode,
+        Context context);
+
+    /**
+     * Gets a mesh revision profile for a specified mesh in the specified location.
+     * 
+     * Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     * 
+     * @param location The name of the Azure region.
+     * @param mode The mode of the mesh.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mesh revision profile for a mesh.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MeshRevisionProfileInner getMeshRevisionProfile(String location, String mode);
+
+    /**
+     * Lists available upgrades for all service meshes in a specific cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return holds an array of MeshUpgradeProfiles as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MeshUpgradeProfileInner> listMeshUpgradeProfilesAsync(String resourceGroupName, String resourceName);
+
+    /**
+     * Lists available upgrades for all service meshes in a specific cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return holds an array of MeshUpgradeProfiles as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MeshUpgradeProfileInner> listMeshUpgradeProfiles(String resourceGroupName, String resourceName);
+
+    /**
+     * Lists available upgrades for all service meshes in a specific cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return holds an array of MeshUpgradeProfiles as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MeshUpgradeProfileInner> listMeshUpgradeProfiles(String resourceGroupName, String resourceName,
+        Context context);
+
+    /**
+     * Gets available upgrades for a service mesh in a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param mode The mode of the mesh.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return available upgrades for a service mesh in a cluster along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MeshUpgradeProfileInner>> getMeshUpgradeProfileWithResponseAsync(String resourceGroupName,
+        String resourceName, String mode);
+
+    /**
+     * Gets available upgrades for a service mesh in a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param mode The mode of the mesh.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return available upgrades for a service mesh in a cluster on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MeshUpgradeProfileInner> getMeshUpgradeProfileAsync(String resourceGroupName, String resourceName,
+        String mode);
+
+    /**
+     * Gets available upgrades for a service mesh in a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param mode The mode of the mesh.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return available upgrades for a service mesh in a cluster along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MeshUpgradeProfileInner> getMeshUpgradeProfileWithResponse(String resourceGroupName, String resourceName,
+        String mode, Context context);
+
+    /**
+     * Gets available upgrades for a service mesh in a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param mode The mode of the mesh.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return available upgrades for a service mesh in a cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MeshUpgradeProfileInner getMeshUpgradeProfile(String resourceGroupName, String resourceName, String mode);
 }

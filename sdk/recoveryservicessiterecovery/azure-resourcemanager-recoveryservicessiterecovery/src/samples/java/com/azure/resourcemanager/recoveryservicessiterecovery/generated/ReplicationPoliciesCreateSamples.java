@@ -10,7 +10,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVRepli
 /** Samples for ReplicationPolicies Create. */
 public final class ReplicationPoliciesCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationPolicies_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationPolicies_Create.json
      */
     /**
      * Sample code: Creates the policy.

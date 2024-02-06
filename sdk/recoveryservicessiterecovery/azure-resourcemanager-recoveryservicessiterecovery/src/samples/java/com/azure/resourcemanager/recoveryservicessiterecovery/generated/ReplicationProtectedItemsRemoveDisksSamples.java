@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for ReplicationProtectedItems RemoveDisks. */
 public final class ReplicationProtectedItemsRemoveDisksSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_RemoveDisks.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_RemoveDisks.json
      */
     /**
      * Sample code: Removes disk(s).

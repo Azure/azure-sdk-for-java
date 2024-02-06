@@ -336,6 +336,12 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     @JsonProperty(value = "recoveryCapacityReservationGroupId")
     private String recoveryCapacityReservationGroupId;
 
+    /*
+     * A value indicating the churn option selected by user.
+     */
+    @JsonProperty(value = "churnOptionSelected", access = JsonProperty.Access.WRITE_ONLY)
+    private ChurnOptionSelected churnOptionSelected;
+
     /** Creates an instance of A2AReplicationDetails class. */
     public A2AReplicationDetails() {
     }
@@ -1338,6 +1344,15 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     public A2AReplicationDetails withRecoveryCapacityReservationGroupId(String recoveryCapacityReservationGroupId) {
         this.recoveryCapacityReservationGroupId = recoveryCapacityReservationGroupId;
         return this;
+    }
+
+    /**
+     * Get the churnOptionSelected property: A value indicating the churn option selected by user.
+     *
+     * @return the churnOptionSelected value.
+     */
+    public ChurnOptionSelected churnOptionSelected() {
+        return this.churnOptionSelected;
     }
 
     /**

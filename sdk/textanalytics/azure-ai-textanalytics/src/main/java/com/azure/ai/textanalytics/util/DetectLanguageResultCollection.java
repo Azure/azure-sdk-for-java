@@ -16,7 +16,7 @@ public class DetectLanguageResultCollection extends IterableStream<DetectLanguag
     private final TextDocumentBatchStatistics statistics;
 
     /**
-     * Creates a {@link DetectLanguageResultCollection} model that maintains a list of {@link DetectLanguageResult}
+     * Creates a {@code DetectLanguageResultCollection} model that maintains a list of {@link DetectLanguageResult}
      * along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link DetectLanguageResult}.

@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Operations. */
 public interface Operations {
     /**
-     * Gets a list of AzureBareMetal management operations.
+     * Lists all of the available consumption REST API operations.
+     *
+     * <p>Gets a list of AzureBareMetal management operations.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -19,7 +21,9 @@ public interface Operations {
     PagedIterable<Operation> list();
 
     /**
-     * Gets a list of AzureBareMetal management operations.
+     * Lists all of the available consumption REST API operations.
+     *
+     * <p>Gets a list of AzureBareMetal management operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

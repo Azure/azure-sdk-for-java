@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardOperationDetail;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBase;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBaseResource;
 import java.nio.ByteBuffer;
@@ -34,59 +35,49 @@ public final class ResourceGuardProxyOperationsPutWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"resourceGuardResourceId\":\"xrkbhammgmqfmef\",\"resourceGuardOperationDetails\":[],\"lastUpdatedTime\":\"pd\",\"description\":\"gquxweysland\"},\"eTag\":\"cdjhunhg\",\"location\":\"cgawnrrnquo\",\"tags\":{\"bfsx\":\"tireimse\",\"mxcjzlquzexokjx\":\"tcyilbvz\"},\"id\":\"bjvbzinzab\",\"name\":\"mvoglj\",\"type\":\"v\"}";
+        String responseStr
+            = "{\"properties\":{\"resourceGuardResourceId\":\"ykykip\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"epfnoc\",\"defaultResourceRequest\":\"ezacfpztga\"},{\"vaultCriticalOperation\":\"yqejga\",\"defaultResourceRequest\":\"kctgkp\"}],\"lastUpdatedTime\":\"kqzkcyzmff\",\"description\":\"dyfcix\"},\"eTag\":\"lcqvhoejgoiutgw\",\"location\":\"mkahpqha\",\"tags\":{\"hncogmipnml\":\"tac\",\"v\":\"q\"},\"id\":\"bhikeaqgr\",\"name\":\"gpomxpu\",\"type\":\"dtsdfjy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ResourceGuardProxyBaseResource response =
-            manager
-                .resourceGuardProxyOperations()
-                .define("xb")
-                .withRegion("uxk")
-                .withExistingVault("gejkbvhh", "aurghooxa")
-                .withTags(mapOf("xlhupmomihzbdnp", "iraabmdlqjbedpf"))
-                .withProperties(
-                    new ResourceGuardProxyBase()
-                        .withResourceGuardResourceId("jxjoezlq")
-                        .withResourceGuardOperationDetails(Arrays.asList())
-                        .withLastUpdatedTime("knkob")
-                        .withDescription("tmbozomtzamicbig"))
-                .withEtag("dgzsez")
-                .create();
+        ResourceGuardProxyBaseResource response
+            = manager.resourceGuardProxyOperations().define("fcm").withRegion("vfqbqna")
+                .withExistingVault("gubsrtmdylpe", "pilttjzgc").withTags(mapOf("yvdgxlyzk", "yenzsieuscpl"))
+                .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("fbodetresrgvts")
+                    .withResourceGuardOperationDetails(Arrays.asList(
+                        new ResourceGuardOperationDetail().withVaultCriticalOperation("t")
+                            .withDefaultResourceRequest("ivmuqkevzgjyp"),
+                        new ResourceGuardOperationDetail().withVaultCriticalOperation("hxmpdxxz")
+                            .withDefaultResourceRequest("wwzjwotnxlkfhglh")))
+                    .withLastUpdatedTime("oxqwecrsnhpcse").withDescription("xovppqibukklvzr"))
+                .withEtag("mlccmetjscz").create();
 
-        Assertions.assertEquals("cgawnrrnquo", response.location());
-        Assertions.assertEquals("tireimse", response.tags().get("bfsx"));
-        Assertions.assertEquals("xrkbhammgmqfmef", response.properties().resourceGuardResourceId());
-        Assertions.assertEquals("pd", response.properties().lastUpdatedTime());
-        Assertions.assertEquals("gquxweysland", response.properties().description());
-        Assertions.assertEquals("cdjhunhg", response.etag());
+        Assertions.assertEquals("mkahpqha", response.location());
+        Assertions.assertEquals("tac", response.tags().get("hncogmipnml"));
+        Assertions.assertEquals("ykykip", response.properties().resourceGuardResourceId());
+        Assertions.assertEquals("epfnoc",
+            response.properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
+        Assertions.assertEquals("ezacfpztga",
+            response.properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
+        Assertions.assertEquals("kqzkcyzmff", response.properties().lastUpdatedTime());
+        Assertions.assertEquals("dyfcix", response.properties().description());
+        Assertions.assertEquals("lcqvhoejgoiutgw", response.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

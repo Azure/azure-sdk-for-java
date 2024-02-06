@@ -30,24 +30,28 @@ import com.azure.resourcemanager.datafactory.fluent.models.PrivateEndpointConnec
 import com.azure.resourcemanager.datafactory.models.PrivateEndpointConnectionListResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndPointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndPointConnectionsClient.
+ */
 public final class PrivateEndPointConnectionsClientImpl implements PrivateEndPointConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateEndPointConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataFactoryManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndPointConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateEndPointConnectionsClientImpl(DataFactoryManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    PrivateEndPointConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateEndPointConnectionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,57 +62,45 @@ public final class PrivateEndPointConnectionsClientImpl implements PrivateEndPoi
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
     public interface PrivateEndPointConnectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/privateEndPointConnections")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndPointConnections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionListResponse>> listByFactory(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateEndpointConnectionListResponse>> listByFactory(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionListResponse>> listByFactoryNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists Private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of linked service resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionResourceInner>> listByFactorySinglePageAsync(
-        String resourceGroupName, String factoryName) {
+    private Mono<PagedResponse<PrivateEndpointConnectionResourceInner>>
+        listByFactorySinglePageAsync(String resourceGroupName, String factoryName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -119,55 +111,35 @@ public final class PrivateEndPointConnectionsClientImpl implements PrivateEndPoi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByFactory(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<PrivateEndpointConnectionResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<PrivateEndpointConnectionResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists Private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of linked service resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionResourceInner>> listByFactorySinglePageAsync(
-        String resourceGroupName, String factoryName, Context context) {
+    private Mono<PagedResponse<PrivateEndpointConnectionResourceInner>>
+        listByFactorySinglePageAsync(String resourceGroupName, String factoryName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -179,28 +151,15 @@ public final class PrivateEndPointConnectionsClientImpl implements PrivateEndPoi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByFactory(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists Private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,16 +168,15 @@ public final class PrivateEndPointConnectionsClientImpl implements PrivateEndPoi
      * @return a list of linked service resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateEndpointConnectionResourceInner> listByFactoryAsync(
-        String resourceGroupName, String factoryName) {
-        return new PagedFlux<>(
-            () -> listByFactorySinglePageAsync(resourceGroupName, factoryName),
+    private PagedFlux<PrivateEndpointConnectionResourceInner> listByFactoryAsync(String resourceGroupName,
+        String factoryName) {
+        return new PagedFlux<>(() -> listByFactorySinglePageAsync(resourceGroupName, factoryName),
             nextLink -> listByFactoryNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists Private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -228,16 +186,15 @@ public final class PrivateEndPointConnectionsClientImpl implements PrivateEndPoi
      * @return a list of linked service resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateEndpointConnectionResourceInner> listByFactoryAsync(
-        String resourceGroupName, String factoryName, Context context) {
-        return new PagedFlux<>(
-            () -> listByFactorySinglePageAsync(resourceGroupName, factoryName, context),
+    private PagedFlux<PrivateEndpointConnectionResourceInner> listByFactoryAsync(String resourceGroupName,
+        String factoryName, Context context) {
+        return new PagedFlux<>(() -> listByFactorySinglePageAsync(resourceGroupName, factoryName, context),
             nextLink -> listByFactoryNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists Private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -246,14 +203,14 @@ public final class PrivateEndPointConnectionsClientImpl implements PrivateEndPoi
      * @return a list of linked service resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateEndpointConnectionResourceInner> listByFactory(
-        String resourceGroupName, String factoryName) {
+    public PagedIterable<PrivateEndpointConnectionResourceInner> listByFactory(String resourceGroupName,
+        String factoryName) {
         return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName));
     }
 
     /**
      * Lists Private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -263,85 +220,68 @@ public final class PrivateEndPointConnectionsClientImpl implements PrivateEndPoi
      * @return a list of linked service resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateEndpointConnectionResourceInner> listByFactory(
-        String resourceGroupName, String factoryName, Context context) {
+    public PagedIterable<PrivateEndpointConnectionResourceInner> listByFactory(String resourceGroupName,
+        String factoryName, Context context) {
         return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of linked service resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionResourceInner>> listByFactoryNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<PrivateEndpointConnectionResourceInner>>
+        listByFactoryNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PrivateEndpointConnectionResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PrivateEndpointConnectionResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of linked service resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionResourceInner>> listByFactoryNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PrivateEndpointConnectionResourceInner>>
+        listByFactoryNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

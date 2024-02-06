@@ -59,5 +59,59 @@ public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
             // END: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges
             .buildChangeFeedProcessor();
     }
+
+    public void changeFeedProcessorBuilderWithContextCodeSnippet() {
+        String hostName = "test-host-name";
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase("testDb");
+        CosmosAsyncContainer feedContainer = cosmosAsyncDatabase.getContainer("feedContainer");
+        CosmosAsyncContainer leaseContainer = cosmosAsyncDatabase.getContainer("leaseContainer");
+        // BEGIN: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.builder
+        ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+            .hostName(hostName)
+            .feedContainer(feedContainer)
+            .leaseContainer(leaseContainer)
+            .handleAllVersionsAndDeletesChanges((docs, context) -> {
+                for (ChangeFeedProcessorItem item : docs) {
+                    // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
+                }
+                String leaseToken = context.getLeaseToken();
+                // Handling of the lease token corresponding to a batch of change feed processor item goes here
+            })
+            .buildChangeFeedProcessor();
+        // END: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.builder
+    }
+
+    public void handleAllVersionsAndDeletesChangesWithContextCodeSnippet() {
+        String hostName = "test-host-name";
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase("testDb");
+        CosmosAsyncContainer feedContainer = cosmosAsyncDatabase.getContainer("feedContainer");
+        CosmosAsyncContainer leaseContainer = cosmosAsyncDatabase.getContainer("leaseContainer");
+        ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+            .hostName(hostName)
+            .feedContainer(feedContainer)
+            .leaseContainer(leaseContainer)
+            // BEGIN: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.handleChanges
+            .handleAllVersionsAndDeletesChanges((docs, context) -> {
+                for (ChangeFeedProcessorItem item : docs) {
+                    // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
+                }
+                String leaseToken = context.getLeaseToken();
+                // Handling of the lease token corresponding to a batch of change feed processor item goes here
+            })
+            // END: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.handleChanges
+            .buildChangeFeedProcessor();
+    }
 }
 

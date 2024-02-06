@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** KEDA (Kubernetes Event-driven Autoscaling) settings for the workload auto-scaler profile. */
+/**
+ * KEDA (Kubernetes Event-driven Autoscaling) settings for the workload auto-scaler profile.
+ */
 @Fluent
 public final class ManagedClusterWorkloadAutoScalerProfileKeda {
     /*
@@ -16,13 +18,15 @@ public final class ManagedClusterWorkloadAutoScalerProfileKeda {
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
-    /** Creates an instance of ManagedClusterWorkloadAutoScalerProfileKeda class. */
+    /**
+     * Creates an instance of ManagedClusterWorkloadAutoScalerProfileKeda class.
+     */
     public ManagedClusterWorkloadAutoScalerProfileKeda() {
     }
 
     /**
      * Get the enabled property: Whether to enable KEDA.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -31,7 +35,7 @@ public final class ManagedClusterWorkloadAutoScalerProfileKeda {
 
     /**
      * Set the enabled property: Whether to enable KEDA.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterWorkloadAutoScalerProfileKeda object itself.
      */
@@ -42,7 +46,7 @@ public final class ManagedClusterWorkloadAutoScalerProfileKeda {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

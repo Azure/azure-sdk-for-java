@@ -8,10 +8,6 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.models.SearchResult;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.SearchResult} and {@link SearchResult}.
  */
@@ -27,12 +23,11 @@ public final class SearchResultConverter {
 
         SearchResult searchResult = new SearchResult(obj.getScore());
 
-        SearchResultHelper.setRerankerScore(searchResult, obj.getRerankerScore());
         SearchResultHelper.setHighlights(searchResult, obj.getHighlights());
-        SearchResultHelper.setCaptions(searchResult, obj.getCaptions());
+        SearchResultHelper.setSemanticSearchResults(searchResult, obj.getRerankerScore(), obj.getCaptions(),
+            obj.getDocumentDebugInfo());
         SearchResultHelper.setAdditionalProperties(searchResult, new SearchDocument(obj.getAdditionalProperties()));
         SearchResultHelper.setJsonSerializer(searchResult, (JsonSerializer) serializer);
-        SearchResultHelper.setDocumentDebugInfo(searchResult, obj.getDocumentDebugInfo());
         return searchResult;
     }
 

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Meta data about operation used for display in portal. */
+/**
+ * Meta data about operation used for display in portal.
+ */
 @Fluent
 public final class CsmOperationDisplay {
     /*
@@ -34,13 +36,15 @@ public final class CsmOperationDisplay {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of CsmOperationDisplay class. */
+    /**
+     * Creates an instance of CsmOperationDisplay class.
+     */
     public CsmOperationDisplay() {
     }
 
     /**
      * Get the provider property: The provider property.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -49,7 +53,7 @@ public final class CsmOperationDisplay {
 
     /**
      * Set the provider property: The provider property.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the CsmOperationDisplay object itself.
      */
@@ -60,7 +64,7 @@ public final class CsmOperationDisplay {
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -69,7 +73,7 @@ public final class CsmOperationDisplay {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the CsmOperationDisplay object itself.
      */
@@ -80,7 +84,7 @@ public final class CsmOperationDisplay {
 
     /**
      * Get the operation property: The operation property.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -89,7 +93,7 @@ public final class CsmOperationDisplay {
 
     /**
      * Set the operation property: The operation property.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the CsmOperationDisplay object itself.
      */
@@ -100,7 +104,7 @@ public final class CsmOperationDisplay {
 
     /**
      * Get the description property: The description property.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public final class CsmOperationDisplay {
 
     /**
      * Set the description property: The description property.
-     *
+     * 
      * @param description the description value to set.
      * @return the CsmOperationDisplay object itself.
      */
@@ -120,7 +124,7 @@ public final class CsmOperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The container technology to be used. */
+/**
+ * The container technology to be used.
+ */
 public final class ContainerType extends ExpandableStringEnum<ContainerType> {
-    /** Static value DockerCompatible for ContainerType. */
+    /**
+     * Static value DockerCompatible for ContainerType.
+     */
     public static final ContainerType DOCKER_COMPATIBLE = fromString("DockerCompatible");
 
-    /** Static value CriCompatible for ContainerType. */
+    /**
+     * Static value CriCompatible for ContainerType.
+     */
     public static final ContainerType CRI_COMPATIBLE = fromString("CriCompatible");
 
     /**
      * Creates a new instance of ContainerType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ContainerType extends ExpandableStringEnum<ContainerType> {
 
     /**
      * Creates or finds a ContainerType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContainerType.
      */
@@ -38,7 +44,7 @@ public final class ContainerType extends ExpandableStringEnum<ContainerType> {
 
     /**
      * Gets known ContainerType values.
-     *
+     * 
      * @return known ContainerType values.
      */
     public static Collection<ContainerType> values() {

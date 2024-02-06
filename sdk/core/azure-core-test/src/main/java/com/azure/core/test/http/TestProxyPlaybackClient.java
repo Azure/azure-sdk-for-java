@@ -14,6 +14,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -32,13 +33,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_FILE_LOCATION;
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
+import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
-import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
 /**
@@ -46,6 +48,7 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
  */
 public class TestProxyPlaybackClient implements HttpClient {
 
+    private static final ClientLogger LOGGER = new ClientLogger(TestProxyPlaybackClient.class);
     private final HttpClient client;
     private final URL proxyUrl;
     private String xRecordingId;
@@ -81,23 +84,19 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @throws RuntimeException Failed to serialize body payload.
      */
     public Queue<String> startPlayback(File recordFile, Path testClassPath) {
-        HttpRequest request = null;
+        HttpRequest request;
         String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
         try {
-            request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
+            request = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/start")
                 .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
                     SerializerEncoding.JSON))
                 .setHeader(HttpHeaderName.ACCEPT, "application/json")
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            HttpResponse response = sendRequestWithRetries(request);
             checkForTestProxyErrors(response);
             xRecordingId = response.getHeaderValue(X_RECORDING_ID);
-            xRecordingFileLocation
-                = new String(Base64.getUrlDecoder().decode(
-                    response.getHeaders().get(X_RECORDING_FILE_LOCATION).getValue()), StandardCharsets.UTF_8);
+            xRecordingFileLocation = new String(Base64.getUrlDecoder().decode(
+                response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)), StandardCharsets.UTF_8);
             addProxySanitization(this.sanitizers);
             addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
@@ -127,13 +126,42 @@ public class TestProxyPlaybackClient implements HttpClient {
         }
     }
 
+    private HttpResponse sendRequestWithRetries(HttpRequest request) {
+        int retries = 0;
+        while (true) {
+            try {
+                HttpResponse response = client.sendSync(request, Context.NONE);
+                if (response.getStatusCode() / 100 != 2) {
+                    throw new RuntimeException("Test proxy returned a non-successful status code. "
+                        + response.getStatusCode() + "; response: " + response.getBodyAsString().block());
+                }
+                return response;
+            } catch (Exception e) {
+                retries++;
+                if (retries >= 3) {
+                    throw e;
+                }
+                sleep(1);
+                LOGGER.warning("Retrying request to test proxy. Retry attempt: " + retries);
+            }
+        }
+    }
+
+    private void sleep(int durationInSeconds) {
+        try {
+            TimeUnit.SECONDS.sleep(durationInSeconds);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * Stops playback of a test recording.
      */
     public void stopPlayback() {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/stop", proxyUrl.toString()))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/stop")
             .setHeader(X_RECORDING_ID, xRecordingId);
-        client.sendSync(request, Context.NONE);
+        sendRequestWithRetries(request);
     }
 
     /**
@@ -189,11 +217,10 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
         if (isPlayingBack()) {
-            getSanitizerRequests(sanitizers, proxyUrl)
-                .forEach(request -> {
-                    request.setHeader(X_RECORDING_ID, xRecordingId);
-                    client.sendSync(request, Context.NONE);
-                });
+            HttpRequest request = createAddSanitizersRequest(sanitizers, proxyUrl)
+                .setHeader(X_RECORDING_ID, xRecordingId);
+
+            client.sendSync(request, Context.NONE).close();
         } else {
             this.sanitizers.addAll(sanitizers);
         }
@@ -211,7 +238,7 @@ public class TestProxyPlaybackClient implements HttpClient {
             }
             matcherRequests.forEach(request -> {
                 request.setHeader(X_RECORDING_ID, xRecordingId);
-                client.sendSync(request, Context.NONE);
+                sendRequestWithRetries(request);
             });
         } else {
             this.matchers.addAll(matchers);

@@ -13,11 +13,13 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager;
 import com.azure.resourcemanager.hybridcontainerservice.models.AgentPool;
-import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolExtendedLocation;
+import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProperties;
 import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningStatusStatus;
-import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfile;
-import com.azure.resourcemanager.hybridcontainerservice.models.Mode;
+import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolUpdateProfile;
+import com.azure.resourcemanager.hybridcontainerservice.models.ExtendedLocation;
+import com.azure.resourcemanager.hybridcontainerservice.models.ExtendedLocationTypes;
 import com.azure.resourcemanager.hybridcontainerservice.models.OsType;
+import com.azure.resourcemanager.hybridcontainerservice.models.Ossku;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -38,82 +40,60 @@ public final class AgentPoolsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":{\"errorMessage\":\"bqactxtgzukx\",\"readyReplicas\":179532208,\"replicas\":287881704},\"count\":451636472,\"availabilityZones\":[\"x\"],\"maxCount\":107951618,\"maxPods\":734515726,\"minCount\":1873190222,\"mode\":\"System\",\"nodeLabels\":{\"azivjlfrqttbajl\":\"savokqdzf\",\"kqqfk\":\"atnwxyiopi\"},\"nodeTaints\":[\"cxkdmligovi\"],\"osType\":\"Linux\",\"nodeImageVersion\":\"pmloazuruoc\",\"vmSize\":\"oorb\",\"cloudProviderProfile\":{}},\"extendedLocation\":{\"type\":\"jxakv\",\"name\":\"gslordilmyww\"},\"location\":\"kgkxn\",\"tags\":{\"uewbc\":\"abgyvudt\"},\"id\":\"hxuuwhcjyxccybvp\",\"name\":\"yakk\",\"type\":\"dzpxgwjpl\"}";
+        String responseStr
+            = "{\"properties\":{\"count\":1432013773,\"vmSize\":\"dlmkkzevdl\",\"kubernetesVersion\":\"wpusdsttwvogv\",\"provisioningState\":\"Succeeded\",\"status\":{\"currentState\":\"Canceled\",\"errorMessage\":\"gqqmoakufgm\",\"readyReplicas\":[{\"count\":1463483261,\"vmSize\":\"grtwae\",\"kubernetesVersion\":\"uzkopbminrfd\"}]},\"osType\":\"Windows\",\"osSKU\":\"Windows2022\",\"nodeLabels\":{\"mzqhoftrmaequi\":\"iuiefozbhdmsm\",\"iyylhalnswhccsp\":\"hxicslfaoqz\",\"scywuggwoluhc\":\"kaivwit\"},\"nodeTaints\":[\"emh\"],\"maxCount\":200585156,\"minCount\":1060937316,\"enableAutoScaling\":false,\"maxPods\":565998030},\"tags\":{\"pqwd\":\"swe\",\"mkttlstvlzywem\":\"ggicccnxqhue\",\"lusiy\":\"zrncsdt\",\"cy\":\"bsfgytguslfea\"},\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"hejhzisx\"},\"id\":\"pelol\",\"name\":\"pv\",\"type\":\"srp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        HybridContainerServiceManager manager =
-            HybridContainerServiceManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridContainerServiceManager manager = HybridContainerServiceManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AgentPool response =
-            manager
-                .agentPools()
-                .define("xconfozauors")
-                .withRegion("ibyowbblgyavutp")
-                .withExistingProvisionedCluster("nnbj", "rxgibbd")
-                .withTags(mapOf("qolj", "oxoismsksbpim", "qzdwlvwlyoup", "kcgxxlxsffgcvi"))
-                .withExtendedLocation(new AgentPoolExtendedLocation().withType("cwrwfs").withName("fnynszqujizdvoqy"))
-                .withStatus(
-                    new AgentPoolProvisioningStatusStatus()
-                        .withErrorMessage("qplhlvnu")
-                        .withReadyReplicas(1920670315)
-                        .withReplicas(201179078))
-                .withCount(461883011)
-                .withAvailabilityZones(Arrays.asList("soldweyuqdunv", "nnrwrbiork"))
-                .withMaxCount(1451955961)
-                .withMaxPods(1371763092)
-                .withMinCount(635272370)
-                .withMode(Mode.USER)
-                .withNodeLabels(mapOf("iloxggdufiq", "hxmsivfo", "hvcyyysfg", "dieuzaofj"))
-                .withNodeTaints(Arrays.asList("cubiipuipw", "qonmacj", "k", "izsh"))
-                .withOsType(OsType.LINUX)
-                .withNodeImageVersion("m")
-                .withVmSize("vfgmblrrilby")
-                .withCloudProviderProfile(new CloudProviderProfile())
+        AgentPool response
+            = manager.agentPools().define("ucqdpfuvglsb").withExistingConnectedClusterResourceUri("bqwcsdbnwdcf")
+                .withTags(mapOf("p", "xarzgszufoxciq", "xkhnzbonlwnto", "doamciodhkha", "zcmrvexztvb", "gokdwbwhks",
+                    "lmnguxaw", "qgsfraoyzkoow"))
+                .withProperties(new AgentPoolProperties().withOsType(OsType.LINUX).withOsSku(Ossku.CBLMARINER)
+                    .withNodeLabels(mapOf("bjcntujitc", "doaon")).withNodeTaints(Arrays.asList("ftwwaezkojvdc"))
+                    .withMaxCount(457925130).withMinCount(1504008224).withEnableAutoScaling(true)
+                    .withMaxPods(1139129644).withCount(990974821).withVmSize("vxb")
+                    .withStatus(new AgentPoolProvisioningStatusStatus().withErrorMessage("cofudflvkgjub")
+                        .withReadyReplicas(Arrays.asList(
+                            new AgentPoolUpdateProfile().withCount(612947091).withVmSize("vsaznqntorudsg"),
+                            new AgentPoolUpdateProfile().withCount(1499049429).withVmSize("auwjuetaebu"),
+                            new AgentPoolUpdateProfile().withCount(1461761941).withVmSize("kif")))))
+                .withExtendedLocation(
+                    new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("yuuximerqfobwyzn"))
                 .create();
 
-        Assertions.assertEquals("kgkxn", response.location());
-        Assertions.assertEquals("abgyvudt", response.tags().get("uewbc"));
-        Assertions.assertEquals("jxakv", response.extendedLocation().type());
-        Assertions.assertEquals("gslordilmyww", response.extendedLocation().name());
-        Assertions.assertEquals("bqactxtgzukx", response.status().errorMessage());
-        Assertions.assertEquals(179532208, response.status().readyReplicas());
-        Assertions.assertEquals(287881704, response.status().replicas());
-        Assertions.assertEquals(451636472, response.count());
-        Assertions.assertEquals("x", response.availabilityZones().get(0));
-        Assertions.assertEquals(107951618, response.maxCount());
-        Assertions.assertEquals(734515726, response.maxPods());
-        Assertions.assertEquals(1873190222, response.minCount());
-        Assertions.assertEquals(Mode.SYSTEM, response.mode());
-        Assertions.assertEquals("savokqdzf", response.nodeLabels().get("azivjlfrqttbajl"));
-        Assertions.assertEquals("cxkdmligovi", response.nodeTaints().get(0));
-        Assertions.assertEquals(OsType.LINUX, response.osType());
-        Assertions.assertEquals("pmloazuruoc", response.nodeImageVersion());
-        Assertions.assertEquals("oorb", response.vmSize());
+        Assertions.assertEquals(OsType.WINDOWS, response.properties().osType());
+        Assertions.assertEquals(Ossku.WINDOWS2022, response.properties().osSku());
+        Assertions.assertEquals("iuiefozbhdmsm", response.properties().nodeLabels().get("mzqhoftrmaequi"));
+        Assertions.assertEquals("emh", response.properties().nodeTaints().get(0));
+        Assertions.assertEquals(200585156, response.properties().maxCount());
+        Assertions.assertEquals(1060937316, response.properties().minCount());
+        Assertions.assertEquals(false, response.properties().enableAutoScaling());
+        Assertions.assertEquals(565998030, response.properties().maxPods());
+        Assertions.assertEquals(1432013773, response.properties().count());
+        Assertions.assertEquals("dlmkkzevdl", response.properties().vmSize());
+        Assertions.assertEquals("gqqmoakufgm", response.properties().status().errorMessage());
+        Assertions.assertEquals(1463483261, response.properties().status().readyReplicas().get(0).count());
+        Assertions.assertEquals("grtwae", response.properties().status().readyReplicas().get(0).vmSize());
+        Assertions.assertEquals("swe", response.tags().get("pqwd"));
+        Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, response.extendedLocation().type());
+        Assertions.assertEquals("hejhzisx", response.extendedLocation().name());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

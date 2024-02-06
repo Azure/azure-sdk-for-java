@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The health status of the VM. */
+/**
+ * The health status of the VM.
+ */
 @Immutable
 public final class VirtualMachineHealthStatus {
     /*
@@ -16,13 +18,15 @@ public final class VirtualMachineHealthStatus {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private InstanceViewStatus status;
 
-    /** Creates an instance of VirtualMachineHealthStatus class. */
+    /**
+     * Creates an instance of VirtualMachineHealthStatus class.
+     */
     public VirtualMachineHealthStatus() {
     }
 
     /**
      * Get the status property: The health status information for the VM.
-     *
+     * 
      * @return the status value.
      */
     public InstanceViewStatus status() {
@@ -31,7 +35,7 @@ public final class VirtualMachineHealthStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

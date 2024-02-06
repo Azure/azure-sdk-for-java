@@ -10,21 +10,25 @@ import java.util.Collection;
 
 /**
  * The OS disk type to be used for machines in the agent pool.
- *
- * <p>The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB.
+ * 
+ * The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB.
  * Otherwise, defaults to 'Managed'. May not be changed after creation. For more information see [Ephemeral
  * OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os).
  */
 public final class OSDiskType extends ExpandableStringEnum<OSDiskType> {
-    /** Static value Managed for OSDiskType. */
+    /**
+     * Static value Managed for OSDiskType.
+     */
     public static final OSDiskType MANAGED = fromString("Managed");
 
-    /** Static value Ephemeral for OSDiskType. */
+    /**
+     * Static value Ephemeral for OSDiskType.
+     */
     public static final OSDiskType EPHEMERAL = fromString("Ephemeral");
 
     /**
      * Creates a new instance of OSDiskType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +37,7 @@ public final class OSDiskType extends ExpandableStringEnum<OSDiskType> {
 
     /**
      * Creates or finds a OSDiskType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OSDiskType.
      */
@@ -44,7 +48,7 @@ public final class OSDiskType extends ExpandableStringEnum<OSDiskType> {
 
     /**
      * Gets known OSDiskType values.
-     *
+     * 
      * @return known OSDiskType values.
      */
     public static Collection<OSDiskType> values() {

@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for ReplicationRecoveryPlans TestFailover. */
 public final class ReplicationRecoveryPlansTestFailoverSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_TestFailover.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_TestFailover.json
      */
     /**
      * Sample code: Execute test failover of the recovery plan.

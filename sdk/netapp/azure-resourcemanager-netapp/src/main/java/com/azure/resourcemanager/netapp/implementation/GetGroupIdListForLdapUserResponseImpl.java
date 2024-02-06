@@ -14,8 +14,7 @@ public final class GetGroupIdListForLdapUserResponseImpl implements GetGroupIdLi
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    GetGroupIdListForLdapUserResponseImpl(
-        GetGroupIdListForLdapUserResponseInner innerObject,
+    GetGroupIdListForLdapUserResponseImpl(GetGroupIdListForLdapUserResponseInner innerObject,
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

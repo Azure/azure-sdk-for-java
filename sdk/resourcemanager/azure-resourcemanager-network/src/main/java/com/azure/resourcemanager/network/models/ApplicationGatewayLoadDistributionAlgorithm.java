@@ -8,21 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Load Distribution Algorithm enums. */
+/**
+ * Load Distribution Algorithm enums.
+ */
 public final class ApplicationGatewayLoadDistributionAlgorithm
     extends ExpandableStringEnum<ApplicationGatewayLoadDistributionAlgorithm> {
-    /** Static value RoundRobin for ApplicationGatewayLoadDistributionAlgorithm. */
+    /**
+     * Static value RoundRobin for ApplicationGatewayLoadDistributionAlgorithm.
+     */
     public static final ApplicationGatewayLoadDistributionAlgorithm ROUND_ROBIN = fromString("RoundRobin");
 
-    /** Static value LeastConnections for ApplicationGatewayLoadDistributionAlgorithm. */
+    /**
+     * Static value LeastConnections for ApplicationGatewayLoadDistributionAlgorithm.
+     */
     public static final ApplicationGatewayLoadDistributionAlgorithm LEAST_CONNECTIONS = fromString("LeastConnections");
 
-    /** Static value IpHash for ApplicationGatewayLoadDistributionAlgorithm. */
+    /**
+     * Static value IpHash for ApplicationGatewayLoadDistributionAlgorithm.
+     */
     public static final ApplicationGatewayLoadDistributionAlgorithm IP_HASH = fromString("IpHash");
 
     /**
      * Creates a new instance of ApplicationGatewayLoadDistributionAlgorithm value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +39,7 @@ public final class ApplicationGatewayLoadDistributionAlgorithm
 
     /**
      * Creates or finds a ApplicationGatewayLoadDistributionAlgorithm from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewayLoadDistributionAlgorithm.
      */
@@ -42,7 +50,7 @@ public final class ApplicationGatewayLoadDistributionAlgorithm
 
     /**
      * Gets known ApplicationGatewayLoadDistributionAlgorithm values.
-     *
+     * 
      * @return known ApplicationGatewayLoadDistributionAlgorithm values.
      */
     public static Collection<ApplicationGatewayLoadDistributionAlgorithm> values() {

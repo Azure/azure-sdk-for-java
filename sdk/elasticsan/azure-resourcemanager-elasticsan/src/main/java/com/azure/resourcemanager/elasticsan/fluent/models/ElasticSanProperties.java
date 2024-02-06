@@ -7,11 +7,14 @@ package com.azure.resourcemanager.elasticsan.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Elastic San response properties. */
+/**
+ * Elastic San response properties.
+ */
 @Fluent
 public final class ElasticSanProperties {
     /*
@@ -80,13 +83,22 @@ public final class ElasticSanProperties {
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
-    /** Creates an instance of ElasticSanProperties class. */
+    /*
+     * Allow or disallow public network access to ElasticSan. Value is optional but if passed in, must be 'Enabled' or
+     * 'Disabled'.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /**
+     * Creates an instance of ElasticSanProperties class.
+     */
     public ElasticSanProperties() {
     }
 
     /**
      * Get the sku property: resource sku.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -95,7 +107,7 @@ public final class ElasticSanProperties {
 
     /**
      * Set the sku property: resource sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ElasticSanProperties object itself.
      */
@@ -106,7 +118,7 @@ public final class ElasticSanProperties {
 
     /**
      * Get the availabilityZones property: Logical zone for Elastic San resource; example: ["1"].
-     *
+     * 
      * @return the availabilityZones value.
      */
     public List<String> availabilityZones() {
@@ -115,7 +127,7 @@ public final class ElasticSanProperties {
 
     /**
      * Set the availabilityZones property: Logical zone for Elastic San resource; example: ["1"].
-     *
+     * 
      * @param availabilityZones the availabilityZones value to set.
      * @return the ElasticSanProperties object itself.
      */
@@ -126,7 +138,7 @@ public final class ElasticSanProperties {
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -135,7 +147,7 @@ public final class ElasticSanProperties {
 
     /**
      * Get the baseSizeTiB property: Base size of the Elastic San appliance in TiB.
-     *
+     * 
      * @return the baseSizeTiB value.
      */
     public long baseSizeTiB() {
@@ -144,7 +156,7 @@ public final class ElasticSanProperties {
 
     /**
      * Set the baseSizeTiB property: Base size of the Elastic San appliance in TiB.
-     *
+     * 
      * @param baseSizeTiB the baseSizeTiB value to set.
      * @return the ElasticSanProperties object itself.
      */
@@ -155,7 +167,7 @@ public final class ElasticSanProperties {
 
     /**
      * Get the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB.
-     *
+     * 
      * @return the extendedCapacitySizeTiB value.
      */
     public long extendedCapacitySizeTiB() {
@@ -164,7 +176,7 @@ public final class ElasticSanProperties {
 
     /**
      * Set the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB.
-     *
+     * 
      * @param extendedCapacitySizeTiB the extendedCapacitySizeTiB value to set.
      * @return the ElasticSanProperties object itself.
      */
@@ -175,7 +187,7 @@ public final class ElasticSanProperties {
 
     /**
      * Get the totalVolumeSizeGiB property: Total size of the provisioned Volumes in GiB.
-     *
+     * 
      * @return the totalVolumeSizeGiB value.
      */
     public Long totalVolumeSizeGiB() {
@@ -184,7 +196,7 @@ public final class ElasticSanProperties {
 
     /**
      * Get the volumeGroupCount property: Total number of volume groups in this Elastic San appliance.
-     *
+     * 
      * @return the volumeGroupCount value.
      */
     public Long volumeGroupCount() {
@@ -193,7 +205,7 @@ public final class ElasticSanProperties {
 
     /**
      * Get the totalIops property: Total Provisioned IOPS of the Elastic San appliance.
-     *
+     * 
      * @return the totalIops value.
      */
     public Long totalIops() {
@@ -202,7 +214,7 @@ public final class ElasticSanProperties {
 
     /**
      * Get the totalMBps property: Total Provisioned MBps Elastic San appliance.
-     *
+     * 
      * @return the totalMBps value.
      */
     public Long totalMBps() {
@@ -211,7 +223,7 @@ public final class ElasticSanProperties {
 
     /**
      * Get the totalSizeTiB property: Total size of the Elastic San appliance in TB.
-     *
+     * 
      * @return the totalSizeTiB value.
      */
     public Long totalSizeTiB() {
@@ -220,7 +232,7 @@ public final class ElasticSanProperties {
 
     /**
      * Get the privateEndpointConnections property: The list of Private Endpoint Connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -228,15 +240,36 @@ public final class ElasticSanProperties {
     }
 
     /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to ElasticSan. Value is optional
+     * but if passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to ElasticSan. Value is optional
+     * but if passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ElasticSanProperties object itself.
+     */
+    public ElasticSanProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model ElasticSanProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model ElasticSanProperties"));
         } else {
             sku().validate();
         }

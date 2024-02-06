@@ -9,7 +9,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.AddVCenterR
 /** Samples for ReplicationvCenters Create. */
 public final class ReplicationvCentersCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationvCenters_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationvCenters_Create.json
      */
     /**
      * Sample code: Add vCenter.

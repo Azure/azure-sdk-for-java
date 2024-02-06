@@ -12,24 +12,15 @@ import java.util.Arrays;
 public final class SupportedSkusResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SupportedSkusResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"urzafb\",\"familyName\":\"j\",\"capabilities\":[{\"name\":\"oq\",\"value\":\"mkljavb\"},{\"name\":\"dtqajzyulpkudj\",\"value\":\"lkhbz\"},{\"name\":\"epgzgqexz\",\"value\":\"c\"},{\"name\":\"c\",\"value\":\"ierhhbcsglummaj\"}]},{\"name\":\"aodxo\",\"familyName\":\"bdxkqpxokaj\",\"capabilities\":[{\"name\":\"imexgstxgcpodgma\",\"value\":\"r\"},{\"name\":\"djwzrlov\",\"value\":\"lwhijcoejctbzaq\"}]},{\"name\":\"sycbkbfk\",\"familyName\":\"kdkexxp\",\"capabilities\":[{\"name\":\"xaxcfjpgddtocjjx\",\"value\":\"pmouexhdz\"}]},{\"name\":\"bqe\",\"familyName\":\"nxqbzvddn\",\"capabilities\":[{\"name\":\"eic\",\"value\":\"w\"}]}],\"nextLink\":\"zao\"}")
-                .toObject(SupportedSkusResult.class);
+        SupportedSkusResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"urzafb\",\"familyName\":\"j\",\"capabilities\":[{\"name\":\"oq\",\"value\":\"mkljavb\"},{\"name\":\"dtqajzyulpkudj\",\"value\":\"lkhbz\"},{\"name\":\"epgzgqexz\",\"value\":\"c\"},{\"name\":\"c\",\"value\":\"ierhhbcsglummaj\"}]},{\"name\":\"aodxo\",\"familyName\":\"bdxkqpxokaj\",\"capabilities\":[{\"name\":\"imexgstxgcpodgma\",\"value\":\"r\"},{\"name\":\"djwzrlov\",\"value\":\"lwhijcoejctbzaq\"}]},{\"name\":\"sycbkbfk\",\"familyName\":\"kdkexxp\",\"capabilities\":[{\"name\":\"xaxcfjpgddtocjjx\",\"value\":\"pmouexhdz\"}]},{\"name\":\"bqe\",\"familyName\":\"nxqbzvddn\",\"capabilities\":[{\"name\":\"eic\",\"value\":\"w\"}]}],\"nextLink\":\"zao\"}")
+            .toObject(SupportedSkusResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportedSkusResult model =
-            new SupportedSkusResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SupportedSkuInner(),
-                            new SupportedSkuInner(),
-                            new SupportedSkuInner(),
-                            new SupportedSkuInner()));
+        SupportedSkusResult model = new SupportedSkusResult().withValue(Arrays.asList(new SupportedSkuInner(),
+            new SupportedSkuInner(), new SupportedSkuInner(), new SupportedSkuInner()));
         model = BinaryData.fromObject(model).toObject(SupportedSkusResult.class);
     }
 }

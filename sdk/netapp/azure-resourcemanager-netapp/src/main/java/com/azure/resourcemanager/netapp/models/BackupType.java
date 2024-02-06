@@ -10,19 +10,23 @@ import java.util.Collection;
 
 /**
  * backupType
- *
- * <p>Type of backup Manual or Scheduled.
+ * 
+ * Type of backup Manual or Scheduled.
  */
 public final class BackupType extends ExpandableStringEnum<BackupType> {
-    /** Static value Manual for BackupType. */
+    /**
+     * Static value Manual for BackupType.
+     */
     public static final BackupType MANUAL = fromString("Manual");
 
-    /** Static value Scheduled for BackupType. */
+    /**
+     * Static value Scheduled for BackupType.
+     */
     public static final BackupType SCHEDULED = fromString("Scheduled");
 
     /**
      * Creates a new instance of BackupType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +35,7 @@ public final class BackupType extends ExpandableStringEnum<BackupType> {
 
     /**
      * Creates or finds a BackupType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackupType.
      */
@@ -42,7 +46,7 @@ public final class BackupType extends ExpandableStringEnum<BackupType> {
 
     /**
      * Gets known BackupType values.
-     *
+     * 
      * @return known BackupType values.
      */
     public static Collection<BackupType> values() {

@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of routes that control routing from VirtualHub into a virtual network connection. */
+/**
+ * List of routes that control routing from VirtualHub into a virtual network connection.
+ */
 @Fluent
 public final class VnetRoute {
     /*
@@ -30,13 +32,15 @@ public final class VnetRoute {
     @JsonProperty(value = "bgpConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> bgpConnections;
 
-    /** Creates an instance of VnetRoute class. */
+    /**
+     * Creates an instance of VnetRoute class.
+     */
     public VnetRoute() {
     }
 
     /**
      * Get the staticRoutesConfig property: Configuration for static routes on this HubVnetConnection.
-     *
+     * 
      * @return the staticRoutesConfig value.
      */
     public StaticRoutesConfig staticRoutesConfig() {
@@ -45,7 +49,7 @@ public final class VnetRoute {
 
     /**
      * Set the staticRoutesConfig property: Configuration for static routes on this HubVnetConnection.
-     *
+     * 
      * @param staticRoutesConfig the staticRoutesConfig value to set.
      * @return the VnetRoute object itself.
      */
@@ -56,7 +60,7 @@ public final class VnetRoute {
 
     /**
      * Get the staticRoutes property: List of all Static Routes.
-     *
+     * 
      * @return the staticRoutes value.
      */
     public List<StaticRoute> staticRoutes() {
@@ -65,7 +69,7 @@ public final class VnetRoute {
 
     /**
      * Set the staticRoutes property: List of all Static Routes.
-     *
+     * 
      * @param staticRoutes the staticRoutes value to set.
      * @return the VnetRoute object itself.
      */
@@ -76,7 +80,7 @@ public final class VnetRoute {
 
     /**
      * Get the bgpConnections property: The list of references to HubBgpConnection objects.
-     *
+     * 
      * @return the bgpConnections value.
      */
     public List<SubResource> bgpConnections() {
@@ -85,7 +89,7 @@ public final class VnetRoute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Peer routing details. */
+/**
+ * Peer routing details.
+ */
 @Immutable
 public final class PeerRoute {
     /*
@@ -52,13 +54,15 @@ public final class PeerRoute {
     @JsonProperty(value = "weight", access = JsonProperty.Access.WRITE_ONLY)
     private Integer weight;
 
-    /** Creates an instance of PeerRoute class. */
+    /**
+     * Creates an instance of PeerRoute class.
+     */
     public PeerRoute() {
     }
 
     /**
      * Get the localAddress property: The peer's local address.
-     *
+     * 
      * @return the localAddress value.
      */
     public String localAddress() {
@@ -67,7 +71,7 @@ public final class PeerRoute {
 
     /**
      * Get the network property: The route's network prefix.
-     *
+     * 
      * @return the network value.
      */
     public String network() {
@@ -76,7 +80,7 @@ public final class PeerRoute {
 
     /**
      * Get the nextHop property: The route's next hop.
-     *
+     * 
      * @return the nextHop value.
      */
     public String nextHop() {
@@ -85,7 +89,7 @@ public final class PeerRoute {
 
     /**
      * Get the sourcePeer property: The peer this route was learned from.
-     *
+     * 
      * @return the sourcePeer value.
      */
     public String sourcePeer() {
@@ -94,7 +98,7 @@ public final class PeerRoute {
 
     /**
      * Get the origin property: The source this route was learned from.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -103,7 +107,7 @@ public final class PeerRoute {
 
     /**
      * Get the asPath property: The route's AS path sequence.
-     *
+     * 
      * @return the asPath value.
      */
     public String asPath() {
@@ -112,7 +116,7 @@ public final class PeerRoute {
 
     /**
      * Get the weight property: The route's weight.
-     *
+     * 
      * @return the weight value.
      */
     public Integer weight() {
@@ -121,7 +125,7 @@ public final class PeerRoute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

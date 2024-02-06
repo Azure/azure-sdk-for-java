@@ -7,27 +7,43 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for WeekOfMonth. */
+/**
+ * Defines values for WeekOfMonth.
+ */
 public enum WeekOfMonth {
-    /** Enum value First. */
+    /**
+     * Enum value First.
+     */
     FIRST("First"),
 
-    /** Enum value Second. */
+    /**
+     * Enum value Second.
+     */
     SECOND("Second"),
 
-    /** Enum value Third. */
+    /**
+     * Enum value Third.
+     */
     THIRD("Third"),
 
-    /** Enum value Fourth. */
+    /**
+     * Enum value Fourth.
+     */
     FOURTH("Fourth"),
 
-    /** Enum value Last. */
+    /**
+     * Enum value Last.
+     */
     LAST("Last"),
 
-    /** Enum value Invalid. */
+    /**
+     * Enum value Invalid.
+     */
     INVALID("Invalid");
 
-    /** The actual serialized value for a WeekOfMonth instance. */
+    /**
+     * The actual serialized value for a WeekOfMonth instance.
+     */
     private final String value;
 
     WeekOfMonth(String value) {
@@ -36,7 +52,7 @@ public enum WeekOfMonth {
 
     /**
      * Parses a serialized value to a WeekOfMonth instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed WeekOfMonth object, or null if unable to parse.
      */
@@ -54,7 +70,9 @@ public enum WeekOfMonth {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

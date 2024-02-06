@@ -15,69 +15,49 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureVmWorkloadSqlInstanceWorkloadItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureVmWorkloadSqlInstanceWorkloadItem model =
-            BinaryData
-                .fromString(
-                    "{\"workloadItemType\":\"SQLInstance\",\"dataDirectoryPaths\":[{\"type\":\"Invalid\",\"path\":\"nrlkwzdqy\",\"logicalName\":\"ceakxc\"},{\"type\":\"Data\",\"path\":\"qfyiaseqchkr\",\"logicalName\":\"zrazisgyk\"},{\"type\":\"Log\",\"path\":\"vanbwzohmnrxxbs\",\"logicalName\":\"klinhmdptysprq\"},{\"type\":\"Data\",\"path\":\"xojpslsvjgp\",\"logicalName\":\"ufiqwoyxqvapcohh\"}],\"parentName\":\"cqpqojxcxzrzdc\",\"serverName\":\"zbenribc\",\"isAutoProtectable\":false,\"subinquireditemcount\":1265070523,\"subWorkloadItemCount\":1311825329,\"backupManagementType\":\"tjwfljhznamtua\",\"workloadType\":\"zwcjjncqtj\",\"friendlyName\":\"izvg\",\"protectionState\":\"ProtectionFailed\"}")
-                .toObject(AzureVmWorkloadSqlInstanceWorkloadItem.class);
-        Assertions.assertEquals("tjwfljhznamtua", model.backupManagementType());
-        Assertions.assertEquals("zwcjjncqtj", model.workloadType());
-        Assertions.assertEquals("izvg", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
-        Assertions.assertEquals("cqpqojxcxzrzdc", model.parentName());
-        Assertions.assertEquals("zbenribc", model.serverName());
-        Assertions.assertEquals(false, model.isAutoProtectable());
-        Assertions.assertEquals(1265070523, model.subinquireditemcount());
-        Assertions.assertEquals(1311825329, model.subWorkloadItemCount());
-        Assertions.assertEquals(SqlDataDirectoryType.INVALID, model.dataDirectoryPaths().get(0).type());
-        Assertions.assertEquals("nrlkwzdqy", model.dataDirectoryPaths().get(0).path());
-        Assertions.assertEquals("ceakxc", model.dataDirectoryPaths().get(0).logicalName());
+        AzureVmWorkloadSqlInstanceWorkloadItem model = BinaryData.fromString(
+            "{\"workloadItemType\":\"SQLInstance\",\"dataDirectoryPaths\":[{\"type\":\"Data\",\"path\":\"zbenribc\",\"logicalName\":\"etzqd\"},{\"type\":\"Log\",\"path\":\"fljhznamtua\",\"logicalName\":\"zwcjjncqtj\"},{\"type\":\"Log\",\"path\":\"vgbgatzuuvbxng\",\"logicalName\":\"bwggahtt\"},{\"type\":\"Data\",\"path\":\"v\",\"logicalName\":\"qfutlxjo\"}],\"parentName\":\"asunwqrjzfrgq\",\"serverName\":\"ohcmbu\",\"isAutoProtectable\":true,\"subinquireditemcount\":11989035,\"subWorkloadItemCount\":1578322360,\"backupManagementType\":\"bpyr\",\"workloadType\":\"ameb\",\"friendlyName\":\"dyvkfkmr\",\"protectionState\":\"Protecting\"}")
+            .toObject(AzureVmWorkloadSqlInstanceWorkloadItem.class);
+        Assertions.assertEquals("bpyr", model.backupManagementType());
+        Assertions.assertEquals("ameb", model.workloadType());
+        Assertions.assertEquals("dyvkfkmr", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
+        Assertions.assertEquals("asunwqrjzfrgq", model.parentName());
+        Assertions.assertEquals("ohcmbu", model.serverName());
+        Assertions.assertEquals(true, model.isAutoProtectable());
+        Assertions.assertEquals(11989035, model.subinquireditemcount());
+        Assertions.assertEquals(1578322360, model.subWorkloadItemCount());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.dataDirectoryPaths().get(0).type());
+        Assertions.assertEquals("zbenribc", model.dataDirectoryPaths().get(0).path());
+        Assertions.assertEquals("etzqd", model.dataDirectoryPaths().get(0).logicalName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureVmWorkloadSqlInstanceWorkloadItem model =
-            new AzureVmWorkloadSqlInstanceWorkloadItem()
-                .withBackupManagementType("tjwfljhznamtua")
-                .withWorkloadType("zwcjjncqtj")
-                .withFriendlyName("izvg")
-                .withProtectionState(ProtectionStatus.PROTECTION_FAILED)
-                .withParentName("cqpqojxcxzrzdc")
-                .withServerName("zbenribc")
-                .withIsAutoProtectable(false)
-                .withSubinquireditemcount(1265070523)
-                .withSubWorkloadItemCount(1311825329)
-                .withDataDirectoryPaths(
-                    Arrays
-                        .asList(
-                            new SqlDataDirectory()
-                                .withType(SqlDataDirectoryType.INVALID)
-                                .withPath("nrlkwzdqy")
-                                .withLogicalName("ceakxc"),
-                            new SqlDataDirectory()
-                                .withType(SqlDataDirectoryType.DATA)
-                                .withPath("qfyiaseqchkr")
-                                .withLogicalName("zrazisgyk"),
-                            new SqlDataDirectory()
-                                .withType(SqlDataDirectoryType.LOG)
-                                .withPath("vanbwzohmnrxxbs")
-                                .withLogicalName("klinhmdptysprq"),
-                            new SqlDataDirectory()
-                                .withType(SqlDataDirectoryType.DATA)
-                                .withPath("xojpslsvjgp")
-                                .withLogicalName("ufiqwoyxqvapcohh")));
+        AzureVmWorkloadSqlInstanceWorkloadItem model = new AzureVmWorkloadSqlInstanceWorkloadItem()
+            .withBackupManagementType("bpyr").withWorkloadType("ameb").withFriendlyName("dyvkfkmr")
+            .withProtectionState(ProtectionStatus.PROTECTING).withParentName("asunwqrjzfrgq").withServerName("ohcmbu")
+            .withIsAutoProtectable(true).withSubinquireditemcount(11989035).withSubWorkloadItemCount(1578322360)
+            .withDataDirectoryPaths(Arrays.asList(
+                new SqlDataDirectory().withType(SqlDataDirectoryType.DATA).withPath("zbenribc")
+                    .withLogicalName("etzqd"),
+                new SqlDataDirectory().withType(SqlDataDirectoryType.LOG).withPath("fljhznamtua")
+                    .withLogicalName("zwcjjncqtj"),
+                new SqlDataDirectory().withType(SqlDataDirectoryType.LOG).withPath("vgbgatzuuvbxng")
+                    .withLogicalName("bwggahtt"),
+                new SqlDataDirectory().withType(SqlDataDirectoryType.DATA).withPath("v").withLogicalName("qfutlxjo")));
         model = BinaryData.fromObject(model).toObject(AzureVmWorkloadSqlInstanceWorkloadItem.class);
-        Assertions.assertEquals("tjwfljhznamtua", model.backupManagementType());
-        Assertions.assertEquals("zwcjjncqtj", model.workloadType());
-        Assertions.assertEquals("izvg", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
-        Assertions.assertEquals("cqpqojxcxzrzdc", model.parentName());
-        Assertions.assertEquals("zbenribc", model.serverName());
-        Assertions.assertEquals(false, model.isAutoProtectable());
-        Assertions.assertEquals(1265070523, model.subinquireditemcount());
-        Assertions.assertEquals(1311825329, model.subWorkloadItemCount());
-        Assertions.assertEquals(SqlDataDirectoryType.INVALID, model.dataDirectoryPaths().get(0).type());
-        Assertions.assertEquals("nrlkwzdqy", model.dataDirectoryPaths().get(0).path());
-        Assertions.assertEquals("ceakxc", model.dataDirectoryPaths().get(0).logicalName());
+        Assertions.assertEquals("bpyr", model.backupManagementType());
+        Assertions.assertEquals("ameb", model.workloadType());
+        Assertions.assertEquals("dyvkfkmr", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
+        Assertions.assertEquals("asunwqrjzfrgq", model.parentName());
+        Assertions.assertEquals("ohcmbu", model.serverName());
+        Assertions.assertEquals(true, model.isAutoProtectable());
+        Assertions.assertEquals(11989035, model.subinquireditemcount());
+        Assertions.assertEquals(1578322360, model.subWorkloadItemCount());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.dataDirectoryPaths().get(0).type());
+        Assertions.assertEquals("zbenribc", model.dataDirectoryPaths().get(0).path());
+        Assertions.assertEquals("etzqd", model.dataDirectoryPaths().get(0).logicalName());
     }
 }

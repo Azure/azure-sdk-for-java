@@ -12,9 +12,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** Contains the parameters specific to hnsw algorithm. */
+/**
+ * Contains the parameters specific to the HNSW algorithm.
+ */
 @Fluent
 public final class HnswParameters implements JsonSerializable<HnswParameters> {
     /*
@@ -33,8 +34,8 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
 
     /*
      * The size of the dynamic list containing the nearest neighbors, which is used during search time. Increasing this
-     * parameter may improve search results, at the expense of slower search. Increasing this parameter leads to
-     * diminishing returns..
+     * parameter may improve search results, at the expense of slower search. At a certain point, increasing this
+     * parameter leads to diminishing returns.
      */
     private Integer efSearch;
 
@@ -43,14 +44,17 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      */
     private VectorSearchAlgorithmMetric metric;
 
-    /** Creates an instance of HnswParameters class. */
-    public HnswParameters() {}
+    /**
+     * Creates an instance of HnswParameters class.
+     */
+    public HnswParameters() {
+    }
 
     /**
      * Get the m property: The number of bi-directional links created for every new element during construction.
      * Increasing this parameter value may improve recall and reduce retrieval times for datasets with high intrinsic
      * dimensionality at the expense of increased memory consumption and longer indexing time.
-     *
+     * 
      * @return the m value.
      */
     public Integer getM() {
@@ -61,7 +65,7 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * Set the m property: The number of bi-directional links created for every new element during construction.
      * Increasing this parameter value may improve recall and reduce retrieval times for datasets with high intrinsic
      * dimensionality at the expense of increased memory consumption and longer indexing time.
-     *
+     * 
      * @param m the m value to set.
      * @return the HnswParameters object itself.
      */
@@ -74,7 +78,7 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * Get the efConstruction property: The size of the dynamic list containing the nearest neighbors, which is used
      * during index time. Increasing this parameter may improve index quality, at the expense of increased indexing
      * time. At a certain point, increasing this parameter leads to diminishing returns.
-     *
+     * 
      * @return the efConstruction value.
      */
     public Integer getEfConstruction() {
@@ -85,7 +89,7 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
      * Set the efConstruction property: The size of the dynamic list containing the nearest neighbors, which is used
      * during index time. Increasing this parameter may improve index quality, at the expense of increased indexing
      * time. At a certain point, increasing this parameter leads to diminishing returns.
-     *
+     * 
      * @param efConstruction the efConstruction value to set.
      * @return the HnswParameters object itself.
      */
@@ -96,9 +100,9 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
 
     /**
      * Get the efSearch property: The size of the dynamic list containing the nearest neighbors, which is used during
-     * search time. Increasing this parameter may improve search results, at the expense of slower search. Increasing
-     * this parameter leads to diminishing returns..
-     *
+     * search time. Increasing this parameter may improve search results, at the expense of slower search. At a certain
+     * point, increasing this parameter leads to diminishing returns.
+     * 
      * @return the efSearch value.
      */
     public Integer getEfSearch() {
@@ -107,9 +111,9 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
 
     /**
      * Set the efSearch property: The size of the dynamic list containing the nearest neighbors, which is used during
-     * search time. Increasing this parameter may improve search results, at the expense of slower search. Increasing
-     * this parameter leads to diminishing returns..
-     *
+     * search time. Increasing this parameter may improve search results, at the expense of slower search. At a certain
+     * point, increasing this parameter leads to diminishing returns.
+     * 
      * @param efSearch the efSearch value to set.
      * @return the HnswParameters object itself.
      */
@@ -120,7 +124,7 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
 
     /**
      * Get the metric property: The similarity metric to use for vector comparisons.
-     *
+     * 
      * @return the metric value.
      */
     public VectorSearchAlgorithmMetric getMetric() {
@@ -129,7 +133,7 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
 
     /**
      * Set the metric property: The similarity metric to use for vector comparisons.
-     *
+     * 
      * @param metric the metric value to set.
      * @return the HnswParameters object itself.
      */
@@ -144,41 +148,39 @@ public final class HnswParameters implements JsonSerializable<HnswParameters> {
         jsonWriter.writeNumberField("m", this.m);
         jsonWriter.writeNumberField("efConstruction", this.efConstruction);
         jsonWriter.writeNumberField("efSearch", this.efSearch);
-        jsonWriter.writeStringField("metric", Objects.toString(this.metric, null));
+        jsonWriter.writeStringField("metric", this.metric == null ? null : this.metric.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of HnswParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of HnswParameters if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the HnswParameters.
      */
     public static HnswParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    HnswParameters deserializedHnswParameters = new HnswParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            HnswParameters deserializedHnswParameters = new HnswParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("m".equals(fieldName)) {
-                            deserializedHnswParameters.m = reader.getNullable(JsonReader::getInt);
-                        } else if ("efConstruction".equals(fieldName)) {
-                            deserializedHnswParameters.efConstruction = reader.getNullable(JsonReader::getInt);
-                        } else if ("efSearch".equals(fieldName)) {
-                            deserializedHnswParameters.efSearch = reader.getNullable(JsonReader::getInt);
-                        } else if ("metric".equals(fieldName)) {
-                            deserializedHnswParameters.metric =
-                                    VectorSearchAlgorithmMetric.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("m".equals(fieldName)) {
+                    deserializedHnswParameters.m = reader.getNullable(JsonReader::getInt);
+                } else if ("efConstruction".equals(fieldName)) {
+                    deserializedHnswParameters.efConstruction = reader.getNullable(JsonReader::getInt);
+                } else if ("efSearch".equals(fieldName)) {
+                    deserializedHnswParameters.efSearch = reader.getNullable(JsonReader::getInt);
+                } else if ("metric".equals(fieldName)) {
+                    deserializedHnswParameters.metric = VectorSearchAlgorithmMetric.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedHnswParameters;
-                });
+            return deserializedHnswParameters;
+        });
     }
 }

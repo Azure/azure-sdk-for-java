@@ -15,44 +15,37 @@ import org.junit.jupiter.api.Assertions;
 public final class ProtectableContainerResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectableContainerResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"jos\",\"backupManagementType\":\"AzureWorkload\",\"healthStatus\":\"ulpjr\",\"containerId\":\"ag\"},\"eTag\":\"vimjwos\",\"location\":\"tx\",\"tags\":{\"tq\":\"skfc\",\"gqggebdunygae\":\"miekkezzikhlyfjh\",\"fatpxllrxcyjmoa\":\"idb\",\"arm\":\"su\"},\"id\":\"wdmjsjqbjhhyx\",\"name\":\"rw\",\"type\":\"yc\"}")
-                .toObject(ProtectableContainerResourceInner.class);
-        Assertions.assertEquals("tx", model.location());
-        Assertions.assertEquals("skfc", model.tags().get("tq"));
-        Assertions.assertEquals("jos", model.properties().friendlyName());
+        ProtectableContainerResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"queziky\",\"backupManagementType\":\"AzureWorkload\",\"healthStatus\":\"kallatmel\",\"containerId\":\"ipicc\"},\"eTag\":\"kzivgvvcnayrh\",\"location\":\"rnxxmueed\",\"tags\":{\"qtc\":\"dvstkw\",\"piohgwxrtfu\":\"ealmfmtdaaygdvwv\",\"k\":\"xepxgyqagvrvmn\"},\"id\":\"kghimdblxgwimfnj\",\"name\":\"fjxwmsz\",\"type\":\"kfoqreyfkzikfj\"}")
+            .toObject(ProtectableContainerResourceInner.class);
+        Assertions.assertEquals("rnxxmueed", model.location());
+        Assertions.assertEquals("dvstkw", model.tags().get("qtc"));
+        Assertions.assertEquals("queziky", model.properties().friendlyName());
         Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.properties().backupManagementType());
-        Assertions.assertEquals("ulpjr", model.properties().healthStatus());
-        Assertions.assertEquals("ag", model.properties().containerId());
-        Assertions.assertEquals("vimjwos", model.etag());
+        Assertions.assertEquals("kallatmel", model.properties().healthStatus());
+        Assertions.assertEquals("ipicc", model.properties().containerId());
+        Assertions.assertEquals("kzivgvvcnayrh", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectableContainerResourceInner model =
-            new ProtectableContainerResourceInner()
-                .withLocation("tx")
-                .withTags(
-                    mapOf("tq", "skfc", "gqggebdunygae", "miekkezzikhlyfjh", "fatpxllrxcyjmoa", "idb", "arm", "su"))
-                .withProperties(
-                    new ProtectableContainer()
-                        .withFriendlyName("jos")
-                        .withBackupManagementType(BackupManagementType.AZURE_WORKLOAD)
-                        .withHealthStatus("ulpjr")
-                        .withContainerId("ag"))
-                .withEtag("vimjwos");
+        ProtectableContainerResourceInner model = new ProtectableContainerResourceInner().withLocation("rnxxmueed")
+            .withTags(mapOf("qtc", "dvstkw", "piohgwxrtfu", "ealmfmtdaaygdvwv", "k", "xepxgyqagvrvmn"))
+            .withProperties(new ProtectableContainer().withFriendlyName("queziky")
+                .withBackupManagementType(BackupManagementType.AZURE_WORKLOAD).withHealthStatus("kallatmel")
+                .withContainerId("ipicc"))
+            .withEtag("kzivgvvcnayrh");
         model = BinaryData.fromObject(model).toObject(ProtectableContainerResourceInner.class);
-        Assertions.assertEquals("tx", model.location());
-        Assertions.assertEquals("skfc", model.tags().get("tq"));
-        Assertions.assertEquals("jos", model.properties().friendlyName());
+        Assertions.assertEquals("rnxxmueed", model.location());
+        Assertions.assertEquals("dvstkw", model.tags().get("qtc"));
+        Assertions.assertEquals("queziky", model.properties().friendlyName());
         Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.properties().backupManagementType());
-        Assertions.assertEquals("ulpjr", model.properties().healthStatus());
-        Assertions.assertEquals("ag", model.properties().containerId());
-        Assertions.assertEquals("vimjwos", model.etag());
+        Assertions.assertEquals("kallatmel", model.properties().healthStatus());
+        Assertions.assertEquals("ipicc", model.properties().containerId());
+        Assertions.assertEquals("kzivgvvcnayrh", model.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

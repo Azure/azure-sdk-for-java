@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The correlation property. */
+/**
+ * The correlation property.
+ */
 @Fluent
 public final class Correlation {
     /*
@@ -16,13 +18,15 @@ public final class Correlation {
     @JsonProperty(value = "clientTrackingId")
     private String clientTrackingId;
 
-    /** Creates an instance of Correlation class. */
+    /**
+     * Creates an instance of Correlation class.
+     */
     public Correlation() {
     }
 
     /**
      * Get the clientTrackingId property: The client tracking id.
-     *
+     * 
      * @return the clientTrackingId value.
      */
     public String clientTrackingId() {
@@ -31,7 +35,7 @@ public final class Correlation {
 
     /**
      * Set the clientTrackingId property: The client tracking id.
-     *
+     * 
      * @param clientTrackingId the clientTrackingId value to set.
      * @return the Correlation object itself.
      */
@@ -42,7 +46,7 @@ public final class Correlation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

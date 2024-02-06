@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The input for OrchestrationServiceState. */
+/**
+ * The input for OrchestrationServiceState.
+ */
 @Fluent
 public final class OrchestrationServiceStateInput {
     /*
@@ -23,13 +25,15 @@ public final class OrchestrationServiceStateInput {
     @JsonProperty(value = "action", required = true)
     private OrchestrationServiceStateAction action;
 
-    /** Creates an instance of OrchestrationServiceStateInput class. */
+    /**
+     * Creates an instance of OrchestrationServiceStateInput class.
+     */
     public OrchestrationServiceStateInput() {
     }
 
     /**
      * Get the serviceName property: The name of the service.
-     *
+     * 
      * @return the serviceName value.
      */
     public OrchestrationServiceNames serviceName() {
@@ -38,7 +42,7 @@ public final class OrchestrationServiceStateInput {
 
     /**
      * Set the serviceName property: The name of the service.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the OrchestrationServiceStateInput object itself.
      */
@@ -49,7 +53,7 @@ public final class OrchestrationServiceStateInput {
 
     /**
      * Get the action property: The action to be performed.
-     *
+     * 
      * @return the action value.
      */
     public OrchestrationServiceStateAction action() {
@@ -58,7 +62,7 @@ public final class OrchestrationServiceStateInput {
 
     /**
      * Set the action property: The action to be performed.
-     *
+     * 
      * @param action the action value to set.
      * @return the OrchestrationServiceStateInput object itself.
      */
@@ -69,21 +73,17 @@ public final class OrchestrationServiceStateInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceName in model OrchestrationServiceStateInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serviceName in model OrchestrationServiceStateInput"));
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property action in model OrchestrationServiceStateInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property action in model OrchestrationServiceStateInput"));
         }
     }
 

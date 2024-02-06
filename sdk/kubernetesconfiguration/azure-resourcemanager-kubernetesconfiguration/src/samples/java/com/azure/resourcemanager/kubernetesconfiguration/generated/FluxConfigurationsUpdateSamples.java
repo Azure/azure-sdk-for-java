@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for FluxConfigurations Update. */
 public final class FluxConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/PatchFluxConfiguration.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/PatchFluxConfiguration.json
      */
     /**
      * Sample code: Patch Flux Configuration.
@@ -50,6 +50,7 @@ public final class FluxConfigurationsUpdateSamples {
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

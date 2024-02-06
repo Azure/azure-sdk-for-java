@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for Sims CreateOrUpdate. */
 public final class SimsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimCreate.json
      */
     /**
      * Sample code: Create SIM.

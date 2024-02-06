@@ -16,6 +16,12 @@ public final class AnalyzeHealthcareEntitiesAction {
     private Boolean disableServiceLogs;
 
     /**
+     * Constructs a {@code AnalyzeHealthcareEntitiesAction} model.
+     */
+    public AnalyzeHealthcareEntitiesAction() {
+    }
+
+    /**
      * Get the name of action.
      *
      * @return the name of action.
@@ -29,7 +35,7 @@ public final class AnalyzeHealthcareEntitiesAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link AnalyzeHealthcareEntitiesAction} object itself.
+     * @return The {@code AnalyzeHealthcareEntitiesAction} object itself.
      */
     public AnalyzeHealthcareEntitiesAction setActionName(String actionName) {
         this.actionName = actionName;
@@ -51,7 +57,7 @@ public final class AnalyzeHealthcareEntitiesAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link AnalyzeHealthcareEntitiesAction} object itself.
+     * @return The {@code AnalyzeHealthcareEntitiesAction} object itself.
      */
     public AnalyzeHealthcareEntitiesAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
@@ -76,7 +82,7 @@ public final class AnalyzeHealthcareEntitiesAction {
      * log your input text. Setting this property to 'false', enables logging your input text for 48 hours,
      * solely to allow for troubleshooting issues.
      *
-     * @return The {@link AnalyzeHealthcareEntitiesAction} object itself.
+     * @return The {@code AnalyzeHealthcareEntitiesAction} object itself.
      */
     public AnalyzeHealthcareEntitiesAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;

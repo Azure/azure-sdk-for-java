@@ -24,15 +24,29 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.fluent.AzureStackHciClient;
-import com.azure.resourcemanager.azurestackhci.implementation.ArcSettingsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.AzureStackHciClientBuilder;
-import com.azure.resourcemanager.azurestackhci.implementation.ClustersImpl;
-import com.azure.resourcemanager.azurestackhci.implementation.ExtensionsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.GalleryImagesOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.GuestAgentsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.GuestAgentsOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.HybridIdentityMetadatasImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.LogicalNetworksOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.MarketplaceGalleryImagesOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.NetworkInterfacesOperationsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.OperationsImpl;
-import com.azure.resourcemanager.azurestackhci.models.ArcSettings;
-import com.azure.resourcemanager.azurestackhci.models.Clusters;
-import com.azure.resourcemanager.azurestackhci.models.Extensions;
+import com.azure.resourcemanager.azurestackhci.implementation.StorageContainersOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.VirtualHardDisksOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.VirtualMachineInstancesImpl;
+import com.azure.resourcemanager.azurestackhci.models.GalleryImagesOperations;
+import com.azure.resourcemanager.azurestackhci.models.GuestAgents;
+import com.azure.resourcemanager.azurestackhci.models.GuestAgentsOperations;
+import com.azure.resourcemanager.azurestackhci.models.HybridIdentityMetadatas;
+import com.azure.resourcemanager.azurestackhci.models.LogicalNetworksOperations;
+import com.azure.resourcemanager.azurestackhci.models.MarketplaceGalleryImagesOperations;
+import com.azure.resourcemanager.azurestackhci.models.NetworkInterfacesOperations;
 import com.azure.resourcemanager.azurestackhci.models.Operations;
+import com.azure.resourcemanager.azurestackhci.models.StorageContainersOperations;
+import com.azure.resourcemanager.azurestackhci.models.VirtualHardDisksOperations;
+import com.azure.resourcemanager.azurestackhci.models.VirtualMachineInstances;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -42,13 +56,27 @@ import java.util.stream.Collectors;
 
 /** Entry point to AzureStackHciManager. Azure Stack HCI management service. */
 public final class AzureStackHciManager {
-    private ArcSettings arcSettings;
-
-    private Clusters clusters;
-
-    private Extensions extensions;
+    private GalleryImagesOperations galleryImagesOperations;
 
     private Operations operations;
+
+    private LogicalNetworksOperations logicalNetworksOperations;
+
+    private MarketplaceGalleryImagesOperations marketplaceGalleryImagesOperations;
+
+    private NetworkInterfacesOperations networkInterfacesOperations;
+
+    private StorageContainersOperations storageContainersOperations;
+
+    private VirtualHardDisksOperations virtualHardDisksOperations;
+
+    private VirtualMachineInstances virtualMachineInstances;
+
+    private HybridIdentityMetadatas hybridIdentityMetadatas;
+
+    private GuestAgents guestAgents;
+
+    private GuestAgentsOperations guestAgentsOperations;
 
     private final AzureStackHciClient clientObject;
 
@@ -215,7 +243,7 @@ public final class AzureStackHciManager {
                 .append("-")
                 .append("com.azure.resourcemanager.azurestackhci")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -273,39 +301,16 @@ public final class AzureStackHciManager {
     }
 
     /**
-     * Gets the resource collection API of ArcSettings. It manages ArcSetting.
+     * Gets the resource collection API of GalleryImagesOperations. It manages GalleryImages.
      *
-     * @return Resource collection API of ArcSettings.
+     * @return Resource collection API of GalleryImagesOperations.
      */
-    public ArcSettings arcSettings() {
-        if (this.arcSettings == null) {
-            this.arcSettings = new ArcSettingsImpl(clientObject.getArcSettings(), this);
+    public GalleryImagesOperations galleryImagesOperations() {
+        if (this.galleryImagesOperations == null) {
+            this.galleryImagesOperations =
+                new GalleryImagesOperationsImpl(clientObject.getGalleryImagesOperations(), this);
         }
-        return arcSettings;
-    }
-
-    /**
-     * Gets the resource collection API of Clusters. It manages Cluster.
-     *
-     * @return Resource collection API of Clusters.
-     */
-    public Clusters clusters() {
-        if (this.clusters == null) {
-            this.clusters = new ClustersImpl(clientObject.getClusters(), this);
-        }
-        return clusters;
-    }
-
-    /**
-     * Gets the resource collection API of Extensions. It manages Extension.
-     *
-     * @return Resource collection API of Extensions.
-     */
-    public Extensions extensions() {
-        if (this.extensions == null) {
-            this.extensions = new ExtensionsImpl(clientObject.getExtensions(), this);
-        }
-        return extensions;
+        return galleryImagesOperations;
     }
 
     /**
@@ -321,8 +326,125 @@ public final class AzureStackHciManager {
     }
 
     /**
-     * @return Wrapped service client AzureStackHciClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets the resource collection API of LogicalNetworksOperations. It manages LogicalNetworks.
+     *
+     * @return Resource collection API of LogicalNetworksOperations.
+     */
+    public LogicalNetworksOperations logicalNetworksOperations() {
+        if (this.logicalNetworksOperations == null) {
+            this.logicalNetworksOperations =
+                new LogicalNetworksOperationsImpl(clientObject.getLogicalNetworksOperations(), this);
+        }
+        return logicalNetworksOperations;
+    }
+
+    /**
+     * Gets the resource collection API of MarketplaceGalleryImagesOperations. It manages MarketplaceGalleryImages.
+     *
+     * @return Resource collection API of MarketplaceGalleryImagesOperations.
+     */
+    public MarketplaceGalleryImagesOperations marketplaceGalleryImagesOperations() {
+        if (this.marketplaceGalleryImagesOperations == null) {
+            this.marketplaceGalleryImagesOperations =
+                new MarketplaceGalleryImagesOperationsImpl(clientObject.getMarketplaceGalleryImagesOperations(), this);
+        }
+        return marketplaceGalleryImagesOperations;
+    }
+
+    /**
+     * Gets the resource collection API of NetworkInterfacesOperations. It manages NetworkInterfaces.
+     *
+     * @return Resource collection API of NetworkInterfacesOperations.
+     */
+    public NetworkInterfacesOperations networkInterfacesOperations() {
+        if (this.networkInterfacesOperations == null) {
+            this.networkInterfacesOperations =
+                new NetworkInterfacesOperationsImpl(clientObject.getNetworkInterfacesOperations(), this);
+        }
+        return networkInterfacesOperations;
+    }
+
+    /**
+     * Gets the resource collection API of StorageContainersOperations. It manages StorageContainers.
+     *
+     * @return Resource collection API of StorageContainersOperations.
+     */
+    public StorageContainersOperations storageContainersOperations() {
+        if (this.storageContainersOperations == null) {
+            this.storageContainersOperations =
+                new StorageContainersOperationsImpl(clientObject.getStorageContainersOperations(), this);
+        }
+        return storageContainersOperations;
+    }
+
+    /**
+     * Gets the resource collection API of VirtualHardDisksOperations. It manages VirtualHardDisks.
+     *
+     * @return Resource collection API of VirtualHardDisksOperations.
+     */
+    public VirtualHardDisksOperations virtualHardDisksOperations() {
+        if (this.virtualHardDisksOperations == null) {
+            this.virtualHardDisksOperations =
+                new VirtualHardDisksOperationsImpl(clientObject.getVirtualHardDisksOperations(), this);
+        }
+        return virtualHardDisksOperations;
+    }
+
+    /**
+     * Gets the resource collection API of VirtualMachineInstances.
+     *
+     * @return Resource collection API of VirtualMachineInstances.
+     */
+    public VirtualMachineInstances virtualMachineInstances() {
+        if (this.virtualMachineInstances == null) {
+            this.virtualMachineInstances =
+                new VirtualMachineInstancesImpl(clientObject.getVirtualMachineInstances(), this);
+        }
+        return virtualMachineInstances;
+    }
+
+    /**
+     * Gets the resource collection API of HybridIdentityMetadatas.
+     *
+     * @return Resource collection API of HybridIdentityMetadatas.
+     */
+    public HybridIdentityMetadatas hybridIdentityMetadatas() {
+        if (this.hybridIdentityMetadatas == null) {
+            this.hybridIdentityMetadatas =
+                new HybridIdentityMetadatasImpl(clientObject.getHybridIdentityMetadatas(), this);
+        }
+        return hybridIdentityMetadatas;
+    }
+
+    /**
+     * Gets the resource collection API of GuestAgents.
+     *
+     * @return Resource collection API of GuestAgents.
+     */
+    public GuestAgents guestAgents() {
+        if (this.guestAgents == null) {
+            this.guestAgents = new GuestAgentsImpl(clientObject.getGuestAgents(), this);
+        }
+        return guestAgents;
+    }
+
+    /**
+     * Gets the resource collection API of GuestAgentsOperations.
+     *
+     * @return Resource collection API of GuestAgentsOperations.
+     */
+    public GuestAgentsOperations guestAgentsOperations() {
+        if (this.guestAgentsOperations == null) {
+            this.guestAgentsOperations = new GuestAgentsOperationsImpl(clientObject.getGuestAgentsOperations(), this);
+        }
+        return guestAgentsOperations;
+    }
+
+    /**
+     * Gets wrapped service client AzureStackHciClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client AzureStackHciClient.
      */
     public AzureStackHciClient serviceClient() {
         return this.clientObject;

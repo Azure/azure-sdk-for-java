@@ -28,14 +28,16 @@ public final class SpotRestorePolicy {
     @JsonProperty(value = "restoreTimeout")
     private String restoreTimeout;
 
-    /** Creates an instance of SpotRestorePolicy class. */
+    /**
+     * Creates an instance of SpotRestorePolicy class.
+     */
     public SpotRestorePolicy() {
     }
 
     /**
-     * Get the enabled property: Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to
-     * be restored opportunistically based on capacity availability and pricing constraints.
-     *
+     * Get the enabled property: Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried
+     * to be restored opportunistically based on capacity availability and pricing constraints.
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -43,9 +45,9 @@ public final class SpotRestorePolicy {
     }
 
     /**
-     * Set the enabled property: Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to
-     * be restored opportunistically based on capacity availability and pricing constraints.
-     *
+     * Set the enabled property: Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried
+     * to be restored opportunistically based on capacity availability and pricing constraints.
+     * 
      * @param enabled the enabled value to set.
      * @return the SpotRestorePolicy object itself.
      */
@@ -57,7 +59,7 @@ public final class SpotRestorePolicy {
     /**
      * Get the restoreTimeout property: Timeout value expressed as an ISO 8601 time duration after which the platform
      * will not try to restore the VMSS SPOT instances.
-     *
+     * 
      * @return the restoreTimeout value.
      */
     public String restoreTimeout() {
@@ -67,7 +69,7 @@ public final class SpotRestorePolicy {
     /**
      * Set the restoreTimeout property: Timeout value expressed as an ISO 8601 time duration after which the platform
      * will not try to restore the VMSS SPOT instances.
-     *
+     * 
      * @param restoreTimeout the restoreTimeout value to set.
      * @return the SpotRestorePolicy object itself.
      */
@@ -78,7 +80,7 @@ public final class SpotRestorePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

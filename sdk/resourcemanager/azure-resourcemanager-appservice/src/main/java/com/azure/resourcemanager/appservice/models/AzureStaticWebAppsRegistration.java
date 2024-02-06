@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the registration for the Azure Static Web Apps provider. */
+/**
+ * The configuration settings of the registration for the Azure Static Web Apps provider.
+ */
 @Fluent
 public final class AzureStaticWebAppsRegistration {
     /*
@@ -16,13 +18,15 @@ public final class AzureStaticWebAppsRegistration {
     @JsonProperty(value = "clientId")
     private String clientId;
 
-    /** Creates an instance of AzureStaticWebAppsRegistration class. */
+    /**
+     * Creates an instance of AzureStaticWebAppsRegistration class.
+     */
     public AzureStaticWebAppsRegistration() {
     }
 
     /**
      * Get the clientId property: The Client ID of the app used for login.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -31,7 +35,7 @@ public final class AzureStaticWebAppsRegistration {
 
     /**
      * Set the clientId property: The Client ID of the app used for login.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the AzureStaticWebAppsRegistration object itself.
      */
@@ -42,7 +46,7 @@ public final class AzureStaticWebAppsRegistration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

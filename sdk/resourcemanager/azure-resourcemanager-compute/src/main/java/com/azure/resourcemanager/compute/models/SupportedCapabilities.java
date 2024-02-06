@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** List of supported capabilities persisted on the disk resource for VM use. */
+/**
+ * List of supported capabilities persisted on the disk resource for VM use.
+ */
 @Fluent
 public final class SupportedCapabilities {
     /*
@@ -28,14 +30,16 @@ public final class SupportedCapabilities {
     @JsonProperty(value = "architecture")
     private Architecture architecture;
 
-    /** Creates an instance of SupportedCapabilities class. */
+    /**
+     * Creates an instance of SupportedCapabilities class.
+     */
     public SupportedCapabilities() {
     }
 
     /**
      * Get the diskControllerTypes property: The disk controllers that an OS disk supports. If set it can be SCSI or
      * SCSI, NVME or NVME, SCSI.
-     *
+     * 
      * @return the diskControllerTypes value.
      */
     public String diskControllerTypes() {
@@ -45,7 +49,7 @@ public final class SupportedCapabilities {
     /**
      * Set the diskControllerTypes property: The disk controllers that an OS disk supports. If set it can be SCSI or
      * SCSI, NVME or NVME, SCSI.
-     *
+     * 
      * @param diskControllerTypes the diskControllerTypes value to set.
      * @return the SupportedCapabilities object itself.
      */
@@ -57,7 +61,7 @@ public final class SupportedCapabilities {
     /**
      * Get the acceleratedNetwork property: True if the image from which the OS disk is created supports accelerated
      * networking.
-     *
+     * 
      * @return the acceleratedNetwork value.
      */
     public Boolean acceleratedNetwork() {
@@ -67,7 +71,7 @@ public final class SupportedCapabilities {
     /**
      * Set the acceleratedNetwork property: True if the image from which the OS disk is created supports accelerated
      * networking.
-     *
+     * 
      * @param acceleratedNetwork the acceleratedNetwork value to set.
      * @return the SupportedCapabilities object itself.
      */
@@ -78,7 +82,7 @@ public final class SupportedCapabilities {
 
     /**
      * Get the architecture property: CPU architecture supported by an OS disk.
-     *
+     * 
      * @return the architecture value.
      */
     public Architecture architecture() {
@@ -87,7 +91,7 @@ public final class SupportedCapabilities {
 
     /**
      * Set the architecture property: CPU architecture supported by an OS disk.
-     *
+     * 
      * @param architecture the architecture value to set.
      * @return the SupportedCapabilities object itself.
      */
@@ -98,7 +102,7 @@ public final class SupportedCapabilities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

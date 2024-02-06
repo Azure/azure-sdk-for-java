@@ -5,12 +5,12 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
-import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -44,17 +44,17 @@ public class ListSnapshots {
         ConfigurationSetting setting2 = client.setConfigurationSetting("TestKey2", null, "value2");
         System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue());
         // 1. Prepare the snapshot filters
-        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("Test*"));
+        filters.add(new ConfigurationSettingsFilter("Test*"));
 
         // 1. Create first snapshot
         String snapshotNameTest = "{snapshotNameInTest}";
-        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot> poller =
-            client.beginCreateSnapshot(snapshotNameTest, new ConfigurationSettingsSnapshot(filters), null);
+        SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
+            client.beginCreateSnapshot(snapshotNameTest, new ConfigurationSnapshot(filters), null);
         poller.setPollInterval(Duration.ofSeconds(10));
         poller.waitForCompletion();
-        ConfigurationSettingsSnapshot snapshot = poller.getFinalResult();
+        ConfigurationSnapshot snapshot = poller.getFinalResult();
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
 
@@ -65,39 +65,39 @@ public class ListSnapshots {
         ConfigurationSetting setting4 = client.setConfigurationSetting("ProductKey2", null, "value2");
         System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue());
         // 2. Prepare the snapshot filters
-        List<SnapshotSettingFilter> filters2 = new ArrayList<>();
+        List<ConfigurationSettingsFilter> filters2 = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("Product*"));
+        filters.add(new ConfigurationSettingsFilter("Product*"));
 
         // 2. Create second snapshot
         String snapshotNameProduct = "{snapshotNameInProduct}";
-        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot> pollerProduct =
-            client.beginCreateSnapshot(snapshotNameProduct, new ConfigurationSettingsSnapshot(filters), Context.NONE);
+        SyncPoller<PollOperationDetails, ConfigurationSnapshot> pollerProduct =
+            client.beginCreateSnapshot(snapshotNameProduct, new ConfigurationSnapshot(filters), Context.NONE);
         pollerProduct.setPollInterval(Duration.ofSeconds(10));
         pollerProduct.waitForCompletion();
-        ConfigurationSettingsSnapshot productSnapshot = pollerProduct.getFinalResult();
+        ConfigurationSnapshot productSnapshot = pollerProduct.getFinalResult();
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             productSnapshot.getName(), productSnapshot.getCreatedAt(), productSnapshot.getStatus());
 
         // List only the snapshot with name = snapshotNameInProduct
-        client.listSnapshots(new SnapshotSelector().setName(snapshotNameProduct))
+        client.listSnapshots(new SnapshotSelector().setNameFilter(snapshotNameProduct))
             .forEach(snapshotResult -> {
                 System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
                     snapshotResult.getName(), snapshotResult.getCreatedAt(), snapshotResult.getStatus());
             });
 
         // Get the snapshot status
-        ConfigurationSettingsSnapshot getSnapshot = client.getSnapshot(snapshotNameProduct);
+        ConfigurationSnapshot getSnapshot = client.getSnapshot(snapshotNameProduct);
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
 
         // Archive a READY snapshot
-        ConfigurationSettingsSnapshot archivedSnapshot = client.archiveSnapshot(snapshotNameProduct);
+        ConfigurationSnapshot archivedSnapshot = client.archiveSnapshot(snapshotNameProduct);
         System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
             archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
 
         // Recover the Archived snapshot
-        ConfigurationSettingsSnapshot recoveredSnapshot = client.recoverSnapshot(snapshotNameProduct);
+        ConfigurationSnapshot recoveredSnapshot = client.recoverSnapshot(snapshotNameProduct);
         System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
             recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
 

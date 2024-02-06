@@ -14,6 +14,15 @@ public final class UpdateRule extends ExpandableStringEnum<UpdateRule> {
     public static final UpdateRule NO_ACTION = fromString("NoAction");
 
     /**
+     * Creates a new instance of UpdateRule value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UpdateRule() {
+    }
+
+    /**
      * Creates or finds a UpdateRule from its string representation.
      *
      * @param name a name to look for.

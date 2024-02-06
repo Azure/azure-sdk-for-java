@@ -6,9 +6,11 @@ package com.azure.resourcemanager.devtestlabs.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devtestlabs.fluent.models.VirtualNetworkProperties;
+import com.azure.resourcemanager.devtestlabs.models.Port;
 import com.azure.resourcemanager.devtestlabs.models.Subnet;
 import com.azure.resourcemanager.devtestlabs.models.SubnetOverride;
 import com.azure.resourcemanager.devtestlabs.models.SubnetSharedPublicIpAddressConfiguration;
+import com.azure.resourcemanager.devtestlabs.models.TransportProtocol;
 import com.azure.resourcemanager.devtestlabs.models.UsagePermissionType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -19,19 +21,39 @@ public final class VirtualNetworkPropertiesTests {
         VirtualNetworkProperties model =
             BinaryData
                 .fromString(
-                    "{\"allowedSubnets\":[{\"resourceId\":\"hjm\",\"labSubnetName\":\"nbsoqeqalarv\",\"allowPublicIp\":\"Deny\"},{\"resourceId\":\"nbtgfebwl\",\"labSubnetName\":\"mhyreeudz\",\"allowPublicIp\":\"Default\"},{\"resourceId\":\"pdqmjxlyyzglgouw\",\"labSubnetName\":\"mjjyuojq\",\"allowPublicIp\":\"Default\"},{\"resourceId\":\"xkjeytunlbfj\",\"labSubnetName\":\"rusnk\",\"allowPublicIp\":\"Allow\"}],\"description\":\"y\",\"externalProviderResourceId\":\"unjqh\",\"externalSubnets\":[{\"id\":\"aulk\",\"name\":\"kdk\"},{\"id\":\"mjnnawtq\",\"name\":\"pxuckpggq\"}],\"subnetOverrides\":[{\"resourceId\":\"ird\",\"labSubnetName\":\"isngwflqqmpizru\",\"useInVmCreationPermission\":\"Allow\",\"usePublicIpAddressPermission\":\"Allow\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[]},\"virtualNetworkPoolName\":\"wfcngjsaas\"},{\"resourceId\":\"xtmkzjvkviir\",\"labSubnetName\":\"fgrwsdpgratzvz\",\"useInVmCreationPermission\":\"Deny\",\"usePublicIpAddressPermission\":\"Deny\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[]},\"virtualNetworkPoolName\":\"tctbrxkjzwrgxffm\"},{\"resourceId\":\"kwfbkgo\",\"labSubnetName\":\"wopdbydpiz\",\"useInVmCreationPermission\":\"Allow\",\"usePublicIpAddressPermission\":\"Default\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[]},\"virtualNetworkPoolName\":\"biygnugjknfsmfct\"}],\"createdDate\":\"2021-07-24T11:33:54Z\",\"provisioningState\":\"uyilflqoiquvrehm\",\"uniqueIdentifier\":\"jhvsujztczyt\"}")
+                    "{\"allowedSubnets\":[{\"resourceId\":\"leeyaswl\",\"labSubnetName\":\"ugmrmf\",\"allowPublicIp\":\"Default\"}],\"description\":\"wtoaukhfk\",\"externalProviderResourceId\":\"isizm\",\"externalSubnets\":[{\"id\":\"sx\",\"name\":\"uivedwcgyeewxeiq\"}],\"subnetOverrides\":[{\"resourceId\":\"g\",\"labSubnetName\":\"guamlj\",\"useInVmCreationPermission\":\"Allow\",\"usePublicIpAddressPermission\":\"Default\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{\"transportProtocol\":\"Tcp\",\"backendPort\":517596277},{\"transportProtocol\":\"Tcp\",\"backendPort\":1243615425},{\"transportProtocol\":\"Udp\",\"backendPort\":1688050054},{\"transportProtocol\":\"Udp\",\"backendPort\":1018837274}]},\"virtualNetworkPoolName\":\"ympqanxrjkixtwb\"},{\"resourceId\":\"oypnyg\",\"labSubnetName\":\"hxcylhkgm\",\"useInVmCreationPermission\":\"Deny\",\"usePublicIpAddressPermission\":\"Allow\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{\"transportProtocol\":\"Tcp\",\"backendPort\":2068666218},{\"transportProtocol\":\"Udp\",\"backendPort\":615187266},{\"transportProtocol\":\"Tcp\",\"backendPort\":1407961228},{\"transportProtocol\":\"Tcp\",\"backendPort\":1784777493}]},\"virtualNetworkPoolName\":\"zvxnqmhrp\"},{\"resourceId\":\"df\",\"labSubnetName\":\"kois\",\"useInVmCreationPermission\":\"Allow\",\"usePublicIpAddressPermission\":\"Deny\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{\"transportProtocol\":\"Udp\",\"backendPort\":2104491949},{\"transportProtocol\":\"Udp\",\"backendPort\":834790015}]},\"virtualNetworkPoolName\":\"kdqzrdzsylo\"}],\"createdDate\":\"2021-10-29T00:26:05Z\",\"provisioningState\":\"rc\",\"uniqueIdentifier\":\"ydmxzj\"}")
                 .toObject(VirtualNetworkProperties.class);
-        Assertions.assertEquals("hjm", model.allowedSubnets().get(0).resourceId());
-        Assertions.assertEquals("nbsoqeqalarv", model.allowedSubnets().get(0).labSubnetName());
-        Assertions.assertEquals(UsagePermissionType.DENY, model.allowedSubnets().get(0).allowPublicIp());
-        Assertions.assertEquals("y", model.description());
-        Assertions.assertEquals("unjqh", model.externalProviderResourceId());
-        Assertions.assertEquals("ird", model.subnetOverrides().get(0).resourceId());
-        Assertions.assertEquals("isngwflqqmpizru", model.subnetOverrides().get(0).labSubnetName());
+        Assertions.assertEquals("leeyaswl", model.allowedSubnets().get(0).resourceId());
+        Assertions.assertEquals("ugmrmf", model.allowedSubnets().get(0).labSubnetName());
+        Assertions.assertEquals(UsagePermissionType.DEFAULT, model.allowedSubnets().get(0).allowPublicIp());
+        Assertions.assertEquals("wtoaukhfk", model.description());
+        Assertions.assertEquals("isizm", model.externalProviderResourceId());
+        Assertions.assertEquals("g", model.subnetOverrides().get(0).resourceId());
+        Assertions.assertEquals("guamlj", model.subnetOverrides().get(0).labSubnetName());
         Assertions.assertEquals(UsagePermissionType.ALLOW, model.subnetOverrides().get(0).useInVmCreationPermission());
         Assertions
-            .assertEquals(UsagePermissionType.ALLOW, model.subnetOverrides().get(0).usePublicIpAddressPermission());
-        Assertions.assertEquals("wfcngjsaas", model.subnetOverrides().get(0).virtualNetworkPoolName());
+            .assertEquals(UsagePermissionType.DEFAULT, model.subnetOverrides().get(0).usePublicIpAddressPermission());
+        Assertions
+            .assertEquals(
+                TransportProtocol.TCP,
+                model
+                    .subnetOverrides()
+                    .get(0)
+                    .sharedPublicIpAddressConfiguration()
+                    .allowedPorts()
+                    .get(0)
+                    .transportProtocol());
+        Assertions
+            .assertEquals(
+                517596277,
+                model
+                    .subnetOverrides()
+                    .get(0)
+                    .sharedPublicIpAddressConfiguration()
+                    .allowedPorts()
+                    .get(0)
+                    .backendPort());
+        Assertions.assertEquals("ympqanxrjkixtwb", model.subnetOverrides().get(0).virtualNetworkPoolName());
     }
 
     @org.junit.jupiter.api.Test
@@ -42,61 +64,108 @@ public final class VirtualNetworkPropertiesTests {
                     Arrays
                         .asList(
                             new Subnet()
-                                .withResourceId("hjm")
-                                .withLabSubnetName("nbsoqeqalarv")
-                                .withAllowPublicIp(UsagePermissionType.DENY),
-                            new Subnet()
-                                .withResourceId("nbtgfebwl")
-                                .withLabSubnetName("mhyreeudz")
-                                .withAllowPublicIp(UsagePermissionType.DEFAULT),
-                            new Subnet()
-                                .withResourceId("pdqmjxlyyzglgouw")
-                                .withLabSubnetName("mjjyuojq")
-                                .withAllowPublicIp(UsagePermissionType.DEFAULT),
-                            new Subnet()
-                                .withResourceId("xkjeytunlbfj")
-                                .withLabSubnetName("rusnk")
-                                .withAllowPublicIp(UsagePermissionType.ALLOW)))
-                .withDescription("y")
-                .withExternalProviderResourceId("unjqh")
+                                .withResourceId("leeyaswl")
+                                .withLabSubnetName("ugmrmf")
+                                .withAllowPublicIp(UsagePermissionType.DEFAULT)))
+                .withDescription("wtoaukhfk")
+                .withExternalProviderResourceId("isizm")
                 .withSubnetOverrides(
                     Arrays
                         .asList(
                             new SubnetOverride()
-                                .withResourceId("ird")
-                                .withLabSubnetName("isngwflqqmpizru")
-                                .withUseInVmCreationPermission(UsagePermissionType.ALLOW)
-                                .withUsePublicIpAddressPermission(UsagePermissionType.ALLOW)
-                                .withSharedPublicIpAddressConfiguration(
-                                    new SubnetSharedPublicIpAddressConfiguration().withAllowedPorts(Arrays.asList()))
-                                .withVirtualNetworkPoolName("wfcngjsaas"),
-                            new SubnetOverride()
-                                .withResourceId("xtmkzjvkviir")
-                                .withLabSubnetName("fgrwsdpgratzvz")
-                                .withUseInVmCreationPermission(UsagePermissionType.DENY)
-                                .withUsePublicIpAddressPermission(UsagePermissionType.DENY)
-                                .withSharedPublicIpAddressConfiguration(
-                                    new SubnetSharedPublicIpAddressConfiguration().withAllowedPorts(Arrays.asList()))
-                                .withVirtualNetworkPoolName("tctbrxkjzwrgxffm"),
-                            new SubnetOverride()
-                                .withResourceId("kwfbkgo")
-                                .withLabSubnetName("wopdbydpiz")
+                                .withResourceId("g")
+                                .withLabSubnetName("guamlj")
                                 .withUseInVmCreationPermission(UsagePermissionType.ALLOW)
                                 .withUsePublicIpAddressPermission(UsagePermissionType.DEFAULT)
                                 .withSharedPublicIpAddressConfiguration(
-                                    new SubnetSharedPublicIpAddressConfiguration().withAllowedPorts(Arrays.asList()))
-                                .withVirtualNetworkPoolName("biygnugjknfsmfct")));
+                                    new SubnetSharedPublicIpAddressConfiguration()
+                                        .withAllowedPorts(
+                                            Arrays
+                                                .asList(
+                                                    new Port()
+                                                        .withTransportProtocol(TransportProtocol.TCP)
+                                                        .withBackendPort(517596277),
+                                                    new Port()
+                                                        .withTransportProtocol(TransportProtocol.TCP)
+                                                        .withBackendPort(1243615425),
+                                                    new Port()
+                                                        .withTransportProtocol(TransportProtocol.UDP)
+                                                        .withBackendPort(1688050054),
+                                                    new Port()
+                                                        .withTransportProtocol(TransportProtocol.UDP)
+                                                        .withBackendPort(1018837274))))
+                                .withVirtualNetworkPoolName("ympqanxrjkixtwb"),
+                            new SubnetOverride()
+                                .withResourceId("oypnyg")
+                                .withLabSubnetName("hxcylhkgm")
+                                .withUseInVmCreationPermission(UsagePermissionType.DENY)
+                                .withUsePublicIpAddressPermission(UsagePermissionType.ALLOW)
+                                .withSharedPublicIpAddressConfiguration(
+                                    new SubnetSharedPublicIpAddressConfiguration()
+                                        .withAllowedPorts(
+                                            Arrays
+                                                .asList(
+                                                    new Port()
+                                                        .withTransportProtocol(TransportProtocol.TCP)
+                                                        .withBackendPort(2068666218),
+                                                    new Port()
+                                                        .withTransportProtocol(TransportProtocol.UDP)
+                                                        .withBackendPort(615187266),
+                                                    new Port()
+                                                        .withTransportProtocol(TransportProtocol.TCP)
+                                                        .withBackendPort(1407961228),
+                                                    new Port()
+                                                        .withTransportProtocol(TransportProtocol.TCP)
+                                                        .withBackendPort(1784777493))))
+                                .withVirtualNetworkPoolName("zvxnqmhrp"),
+                            new SubnetOverride()
+                                .withResourceId("df")
+                                .withLabSubnetName("kois")
+                                .withUseInVmCreationPermission(UsagePermissionType.ALLOW)
+                                .withUsePublicIpAddressPermission(UsagePermissionType.DENY)
+                                .withSharedPublicIpAddressConfiguration(
+                                    new SubnetSharedPublicIpAddressConfiguration()
+                                        .withAllowedPorts(
+                                            Arrays
+                                                .asList(
+                                                    new Port()
+                                                        .withTransportProtocol(TransportProtocol.UDP)
+                                                        .withBackendPort(2104491949),
+                                                    new Port()
+                                                        .withTransportProtocol(TransportProtocol.UDP)
+                                                        .withBackendPort(834790015))))
+                                .withVirtualNetworkPoolName("kdqzrdzsylo")));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkProperties.class);
-        Assertions.assertEquals("hjm", model.allowedSubnets().get(0).resourceId());
-        Assertions.assertEquals("nbsoqeqalarv", model.allowedSubnets().get(0).labSubnetName());
-        Assertions.assertEquals(UsagePermissionType.DENY, model.allowedSubnets().get(0).allowPublicIp());
-        Assertions.assertEquals("y", model.description());
-        Assertions.assertEquals("unjqh", model.externalProviderResourceId());
-        Assertions.assertEquals("ird", model.subnetOverrides().get(0).resourceId());
-        Assertions.assertEquals("isngwflqqmpizru", model.subnetOverrides().get(0).labSubnetName());
+        Assertions.assertEquals("leeyaswl", model.allowedSubnets().get(0).resourceId());
+        Assertions.assertEquals("ugmrmf", model.allowedSubnets().get(0).labSubnetName());
+        Assertions.assertEquals(UsagePermissionType.DEFAULT, model.allowedSubnets().get(0).allowPublicIp());
+        Assertions.assertEquals("wtoaukhfk", model.description());
+        Assertions.assertEquals("isizm", model.externalProviderResourceId());
+        Assertions.assertEquals("g", model.subnetOverrides().get(0).resourceId());
+        Assertions.assertEquals("guamlj", model.subnetOverrides().get(0).labSubnetName());
         Assertions.assertEquals(UsagePermissionType.ALLOW, model.subnetOverrides().get(0).useInVmCreationPermission());
         Assertions
-            .assertEquals(UsagePermissionType.ALLOW, model.subnetOverrides().get(0).usePublicIpAddressPermission());
-        Assertions.assertEquals("wfcngjsaas", model.subnetOverrides().get(0).virtualNetworkPoolName());
+            .assertEquals(UsagePermissionType.DEFAULT, model.subnetOverrides().get(0).usePublicIpAddressPermission());
+        Assertions
+            .assertEquals(
+                TransportProtocol.TCP,
+                model
+                    .subnetOverrides()
+                    .get(0)
+                    .sharedPublicIpAddressConfiguration()
+                    .allowedPorts()
+                    .get(0)
+                    .transportProtocol());
+        Assertions
+            .assertEquals(
+                517596277,
+                model
+                    .subnetOverrides()
+                    .get(0)
+                    .sharedPublicIpAddressConfiguration()
+                    .allowedPorts()
+                    .get(0)
+                    .backendPort());
+        Assertions.assertEquals("ympqanxrjkixtwb", model.subnetOverrides().get(0).virtualNetworkPoolName());
     }
 }

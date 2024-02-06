@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specific Databases to restore. */
+/**
+ * Specific Databases to restore.
+ */
 @Fluent
 public final class RestorableMongodbResourcesGetResultInner {
     /*
@@ -41,13 +43,15 @@ public final class RestorableMongodbResourcesGetResultInner {
     @JsonProperty(value = "collectionNames")
     private List<String> collectionNames;
 
-    /** Creates an instance of RestorableMongodbResourcesGetResultInner class. */
+    /**
+     * Creates an instance of RestorableMongodbResourcesGetResultInner class.
+     */
     public RestorableMongodbResourcesGetResultInner() {
     }
 
     /**
      * Get the id property: The unique resource identifier of the ARM resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +60,7 @@ public final class RestorableMongodbResourcesGetResultInner {
 
     /**
      * Get the name property: The name of the ARM resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +69,7 @@ public final class RestorableMongodbResourcesGetResultInner {
 
     /**
      * Get the type property: The type of Azure resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -74,7 +78,7 @@ public final class RestorableMongodbResourcesGetResultInner {
 
     /**
      * Get the databaseName property: The name of the database available for restore.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -83,7 +87,7 @@ public final class RestorableMongodbResourcesGetResultInner {
 
     /**
      * Set the databaseName property: The name of the database available for restore.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the RestorableMongodbResourcesGetResultInner object itself.
      */
@@ -94,7 +98,7 @@ public final class RestorableMongodbResourcesGetResultInner {
 
     /**
      * Get the collectionNames property: The names of the collections available for restore.
-     *
+     * 
      * @return the collectionNames value.
      */
     public List<String> collectionNames() {
@@ -103,7 +107,7 @@ public final class RestorableMongodbResourcesGetResultInner {
 
     /**
      * Set the collectionNames property: The names of the collections available for restore.
-     *
+     * 
      * @param collectionNames the collectionNames value to set.
      * @return the RestorableMongodbResourcesGetResultInner object itself.
      */
@@ -114,7 +118,7 @@ public final class RestorableMongodbResourcesGetResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

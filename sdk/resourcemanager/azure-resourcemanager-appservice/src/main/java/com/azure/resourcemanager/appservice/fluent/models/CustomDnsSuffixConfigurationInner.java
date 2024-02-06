@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.CustomDnsSuffixProvisioningSt
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Full view of the custom domain suffix configuration for ASEv3. */
+/**
+ * Full view of the custom domain suffix configuration for ASEv3.
+ */
 @Fluent
 public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private CustomDnsSuffixConfigurationProperties innerProperties;
 
-    /** Creates an instance of CustomDnsSuffixConfigurationInner class. */
+    /**
+     * Creates an instance of CustomDnsSuffixConfigurationInner class.
+     */
     public CustomDnsSuffixConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: CustomDnsSuffixConfiguration resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CustomDnsSuffixConfigurationProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDnsSuffixConfigurationInner withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CustomDnsSuffixProvisioningState provisioningState() {
@@ -49,7 +55,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
 
     /**
      * Get the provisioningDetails property: The provisioningDetails property.
-     *
+     * 
      * @return the provisioningDetails value.
      */
     public String provisioningDetails() {
@@ -58,7 +64,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
 
     /**
      * Get the dnsSuffix property: The default custom domain suffix to use for all sites deployed on the ASE.
-     *
+     * 
      * @return the dnsSuffix value.
      */
     public String dnsSuffix() {
@@ -67,7 +73,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
 
     /**
      * Set the dnsSuffix property: The default custom domain suffix to use for all sites deployed on the ASE.
-     *
+     * 
      * @param dnsSuffix the dnsSuffix value to set.
      * @return the CustomDnsSuffixConfigurationInner object itself.
      */
@@ -82,7 +88,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
     /**
      * Get the certificateUrl property: The URL referencing the Azure Key Vault certificate secret that should be used
      * as the default SSL/TLS certificate for sites with the custom domain suffix.
-     *
+     * 
      * @return the certificateUrl value.
      */
     public String certificateUrl() {
@@ -92,7 +98,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
     /**
      * Set the certificateUrl property: The URL referencing the Azure Key Vault certificate secret that should be used
      * as the default SSL/TLS certificate for sites with the custom domain suffix.
-     *
+     * 
      * @param certificateUrl the certificateUrl value to set.
      * @return the CustomDnsSuffixConfigurationInner object itself.
      */
@@ -107,7 +113,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
     /**
      * Get the keyVaultReferenceIdentity property: The user-assigned identity to use for resolving the key vault
      * certificate reference. If not specified, the system-assigned ASE identity will be used if available.
-     *
+     * 
      * @return the keyVaultReferenceIdentity value.
      */
     public String keyVaultReferenceIdentity() {
@@ -117,7 +123,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
     /**
      * Set the keyVaultReferenceIdentity property: The user-assigned identity to use for resolving the key vault
      * certificate reference. If not specified, the system-assigned ASE identity will be used if available.
-     *
+     * 
      * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
      * @return the CustomDnsSuffixConfigurationInner object itself.
      */
@@ -131,7 +137,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

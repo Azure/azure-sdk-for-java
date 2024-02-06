@@ -10,7 +10,9 @@ import com.azure.resourcemanager.devcenter.models.HealthStatusDetail;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
+import com.azure.resourcemanager.devcenter.models.SingleSignOnStatus;
 import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
+import com.azure.resourcemanager.devcenter.models.VirtualNetworkType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -29,6 +31,12 @@ public final class PoolProperties extends PoolUpdateProperties {
      */
     @JsonProperty(value = "healthStatusDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthStatusDetail> healthStatusDetails;
+
+    /*
+     * Indicates the number of provisioned Dev Boxes in this pool.
+     */
+    @JsonProperty(value = "devBoxCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer devBoxCount;
 
     /*
      * The provisioning state of the resource.
@@ -58,6 +66,15 @@ public final class PoolProperties extends PoolUpdateProperties {
      */
     public List<HealthStatusDetail> healthStatusDetails() {
         return this.healthStatusDetails;
+    }
+
+    /**
+     * Get the devBoxCount property: Indicates the number of provisioned Dev Boxes in this pool.
+     *
+     * @return the devBoxCount value.
+     */
+    public Integer devBoxCount() {
+        return this.devBoxCount;
     }
 
     /**
@@ -101,6 +118,34 @@ public final class PoolProperties extends PoolUpdateProperties {
     @Override
     public PoolProperties withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect) {
         super.withStopOnDisconnect(stopOnDisconnect);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PoolProperties withSingleSignOnStatus(SingleSignOnStatus singleSignOnStatus) {
+        super.withSingleSignOnStatus(singleSignOnStatus);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PoolProperties withDisplayName(String displayName) {
+        super.withDisplayName(displayName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PoolProperties withVirtualNetworkType(VirtualNetworkType virtualNetworkType) {
+        super.withVirtualNetworkType(virtualNetworkType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PoolProperties withManagedVirtualNetworkRegions(List<String> managedVirtualNetworkRegions) {
+        super.withManagedVirtualNetworkRegions(managedVirtualNetworkRegions);
         return this;
     }
 

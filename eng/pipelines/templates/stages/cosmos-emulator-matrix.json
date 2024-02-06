@@ -99,7 +99,7 @@
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.11",
         "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
-      }      
+      }
     }
   }
 }

@@ -24,6 +24,13 @@ public final class KeyVaultResourceSettings extends ResourceSettings {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public KeyVaultResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

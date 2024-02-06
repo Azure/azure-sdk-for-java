@@ -10,28 +10,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * TriggerBackupRequest
- *
- * <p>Trigger backup request.
+ * 
+ * Trigger backup request.
  */
 @Fluent
 public final class TriggerBackupRequest {
     /*
      * AdHocBackupRuleOptions
-     *
+     * 
      * Name for the Rule of the Policy which needs to be applied for this backup
      */
     @JsonProperty(value = "backupRuleOptions", required = true)
     private AdHocBackupRuleOptions backupRuleOptions;
 
-    /** Creates an instance of TriggerBackupRequest class. */
+    /**
+     * Creates an instance of TriggerBackupRequest class.
+     */
     public TriggerBackupRequest() {
     }
 
     /**
      * Get the backupRuleOptions property: AdHocBackupRuleOptions
-     *
-     * <p>Name for the Rule of the Policy which needs to be applied for this backup.
-     *
+     * 
+     * Name for the Rule of the Policy which needs to be applied for this backup.
+     * 
      * @return the backupRuleOptions value.
      */
     public AdHocBackupRuleOptions backupRuleOptions() {
@@ -40,9 +42,9 @@ public final class TriggerBackupRequest {
 
     /**
      * Set the backupRuleOptions property: AdHocBackupRuleOptions
-     *
-     * <p>Name for the Rule of the Policy which needs to be applied for this backup.
-     *
+     * 
+     * Name for the Rule of the Policy which needs to be applied for this backup.
+     * 
      * @param backupRuleOptions the backupRuleOptions value to set.
      * @return the TriggerBackupRequest object itself.
      */
@@ -53,15 +55,13 @@ public final class TriggerBackupRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (backupRuleOptions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property backupRuleOptions in model TriggerBackupRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property backupRuleOptions in model TriggerBackupRequest"));
         } else {
             backupRuleOptions().validate();
         }

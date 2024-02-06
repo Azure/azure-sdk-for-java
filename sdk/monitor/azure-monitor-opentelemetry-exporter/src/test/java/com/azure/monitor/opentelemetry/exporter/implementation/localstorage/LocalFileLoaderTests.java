@@ -9,6 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
+import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import org.junit.jupiter.api.Test;
@@ -79,13 +80,15 @@ public class LocalFileLoaderTests {
     @Test
     public void testDeleteFilePermanentlyOnSuccess() throws Exception {
         HttpClient mockedClient = getMockHttpClientSuccess();
-        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder().httpClient(mockedClient);
+        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder()
+            .httpClient(mockedClient)
+            .tracer(new NoopTracer());
         LocalFileCache localFileCache = new LocalFileCache(tempFolder);
         LocalFileWriter localFileWriter =
             new LocalFileWriter(50, localFileCache, tempFolder, null, false);
         LocalFileLoader localFileLoader = new LocalFileLoader(localFileCache, tempFolder, null, false);
 
-        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
+        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build(), null);
 
         // persist 10 files to disk
         for (int i = 0; i < 10; i++) {
@@ -131,14 +134,16 @@ public class LocalFileLoaderTests {
                 invocation ->
                     Mono.error(
                         () -> new Exception("this is expected to be logged by the operation logger")));
-        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder().httpClient(mockedClient);
+        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder()
+            .httpClient(mockedClient)
+            .tracer(new NoopTracer());
         LocalFileCache localFileCache = new LocalFileCache(tempFolder);
 
         LocalFileLoader localFileLoader = new LocalFileLoader(localFileCache, tempFolder, null, false);
         LocalFileWriter localFileWriter =
             new LocalFileWriter(50, localFileCache, tempFolder, null, false);
 
-        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
+        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build(), null);
 
         // persist 10 files to disk
         for (int i = 0; i < 10; i++) {

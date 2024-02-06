@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deleted Backup Instance. */
+/**
+ * Deleted Backup Instance.
+ */
 @Fluent
 public final class DeletedBackupInstance extends BackupInstance {
     /*
@@ -16,69 +18,87 @@ public final class DeletedBackupInstance extends BackupInstance {
     @JsonProperty(value = "deletionInfo", access = JsonProperty.Access.WRITE_ONLY)
     private DeletionInfo deletionInfo;
 
-    /** Creates an instance of DeletedBackupInstance class. */
+    /**
+     * Creates an instance of DeletedBackupInstance class.
+     */
     public DeletedBackupInstance() {
     }
 
     /**
      * Get the deletionInfo property: Deletion info of Backup Instance.
-     *
+     * 
      * @return the deletionInfo value.
      */
     public DeletionInfo deletionInfo() {
         return this.deletionInfo;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedBackupInstance withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedBackupInstance withDataSourceInfo(Datasource dataSourceInfo) {
         super.withDataSourceInfo(dataSourceInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedBackupInstance withDataSourceSetInfo(DatasourceSet dataSourceSetInfo) {
         super.withDataSourceSetInfo(dataSourceSetInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedBackupInstance withPolicyInfo(PolicyInfo policyInfo) {
         super.withPolicyInfo(policyInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedBackupInstance withDatasourceAuthCredentials(AuthCredentials datasourceAuthCredentials) {
         super.withDatasourceAuthCredentials(datasourceAuthCredentials);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedBackupInstance withValidationType(ValidationType validationType) {
         super.withValidationType(validationType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedBackupInstance withIdentityDetails(IdentityDetails identityDetails) {
         super.withIdentityDetails(identityDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedBackupInstance withObjectType(String objectType) {
         super.withObjectType(objectType);
@@ -87,7 +107,7 @@ public final class DeletedBackupInstance extends BackupInstance {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

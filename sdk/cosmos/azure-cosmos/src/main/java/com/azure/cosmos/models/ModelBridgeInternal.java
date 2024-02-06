@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
@@ -112,12 +113,12 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
-        return new CosmosStoredProcedureProperties(jsonString);
+        return new CosmosStoredProcedureProperties(Utils.parseJson(jsonString));
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosPermissionProperties createCosmosPermissionProperties(String jsonString) {
-        return new CosmosPermissionProperties(jsonString);
+        return new CosmosPermissionProperties(Utils.parseJson(jsonString));
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -225,28 +226,10 @@ public final class ModelBridgeInternal {
         return cosmosContainerRequestOptions.toRequestOptions();
     }
 
-//    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-//    public static CosmosContainerRequestOptions setOfferThroughput(CosmosContainerRequestOptions cosmosContainerRequestOptions,
-//                                                                   Integer offerThroughput) {
-//        return cosmosContainerRequestOptions.setOfferThroughput(offerThroughput);
-//    }
-//
-//    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-//    public static CosmosContainerRequestOptions setThroughputProperties(CosmosContainerRequestOptions cosmosContainerRequestOptions,
-//                                                                   ThroughputProperties throughputProperties) {
-//        return cosmosContainerRequestOptions.setThroughputProperties(throughputProperties);
-//    }
-
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static RequestOptions toRequestOptions(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions) {
         return cosmosDatabaseRequestOptions.toRequestOptions();
     }
-
-//    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-//    public static CosmosDatabaseRequestOptions setOfferThroughput(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
-//                                                                   Integer offerThroughput) {
-//        return cosmosDatabaseRequestOptions.setOfferThroughput(offerThroughput);
-//    }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosDatabaseRequestOptions setThroughputProperties(
@@ -342,7 +325,7 @@ public final class ModelBridgeInternal {
         Function<JsonNode, T> factoryMethod,
         Class<T> cls) {
 
-        return new FeedResponse<T>(response.getQueryResponse(factoryMethod, cls), response);
+        return new FeedResponse<>(response.getQueryResponse(factoryMethod, cls), response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -356,7 +339,7 @@ public final class ModelBridgeInternal {
         Function<JsonNode, T> factoryMethod,
         Class<T> cls) {
 
-        return new FeedResponse<T>(
+        return new FeedResponse<>(
             noChanges(response) ? Collections.emptyList() : response.getQueryResponse(factoryMethod, cls),
             response.getResponseHeaders(), noChanges(response));
     }
@@ -439,7 +422,7 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Object getPartitionKeyObject(PartitionKey right) {
-        return right.getKeyObject();
+        throw new UnsupportedOperationException("getPartitionKeyObject is not supported");
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -709,18 +692,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static QueryInfo getQueryInfoFromFeedResponse(FeedResponse<?> response) {
-        return response.getQueryInfo();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static boolean getNoChangesFromFeedResponse(FeedResponse<?> response) {
         return response.getNoChanges();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosQueryRequestOptions createQueryRequestOptions(CosmosQueryRequestOptions options) {
-        return new CosmosQueryRequestOptions(options);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -757,16 +730,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static boolean getEmptyPagesAllowedFromQueryRequestOptions(CosmosQueryRequestOptions options) {
-        return options.isEmptyPagesAllowed();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosQueryRequestOptions setQueryRequestOptionsEmptyPagesAllowed(CosmosQueryRequestOptions options, boolean emptyPageAllowed) {
-        return options.setEmptyPagesAllowed(emptyPageAllowed);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static IndexingPolicy createIndexingPolicy(Index[] indexes) {
         return new IndexingPolicy(indexes);
     }
@@ -778,7 +741,7 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> int getPayloadLength(CosmosItemResponse<T> cosmosItemResponse) {
-        return cosmosItemResponse.responseBodyAsByteArray != null ? cosmosItemResponse.responseBodyAsByteArray.length : 0;
+        return cosmosItemResponse.getResponsePayloadLength();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -933,11 +896,6 @@ public final class ModelBridgeInternal {
             operation,
             exception,
             batchContext);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static int getPayloadLength(CosmosBatchResponse cosmosBatchResponse) {
-        return cosmosBatchResponse.getResponseLength();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

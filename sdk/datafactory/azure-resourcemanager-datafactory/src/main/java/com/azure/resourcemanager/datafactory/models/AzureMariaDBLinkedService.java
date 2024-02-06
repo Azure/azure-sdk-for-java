@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Database for MariaDB linked service. */
+/**
+ * Azure Database for MariaDB linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureMariaDB")
 @Fluent
@@ -24,41 +26,51 @@ public final class AzureMariaDBLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureMariaDBLinkedServiceTypeProperties innerTypeProperties = new AzureMariaDBLinkedServiceTypeProperties();
 
-    /** Creates an instance of AzureMariaDBLinkedService class. */
+    /**
+     * Creates an instance of AzureMariaDBLinkedService class.
+     */
     public AzureMariaDBLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Azure Database for MariaDB linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AzureMariaDBLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMariaDBLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMariaDBLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMariaDBLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMariaDBLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -68,7 +80,7 @@ public final class AzureMariaDBLinkedService extends LinkedService {
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -78,7 +90,7 @@ public final class AzureMariaDBLinkedService extends LinkedService {
     /**
      * Set the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AzureMariaDBLinkedService object itself.
      */
@@ -92,7 +104,7 @@ public final class AzureMariaDBLinkedService extends LinkedService {
 
     /**
      * Get the pwd property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the pwd value.
      */
     public AzureKeyVaultSecretReference pwd() {
@@ -101,7 +113,7 @@ public final class AzureMariaDBLinkedService extends LinkedService {
 
     /**
      * Set the pwd property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param pwd the pwd value to set.
      * @return the AzureMariaDBLinkedService object itself.
      */
@@ -114,23 +126,23 @@ public final class AzureMariaDBLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMariaDBLinkedService object itself.
      */
-    public AzureMariaDBLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureMariaDBLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureMariaDBLinkedServiceTypeProperties();
         }
@@ -140,17 +152,15 @@ public final class AzureMariaDBLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AzureMariaDBLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model AzureMariaDBLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

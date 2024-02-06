@@ -9,9 +9,11 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ObservableHelper;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -36,7 +38,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -47,6 +48,10 @@ import java.util.stream.Collectors;
  * This is meant to be internally used only by our sdk.
  */
 class DocumentProducer<T> {
+
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
     private static final Logger logger = LoggerFactory.getLogger(DocumentProducer.class);
     private int retries;
 
@@ -98,7 +103,7 @@ class DocumentProducer<T> {
     protected final String collectionLink;
     protected final TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc;
     protected final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFuncWithRetries;
-    protected final Callable<DocumentClientRetryPolicy> createRetryPolicyFunc;
+    protected final Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc;
     protected final int pageSize;
     protected final UUID correlatedActivityId;
     public int top;
@@ -114,7 +119,7 @@ class DocumentProducer<T> {
             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
             String collectionLink,
-            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
+            Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
             Class<T> resourceType ,
             UUID correlatedActivityId,
             int initialPageSize, // = -1,
@@ -132,37 +137,47 @@ class DocumentProducer<T> {
         this.fetchSchedulingMetrics.ready();
         this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(feedRange.getRange().toString());
         this.operationContextTextProvider = operationContextTextProvider;
-        this.executeRequestFuncWithRetries = request -> {
-            retries = -1;
-            this.fetchSchedulingMetrics.start();
-            this.fetchExecutionRangeAccumulator.beginFetchRange();
-            DocumentClientRetryPolicy retryPolicy = null;
-            if (createRetryPolicyFunc != null) {
-                try {
-                    retryPolicy = createRetryPolicyFunc.call();
-                } catch (Exception e) {
-                    return Mono.error(e);
-                }
-            }
 
-            DocumentClientRetryPolicy finalRetryPolicy = retryPolicy;
+        BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<T>>>
+            executeFeedOperationCore = (clientRetryPolicyFactory, request) -> {
+            DocumentClientRetryPolicy finalRetryPolicy = clientRetryPolicyFactory.get();
             return ObservableHelper.inlineIfPossibleAsObs(
-                    () -> {
-                        if(finalRetryPolicy != null) {
-                            finalRetryPolicy.onBeforeSendRequest(request);
-                        }
+                () -> {
+                    if(finalRetryPolicy != null) {
+                        finalRetryPolicy.onBeforeSendRequest(request);
+                    }
 
-                        ++retries;
-                        return executeRequestFunc.apply(request);
-                    }, retryPolicy);
+                    ++retries;
+                    return executeRequestFunc.apply(request);
+                }, finalRetryPolicy);
         };
 
         this.correlatedActivityId = correlatedActivityId;
 
-        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions != null ?
-                                             ModelBridgeInternal.createQueryRequestOptions(cosmosQueryRequestOptions)
-                                             : new CosmosQueryRequestOptions();
+        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions != null
+            ? qryOptionsAccessor.clone(cosmosQueryRequestOptions)
+            : new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsContinuationToken(this.cosmosQueryRequestOptions, initialContinuationToken);
+
+        this.executeRequestFuncWithRetries = request -> {
+            retries = -1;
+            this.fetchSchedulingMetrics.start();
+            this.fetchExecutionRangeAccumulator.beginFetchRange();
+
+            return this.client.executeFeedOperationWithAvailabilityStrategy(
+                ResourceType.Document,
+                OperationType.Query,
+                () -> {
+                    if (createRetryPolicyFunc != null) {
+                        return createRetryPolicyFunc.get();
+                    }
+
+                    return null;
+                },
+                request,
+                executeFeedOperationCore);
+        };
+
         this.lastResponseContinuationToken = initialContinuationToken;
         this.resourceType = resourceType;
         this.collectionLink = collectionLink;

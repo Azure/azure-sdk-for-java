@@ -5,75 +5,77 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
-/** The IncidentResult model. */
+/**
+ * The IncidentResult model.
+ */
 @Fluent
-public final class IncidentResult {
+public final class IncidentResult implements JsonSerializable<IncidentResult> {
     /*
      * data feed unique id
-     *
+     * 
      * only return for alerting anomaly result
      */
-    @JsonProperty(value = "dataFeedId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID dataFeedId;
 
     /*
      * metric unique id
-     *
+     * 
      * only return for alerting incident result
      */
-    @JsonProperty(value = "metricId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID metricId;
 
     /*
      * anomaly detection configuration unique id
-     *
+     * 
      * only return for alerting incident result
      */
-    @JsonProperty(value = "anomalyDetectionConfigurationId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID anomalyDetectionConfigurationId;
 
     /*
      * incident id
      */
-    @JsonProperty(value = "incidentId", required = true)
     private String incidentId;
 
     /*
      * incident start time
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * incident last time
      */
-    @JsonProperty(value = "lastTime", required = true)
     private OffsetDateTime lastTime;
 
     /*
      * The rootNode property.
      */
-    @JsonProperty(value = "rootNode", required = true)
     private SeriesIdentity rootNode;
 
     /*
      * The property property.
      */
-    @JsonProperty(value = "property", required = true)
     private IncidentProperty property;
 
-    /** Creates an instance of IncidentResult class. */
-    public IncidentResult() {}
+    /**
+     * Creates an instance of IncidentResult class.
+     */
+    public IncidentResult() {
+    }
 
     /**
      * Get the dataFeedId property: data feed unique id
-     *
-     * <p>only return for alerting anomaly result.
-     *
+     * 
+     * only return for alerting anomaly result.
+     * 
      * @return the dataFeedId value.
      */
     public UUID getDataFeedId() {
@@ -82,9 +84,9 @@ public final class IncidentResult {
 
     /**
      * Get the metricId property: metric unique id
-     *
-     * <p>only return for alerting incident result.
-     *
+     * 
+     * only return for alerting incident result.
+     * 
      * @return the metricId value.
      */
     public UUID getMetricId() {
@@ -93,9 +95,9 @@ public final class IncidentResult {
 
     /**
      * Get the anomalyDetectionConfigurationId property: anomaly detection configuration unique id
-     *
-     * <p>only return for alerting incident result.
-     *
+     * 
+     * only return for alerting incident result.
+     * 
      * @return the anomalyDetectionConfigurationId value.
      */
     public UUID getAnomalyDetectionConfigurationId() {
@@ -104,7 +106,7 @@ public final class IncidentResult {
 
     /**
      * Get the incidentId property: incident id.
-     *
+     * 
      * @return the incidentId value.
      */
     public String getIncidentId() {
@@ -113,7 +115,7 @@ public final class IncidentResult {
 
     /**
      * Set the incidentId property: incident id.
-     *
+     * 
      * @param incidentId the incidentId value to set.
      * @return the IncidentResult object itself.
      */
@@ -124,7 +126,7 @@ public final class IncidentResult {
 
     /**
      * Get the startTime property: incident start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -133,7 +135,7 @@ public final class IncidentResult {
 
     /**
      * Set the startTime property: incident start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the IncidentResult object itself.
      */
@@ -144,7 +146,7 @@ public final class IncidentResult {
 
     /**
      * Get the lastTime property: incident last time.
-     *
+     * 
      * @return the lastTime value.
      */
     public OffsetDateTime getLastTime() {
@@ -153,7 +155,7 @@ public final class IncidentResult {
 
     /**
      * Set the lastTime property: incident last time.
-     *
+     * 
      * @param lastTime the lastTime value to set.
      * @return the IncidentResult object itself.
      */
@@ -164,7 +166,7 @@ public final class IncidentResult {
 
     /**
      * Get the rootNode property: The rootNode property.
-     *
+     * 
      * @return the rootNode value.
      */
     public SeriesIdentity getRootNode() {
@@ -173,7 +175,7 @@ public final class IncidentResult {
 
     /**
      * Set the rootNode property: The rootNode property.
-     *
+     * 
      * @param rootNode the rootNode value to set.
      * @return the IncidentResult object itself.
      */
@@ -184,7 +186,7 @@ public final class IncidentResult {
 
     /**
      * Get the property property: The property property.
-     *
+     * 
      * @return the property value.
      */
     public IncidentProperty getProperty() {
@@ -193,12 +195,69 @@ public final class IncidentResult {
 
     /**
      * Set the property property: The property property.
-     *
+     * 
      * @param property the property value to set.
      * @return the IncidentResult object itself.
      */
     public IncidentResult setProperty(IncidentProperty property) {
         this.property = property;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("incidentId", this.incidentId);
+        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
+        jsonWriter.writeStringField("lastTime", Objects.toString(this.lastTime, null));
+        jsonWriter.writeJsonField("rootNode", this.rootNode);
+        jsonWriter.writeJsonField("property", this.property);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncidentResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncidentResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IncidentResult.
+     */
+    public static IncidentResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncidentResult deserializedIncidentResult = new IncidentResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("incidentId".equals(fieldName)) {
+                    deserializedIncidentResult.incidentId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedIncidentResult.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("lastTime".equals(fieldName)) {
+                    deserializedIncidentResult.lastTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("rootNode".equals(fieldName)) {
+                    deserializedIncidentResult.rootNode = SeriesIdentity.fromJson(reader);
+                } else if ("property".equals(fieldName)) {
+                    deserializedIncidentResult.property = IncidentProperty.fromJson(reader);
+                } else if ("dataFeedId".equals(fieldName)) {
+                    deserializedIncidentResult.dataFeedId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("metricId".equals(fieldName)) {
+                    deserializedIncidentResult.metricId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("anomalyDetectionConfigurationId".equals(fieldName)) {
+                    deserializedIncidentResult.anomalyDetectionConfigurationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncidentResult;
+        });
     }
 }

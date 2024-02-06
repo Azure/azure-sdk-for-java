@@ -20,41 +20,28 @@ public final class ProtectedItemsImpl implements ProtectedItems {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ProtectedItemsImpl(
-        ProtectedItemsClient innerClient,
+    public ProtectedItemsImpl(ProtectedItemsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ProtectedItemResource> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String filter,
-        Context context) {
-        Response<ProtectedItemResourceInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter, context);
+    public Response<ProtectedItemResource> getWithResponse(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String filter, Context context) {
+        Response<ProtectedItemResourceInner> inner = this.serviceClient().getWithResponse(vaultName, resourceGroupName,
+            fabricName, containerName, protectedItemName, filter, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProtectedItemResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ProtectedItemResource get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
-        ProtectedItemResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName);
+    public ProtectedItemResource get(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName) {
+        ProtectedItemResourceInner inner
+            = this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName);
         if (inner != null) {
             return new ProtectedItemResourceImpl(inner, this.manager());
         } else {
@@ -62,206 +49,136 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, context);
+    public Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, Context context) {
+        return this.serviceClient().deleteWithResponse(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, context);
     }
 
-    public void delete(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
+    public void delete(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName) {
         this.serviceClient().delete(vaultName, resourceGroupName, fabricName, containerName, protectedItemName);
     }
 
     public ProtectedItemResource getById(String id) {
-        String vaultName = Utils.getValueFromIdByName(id, "vaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "backupFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "backupFabrics");
         if (fabricName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
         }
-        String containerName = Utils.getValueFromIdByName(id, "protectionContainers");
+        String containerName = ResourceManagerUtils.getValueFromIdByName(id, "protectionContainers");
         if (containerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'protectionContainers'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'protectionContainers'.", id)));
         }
-        String protectedItemName = Utils.getValueFromIdByName(id, "protectedItems");
+        String protectedItemName = ResourceManagerUtils.getValueFromIdByName(id, "protectedItems");
         if (protectedItemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
         }
         String localFilter = null;
-        return this
-            .getWithResponse(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, localFilter, Context.NONE)
-            .getValue();
+        return this.getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            localFilter, Context.NONE).getValue();
     }
 
     public Response<ProtectedItemResource> getByIdWithResponse(String id, String filter, Context context) {
-        String vaultName = Utils.getValueFromIdByName(id, "vaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "backupFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "backupFabrics");
         if (fabricName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
         }
-        String containerName = Utils.getValueFromIdByName(id, "protectionContainers");
+        String containerName = ResourceManagerUtils.getValueFromIdByName(id, "protectionContainers");
         if (containerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'protectionContainers'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'protectionContainers'.", id)));
         }
-        String protectedItemName = Utils.getValueFromIdByName(id, "protectedItems");
+        String protectedItemName = ResourceManagerUtils.getValueFromIdByName(id, "protectedItems");
         if (protectedItemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
         }
-        return this
-            .getWithResponse(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter, context);
+        return this.getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter,
+            context);
     }
 
     public void deleteById(String id) {
-        String vaultName = Utils.getValueFromIdByName(id, "vaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "backupFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "backupFabrics");
         if (fabricName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
         }
-        String containerName = Utils.getValueFromIdByName(id, "protectionContainers");
+        String containerName = ResourceManagerUtils.getValueFromIdByName(id, "protectionContainers");
         if (containerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'protectionContainers'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'protectionContainers'.", id)));
         }
-        String protectedItemName = Utils.getValueFromIdByName(id, "protectedItems");
+        String protectedItemName = ResourceManagerUtils.getValueFromIdByName(id, "protectedItems");
         if (protectedItemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
         }
-        this
-            .deleteWithResponse(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, Context.NONE);
+        this.deleteWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String vaultName = Utils.getValueFromIdByName(id, "vaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "backupFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "backupFabrics");
         if (fabricName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
         }
-        String containerName = Utils.getValueFromIdByName(id, "protectionContainers");
+        String containerName = ResourceManagerUtils.getValueFromIdByName(id, "protectionContainers");
         if (containerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'protectionContainers'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'protectionContainers'.", id)));
         }
-        String protectedItemName = Utils.getValueFromIdByName(id, "protectedItems");
+        String protectedItemName = ResourceManagerUtils.getValueFromIdByName(id, "protectedItems");
         if (protectedItemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
         }
-        return this
-            .deleteWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, context);
+        return this.deleteWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            context);
     }
 
     private ProtectedItemsClient serviceClient() {

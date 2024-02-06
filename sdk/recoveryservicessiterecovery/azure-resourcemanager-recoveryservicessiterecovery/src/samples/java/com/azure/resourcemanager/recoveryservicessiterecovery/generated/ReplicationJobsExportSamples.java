@@ -9,7 +9,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.JobQueryPar
 /** Samples for ReplicationJobs Export. */
 public final class ReplicationJobsExportSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_Export.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_Export.json
      */
     /**
      * Sample code: Exports the details of the Azure Site Recovery jobs of the vault.

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Qos Traffic Profiler IP Range properties. */
+/**
+ * Qos Traffic Profiler IP Range properties.
+ */
 @Fluent
 public final class QosIpRange {
     /*
@@ -22,13 +24,15 @@ public final class QosIpRange {
     @JsonProperty(value = "endIP")
     private String endIp;
 
-    /** Creates an instance of QosIpRange class. */
+    /**
+     * Creates an instance of QosIpRange class.
+     */
     public QosIpRange() {
     }
 
     /**
      * Get the startIp property: Start IP Address.
-     *
+     * 
      * @return the startIp value.
      */
     public String startIp() {
@@ -37,7 +41,7 @@ public final class QosIpRange {
 
     /**
      * Set the startIp property: Start IP Address.
-     *
+     * 
      * @param startIp the startIp value to set.
      * @return the QosIpRange object itself.
      */
@@ -48,7 +52,7 @@ public final class QosIpRange {
 
     /**
      * Get the endIp property: End IP Address.
-     *
+     * 
      * @return the endIp value.
      */
     public String endIp() {
@@ -57,7 +61,7 @@ public final class QosIpRange {
 
     /**
      * Set the endIp property: End IP Address.
-     *
+     * 
      * @param endIp the endIp value to set.
      * @return the QosIpRange object itself.
      */
@@ -68,7 +72,7 @@ public final class QosIpRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

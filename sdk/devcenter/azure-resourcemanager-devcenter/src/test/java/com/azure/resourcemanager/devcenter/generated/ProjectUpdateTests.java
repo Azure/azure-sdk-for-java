@@ -16,32 +16,36 @@ public final class ProjectUpdateTests {
         ProjectUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"devCenterId\":\"tbvpysszdnru\",\"description\":\"guhmuouqfpr\",\"maxDevBoxesPerUser\":584563122},\"tags\":{\"itnwuizgazxufi\":\"g\",\"hr\":\"uckyf\",\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"location\":\"km\"}")
+                    "{\"properties\":{\"devCenterId\":\"cdgea\",\"description\":\"gphuticndvka\",\"maxDevBoxesPerUser\":563001635,\"displayName\":\"i\"},\"tags\":{\"rokft\":\"hxh\",\"iawxklry\":\"xolniwpwcukjfk\"},\"location\":\"wckbasyypnd\"}")
                 .toObject(ProjectUpdate.class);
-        Assertions.assertEquals("g", model.tags().get("itnwuizgazxufi"));
-        Assertions.assertEquals("km", model.location());
-        Assertions.assertEquals("tbvpysszdnru", model.devCenterId());
-        Assertions.assertEquals("guhmuouqfpr", model.description());
-        Assertions.assertEquals(584563122, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("hxh", model.tags().get("rokft"));
+        Assertions.assertEquals("wckbasyypnd", model.location());
+        Assertions.assertEquals("cdgea", model.devCenterId());
+        Assertions.assertEquals("gphuticndvka", model.description());
+        Assertions.assertEquals(563001635, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("i", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProjectUpdate model =
             new ProjectUpdate()
-                .withTags(mapOf("itnwuizgazxufi", "g", "hr", "uckyf", "zwdzuh", "idf", "wxmnteiwao", "ymwisdkft"))
-                .withLocation("km")
-                .withDevCenterId("tbvpysszdnru")
-                .withDescription("guhmuouqfpr")
-                .withMaxDevBoxesPerUser(584563122);
+                .withTags(mapOf("rokft", "hxh", "iawxklry", "xolniwpwcukjfk"))
+                .withLocation("wckbasyypnd")
+                .withDevCenterId("cdgea")
+                .withDescription("gphuticndvka")
+                .withMaxDevBoxesPerUser(563001635)
+                .withDisplayName("i");
         model = BinaryData.fromObject(model).toObject(ProjectUpdate.class);
-        Assertions.assertEquals("g", model.tags().get("itnwuizgazxufi"));
-        Assertions.assertEquals("km", model.location());
-        Assertions.assertEquals("tbvpysszdnru", model.devCenterId());
-        Assertions.assertEquals("guhmuouqfpr", model.description());
-        Assertions.assertEquals(584563122, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("hxh", model.tags().get("rokft"));
+        Assertions.assertEquals("wckbasyypnd", model.location());
+        Assertions.assertEquals("cdgea", model.devCenterId());
+        Assertions.assertEquals("gphuticndvka", model.description());
+        Assertions.assertEquals(563001635, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("i", model.displayName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -455,6 +455,15 @@ public final class CosmosDiagnostics {
 
                     return false;
                 }
+
+                @Override
+                public void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx) {
+                    if (cosmosDiagnostics == null) {
+                        return;
+                    }
+
+                    cosmosDiagnostics.setDiagnosticsContext(ctx);
+                }
             });
     }
 

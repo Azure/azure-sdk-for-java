@@ -9,10 +9,8 @@ import com.azure.resourcemanager.datafactory.fluent.models.ManagedIdentityCreden
 import com.azure.resourcemanager.datafactory.models.ManagedIdentityCredential;
 import com.azure.resourcemanager.datafactory.models.ManagedIdentityCredentialResource;
 
-public final class ManagedIdentityCredentialResourceImpl
-    implements ManagedIdentityCredentialResource,
-        ManagedIdentityCredentialResource.Definition,
-        ManagedIdentityCredentialResource.Update {
+public final class ManagedIdentityCredentialResourceImpl implements ManagedIdentityCredentialResource,
+    ManagedIdentityCredentialResource.Definition, ManagedIdentityCredentialResource.Update {
     private ManagedIdentityCredentialResourceInner innerObject;
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
@@ -66,29 +64,21 @@ public final class ManagedIdentityCredentialResourceImpl
     }
 
     public ManagedIdentityCredentialResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCredentialOperations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, credentialName, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getCredentialOperations().createOrUpdateWithResponse(resourceGroupName,
+                factoryName, credentialName, this.innerModel(), createIfMatch, Context.NONE).getValue();
         return this;
     }
 
     public ManagedIdentityCredentialResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCredentialOperations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, credentialName, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getCredentialOperations().createOrUpdateWithResponse(resourceGroupName,
+                factoryName, credentialName, this.innerModel(), createIfMatch, context).getValue();
         return this;
     }
 
-    ManagedIdentityCredentialResourceImpl(
-        String name, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+    ManagedIdentityCredentialResourceImpl(String name,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = new ManagedIdentityCredentialResourceInner();
         this.serviceManager = serviceManager;
         this.credentialName = name;
@@ -101,56 +91,39 @@ public final class ManagedIdentityCredentialResourceImpl
     }
 
     public ManagedIdentityCredentialResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCredentialOperations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, credentialName, this.innerModel(), updateIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getCredentialOperations().createOrUpdateWithResponse(resourceGroupName,
+                factoryName, credentialName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
         return this;
     }
 
     public ManagedIdentityCredentialResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCredentialOperations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, credentialName, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getCredentialOperations().createOrUpdateWithResponse(resourceGroupName,
+                factoryName, credentialName, this.innerModel(), updateIfMatch, context).getValue();
         return this;
     }
 
-    ManagedIdentityCredentialResourceImpl(
-        ManagedIdentityCredentialResourceInner innerObject,
+    ManagedIdentityCredentialResourceImpl(ManagedIdentityCredentialResourceInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.credentialName = Utils.getValueFromIdByName(innerObject.id(), "credentials");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.credentialName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "credentials");
     }
 
     public ManagedIdentityCredentialResource refresh() {
         String localIfNoneMatch = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCredentialOperations()
-                .getWithResponse(resourceGroupName, factoryName, credentialName, localIfNoneMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCredentialOperations()
+            .getWithResponse(resourceGroupName, factoryName, credentialName, localIfNoneMatch, Context.NONE).getValue();
         return this;
     }
 
     public ManagedIdentityCredentialResource refresh(Context context) {
         String localIfNoneMatch = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCredentialOperations()
-                .getWithResponse(resourceGroupName, factoryName, credentialName, localIfNoneMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCredentialOperations()
+            .getWithResponse(resourceGroupName, factoryName, credentialName, localIfNoneMatch, context).getValue();
         return this;
     }
 

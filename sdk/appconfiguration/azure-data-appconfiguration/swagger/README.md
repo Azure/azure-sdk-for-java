@@ -30,10 +30,10 @@ autorest
 ```yaml
 namespace: com.azure.data.appconfiguration
 input-file: 
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2f7a3cbda00c6ae4199940d500e5212b6481d9ea/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/preview/2022-11-01-preview/appconfiguration.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-10-01/appconfiguration.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter,CompositionType,Snapshot,ConfigurationSettingsSnapshot,SnapshotStatus,SnapshotFields,SnapshotFields
+custom-types: KeyValueFields,KeyValueFilter,SettingFields,ConfigurationSettingsFilter,CompositionType,SnapshotComposition,Snapshot,ConfigurationSnapshot,Status,ConfigurationSnapshotStatus,SnapshotFields,SnapshotFields
 customization-class: src/main/java/AppConfigCustomization.java
 ```
 
@@ -56,6 +56,15 @@ default-http-exception-type: com.azure.core.exception.HttpResponseException
 stream-style-serialization: true
 ```
 
+### Renames enums
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.Snapshot.properties.composition_type
+    transform: >
+      $["x-ms-enum"].name = "SnapshotComposition";
+```
+
 ### Renames properties
 ```yaml
 directive:
@@ -67,6 +76,12 @@ directive:
       $["expires"]["x-ms-client-name"] = "expiresAt";
       $["size"]["x-ms-client-name"] = "sizeInBytes";
       $["etag"]["x-ms-client-name"] = "eTag";
+      $["composition_type"]["x-ms-client-name"] = "snapshotComposition";
+      $["status"]["x-ms-enum"].name = "ConfigurationSnapshotStatus";
+  - from: swagger-document
+    where: $.definitions.SnapshotUpdateParameters.properties
+    transform: >
+      $["status"]["x-ms-enum"].name = "ConfigurationSnapshotStatus";
 ```
 
 ### Renames
@@ -74,14 +89,18 @@ directive:
 directive:
   - rename-model:
       from: KeyValueFilter
-      to: SnapshotSettingFilter
+      to: ConfigurationSettingsFilter
   - rename-model:
       from: Snapshot
-      to: ConfigurationSettingsSnapshot
+      to: ConfigurationSnapshot
   - from: swagger-document
     where: $.parameters.KeyValueFields
     transform: >
-      $.items["x-ms-enum"].name = "SettingFields"; 
+      $.items["x-ms-enum"].name = "SettingFields";
+  - from: swagger-document
+    where: $.parameters.Status
+    transform: >
+      $.items["x-ms-enum"].name = "ConfigurationSnapshotStatus";
 ```
 
 ### Modify SettingField enums
@@ -158,7 +177,7 @@ directive:
         },
         {
           "value": "composition_type",
-          "name": "composition_type",
+          "name": "snapshot_composition",
           "description": "Populates the snapshot 'composition_type' from the service."
         },
         {

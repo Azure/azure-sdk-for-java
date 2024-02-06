@@ -5,18 +5,16 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Condition applicable to the resource, or to the job overall, that warrant customer attention. */
+/**
+ * Condition applicable to the resource, or to the job overall, that warrant customer attention.
+ */
 @Immutable
 public final class DiagnosticCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticCondition.class);
-
     /*
-     * The UTC timestamp of when the condition started. Customers should be
-     * able to find a corresponding event in the ops log around this time.
+     * The UTC timestamp of when the condition started. Customers should be able to find a corresponding event in the
+     * ops log around this time.
      */
     @JsonProperty(value = "since", access = JsonProperty.Access.WRITE_ONLY)
     private String since;
@@ -28,16 +26,22 @@ public final class DiagnosticCondition {
     private String code;
 
     /*
-     * The human-readable message describing the condition in detail. Localized
-     * in the Accept-Language of the client request.
+     * The human-readable message describing the condition in detail. Localized in the Accept-Language of the client
+     * request.
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
+     * Creates an instance of DiagnosticCondition class.
+     */
+    public DiagnosticCondition() {
+    }
+
+    /**
      * Get the since property: The UTC timestamp of when the condition started. Customers should be able to find a
      * corresponding event in the ops log around this time.
-     *
+     * 
      * @return the since value.
      */
     public String since() {
@@ -46,7 +50,7 @@ public final class DiagnosticCondition {
 
     /**
      * Get the code property: The opaque diagnostic code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -56,7 +60,7 @@ public final class DiagnosticCondition {
     /**
      * Get the message property: The human-readable message describing the condition in detail. Localized in the
      * Accept-Language of the client request.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -65,7 +69,7 @@ public final class DiagnosticCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

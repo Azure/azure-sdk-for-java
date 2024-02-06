@@ -8,6 +8,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -236,8 +237,12 @@ public class QuorumReader {
                                 );
 
                             default:
-                                logger.error("Unknown ReadQuorum result {}", secondaryQuorumReadResult.quorumResult.toString());
-                                return Flux.error(new InternalServerErrorException(RMResources.InternalServerError));
+                                String errorMessage = "Unknown ReadQuorum result " + secondaryQuorumReadResult.quorumResult;
+                                logger.error(errorMessage);
+                                return Flux.error(
+                                    new InternalServerErrorException(
+                                        Exceptions.getInternalServerErrorMessage(errorMessage),
+                                        HttpConstants.SubStatusCodes.UNKNOWN_QUORUM_RESULT));
                         }
 
                     });
@@ -745,8 +750,11 @@ public class QuorumReader {
 
         public StoreResponse getResponse() {
             if (!this.isValidResult()) {
-                logger.error("getResponse called for invalid result");
-                throw new InternalServerErrorException(RMResources.InternalServerError);
+                String errorMessage = "getResponse called for invalid result";
+                logger.error(errorMessage);
+                throw new InternalServerErrorException(
+                    Exceptions.getInternalServerErrorMessage(errorMessage),
+                    HttpConstants.SubStatusCodes.INVALID_RESULT);
             }
 
             return this.response.toResponse(requestChargeTracker);

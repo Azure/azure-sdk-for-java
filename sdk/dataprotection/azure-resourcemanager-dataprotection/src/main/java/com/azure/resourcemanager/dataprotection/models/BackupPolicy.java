@@ -13,8 +13,8 @@ import java.util.List;
 
 /**
  * BackupPolicy
- *
- * <p>Rule based backup policy.
+ * 
+ * Rule based backup policy.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("BackupPolicy")
@@ -26,14 +26,16 @@ public final class BackupPolicy extends BaseBackupPolicy {
     @JsonProperty(value = "policyRules", required = true)
     private List<BasePolicyRule> policyRules;
 
-    /** Creates an instance of BackupPolicy class. */
+    /**
+     * Creates an instance of BackupPolicy class.
+     */
     public BackupPolicy() {
     }
 
     /**
      * Get the policyRules property: Policy rule dictionary that contains rules for each backuptype i.e
      * Full/Incremental/Logs etc.
-     *
+     * 
      * @return the policyRules value.
      */
     public List<BasePolicyRule> policyRules() {
@@ -43,7 +45,7 @@ public final class BackupPolicy extends BaseBackupPolicy {
     /**
      * Set the policyRules property: Policy rule dictionary that contains rules for each backuptype i.e
      * Full/Incremental/Logs etc.
-     *
+     * 
      * @param policyRules the policyRules value to set.
      * @return the BackupPolicy object itself.
      */
@@ -52,7 +54,9 @@ public final class BackupPolicy extends BaseBackupPolicy {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupPolicy withDatasourceTypes(List<String> datasourceTypes) {
         super.withDatasourceTypes(datasourceTypes);
@@ -61,16 +65,15 @@ public final class BackupPolicy extends BaseBackupPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (policyRules() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property policyRules in model BackupPolicy"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property policyRules in model BackupPolicy"));
         } else {
             policyRules().forEach(e -> e.validate());
         }

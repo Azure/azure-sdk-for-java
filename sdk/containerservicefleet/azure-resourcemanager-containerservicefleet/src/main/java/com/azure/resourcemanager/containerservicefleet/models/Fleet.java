@@ -80,13 +80,6 @@ public interface Fleet {
     FleetProvisioningState provisioningState();
 
     /**
-     * Gets the hubProfile property: The FleetHubProfile configures the Fleet's hub.
-     *
-     * @return the hubProfile value.
-     */
-    FleetHubProfile hubProfile();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -165,7 +158,6 @@ public interface Fleet {
         interface WithCreate
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithIdentity,
-                DefinitionStages.WithHubProfile,
                 DefinitionStages.WithIfMatch,
                 DefinitionStages.WithIfNoneMatch {
             /**
@@ -204,17 +196,6 @@ public interface Fleet {
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
-        }
-
-        /** The stage of the Fleet definition allowing to specify hubProfile. */
-        interface WithHubProfile {
-            /**
-             * Specifies the hubProfile property: The FleetHubProfile configures the Fleet's hub..
-             *
-             * @param hubProfile The FleetHubProfile configures the Fleet's hub.
-             * @return the next definition stage.
-             */
-            WithCreate withHubProfile(FleetHubProfile hubProfile);
         }
 
         /** The stage of the Fleet definition allowing to specify ifMatch. */

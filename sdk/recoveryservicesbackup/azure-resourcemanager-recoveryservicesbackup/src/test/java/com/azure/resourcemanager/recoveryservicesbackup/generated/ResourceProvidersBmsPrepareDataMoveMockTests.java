@@ -35,41 +35,24 @@ public final class ResourceProvidersBmsPrepareDataMoveMockTests {
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .resourceProviders()
-            .bmsPrepareDataMove(
-                "dfkbnrzorpdltbq",
-                "tqjfgxxsaet",
-                new PrepareDataMoveRequest()
-                    .withTargetResourceId("zdgvpyigdaqqilz")
-                    .withTargetRegion("cduwjoedx")
-                    .withDataMoveLevel(DataMoveLevel.CONTAINER)
-                    .withSourceContainerArmIds(Arrays.asList("aifpaurwwgil", "jqqacdmkx", "xdcvjwcy"))
-                    .withIgnoreMoved(true),
-                com.azure.core.util.Context.NONE);
+        manager.resourceProviders().bmsPrepareDataMove("parybjufpt", "jczjnciuiyqv",
+            new PrepareDataMoveRequest().withTargetResourceId("daswvpp").withTargetRegion("sqqzlgcndhz")
+                .withDataMoveLevel(DataMoveLevel.CONTAINER)
+                .withSourceContainerArmIds(Arrays.asList("cfsrhkhgsn", "uww", "pphefsbzx")).withIgnoreMoved(true),
+            com.azure.core.util.Context.NONE);
+
     }
 }

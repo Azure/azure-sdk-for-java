@@ -9,11 +9,13 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** An instance of this class provides access to all the operations defined in JobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobsClient.
+ */
 public interface JobsClient {
     /**
      * Triggers export of jobs specified by filters and returns an OperationID to track.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -28,7 +30,7 @@ public interface JobsClient {
 
     /**
      * Triggers export of jobs specified by filters and returns an OperationID to track.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

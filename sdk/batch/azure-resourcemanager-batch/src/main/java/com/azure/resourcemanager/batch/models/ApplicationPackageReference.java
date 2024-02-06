@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Link to an application package inside the batch account. */
+/**
+ * Link to an application package inside the batch account.
+ */
 @Fluent
 public final class ApplicationPackageReference {
     /*
@@ -20,21 +22,23 @@ public final class ApplicationPackageReference {
 
     /*
      * The version of the application to deploy. If omitted, the default version is deployed.
-     *
+     * 
      * If this is omitted, and no default version is specified for this application, the request fails with the error
      * code InvalidApplicationPackageReferences. If you are calling the REST API directly, the HTTP status code is 409.
      */
     @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of ApplicationPackageReference class. */
+    /**
+     * Creates an instance of ApplicationPackageReference class.
+     */
     public ApplicationPackageReference() {
     }
 
     /**
      * Get the id property: The ID of the application package to install. This must be inside the same batch account as
      * the pool. This can either be a reference to a specific version or the default version if one exists.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +48,7 @@ public final class ApplicationPackageReference {
     /**
      * Set the id property: The ID of the application package to install. This must be inside the same batch account as
      * the pool. This can either be a reference to a specific version or the default version if one exists.
-     *
+     * 
      * @param id the id value to set.
      * @return the ApplicationPackageReference object itself.
      */
@@ -55,10 +59,10 @@ public final class ApplicationPackageReference {
 
     /**
      * Get the version property: The version of the application to deploy. If omitted, the default version is deployed.
-     *
-     * <p>If this is omitted, and no default version is specified for this application, the request fails with the error
+     * 
+     * If this is omitted, and no default version is specified for this application, the request fails with the error
      * code InvalidApplicationPackageReferences. If you are calling the REST API directly, the HTTP status code is 409.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -67,10 +71,10 @@ public final class ApplicationPackageReference {
 
     /**
      * Set the version property: The version of the application to deploy. If omitted, the default version is deployed.
-     *
-     * <p>If this is omitted, and no default version is specified for this application, the request fails with the error
+     * 
+     * If this is omitted, and no default version is specified for this application, the request fails with the error
      * code InvalidApplicationPackageReferences. If you are calling the REST API directly, the HTTP status code is 409.
-     *
+     * 
      * @param version the version value to set.
      * @return the ApplicationPackageReference object itself.
      */
@@ -81,14 +85,13 @@ public final class ApplicationPackageReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model ApplicationPackageReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model ApplicationPackageReference"));
         }
     }
 

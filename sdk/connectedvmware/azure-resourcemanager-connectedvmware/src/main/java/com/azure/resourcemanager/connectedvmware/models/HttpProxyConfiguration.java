@@ -16,6 +16,10 @@ public final class HttpProxyConfiguration {
     @JsonProperty(value = "httpsProxy")
     private String httpsProxy;
 
+    /** Creates an instance of HttpProxyConfiguration class. */
+    public HttpProxyConfiguration() {
+    }
+
     /**
      * Get the httpsProxy property: Gets or sets httpsProxy url.
      *

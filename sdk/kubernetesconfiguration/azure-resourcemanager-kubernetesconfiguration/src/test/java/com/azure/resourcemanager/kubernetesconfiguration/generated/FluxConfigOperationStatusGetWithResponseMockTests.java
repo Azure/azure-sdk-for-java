@@ -31,7 +31,7 @@ public final class FluxConfigOperationStatusGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"syocogjltdtbnnha\",\"name\":\"ocrkvcikh\",\"status\":\"vpa\",\"properties\":{\"queziky\":\"x\",\"ccjzkzivgvv\":\"ggxkallatmelwuip\",\"rdvstkwqqtch\":\"nayrhyrnxxmueedn\"}}";
+            "{\"id\":\"mz\",\"name\":\"wabm\",\"status\":\"oefki\",\"properties\":{\"gkfbtndoaong\":\"tpuqujmq\",\"tcje\":\"jcntuj\",\"zfoqouicybxar\":\"ftwwaezkojvdc\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,18 @@ public final class FluxConfigOperationStatusGetWithResponseMockTests {
             manager
                 .fluxConfigOperationStatus()
                 .getWithResponse(
-                    "mwzn", "abikns", "rgjhxb", "dtlwwrlkd", "tncvokot", "lxdy", com.azure.core.util.Context.NONE)
+                    "vkg",
+                    "u",
+                    "gdknnqv",
+                    "aznqntoru",
+                    "sgsahmkycgr",
+                    "uwjuetaeburuvdmo",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("syocogjltdtbnnha", response.id());
-        Assertions.assertEquals("ocrkvcikh", response.name());
-        Assertions.assertEquals("vpa", response.status());
-        Assertions.assertEquals("x", response.properties().get("queziky"));
+        Assertions.assertEquals("mz", response.id());
+        Assertions.assertEquals("wabm", response.name());
+        Assertions.assertEquals("oefki", response.status());
+        Assertions.assertEquals("tpuqujmq", response.properties().get("gkfbtndoaong"));
     }
 }

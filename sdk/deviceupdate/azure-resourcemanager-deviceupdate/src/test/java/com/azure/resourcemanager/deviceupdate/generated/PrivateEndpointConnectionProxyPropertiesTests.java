@@ -6,19 +6,16 @@ package com.azure.resourcemanager.deviceupdate.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.fluent.models.PrivateEndpointConnectionProxyProperties;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionProxyPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        PrivateEndpointConnectionProxyProperties model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Deleting\"}")
-                .toObject(PrivateEndpointConnectionProxyProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateEndpointConnectionProxyProperties model = BinaryData.fromString("{\"provisioningState\":\"Deleting\"}")
+            .toObject(PrivateEndpointConnectionProxyProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointConnectionProxyProperties model = new PrivateEndpointConnectionProxyProperties();
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProxyProperties.class);
     }

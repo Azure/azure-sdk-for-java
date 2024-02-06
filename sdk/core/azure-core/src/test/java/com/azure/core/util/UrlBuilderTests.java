@@ -806,8 +806,8 @@ public class UrlBuilderTests {
     public void fluxParallelParsing() {
         AtomicInteger callCount = new AtomicInteger();
         Mono<Void> mono = Flux.range(0, 20000)
-            .parallel()
-            .runOn(Schedulers.parallel())
+            .parallel(Runtime.getRuntime().availableProcessors())
+            .runOn(Schedulers.boundedElastic())
             .map(i -> {
                 callCount.incrementAndGet();
                 return UrlBuilder.parse("https://example" + i + ".com");

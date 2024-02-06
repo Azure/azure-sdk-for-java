@@ -14,14 +14,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Marks terms as keywords. This token filter is implemented using Apache Lucene. */
+/**
+ * Marks terms as keywords. This token filter is implemented using Apache Lucene.
+ */
 @Fluent
 public final class KeywordMarkerTokenFilter extends TokenFilter {
-    /*
-     * Identifies the concrete type of the token filter.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.KeywordMarkerTokenFilter";
-
     /*
      * A list of words to mark as keywords.
      */
@@ -35,7 +32,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
 
     /**
      * Creates an instance of KeywordMarkerTokenFilter class.
-     *
+     * 
      * @param name the name value to set.
      * @param keywords the keywords value to set.
      */
@@ -46,7 +43,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
 
     /**
      * Get the keywords property: A list of words to mark as keywords.
-     *
+     * 
      * @return the keywords value.
      */
     public List<String> getKeywords() {
@@ -56,7 +53,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
     /**
      * Get the caseIgnored property: A value indicating whether to ignore case. If true, all words are converted to
      * lower case first. Default is false.
-     *
+     * 
      * @return the caseIgnored value.
      */
     public Boolean isCaseIgnored() {
@@ -66,7 +63,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
     /**
      * Set the caseIgnored property: A value indicating whether to ignore case. If true, all words are converted to
      * lower case first. Default is false.
-     *
+     * 
      * @param caseIgnored the caseIgnored value to set.
      * @return the KeywordMarkerTokenFilter object itself.
      */
@@ -78,7 +75,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.KeywordMarkerTokenFilter");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeArrayField("keywords", this.keywords, (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("ignoreCase", this.caseIgnored);
@@ -87,65 +84,61 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
 
     /**
      * Reads an instance of KeywordMarkerTokenFilter from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeywordMarkerTokenFilter if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the KeywordMarkerTokenFilter.
      */
     public static KeywordMarkerTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    boolean keywordsFound = false;
-                    List<String> keywords = null;
-                    Boolean caseIgnored = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean keywordsFound = false;
+            List<String> keywords = null;
+            Boolean caseIgnored = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("keywords".equals(fieldName)) {
-                            keywords = reader.readArray(reader1 -> reader1.getString());
-                            keywordsFound = true;
-                        } else if ("ignoreCase".equals(fieldName)) {
-                            caseIgnored = reader.getNullable(JsonReader::getBoolean);
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("@odata.type".equals(fieldName)) {
+                    String odataType = reader.getString();
+                    if (!"#Microsoft.Azure.Search.KeywordMarkerTokenFilter".equals(odataType)) {
+                        throw new IllegalStateException(
+                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.KeywordMarkerTokenFilter'. The found '@odata.type' was '"
+                                + odataType + "'.");
                     }
-                    if (nameFound && keywordsFound) {
-                        KeywordMarkerTokenFilter deserializedKeywordMarkerTokenFilter =
-                                new KeywordMarkerTokenFilter(name, keywords);
-                        deserializedKeywordMarkerTokenFilter.caseIgnored = caseIgnored;
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("keywords".equals(fieldName)) {
+                    keywords = reader.readArray(reader1 -> reader1.getString());
+                    keywordsFound = true;
+                } else if ("ignoreCase".equals(fieldName)) {
+                    caseIgnored = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && keywordsFound) {
+                KeywordMarkerTokenFilter deserializedKeywordMarkerTokenFilter
+                    = new KeywordMarkerTokenFilter(name, keywords);
+                deserializedKeywordMarkerTokenFilter.caseIgnored = caseIgnored;
 
-                        return deserializedKeywordMarkerTokenFilter;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-                    if (!keywordsFound) {
-                        missingProperties.add("keywords");
-                    }
+                return deserializedKeywordMarkerTokenFilter;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!keywordsFound) {
+                missingProperties.add("keywords");
+            }
 
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

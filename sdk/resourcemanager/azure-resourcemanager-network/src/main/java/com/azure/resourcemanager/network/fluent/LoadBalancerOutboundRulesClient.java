@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.OutboundRuleInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LoadBalancerOutboundRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LoadBalancerOutboundRulesClient.
+ */
 public interface LoadBalancerOutboundRulesClient {
     /**
      * Gets all the outbound rules in a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface LoadBalancerOutboundRulesClient {
 
     /**
      * Gets all the outbound rules in a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +45,7 @@ public interface LoadBalancerOutboundRulesClient {
 
     /**
      * Gets all the outbound rules in a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -57,23 +59,23 @@ public interface LoadBalancerOutboundRulesClient {
 
     /**
      * Gets the specified load balancer outbound rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param outboundRuleName The name of the outbound rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer outbound rule along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified load balancer outbound rule along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<OutboundRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, String outboundRuleName);
+    Mono<Response<OutboundRuleInner>> getWithResponseAsync(String resourceGroupName, String loadBalancerName,
+        String outboundRuleName);
 
     /**
      * Gets the specified load balancer outbound rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param outboundRuleName The name of the outbound rule.
@@ -87,7 +89,7 @@ public interface LoadBalancerOutboundRulesClient {
 
     /**
      * Gets the specified load balancer outbound rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param outboundRuleName The name of the outbound rule.
@@ -98,12 +100,12 @@ public interface LoadBalancerOutboundRulesClient {
      * @return the specified load balancer outbound rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OutboundRuleInner> getWithResponse(
-        String resourceGroupName, String loadBalancerName, String outboundRuleName, Context context);
+    Response<OutboundRuleInner> getWithResponse(String resourceGroupName, String loadBalancerName,
+        String outboundRuleName, Context context);
 
     /**
      * Gets the specified load balancer outbound rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param outboundRuleName The name of the outbound rule.

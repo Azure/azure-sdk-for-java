@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Uploaded Jar binary for a deployment. */
+/**
+ * Uploaded Jar binary for a deployment.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Jar")
 @Fluent
@@ -27,8 +29,14 @@ public final class JarUploadedUserSourceInfo extends UploadedUserSourceInfo {
     private String jvmOptions;
 
     /**
+     * Creates an instance of JarUploadedUserSourceInfo class.
+     */
+    public JarUploadedUserSourceInfo() {
+    }
+
+    /**
      * Get the runtimeVersion property: Runtime version of the Jar file.
-     *
+     * 
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
@@ -37,7 +45,7 @@ public final class JarUploadedUserSourceInfo extends UploadedUserSourceInfo {
 
     /**
      * Set the runtimeVersion property: Runtime version of the Jar file.
-     *
+     * 
      * @param runtimeVersion the runtimeVersion value to set.
      * @return the JarUploadedUserSourceInfo object itself.
      */
@@ -48,7 +56,7 @@ public final class JarUploadedUserSourceInfo extends UploadedUserSourceInfo {
 
     /**
      * Get the jvmOptions property: JVM parameter.
-     *
+     * 
      * @return the jvmOptions value.
      */
     public String jvmOptions() {
@@ -57,7 +65,7 @@ public final class JarUploadedUserSourceInfo extends UploadedUserSourceInfo {
 
     /**
      * Set the jvmOptions property: JVM parameter.
-     *
+     * 
      * @param jvmOptions the jvmOptions value to set.
      * @return the JarUploadedUserSourceInfo object itself.
      */
@@ -66,14 +74,18 @@ public final class JarUploadedUserSourceInfo extends UploadedUserSourceInfo {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JarUploadedUserSourceInfo withRelativePath(String relativePath) {
         super.withRelativePath(relativePath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JarUploadedUserSourceInfo withVersion(String version) {
         super.withVersion(version);
@@ -82,7 +94,7 @@ public final class JarUploadedUserSourceInfo extends UploadedUserSourceInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

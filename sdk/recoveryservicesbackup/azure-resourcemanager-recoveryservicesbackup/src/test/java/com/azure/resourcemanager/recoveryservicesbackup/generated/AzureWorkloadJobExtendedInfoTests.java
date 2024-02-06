@@ -15,36 +15,32 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureWorkloadJobExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureWorkloadJobExtendedInfo model =
-            BinaryData
-                .fromString(
-                    "{\"tasksList\":[{\"taskId\":\"agtltdhlfkqoj\",\"status\":\"kvgtrdcn\"},{\"taskId\":\"mzzs\",\"status\":\"m\"},{\"taskId\":\"nysuxmprafwgckh\",\"status\":\"xvd\"}],\"propertyBag\":{\"spave\":\"wafqroud\",\"bunzozudh\":\"hrv\",\"moy\":\"xg\"},\"dynamicErrorMessage\":\"dyuib\"}")
-                .toObject(AzureWorkloadJobExtendedInfo.class);
-        Assertions.assertEquals("agtltdhlfkqoj", model.tasksList().get(0).taskId());
-        Assertions.assertEquals("kvgtrdcn", model.tasksList().get(0).status());
-        Assertions.assertEquals("wafqroud", model.propertyBag().get("spave"));
-        Assertions.assertEquals("dyuib", model.dynamicErrorMessage());
+        AzureWorkloadJobExtendedInfo model = BinaryData.fromString(
+            "{\"tasksList\":[{\"taskId\":\"frbbc\",\"status\":\"qagt\"},{\"taskId\":\"dhlfkqojpykvgt\",\"status\":\"cnifm\"},{\"taskId\":\"sdymbrn\",\"status\":\"u\"}],\"propertyBag\":{\"fwafqrouda\":\"rafwgckhocxvdf\",\"kbunzoz\":\"pavehhr\",\"cdyuibhmfdnbzyd\":\"dhcxgkmoy\"},\"dynamicErrorMessage\":\"vfcjnaeoisrvhmg\"}")
+            .toObject(AzureWorkloadJobExtendedInfo.class);
+        Assertions.assertEquals("frbbc", model.tasksList().get(0).taskId());
+        Assertions.assertEquals("qagt", model.tasksList().get(0).status());
+        Assertions.assertEquals("rafwgckhocxvdf", model.propertyBag().get("fwafqrouda"));
+        Assertions.assertEquals("vfcjnaeoisrvhmg", model.dynamicErrorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureWorkloadJobExtendedInfo model =
-            new AzureWorkloadJobExtendedInfo()
-                .withTasksList(
-                    Arrays
-                        .asList(
-                            new AzureWorkloadJobTaskDetails().withTaskId("agtltdhlfkqoj").withStatus("kvgtrdcn"),
-                            new AzureWorkloadJobTaskDetails().withTaskId("mzzs").withStatus("m"),
-                            new AzureWorkloadJobTaskDetails().withTaskId("nysuxmprafwgckh").withStatus("xvd")))
-                .withPropertyBag(mapOf("spave", "wafqroud", "bunzozudh", "hrv", "moy", "xg"))
-                .withDynamicErrorMessage("dyuib");
+        AzureWorkloadJobExtendedInfo model = new AzureWorkloadJobExtendedInfo()
+            .withTasksList(Arrays.asList(new AzureWorkloadJobTaskDetails().withTaskId("frbbc").withStatus("qagt"),
+                new AzureWorkloadJobTaskDetails().withTaskId("dhlfkqojpykvgt").withStatus("cnifm"),
+                new AzureWorkloadJobTaskDetails().withTaskId("sdymbrn").withStatus("u")))
+            .withPropertyBag(
+                mapOf("fwafqrouda", "rafwgckhocxvdf", "kbunzoz", "pavehhr", "cdyuibhmfdnbzyd", "dhcxgkmoy"))
+            .withDynamicErrorMessage("vfcjnaeoisrvhmg");
         model = BinaryData.fromObject(model).toObject(AzureWorkloadJobExtendedInfo.class);
-        Assertions.assertEquals("agtltdhlfkqoj", model.tasksList().get(0).taskId());
-        Assertions.assertEquals("kvgtrdcn", model.tasksList().get(0).status());
-        Assertions.assertEquals("wafqroud", model.propertyBag().get("spave"));
-        Assertions.assertEquals("dyuib", model.dynamicErrorMessage());
+        Assertions.assertEquals("frbbc", model.tasksList().get(0).taskId());
+        Assertions.assertEquals("qagt", model.tasksList().get(0).status());
+        Assertions.assertEquals("rafwgckhocxvdf", model.propertyBag().get("fwafqrouda"));
+        Assertions.assertEquals("vfcjnaeoisrvhmg", model.dynamicErrorMessage());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

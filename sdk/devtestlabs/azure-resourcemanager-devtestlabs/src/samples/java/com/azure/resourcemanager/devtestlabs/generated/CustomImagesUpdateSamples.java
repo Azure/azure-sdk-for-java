@@ -28,6 +28,7 @@ public final class CustomImagesUpdateSamples {
         resource.update().withTags(mapOf("tagName1", "tagValue2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -29,6 +29,15 @@ public final class OptimizationType extends ExpandableStringEnum<OptimizationTyp
     public static final OptimizationType DYNAMIC_SITE_ACCELERATION = fromString("DynamicSiteAcceleration");
 
     /**
+     * Creates a new instance of OptimizationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OptimizationType() {
+    }
+
+    /**
      * Creates or finds a OptimizationType from its string representation.
      *
      * @param name a name to look for.

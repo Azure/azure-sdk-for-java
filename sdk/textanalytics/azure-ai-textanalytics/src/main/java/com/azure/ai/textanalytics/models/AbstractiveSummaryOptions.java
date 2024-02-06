@@ -15,12 +15,18 @@ public final class AbstractiveSummaryOptions extends TextAnalyticsRequestOptions
     private Integer sentenceCount;
 
     /**
+     * Constructs a {@code AbstractiveSummaryOptions} model.
+     */
+    public AbstractiveSummaryOptions() {
+    }
+
+    /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link AbstractiveSummaryOptions} object itself.
+     * @return The {@code AbstractiveSummaryOptions} object itself.
      */
     @Override
     public AbstractiveSummaryOptions setModelVersion(String modelVersion) {
@@ -36,7 +42,7 @@ public final class AbstractiveSummaryOptions extends TextAnalyticsRequestOptions
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return The {@link AbstractiveSummaryOptions} object itself.
+     * @return The {@code AbstractiveSummaryOptions} object itself.
      */
     @Override
     public AbstractiveSummaryOptions setIncludeStatistics(boolean includeStatistics) {
@@ -52,7 +58,7 @@ public final class AbstractiveSummaryOptions extends TextAnalyticsRequestOptions
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link AbstractiveSummaryOptions} object itself.
+     * @return The {@code AbstractiveSummaryOptions} object itself.
      */
     @Override
     public AbstractiveSummaryOptions setServiceLogsDisabled(boolean disableServiceLogs) {
@@ -74,7 +80,7 @@ public final class AbstractiveSummaryOptions extends TextAnalyticsRequestOptions
      *
      * @param displayName Display name of the operation.
      *
-     * @return The {@link AbstractiveSummaryOptions} object itself.
+     * @return The {@code AbstractiveSummaryOptions} object itself.
      */
     public AbstractiveSummaryOptions setDisplayName(String displayName) {
         this.displayName = displayName;
@@ -94,7 +100,7 @@ public final class AbstractiveSummaryOptions extends TextAnalyticsRequestOptions
      * Set the sentenceCount property: It controls the approximate number of sentences in the output summaries.
      *
      * @param sentenceCount the sentenceCount value to set.
-     * @return the AbstractiveSummaryOptions object itself.
+     * @return The {@code AbstractiveSummaryOptions} object itself.
      */
     public AbstractiveSummaryOptions setSentenceCount(Integer sentenceCount) {
         this.sentenceCount = sentenceCount;

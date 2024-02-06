@@ -9,11 +9,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AppFigures linked service type properties. */
+/**
+ * AppFigures linked service type properties.
+ */
 @Fluent
 public final class AppFiguresLinkedServiceTypeProperties {
     /*
-     * The username of the Appfigures source.
+     * The username of the Appfigures source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName", required = true)
     private Object username;
@@ -30,13 +32,16 @@ public final class AppFiguresLinkedServiceTypeProperties {
     @JsonProperty(value = "clientKey", required = true)
     private SecretBase clientKey;
 
-    /** Creates an instance of AppFiguresLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AppFiguresLinkedServiceTypeProperties class.
+     */
     public AppFiguresLinkedServiceTypeProperties() {
     }
 
     /**
-     * Get the username property: The username of the Appfigures source.
-     *
+     * Get the username property: The username of the Appfigures source. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -44,8 +49,9 @@ public final class AppFiguresLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the username property: The username of the Appfigures source.
-     *
+     * Set the username property: The username of the Appfigures source. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param username the username value to set.
      * @return the AppFiguresLinkedServiceTypeProperties object itself.
      */
@@ -56,7 +62,7 @@ public final class AppFiguresLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The password of the AppFigures source.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -65,7 +71,7 @@ public final class AppFiguresLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The password of the AppFigures source.
-     *
+     * 
      * @param password the password value to set.
      * @return the AppFiguresLinkedServiceTypeProperties object itself.
      */
@@ -76,7 +82,7 @@ public final class AppFiguresLinkedServiceTypeProperties {
 
     /**
      * Get the clientKey property: The client key for the AppFigures source.
-     *
+     * 
      * @return the clientKey value.
      */
     public SecretBase clientKey() {
@@ -85,7 +91,7 @@ public final class AppFiguresLinkedServiceTypeProperties {
 
     /**
      * Set the clientKey property: The client key for the AppFigures source.
-     *
+     * 
      * @param clientKey the clientKey value to set.
      * @return the AppFiguresLinkedServiceTypeProperties object itself.
      */
@@ -96,29 +102,23 @@ public final class AppFiguresLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model AppFiguresLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property username in model AppFiguresLinkedServiceTypeProperties"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model AppFiguresLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property password in model AppFiguresLinkedServiceTypeProperties"));
         } else {
             password().validate();
         }
         if (clientKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientKey in model AppFiguresLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clientKey in model AppFiguresLinkedServiceTypeProperties"));
         } else {
             clientKey().validate();
         }

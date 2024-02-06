@@ -3,8 +3,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.util.Configuration;
-
-import java.util.UUID;
+import com.azure.core.util.CoreUtils;
 
 /**
  * Sample demonstrates how to create, list and delete a share using the async file service client.
@@ -15,7 +14,7 @@ public class AsyncSample {
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
-        return UUID.randomUUID().toString().substring(0, 8);
+        return CoreUtils.randomUuid().toString().substring(0, 8);
     }
 
     /**

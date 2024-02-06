@@ -36,22 +36,28 @@ import com.azure.resourcemanager.datafactory.models.PipelineListResponse;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PipelinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PipelinesClient.
+ */
 public final class PipelinesClientImpl implements PipelinesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PipelinesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataFactoryManagementClientImpl client;
 
     /**
      * Initializes an instance of PipelinesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PipelinesClientImpl(DataFactoryManagementClientImpl client) {
-        this.service =
-            RestProxy.create(PipelinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(PipelinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,107 +68,72 @@ public final class PipelinesClientImpl implements PipelinesClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
     public interface PipelinesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/pipelines")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PipelineListResponse>> listByFactory(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PipelineListResponse>> listByFactory(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/pipelines/{pipelineName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PipelineResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PipelineResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @PathParam("pipelineName") String pipelineName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
-            @BodyParam("application/json") PipelineResourceInner pipeline,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("pipelineName") String pipelineName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @BodyParam("application/json") PipelineResourceInner pipeline,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/pipelines/{pipelineName}")
-        @ExpectedResponses({200, 304})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}")
+        @ExpectedResponses({ 200, 304 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PipelineResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PipelineResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @PathParam("pipelineName") String pipelineName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("pipelineName") String pipelineName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/pipelines/{pipelineName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @PathParam("pipelineName") String pipelineName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("pipelineName") String pipelineName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/pipelines/{pipelineName}/createRun")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}/createRun")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CreateRunResponseInner>> createRun(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CreateRunResponseInner>> createRun(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @PathParam("pipelineName") String pipelineName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("pipelineName") String pipelineName, @QueryParam("api-version") String apiVersion,
             @QueryParam("referencePipelineRunId") String referencePipelineRunId,
-            @QueryParam("isRecovery") Boolean isRecovery,
-            @QueryParam("startActivityName") String startActivityName,
+            @QueryParam("isRecovery") Boolean isRecovery, @QueryParam("startActivityName") String startActivityName,
             @QueryParam("startFromFailure") Boolean startFromFailure,
-            @BodyParam("application/json") Map<String, Object> parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") Map<String, Object> parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PipelineListResponse>> listByFactoryNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists pipelines.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,19 +142,15 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return a list of pipeline resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PipelineResourceInner>> listByFactorySinglePageAsync(
-        String resourceGroupName, String factoryName) {
+    private Mono<PagedResponse<PipelineResourceInner>> listByFactorySinglePageAsync(String resourceGroupName,
+        String factoryName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -194,32 +161,16 @@ public final class PipelinesClientImpl implements PipelinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByFactory(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<PipelineResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<PipelineResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists pipelines.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -229,19 +180,15 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return a list of pipeline resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PipelineResourceInner>> listByFactorySinglePageAsync(
-        String resourceGroupName, String factoryName, Context context) {
+    private Mono<PagedResponse<PipelineResourceInner>> listByFactorySinglePageAsync(String resourceGroupName,
+        String factoryName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -253,28 +200,15 @@ public final class PipelinesClientImpl implements PipelinesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByFactory(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists pipelines.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,14 +218,13 @@ public final class PipelinesClientImpl implements PipelinesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PipelineResourceInner> listByFactoryAsync(String resourceGroupName, String factoryName) {
-        return new PagedFlux<>(
-            () -> listByFactorySinglePageAsync(resourceGroupName, factoryName),
+        return new PagedFlux<>(() -> listByFactorySinglePageAsync(resourceGroupName, factoryName),
             nextLink -> listByFactoryNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists pipelines.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -301,16 +234,15 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return a list of pipeline resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PipelineResourceInner> listByFactoryAsync(
-        String resourceGroupName, String factoryName, Context context) {
-        return new PagedFlux<>(
-            () -> listByFactorySinglePageAsync(resourceGroupName, factoryName, context),
+    private PagedFlux<PipelineResourceInner> listByFactoryAsync(String resourceGroupName, String factoryName,
+        Context context) {
+        return new PagedFlux<>(() -> listByFactorySinglePageAsync(resourceGroupName, factoryName, context),
             nextLink -> listByFactoryNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists pipelines.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,7 +257,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
 
     /**
      * Lists pipelines.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -335,43 +267,35 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return a list of pipeline resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PipelineResourceInner> listByFactory(
-        String resourceGroupName, String factoryName, Context context) {
+    public PagedIterable<PipelineResourceInner> listByFactory(String resourceGroupName, String factoryName,
+        Context context) {
         return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName, context));
     }
 
     /**
      * Creates or updates a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param pipeline Pipeline resource definition.
      * @param ifMatch ETag of the pipeline entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        String pipelineName,
-        PipelineResourceInner pipeline,
-        String ifMatch) {
+    private Mono<Response<PipelineResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String factoryName, String pipelineName, PipelineResourceInner pipeline, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -390,32 +314,21 @@ public final class PipelinesClientImpl implements PipelinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            pipelineName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            pipeline,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, pipelineName, this.client.getApiVersion(), ifMatch, pipeline, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param pipeline Pipeline resource definition.
      * @param ifMatch ETag of the pipeline entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -423,24 +336,15 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return pipeline resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        String pipelineName,
-        PipelineResourceInner pipeline,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<PipelineResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String factoryName, String pipelineName, PipelineResourceInner pipeline, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -459,23 +363,13 @@ public final class PipelinesClientImpl implements PipelinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                pipelineName,
-                this.client.getApiVersion(),
-                ifMatch,
-                pipeline,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, pipelineName, this.client.getApiVersion(), ifMatch, pipeline, accept, context);
     }
 
     /**
      * Creates or updates a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -486,8 +380,8 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return pipeline resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PipelineResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String factoryName, String pipelineName, PipelineResourceInner pipeline) {
+    private Mono<PipelineResourceInner> createOrUpdateAsync(String resourceGroupName, String factoryName,
+        String pipelineName, PipelineResourceInner pipeline) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, pipelineName, pipeline, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -495,13 +389,13 @@ public final class PipelinesClientImpl implements PipelinesClient {
 
     /**
      * Creates or updates a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param pipeline Pipeline resource definition.
      * @param ifMatch ETag of the pipeline entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -509,20 +403,15 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return pipeline resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PipelineResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String pipelineName,
-        PipelineResourceInner pipeline,
-        String ifMatch,
-        Context context) {
+    public Response<PipelineResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
+        String pipelineName, PipelineResourceInner pipeline, String ifMatch, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, pipelineName, pipeline, ifMatch, context)
             .block();
     }
 
     /**
      * Creates or updates a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -533,8 +422,8 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return pipeline resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineResourceInner createOrUpdate(
-        String resourceGroupName, String factoryName, String pipelineName, PipelineResourceInner pipeline) {
+    public PipelineResourceInner createOrUpdate(String resourceGroupName, String factoryName, String pipelineName,
+        PipelineResourceInner pipeline) {
         final String ifMatch = null;
         return createOrUpdateWithResponse(resourceGroupName, factoryName, pipelineName, pipeline, ifMatch, Context.NONE)
             .getValue();
@@ -542,31 +431,27 @@ public final class PipelinesClientImpl implements PipelinesClient {
 
     /**
      * Gets a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
+     * existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pipeline along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String factoryName, String pipelineName, String ifNoneMatch) {
+    private Mono<Response<PipelineResourceInner>> getWithResponseAsync(String resourceGroupName, String factoryName,
+        String pipelineName, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -581,29 +466,19 @@ public final class PipelinesClientImpl implements PipelinesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            pipelineName,
-                            this.client.getApiVersion(),
-                            ifNoneMatch,
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    factoryName, pipelineName, this.client.getApiVersion(), ifNoneMatch, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
+     * existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -611,19 +486,15 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return a pipeline along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String factoryName, String pipelineName, String ifNoneMatch, Context context) {
+    private Mono<Response<PipelineResourceInner>> getWithResponseAsync(String resourceGroupName, String factoryName,
+        String pipelineName, String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -637,22 +508,13 @@ public final class PipelinesClientImpl implements PipelinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                pipelineName,
-                this.client.getApiVersion(),
-                ifNoneMatch,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
+            pipelineName, this.client.getApiVersion(), ifNoneMatch, accept, context);
     }
 
     /**
      * Gets a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -670,12 +532,12 @@ public final class PipelinesClientImpl implements PipelinesClient {
 
     /**
      * Gets a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
+     * existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -683,14 +545,14 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return a pipeline along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PipelineResourceInner> getWithResponse(
-        String resourceGroupName, String factoryName, String pipelineName, String ifNoneMatch, Context context) {
+    public Response<PipelineResourceInner> getWithResponse(String resourceGroupName, String factoryName,
+        String pipelineName, String ifNoneMatch, Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, pipelineName, ifNoneMatch, context).block();
     }
 
     /**
      * Gets a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -707,7 +569,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
 
     /**
      * Deletes a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -717,19 +579,15 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String factoryName, String pipelineName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName,
+        String pipelineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -743,24 +601,14 @@ public final class PipelinesClientImpl implements PipelinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            pipelineName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, pipelineName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -771,19 +619,15 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String factoryName, String pipelineName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName,
+        String pipelineName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -797,21 +641,13 @@ public final class PipelinesClientImpl implements PipelinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                pipelineName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, pipelineName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -827,7 +663,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
 
     /**
      * Deletes a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -838,14 +674,14 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String pipelineName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String pipelineName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, pipelineName, context).block();
     }
 
     /**
      * Deletes a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -860,46 +696,36 @@ public final class PipelinesClientImpl implements PipelinesClient {
 
     /**
      * Creates a run of a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified
-     *     run will be used to create a new run.
+     * run will be used to create a new run.
      * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and
-     *     the new run will be grouped under the same groupId.
+     * the new run will be grouped under the same groupId.
      * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all
-     *     activities will run.
+     * activities will run.
      * @param startFromFailure In recovery mode, if set to true, the rerun will start from failed activities. The
-     *     property will be used only if startActivityName is not specified.
+     * property will be used only if startActivityName is not specified.
      * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not
-     *     specified.
+     * specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body with a run identifier along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CreateRunResponseInner>> createRunWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        String pipelineName,
-        String referencePipelineRunId,
-        Boolean isRecovery,
-        String startActivityName,
-        Boolean startFromFailure,
-        Map<String, Object> parameters) {
+    private Mono<Response<CreateRunResponseInner>> createRunWithResponseAsync(String resourceGroupName,
+        String factoryName, String pipelineName, String referencePipelineRunId, Boolean isRecovery,
+        String startActivityName, Boolean startFromFailure, Map<String, Object> parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -913,42 +739,28 @@ public final class PipelinesClientImpl implements PipelinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createRun(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            pipelineName,
-                            this.client.getApiVersion(),
-                            referencePipelineRunId,
-                            isRecovery,
-                            startActivityName,
-                            startFromFailure,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createRun(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, pipelineName, this.client.getApiVersion(), referencePipelineRunId,
+                isRecovery, startActivityName, startFromFailure, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a run of a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified
-     *     run will be used to create a new run.
+     * run will be used to create a new run.
      * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and
-     *     the new run will be grouped under the same groupId.
+     * the new run will be grouped under the same groupId.
      * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all
-     *     activities will run.
+     * activities will run.
      * @param startFromFailure In recovery mode, if set to true, the rerun will start from failed activities. The
-     *     property will be used only if startActivityName is not specified.
+     * property will be used only if startActivityName is not specified.
      * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not
-     *     specified.
+     * specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -956,27 +768,16 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return response body with a run identifier along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CreateRunResponseInner>> createRunWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        String pipelineName,
-        String referencePipelineRunId,
-        Boolean isRecovery,
-        String startActivityName,
-        Boolean startFromFailure,
-        Map<String, Object> parameters,
-        Context context) {
+    private Mono<Response<CreateRunResponseInner>> createRunWithResponseAsync(String resourceGroupName,
+        String factoryName, String pipelineName, String referencePipelineRunId, Boolean isRecovery,
+        String startActivityName, Boolean startFromFailure, Map<String, Object> parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -990,26 +791,14 @@ public final class PipelinesClientImpl implements PipelinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createRun(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                pipelineName,
-                this.client.getApiVersion(),
-                referencePipelineRunId,
-                isRecovery,
-                startActivityName,
-                startFromFailure,
-                parameters,
-                accept,
-                context);
+        return service.createRun(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, pipelineName, this.client.getApiVersion(), referencePipelineRunId, isRecovery,
+            startActivityName, startFromFailure, parameters, accept, context);
     }
 
     /**
      * Creates a run of a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -1019,41 +808,34 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return response body with a run identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CreateRunResponseInner> createRunAsync(
-        String resourceGroupName, String factoryName, String pipelineName) {
+    private Mono<CreateRunResponseInner> createRunAsync(String resourceGroupName, String factoryName,
+        String pipelineName) {
         final String referencePipelineRunId = null;
         final Boolean isRecovery = null;
         final String startActivityName = null;
         final Boolean startFromFailure = null;
         final Map<String, Object> parameters = null;
-        return createRunWithResponseAsync(
-                resourceGroupName,
-                factoryName,
-                pipelineName,
-                referencePipelineRunId,
-                isRecovery,
-                startActivityName,
-                startFromFailure,
-                parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createRunWithResponseAsync(resourceGroupName, factoryName, pipelineName, referencePipelineRunId,
+            isRecovery, startActivityName, startFromFailure, parameters)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a run of a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified
-     *     run will be used to create a new run.
+     * run will be used to create a new run.
      * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and
-     *     the new run will be grouped under the same groupId.
+     * the new run will be grouped under the same groupId.
      * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all
-     *     activities will run.
+     * activities will run.
      * @param startFromFailure In recovery mode, if set to true, the rerun will start from failed activities. The
-     *     property will be used only if startActivityName is not specified.
+     * property will be used only if startActivityName is not specified.
      * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not
-     *     specified.
+     * specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1061,32 +843,16 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return response body with a run identifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateRunResponseInner> createRunWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String pipelineName,
-        String referencePipelineRunId,
-        Boolean isRecovery,
-        String startActivityName,
-        Boolean startFromFailure,
-        Map<String, Object> parameters,
-        Context context) {
-        return createRunWithResponseAsync(
-                resourceGroupName,
-                factoryName,
-                pipelineName,
-                referencePipelineRunId,
-                isRecovery,
-                startActivityName,
-                startFromFailure,
-                parameters,
-                context)
-            .block();
+    public Response<CreateRunResponseInner> createRunWithResponse(String resourceGroupName, String factoryName,
+        String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName,
+        Boolean startFromFailure, Map<String, Object> parameters, Context context) {
+        return createRunWithResponseAsync(resourceGroupName, factoryName, pipelineName, referencePipelineRunId,
+            isRecovery, startActivityName, startFromFailure, parameters, context).block();
     }
 
     /**
      * Creates a run of a pipeline.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
@@ -1102,24 +868,16 @@ public final class PipelinesClientImpl implements PipelinesClient {
         final String startActivityName = null;
         final Boolean startFromFailure = null;
         final Map<String, Object> parameters = null;
-        return createRunWithResponse(
-                resourceGroupName,
-                factoryName,
-                pipelineName,
-                referencePipelineRunId,
-                isRecovery,
-                startActivityName,
-                startFromFailure,
-                parameters,
-                Context.NONE)
-            .getValue();
+        return createRunWithResponse(resourceGroupName, factoryName, pipelineName, referencePipelineRunId, isRecovery,
+            startActivityName, startFromFailure, parameters, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1131,31 +889,23 @@ public final class PipelinesClientImpl implements PipelinesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PipelineResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PipelineResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1163,29 +913,19 @@ public final class PipelinesClientImpl implements PipelinesClient {
      * @return a list of pipeline resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PipelineResourceInner>> listByFactoryNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PipelineResourceInner>> listByFactoryNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -30,6 +30,10 @@ public final class ResponseBasedOriginErrorDetectionParameters {
     @JsonProperty(value = "httpErrorRanges")
     private List<HttpErrorRangeParameters> httpErrorRanges;
 
+    /** Creates an instance of ResponseBasedOriginErrorDetectionParameters class. */
+    public ResponseBasedOriginErrorDetectionParameters() {
+    }
+
     /**
      * Get the responseBasedDetectedErrorTypes property: Type of response errors for real user requests for which origin
      * will be deemed unhealthy.

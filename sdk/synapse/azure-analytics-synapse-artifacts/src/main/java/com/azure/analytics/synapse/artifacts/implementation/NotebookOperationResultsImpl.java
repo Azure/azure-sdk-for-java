@@ -22,23 +22,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NotebookOperationResults. */
+/**
+ * An instance of this class provides access to all the operations defined in NotebookOperationResults.
+ */
 public final class NotebookOperationResultsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NotebookOperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ArtifactsClientImpl client;
 
     /**
      * Initializes an instance of NotebookOperationResultsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NotebookOperationResultsImpl(ArtifactsClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        NotebookOperationResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(NotebookOperationResultsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,19 +55,15 @@ public final class NotebookOperationResultsImpl {
     @ServiceInterface(name = "ArtifactsClientNoteb")
     public interface NotebookOperationResultsService {
         @Get("/notebookOperationResults/{operationId}")
-        @ExpectedResponses({200, 201, 202, 204})
+        @ExpectedResponses({ 200, 201, 202, 204 })
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<Response<Void>> get(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("operationId") String operationId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> get(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get notebook operation result.
-     *
+     * 
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -73,13 +74,13 @@ public final class NotebookOperationResultsImpl {
     public Mono<Response<Void>> getWithResponseAsync(String operationId) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.get(this.client.getEndpoint(), apiVersion, operationId, accept, context));
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, operationId, accept, context));
     }
 
     /**
      * Get notebook operation result.
-     *
+     * 
      * @param operationId Operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,7 +97,7 @@ public final class NotebookOperationResultsImpl {
 
     /**
      * Get notebook operation result.
-     *
+     * 
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -110,7 +111,7 @@ public final class NotebookOperationResultsImpl {
 
     /**
      * Get notebook operation result.
-     *
+     * 
      * @param operationId Operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -125,7 +126,7 @@ public final class NotebookOperationResultsImpl {
 
     /**
      * Get notebook operation result.
-     *
+     * 
      * @param operationId Operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +141,7 @@ public final class NotebookOperationResultsImpl {
 
     /**
      * Get notebook operation result.
-     *
+     * 
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.

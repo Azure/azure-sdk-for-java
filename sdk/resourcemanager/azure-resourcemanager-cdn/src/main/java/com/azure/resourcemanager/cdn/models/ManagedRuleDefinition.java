@@ -22,6 +22,10 @@ public final class ManagedRuleDefinition {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
+    /** Creates an instance of ManagedRuleDefinition class. */
+    public ManagedRuleDefinition() {
+    }
+
     /**
      * Get the ruleId property: Identifier for the managed rule.
      *

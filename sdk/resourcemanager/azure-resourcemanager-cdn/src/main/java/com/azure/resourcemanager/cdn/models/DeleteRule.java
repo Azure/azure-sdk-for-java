@@ -14,6 +14,15 @@ public final class DeleteRule extends ExpandableStringEnum<DeleteRule> {
     public static final DeleteRule NO_ACTION = fromString("NoAction");
 
     /**
+     * Creates a new instance of DeleteRule value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeleteRule() {
+    }
+
+    /**
      * Creates or finds a DeleteRule from its string representation.
      *
      * @param name a name to look for.

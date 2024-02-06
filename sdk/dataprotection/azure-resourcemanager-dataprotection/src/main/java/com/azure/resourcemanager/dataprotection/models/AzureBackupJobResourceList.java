@@ -9,7 +9,9 @@ import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupJobReso
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of AzureBackup Job resources. */
+/**
+ * List of AzureBackup Job resources.
+ */
 @Fluent
 public final class AzureBackupJobResourceList extends DppResourceList {
     /*
@@ -18,13 +20,15 @@ public final class AzureBackupJobResourceList extends DppResourceList {
     @JsonProperty(value = "value")
     private List<AzureBackupJobResourceInner> value;
 
-    /** Creates an instance of AzureBackupJobResourceList class. */
+    /**
+     * Creates an instance of AzureBackupJobResourceList class.
+     */
     public AzureBackupJobResourceList() {
     }
 
     /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<AzureBackupJobResourceInner> value() {
@@ -33,7 +37,7 @@ public final class AzureBackupJobResourceList extends DppResourceList {
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the AzureBackupJobResourceList object itself.
      */
@@ -42,7 +46,9 @@ public final class AzureBackupJobResourceList extends DppResourceList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupJobResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -51,7 +57,7 @@ public final class AzureBackupJobResourceList extends DppResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

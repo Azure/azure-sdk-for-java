@@ -5,39 +5,100 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Event data for Microsoft.Devices.DeviceConnected event. */
+/**
+ * Event data for Microsoft.Devices.DeviceConnected event.
+ */
 @Fluent
 public final class IotHubDeviceConnectedEventData extends DeviceConnectionStateEventProperties {
-    /** Creates an instance of IotHubDeviceConnectedEventData class. */
-    public IotHubDeviceConnectedEventData() {}
+    /**
+     * Creates an instance of IotHubDeviceConnectedEventData class.
+     */
+    public IotHubDeviceConnectedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceConnectedEventData setDeviceId(String deviceId) {
         super.setDeviceId(deviceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceConnectedEventData setModuleId(String moduleId) {
         super.setModuleId(moduleId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceConnectedEventData setHubName(String hubName) {
         super.setHubName(hubName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public IotHubDeviceConnectedEventData setDeviceConnectionStateEventInfo(
-            DeviceConnectionStateEventInfo deviceConnectionStateEventInfo) {
+    public IotHubDeviceConnectedEventData
+        setDeviceConnectionStateEventInfo(DeviceConnectionStateEventInfo deviceConnectionStateEventInfo) {
         super.setDeviceConnectionStateEventInfo(deviceConnectionStateEventInfo);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceId", getDeviceId());
+        jsonWriter.writeStringField("moduleId", getModuleId());
+        jsonWriter.writeStringField("hubName", getHubName());
+        jsonWriter.writeJsonField("deviceConnectionStateEventInfo", getDeviceConnectionStateEventInfo());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotHubDeviceConnectedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotHubDeviceConnectedEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotHubDeviceConnectedEventData.
+     */
+    public static IotHubDeviceConnectedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotHubDeviceConnectedEventData deserializedIotHubDeviceConnectedEventData
+                = new IotHubDeviceConnectedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceId".equals(fieldName)) {
+                    deserializedIotHubDeviceConnectedEventData.setDeviceId(reader.getString());
+                } else if ("moduleId".equals(fieldName)) {
+                    deserializedIotHubDeviceConnectedEventData.setModuleId(reader.getString());
+                } else if ("hubName".equals(fieldName)) {
+                    deserializedIotHubDeviceConnectedEventData.setHubName(reader.getString());
+                } else if ("deviceConnectionStateEventInfo".equals(fieldName)) {
+                    deserializedIotHubDeviceConnectedEventData
+                        .setDeviceConnectionStateEventInfo(DeviceConnectionStateEventInfo.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotHubDeviceConnectedEventData;
+        });
     }
 }

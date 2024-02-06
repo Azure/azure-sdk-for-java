@@ -70,7 +70,7 @@
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/Operations_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -91,7 +91,7 @@ import com.azure.resourcemanager.signalr.models.NameAvailabilityParameters;
 /** Samples for SignalR CheckNameAvailability. */
 public final class SignalRCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_CheckNameAvailability.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_CheckNameAvailability.json
      */
     /**
      * Sample code: SignalR_CheckNameAvailability.
@@ -143,7 +143,7 @@ import java.util.Map;
 /** Samples for SignalR CreateOrUpdate. */
 public final class SignalRCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_CreateOrUpdate.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalR_CreateOrUpdate.
@@ -238,7 +238,7 @@ public final class SignalRCreateOrUpdateSamples {
 /** Samples for SignalR Delete. */
 public final class SignalRDeleteSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_Delete.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Delete.json
      */
     /**
      * Sample code: SignalR_Delete.
@@ -257,7 +257,7 @@ public final class SignalRDeleteSamples {
 /** Samples for SignalR GetByResourceGroup. */
 public final class SignalRGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_Get.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Get.json
      */
     /**
      * Sample code: SignalR_Get.
@@ -278,7 +278,7 @@ public final class SignalRGetByResourceGroupSamples {
 /** Samples for SignalR List. */
 public final class SignalRListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_ListBySubscription.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListBySubscription.json
      */
     /**
      * Sample code: SignalR_ListBySubscription.
@@ -297,7 +297,7 @@ public final class SignalRListSamples {
 /** Samples for SignalR ListByResourceGroup. */
 public final class SignalRListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_ListByResourceGroup.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListByResourceGroup.json
      */
     /**
      * Sample code: SignalR_ListByResourceGroup.
@@ -316,7 +316,7 @@ public final class SignalRListByResourceGroupSamples {
 /** Samples for SignalR ListKeys. */
 public final class SignalRListKeysSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_ListKeys.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListKeys.json
      */
     /**
      * Sample code: SignalR_ListKeys.
@@ -337,7 +337,7 @@ public final class SignalRListKeysSamples {
 /** Samples for SignalR ListReplicaSkus. */
 public final class SignalRListReplicaSkusSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_ListReplicaSkus.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListReplicaSkus.json
      */
     /**
      * Sample code: SignalR_ListReplicaSkus.
@@ -359,7 +359,7 @@ public final class SignalRListReplicaSkusSamples {
 /** Samples for SignalR ListSkus. */
 public final class SignalRListSkusSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_ListSkus.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListSkus.json
      */
     /**
      * Sample code: SignalR_ListSkus.
@@ -383,7 +383,7 @@ import com.azure.resourcemanager.signalr.models.RegenerateKeyParameters;
 /** Samples for SignalR RegenerateKey. */
 public final class SignalRRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_RegenerateKey.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_RegenerateKey.json
      */
     /**
      * Sample code: SignalR_RegenerateKey.
@@ -408,7 +408,7 @@ public final class SignalRRegenerateKeySamples {
 /** Samples for SignalR Restart. */
 public final class SignalRRestartSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_Restart.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Restart.json
      */
     /**
      * Sample code: SignalR_Restart.
@@ -453,7 +453,7 @@ import java.util.Map;
 /** Samples for SignalR Update. */
 public final class SignalRUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_Update.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Update.json
      */
     /**
      * Sample code: SignalR_Update.
@@ -549,7 +549,7 @@ public final class SignalRUpdateSamples {
 /** Samples for SignalRCustomCertificates CreateOrUpdate. */
 public final class SignalRCustomCertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRCustomCertificates_CreateOrUpdate.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRCustomCertificates_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalRCustomCertificates_CreateOrUpdate.
@@ -576,7 +576,7 @@ public final class SignalRCustomCertificatesCreateOrUpdateSamples {
 /** Samples for SignalRCustomCertificates Delete. */
 public final class SignalRCustomCertificatesDeleteSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRCustomCertificates_Delete.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRCustomCertificates_Delete.json
      */
     /**
      * Sample code: SignalRCustomCertificates_Delete.
@@ -597,7 +597,7 @@ public final class SignalRCustomCertificatesDeleteSamples {
 /** Samples for SignalRCustomCertificates Get. */
 public final class SignalRCustomCertificatesGetSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRCustomCertificates_Get.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRCustomCertificates_Get.json
      */
     /**
      * Sample code: SignalRCustomCertificates_Get.
@@ -618,7 +618,7 @@ public final class SignalRCustomCertificatesGetSamples {
 /** Samples for SignalRCustomCertificates List. */
 public final class SignalRCustomCertificatesListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRCustomCertificates_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRCustomCertificates_List.json
      */
     /**
      * Sample code: SignalRCustomCertificates_List.
@@ -641,7 +641,7 @@ import com.azure.resourcemanager.signalr.models.ResourceReference;
 /** Samples for SignalRCustomDomains CreateOrUpdate. */
 public final class SignalRCustomDomainsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRCustomDomains_CreateOrUpdate.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRCustomDomains_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalRCustomDomains_CreateOrUpdate.
@@ -669,7 +669,7 @@ public final class SignalRCustomDomainsCreateOrUpdateSamples {
 /** Samples for SignalRCustomDomains Delete. */
 public final class SignalRCustomDomainsDeleteSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRCustomDomains_Delete.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRCustomDomains_Delete.json
      */
     /**
      * Sample code: SignalRCustomDomains_Delete.
@@ -690,7 +690,7 @@ public final class SignalRCustomDomainsDeleteSamples {
 /** Samples for SignalRCustomDomains Get. */
 public final class SignalRCustomDomainsGetSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRCustomDomains_Get.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRCustomDomains_Get.json
      */
     /**
      * Sample code: SignalRCustomDomains_Get.
@@ -711,7 +711,7 @@ public final class SignalRCustomDomainsGetSamples {
 /** Samples for SignalRCustomDomains List. */
 public final class SignalRCustomDomainsListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRCustomDomains_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRCustomDomains_List.json
      */
     /**
      * Sample code: SignalRCustomDomains_List.
@@ -730,7 +730,7 @@ public final class SignalRCustomDomainsListSamples {
 /** Samples for SignalRPrivateEndpointConnections Delete. */
 public final class SignalRPrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRPrivateEndpointConnections_Delete.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRPrivateEndpointConnections_Delete.json
      */
     /**
      * Sample code: SignalRPrivateEndpointConnections_Delete.
@@ -756,7 +756,7 @@ public final class SignalRPrivateEndpointConnectionsDeleteSamples {
 /** Samples for SignalRPrivateEndpointConnections Get. */
 public final class SignalRPrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRPrivateEndpointConnections_Get.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRPrivateEndpointConnections_Get.json
      */
     /**
      * Sample code: SignalRPrivateEndpointConnections_Get.
@@ -781,7 +781,7 @@ public final class SignalRPrivateEndpointConnectionsGetSamples {
 /** Samples for SignalRPrivateEndpointConnections List. */
 public final class SignalRPrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRPrivateEndpointConnections_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRPrivateEndpointConnections_List.json
      */
     /**
      * Sample code: SignalRPrivateEndpointConnections_List.
@@ -807,7 +807,7 @@ import com.azure.resourcemanager.signalr.models.PrivateLinkServiceConnectionStat
 /** Samples for SignalRPrivateEndpointConnections Update. */
 public final class SignalRPrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRPrivateEndpointConnections_Update.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRPrivateEndpointConnections_Update.json
      */
     /**
      * Sample code: SignalRPrivateEndpointConnections_Update.
@@ -839,7 +839,7 @@ public final class SignalRPrivateEndpointConnectionsUpdateSamples {
 /** Samples for SignalRPrivateLinkResources List. */
 public final class SignalRPrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRPrivateLinkResources_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRPrivateLinkResources_List.json
      */
     /**
      * Sample code: SignalRPrivateLinkResources_List.
@@ -865,7 +865,7 @@ import java.util.Map;
 /** Samples for SignalRReplicas CreateOrUpdate. */
 public final class SignalRReplicasCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_CreateOrUpdate.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalRReplicas_CreateOrUpdate.
@@ -880,6 +880,7 @@ public final class SignalRReplicasCreateOrUpdateSamples {
             .withExistingSignalR("myResourceGroup", "mySignalRService")
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withSku(new ResourceSku().withName("Premium_P1").withTier(SignalRSkuTier.PREMIUM).withCapacity(1))
+            .withResourceStopped("false")
             .create();
     }
 
@@ -903,7 +904,7 @@ public final class SignalRReplicasCreateOrUpdateSamples {
 /** Samples for SignalRReplicas Delete. */
 public final class SignalRReplicasDeleteSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_Delete.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_Delete.json
      */
     /**
      * Sample code: SignalRReplicas_Delete.
@@ -925,7 +926,7 @@ public final class SignalRReplicasDeleteSamples {
 /** Samples for SignalRReplicas Get. */
 public final class SignalRReplicasGetSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_Get.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_Get.json
      */
     /**
      * Sample code: SignalRReplicas_Get.
@@ -947,7 +948,7 @@ public final class SignalRReplicasGetSamples {
 /** Samples for SignalRReplicas List. */
 public final class SignalRReplicasListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_List.json
      */
     /**
      * Sample code: SignalRReplicas_List.
@@ -966,7 +967,7 @@ public final class SignalRReplicasListSamples {
 /** Samples for SignalRReplicas Restart. */
 public final class SignalRReplicasRestartSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_Restart.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_Restart.json
      */
     /**
      * Sample code: SignalRReplicas_Restart.
@@ -994,7 +995,7 @@ import java.util.Map;
 /** Samples for SignalRReplicas Update. */
 public final class SignalRReplicasUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_Update.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_Update.json
      */
     /**
      * Sample code: SignalRReplicas_Update.
@@ -1012,6 +1013,7 @@ public final class SignalRReplicasUpdateSamples {
             .update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withSku(new ResourceSku().withName("Premium_P1").withTier(SignalRSkuTier.PREMIUM).withCapacity(1))
+            .withResourceStopped("false")
             .apply();
     }
 
@@ -1035,7 +1037,7 @@ public final class SignalRReplicasUpdateSamples {
 /** Samples for SignalRSharedPrivateLinkResources CreateOrUpdate. */
 public final class SignalRSharedPrivateLinkResourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRSharedPrivateLinkResources_CreateOrUpdate.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRSharedPrivateLinkResources_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalRSharedPrivateLinkResources_CreateOrUpdate.
@@ -1063,7 +1065,7 @@ public final class SignalRSharedPrivateLinkResourcesCreateOrUpdateSamples {
 /** Samples for SignalRSharedPrivateLinkResources Delete. */
 public final class SignalRSharedPrivateLinkResourcesDeleteSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRSharedPrivateLinkResources_Delete.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRSharedPrivateLinkResources_Delete.json
      */
     /**
      * Sample code: SignalRSharedPrivateLinkResources_Delete.
@@ -1085,7 +1087,7 @@ public final class SignalRSharedPrivateLinkResourcesDeleteSamples {
 /** Samples for SignalRSharedPrivateLinkResources Get. */
 public final class SignalRSharedPrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRSharedPrivateLinkResources_Get.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRSharedPrivateLinkResources_Get.json
      */
     /**
      * Sample code: SignalRSharedPrivateLinkResources_Get.
@@ -1106,7 +1108,7 @@ public final class SignalRSharedPrivateLinkResourcesGetSamples {
 /** Samples for SignalRSharedPrivateLinkResources List. */
 public final class SignalRSharedPrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRSharedPrivateLinkResources_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRSharedPrivateLinkResources_List.json
      */
     /**
      * Sample code: SignalRSharedPrivateLinkResources_List.
@@ -1127,7 +1129,7 @@ public final class SignalRSharedPrivateLinkResourcesListSamples {
 /** Samples for Usages List. */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/Usages_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/Usages_List.json
      */
     /**
      * Sample code: Usages_List.

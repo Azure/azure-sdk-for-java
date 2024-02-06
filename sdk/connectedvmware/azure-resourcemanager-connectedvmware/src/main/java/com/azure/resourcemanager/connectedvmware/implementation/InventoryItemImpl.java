@@ -8,6 +8,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.connectedvmware.fluent.models.InventoryItemInner;
 import com.azure.resourcemanager.connectedvmware.models.InventoryItem;
+import com.azure.resourcemanager.connectedvmware.models.InventoryItemProperties;
 
 public final class InventoryItemImpl implements InventoryItem, InventoryItem.Definition {
     private InventoryItemInner innerObject;
@@ -33,28 +34,16 @@ public final class InventoryItemImpl implements InventoryItem, InventoryItem.Def
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public InventoryItemProperties properties() {
+        return this.innerModel().properties();
     }
 
     public String kind() {
         return this.innerModel().kind();
     }
 
-    public String managedResourceId() {
-        return this.innerModel().managedResourceId();
-    }
-
-    public String moRefId() {
-        return this.innerModel().moRefId();
-    }
-
-    public String moName() {
-        return this.innerModel().moName();
-    }
-
-    public String provisioningState() {
-        return this.innerModel().provisioningState();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public InventoryItemInner innerModel() {
@@ -123,23 +112,13 @@ public final class InventoryItemImpl implements InventoryItem, InventoryItem.Def
         return this;
     }
 
+    public InventoryItemImpl withProperties(InventoryItemProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
+    }
+
     public InventoryItemImpl withKind(String kind) {
         this.innerModel().withKind(kind);
-        return this;
-    }
-
-    public InventoryItemImpl withManagedResourceId(String managedResourceId) {
-        this.innerModel().withManagedResourceId(managedResourceId);
-        return this;
-    }
-
-    public InventoryItemImpl withMoRefId(String moRefId) {
-        this.innerModel().withMoRefId(moRefId);
-        return this;
-    }
-
-    public InventoryItemImpl withMoName(String moName) {
-        this.innerModel().withMoName(moName);
         return this;
     }
 }

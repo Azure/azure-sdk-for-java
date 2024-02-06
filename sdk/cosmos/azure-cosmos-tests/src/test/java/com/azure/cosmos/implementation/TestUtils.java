@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import org.mockito.Mockito;
 
 import java.util.UUID;
@@ -40,6 +39,28 @@ public class TestUtils {
     public static String getUserNameLink(String databaseId, String userId) {
 
         return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + USERS_PATH_SEGMENT + "/" + userId;
+    }
+
+    public static QueryFeedOperationState createDummyQueryFeedOperationState(
+        ResourceType resourceType,
+        OperationType operationType,
+        CosmosQueryRequestOptions options,
+        AsyncDocumentClient client) {
+        CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+            .key(client.getMasterKeyOrResourceToken())
+            .endpoint(client.getServiceEndpoint().toString())
+            .buildAsyncClient();
+        return new QueryFeedOperationState(
+            cosmosClient,
+            "SomeSpanName",
+            "SomeDBName",
+            "SomeContainerName",
+            resourceType,
+            operationType,
+            null,
+            options,
+            new CosmosPagedFluxOptions()
+        );
     }
 
     public static DiagnosticsClientContext mockDiagnosticsClientContext() {

@@ -27,6 +27,10 @@ public final class AfdDomainListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AfdDomainListResult class. */
+    public AfdDomainListResult() {
+    }
+
     /**
      * Get the value property: List of AzureFrontDoor domains within a profile.
      *

@@ -1,14 +1,42 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
+## 1.3.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for a new communication identifier `MicrosoftTeamsAppIdentifier`.
 
 ### Breaking Changes
+- Introduction of `MicrosoftTeamsAppIdentifier` is a breaking change. It will impact any code that previously depended on the use of UnknownIdentifier with rawIDs starting with `28:orgid:`, `28:dod:`, or `28:gcch:`.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.14 (2023-11-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+
+## 1.2.13 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
+## 1.2.12 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 
 ## 1.2.11 (2023-08-18)
 

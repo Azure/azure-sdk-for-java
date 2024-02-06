@@ -5,9 +5,11 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
@@ -188,5 +190,24 @@ public class CosmosClientBuilderTest {
         RxDocumentClientImpl documentClient =
             (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosClientBuilder.buildAsyncClient());
         assertThat(ReflectionUtils.getApiType(documentClient)).isEqualTo(apiType);
+    }
+
+    @Test(groups = "emulator")
+    public void validateSessionTokenCapturingForAccountDefaultConsistency() {
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .userAgentSuffix("custom-direct-client");
+
+        CosmosAsyncClient client = cosmosClientBuilder.buildAsyncClient();
+        RxDocumentClientImpl documentClient =
+            (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+
+        if (documentClient.getDefaultConsistencyLevelOfAccount() != ConsistencyLevel.SESSION) {
+            throw new SkipException("This test is only applicable when default account-level consistency is Session.");
+        }
+
+        SessionContainer sessionContainer = (SessionContainer)documentClient.getSession();
+        assertThat(sessionContainer.getDisableSessionCapturing()).isEqualTo(false);
     }
 }

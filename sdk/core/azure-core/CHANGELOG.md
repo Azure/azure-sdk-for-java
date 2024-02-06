@@ -1,6 +1,6 @@
 # Release History
 
-## 1.44.0-beta.1 (Unreleased)
+## 1.47.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,81 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.46.0 (2024-02-02)
+
+### Features Added
+
+- Added `SyncPoller.getFinalResult(Duration)` to get the final result of a long-running operation with a timeout
+  period. Allows for a single call rather than calling both `SyncPoller.waitForCompletion(Duration)` and
+  `SyncPoller.getFinalResult()`.
+- Serialization model types now implement `JsonSerializable`. ([#37046](https://github.com/Azure/azure-sdk-for-java/pull/37046))
+- Added `CoreUtils.durationToStringWithDays`, exposing how serialization of `Duration` is done. ([#37763](https://github.com/Azure/azure-sdk-for-java/pull/37763))
+- Prevent requests that won't retry from being buffered. ([#37871](https://github.com/Azure/azure-sdk-for-java/pull/37871))
+- Added `BinaryData.writeTo(OutputStream)`, `BinaryData.writeTo(WriteableByteChannel)`, 
+  and `BinaryData.writeToAsync(AsynchronousByteChannel)` to allow writing the content of `BinaryData` to an 
+  `OutputStream`, `WriteableByteChannel`, or `AsynchronousByteChannel` respectively. ([#38271](https://github.com/Azure/azure-sdk-for-java/pull/38271))
+- Added `RetryOptions.shouldRetryCondition`, `RetryStrategy.shouldRetryCondition` and `RequestRetryCondition` to allow 
+  `RetryOptions` to determine which  HTTP responses and exceptions can be retried. ([#38585](https://github.com/Azure/azure-sdk-for-java/pull/38585))
+- Added `CoreUtils.addShutdownHookSafely` to add a shutdown hook with possible usage of `AccessController` to add it
+  in a privileged manner. ([#38580](https://github.com/Azure/azure-sdk-for-java/pull/38580))
+
+### Breaking Changes
+
+- `SyncPoller.waitForCompletion(Duration)` now throws an exception if the polling operation doesn't complete or reach 
+  the status within the give duration.
+
+### Bugs Fixed
+
+- Fixed `RetryPolicy` usage of calculated delay. ([#37788](https://github.com/Azure/azure-sdk-for-java/pull/37788))
+
+### Other Changes
+
+- `HttpLoggingPolicy` uses better defaults for allowed headers and query parameters to log. ([#37686](https://github.com/Azure/azure-sdk-for-java/pull/37686))
+- Performance improvements in `LoggingEventBuilder`. ([#37967](https://github.com/Azure/azure-sdk-for-java/pull/37967))
+- Performance improvements to HTTP header logging. ([#38492](https://github.com/Azure/azure-sdk-for-java/pull/38492))
+- Reduce redacted header logging. ([#38501](https://github.com/Azure/azure-sdk-for-java/pull/38501))
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.33` to `3.4.34`.
+
+## 1.45.0 (2023-11-03)
+
+### Features Added
+
+- Added `PollOperationDetails` as details of long-running operations.
+
+### Bugs Fixed
+
+- Checks for HTTPS requirement when using certain credentials now checks for the protocol not being 'https'. ([#37454](https://github.com/Azure/azure-sdk-for-java/pull/37454))
+
+## 1.44.1 (2023-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.31` to `3.4.33`.
+
+## 1.44.0 (2023-10-06)
+
+### Features Added
+
+- Added `CoreUtils.getResultWithTimeout` to get a value of a `Future` and cancel it if the `get` times out. ([#37055](https://github.com/Azure/azure-sdk-for-java/pull/37055))
+- Added `transfer` and `transferAsync` overloads in `IOUtils` that accept an estimated data size to attempt to better
+  optimize transfers to reduce reads and writes. ([#36650](https://github.com/Azure/azure-sdk-for-java/pull/36650))
+
+### Bugs Fixed
+
+- Fixed a bug where `FluxByteBufferContent.toReplayableContent()` didn't eagerly make the `Flux<ByteBuffer>` replayable. ([#36999](https://github.com/Azure/azure-sdk-for-java/pull/36999))
+
+### Other Changes
+
+- REST calls using `SyncRestProxy` no longer logs unexpected HTTP status code responses to align with the asynchronous
+  behavior in `AsyncRestProxy`. ([#36680](https://github.com/Azure/azure-sdk-for-java/pull/36680))
+- Rewrote internal reflection handling to better support Android. ([#36612](https://github.com/Azure/azure-sdk-for-java/pull/36612))
+- Replaced `doFinally` with `Mono.using` and `Flux.using`. ([#36997](https://github.com/Azure/azure-sdk-for-java/pull/36997))
 
 ## 1.43.0 (2023-09-07)
 

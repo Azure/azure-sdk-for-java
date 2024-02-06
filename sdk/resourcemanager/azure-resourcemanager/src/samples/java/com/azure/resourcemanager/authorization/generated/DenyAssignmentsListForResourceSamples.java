@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DenyAssignments ListForResource. */
 public final class DenyAssignmentsListForResourceSamples {
     /*
@@ -30,6 +28,6 @@ public final class DenyAssignmentsListForResourceSamples {
                 "resourceType",
                 "resourceName",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

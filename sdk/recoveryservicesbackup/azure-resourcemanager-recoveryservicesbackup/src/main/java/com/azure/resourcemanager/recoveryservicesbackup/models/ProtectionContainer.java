@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for container with backup items. Containers with specific workloads are derived from this class. */
+/**
+ * Base class for container with backup items. Containers with specific workloads are derived from this class.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -24,8 +26,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "AzureSqlContainer", value = AzureSqlContainer.class),
     @JsonSubTypes.Type(name = "StorageContainer", value = AzureStorageContainer.class),
     @JsonSubTypes.Type(name = "GenericContainer", value = GenericContainer.class),
-    @JsonSubTypes.Type(name = "Windows", value = MabContainer.class)
-})
+    @JsonSubTypes.Type(name = "Windows", value = MabContainer.class) })
 @Fluent
 public class ProtectionContainer {
     /*
@@ -58,13 +59,15 @@ public class ProtectionContainer {
     @JsonProperty(value = "protectableObjectType")
     private String protectableObjectType;
 
-    /** Creates an instance of ProtectionContainer class. */
+    /**
+     * Creates an instance of ProtectionContainer class.
+     */
     public ProtectionContainer() {
     }
 
     /**
      * Get the friendlyName property: Friendly name of the container.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -73,7 +76,7 @@ public class ProtectionContainer {
 
     /**
      * Set the friendlyName property: Friendly name of the container.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ProtectionContainer object itself.
      */
@@ -84,7 +87,7 @@ public class ProtectionContainer {
 
     /**
      * Get the backupManagementType property: Type of backup management for the container.
-     *
+     * 
      * @return the backupManagementType value.
      */
     public BackupManagementType backupManagementType() {
@@ -93,7 +96,7 @@ public class ProtectionContainer {
 
     /**
      * Set the backupManagementType property: Type of backup management for the container.
-     *
+     * 
      * @param backupManagementType the backupManagementType value to set.
      * @return the ProtectionContainer object itself.
      */
@@ -104,7 +107,7 @@ public class ProtectionContainer {
 
     /**
      * Get the registrationStatus property: Status of registration of the container with the Recovery Services Vault.
-     *
+     * 
      * @return the registrationStatus value.
      */
     public String registrationStatus() {
@@ -113,7 +116,7 @@ public class ProtectionContainer {
 
     /**
      * Set the registrationStatus property: Status of registration of the container with the Recovery Services Vault.
-     *
+     * 
      * @param registrationStatus the registrationStatus value to set.
      * @return the ProtectionContainer object itself.
      */
@@ -124,7 +127,7 @@ public class ProtectionContainer {
 
     /**
      * Get the healthStatus property: Status of health of the container.
-     *
+     * 
      * @return the healthStatus value.
      */
     public String healthStatus() {
@@ -133,7 +136,7 @@ public class ProtectionContainer {
 
     /**
      * Set the healthStatus property: Status of health of the container.
-     *
+     * 
      * @param healthStatus the healthStatus value to set.
      * @return the ProtectionContainer object itself.
      */
@@ -144,7 +147,7 @@ public class ProtectionContainer {
 
     /**
      * Get the protectableObjectType property: Type of the protectable object associated with this container.
-     *
+     * 
      * @return the protectableObjectType value.
      */
     public String protectableObjectType() {
@@ -153,7 +156,7 @@ public class ProtectionContainer {
 
     /**
      * Set the protectableObjectType property: Type of the protectable object associated with this container.
-     *
+     * 
      * @param protectableObjectType the protectableObjectType value to set.
      * @return the ProtectionContainer object itself.
      */
@@ -164,7 +167,7 @@ public class ProtectionContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Flexible server edition capabilities. */
+/**
+ * Flexible server edition capabilities.
+ */
 @Immutable
 public final class FlexibleServerEditionCapability extends CapabilityBase {
     /*
@@ -35,13 +37,15 @@ public final class FlexibleServerEditionCapability extends CapabilityBase {
     @JsonProperty(value = "supportedServerSkus", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerSkuCapability> supportedServerSkus;
 
-    /** Creates an instance of FlexibleServerEditionCapability class. */
+    /**
+     * Creates an instance of FlexibleServerEditionCapability class.
+     */
     public FlexibleServerEditionCapability() {
     }
 
     /**
      * Get the name property: Server edition name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class FlexibleServerEditionCapability extends CapabilityBase {
 
     /**
      * Get the defaultSkuName property: Default sku name for the server edition.
-     *
+     * 
      * @return the defaultSkuName value.
      */
     public String defaultSkuName() {
@@ -59,7 +63,7 @@ public final class FlexibleServerEditionCapability extends CapabilityBase {
 
     /**
      * Get the supportedStorageEditions property: The list of editions supported by this server edition.
-     *
+     * 
      * @return the supportedStorageEditions value.
      */
     public List<StorageEditionCapability> supportedStorageEditions() {
@@ -68,7 +72,7 @@ public final class FlexibleServerEditionCapability extends CapabilityBase {
 
     /**
      * Get the supportedServerSkus property: List of supported server SKUs.
-     *
+     * 
      * @return the supportedServerSkus value.
      */
     public List<ServerSkuCapability> supportedServerSkus() {
@@ -77,7 +81,7 @@ public final class FlexibleServerEditionCapability extends CapabilityBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

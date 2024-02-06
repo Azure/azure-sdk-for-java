@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class MabFileFolderProtectedItemExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MabFileFolderProtectedItemExtendedInfo model =
-            BinaryData
-                .fromString(
-                    "{\"lastRefreshedAt\":\"2021-05-19T03:14:53Z\",\"oldestRecoveryPoint\":\"2021-06-11T14:56:28Z\",\"recoveryPointCount\":109793124}")
-                .toObject(MabFileFolderProtectedItemExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T03:14:53Z"), model.lastRefreshedAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T14:56:28Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(109793124, model.recoveryPointCount());
+        MabFileFolderProtectedItemExtendedInfo model = BinaryData.fromString(
+            "{\"lastRefreshedAt\":\"2021-09-03T22:46:11Z\",\"oldestRecoveryPoint\":\"2021-05-02T03:25:22Z\",\"recoveryPointCount\":639102434}")
+            .toObject(MabFileFolderProtectedItemExtendedInfo.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T22:46:11Z"), model.lastRefreshedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T03:25:22Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(639102434, model.recoveryPointCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MabFileFolderProtectedItemExtendedInfo model =
-            new MabFileFolderProtectedItemExtendedInfo()
-                .withLastRefreshedAt(OffsetDateTime.parse("2021-05-19T03:14:53Z"))
-                .withOldestRecoveryPoint(OffsetDateTime.parse("2021-06-11T14:56:28Z"))
-                .withRecoveryPointCount(109793124);
+        MabFileFolderProtectedItemExtendedInfo model = new MabFileFolderProtectedItemExtendedInfo()
+            .withLastRefreshedAt(OffsetDateTime.parse("2021-09-03T22:46:11Z"))
+            .withOldestRecoveryPoint(OffsetDateTime.parse("2021-05-02T03:25:22Z")).withRecoveryPointCount(639102434);
         model = BinaryData.fromObject(model).toObject(MabFileFolderProtectedItemExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T03:14:53Z"), model.lastRefreshedAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T14:56:28Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(109793124, model.recoveryPointCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T22:46:11Z"), model.lastRefreshedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T03:25:22Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(639102434, model.recoveryPointCount());
     }
 }

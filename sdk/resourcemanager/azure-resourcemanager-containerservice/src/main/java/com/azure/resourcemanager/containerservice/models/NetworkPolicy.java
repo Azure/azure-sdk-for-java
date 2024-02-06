@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Network policy used for building the Kubernetes network. */
+/**
+ * Network policy used for building the Kubernetes network.
+ */
 public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
-    /** Static value calico for NetworkPolicy. */
+    /**
+     * Static value calico for NetworkPolicy.
+     */
     public static final NetworkPolicy CALICO = fromString("calico");
 
-    /** Static value azure for NetworkPolicy. */
+    /**
+     * Static value azure for NetworkPolicy.
+     */
     public static final NetworkPolicy AZURE = fromString("azure");
 
-    /** Static value cilium for NetworkPolicy. */
+    /**
+     * Static value cilium for NetworkPolicy.
+     */
     public static final NetworkPolicy CILIUM = fromString("cilium");
 
     /**
      * Creates a new instance of NetworkPolicy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
 
     /**
      * Creates or finds a NetworkPolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkPolicy.
      */
@@ -41,7 +49,7 @@ public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
 
     /**
      * Gets known NetworkPolicy values.
-     *
+     * 
      * @return known NetworkPolicy values.
      */
     public static Collection<NetworkPolicy> values() {

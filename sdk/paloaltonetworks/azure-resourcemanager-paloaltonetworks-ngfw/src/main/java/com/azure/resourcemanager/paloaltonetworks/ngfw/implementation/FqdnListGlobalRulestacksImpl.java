@@ -21,8 +21,7 @@ public final class FqdnListGlobalRulestacksImpl implements FqdnListGlobalRulesta
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    public FqdnListGlobalRulestacksImpl(
-        FqdnListGlobalRulestacksClient innerClient,
+    public FqdnListGlobalRulestacksImpl(FqdnListGlobalRulestacksClient innerClient,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -34,20 +33,17 @@ public final class FqdnListGlobalRulestacksImpl implements FqdnListGlobalRulesta
     }
 
     public PagedIterable<FqdnListGlobalRulestackResource> list(String globalRulestackName, Context context) {
-        PagedIterable<FqdnListGlobalRulestackResourceInner> inner =
-            this.serviceClient().list(globalRulestackName, context);
+        PagedIterable<FqdnListGlobalRulestackResourceInner> inner
+            = this.serviceClient().list(globalRulestackName, context);
         return Utils.mapPage(inner, inner1 -> new FqdnListGlobalRulestackResourceImpl(inner1, this.manager()));
     }
 
-    public Response<FqdnListGlobalRulestackResource> getWithResponse(
-        String globalRulestackName, String name, Context context) {
-        Response<FqdnListGlobalRulestackResourceInner> inner =
-            this.serviceClient().getWithResponse(globalRulestackName, name, context);
+    public Response<FqdnListGlobalRulestackResource> getWithResponse(String globalRulestackName, String name,
+        Context context) {
+        Response<FqdnListGlobalRulestackResourceInner> inner
+            = this.serviceClient().getWithResponse(globalRulestackName, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FqdnListGlobalRulestackResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -63,10 +59,10 @@ public final class FqdnListGlobalRulestacksImpl implements FqdnListGlobalRulesta
         }
     }
 
-    public FqdnListGlobalRulestackResource createOrUpdate(
-        String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource) {
-        FqdnListGlobalRulestackResourceInner inner =
-            this.serviceClient().createOrUpdate(globalRulestackName, name, resource);
+    public FqdnListGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
+        FqdnListGlobalRulestackResourceInner resource) {
+        FqdnListGlobalRulestackResourceInner inner
+            = this.serviceClient().createOrUpdate(globalRulestackName, name, resource);
         if (inner != null) {
             return new FqdnListGlobalRulestackResourceImpl(inner, this.manager());
         } else {
@@ -74,10 +70,10 @@ public final class FqdnListGlobalRulestacksImpl implements FqdnListGlobalRulesta
         }
     }
 
-    public FqdnListGlobalRulestackResource createOrUpdate(
-        String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource, Context context) {
-        FqdnListGlobalRulestackResourceInner inner =
-            this.serviceClient().createOrUpdate(globalRulestackName, name, resource, context);
+    public FqdnListGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
+        FqdnListGlobalRulestackResourceInner resource, Context context) {
+        FqdnListGlobalRulestackResourceInner inner
+            = this.serviceClient().createOrUpdate(globalRulestackName, name, resource, context);
         if (inner != null) {
             return new FqdnListGlobalRulestackResourceImpl(inner, this.manager());
         } else {

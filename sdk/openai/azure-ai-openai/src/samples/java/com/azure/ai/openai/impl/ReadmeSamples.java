@@ -6,29 +6,43 @@ package com.azure.ai.openai.impl;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
+import com.azure.ai.openai.functions.MyFunctionCallArguments;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslation;
+import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
+import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinition;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatMessage;
-import com.azure.ai.openai.models.ChatRole;
+import com.azure.ai.openai.models.ChatCompletionsToolDefinition;
+import com.azure.ai.openai.models.ChatMessageImageContentItem;
+import com.azure.ai.openai.models.ChatMessageImageUrl;
+import com.azure.ai.openai.models.ChatMessageTextContentItem;
+import com.azure.ai.openai.models.ChatRequestAssistantMessage;
+import com.azure.ai.openai.models.ChatRequestMessage;
+import com.azure.ai.openai.models.ChatRequestSystemMessage;
+import com.azure.ai.openai.models.ChatRequestToolMessage;
+import com.azure.ai.openai.models.ChatRequestUserMessage;
+import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.FunctionDefinition;
+import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
-import com.azure.ai.openai.models.ImageLocation;
-import com.azure.ai.openai.models.ImageResponse;
+import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.IterableStream;
@@ -116,7 +130,7 @@ public final class ReadmeSamples {
         List<String> prompt = new ArrayList<>();
         prompt.add("Say this is a test");
 
-        Completions completions = client.getCompletions("{deploymentOrModelId}", new CompletionsOptions(prompt));
+        Completions completions = client.getCompletions("{deploymentOrModelName}", new CompletionsOptions(prompt));
 
         System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
         for (Choice choice : completions.getChoices()) {
@@ -131,7 +145,7 @@ public final class ReadmeSamples {
         prompt.add("How to bake a cake?");
 
         IterableStream<Completions> completionsStream = client
-            .getCompletionsStream("{deploymentOrModelId}", new CompletionsOptions(prompt));
+            .getCompletionsStream("{deploymentOrModelName}", new CompletionsOptions(prompt));
 
         completionsStream
             .stream()
@@ -145,18 +159,18 @@ public final class ReadmeSamples {
 
     public void getChatCompletions() {
         // BEGIN: readme-sample-getChatCompletions
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-        ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelId}",
+        ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}",
             new ChatCompletionsOptions(chatMessages));
 
         System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
         for (ChatChoice choice : chatCompletions.getChoices()) {
-            ChatMessage message = choice.getMessage();
+            ChatResponseMessage message = choice.getMessage();
             System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
             System.out.println("Message:");
             System.out.println(message.getContent());
@@ -166,13 +180,13 @@ public final class ReadmeSamples {
 
     public void getChatCompletionsStream() {
         // BEGIN: readme-sample-getChatCompletionsStream
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
+        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelName}",
             new ChatCompletionsOptions(chatMessages));
 
         chatCompletionsStream
@@ -182,7 +196,7 @@ public final class ReadmeSamples {
             // TODO: remove .skip(1) when service fix the issue.
             .skip(1)
             .forEach(chatCompletions -> {
-                ChatMessage delta = chatCompletions.getChoices().get(0).getDelta();
+                ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
                 if (delta.getRole() != null) {
                     System.out.println("Role = " + delta.getRole());
                 }
@@ -198,7 +212,7 @@ public final class ReadmeSamples {
         EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(
             Arrays.asList("Your text string goes here"));
 
-        Embeddings embeddings = client.getEmbeddings("{deploymentOrModelId}", embeddingsOptions);
+        Embeddings embeddings = client.getEmbeddings("{deploymentOrModelName}", embeddingsOptions);
 
         for (EmbeddingItem item : embeddings.getData()) {
             System.out.printf("Index: %d.%n", item.getPromptIndex());
@@ -213,18 +227,12 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-imageGeneration
         ImageGenerationOptions imageGenerationOptions = new ImageGenerationOptions(
             "A drawing of the Seattle skyline in the style of Van Gogh");
-        ImageResponse images = client.getImages(imageGenerationOptions);
+        ImageGenerations images = client.getImageGenerations("{deploymentOrModelName}", imageGenerationOptions);
 
-        for (ImageLocation imageLocation : images.getData()) {
-            ResponseError error = imageLocation.getError();
-            if (error != null) {
-                System.out.printf("Image generation operation failed. Error code: %s, error message: %s.%n",
-                    error.getCode(), error.getMessage());
-            } else {
-                System.out.printf(
-                    "Image location URL that provides temporary access to download the generated image is %s.%n",
-                    imageLocation.getUrl());
-            }
+        for (ImageGenerationData imageGenerationData : images.getData()) {
+            System.out.printf(
+                "Image location URL that provides temporary access to download the generated image is %s.%n",
+                imageGenerationData.getUrl());
         }
         // END: readme-sample-imageGeneration
     }
@@ -238,7 +246,7 @@ public final class ReadmeSamples {
         AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
             .setResponseFormat(AudioTranscriptionFormat.JSON);
 
-        AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelId}", fileName, transcriptionOptions);
+        AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelName}", fileName, transcriptionOptions);
 
         System.out.println("Transcription: " + transcription.getText());
         // END: readme-sample-audioTranscription
@@ -251,11 +259,80 @@ public final class ReadmeSamples {
 
         byte[] file = BinaryData.fromFile(filePath).toBytes();
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
-            .setResponseFormat(AudioTranscriptionFormat.JSON);
+            .setResponseFormat(AudioTranslationFormat.JSON);
 
-        AudioTranscription translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
+        AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelName}", fileName, translationOptions);
 
         System.out.println("Translation: " + translation.getText());
         // END: readme-sample-audioTranslation
+    }
+
+    public void chatWithImages() {
+        // BEGIN: readme-sample-chatWithImages
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that describes images"));
+        chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+                new ChatMessageTextContentItem("Please describe this image"),
+                new ChatMessageImageContentItem(
+                        new ChatMessageImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png"))
+        )));
+
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
+        ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}", chatCompletionsOptions);
+
+        System.out.println("Chat completion: " + chatCompletions.getChoices().get(0).getMessage().getContent());
+        // END: readme-sample-chatWithImages
+    }
+
+    public void toolCalls() {
+        // BEGIN: readme-sample-toolCalls
+        List<ChatRequestMessage> chatMessages = Arrays.asList(
+                new ChatRequestSystemMessage("You are a helpful assistant."),
+                new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?")
+        );
+        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
+                new FunctionDefinition("MyFunctionName"));
+
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
+        chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
+
+        ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}", chatCompletionsOptions);
+
+        ChatChoice choice = chatCompletions.getChoices().get(0);
+        // The LLM is requesting the calling of the function we defined in the original request
+        if (choice.getFinishReason() == CompletionsFinishReason.TOOL_CALLS) {
+            ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) choice.getMessage().getToolCalls().get(0);
+            String functionArguments = toolCall.getFunction().getArguments();
+
+            // As an additional step, you may want to deserialize the parameters, so you can call your function
+            MyFunctionCallArguments parameters = BinaryData.fromString(functionArguments).toObject(MyFunctionCallArguments.class);
+
+            String functionCallResult = "{the-result-of-my-function}"; // myFunction(parameters...);
+
+            ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage("");
+            assistantMessage.setToolCalls(choice.getMessage().getToolCalls());
+
+            // We include:
+            // - The past 2 messages from the original request
+            // - A new ChatRequestAssistantMessage with the tool calls from the original request
+            // - A new ChatRequestToolMessage with the result of our function call
+            List<ChatRequestMessage> followUpMessages = Arrays.asList(
+                    chatMessages.get(0),
+                    chatMessages.get(1),
+                    assistantMessage,
+                    new ChatRequestToolMessage(functionCallResult, toolCall.getId())
+            );
+
+            ChatCompletionsOptions followUpChatCompletionsOptions = new ChatCompletionsOptions(followUpMessages);
+
+            ChatCompletions followUpChatCompletions = client.getChatCompletions("{deploymentOrModelName}", followUpChatCompletionsOptions);
+
+            // This time the finish reason is STOPPED
+            ChatChoice followUpChoice = followUpChatCompletions.getChoices().get(0);
+            if (followUpChoice.getFinishReason() == CompletionsFinishReason.STOPPED) {
+                System.out.println("Chat Completions Result: " + followUpChoice.getMessage().getContent());
+            }
+        }
+        // END: readme-sample-toolCalls
     }
 }

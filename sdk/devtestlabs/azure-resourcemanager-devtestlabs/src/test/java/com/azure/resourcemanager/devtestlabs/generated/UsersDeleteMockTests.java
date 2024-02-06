@@ -56,6 +56,6 @@ public final class UsersDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.users().delete("lpmcrdc", "eljtiahxmfqryarv", "x", com.azure.core.util.Context.NONE);
+        manager.users().delete("qelwgdhuruzytza", "ogatmoljiy", "mpinmzvfkneerzzt", com.azure.core.util.Context.NONE);
     }
 }

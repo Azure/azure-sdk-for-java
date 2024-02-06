@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of managed integration runtime operation result. */
+/**
+ * Properties of managed integration runtime operation result.
+ */
 @Fluent
 public final class ManagedIntegrationRuntimeOperationResult {
     /*
@@ -56,15 +58,18 @@ public final class ManagedIntegrationRuntimeOperationResult {
     /*
      * Properties of managed integration runtime operation result.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ManagedIntegrationRuntimeOperationResult class. */
+    /**
+     * Creates an instance of ManagedIntegrationRuntimeOperationResult class.
+     */
     public ManagedIntegrationRuntimeOperationResult() {
     }
 
     /**
      * Get the type property: The operation type. Could be start or stop.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -73,7 +78,7 @@ public final class ManagedIntegrationRuntimeOperationResult {
 
     /**
      * Get the startTime property: The start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -82,7 +87,7 @@ public final class ManagedIntegrationRuntimeOperationResult {
 
     /**
      * Get the result property: The operation result.
-     *
+     * 
      * @return the result value.
      */
     public String result() {
@@ -91,7 +96,7 @@ public final class ManagedIntegrationRuntimeOperationResult {
 
     /**
      * Get the errorCode property: The error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -100,7 +105,7 @@ public final class ManagedIntegrationRuntimeOperationResult {
 
     /**
      * Get the parameters property: Managed integration runtime error parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public List<String> parameters() {
@@ -109,7 +114,7 @@ public final class ManagedIntegrationRuntimeOperationResult {
 
     /**
      * Get the activityId property: The activity id for the operation request.
-     *
+     * 
      * @return the activityId value.
      */
     public String activityId() {
@@ -118,7 +123,7 @@ public final class ManagedIntegrationRuntimeOperationResult {
 
     /**
      * Get the additionalProperties property: Properties of managed integration runtime operation result.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -128,7 +133,7 @@ public final class ManagedIntegrationRuntimeOperationResult {
 
     /**
      * Set the additionalProperties property: Properties of managed integration runtime operation result.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ManagedIntegrationRuntimeOperationResult object itself.
      */
@@ -147,7 +152,7 @@ public final class ManagedIntegrationRuntimeOperationResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

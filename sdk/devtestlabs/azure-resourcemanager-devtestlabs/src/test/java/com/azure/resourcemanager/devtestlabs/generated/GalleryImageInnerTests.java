@@ -17,58 +17,59 @@ public final class GalleryImageInnerTests {
         GalleryImageInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"author\":\"byrqufeg\",\"createdDate\":\"2021-08-31T05:13:54Z\",\"description\":\"zfbn\",\"imageReference\":{\"offer\":\"ctlpdngitvgb\",\"publisher\":\"rixkwmyijejve\",\"sku\":\"hbpnaixexccbd\",\"osType\":\"ax\",\"version\":\"exdrrvqahqkg\"},\"icon\":\"pwijnhy\",\"enabled\":false,\"planId\":\"ycxzbfvoo\",\"isPlanAuthorized\":false},\"location\":\"vmtgjqppy\",\"tags\":{\"sxkm\":\"ronzmyhgfip\",\"hjglikk\":\"waekrrjreafxtsgu\",\"uzlm\":\"wslolbqp\"},\"id\":\"felfktg\",\"name\":\"lcrpw\",\"type\":\"xeznoi\"}")
+                    "{\"properties\":{\"author\":\"jmsvpkjp\",\"createdDate\":\"2021-09-03T19:15:23Z\",\"description\":\"cfzq\",\"imageReference\":{\"offer\":\"x\",\"publisher\":\"czheyd\",\"sku\":\"dshmkxmaehvbbx\",\"osType\":\"iplt\",\"version\":\"htba\"},\"icon\":\"gx\",\"enabled\":false,\"planId\":\"kpyklyhp\",\"isPlanAuthorized\":true},\"location\":\"dpvruud\",\"tags\":{\"eclze\":\"ibthostgktstvd\"},\"id\":\"qbcvhzlhplod\",\"name\":\"kdl\",\"type\":\"wqfbumlkxtrqjfsm\"}")
                 .toObject(GalleryImageInner.class);
-        Assertions.assertEquals("vmtgjqppy", model.location());
-        Assertions.assertEquals("ronzmyhgfip", model.tags().get("sxkm"));
-        Assertions.assertEquals("byrqufeg", model.author());
-        Assertions.assertEquals("zfbn", model.description());
-        Assertions.assertEquals("ctlpdngitvgb", model.imageReference().offer());
-        Assertions.assertEquals("rixkwmyijejve", model.imageReference().publisher());
-        Assertions.assertEquals("hbpnaixexccbd", model.imageReference().sku());
-        Assertions.assertEquals("ax", model.imageReference().osType());
-        Assertions.assertEquals("exdrrvqahqkg", model.imageReference().version());
-        Assertions.assertEquals("pwijnhy", model.icon());
+        Assertions.assertEquals("dpvruud", model.location());
+        Assertions.assertEquals("ibthostgktstvd", model.tags().get("eclze"));
+        Assertions.assertEquals("jmsvpkjp", model.author());
+        Assertions.assertEquals("cfzq", model.description());
+        Assertions.assertEquals("x", model.imageReference().offer());
+        Assertions.assertEquals("czheyd", model.imageReference().publisher());
+        Assertions.assertEquals("dshmkxmaehvbbx", model.imageReference().sku());
+        Assertions.assertEquals("iplt", model.imageReference().osType());
+        Assertions.assertEquals("htba", model.imageReference().version());
+        Assertions.assertEquals("gx", model.icon());
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("ycxzbfvoo", model.planId());
-        Assertions.assertEquals(false, model.isPlanAuthorized());
+        Assertions.assertEquals("kpyklyhp", model.planId());
+        Assertions.assertEquals(true, model.isPlanAuthorized());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GalleryImageInner model =
             new GalleryImageInner()
-                .withLocation("vmtgjqppy")
-                .withTags(mapOf("sxkm", "ronzmyhgfip", "hjglikk", "waekrrjreafxtsgu", "uzlm", "wslolbqp"))
-                .withAuthor("byrqufeg")
-                .withDescription("zfbn")
+                .withLocation("dpvruud")
+                .withTags(mapOf("eclze", "ibthostgktstvd"))
+                .withAuthor("jmsvpkjp")
+                .withDescription("cfzq")
                 .withImageReference(
                     new GalleryImageReference()
-                        .withOffer("ctlpdngitvgb")
-                        .withPublisher("rixkwmyijejve")
-                        .withSku("hbpnaixexccbd")
-                        .withOsType("ax")
-                        .withVersion("exdrrvqahqkg"))
-                .withIcon("pwijnhy")
+                        .withOffer("x")
+                        .withPublisher("czheyd")
+                        .withSku("dshmkxmaehvbbx")
+                        .withOsType("iplt")
+                        .withVersion("htba"))
+                .withIcon("gx")
                 .withEnabled(false)
-                .withPlanId("ycxzbfvoo")
-                .withIsPlanAuthorized(false);
+                .withPlanId("kpyklyhp")
+                .withIsPlanAuthorized(true);
         model = BinaryData.fromObject(model).toObject(GalleryImageInner.class);
-        Assertions.assertEquals("vmtgjqppy", model.location());
-        Assertions.assertEquals("ronzmyhgfip", model.tags().get("sxkm"));
-        Assertions.assertEquals("byrqufeg", model.author());
-        Assertions.assertEquals("zfbn", model.description());
-        Assertions.assertEquals("ctlpdngitvgb", model.imageReference().offer());
-        Assertions.assertEquals("rixkwmyijejve", model.imageReference().publisher());
-        Assertions.assertEquals("hbpnaixexccbd", model.imageReference().sku());
-        Assertions.assertEquals("ax", model.imageReference().osType());
-        Assertions.assertEquals("exdrrvqahqkg", model.imageReference().version());
-        Assertions.assertEquals("pwijnhy", model.icon());
+        Assertions.assertEquals("dpvruud", model.location());
+        Assertions.assertEquals("ibthostgktstvd", model.tags().get("eclze"));
+        Assertions.assertEquals("jmsvpkjp", model.author());
+        Assertions.assertEquals("cfzq", model.description());
+        Assertions.assertEquals("x", model.imageReference().offer());
+        Assertions.assertEquals("czheyd", model.imageReference().publisher());
+        Assertions.assertEquals("dshmkxmaehvbbx", model.imageReference().sku());
+        Assertions.assertEquals("iplt", model.imageReference().osType());
+        Assertions.assertEquals("htba", model.imageReference().version());
+        Assertions.assertEquals("gx", model.icon());
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("ycxzbfvoo", model.planId());
-        Assertions.assertEquals(false, model.isPlanAuthorized());
+        Assertions.assertEquals("kpyklyhp", model.planId());
+        Assertions.assertEquals(true, model.isPlanAuthorized());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

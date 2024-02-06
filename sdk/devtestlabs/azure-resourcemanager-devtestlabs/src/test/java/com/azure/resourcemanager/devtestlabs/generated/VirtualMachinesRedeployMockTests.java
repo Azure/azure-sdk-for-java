@@ -56,6 +56,8 @@ public final class VirtualMachinesRedeployMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.virtualMachines().redeploy("pnmliq", "v", "bhikeaqgr", com.azure.core.util.Context.NONE);
+        manager
+            .virtualMachines()
+            .redeploy("nynpameudpabcre", "wzosgy", "xvcvasormrexz", com.azure.core.util.Context.NONE);
     }
 }

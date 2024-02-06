@@ -12,7 +12,9 @@ import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.DomainValidationProperties;
 import com.azure.resourcemanager.cdn.models.DomainValidationState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** The JSON object that contains the properties of the domain to create. */
 @Fluent
@@ -31,6 +33,13 @@ public final class AfdDomainProperties extends AfdDomainUpdatePropertiesParamete
     private String hostname;
 
     /*
+     * Key-Value pair representing migration properties for domains.
+     */
+    @JsonProperty(value = "extendedProperties")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> extendedProperties;
+
+    /*
      * Values the customer needs to validate domain ownership
      */
     @JsonProperty(value = "validationProperties", access = JsonProperty.Access.WRITE_ONLY)
@@ -47,6 +56,10 @@ public final class AfdDomainProperties extends AfdDomainUpdatePropertiesParamete
      */
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
+
+    /** Creates an instance of AfdDomainProperties class. */
+    public AfdDomainProperties() {
+    }
 
     /**
      * Get the domainValidationState property: Provisioning substate shows the progress of custom HTTPS
@@ -75,6 +88,26 @@ public final class AfdDomainProperties extends AfdDomainUpdatePropertiesParamete
      */
     public AfdDomainProperties withHostname(String hostname) {
         this.hostname = hostname;
+        return this;
+    }
+
+    /**
+     * Get the extendedProperties property: Key-Value pair representing migration properties for domains.
+     *
+     * @return the extendedProperties value.
+     */
+    public Map<String, String> extendedProperties() {
+        return this.extendedProperties;
+    }
+
+    /**
+     * Set the extendedProperties property: Key-Value pair representing migration properties for domains.
+     *
+     * @param extendedProperties the extendedProperties value to set.
+     * @return the AfdDomainProperties object itself.
+     */
+    public AfdDomainProperties withExtendedProperties(Map<String, String> extendedProperties) {
+        this.extendedProperties = extendedProperties;
         return this;
     }
 

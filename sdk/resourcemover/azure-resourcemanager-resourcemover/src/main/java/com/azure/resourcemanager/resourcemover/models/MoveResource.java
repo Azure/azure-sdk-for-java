@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.resourcemover.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcemover.fluent.models.MoveResourceInner;
 
@@ -38,6 +39,13 @@ public interface MoveResource {
     MoveResourceProperties properties();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the inner com.azure.resourcemanager.resourcemover.fluent.models.MoveResourceInner object.
      *
      * @return the inner object.
@@ -48,11 +56,13 @@ public interface MoveResource {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The MoveResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the MoveResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the MoveResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -64,6 +74,7 @@ public interface MoveResource {
              */
             WithCreate withExistingMoveCollection(String resourceGroupName, String moveCollectionName);
         }
+
         /**
          * The stage of the MoveResource definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -84,6 +95,7 @@ public interface MoveResource {
              */
             MoveResource create(Context context);
         }
+
         /** The stage of the MoveResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -95,6 +107,7 @@ public interface MoveResource {
             WithCreate withProperties(MoveResourceProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -1,17 +1,17 @@
 // Databricks notebook source
 // MAGIC %md
 // MAGIC **Secrets**
-// MAGIC 
+// MAGIC
 // MAGIC The secrets below  like the Cosmos account key are retrieved from a secret scope. If you don't have defined a secret scope for a Cosmos Account you want to use when going through this sample you can find the instructions on how to create one here:
 // MAGIC - Here you can [Create a new secret scope](./#secrets/createScope) for the current Databricks workspace
-// MAGIC   - See how you can create an [Azure Key Vault backed secret scope](https://docs.microsoft.com/azure/databricks/security/secrets/secret-scopes#--create-an-azure-key-vault-backed-secret-scope) 
+// MAGIC   - See how you can create an [Azure Key Vault backed secret scope](https://docs.microsoft.com/azure/databricks/security/secrets/secret-scopes#--create-an-azure-key-vault-backed-secret-scope)
 // MAGIC   - See how you can create a [Databricks backed secret scope](https://docs.microsoft.com/azure/databricks/security/secrets/secret-scopes#create-a-databricks-backed-secret-scope)
 // MAGIC - And here you can find information on how to [add secrets to your Spark configuration](https://docs.microsoft.com/azure/databricks/security/secrets/secrets#read-a-secret)
 // MAGIC If you don't want to use secrets at all you can of course also just assign the values in clear-text below - but for obvious reasons we recommend the usage of secrets.
 
 // COMMAND ----------
 
-val authType = "ServicePrinciple"
+val authType = "ServicePrincipal"
 val cosmosEndpoint = spark.conf.get("spark.cosmos.accountEndpoint")
 val subscriptionId = spark.conf.get("spark.cosmos.subscriptionId")
 val tenantId = spark.conf.get("spark.cosmos.tenantId")
@@ -31,7 +31,7 @@ val clientSecret = spark.conf.get("spark.cosmos.aad.clientSecret")
 // COMMAND ----------
 
 // MAGIC %md
-// MAGIC 
+// MAGIC
 // MAGIC Configure the Catalog API to be used for main workload
 
 // COMMAND ----------
@@ -49,7 +49,7 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.views.repositoryPat
 // COMMAND ----------
 
 // MAGIC %md
-// MAGIC 
+// MAGIC
 // MAGIC Configure the Catalog API to be used for throughput control. This will only be needed if different account is used for throughput control
 
 // COMMAND ----------
@@ -68,25 +68,25 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.views.repositoryPat
 
 // MAGIC %sql
 // MAGIC CREATE DATABASE IF NOT EXISTS cosmosCatalog.SampleDatabase;
-// MAGIC 
+// MAGIC
 // MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.GreenTaxiRecords
 // MAGIC USING cosmos.oltp
 // MAGIC TBLPROPERTIES(partitionKeyPath = '/id', autoScaleMaxThroughput = '100000', indexingPolicy = 'OnlySystemProperties');
-// MAGIC 
+// MAGIC
 // MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.GreenTaxiRecordsCFSink
 // MAGIC USING cosmos.oltp
 // MAGIC TBLPROPERTIES(partitionKeyPath = '/id', autoScaleMaxThroughput = '100000', indexingPolicy = 'OnlySystemProperties');
-// MAGIC 
+// MAGIC
 // MAGIC /* NOTE: It is important to enable TTL (can be off/-1 by default) on the throughput control container */
 // MAGIC /* If you are using a different account for throughput control, then please reference following commented examples */
 // MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.ThroughputControl
 // MAGIC USING cosmos.oltp
 // MAGIC OPTIONS(spark.cosmos.database = 'SampleDatabase')
 // MAGIC TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput = '4000', indexingPolicy = 'AllProperties', defaultTtlInSeconds = '-1');
-// MAGIC 
+// MAGIC
 // MAGIC -- /* If you are using a different account for throughput control, then please use throughput control catalog account for initializing containers */
 // MAGIC -- CREATE DATABASE IF NOT EXISTS throughputControlCatalog.SampleDatabase;
-// MAGIC 
+// MAGIC
 // MAGIC -- CREATE TABLE IF NOT EXISTS throughputControlCatalog.SampleDatabase.ThroughputControl
 // MAGIC -- USING cosmos.oltp
 // MAGIC -- OPTIONS(spark.cosmos.database = 'SampleDatabase')
@@ -96,7 +96,7 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.views.repositoryPat
 
 // MAGIC %md
 // MAGIC **Preparation - loading data source "[NYC Taxi & Limousine Commission - green taxi trip records](https://azure.microsoft.com/services/open-datasets/catalog/nyc-taxi-limousine-commission-green-taxi-trip-records/)"**
-// MAGIC 
+// MAGIC
 // MAGIC The green taxi trip records include fields capturing pick-up and drop-off dates/times, pick-up and drop-off locations, trip distances, itemized fares, rate types, payment types, and driver-reported passenger counts. This data set has over 80 million records (>8 GB) of data and is available via a publicly accessible Azure Blob Storage Account located in the East-US Azure region.
 
 // COMMAND ----------
@@ -123,8 +123,8 @@ spark.conf.set(
   blob_sas_token)
 print(s"Remote blob path: ${wasbs_path}")
 // SPARK read parquet, note that it won't load any data yet by now
-// NOTE - if you want to experiment with larger dataset sizes - consider switching to Option B (commenting code 
-// for Option A/uncommenting code for option B) the lines below or increase the value passed into the 
+// NOTE - if you want to experiment with larger dataset sizes - consider switching to Option B (commenting code
+// for Option A/uncommenting code for option B) the lines below or increase the value passed into the
 // limit function restricting the dataset size below
 
 // ------------------------------------------------------------------------------------
@@ -152,7 +152,7 @@ print("Finished preparation: ${formatter.format(Instant.now)}")
 
 // MAGIC %md
 // MAGIC ** Sample - ingesting the NYC Green Taxi data into Cosmos DB**
-// MAGIC 
+// MAGIC
 // MAGIC By setting the target throughput threshold to 0.95 (95%) we reduce throttling but still allow the ingestion to consume most of the provisioned throughput. For scenarios where ingestion should only take a smaller subset of the available throughput this threshold can be reduced accordingly.
 
 // COMMAND ----------
@@ -199,7 +199,7 @@ println(s"Finished ingestion: ${formatter.format(Instant.now)}")
 // COMMAND ----------
 
 val count_source = spark.sql("SELECT * FROM source").count()
-println(s"Number of records in source: ${count_source}") 
+println(s"Number of records in source: ${count_source}")
 
 // COMMAND ----------
 
@@ -230,7 +230,7 @@ val readCfg = Map(
 val count_query_schema=StructType(Array(StructField("Count", LongType, true)))
 val query_df = spark.read.format("cosmos.oltp").schema(count_query_schema).options(readCfg).load()
 val count_query = query_df.agg(sum("Count").as("TotalCount")).first.getLong(0)
-println(s"Number of records retrieved via query: ${count_query}") 
+println(s"Number of records retrieved via query: ${count_query}")
 println(s"Finished validation via query: ${formatter.format(Instant.now)}")
 
 assert(count_source == count_query)
@@ -260,7 +260,7 @@ val changeFeedCfg = Map(
 )
 val changeFeed_df = spark.read.format("cosmos.oltp.changeFeed").options(changeFeedCfg).load()
 val count_changeFeed = changeFeed_df.count()
-println(s"Number of records retrieved via change feed: ${count_changeFeed}") 
+println(s"Number of records retrieved via change feed: ${count_changeFeed}")
 println(s"Finished validation via change feed: ${formatter.format(Instant.now)}")
 
 assert(count_source == count_changeFeed)
@@ -289,7 +289,7 @@ val readCfg = Map(
 )
 
 val toBeDeleted_df = spark.read.format("cosmos.oltp").options(readCfg).load().limit(100000)
-println(s"Number of records to be deleted: ${toBeDeleted_df.count}") 
+println(s"Number of records to be deleted: ${toBeDeleted_df.count}")
 
 println(s"Starting to bulk delete documents: ${formatter.format(Instant.now)}")
 val deleteCfg = writeCfg + ("spark.cosmos.write.strategy" -> "ItemDelete")
@@ -306,7 +306,7 @@ val countCfg = readCfg + ("spark.cosmos.read.customQuery" -> "SELECT COUNT(0) AS
 val count_query_schema=StructType(Array(StructField("Count", LongType, true)))
 val query_df = spark.read.format("cosmos.oltp").schema(count_query_schema).options(countCfg).load()
 val count_query = query_df.agg(sum("Count").as("TotalCount")).first.getLong(0)
-println(s"Number of records retrieved via query: ${count_query}") 
+println(s"Number of records retrieved via query: ${count_query}")
 println(s"Finished count validation via query: ${formatter.format(Instant.now)}")
 
 assert (math.max(0, count_source - 100000) == count_query)
@@ -349,7 +349,7 @@ assert(df_Tables.count() == 3)
 // COMMAND ----------
 
 // MAGIC %sql
-// MAGIC CREATE TABLE cosmosCatalog.SampleDatabase.GreenTaxiRecordsView 
+// MAGIC CREATE TABLE cosmosCatalog.SampleDatabase.GreenTaxiRecordsView
 // MAGIC   (id STRING, _ts TIMESTAMP, vendorID INT, totalAmount DOUBLE)
 // MAGIC USING cosmos.oltp
 // MAGIC TBLPROPERTIES(isCosmosView = 'True')
@@ -359,7 +359,7 @@ assert(df_Tables.count() == 3)
 // MAGIC   spark.cosmos.read.inferSchema.enabled = 'False',
 // MAGIC   spark.cosmos.read.inferSchema.includeSystemProperties = 'True',
 // MAGIC   spark.cosmos.read.partitioning.strategy = 'Aggressive');
-// MAGIC 
+// MAGIC
 // MAGIC SELECT * FROM cosmosCatalog.SampleDatabase.GreenTaxiRecordsView LIMIT 10
 
 // COMMAND ----------
@@ -370,7 +370,7 @@ assert(df_Tables.count() == 3)
 // COMMAND ----------
 
 // MAGIC %sql
-// MAGIC CREATE TABLE cosmosCatalog.SampleDatabase.GreenTaxiRecordsAnotherView 
+// MAGIC CREATE TABLE cosmosCatalog.SampleDatabase.GreenTaxiRecordsAnotherView
 // MAGIC USING cosmos.oltp
 // MAGIC TBLPROPERTIES(isCosmosView = 'True')
 // MAGIC OPTIONS (
@@ -379,7 +379,7 @@ assert(df_Tables.count() == 3)
 // MAGIC   spark.cosmos.read.inferSchema.enabled = 'True',
 // MAGIC   spark.cosmos.read.inferSchema.includeSystemProperties = 'False',
 // MAGIC   spark.cosmos.read.partitioning.strategy = 'Restrictive');
-// MAGIC 
+// MAGIC
 // MAGIC SELECT * FROM cosmosCatalog.SampleDatabase.GreenTaxiRecordsAnotherView LIMIT 10
 
 // COMMAND ----------

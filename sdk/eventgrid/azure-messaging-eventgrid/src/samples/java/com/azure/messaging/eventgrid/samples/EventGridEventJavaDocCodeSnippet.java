@@ -4,15 +4,19 @@
 package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.azure.messaging.eventgrid.samples.models.User;
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +54,42 @@ public class EventGridEventJavaDocCodeSnippet {
         EventGridEvent eventGridEventDataDataJsonStr = new EventGridEvent("/EventGridEvents/example/source",
             "Example.EventType", BinaryData.fromString(jsonStringForData), "0.1");
         // END: com.azure.messaging.eventgrid.EventGridEvent#constructor
+    }
+
+    public void createPublisherWithDefaultAzureCredential() {
+        // BEGIN: com.azure.messaging.eventgrid.EventGridPublisherClientBuilder#buildEventGridEventPublisherClientWithDac
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        EventGridPublisherClient<EventGridEvent> eventGridEventPublisherClient = new EventGridPublisherClientBuilder()
+            .endpoint(System.getenv("AZURE_EVENTGRID_EVENT_ENDPOINT"))
+            .credential(credential)
+            .buildEventGridEventPublisherClient();
+        // END: com.azure.messaging.eventgrid.EventGridPublisherClientBuilder#buildEventGridEventPublisherClientWithDac
+    }
+    public void createPublisherClientWithSasCredential() {
+        // BEGIN: com.azure.messaging.eventgrid.CreateSasToken
+        // You can get a SAS token using static methods of EventGridPublisherClient.
+        String sasKey = EventGridPublisherClient.generateSas(System.getenv("AZURE_EVENTGRID_EVENT_ENDPOINT"),
+                new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_EVENT_TOPIC_KEY")),
+                OffsetDateTime.now().plusHours(1));
+        // END: com.azure.messaging.eventgrid.CreateSasToken
+        // BEGIN: com.azure.messaging.eventgrid.EventGridPublisherClientBuilder#buildEventGridEventPublisherClientWithSas
+        // Once you have this key, you can share it with anyone who needs to send events to your topic. They use it like this:
+        AzureSasCredential credential = new AzureSasCredential(sasKey);
+        EventGridPublisherClient<EventGridEvent> eventGridEventPublisherClient = new EventGridPublisherClientBuilder()
+            .endpoint(System.getenv("AZURE_EVENTGRID_EVENT_ENDPOINT"))
+            .credential(credential)
+            .buildEventGridEventPublisherClient();
+        // END: com.azure.messaging.eventgrid.EventGridPublisherClientBuilder#buildEventGridEventPublisherClientWithSas
+    }
+
+    public void createPublisherClientWithAzureKeyCredential() {
+        // BEGIN: com.azure.messaging.eventgrid.EventGridPublisherClientBuilder#buildEventGridEventPublisherClientWithKey
+        AzureKeyCredential credential = new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_EVENT_TOPIC_KEY"));
+        EventGridPublisherClient<EventGridEvent> eventGridEventPublisherClient = new EventGridPublisherClientBuilder()
+            .endpoint(System.getenv("AZURE_EVENTGRID_EVENT_ENDPOINT"))
+            .credential(credential)
+            .buildEventGridEventPublisherClient();
+        // END: com.azure.messaging.eventgrid.EventGridPublisherClientBuilder#buildEventGridEventPublisherClientWithKey
     }
 
     public void fromJsonStringWithDataJson() {
