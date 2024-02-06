@@ -2,6 +2,7 @@
 
 ```yaml
 require: https://github.com/Azure/azure-rest-api-specs/blob/3e27c70e7c02c07b458bc0e94716c3d82d3fdd19/specification/loadtestservice/data-plane/readme.md
+use: '@autorest/java@4.1.26'
 java: true
 data-plane: true
 title: LoadTestingClient

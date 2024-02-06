@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
@@ -27,50 +28,38 @@ import java.util.Map;
 import reactor.core.publisher.Mono;
 
 class LoadTestingClientTestBase extends TestProxyTestBase {
-    protected LoadTestAdministrationClientBuilder adminBuilder;
-    protected LoadTestRunClientBuilder testRunBuilder;
-
     private static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
+    private final String defaultEndpoint = "REDACTED.eastus.cnt-prod.loadtesting.azure.com";
 
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private final String defaultEndpoint = "REDACTED.eastus.cnt-prod.loadtesting.azure.com";
-
-    protected final String existingTestId = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID", "11111111-1234-1234-1234-123456789012");
-    protected final String newTestId = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22222222-1234-1234-1234-123456789012");
-    protected final String newTestIdAsync = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22223333-1234-1234-1234-123456789012");
-    protected final String newTestRunId = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID", "33333333-1234-1234-1234-123456789012");
-    protected final String newTestRunIdAsync = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID_2", "44444444-1234-1234-1234-123456789012");
-    protected final String uploadJmxFileName = Configuration.getGlobalConfiguration().get("UPLOAD_JMX_FILE_NAME", "sample-JMX-file.jmx");
-    protected final String uploadCsvFileName = Configuration.getGlobalConfiguration().get("UPLOAD_CSV_FILE_NAME", "additional-data.csv");
-    protected final String defaultAppComponentResourceId = Configuration.getGlobalConfiguration().get("APP_COMPONENT_RESOURCE_ID", "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource");
-    protected final String defaultServerMetricId = Configuration.getGlobalConfiguration().get("SERVER_METRIC_ID", "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/duration");
-
-    private TokenCredential getTokenCredential() {
-        DefaultAzureCredentialBuilder credentialBuilder = new DefaultAzureCredentialBuilder();
-        String authorityHost = Configuration.getGlobalConfiguration().get("AUTHORITY_HOST");
-        if (authorityHost != null) {
-            credentialBuilder.authorityHost(authorityHost);
-        }
-        return credentialBuilder.build();
-    }
+    protected final String existingTestId = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID",
+            "11111111-1234-1234-1234-123456789012");
+    protected final String newTestId = Configuration.getGlobalConfiguration().get("NEW_TEST_ID",
+            "22222222-1234-1234-1234-123456789012");
+    protected final String newTestIdAsync = Configuration.getGlobalConfiguration().get("NEW_TEST_ID",
+            "22223333-1234-1234-1234-123456789012");
+    protected final String newTestRunId = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID",
+            "33333333-1234-1234-1234-123456789012");
+    protected final String newTestRunIdAsync = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID_2",
+            "44444444-1234-1234-1234-123456789012");
+    protected final String uploadJmxFileName = Configuration.getGlobalConfiguration().get("UPLOAD_JMX_FILE_NAME",
+            "sample-JMX-file.jmx");
+    protected final String uploadCsvFileName = Configuration.getGlobalConfiguration().get("UPLOAD_CSV_FILE_NAME",
+            "additional-data.csv");
+    protected final String defaultAppComponentResourceId = Configuration.getGlobalConfiguration().get(
+            "APP_COMPONENT_RESOURCE_ID",
+            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource");
+    protected final String defaultServerMetricId = Configuration.getGlobalConfiguration().get("SERVER_METRIC_ID",
+            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/duration");
 
     @Override
     protected void beforeTest() {
-        LoadTestAdministrationClientBuilder loadTestAdministrationClientBuilder =
-                new LoadTestAdministrationClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
-                        .httpClient(HttpClient.createDefault())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        LoadTestRunClientBuilder loadTestRunClientBuilder =
-                new LoadTestRunClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-
         if (getTestMode() != TestMode.LIVE) {
             List<TestProxySanitizer> sanitizers = new ArrayList<>();
-            sanitizers.add(new TestProxySanitizer("Location", "https://[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}", "https://REDACTED", TestProxySanitizerType.HEADER));
+            sanitizers.add(new TestProxySanitizer("Location",
+                    "https://[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
+                    "https://REDACTED", TestProxySanitizerType.HEADER));
             sanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
             interceptorManager.addSanitizers(sanitizers);
         }
@@ -80,31 +69,25 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
             matchers.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
             interceptorManager.addMatchers(matchers);
         }
-
-        if (getTestMode() == TestMode.PLAYBACK) {
-            loadTestAdministrationClientBuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-            loadTestRunClientBuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            loadTestAdministrationClientBuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(getTokenCredential());
-            loadTestRunClientBuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(getTokenCredential());
-        } else if (getTestMode() == TestMode.LIVE) {
-            loadTestAdministrationClientBuilder.credential(getTokenCredential());
-            loadTestRunClientBuilder.credential(getTokenCredential());
-        }
-
-        adminBuilder = loadTestAdministrationClientBuilder;
-        testRunBuilder = loadTestRunClientBuilder;
     }
 
     // Helpers
+
+    protected LoadTestAdministrationClient getLoadTestAdministrationClient() {
+        return getLoadTestAdministrationClientBuilder(false).buildClient();
+    }
+
+    protected LoadTestAdministrationAsyncClient getLoadTestAdministrationAsyncClient() {
+        return getLoadTestAdministrationClientBuilder(true).buildAsyncClient();
+    }
+
+    protected LoadTestRunClient getLoadTestRunClient() {
+        return getLoadTestRunClientBuilder(false).buildClient();
+    }
+
+    protected LoadTestRunAsyncClient getLoadTestRunAsyncClient() {
+        return getLoadTestRunClientBuilder(true).buildAsyncClient();
+    }
 
     protected Map<String, Object> getAppComponentBodyFromDict() {
         Map<String, Object> appCompMap = new HashMap<String, Object>();
@@ -136,5 +119,94 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
         serverMetricsMap.put("metrics", metricsMap);
 
         return serverMetricsMap;
+    }
+
+    private TokenCredential getTokenCredential() {
+        DefaultAzureCredentialBuilder credentialBuilder = new DefaultAzureCredentialBuilder();
+        String authorityHost = Configuration.getGlobalConfiguration().get("AUTHORITY_HOST");
+        if (authorityHost != null) {
+            credentialBuilder.authorityHost(authorityHost);
+        }
+        return credentialBuilder.build();
+    }
+
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+                .skipRequest((ignored1, ignored2) -> false)
+                .assertAsync()
+                .build();
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+                .skipRequest((ignored1, ignored2) -> false)
+                .assertSync()
+                .build();
+    }
+
+    private HttpClient getTestModeHttpClient() {
+        HttpClient httpClient;
+        if (getTestMode() == TestMode.PLAYBACK) {
+            httpClient = interceptorManager.getPlaybackClient();
+        } else {
+            httpClient = HttpClient.createDefault();
+        }
+        return httpClient;
+    }
+
+    private LoadTestAdministrationClientBuilder getLoadTestAdministrationClientBuilder(boolean async) {
+        HttpClient httpClient = getTestModeHttpClient();
+
+        if (async) {
+            httpClient = buildAsyncAssertingClient(httpClient);
+        } else {
+            httpClient = buildSyncAssertingClient(httpClient);
+        }
+
+        LoadTestAdministrationClientBuilder loadTestAdministrationClientBuilder = new LoadTestAdministrationClientBuilder()
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
+                .httpClient(httpClient)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            loadTestAdministrationClientBuilder
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            loadTestAdministrationClientBuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(getTokenCredential());
+        } else if (getTestMode() == TestMode.LIVE) {
+            loadTestAdministrationClientBuilder.credential(getTokenCredential());
+        }
+
+        return loadTestAdministrationClientBuilder;
+    }
+
+    private LoadTestRunClientBuilder getLoadTestRunClientBuilder(boolean async) {
+        HttpClient httpClient = getTestModeHttpClient();
+
+        if (async) {
+            httpClient = buildAsyncAssertingClient(httpClient);
+        } else {
+            httpClient = buildSyncAssertingClient(httpClient);
+        }
+
+        LoadTestRunClientBuilder loadTestRunClientBuilder = new LoadTestRunClientBuilder()
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
+                .httpClient(httpClient)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            loadTestRunClientBuilder
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            loadTestRunClientBuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(getTokenCredential());
+        } else if (getTestMode() == TestMode.LIVE) {
+            loadTestRunClientBuilder.credential(getTokenCredential());
+        }
+
+        return loadTestRunClientBuilder;
     }
 }

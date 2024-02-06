@@ -63,7 +63,8 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     @Order(1)
     public void createOrUpdateTest() {
         BinaryData body = BinaryData.fromObject(getTestBodyFromDict());
-        Mono<Response<BinaryData>> monoResponse = adminBuilder.buildAsyncClient().createOrUpdateTestWithResponse(newTestIdAsync, body, null);
+        Mono<Response<BinaryData>> monoResponse = getLoadTestAdministrationAsyncClient()
+                .createOrUpdateTestWithResponse(newTestIdAsync, body, null);
         StepVerifier.create(monoResponse).assertNext(response -> {
             Assertions.assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
         }).verifyComplete();
@@ -74,11 +75,11 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     public void beginUploadTestFileAdditionalFiles() {
         BinaryData file = getFileBodyFromResource(uploadCsvFileName);
         RequestOptions requestOptions = new RequestOptions().addQueryParam("fileType", "ADDITIONAL_ARTIFACTS");
-        PollerFlux<BinaryData, BinaryData> poller = adminBuilder.buildAsyncClient().beginUploadTestFile(
-                                                        newTestIdAsync,
-                                                        uploadCsvFileName,
-                                                        file,
-                                                        requestOptions);
+        PollerFlux<BinaryData, BinaryData> poller = getLoadTestAdministrationAsyncClient().beginUploadTestFile(
+                newTestIdAsync,
+                uploadCsvFileName,
+                file,
+                requestOptions);
         poller = setPlaybackPollerFluxPollInterval(poller);
         StepVerifier.create(poller.last()).assertNext(pollResponse -> {
             Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
@@ -90,27 +91,31 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     public void beginUploadTestFileTestScript() {
         BinaryData file = getFileBodyFromResource(uploadJmxFileName);
         RequestOptions fileUploadRequestOptions = new RequestOptions().addQueryParam("fileType", "JMX_FILE");
-        PollerFlux<BinaryData, BinaryData> poller = adminBuilder.buildAsyncClient().beginUploadTestFile(newTestIdAsync, uploadJmxFileName, file, fileUploadRequestOptions);
+        PollerFlux<BinaryData, BinaryData> poller = getLoadTestAdministrationAsyncClient()
+                .beginUploadTestFile(newTestIdAsync, uploadJmxFileName, file, fileUploadRequestOptions);
         poller = setPlaybackPollerFluxPollInterval(poller);
-        StepVerifier.create(poller.takeUntil(pollResponse -> pollResponse.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult)).assertNext(fileBinary -> {
-            try {
-                JsonNode fileNode = OBJECT_MAPPER.readTree(fileBinary.toString());
-                String validationStatus = fileNode.get("validationStatus").asText();
-                Assertions.assertTrue(fileNode.get("fileName").asText().equals(uploadJmxFileName) && "VALIDATION_SUCCESS".equals(validationStatus));
-            } catch (Exception e) {
-                Assertions.assertTrue(false);
-            }
-        }).verifyComplete();
+        StepVerifier.create(poller.takeUntil(pollResponse -> pollResponse.getStatus().isComplete()).last()
+                .flatMap(AsyncPollResponse::getFinalResult)).assertNext(fileBinary -> {
+                    try {
+                        JsonNode fileNode = OBJECT_MAPPER.readTree(fileBinary.toString());
+                        String validationStatus = fileNode.get("validationStatus").asText();
+                        Assertions.assertTrue(fileNode.get("fileName").asText().equals(uploadJmxFileName)
+                                && "VALIDATION_SUCCESS".equals(validationStatus));
+                    } catch (Exception e) {
+                        Assertions.assertTrue(false);
+                    }
+                }).verifyComplete();
     }
 
     @Test
     @Order(4)
     public void createOrUpdateAppComponents() {
         BinaryData body = BinaryData.fromObject(getAppComponentBodyFromDict());
-        Mono<Response<BinaryData>> monoResponse = adminBuilder.buildAsyncClient().createOrUpdateAppComponentsWithResponse(
-                                                newTestIdAsync,
-                                                body,
-                                                null);
+        Mono<Response<BinaryData>> monoResponse = getLoadTestAdministrationAsyncClient()
+                .createOrUpdateAppComponentsWithResponse(
+                        newTestIdAsync,
+                        body,
+                        null);
         StepVerifier.create(monoResponse).assertNext(response -> {
             Assertions.assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
         }).verifyComplete();
@@ -120,10 +125,11 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     @Order(5)
     public void createOrUpdateServerMetricsConfig() {
         BinaryData body = BinaryData.fromObject(getServerMetricsBodyFromDict());
-        Mono<Response<BinaryData>> monoResponse = adminBuilder.buildAsyncClient().createOrUpdateServerMetricsConfigWithResponse(
-                                                newTestIdAsync,
-                                                body,
-                                                null);
+        Mono<Response<BinaryData>> monoResponse = getLoadTestAdministrationAsyncClient()
+                .createOrUpdateServerMetricsConfigWithResponse(
+                        newTestIdAsync,
+                        body,
+                        null);
         StepVerifier.create(monoResponse).assertNext(response -> {
             Assertions.assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
         }).verifyComplete();
@@ -134,11 +140,13 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     @Test
     @Order(6)
     public void getTestFile() {
-        Mono<Response<BinaryData>> monoResponse = adminBuilder.buildAsyncClient().getTestFileWithResponse(newTestIdAsync, uploadJmxFileName, null);
+        Mono<Response<BinaryData>> monoResponse = getLoadTestAdministrationAsyncClient()
+                .getTestFileWithResponse(newTestIdAsync, uploadJmxFileName, null);
         StepVerifier.create(monoResponse).assertNext(response -> {
             try {
                 JsonNode file = OBJECT_MAPPER.readTree(response.getValue().toString());
-                Assertions.assertTrue(file.get("fileName").asText().equals(uploadJmxFileName) && file.get("fileType").asText().equals("JMX_FILE"));
+                Assertions.assertTrue(file.get("fileName").asText().equals(uploadJmxFileName)
+                        && file.get("fileType").asText().equals("JMX_FILE"));
             } catch (Exception e) {
                 Assertions.assertTrue(false);
             }
@@ -149,7 +157,8 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     @Test
     @Order(7)
     public void getTest() {
-        Mono<Response<BinaryData>> monoResponse = adminBuilder.buildAsyncClient().getTestWithResponse(newTestIdAsync, null);
+        Mono<Response<BinaryData>> monoResponse = getLoadTestAdministrationAsyncClient()
+                .getTestWithResponse(newTestIdAsync, null);
         StepVerifier.create(monoResponse).assertNext(response -> {
             try {
                 JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
@@ -164,11 +173,14 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     @Test
     @Order(8)
     public void getAppComponents() {
-        Mono<Response<BinaryData>> monoResponse = adminBuilder.buildAsyncClient().getAppComponentsWithResponse(newTestIdAsync, null);
+        Mono<Response<BinaryData>> monoResponse = getLoadTestAdministrationAsyncClient()
+                .getAppComponentsWithResponse(newTestIdAsync, null);
         StepVerifier.create(monoResponse).assertNext(response -> {
             try {
                 JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
-                Assertions.assertTrue(test.get("components").has(defaultAppComponentResourceId) && test.get("components").get(defaultAppComponentResourceId).get("resourceId").asText().equalsIgnoreCase(defaultAppComponentResourceId));
+                Assertions.assertTrue(test.get("components").has(defaultAppComponentResourceId)
+                        && test.get("components").get(defaultAppComponentResourceId).get("resourceId").asText()
+                                .equalsIgnoreCase(defaultAppComponentResourceId));
             } catch (Exception e) {
                 Assertions.assertTrue(false);
             }
@@ -179,11 +191,13 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     @Test
     @Order(9)
     public void getServerMetricsConfig() {
-        Mono<Response<BinaryData>> monoResponse = adminBuilder.buildAsyncClient().getServerMetricsConfigWithResponse(newTestIdAsync, null);
+        Mono<Response<BinaryData>> monoResponse = getLoadTestAdministrationAsyncClient()
+                .getServerMetricsConfigWithResponse(newTestIdAsync, null);
         StepVerifier.create(monoResponse).assertNext(response -> {
             try {
                 JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
-                Assertions.assertTrue(test.get("metrics").has(defaultServerMetricId) && test.get("metrics").get(defaultServerMetricId).get("id").asText().equalsIgnoreCase(defaultServerMetricId));
+                Assertions.assertTrue(test.get("metrics").has(defaultServerMetricId) && test.get("metrics")
+                        .get(defaultServerMetricId).get("id").asText().equalsIgnoreCase(defaultServerMetricId));
             } catch (Exception e) {
                 e.printStackTrace();
                 Assertions.assertTrue(false);
@@ -197,11 +211,12 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     @Test
     @Order(10)
     public void listTestFiles() {
-        PagedFlux<BinaryData> response = adminBuilder.buildAsyncClient().listTestFiles(newTestIdAsync, null);
+        PagedFlux<BinaryData> response = getLoadTestAdministrationAsyncClient().listTestFiles(newTestIdAsync, null);
         StepVerifier.create(response).expectNextMatches(fileBinary -> {
             try {
                 JsonNode file = OBJECT_MAPPER.readTree(fileBinary.toString());
-                if (file.get("fileName").asText().equals(uploadJmxFileName) && file.get("fileType").asText().equals("JMX_FILE")) {
+                if (file.get("fileName").asText().equals(uploadJmxFileName)
+                        && file.get("fileType").asText().equals("JMX_FILE")) {
                     return true;
                 }
             } catch (Exception e) {
@@ -215,8 +230,8 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     @Order(11)
     public void listTests() {
         RequestOptions reqOpts = new RequestOptions()
-                                    .addQueryParam("orderBy", "lastModifiedDateTime desc");
-        PagedFlux<BinaryData> response = adminBuilder.buildAsyncClient().listTests(reqOpts);
+                .addQueryParam("orderBy", "lastModifiedDateTime desc");
+        PagedFlux<BinaryData> response = getLoadTestAdministrationAsyncClient().listTests(reqOpts);
         StepVerifier.create(response).expectNextMatches(testBinary -> {
             try {
                 JsonNode test = OBJECT_MAPPER.readTree(testBinary.toString());
@@ -232,13 +247,16 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     @Test
     @Order(12)
     public void deleteTestFile() {
-        StepVerifier.create(adminBuilder.buildAsyncClient().deleteTestFileWithResponse(newTestIdAsync, uploadCsvFileName, null)).expectNextCount(1).verifyComplete();
-        StepVerifier.create(adminBuilder.buildAsyncClient().deleteTestFileWithResponse(newTestIdAsync, uploadJmxFileName, null)).expectNextCount(1).verifyComplete();
+        StepVerifier.create(getLoadTestAdministrationAsyncClient().deleteTestFileWithResponse(newTestIdAsync,
+                uploadCsvFileName, null)).expectNextCount(1).verifyComplete();
+        StepVerifier.create(getLoadTestAdministrationAsyncClient().deleteTestFileWithResponse(newTestIdAsync,
+                uploadJmxFileName, null)).expectNextCount(1).verifyComplete();
     }
 
     @Test
     @Order(13)
     public void deleteTest() {
-        StepVerifier.create(adminBuilder.buildAsyncClient().deleteTestWithResponse(newTestIdAsync, null)).expectNextCount(1).verifyComplete();
+        StepVerifier.create(getLoadTestAdministrationAsyncClient().deleteTestWithResponse(newTestIdAsync, null))
+                .expectNextCount(1).verifyComplete();
     }
 }
