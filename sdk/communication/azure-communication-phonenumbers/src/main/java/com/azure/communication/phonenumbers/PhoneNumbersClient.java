@@ -721,6 +721,7 @@ public final class PhoneNumbersClient {
      * @param phoneNumbers The phone number(s) whose operator information should be searched.
      * @param includeAdditionalPhoneAndOperatorDetails Modifies the search to include additional fields in the response.
      *                  Please note: use of this option will affect the cost of the search.
+     * @param context A {@link Context} representing the request context.
      *
      * @return A {@link OperatorInformationResult} which contains the results of the search.
      */
