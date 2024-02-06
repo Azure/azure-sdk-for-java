@@ -191,7 +191,7 @@
  * not present in the document. Moreover, Vector Search can be applied to various types of content, including images
  * and videos, not just text.</p>
  *
- * <p>To learn how to index vector fields and perform vector search, you can refer to the <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/VectorSearchExample.java">sample</a>.
+ * <p>To learn how to index vector fields and perform vector search, you can refer to the <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/VectorSearchExample.java">sample</a>.
  * This sample provides detailed guidance on indexing vector fields and demonstrates how to perform vector search.</p>
  *
  * <p>Additionally, for more comprehensive information about Vector Search, including its concepts and usage, you can
@@ -201,7 +201,7 @@
  * <h3>Examples</h3>
  *
  * <p>The following examples all use a sample<a href="https://github.com/Azure-Samples/azure-search-sample-data"> Hotel data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">import into your own index from the Azure
- * portal</a>. These are just a few of the basics - please <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/README.md">check out our Samples</a> for much more.</p>
+ * portal</a>. These are just a few of the basics - please <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md">check out our Samples</a> for much more.</p>
  *
  * <h4>Querying</h4>
  *
@@ -423,7 +423,7 @@
  *
  * <h3>Troubleshooting</h3>
  *
- * <p>See our <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/TROUBLESHOOTING.md">troubleshooting guide</a> for details on how to diagnose various failure scenarios.</p>
+ * <p>See our <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/TROUBLESHOOTING.md">troubleshooting guide</a> for details on how to diagnose various failure scenarios.</p>
  *
  * <h4>General</h4>
  *
