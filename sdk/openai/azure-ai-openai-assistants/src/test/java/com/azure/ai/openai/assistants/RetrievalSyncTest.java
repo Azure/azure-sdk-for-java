@@ -6,6 +6,7 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
@@ -31,12 +32,12 @@ public class RetrievalSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void basicRetrieval(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void basicRetrieval(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
 
-        createRetrievalRunner((uploadFileRequest, assistantCreationOptions) -> {
+        createRetrievalRunner((fileDetails, assistantCreationOptions) -> {
             // Upload file for assistant
-            OpenAIFile openAIFile = client.uploadFile(uploadFileRequest);
+            OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
 
             // Create assistant
             assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));

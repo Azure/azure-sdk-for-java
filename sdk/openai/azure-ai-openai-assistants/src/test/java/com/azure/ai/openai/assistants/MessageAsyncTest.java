@@ -32,7 +32,7 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void messageOperationCreateRetrieveUpdate(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void messageOperationCreateRetrieveUpdate(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
         String threadId = createThread(client);
         createMessageRunner(message -> {
@@ -74,7 +74,7 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void messageResponseOperationCreateRetrieveUpdate(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void messageResponseOperationCreateRetrieveUpdate(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
         String threadId = createThread(client);
         createMessageRunner(message -> {
@@ -126,7 +126,7 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listMessages(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void listMessages(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
         String threadId = createThread(client);
         createMessageRunner(message -> {
@@ -162,7 +162,7 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void getMessageFile(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void getMessageFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
         String threadId = createThread(client);
         String fileId = uploadFile(client);
@@ -193,7 +193,7 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listMessageFiles(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void listMessageFiles(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
         String threadId = createThread(client);
         String fileId1 = uploadFile(client);
@@ -230,7 +230,7 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listMessageFilesBetweenTwoFileId(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void listMessageFilesBetweenTwoFileId(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
         String threadId = createThread(client);
         String fileId1 = uploadFile(client);

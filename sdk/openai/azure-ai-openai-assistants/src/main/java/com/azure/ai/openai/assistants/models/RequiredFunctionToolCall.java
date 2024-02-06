@@ -23,7 +23,7 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
      */
     @Generated
     @JsonProperty(value = "function")
-    private FunctionToolCallDetails function;
+    private RequiredFunctionToolCallDetails function;
 
     /**
      * Get the function property: Detailed information about the function to be executed by the tool that includes name
@@ -32,7 +32,7 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
      * @return the function value.
      */
     @Generated
-    public FunctionToolCallDetails getFunction() {
+    public RequiredFunctionToolCallDetails getFunction() {
         return this.function;
     }
 
@@ -45,7 +45,7 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
     @Generated
     @JsonCreator
     private RequiredFunctionToolCall(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "function") FunctionToolCallDetails function) {
+        @JsonProperty(value = "function") RequiredFunctionToolCallDetails function) {
         super(id);
         this.function = function;
     }

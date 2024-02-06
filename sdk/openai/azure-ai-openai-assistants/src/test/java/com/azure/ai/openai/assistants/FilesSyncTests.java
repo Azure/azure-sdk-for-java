@@ -25,11 +25,11 @@ public class FilesSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantTextFileOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantTextFileOperations(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        uploadAssistantTextFileRunner(uploadFileRequest -> {
+        uploadAssistantTextFileRunner((fileDetails, filePurpose) -> {
             // Upload file
-            OpenAIFile file = client.uploadFile(uploadFileRequest);
+            OpenAIFile file = client.uploadFile(fileDetails, filePurpose);
             assertNotNull(file);
             assertNotNull(file.getId());
 
@@ -38,7 +38,7 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            FileListResponse files = client.listFiles(uploadFileRequest.getPurpose());
+            FileListResponse files = client.listFiles(filePurpose);
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
@@ -50,11 +50,11 @@ public class FilesSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantImageFileOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantImageFileOperations(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        uploadAssistantImageFileRunner(uploadFileRequest -> {
+        uploadAssistantImageFileRunner((fileDetails, filePurpose) -> {
             // Upload file
-            OpenAIFile file = client.uploadFile(uploadFileRequest);
+            OpenAIFile file = client.uploadFile(fileDetails, filePurpose);
             assertNotNull(file);
             assertNotNull(file.getId());
 
@@ -63,7 +63,7 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            FileListResponse files = client.listFiles(uploadFileRequest.getPurpose());
+            FileListResponse files = client.listFiles(filePurpose);
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
@@ -75,11 +75,11 @@ public class FilesSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void fineTuningJsonFileOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void fineTuningJsonFileOperations(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        uploadFineTuningJsonFileRunner(uploadFileRequest -> {
+        uploadFineTuningJsonFileRunner((fileDetails, filePurpose) -> {
             // Upload file
-            OpenAIFile file = client.uploadFile(uploadFileRequest);
+            OpenAIFile file = client.uploadFile(fileDetails, filePurpose);
             assertNotNull(file);
             assertNotNull(file.getId());
 
@@ -88,7 +88,7 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            FileListResponse files = client.listFiles(uploadFileRequest.getPurpose());
+            FileListResponse files = client.listFiles(filePurpose);
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
@@ -100,11 +100,11 @@ public class FilesSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantTextFileOperationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantTextFileOperationsWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        uploadAssistantTextFileRunner(uploadFileRequest -> {
+        uploadAssistantTextFileRunner((fileDetails, filePurpose) -> {
             // Upload file
-            OpenAIFile file = client.uploadFile(uploadFileRequest);
+            OpenAIFile file = client.uploadFile(fileDetails, filePurpose);
             assertNotNull(file);
             assertNotNull(file.getId());
 
@@ -132,11 +132,11 @@ public class FilesSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantImageFileOperationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantImageFileOperationsWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        uploadAssistantImageFileRunner(uploadFileRequest -> {
+        uploadAssistantImageFileRunner((fileDetails, filePurpose) -> {
             // Upload file
-            OpenAIFile file = client.uploadFile(uploadFileRequest);
+            OpenAIFile file = client.uploadFile(fileDetails, filePurpose);
             assertNotNull(file);
             assertNotNull(file.getId());
 
@@ -165,11 +165,11 @@ public class FilesSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void fineTuningJsonFileOperationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void fineTuningJsonFileOperationsWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        uploadFineTuningJsonFileRunner(uploadFileRequest -> {
+        uploadFineTuningJsonFileRunner((fileDetails, filePurpose) -> {
             // Upload file
-            OpenAIFile file = client.uploadFile(uploadFileRequest);
+            OpenAIFile file = client.uploadFile(fileDetails, filePurpose);
             assertNotNull(file);
             assertNotNull(file.getId());
 

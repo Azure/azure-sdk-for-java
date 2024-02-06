@@ -6,6 +6,7 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
@@ -34,12 +35,12 @@ public class RetrievalAsyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void basicRetrieval(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void basicRetrieval(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
 
-        createRetrievalRunner((uploadFileRequest, assistantCreationOptions) -> {
+        createRetrievalRunner((fileDetails, assistantCreationOptions) -> {
             // Upload file
-            StepVerifier.create(client.uploadFile(uploadFileRequest)
+            StepVerifier.create(client.uploadFile(fileDetails, FilePurpose.ASSISTANTS)
                 .flatMap(openAIFile -> {
                     // Create assistant
                     AsyncUtils cleanUp = new AsyncUtils();

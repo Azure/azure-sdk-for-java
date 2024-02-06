@@ -251,38 +251,6 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         return this;
     }
 
-    /*
-     * Service version
-     */
-    private OpenAIServiceVersion serviceVersion;
-
-    /**
-     * Sets Service version.
-     *
-     * @param serviceVersion the serviceVersion value.
-     * @return the AssistantsClientBuilder.
-     */
-    public AssistantsClientBuilder serviceVersion(OpenAIServiceVersion serviceVersion) {
-        this.serviceVersion = serviceVersion;
-        return this;
-    }
-
-    /**
-     * Builds an instance of AssistantsClientImpl with the provided parameters.
-     *
-     * @return an instance of AssistantsClientImpl.
-     */
-    private AssistantsClientImpl buildInnerClient() {
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        OpenAIServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : OpenAIServiceVersion.getLatest();
-        AssistantsClientImpl client = new AssistantsClientImpl(
-            localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), useNonAzureOpenAIService()
-                ? OPEN_AI_ENDPOINT : (this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai")),
-            localServiceVersion);
-        return client;
-    }
-
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -356,5 +324,39 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
     @Generated
     public AssistantsClient buildClient() {
         return new AssistantsClient(buildInnerClient());
+    }
+
+    /*
+     * Service version
+     */
+    @Generated
+    private AssistantsServiceVersion serviceVersion;
+
+    /**
+     * Sets Service version.
+     *
+     * @param serviceVersion the serviceVersion value.
+     * @return the AssistantsClientBuilder.
+     */
+    @Generated
+    public AssistantsClientBuilder serviceVersion(AssistantsServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
+        return this;
+    }
+
+    /**
+     * Builds an instance of AssistantsClientImpl with the provided parameters.
+     *
+     * @return an instance of AssistantsClientImpl.
+     */
+    private AssistantsClientImpl buildInnerClient() {
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        AssistantsServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : AssistantsServiceVersion.getLatest();
+        AssistantsClientImpl client = new AssistantsClientImpl(
+            localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), useNonAzureOpenAIService()
+                ? OPEN_AI_ENDPOINT : (this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai")),
+            localServiceVersion);
+        return client;
     }
 }

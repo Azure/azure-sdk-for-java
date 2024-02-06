@@ -4,7 +4,7 @@
 
 package com.azure.ai.openai.assistants.implementation;
 
-import com.azure.ai.openai.assistants.OpenAIServiceVersion;
+import com.azure.ai.openai.assistants.AssistantsServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -52,17 +52,26 @@ public final class AssistantsClientImpl {
     private final String endpoint;
 
     /**
-     * Service version.
-     */
-    private final OpenAIServiceVersion serviceVersion;
-
-    /**
      * Gets An OpenAI endpoint supporting assistants functionality.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /**
+     * Service version.
+     */
+    private final AssistantsServiceVersion serviceVersion;
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public AssistantsServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /**
@@ -72,7 +81,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -86,7 +95,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -95,36 +104,36 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     *
+     * 
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
      * @param serviceVersion Service version.
      */
-    public AssistantsClientImpl(String endpoint, OpenAIServiceVersion serviceVersion) {
+    public AssistantsClientImpl(String endpoint, AssistantsServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of AssistantsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
      * @param serviceVersion Service version.
      */
-    public AssistantsClientImpl(HttpPipeline httpPipeline, String endpoint, OpenAIServiceVersion serviceVersion) {
+    public AssistantsClientImpl(HttpPipeline httpPipeline, String endpoint, AssistantsServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of AssistantsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
      * @param serviceVersion Service version.
      */
     public AssistantsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-                                OpenAIServiceVersion serviceVersion) {
+        AssistantsServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -785,9 +794,8 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getFileSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-            Context context);
+        Response<BinaryData> getFileSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("fileId") String fileId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -837,7 +845,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -851,8 +859,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> createAssistantWithResponseAsync(BinaryData assistantCreationOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createAssistant(this.getEndpoint(),
-                this.serviceVersion.getVersion(), accept,
+        return FluxUtil.withContext(context -> service.createAssistant(this.getEndpoint(), this.serviceVersion.getVersion(),
+                accept,
             assistantCreationOptions, requestOptions, context));
     }
 
@@ -903,7 +911,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -916,8 +924,7 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> createAssistantWithResponse(BinaryData assistantCreationOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createAssistantSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                accept, assistantCreationOptions, requestOptions,
+        return service.createAssistantSync(this.getEndpoint(), this.serviceVersion.getVersion(), accept, assistantCreationOptions, requestOptions,
             Context.NONE);
     }
 
@@ -998,7 +1005,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1011,8 +1018,7 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> listAssistantsWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listAssistants(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    accept, requestOptions, context));
+            .withContext(context -> service.listAssistants(this.getEndpoint(), this.serviceVersion.getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1092,7 +1098,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1103,8 +1109,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listAssistantsWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listAssistantsSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                accept, requestOptions, Context.NONE);
+        return service.listAssistantsSync(this.getEndpoint(), this.serviceVersion.getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1133,7 +1138,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1147,8 +1152,7 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> getAssistantWithResponseAsync(String assistantId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.getAssistant(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    assistantId, accept, requestOptions, context));
+            context -> service.getAssistant(this.getEndpoint(), this.serviceVersion.getVersion(), assistantId, accept, requestOptions, context));
     }
 
     /**
@@ -1177,7 +1181,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1189,8 +1193,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAssistantSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                assistantId, accept, requestOptions, Context.NONE);
+        return service.getAssistantSync(this.getEndpoint(), this.serviceVersion.getVersion(), assistantId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1240,7 +1243,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to modify.
      * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1255,8 +1258,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> updateAssistantWithResponseAsync(String assistantId,
         BinaryData updateAssistantOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateAssistant(this.getEndpoint(),
-                this.serviceVersion.getVersion(), assistantId, accept,
+        return FluxUtil.withContext(context -> service.updateAssistant(this.getEndpoint(), this.serviceVersion.getVersion(),
+                assistantId, accept,
             updateAssistantOptions, requestOptions, context));
     }
 
@@ -1307,7 +1310,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to modify.
      * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1321,8 +1324,7 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> updateAssistantWithResponse(String assistantId, BinaryData updateAssistantOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateAssistantSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                assistantId, accept, updateAssistantOptions,
+        return service.updateAssistantSync(this.getEndpoint(), this.serviceVersion.getVersion(), assistantId, accept, updateAssistantOptions,
             requestOptions, Context.NONE);
     }
 
@@ -1338,7 +1340,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1353,8 +1355,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.deleteAssistant(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    assistantId, accept, requestOptions, context));
+            context -> service.deleteAssistant(this.getEndpoint(), this.serviceVersion.getVersion(), assistantId, accept, requestOptions, context));
     }
 
     /**
@@ -1369,7 +1370,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1381,8 +1382,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteAssistantSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                assistantId, accept, requestOptions, Context.NONE);
+        return service.deleteAssistantSync(this.getEndpoint(), this.serviceVersion.getVersion(), assistantId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1406,7 +1406,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to attach the file to.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1421,8 +1421,7 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> createAssistantFileWithResponseAsync(String assistantId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createAssistantFile(this.getEndpoint(),
-                this.serviceVersion.getVersion(), assistantId, accept,
+        return FluxUtil.withContext(context -> service.createAssistantFile(this.getEndpoint(), this.serviceVersion.getVersion(), assistantId, accept,
             request, requestOptions, context));
     }
 
@@ -1447,7 +1446,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to attach the file to.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1462,8 +1461,7 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> createAssistantFileWithResponse(String assistantId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                assistantId, accept, request, requestOptions,
+        return service.createAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(), assistantId, accept, request, requestOptions,
             Context.NONE);
     }
 
@@ -1531,7 +1529,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1546,8 +1544,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.listAssistantFiles(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    assistantId, accept, requestOptions, context));
+            context -> service.listAssistantFiles(this.getEndpoint(), this.serviceVersion.getVersion(), assistantId, accept, requestOptions, context));
     }
 
     /**
@@ -1614,7 +1611,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1627,8 +1624,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listAssistantFilesSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                assistantId, accept, requestOptions, Context.NONE);
+        return service.listAssistantFilesSync(this.getEndpoint(), this.serviceVersion.getVersion(), assistantId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1644,7 +1640,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant associated with the attached file.
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1659,8 +1655,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> getAssistantFileWithResponseAsync(String assistantId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAssistantFile(this.getEndpoint(),
-                this.serviceVersion.getVersion(), assistantId, fileId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getAssistantFile(this.getEndpoint(),  this.serviceVersion.getVersion(), assistantId, fileId, accept,
+            requestOptions, context));
     }
 
     /**
@@ -1676,7 +1672,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant associated with the attached file.
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1691,8 +1687,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> getAssistantFileWithResponse(String assistantId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                assistantId, fileId, accept, requestOptions, Context.NONE);
+        return service.getAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(), assistantId, fileId, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1708,7 +1704,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant from which the specified file should be unlinked.
      * @param fileId The ID of the file to unlink from the specified assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1723,8 +1719,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> deleteAssistantFileWithResponseAsync(String assistantId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteAssistantFile(this.getEndpoint(),
-                this.serviceVersion.getVersion(), assistantId, fileId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteAssistantFile(this.getEndpoint(), this.serviceVersion.getVersion(), assistantId, fileId,
+            accept, requestOptions, context));
     }
 
     /**
@@ -1740,7 +1736,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant from which the specified file should be unlinked.
      * @param fileId The ID of the file to unlink from the specified assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1754,8 +1750,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> deleteAssistantFileWithResponse(String assistantId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                assistantId, fileId, accept, requestOptions, Context.NONE);
+        return service.deleteAssistantFileSync(this.getEndpoint(), this.serviceVersion.getVersion(), assistantId, fileId, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1795,7 +1791,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1809,8 +1805,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> createThreadWithResponseAsync(BinaryData assistantThreadCreationOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createThread(this.getEndpoint(),
-                this.serviceVersion.getVersion(), accept, assistantThreadCreationOptions, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createThread(this.getEndpoint(), this.serviceVersion.getVersion(), accept,
+            assistantThreadCreationOptions, requestOptions, context));
     }
 
     /**
@@ -1850,7 +1846,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1863,8 +1859,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> createThreadWithResponse(BinaryData assistantThreadCreationOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                accept, assistantThreadCreationOptions, requestOptions, Context.NONE);
+        return service.createThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(), accept, assistantThreadCreationOptions, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1882,7 +1878,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1896,8 +1892,7 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> getThreadWithResponseAsync(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getThread(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    threadId, accept, requestOptions, context));
+            .withContext(context -> service.getThread(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, requestOptions, context));
     }
 
     /**
@@ -1915,7 +1910,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1927,8 +1922,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getThreadWithResponse(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, accept, requestOptions, Context.NONE);
+        return service.getThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1956,7 +1950,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to modify.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1972,8 +1966,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.updateThread(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    threadId, accept, request, requestOptions, context));
+            context -> service.updateThread(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, request, requestOptions, context));
     }
 
     /**
@@ -2001,7 +1994,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to modify.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2015,8 +2008,7 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> updateThreadWithResponse(String threadId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, accept, request, requestOptions, Context.NONE);
+        return service.updateThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -2031,7 +2023,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2045,8 +2037,7 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> deleteThreadWithResponseAsync(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.deleteThread(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    threadId, accept, requestOptions, context));
+            context -> service.deleteThread(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, requestOptions, context));
     }
 
     /**
@@ -2061,7 +2052,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2073,8 +2064,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteThreadWithResponse(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, accept, requestOptions, Context.NONE);
+        return service.deleteThreadSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2118,7 +2108,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to create the new message on.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2134,8 +2124,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.createMessage(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    threadId, accept, request, requestOptions, context));
+            context -> service.createMessage(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, request, requestOptions, context));
     }
 
     /**
@@ -2179,7 +2168,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to create the new message on.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2193,8 +2182,7 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> createMessageWithResponse(String threadId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createMessageSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, accept, request, requestOptions, Context.NONE);
+        return service.createMessageSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -2274,7 +2262,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2288,8 +2276,7 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> listMessagesWithResponseAsync(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.listMessages(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    threadId, accept, requestOptions, context));
+            context -> service.listMessages(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, requestOptions, context));
     }
 
     /**
@@ -2369,7 +2356,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2381,8 +2368,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listMessagesWithResponse(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listMessagesSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, accept, requestOptions, Context.NONE);
+        return service.listMessagesSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2411,7 +2397,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve the specified message from.
      * @param messageId The ID of the message to retrieve from the specified thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2427,8 +2413,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.getMessage(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    threadId, messageId, accept, requestOptions, context));
+            context -> service.getMessage(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, messageId, accept, requestOptions, context));
     }
 
     /**
@@ -2457,7 +2442,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve the specified message from.
      * @param messageId The ID of the message to retrieve from the specified thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2471,8 +2456,7 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> getMessageWithResponse(String threadId, String messageId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getMessageSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, messageId, accept, requestOptions, Context.NONE);
+        return service.getMessageSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, messageId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2511,7 +2495,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
      * @param request The request parameter.
@@ -2527,8 +2511,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> updateMessageWithResponseAsync(String threadId, String messageId,
         BinaryData request, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateMessage(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, messageId, accept, request, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateMessage(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, messageId, accept,
+            request, requestOptions, context));
     }
 
     /**
@@ -2567,7 +2551,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
      * @param request The request parameter.
@@ -2582,8 +2566,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> updateMessageWithResponse(String threadId, String messageId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateMessageSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, messageId, accept, request, requestOptions, Context.NONE);
+        return service.updateMessageSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, messageId, accept, request, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2650,7 +2634,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the message to list files from.
      * @param messageId The ID of the message to list files from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2665,8 +2649,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> listMessageFilesWithResponseAsync(String threadId, String messageId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listMessageFiles(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, messageId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.listMessageFiles(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, messageId, accept,
+            requestOptions, context));
     }
 
     /**
@@ -2733,7 +2717,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the message to list files from.
      * @param messageId The ID of the message to list files from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2747,8 +2731,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> listMessageFilesWithResponse(String threadId, String messageId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listMessageFilesSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, messageId, accept, requestOptions, Context.NONE);
+        return service.listMessageFilesSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, messageId, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2764,7 +2748,7 @@ public final class AssistantsClientImpl {
      *     message_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the message to get information from.
      * @param messageId The ID of the message to get information from.
      * @param fileId The ID of the file to get information about.
@@ -2780,8 +2764,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> getMessageFileWithResponseAsync(String threadId, String messageId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getMessageFile(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, messageId, fileId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getMessageFile(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, messageId, fileId,
+            accept, requestOptions, context));
     }
 
     /**
@@ -2797,7 +2781,7 @@ public final class AssistantsClientImpl {
      *     message_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the message to get information from.
      * @param messageId The ID of the message to get information from.
      * @param fileId The ID of the file to get information about.
@@ -2812,8 +2796,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> getMessageFileWithResponse(String threadId, String messageId, String fileId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getMessageFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, messageId, fileId, accept, requestOptions, Context.NONE);
+        return service.getMessageFileSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, messageId, fileId, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2872,7 +2856,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to run.
      * @param createRunOptions The details for the run to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2887,8 +2871,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> createRunWithResponseAsync(String threadId, BinaryData createRunOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createRun(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, accept, createRunOptions, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createRun(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, createRunOptions,
+            requestOptions, context));
     }
 
     /**
@@ -2947,7 +2931,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to run.
      * @param createRunOptions The details for the run to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2961,8 +2945,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> createRunWithResponse(String threadId, BinaryData createRunOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, accept, createRunOptions, requestOptions, Context.NONE);
+        return service.createRunSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, createRunOptions, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3054,7 +3038,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3068,8 +3052,7 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> listRunsWithResponseAsync(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listRuns(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    threadId, accept, requestOptions, context));
+            .withContext(context -> service.listRuns(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, requestOptions, context));
     }
 
     /**
@@ -3161,7 +3144,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3173,8 +3156,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRunsWithResponse(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listRunsSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, accept, requestOptions, Context.NONE);
+        return service.listRunsSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3215,7 +3197,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3231,8 +3213,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.getRun(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    threadId, runId, accept, requestOptions, context));
+            context -> service.getRun(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, runId, accept, requestOptions, context));
     }
 
     /**
@@ -3273,7 +3254,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3286,8 +3267,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, accept, requestOptions, Context.NONE);
+        return service.getRunSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, runId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3338,7 +3318,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @param request The request parameter.
@@ -3354,8 +3334,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> updateRunWithResponseAsync(String threadId, String runId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateRun(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, accept, request, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateRun(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, runId, accept, request,
+            requestOptions, context));
     }
 
     /**
@@ -3406,7 +3386,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @param request The request parameter.
@@ -3421,8 +3401,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> updateRunWithResponse(String threadId, String runId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, accept, request, requestOptions, Context.NONE);
+        return service.updateRunSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, runId, accept, request, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3477,7 +3457,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
      * @param request The request parameter.
@@ -3493,8 +3473,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> submitToolOutputsToRunWithResponseAsync(String threadId, String runId,
         BinaryData request, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.submitToolOutputsToRun(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, runId, accept, request, requestOptions, context));
+        return FluxUtil.withContext(context -> service.submitToolOutputsToRun(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, runId,
+            accept, request, requestOptions, context));
     }
 
     /**
@@ -3549,7 +3529,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
      * @param request The request parameter.
@@ -3564,8 +3544,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> submitToolOutputsToRunWithResponse(String threadId, String runId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.submitToolOutputsToRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, accept, request, requestOptions, Context.NONE);
+        return service.submitToolOutputsToRunSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, runId, accept, request, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3606,7 +3586,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3622,8 +3602,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.cancelRun(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    threadId, runId, accept, requestOptions, context));
+            context -> service.cancelRun(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, runId, accept, requestOptions, context));
     }
 
     /**
@@ -3664,7 +3643,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3677,8 +3656,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, accept, requestOptions, Context.NONE);
+        return service.cancelRunSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, runId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3753,7 +3731,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3767,8 +3745,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> createThreadAndRunWithResponseAsync(BinaryData createAndRunThreadOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createThreadAndRun(this.getEndpoint(),
-                this.serviceVersion.getVersion(), accept, createAndRunThreadOptions, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createThreadAndRun(this.getEndpoint(), this.serviceVersion.getVersion(), accept,
+            createAndRunThreadOptions, requestOptions, context));
     }
 
     /**
@@ -3843,7 +3821,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3856,8 +3834,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> createThreadAndRunWithResponse(BinaryData createAndRunThreadOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createThreadAndRunSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                accept, createAndRunThreadOptions, requestOptions, Context.NONE);
+        return service.createThreadAndRunSync(this.getEndpoint(), this.serviceVersion.getVersion(), accept, createAndRunThreadOptions, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3890,7 +3868,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the specific run to retrieve the step from.
      * @param stepId The ID of the step to retrieve information about.
@@ -3905,8 +3883,8 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> getRunStepWithResponseAsync(String threadId, String runId, String stepId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRunStep(this.getEndpoint(),
-                this.serviceVersion.getVersion(), threadId, runId, stepId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getRunStep(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, runId, stepId, accept,
+            requestOptions, context));
     }
 
     /**
@@ -3939,7 +3917,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the specific run to retrieve the step from.
      * @param stepId The ID of the step to retrieve information about.
@@ -3954,8 +3932,8 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> getRunStepWithResponse(String threadId, String runId, String stepId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getRunStepSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, stepId, accept, requestOptions, Context.NONE);
+        return service.getRunStepSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, runId, stepId, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -4039,7 +4017,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run to list steps from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4055,8 +4033,7 @@ public final class AssistantsClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.listRunSteps(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    threadId, runId, accept, requestOptions, context));
+            context -> service.listRunSteps(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, runId, accept, requestOptions, context));
     }
 
     /**
@@ -4140,7 +4117,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run to list steps from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4153,8 +4130,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRunStepsWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listRunStepsSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                threadId, runId, accept, requestOptions, Context.NONE);
+        return service.listRunStepsSync(this.getEndpoint(), this.serviceVersion.getVersion(), threadId, runId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4197,7 +4173,7 @@ public final class AssistantsClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4208,8 +4184,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listFilesWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listFiles(this.getEndpoint(),
-                this.serviceVersion.getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.listFiles(this.getEndpoint(), this.serviceVersion.getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -4252,7 +4227,7 @@ public final class AssistantsClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4263,8 +4238,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listFilesSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                accept, requestOptions, Context.NONE);
+        return service.listFilesSync(this.getEndpoint(), this.serviceVersion.getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4282,7 +4256,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4297,8 +4271,7 @@ public final class AssistantsClientImpl {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.uploadFile(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    contentType, accept, request, requestOptions, context));
+            context -> service.uploadFile(this.getEndpoint(), this.serviceVersion.getVersion(), contentType, accept, request, requestOptions, context));
     }
 
     /**
@@ -4316,7 +4289,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4329,8 +4302,7 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.uploadFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                contentType, accept, request, requestOptions, Context.NONE);
+        return service.uploadFileSync(this.getEndpoint(), this.serviceVersion.getVersion(), contentType, accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -4345,7 +4317,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4359,8 +4331,7 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> deleteFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.deleteFile(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    fileId, accept, requestOptions, context));
+            .withContext(context -> service.deleteFile(this.getEndpoint(), this.serviceVersion.getVersion(), fileId, accept, requestOptions, context));
     }
 
     /**
@@ -4375,7 +4346,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4387,8 +4358,7 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                fileId, accept, requestOptions, Context.NONE);
+        return service.deleteFileSync(this.getEndpoint(), this.serviceVersion.getVersion(), fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4406,7 +4376,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4420,8 +4390,7 @@ public final class AssistantsClientImpl {
     public Mono<Response<BinaryData>> getFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getFile(this.getEndpoint(), this.serviceVersion.getVersion(),
-                    fileId, accept, requestOptions, context));
+            .withContext(context -> service.getFile(this.getEndpoint(), this.serviceVersion.getVersion(), fileId, accept, requestOptions, context));
     }
 
     /**
@@ -4439,7 +4408,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4451,7 +4420,6 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getFileSync(this.getEndpoint(), this.serviceVersion.getVersion(),
-                fileId, accept, requestOptions, Context.NONE);
+        return service.getFileSync(this.getEndpoint(), this.serviceVersion.getVersion(), fileId, accept, requestOptions, Context.NONE);
     }
 }

@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 // DO NOT modify this helper class
 
@@ -207,7 +208,9 @@ public final class MultipartFormDataHelper {
         requestDataStream = new SequenceInputStream(requestDataStream, new ByteArrayInputStream(bytes));
     }
 
+    private static final Pattern REDACT_FILENAME = Pattern.compile("[^\\x20-\\x7E]|\"");
+
     private static String normalizeAscii(String text) {
-        return Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("[^\\x00-\\x7F]", "");
+        return REDACT_FILENAME.matcher(Normalizer.normalize(text, Normalizer.Form.NFD)).replaceAll("");
     }
 }

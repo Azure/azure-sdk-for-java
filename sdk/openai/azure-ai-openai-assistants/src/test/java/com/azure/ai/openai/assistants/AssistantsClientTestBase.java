@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai.assistants;
 
+import com.azure.ai.openai.assistants.implementation.FunctionsToolCallHelper;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
@@ -24,8 +25,6 @@ import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolDefinition;
-import com.azure.ai.openai.assistants.models.UploadFileRequest;
-import com.azure.ai.openai.assistants.implementation.FunctionsToolCallHelper;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -64,7 +63,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
             .buildAsyncClient();
     }
 
-    AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         return getAzureAssistantsClientBuilder(buildAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
                 false), serviceVersion)
@@ -77,14 +76,14 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                 .buildClient();
     }
 
-    AssistantsClient getAssistantsClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    AssistantsClient getAssistantsClient(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         return getAzureAssistantsClientBuilder(buildAssertingClient(
                         interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true),
                 serviceVersion)
                 .buildClient();
     }
 
-    AssistantsClientBuilder getAzureAssistantsClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    AssistantsClientBuilder getAzureAssistantsClientBuilder(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         AssistantsClientBuilder builder = new AssistantsClientBuilder()
                 .httpClient(httpClient)
                 .serviceVersion(serviceVersion);
@@ -186,19 +185,17 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     }
 
-    void createRetrievalRunner(BiConsumer<UploadFileRequest, AssistantCreationOptions> testRunner) {
-        UploadFileRequest uploadRequest = new UploadFileRequest(
-            new FileDetails(
-                BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")))
-                    .setFilename("java_sdk_tests_assistants.txt"),
-                FilePurpose.ASSISTANTS);
+    void createRetrievalRunner(BiConsumer<FileDetails, AssistantCreationOptions> testRunner) {
+        FileDetails fileDetails = new FileDetails(
+            BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))
+        ).setFilename("java_sdk_tests_assistants.txt");
 
         AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
             .setName("Java SDK Retrieval Sample")
             .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
             .setTools(Arrays.asList(new RetrievalToolDefinition()));
 
-        testRunner.accept(uploadRequest, assistantOptions);
+        testRunner.accept(fileDetails, assistantOptions);
     }
 
     void createFunctionToolCallRunner(BiConsumer<AssistantCreationOptions, AssistantThreadCreationOptions> testRunner) {
@@ -218,25 +215,19 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         testRunner.accept(assistantOptions, threadCreationOptions);
     }
 
-    void uploadAssistantTextFileRunner(Consumer<UploadFileRequest> testRunner) {
-        UploadFileRequest uploadFileRequest = new UploadFileRequest(
-            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
-            FilePurpose.ASSISTANTS);
-        testRunner.accept(uploadFileRequest);
+    void uploadAssistantTextFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")));
+        testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
     }
 
-    void uploadAssistantImageFileRunner(Consumer<UploadFileRequest> testRunner) {
-        UploadFileRequest uploadFileRequest = new UploadFileRequest(
-            new FileDetails(BinaryData.fromFile(openResourceFile("ms_logo.png"))),
-            FilePurpose.ASSISTANTS);
-        testRunner.accept(uploadFileRequest);
+    void uploadAssistantImageFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile("ms_logo.png")));
+        testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
     }
 
-    void uploadFineTuningJsonFileRunner(Consumer<UploadFileRequest> testRunner) {
-        UploadFileRequest uploadFileRequest = new UploadFileRequest(
-            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_fine_tuning.json"))),
-            FilePurpose.FINE_TUNE);
-        testRunner.accept(uploadFileRequest);
+    void uploadFineTuningJsonFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_fine_tuning.json")));
+        testRunner.accept(fileDetails, FilePurpose.FINE_TUNE);
     }
 
     public HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
@@ -291,9 +282,9 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     String uploadFile(AssistantsClient client) {
-        OpenAIFile openAIFile = client.uploadFile(new UploadFileRequest(
-                new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
-                FilePurpose.ASSISTANTS));
+        OpenAIFile openAIFile = client.uploadFile(
+            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
+            FilePurpose.ASSISTANTS);
         assertNotNull(openAIFile.getId());
         assertNotNull(openAIFile.getCreatedAt());
         return openAIFile.getId();
@@ -310,9 +301,9 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     String uploadFile(AssistantsAsyncClient client) {
         AtomicReference<String> openAIFileRef = new AtomicReference<>();
-        StepVerifier.create(client.uploadFile(new UploadFileRequest(
-                new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
-                        FilePurpose.ASSISTANTS)))
+        StepVerifier.create(client.uploadFile(
+            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
+            FilePurpose.ASSISTANTS))
                 .assertNext(openAIFile -> {
                     assertNotNull(openAIFile.getId());
                     assertNotNull(openAIFile.getCreatedAt());

@@ -31,7 +31,7 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
     private AssistantsClient client;
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantCreateRetrieveUpdateDelete(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantCreateRetrieveUpdateDelete(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsRunner(assistantCreationOptions -> {
             Assistant assistant = client.createAssistant(assistantCreationOptions);
@@ -72,7 +72,7 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantCrudWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantCrudWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsRunner(assistantCreationOptions -> {
             // Create an assistant
@@ -122,7 +122,7 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listAssistants(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void listAssistants(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsRunner(assistantCreationOptions -> {
             // Create assistants
@@ -147,7 +147,7 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listAssistantsBetweenTwoAssistantId(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void listAssistantsBetweenTwoAssistantId(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         createAssistantsRunner(assistantCreationOptions -> {
             // Create assistants
@@ -182,7 +182,7 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantFileCreateRetrieveDelete(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantFileCreateRetrieveDelete(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         String assistantId = createMathTutorAssistant(client);
         String fileId = uploadFile(client);
@@ -212,7 +212,7 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantFileCreateRetrieveDeleteWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void assistantFileCreateRetrieveDeleteWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         String assistantId = createMathTutorAssistant(client);
         String fileId = uploadFile(client);
@@ -253,7 +253,7 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listAssistantFiles(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void listAssistantFiles(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         String assistantId = createMathTutorAssistant(client);
         String fileId = uploadFile(client);
@@ -280,7 +280,7 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listAssistantFilesAddSameFile(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void listAssistantFilesAddSameFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         String assistantId = createMathTutorAssistant(client);
         String fileId = uploadFile(client);
@@ -304,7 +304,7 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listAssistantFilesWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void listAssistantFilesWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         String assistantId = createMathTutorAssistant(client);
         String fileId = uploadFile(client);
@@ -334,7 +334,7 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void listAssistantFilesBetweenTwoAssistantId(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void listAssistantFilesBetweenTwoAssistantId(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
         String assistantId = createMathTutorAssistant(client);
         String fileId1 = uploadFile(client);
