@@ -66,7 +66,6 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     private String endpoint;
     private TokenCredential tokenCredential;
 
-    // empty constructor so suppress javadoc warning
 
     /**
      * Creates a new instance of {@link LogsIngestionClientBuilder}.

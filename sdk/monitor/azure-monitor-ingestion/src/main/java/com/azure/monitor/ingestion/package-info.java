@@ -41,7 +41,9 @@
  * <h2>Overview</h2>
  *
  * <p>
- *     The Logs Ingestion REST API in Azure Monitor lets you send data to a Log Analytics workspace. The API allows you to send data to supported Azure tables or to custom tables that you create. You can
+ *     The Logs Ingestion REST API in Azure Monitor lets you send data to a Log Analytics workspace.
+ *     The API allows you to send data to <a href="https://learn.microsoft.com/en-us/azure/azure-monitor/logs/logs-ingestion-api-overview#supported-tables">supported tables</a>
+ *     or to custom tables that you create. You can
  *     also extend the schema of Azure tables with custom columns to accept additional data.
  * </p>
  *
@@ -84,16 +86,10 @@
  * <p><strong>Log Analytics Workspace Tables</strong></p>
  *
  * <p>
- *     Custom logs can send data to any custom table that you create and to certain built-in tables in your Log Analytics
- *     workspace. The target table must exist before you can send data to it. The following built-in tables are currently supported:
+ *     Custom logs can send data to any custom table that you create and to
+ *     <a href="https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview#supported-tables">certain built-in tables</a>
+ *     in your Log Analytics workspace. The target table must exist before you can send data to it.
  * </p>
- *
- * <ol>
- *     <li>CommonSecurityLog</li>
- *     <li>SecurityEvents</li>
- *     <li>Syslog</li>
- *     <li>WindowsEvents</li>
- * </ol>
  *
  * <p><strong>Logs retrieval</strong></p>
  *

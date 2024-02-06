@@ -17,7 +17,6 @@ public final class LogsUploadOptions {
     private Integer maxConcurrency;
     private Consumer<LogsUploadError> logsUploadErrorConsumer;
 
-    // empty constructor to suppress javadoc warning
     /**
      * Creates an instance of {@link LogsUploadOptions}.
      */
