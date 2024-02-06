@@ -5,10 +5,10 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkRowItem}
-import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal, PartitionKeyDefinition}
+import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
-import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
+import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
@@ -136,7 +136,7 @@ private[spark] case class ItemsPartitionReaderWithReadMany
               objectNode,
               readConfig.schemaConversionMode)
 
-            SparkRowItem(row, Some(partitionKey))
+            SparkRowItem(row, getPartitionKeyForFeedDiagnostics(partitionKey))
           }
           case _ => {
             // id is not the partitionKey, dynamically computed the readMany filtering property
@@ -154,7 +154,7 @@ private[spark] case class ItemsPartitionReaderWithReadMany
               readConfig.schemaConversionMode,
               computedColumnsMap)
 
-            SparkRowItem(row, Some(partitionKey))
+            SparkRowItem(row, getPartitionKeyForFeedDiagnostics(partitionKey))
           }
         }
       })
@@ -168,6 +168,19 @@ private[spark] case class ItemsPartitionReaderWithReadMany
     classOf[SparkRowItem])
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
+
+  private def shouldLogDetailedFeedDiagnostics(): Boolean = {
+    diagnosticsConfig.mode.isDefined &&
+     diagnosticsConfig.mode.get.equalsIgnoreCase(classOf[DetailedFeedDiagnosticsProvider].getName)
+  }
+
+  private def getPartitionKeyForFeedDiagnostics(pkValue: PartitionKey): Option[PartitionKey] = {
+    if (shouldLogDetailedFeedDiagnostics()) {
+      Some(pkValue)
+    } else {
+      None
+    }
+  }
 
   override def next(): Boolean = iterator.hasNext
 
