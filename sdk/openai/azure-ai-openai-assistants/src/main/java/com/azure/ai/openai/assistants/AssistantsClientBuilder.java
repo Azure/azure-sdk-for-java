@@ -311,6 +311,7 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
      *
      * @return an instance of AssistantsAsyncClient.
      */
+    @Generated
     public AssistantsAsyncClient buildAsyncClient() {
         return new AssistantsAsyncClient(buildInnerClient());
     }

@@ -15,6 +15,7 @@ import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.implementation.AsyncUtils;
 import com.azure.core.http.HttpClient;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -33,6 +34,7 @@ public class AzureRetrievalAsyncTest extends AssistantsClientTestBase {
 
     AssistantsAsyncClient client;
 
+    @Disabled("Retrieval tools are not supported in Azure")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void basicRetrieval(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
