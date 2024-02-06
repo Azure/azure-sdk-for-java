@@ -305,7 +305,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             callConnectionAsync.muteParticipantWithResponse(options).block();
 
         assertNotNull(muteParticipantsResultResponse);
-        assertEquals(202, muteParticipantsResultResponse.getStatusCode());
+        assertEquals(200, muteParticipantsResultResponse.getStatusCode());
         assertNotNull(muteParticipantsResultResponse.getValue());
     }
 
