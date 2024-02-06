@@ -9,7 +9,7 @@ import com.azure.core.http.rest.RequestOptions;
 /**
  * Utility class to be used by the SDK internally.
  */
-public class Util {
+public class OpenAIUtils {
     /**
      * This is the endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
      */
