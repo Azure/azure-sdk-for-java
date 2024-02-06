@@ -71,7 +71,8 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         return this.disableSessionCapturing;
     }
 
-    String getSessionToken(String collectionLink) {
+    @Override
+    public String getSessionToken(String collectionLink) {
 
         PathInfo pathInfo = new PathInfo(false, null, null, false);
         PartitionKeyRangeBasedRegionScopedSessionTokenRegistry partitionKeyRangeBasedRegionScopedSessionTokenRegistry = null;

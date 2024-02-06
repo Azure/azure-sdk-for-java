@@ -63,7 +63,8 @@ public final class SessionContainer implements ISessionContainer {
         return this.disableSessionCapturing;
     }
 
-    String getSessionToken(String collectionLink) {
+    @Override
+    public String getSessionToken(String collectionLink) {
 
         PathInfo pathInfo = new PathInfo(false, null, null, false);
         ConcurrentHashMap<String, ISessionToken> partitionKeyRangeIdToTokenMap = null;

@@ -152,7 +152,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         // .NET uses lock method which is eventfully using LastReadAddress only for the test case to pass, we are not implementing this in java
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateSessionTokenWithPreConditionFailure(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
@@ -162,46 +162,72 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
         }
 
-        this.validateSessionTokenWithPreConditionFailure(false, shouldRegionScopedSessionContainerEnabled);
-        this.validateSessionTokenWithPreConditionFailure(true, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenWithPreConditionFailureBase(false);
+        this.validateSessionTokenWithPreConditionFailureBase(true);
 
         System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenWithDocumentNotFound() throws Exception {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionTokenWithDocumentNotFound(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
+
+        if (shouldRegionScopedSessionContainerEnabled) {
+            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
+        }
+
         //this.validateSessionTokenWithDocumentNotFoundException(false, Protocol.TCP);
-        this.validateSessionTokenWithDocumentNotFoundException(false);
-        this.validateSessionTokenWithDocumentNotFoundException(true);
+        this.validateSessionTokenWithDocumentNotFoundExceptionBase(false);
+        this.validateSessionTokenWithDocumentNotFoundExceptionBase(true);
+
+        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenWithExpectedException() throws Exception {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionTokenWithExpectedException(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
+
+        if (shouldRegionScopedSessionContainerEnabled) {
+            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
+        }
+
         //this.validateSessionTokenWithExpectedException(false, Protocol.TCP);
-        this.validateSessionTokenWithExpectedException(false);
-        this.validateSessionTokenWithExpectedException(true);
+        this.validateSessionTokenWithExpectedExceptionBase(false);
+        this.validateSessionTokenWithExpectedExceptionBase(true);
+
+        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenWithConflictException() {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionTokenWithConflictException(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         //this.validateSessionTokenWithConflictException(false, Protocol.TCP);
-        this.validateSessionTokenWithConflictException(false);
-        this.validateSessionTokenWithConflictException(true);
+        if (shouldRegionScopedSessionContainerEnabled) {
+            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
+        }
+
+        this.validateSessionTokenWithConflictExceptionBase(false);
+        this.validateSessionTokenWithConflictExceptionBase(true);
+
+        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenMultiPartitionCollection() throws Exception {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionTokenMultiPartitionCollection(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         //this.validateSessionTokenMultiPartitionCollection(false, Protocol.TCP);
-        this.validateSessionTokenMultiPartitionCollection(false);
-        this.validateSessionTokenMultiPartitionCollection(true);
+        if (shouldRegionScopedSessionContainerEnabled) {
+            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
+        }
+
+        this.validateSessionTokenMultiPartitionCollectionBase(false);
+        this.validateSessionTokenMultiPartitionCollectionBase(true);
+
+        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
     }
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)

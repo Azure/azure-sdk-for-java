@@ -71,4 +71,6 @@ public interface ISessionContainer {
     void setSessionToken(RxDocumentServiceRequest request, String collectionRid, String collectionFullName, Map<String, String> responseHeaders);
 
     void setSessionToken(String collectionRid, String collectionFullName, Map<String, String> responseHeaders);
+
+    String getSessionToken(String collectionLink);
 }

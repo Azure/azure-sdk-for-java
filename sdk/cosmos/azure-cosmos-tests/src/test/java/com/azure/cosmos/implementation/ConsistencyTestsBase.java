@@ -523,7 +523,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
     }
 
-    void validateSessionTokenWithPreConditionFailure(boolean useGateway, boolean isRegionScopedSessionContainerEnabled) throws Exception {
+    void validateSessionTokenWithPreConditionFailureBase(boolean useGateway) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -576,7 +576,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         }
     }
 
-    void validateSessionTokenWithDocumentNotFoundException(boolean useGateway) throws Exception {
+    void validateSessionTokenWithDocumentNotFoundExceptionBase(boolean useGateway) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -617,14 +617,14 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             // try to read a non existent document in the same partition that we previously wrote to
             Mono<ResourceResponse<Document>> readObservable = validationClient.readDocument(BridgeInternal.getAltLink(documentResponse.getResource()) + "dummy", requestOptions);
             validateFailure(readObservable, failureValidator);
-            assertThat(isSessionEqual(((SessionContainer) validationClient.getSession()), (SessionContainer) writeClient.getSession())).isTrue();
+            assertThat(isSessionEqual(validationClient.getSession(), writeClient.getSession())).isTrue();
         } finally {
             safeClose(writeClient);
             safeClose(validationClient);
         }
     }
 
-    void validateSessionTokenWithExpectedException(boolean useGateway) throws Exception {
+    void validateSessionTokenWithExpectedExceptionBase(boolean useGateway) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -657,13 +657,12 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             Mono<ResourceResponse<Document>> readObservable = writeClient.readDocument(BridgeInternal.getAltLink(documentResponse.getResource()),
                     requestOptions);
             validateFailure(readObservable, failureValidator);
-
         } finally {
             safeClose(writeClient);
         }
     }
 
-    void validateSessionTokenWithConflictException(boolean useGateway) {
+    void validateSessionTokenWithConflictExceptionBase(boolean useGateway) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -702,13 +701,14 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                     documentDefinition, null,
                     true);
             validateFailure(conflictDocumentResponse, failureValidator);
+            assertThat(isSessionEqual(validationClient.getSession(), writeClient.getSession())).isTrue();
         } finally {
             safeClose(writeClient);
             safeClose(validationClient);
         }
     }
 
-    void validateSessionTokenMultiPartitionCollection(boolean useGateway) throws Exception {
+    void validateSessionTokenMultiPartitionCollectionBase(boolean useGateway) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -742,17 +742,18 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             logger.info("Created {} child resource", childResource1.getResource().getResourceId());
             assertThat(childResource1.getSessionToken()).isNotNull();
             assertThat(childResource1.getSessionToken().contains(":")).isTrue();
-            String globalSessionToken1 = ((SessionContainer) writeClient.getSession()).getSessionToken(createdCollection.getSelfLink());
-            assertThat(globalSessionToken1.contains(childResource1.getSessionToken()));
+            String globalSessionToken1 = writeClient.getSession().getSessionToken(createdCollection.getSelfLink());
+            assertThat(globalSessionToken1.contains(childResource1.getSessionToken())).isTrue();
 
             // Document to lock pause/resume clients
             Document document2 = new Document();
             document2.setId("test" + UUID.randomUUID().toString());
             BridgeInternal.setProperty(document2, "mypk", 2);
             ResourceResponse<Document> childResource2 = writeClient.createDocument(createdCollection.getSelfLink(), document2, null, true).block();
+            assertThat(childResource2).isNotNull();
             assertThat(childResource2.getSessionToken()).isNotNull();
             assertThat(childResource2.getSessionToken().contains(":")).isTrue();
-            String globalSessionToken2 = ((SessionContainer) writeClient.getSession()).getSessionToken(createdCollection.getSelfLink());
+            String globalSessionToken2 = writeClient.getSession().getSessionToken(createdCollection.getSelfLink());
             logger.info("globalsessiontoken2 {}, childtoken1 {}, childtoken2 {}", globalSessionToken2, childResource1.getSessionToken(), childResource2.getSessionToken());
             assertThat(globalSessionToken2.contains(childResource2.getSessionToken())).isTrue();
 
@@ -783,11 +784,11 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                     new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
             validateFailure(readObservable, failureValidator);
 
-            assertThat(((SessionContainer) writeClient.getSession()).getSessionToken(createdCollection.getSelfLink())).isEqualTo
-                    (((SessionContainer) writeClient.getSession()).getSessionToken(BridgeInternal.getAltLink(createdCollection)));
+            assertThat(writeClient.getSession().getSessionToken(createdCollection.getSelfLink())).isEqualTo
+                    (writeClient.getSession().getSessionToken(BridgeInternal.getAltLink(createdCollection)));
 
-            assertThat(((SessionContainer) writeClient.getSession()).getSessionToken("asdfasdf")).isEmpty();
-            assertThat(((SessionContainer) writeClient.getSession()).getSessionToken(createdDatabase.getSelfLink())).isEmpty();
+            assertThat(writeClient.getSession().getSessionToken("asdfasdf")).isEmpty();
+            assertThat(writeClient.getSession().getSessionToken(createdDatabase.getSelfLink())).isEmpty();
         } finally {
             safeClose(writeClient);
         }
