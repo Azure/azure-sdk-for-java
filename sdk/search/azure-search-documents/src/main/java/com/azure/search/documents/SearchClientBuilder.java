@@ -125,11 +125,11 @@ import static com.azure.search.documents.implementation.util.Utility.buildRestCl
  * <!-- end com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.instantiation.SearchAsyncClient -->
  *
  * <h4>
- *     Building and Authenticating a {@link SearchClient} or {@link SearchAsyncClient} using Azure Active Directory
+ *     Building and Authenticating a {@link SearchClient} or {@link SearchAsyncClient} using Microsoft Entra ID
  * </h4>
  *
  * <p>
- *   You can also create a {@link SearchClient} or {@link SearchAsyncClient} using Azure Active Directory (AAD)
+ *   You can also create a {@link SearchClient} or {@link SearchAsyncClient} using Microsoft Entra ID
  *   authentication. Your user or service principal must be assigned the "Search Index Data Reader" role. Using the
  *   DefaultAzureCredential you can authenticate a service using Managed Identity or a service principal, authenticate
  *   as a developer working on an application, and more all without changing code. Please refer the <a href="https://learn.microsoft.com/azure/search/search-security-rbac?tabs=config-svc-portal,roles-portal,test-portal,custom-role-portal,disable-keys-portal">documentation</a> for
@@ -371,13 +371,13 @@ public final class SearchClientBuilder implements
     }
 
     /**
-     * Sets the Audience to use for authentication with Azure Active Directory (AAD).
+     * Sets the Audience to use for authentication with Microsoft Entra ID.
      * <p>
      * The audience is not considered when using a {@link #credential(AzureKeyCredential) shared key}.
      * <p>
      * If {@code audience} is null the public cloud audience will be assumed.
      *
-     * @param audience The Audience to use for authentication with Azure Active Directory (AAD).
+     * @param audience The Audience to use for authentication with Microsoft Entra ID.
      * @return The updated SearchClientBuilder object.
      */
     public SearchClientBuilder audience(SearchAudience audience) {
