@@ -10,6 +10,8 @@ export NVM_DIR="$HOME/.nvm"
 nvm install v18.15.0
 nvm alias default node
 
+npm install -g @azure-tools/typespec-client-generator-cli
+
 cat << EOF > $2
 {"envs": {"PATH": "$JAVA_HOME_11_X64/bin:$PATH", "JAVA_HOME": "$JAVA_HOME_11_X64"}}
 EOF
