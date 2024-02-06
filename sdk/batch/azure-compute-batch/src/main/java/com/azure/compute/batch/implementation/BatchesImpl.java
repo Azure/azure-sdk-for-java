@@ -32579,8 +32579,8 @@ public final class BatchesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -32629,8 +32629,8 @@ public final class BatchesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -32713,8 +32713,8 @@ public final class BatchesImpl {
      * }</pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -32796,8 +32796,8 @@ public final class BatchesImpl {
      * }</pre>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -32866,8 +32866,8 @@ public final class BatchesImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -32937,8 +32937,8 @@ public final class BatchesImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

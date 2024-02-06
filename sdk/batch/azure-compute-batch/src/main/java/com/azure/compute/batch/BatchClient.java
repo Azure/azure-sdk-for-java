@@ -104,6 +104,7 @@ import com.azure.compute.batch.models.ListBatchSubTasksOptions;
 import com.azure.compute.batch.models.ListBatchTaskFilesOptions;
 import com.azure.compute.batch.models.ListBatchTasksOptions;
 import com.azure.compute.batch.models.ListSupportedBatchImagesOptions;
+import com.azure.compute.batch.models.NodeFileProperties;
 import com.azure.compute.batch.models.ReactivateBatchTaskOptions;
 import com.azure.compute.batch.models.RebootBatchNodeOptions;
 import com.azure.compute.batch.models.ReimageBatchNodeOptions;
@@ -140,6 +141,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -3096,8 +3098,8 @@ public final class BatchClient {
      * Returns the content of the specified Compute Node file.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param options A group containing optional parameters like timeOutInSeconds, ifModifiedSince, ifUnmodifiedSince,
      * and ocpRange.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3117,8 +3119,8 @@ public final class BatchClient {
      * Returns the content of the specified Compute Node file.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3135,8 +3137,8 @@ public final class BatchClient {
      * Gets the properties of the specified Compute Node file.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param options A group containing optional parameters like timeOutInSeconds, ifModifiedSince, and
      * ifUnmodifiedSince.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3145,28 +3147,45 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The {@link NodeFileProperties} object containing the properties retrieved from the response headers.
      */
-    public void getNodeFileProperties(String poolId, String nodeId, String filePath,
+    public NodeFileProperties getNodeFileProperties(String poolId, String nodeId, String filePath,
         GetBatchNodeFilePropertiesOptions options) {
-        getNodeFilePropertiesInternal(poolId, nodeId, filePath, options.getTimeOutInSeconds(),
-            options.getIfModifiedSince(), options.getIfUnmodifiedSince());
+        // Set query and header parameters based on options provided
+        RequestOptions requestOptions = new RequestOptions();
+        if (options.getTimeOutInSeconds() != null) {
+            requestOptions.addQueryParam("timeOut", options.getTimeOutInSeconds().toString());
+        }
+        if (options.getIfModifiedSince() != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                options.getIfModifiedSince().format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        }
+        if (options.getIfUnmodifiedSince() != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                options.getIfUnmodifiedSince().format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        }
+        // Retrieve response from getNodeFilePropertiesWithResponse and construct NodeFileProperties from its headers
+        Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions);
+        return new NodeFileProperties(response.getHeaders());
     }
 
     /**
      * Gets the properties of the specified Compute Node file.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The {@link NodeFileProperties} object containing the properties retrieved from the response headers.
      */
-    public void getNodeFileProperties(String poolId, String nodeId, String filePath) {
-        getNodeFilePropertiesInternal(poolId, nodeId, filePath);
+    public NodeFileProperties getNodeFileProperties(String poolId, String nodeId, String filePath) {
+        Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, new RequestOptions());
+        return new NodeFileProperties(response.getHeaders());
     }
 
     /**
@@ -22936,8 +22955,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -23067,8 +23086,8 @@ public final class BatchClient {
      * }</pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -23221,8 +23240,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -23294,8 +23313,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -27280,8 +27299,8 @@ public final class BatchClient {
      * Deletes the specified file from the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
      * in seconds. The default is 30 seconds.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents
@@ -27314,8 +27333,8 @@ public final class BatchClient {
      * Deletes the specified file from the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -27335,8 +27354,8 @@ public final class BatchClient {
      * Returns the content of the specified Compute Node file.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
      * in seconds. The default is 30 seconds.
      * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the
@@ -27382,8 +27401,8 @@ public final class BatchClient {
      * Returns the content of the specified Compute Node file.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -27404,8 +27423,8 @@ public final class BatchClient {
      * Gets the properties of the specified Compute Node file.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request,
      * in seconds. The default is 30 seconds.
      * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the
@@ -27445,8 +27464,8 @@ public final class BatchClient {
      * Gets the properties of the specified Compute Node file.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

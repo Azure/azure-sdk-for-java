@@ -123,8 +123,8 @@ public class FileTests extends BatchClientTestBase {
                 binaryData = batchClientBuilder.buildAsyncClient().getNodeFileWithResponse(poolId, nodeId, fileName, null).block().getValue();
                 Assertions.assertEquals("hello\n", binaryData.toString());
 
-                Response<Void> getFilePropertiesResponse = batchClient.getNodeFilePropertiesWithResponse(poolId, nodeId, fileName, null);
-                Assertions.assertEquals("6", getFilePropertiesResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+                NodeFileProperties fileProperties = batchClient.getNodeFileProperties(poolId, nodeId, fileName);
+                Assertions.assertEquals(6, fileProperties.getContentLength());
 
             } else {
                 throw new TimeoutException("Task did not complete within the specified timeout");
