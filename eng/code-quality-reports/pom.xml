@@ -31,6 +31,14 @@
   </scm>
 
   <dependencies>
+
+    <!-- Transient Direct Dependency until bump to Java 11 baseline -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>33.0.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
+    </dependency>
+
     <dependency>
       <groupId>com.puppycrawl.tools</groupId>
       <artifactId>checkstyle</artifactId>
