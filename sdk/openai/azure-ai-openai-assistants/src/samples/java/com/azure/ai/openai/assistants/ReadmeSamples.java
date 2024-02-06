@@ -153,7 +153,7 @@ public final class ReadmeSamples {
     public void simpleRetrievalOperation() throws InterruptedException {
         String apiKey = Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY");
         String deploymentOrModelId = "gpt-4-1106-preview";
-        String fileName = "retrieval_sample_java_aoai_sdk.txt";
+        String fileName = "retrieval_sample_java_sdk.txt";
         client = new AssistantsClientBuilder()
             .credential(new KeyCredential(apiKey))
             .buildClient();

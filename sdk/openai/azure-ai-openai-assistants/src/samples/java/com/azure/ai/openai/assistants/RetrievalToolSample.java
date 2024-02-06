@@ -39,7 +39,7 @@ public class RetrievalToolSample {
     public static void main(String[] args) throws InterruptedException {
         String apiKey = Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY");
         String deploymentOrModelId = "gpt-4-1106-preview";
-        String fileName = "retrieval_sample_java_aoai_sdk.txt";
+        String fileName = "retrieval_sample_java_sdk.txt";
 
         Path filePath = Paths.get("src", "samples", "resources", fileName);
         BinaryData fileData = BinaryData.fromFile(filePath);
