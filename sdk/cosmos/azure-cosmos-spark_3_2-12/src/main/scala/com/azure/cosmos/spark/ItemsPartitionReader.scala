@@ -44,29 +44,6 @@ private case class ItemsPartitionReader
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   ThroughputControlHelper.populateThroughputControlGroupName(queryOptions, readConfig.throughputControlConfig)
 
-  private val partitionKeyDefinitionOpt: Option[PartitionKeyDefinition] = {
-    if (shouldLogDetailedFeedDiagnostics() || readConfig.readManyFilteringConfig.readManyFilteringEnabled) {
-      Some(
-        TransientErrorsRetryPolicy.executeWithRetry(() => {
-        cosmosAsyncContainer.read().block().getProperties.getPartitionKeyDefinition
-      }))
-    } else {
-      None
-    }
-  }
-
-  private val effectiveReadManyFilteringConfigOpt = {
-    if (readConfig.readManyFilteringConfig.readManyFilteringEnabled) {
-      Some(
-        CosmosReadManyFilteringConfig
-          .getEffectiveReadManyFilteringConfig(
-            readConfig.readManyFilteringConfig,
-            partitionKeyDefinitionOpt.get))
-    } else {
-      None
-    }
-  }
-
   private val operationContext = {
     val taskContext = TaskContext.get
     assert(taskContext != null)
@@ -123,6 +100,29 @@ private case class ItemsPartitionReader
       clientCacheItem,
       throughputControlClientCacheItemOpt)
   SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
+
+  private val partitionKeyDefinitionOpt: Option[PartitionKeyDefinition] = {
+    if (shouldLogDetailedFeedDiagnostics() || readConfig.readManyFilteringConfig.readManyFilteringEnabled) {
+      Some(
+        TransientErrorsRetryPolicy.executeWithRetry(() => {
+          cosmosAsyncContainer.read().block().getProperties.getPartitionKeyDefinition
+        }))
+    } else {
+      None
+    }
+  }
+
+  private val effectiveReadManyFilteringConfigOpt = {
+    if (readConfig.readManyFilteringConfig.readManyFilteringEnabled) {
+      Some(
+        CosmosReadManyFilteringConfig
+         .getEffectiveReadManyFilteringConfig(
+           readConfig.readManyFilteringConfig,
+           partitionKeyDefinitionOpt.get))
+    } else {
+      None
+    }
+  }
 
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
   private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
