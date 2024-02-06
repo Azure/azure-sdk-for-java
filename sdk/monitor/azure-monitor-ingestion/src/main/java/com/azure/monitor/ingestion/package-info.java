@@ -36,6 +36,20 @@
  *     for more information. See {@link com.azure.monitor.ingestion.LogsIngestionClientBuilder LogIngestionClientBuilder} for more examples on authenticating a client.
  * </p>
  *
+ * <p>
+ *     The following sample demonstrates how to create a {@link com.azure.monitor.ingestion.LogsIngestionClient LogIngestionClient}
+ *     using {@link com.azure.monitor.ingestion.LogsIngestionClientBuilder LogIngestionClientBuilder} and TokenCredential authentication.
+ * </p>
+ *
+ * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
+ * <pre>
+ * LogsIngestionClient logsIngestionClient = new LogsIngestionClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .endpoint&#40;&quot;&lt;data-collection-endpoint&gt;&quot;&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
+ *
  * <hr/>
  *
  * <h2>Overview</h2>
@@ -102,8 +116,25 @@
  *
  * <h2>Client Usage</h2>
  *
+ * <h3>
+ *     Uploading logs to Azure Monitor
+ * </h3>
+ *
  * <p>
- *     For synchronous and asynchronous client usage information, see {@link com.azure.monitor.ingestion.LogsIngestionClient} and
+ *     The following sample demonstrates how to upload logs to Azure Monitor using
+ *     {@link com.azure.monitor.ingestion.LogsIngestionClient LogIngestionClient}.
+ * </p>
+ *
+ * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.upload -->
+ * <pre>
+ * List&lt;Object&gt; logs = getLogs&#40;&#41;;
+ * logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;;
+ * System.out.println&#40;&quot;Logs uploaded successfully&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.upload -->
+ *
+ * <p>
+ *     For more synchronous and asynchronous client usage information, see {@link com.azure.monitor.ingestion.LogsIngestionClient} and
  *     {@link com.azure.monitor.ingestion.LogsIngestionAsyncClient}, respectively.
  * </p>
  *
