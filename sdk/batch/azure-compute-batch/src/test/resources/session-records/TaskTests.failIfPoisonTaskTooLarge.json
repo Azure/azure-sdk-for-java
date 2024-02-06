@@ -6,19 +6,19 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "fdaf6767-579a-4ee1-8451-eafd76d639c2",
+        "client-request-id": "20e20ff2-0b1a-4fda-8b91-498684284a44",
         "Content-Length": "0",
-        "Date": "Tue, 09 Jan 2024 09:51:19 GMT",
+        "Date": "Tue, 06 Feb 2024 11:00:58 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 09 Jan 2024 09:51:21 GMT",
+        "Date": "Tue, 06 Feb 2024 11:00:59 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "1439271a-f61f-4d6b-9257-c7ba657d1c6c",
+        "request-id": "ef73fdab-38b1-43b3-b421-f247befa1f29",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -32,9 +32,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "b2e3066e-fcff-4257-8d98-b094cb9a9f7b",
+        "client-request-id": "8c13fdab-046d-4180-ae0d-3f6f40330b9a",
         "Content-Length": "0",
-        "Date": "Tue, 09 Jan 2024 09:51:21 GMT",
+        "Date": "Tue, 06 Feb 2024 11:01:00 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -42,10 +42,10 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 09 Jan 2024 09:51:21 GMT",
+        "Date": "Tue, 06 Feb 2024 11:01:00 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "fb92eb46-197d-4ad4-bf6a-d91980f4f019",
+        "request-id": "e56d97e8-7609-4e14-a3e5-e2ff58931a36",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -107,17 +107,17 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "d7fab0e8-8550-43b6-be53-d6b20530b982",
+        "client-request-id": "a32402d2-45ca-4d5b-869f-ef3d73c1dbdd",
         "Content-Length": "0",
-        "Date": "Tue, 09 Jan 2024 09:51:21 GMT",
+        "Date": "Tue, 06 Feb 2024 11:01:00 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 404,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 09 Jan 2024 09:51:20 GMT",
-        "request-id": "352a93d6-4435-4ec4-8d3d-28836edc1d9c",
+        "Date": "Tue, 06 Feb 2024 11:01:00 GMT",
+        "request-id": "baae7155-1c12-4a4f-91bd-a44ce764ece2",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -131,10 +131,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "26e628d7-7a85-4b57-b1a3-320cce474d14",
+        "client-request-id": "f4aebf9f-f8fb-4672-9b1c-871ddcbb7d1f",
         "Content-Length": "569",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Tue, 09 Jan 2024 09:51:26 GMT",
+        "Date": "Tue, 06 Feb 2024 11:01:04 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -170,8 +170,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 09 Jan 2024 09:51:26 GMT",
-        "request-id": "0ca0f2d4-e1bc-4293-8c80-8f25cc6af90c",
+        "Date": "Tue, 06 Feb 2024 11:01:04 GMT",
+        "request-id": "b9d32aa4-01d2-47b1-9f8b-fdca40af3ee1",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -181,7 +181,7 @@
         "code": "PoolExists",
         "message": {
           "lang": "en-US",
-          "value": "The specified pool already exists.\nRequestId:0ca0f2d4-e1bc-4293-8c80-8f25cc6af90c\nTime:2024-01-09T09:51:26.5856107Z"
+          "value": "The specified pool already exists.\nRequestId:b9d32aa4-01d2-47b1-9f8b-fdca40af3ee1\nTime:2024-02-06T11:01:05.6087956Z"
         }
       }
     },
@@ -191,10 +191,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "81a45eba-4528-4a73-b6c0-75062b931e7f",
+        "client-request-id": "437352d7-f953-432b-9350-4dff095e90cc",
         "Content-Length": "90",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Tue, 09 Jan 2024 09:51:26 GMT",
+        "Date": "Tue, 06 Feb 2024 11:01:05 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -208,8 +208,8 @@
         "Content-Length": "372",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 09 Jan 2024 09:51:25 GMT",
-        "request-id": "48bb6709-0ddc-4a3f-88da-47dab80b2830",
+        "Date": "Tue, 06 Feb 2024 11:01:04 GMT",
+        "request-id": "54af0acb-a1e3-4dab-a840-ba36811b694f",
         "Retry-After": "30",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -220,7 +220,7 @@
         "code": "TooManyRequests",
         "message": {
           "lang": "en-US",
-          "value": "Request failed as server encountered too many requests. Please try again.\nRequestId:48bb6709-0ddc-4a3f-88da-47dab80b2830\nTime:2024-01-09T09:51:26.7303159Z"
+          "value": "Request failed as server encountered too many requests. Please try again.\nRequestId:54af0acb-a1e3-4dab-a840-ba36811b694f\nTime:2024-02-06T11:01:05.7478015Z"
         }
       }
     },
@@ -230,10 +230,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "81a45eba-4528-4a73-b6c0-75062b931e7f",
+        "client-request-id": "437352d7-f953-432b-9350-4dff095e90cc",
         "Content-Length": "90",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Tue, 09 Jan 2024 09:51:27 GMT",
+        "Date": "Tue, 06 Feb 2024 11:01:06 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -246,11 +246,11 @@
       "ResponseHeaders": {
         "DataServiceId": "https://sanjbatch.eastus.batch.azure.com/jobs/job-1",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 09 Jan 2024 09:51:27 GMT",
-        "ETag": "0x8DC10F88CAAC613",
-        "Last-Modified": "Tue, 09 Jan 2024 09:51:27 GMT",
+        "Date": "Tue, 06 Feb 2024 11:01:05 GMT",
+        "ETag": "0x8DC2702EB14F13A",
+        "Last-Modified": "Tue, 06 Feb 2024 11:01:06 GMT",
         "Location": "https://sanjbatch.eastus.batch.azure.com/jobs/job-1",
-        "request-id": "42ac018a-a1e3-438e-9137-a90a5b254f4e",
+        "request-id": "20e415e7-2742-4728-b4b2-70d0e209001f",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -264,10 +264,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "ab2885c1-f816-41ae-a272-11d7819197c5",
+        "client-request-id": "075d4bcd-f1cb-4098-ad2e-50769ff1df97",
         "Content-Length": "528959",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Tue, 09 Jan 2024 09:51:27 GMT",
+        "Date": "Tue, 06 Feb 2024 11:01:06 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -40285,8 +40285,8 @@
         "Content-Length": "447",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 09 Jan 2024 09:51:27 GMT",
-        "request-id": "5f21aeca-f478-4e7b-b60c-207db0c592d3",
+        "Date": "Tue, 06 Feb 2024 11:01:06 GMT",
+        "request-id": "6f55211e-c320-41d6-aba6-72b907f51f22",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -40296,7 +40296,7 @@
         "code": "RequestBodyTooLarge",
         "message": {
           "lang": "en-US",
-          "value": "The request body is too large and exceeds the maximum permissible limit.\nRequestId:5f21aeca-f478-4e7b-b60c-207db0c592d3\nTime:2024-01-09T09:51:28.3426234Z"
+          "value": "The request body is too large and exceeds the maximum permissible limit.\nRequestId:6f55211e-c320-41d6-aba6-72b907f51f22\nTime:2024-02-06T11:01:06.9322463Z"
         },
         "values": [
           {
@@ -40312,17 +40312,17 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "a4f60821-0324-4cc1-b331-89f7cf5db982",
+        "client-request-id": "73228a99-7fb0-40b8-8a85-5ec96807fa0d",
         "Content-Length": "0",
-        "Date": "Tue, 09 Jan 2024 09:51:28 GMT",
+        "Date": "Tue, 06 Feb 2024 11:01:07 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 09 Jan 2024 09:51:27 GMT",
-        "request-id": "99b15d2f-44b9-4b4b-9748-e01418bf2b71",
+        "Date": "Tue, 06 Feb 2024 11:01:07 GMT",
+        "request-id": "349024b8-7108-406e-9ba2-33757135c4f1",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
