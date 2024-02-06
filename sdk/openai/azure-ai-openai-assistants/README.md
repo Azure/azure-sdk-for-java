@@ -1,10 +1,5 @@
 # Azure OpenAI: OpenAI Assistants client library for Java
 
-> **NOTE**: This is a preview version of the Azure SDK library for OpenAI Assistants. The Azure OpenAI service does not 
-> yet include Assistants features and this project is thus currently for sole use with OpenAI's `api.openai.com` endpoints.
-> [OpenAI's Assistants API](https://platform.openai.com/docs/api-reference/assistants) is tagged as beta and both the 
-> API surface and this library's representation are subject to change.
-
 The Azure OpenAI Assistants client library for Java is an adaptation of OpenAI's REST APIs that provides an idiomatic interface
 and rich integration with the rest of the Azure SDK ecosystem. It will connect to Azure OpenAI resources *or* to the
 non-Azure OpenAI inference endpoint, making it a great choice for even non-Azure OpenAI development.
@@ -43,8 +38,6 @@ overview of the concepts and relationships used with assistants. This overview c
 creating, running, and using assistants and threads.
 
 #### Create a Azure OpenAI client with key credential
-> **NOTE**: The Azure OpenAI service does not yet include Assistants features. Use Non-Azure OpenAI Client for now.
-
 Get Azure OpenAI `key` credential from the Azure Portal.
 
 ```java readme-sample-createSyncClientKeyCredential
@@ -66,7 +59,6 @@ AssistantsAsyncClient client = new AssistantsClientBuilder()
 The SDK also supports operating against the public non-Azure OpenAI. The response models remain the same, only the
 setup of the `Assistants Client` is slightly different. First, get Non-Azure OpenAI API key from
 [Open AI authentication API keys][non_azure_openai_authentication]. Then setup your `Assistants Client` as follows:
-
 
 ```java readme-sample-createNonAzureAssistantSyncClientApiKey
 AssistantsClient client = new AssistantsClientBuilder()
