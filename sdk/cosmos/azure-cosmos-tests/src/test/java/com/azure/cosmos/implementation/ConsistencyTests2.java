@@ -230,13 +230,20 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenFromCollectionReplaceIsServerToken() {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionTokenFromCollectionReplaceIsServerToken(boolean shouldRegionScopedSessionContainerEnabled) {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         //this.validateSessionTokenFromCollectionReplaceIsServerToken(false, Protocol.TCP);
-        this.validateSessionTokenFromCollectionReplaceIsServerToken(false);
-        this.validateSessionTokenFromCollectionReplaceIsServerToken(true);
+
+        if (shouldRegionScopedSessionContainerEnabled) {
+            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
+        }
+
+        this.validateSessionTokenFromCollectionReplaceIsServerTokenBase(false);
+        this.validateSessionTokenFromCollectionReplaceIsServerTokenBase(true);
+
+        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
     }
 
     //TODO ReadFeed is broken, will enable the test case once it get fixed

@@ -794,7 +794,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         }
     }
 
-    void validateSessionTokenFromCollectionReplaceIsServerToken(boolean useGateway) {
+    void validateSessionTokenFromCollectionReplaceIsServerTokenBase(boolean useGateway) {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -819,7 +819,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(doc, "mypk")));
             Document doc1 = client1.readDocument(BridgeInternal.getAltLink(doc), requestOptions).block().getResource();
 
-            String token1 = ((SessionContainer) client1.getSession()).getSessionToken(createdCollection.getSelfLink());
+            String token1 = client1.getSession().getSessionToken(createdCollection.getSelfLink());
             client2 = (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
@@ -831,9 +831,11 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                     .build();
             client2.replaceCollection(createdCollection, null).block();
-            String token2 = ((SessionContainer) client2.getSession()).getSessionToken(createdCollection.getSelfLink());
+            Document doc2 = client2.readDocument(BridgeInternal.getAltLink(doc), requestOptions).block().getResource();
+            String token2 = client2.getSession().getSessionToken(createdCollection.getSelfLink());
 
             logger.info("Token after document and after collection replace {} = {}", token1, token2);
+            assertThat(token1).isEqualTo(token2);
         } finally {
             safeClose(client1);
             safeClose(client2);
