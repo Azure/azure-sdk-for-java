@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * <p><a href="https://learn.microsoft.com/azure/search/">Azure AI Search</a>, formerly known as "Azure Cognitive Search", provides secure information retrieval at scale over
+ * <p><a href="https://learn.microsoft.com/azure/search/">Azure AI Search</a>, formerly known as "Azure AI Search", provides secure information retrieval at scale over
  * user-owned content in traditional and conversational search applications.</p>
  *
  * <p>The Azure AI Search service provides:/p>
@@ -91,7 +91,7 @@
  *
  * <h3>Create a SearchIndexClient</h3>
  *
- * <p>To create a SearchIndexClient, you will need the values of the Azure Cognitive Search service URL endpoint and
+ * <p>To create a SearchIndexClient, you will need the values of the Azure AI Search service URL endpoint and
  * admin key. The following snippet shows how to create a SearchIndexClient.</p>
  *
  * The following sample creates a SearchIndexClient using the endpoint and Azure Key Credential (API Key).
@@ -107,7 +107,7 @@
  *
  * <h3>Create a SearchIndexerClient</h3>
  *
- * <p>To create a SearchIndexerClient, you will need the values of the Azure Cognitive Search
+ * <p>To create a SearchIndexerClient, you will need the values of the Azure AI Search
  * service URL endpoint and admin key. The following snippet shows how to create a SearchIndexerClient.</p>
  *
  * <p>The following sample creates SearchIndexerClient using an endpoint and Azure Key Credential (API Key).</p>
@@ -124,7 +124,7 @@
  *
  * <h3>Create a SearchClient</h3>
  *
- * <p>To create a SearchClient, you will need the values of the Azure Cognitive Search
+ * <p>To create a SearchClient, you will need the values of the Azure AI Search
  * service URL endpoint, admin key, and an index name. The following snippet shows how to create a SearchIndexerClient.</p>
  *
  * <p>The following sample creates a SearchClient</p>
@@ -141,7 +141,7 @@
  *
  * <h2>Key Concepts</h2>
  *
- * <p>An Azure Cognitive Search service contains one or more indexes that provide persistent storage of searchable data
+ * <p>An Azure AI Search service contains one or more indexes that provide persistent storage of searchable data
  * in the form of JSON documents. (If you're new to search, you can make a very rough analogy between indexes and
  * database tables.) The azure-search-documents client library exposes operations on these resources through two main
  * client types.</p>
@@ -167,7 +167,7 @@
  *      <li>Define AI powered Skillsets to transform and enrich your data</li>
  * </ul>
  *
- * <p>Azure Cognitive Search provides two powerful features:</p>
+ * <p>Azure AI Search provides two powerful features:</p>
  *
  * <h3>Semantic Search</h3>
  *
@@ -196,7 +196,7 @@
  *
  * <p>Additionally, for more comprehensive information about Vector Search, including its concepts and usage, you can
  * refer to the <a href="https://learn.microsoft.com/azure/search/vector-search-overview">documentation</a>. The documentation provides in-depth explanations and guidance on leveraging the power of
- * Vector Search in Azure Cognitive Search.</p>
+ * Vector Search in Azure AI Search.</p>
  *
  * <h3>Examples</h3>
  *
@@ -427,7 +427,7 @@
  *
  * <h4>General</h4>
  *
- * <p>When you interact with Azure Cognitive Search using this Java client library, errors returned by the service
+ * <p>When you interact with Azure AI Search using this Java client library, errors returned by the service
  * correspond to the <a href="https://learn.microsoft.com/rest/api/searchservice/http-status-codes">same HTTP status codes returned for REST API requests.</a> For example, the service will return a 404
  * error if you try to retrieve a document that doesn't exist in your index.</p>
  *

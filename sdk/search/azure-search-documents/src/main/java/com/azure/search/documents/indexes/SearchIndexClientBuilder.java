@@ -80,10 +80,10 @@ import java.util.Objects;
  *
  * <ul>
  *     <li>
- *         The Azure Cognitive Search service URL.
+ *         The Azure AI Search service URL.
  *     </li>
  *     <li>
- *         An {@link AzureKeyCredential API Key} that grants access to the Azure Cognitive Search service.
+ *         An {@link AzureKeyCredential API Key} that grants access to the Azure AI Search service.
  *     </li>
  * </ul>
  *
@@ -119,7 +119,7 @@ import java.util.Objects;
  *   authentication. Your user or service principal must be assigned the "Search Index Data Reader" role. Using Azure Identity
  *   you can authenticate a service using Managed Identity or a service principal, authenticate
  *   as a developer working on an application, and more all without changing code. Please refer the <a href="https://learn.microsoft.com/azure/search/search-security-rbac?tabs=config-svc-portal,roles-portal,test-portal,custom-role-portal,disable-keys-portal">documentation</a> for
- *   instructions on how to connect to Azure Cognitive Search using Azure role-based access control (Azure RBAC).
+ *   instructions on how to connect to Azure AI Search using Azure role-based access control (Azure RBAC).
  * </p>
  *
  * <p>
@@ -269,9 +269,9 @@ public final class SearchIndexClientBuilder implements
     }
 
     /**
-     * Sets the service endpoint for the Azure Cognitive Search instance.
+     * Sets the service endpoint for the Azure AI Search instance.
      *
-     * @param endpoint The URL of the Azure Cognitive Search instance.
+     * @param endpoint The URL of the Azure AI Search instance.
      * @return The updated SearchIndexClientBuilder object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */

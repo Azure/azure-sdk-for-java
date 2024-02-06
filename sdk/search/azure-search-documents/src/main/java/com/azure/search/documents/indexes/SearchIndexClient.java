@@ -40,7 +40,7 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
 
 /**
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting
- * indexes or synonym map and analyzing text in an Azure Cognitive Search service.
+ * indexes or synonym map and analyzing text in an Azure AI Search service.
  *
  * <h2>
  *     Overview
@@ -362,7 +362,7 @@ public final class SearchIndexClient {
     private final SearchServiceVersion serviceVersion;
 
     /**
-     * The endpoint for the Azure Cognitive Search service.
+     * The endpoint for the Azure AI Search service.
      */
     private final String endpoint;
 
@@ -396,7 +396,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Gets the endpoint for the Azure Cognitive Search service.
+     * Gets the endpoint for the Azure AI Search service.
      *
      * @return the endpoint value.
      */
@@ -416,7 +416,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search index
+     * Creates a new Azure AI Search index
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -444,7 +444,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search index
+     * Creates a new Azure AI Search index
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -478,7 +478,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Retrieves an index definition from the Azure Cognitive Search.
+     * Retrieves an index definition from the Azure AI Search.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -502,7 +502,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Retrieves an index definition from the Azure Cognitive Search.
+     * Retrieves an index definition from the Azure AI Search.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -582,7 +582,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all indexes available for an Azure Cognitive Search service.
+     * Lists all indexes available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -606,7 +606,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all indexes available for an Azure Cognitive Search service.
+     * Lists all indexes available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -641,7 +641,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all index names for an Azure Cognitive Search service.
+     * Lists all index names for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -664,7 +664,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all indexes names for an Azure Cognitive Search service.
+     * Lists all indexes names for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -695,7 +695,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     * Creates a new Azure AI Search index or updates an index if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -721,7 +721,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     * Creates a new Azure AI Search index or updates an index if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -762,7 +762,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     * Deletes an Azure AI Search index and all the documents it contains.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -783,7 +783,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     * Deletes an Azure AI Search index and all the documents it contains.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -883,7 +883,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search synonym map.
+     * Creates a new Azure AI Search synonym map.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -908,7 +908,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search synonym map.
+     * Creates a new Azure AI Search synonym map.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -991,7 +991,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all synonym maps available for an Azure Cognitive Search service.
+     * Lists all synonym maps available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1015,7 +1015,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all synonym maps available for an Azure Cognitive Search service.
+     * Lists all synonym maps available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1051,7 +1051,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all synonym maps names for an Azure Cognitive Search service.
+     * Lists all synonym maps names for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1074,7 +1074,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all synonym maps names for an Azure Cognitive Search service.
+     * Lists all synonym maps names for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1105,7 +1105,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
+     * Creates a new Azure AI Search synonym map or updates a synonym map if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1130,7 +1130,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
+     * Creates a new Azure AI Search synonym map or updates a synonym map if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1167,7 +1167,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search synonym map.
+     * Deletes an Azure AI Search synonym map.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1188,7 +1188,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search synonym map.
+     * Deletes an Azure AI Search synonym map.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1279,7 +1279,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search alias.
+     * Creates a new Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1302,7 +1302,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search alias.
+     * Creates a new Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1331,7 +1331,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates or updates an Azure Cognitive Search alias.
+     * Creates or updates an Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1361,7 +1361,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates or updates an Azure Cognitive Search alias.
+     * Creates or updates an Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1397,7 +1397,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Gets the Azure Cognitive Search alias.
+     * Gets the Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1420,7 +1420,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Gets the Azure Cognitive Search alias.
+     * Gets the Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1445,7 +1445,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Deletes the Azure Cognitive Search alias.
+     * Deletes the Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1466,7 +1466,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Deletes the Azure Cognitive Search alias.
+     * Deletes the Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1498,7 +1498,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all aliases in the Azure Cognitive Search service.
+     * Lists all aliases in the Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1519,7 +1519,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all aliases in the Azure Cognitive Search service.
+     * Lists all aliases in the Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *

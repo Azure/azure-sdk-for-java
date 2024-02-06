@@ -12,7 +12,7 @@
   </parent>
 
   <name>Microsoft Azure client library for Cognitive Search</name>
-  <description>This package contains the Microsoft Azure Cognitive Search client library</description>
+  <description>This package contains the Microsoft Azure AI Search client library</description>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-search-documents</artifactId>

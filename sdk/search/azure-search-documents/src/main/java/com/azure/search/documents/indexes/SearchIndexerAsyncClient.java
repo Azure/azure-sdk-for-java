@@ -38,7 +38,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting data
- * source connections, indexers, or skillsets and running or resetting indexers in an Azure Cognitive Search service.
+ * source connections, indexers, or skillsets and running or resetting indexers in an Azure AI Search service.
  *
  * <h2>
  *     Overview
@@ -394,7 +394,7 @@ public class SearchIndexerAsyncClient {
     private final SearchServiceVersion serviceVersion;
 
     /**
-     * The endpoint for the Azure Cognitive Search service.
+     * The endpoint for the Azure AI Search service.
      */
     private final String endpoint;
 
@@ -426,7 +426,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Gets the endpoint for the Azure Cognitive Search service.
+     * Gets the endpoint for the Azure AI Search service.
      *
      * @return the endpoint value.
      */
@@ -435,7 +435,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
+     * Creates a new Azure AI Search data source or updates a data source if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -467,7 +467,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
+     * Creates a new Azure AI Search data source or updates a data source if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -504,7 +504,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
+     * Creates a new Azure AI Search data source or updates a data source if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -567,7 +567,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search data source
+     * Creates a new Azure AI Search data source
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -599,7 +599,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search data source
+     * Creates a new Azure AI Search data source
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -641,7 +641,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Retrieves a DataSource from an Azure Cognitive Search service.
+     * Retrieves a DataSource from an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -665,7 +665,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Retrieves a DataSource from an Azure Cognitive Search service.
+     * Retrieves a DataSource from an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -702,7 +702,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * List all DataSources from an Azure Cognitive Search service.
+     * List all DataSources from an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -731,7 +731,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * List all DataSource names from an Azure Cognitive Search service.
+     * List all DataSource names from an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -786,7 +786,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search data source.
+     * Deletes an Azure AI Search data source.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -830,7 +830,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search indexer.
+     * Creates a new Azure AI Search indexer.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -856,7 +856,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search indexer.
+     * Creates a new Azure AI Search indexer.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -892,7 +892,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
+     * Creates a new Azure AI Search indexer or updates an indexer if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -922,7 +922,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
+     * Creates a new Azure AI Search indexer or updates an indexer if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -960,7 +960,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
+     * Creates a new Azure AI Search indexer or updates an indexer if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1079,7 +1079,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Lists all indexers available for an Azure Cognitive Search service.
+     * Lists all indexers available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1107,7 +1107,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Lists all indexers available for an Azure Cognitive Search service.
+     * Lists all indexers available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1138,7 +1138,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search indexer.
+     * Deletes an Azure AI Search indexer.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1160,7 +1160,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search indexer.
+     * Deletes an Azure AI Search indexer.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1193,7 +1193,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search indexer.
+     * Deletes an Azure AI Search indexer.
      *
      * @param indexerName the name of the indexer to delete
      * @param eTag Optional. The eTag to match.
@@ -1462,7 +1462,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new skillset in an Azure Cognitive Search service.
+     * Creates a new skillset in an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1505,7 +1505,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new skillset in an Azure Cognitive Search service.
+     * Creates a new skillset in an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1618,7 +1618,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Lists all skillsets available for an Azure Cognitive Search service.
+     * Lists all skillsets available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1646,7 +1646,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Lists all skillset names for an Azure Cognitive Search service.
+     * Lists all skillset names for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1677,7 +1677,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     * Creates a new Azure AI Search skillset or updates a skillset if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1708,7 +1708,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     * Creates a new Azure AI Search skillset or updates a skillset if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1745,7 +1745,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     * Creates a new Azure AI Search skillset or updates a skillset if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1808,7 +1808,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     * Deletes a cognitive skillset in an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1830,7 +1830,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     * Deletes a cognitive skillset in an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1874,7 +1874,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Resets skills in an existing skillset in an Azure Cognitive Search service.
+     * Resets skills in an existing skillset in an Azure AI Search service.
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkills#String-List -->
      * <pre>
@@ -1894,7 +1894,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Resets skills in an existing skillset in an Azure Cognitive Search service.
+     * Resets skills in an existing skillset in an Azure AI Search service.
      *
      * <!-- src_embed
      * com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List

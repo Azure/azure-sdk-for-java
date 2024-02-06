@@ -63,7 +63,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
 
 /**
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
- * documents in an Azure Cognitive Search service.
+ * documents in an Azure AI Search service.
  *
  * <h2>
  *     Overview
@@ -295,17 +295,17 @@ public final class SearchAsyncClient {
     private final SearchServiceVersion serviceVersion;
 
     /**
-     * The endpoint for the Azure Cognitive Search service.
+     * The endpoint for the Azure AI Search service.
      */
     private final String endpoint;
 
     /**
-     * The name of the Azure Cognitive Search index.
+     * The name of the Azure AI Search index.
      */
     private final String indexName;
 
     /**
-     * The underlying AutoRest client used to interact with the Azure Cognitive Search service
+     * The underlying AutoRest client used to interact with the Azure AI Search service
      */
     private final SearchIndexClientImpl restClient;
 
@@ -330,7 +330,7 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Gets the name of the Azure Cognitive Search index.
+     * Gets the name of the Azure AI Search index.
      *
      * @return the indexName value.
      */
@@ -348,7 +348,7 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Gets the endpoint for the Azure Cognitive Search service.
+     * Gets the endpoint for the Azure AI Search service.
      *
      * @return the endpoint value.
      */
@@ -828,7 +828,7 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Retrieves a document from the Azure Cognitive Search index.
+     * Retrieves a document from the Azure AI Search index.
      * <p>
      * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
      * constructing valid document keys.
@@ -861,7 +861,7 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Retrieves a document from the Azure Cognitive Search index.
+     * Retrieves a document from the Azure AI Search index.
      * <p>
      * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
      * constructing valid document keys.
@@ -966,11 +966,11 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Searches for documents in the Azure Cognitive Search index.
+     * Searches for documents in the Azure AI Search index.
      * <p>
      * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
+     * syntax in Azure AI Search</a> for more information about search query syntax.
      * <p>
      * The {@link SearchPagedFlux} will iterate through search result pages until all search results are returned.
      * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
@@ -1023,11 +1023,11 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Searches for documents in the Azure Cognitive Search index.
+     * Searches for documents in the Azure AI Search index.
      * <p>
      * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure Cognitive Search</a> for more information about search query syntax.
+     * syntax in Azure AI Search</a> for more information about search query syntax.
      * <p>
      * The {@link SearchPagedFlux} will iterate through search result pages until all search results are returned.
      * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
