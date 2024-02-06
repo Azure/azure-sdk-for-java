@@ -21,6 +21,7 @@ import com.azure.ai.openai.assistants.models.MessageTextDetails;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
+import com.azure.ai.openai.assistants.models.RequiredFunctionToolCallDetails;
 import com.azure.ai.openai.assistants.models.RequiredToolCall;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStatus;
@@ -44,6 +45,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.azure.ai.openai.assistants.FunctionToolCallSample.getCityNicknameToolDefinition;
+import static com.azure.ai.openai.assistants.FunctionToolCallSample.getWeatherAtLocationToolDefinition;
 
 public final class ReadmeSamples {
     private AssistantsClient client = new AssistantsClientBuilder().buildClient();
@@ -225,9 +229,9 @@ public final class ReadmeSamples {
                 + "Customize your responses to the user's preferences as much as possible and use friendly "
                 + "nicknames for cities whenever possible.")
             .setTools(Arrays.asList(
-                getUserFavoriteCityToolDefinition()
-//                getCityNicknameToolDefinition(),
-//                getWeatherAtLocationToolDefinition()
+                getUserFavoriteCityToolDefinition(),
+                getCityNicknameToolDefinition(),
+                getWeatherAtLocationToolDefinition()
             ));
 
         Assistant assistant = client.createAssistant(assistantCreationOptions);
@@ -316,30 +320,30 @@ public final class ReadmeSamples {
     private ToolOutput getResolvedToolOutput(RequiredToolCall toolCall) {
         if (toolCall instanceof RequiredFunctionToolCall) {
             RequiredFunctionToolCall functionToolCall = (RequiredFunctionToolCall) toolCall;
-            if (functionToolCall.getFunction().getName().equals(GET_USER_FAVORITE_CITY)) {
-                return new ToolOutput().setToolCallId(toolCall.getId())
-                    .setOutput(getUserFavoriteCity());
-            }
-            if (functionToolCall.getFunction().getName().equals(GET_CITY_NICKNAME)) {
-                Map<String, String> parameters = BinaryData.fromString(
-                        functionToolCall.getFunction().getArguments())
-                    .toObject(new TypeReference<Map<String, String>>() {});
+            RequiredFunctionToolCallDetails functionCallDetails = functionToolCall.getFunction();
+            String name = functionCallDetails.getName();
+            String arguments = functionCallDetails.getArguments();
+            ToolOutput toolOutput = new ToolOutput().setToolCallId(toolCall.getId());
+            if (GET_USER_FAVORITE_CITY.equals(name)) {
+                toolOutput.setOutput(getUserFavoriteCity());
+            } else if (GET_CITY_NICKNAME.equals(name)) {
+                Map<String, String> parameters = BinaryData.fromString(arguments)
+                        .toObject(new TypeReference<Map<String, String>>() {});
                 String location = parameters.get("location");
-                return new ToolOutput().setToolCallId(toolCall.getId())
-                    .setOutput(getCityNickname(location));
-            }
-            if (functionToolCall.getFunction().getName().equals(GET_WEATHER_AT_LOCATION)) {
-                Map<String, String> parameters = BinaryData.fromString(
-                        functionToolCall.getFunction().getArguments())
-                    .toObject(new TypeReference<Map<String, String>>() {});
+
+                toolOutput.setOutput(getCityNickname(location));
+            } else if (GET_WEATHER_AT_LOCATION.equals(name)) {
+                Map<String, String> parameters = BinaryData.fromString(arguments)
+                        .toObject(new TypeReference<Map<String, String>>() {});
                 String location = parameters.get("location");
                 // unit was not marked as required on our Function tool definition, so we need to handle its absence
                 String unit = parameters.getOrDefault("unit", "c");
-                return new ToolOutput().setToolCallId(toolCall.getId())
-                    .setOutput(getWeatherAtLocation(location, unit));
+
+                toolOutput.setOutput(getWeatherAtLocation(location, unit));
             }
+            return toolOutput;
         }
-        return null;
+        throw new IllegalArgumentException("Tool call not supported: " + toolCall.getClass());
     }
     // END: readme-sample-resolveToolOutput
 }
