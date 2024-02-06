@@ -14,7 +14,7 @@ public final class OperatorInformationRequest {
     /*
      * Phone number(s) whose operator information is being requested
      */
-    @JsonProperty(value = "phoneNumbers")
+    @JsonProperty(value = "phoneNumbers", required = true)
     private List<String> phoneNumbers;
 
     /*

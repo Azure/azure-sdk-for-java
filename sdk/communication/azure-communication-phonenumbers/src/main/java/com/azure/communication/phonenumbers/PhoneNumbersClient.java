@@ -8,7 +8,7 @@ import java.util.Objects;
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
-import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequestOptions;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
@@ -709,7 +709,10 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperatorInformationResult searchOperatorInformation(List<String> phoneNumbers) {
-        return this.searchOperatorInformation(phoneNumbers, false);
+        OperatorInformationRequest request = new OperatorInformationRequest();
+        request.setPhoneNumbers(phoneNumbers);
+        request.setOptions(new OperatorInformationOptions().setIncludeAdditionalOperatorDetails(false));
+        return client.operatorInformationSearch(request);
     }
 
     /**
@@ -722,11 +725,14 @@ public final class PhoneNumbersClient {
      * @return A {@link OperatorInformationResult} which contains the results of the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers,
-            boolean includeAdditionalPhoneAndOperatorDetails) {
+    public Response<OperatorInformationResult> searchOperatorInformationWithResponse(List<String> phoneNumbers,
+            boolean includeAdditionalPhoneAndOperatorDetails,
+            Context context) {
         OperatorInformationRequest request = new OperatorInformationRequest();
         request.setPhoneNumbers(phoneNumbers);
-        request.setOptions(new OperatorInformationRequestOptions().setIncludeAdditionalPhoneAndOperatorDetails(includeAdditionalPhoneAndOperatorDetails));
-        return client.operatorInformationSearchWithResponse(request);
+        request.setOptions(new OperatorInformationOptions().setIncludeAdditionalOperatorDetails(includeAdditionalPhoneAndOperatorDetails));
+
+        context = context == null ? Context.NONE : context;
+        return client.operatorInformationSearchWithResponseAsync(request, context).block();
     }
 }

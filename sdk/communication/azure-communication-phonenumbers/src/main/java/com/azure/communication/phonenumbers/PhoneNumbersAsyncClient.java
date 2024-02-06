@@ -15,7 +15,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersRe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
-import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequestOptions;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
@@ -728,7 +728,11 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers) {
-        return this.searchOperatorInformation(phoneNumbers, false);
+        OperatorInformationRequest request = new OperatorInformationRequest();
+        request.setPhoneNumbers(phoneNumbers);
+        request.setOptions(new OperatorInformationOptions().setIncludeAdditionalOperatorDetails(false));
+        return client.operatorInformationSearchAsync(request)
+            .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }
 
     /**
@@ -741,12 +745,18 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link OperatorInformationResult} which contains the results of the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<OperatorInformationResult>> searchOperatorInformationWithResponse(List<String> phoneNumbers, boolean includeAdditionalPhoneAndOperatorDetails) {
+    public Mono<Response<OperatorInformationResult>> searchOperatorInformationWithResponse(List<String> phoneNumbers, boolean includeAdditionalPhoneAndOperatorDetails, Context context) {
         OperatorInformationRequest request = new OperatorInformationRequest();
         request.setPhoneNumbers(phoneNumbers);
-        request.setOptions(new OperatorInformationRequestOptions().setIncludeAdditionalPhoneAndOperatorDetails(includeAdditionalPhoneAndOperatorDetails));
-        return client.operatorInformationSearchWithResponseAsync(request)
+        request.setOptions(new OperatorInformationOptions().setIncludeAdditionalOperatorDetails(includeAdditionalPhoneAndOperatorDetails));
+
+        return withContext(contextValue -> {
+            if (context != null) {
+                contextValue = context;
+            }
+            return client.operatorInformationSearchWithResponseAsync(request, contextValue)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
+        });
     }
 
     private Mono<PhoneNumberOperation> getOperation(String operationId) {

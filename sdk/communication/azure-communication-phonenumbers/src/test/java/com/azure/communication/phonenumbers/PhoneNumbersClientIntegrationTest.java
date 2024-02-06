@@ -343,6 +343,30 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         assertEquals(phoneNumbers.get(0), result.getValues().get(0).getPhoneNumber());
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void includeAdditionalOperatorDetails(HttpClient httpClient) {
+        List<String> phoneNumbers = new ArrayList<String>();
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        Response<OperatorInformationResult> result = this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
+                .searchOperatorInformationWithResponse(phoneNumbers, false, Context.NONE);
+        assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
+        assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
+        assertNotNull(result.getValue().getValues().get(0).getInternationalFormat());
+        assertEquals(null, result.getValue().getValues().get(0).getNumberType());
+        assertEquals(null, result.getValue().getValues().get(0).getIsoCountryCode());
+        assertEquals(null, result.getValue().getValues().get(0).getOperatorDetails());
+
+        result = this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
+                .searchOperatorInformationWithResponse(phoneNumbers, true, Context.NONE);
+        assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
+        assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
+        assertNotNull(result.getValue().getValues().get(0).getInternationalFormat());
+        assertNotNull(result.getValue().getValues().get(0).getNumberType());
+        assertNotNull(result.getValue().getValues().get(0).getIsoCountryCode());
+        assertNotNull(result.getValue().getValues().get(0).getOperatorDetails());
+    }
+
     private SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(
             HttpClient httpClient, String testName, boolean withContext) {
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
