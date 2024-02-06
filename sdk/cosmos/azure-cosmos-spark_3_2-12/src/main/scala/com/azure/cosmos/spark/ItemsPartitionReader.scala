@@ -46,7 +46,8 @@ private case class ItemsPartitionReader
 
   private val partitionKeyDefinitionOpt: Option[PartitionKeyDefinition] = {
     if (shouldLogDetailedFeedDiagnostics() || readConfig.readManyFilteringConfig.readManyFilteringEnabled) {
-      Some(TransientErrorsRetryPolicy.executeWithRetry(() => {
+      Some(
+        TransientErrorsRetryPolicy.executeWithRetry(() => {
         cosmosAsyncContainer.read().block().getProperties.getPartitionKeyDefinition
       }))
     } else {
@@ -62,7 +63,7 @@ private case class ItemsPartitionReader
             readConfig.readManyFilteringConfig,
             partitionKeyDefinitionOpt.get))
     } else {
-      Option.empty[CosmosReadManyFilteringConfig]
+      None
     }
   }
 
@@ -131,14 +132,6 @@ private case class ItemsPartitionReader
       diagnosticsConfig.mode.get.equalsIgnoreCase(classOf[DetailedFeedDiagnosticsProvider].getName)
   }
 
-  private def getPartitionKeyForFeedDiagnostics(pkValue: PartitionKey): Option[PartitionKey] = {
-    if (shouldLogDetailedFeedDiagnostics()) {
-      Some(pkValue)
-    } else {
-      None
-    }
-  }
-
   private def initializeOperationContext(): SparkTaskContext = {
     val taskContext = TaskContext.get
 
@@ -185,11 +178,11 @@ private case class ItemsPartitionReader
             readConfig.schemaConversionMode)
 
           val pkValueOpt = {
-                if (shouldLogDetailedFeedDiagnostics()) {
-                  Some(PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinitionOpt.get))
-                } else {
-                  None
-                }
+            if (shouldLogDetailedFeedDiagnostics()) {
+              Some(PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinitionOpt.get))
+            } else {
+              None
+            }
           }
 
           SparkRowItem(row, pkValueOpt)
