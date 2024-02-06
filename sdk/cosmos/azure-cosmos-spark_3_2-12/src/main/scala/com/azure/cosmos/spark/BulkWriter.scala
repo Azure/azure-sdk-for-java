@@ -1053,7 +1053,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
           assume(activeTasks.get() == 0)
           assume(activeBulkWriteOperations.isEmpty)
           assume(activeReadManyOperations.isEmpty)
-          assume(semaphore.availablePermits() == maxPendingOperations)
+          assume(semaphore.availablePermits() >= maxPendingOperations)
 
           if (totalScheduledMetrics.get() != totalSuccessfulIngestionMetrics.get) {
             log.logWarning(s"flushAndClose completed with no error but inconsistent total success and " +
