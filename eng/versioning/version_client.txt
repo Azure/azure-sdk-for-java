@@ -124,9 +124,9 @@ com.azure:azure-digitaltwins-core;1.3.16;1.4.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-identity;1.11.1;1.12.0-beta.1
-com.azure:azure-identity-extensions;1.1.11;1.2.0-beta.2
-com.azure:azure-identity-broker;1.0.1;1.1.0-beta.1
+com.azure:azure-identity;1.11.2;1.12.0-beta.1
+com.azure:azure-identity-extensions;1.1.12;1.2.0-beta.2
+com.azure:azure-identity-broker;1.0.2;1.1.0-beta.1
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.14;1.1.0-beta.1
@@ -254,7 +254,7 @@ com.azure.spring:spring-cloud-azure-stream-binder-servicebus;4.15.0;4.16.0-beta.
 com.azure.spring:spring-cloud-azure-trace-sleuth;4.15.0;4.16.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager;2.35.0;2.36.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.35.0;2.36.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-appservice;2.35.1;2.36.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-appservice;2.35.2;2.36.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.35.0;2.36.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.35.0;2.36.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute;2.35.0;2.36.0-beta.1
