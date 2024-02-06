@@ -42,14 +42,14 @@ public class SearchIndexClientBuilderJavaDocSnippets {
      * Instantiate a synchronous client using DefaultAzureCredential.
      */
     public static SearchIndexClient createSearchIndexClientWithDefaultAzureCredential() {
-            // BEGIN: com.azure.search.documents.SearchIndexClientBuilder.credential
-            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        // BEGIN: com.azure.search.documents.SearchIndexClientBuilder.credential
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
-            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-                .credential(credential)
-                .endpoint("{endpoint}")
-                .buildClient();
-            // END: com.azure.search.documents.SearchIndexClientBuilder.credential
+        SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
+            .credential(credential)
+            .endpoint("{endpoint}")
+            .buildClient();
+        // END: com.azure.search.documents.SearchIndexClientBuilder.credential
         return searchIndexClient;
     }
 

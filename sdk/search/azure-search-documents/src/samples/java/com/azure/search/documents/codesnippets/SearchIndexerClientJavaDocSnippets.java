@@ -6,7 +6,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.KeyPhraseExtractionSkill;
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchIndexer;

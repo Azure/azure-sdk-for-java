@@ -3,7 +3,6 @@
 package com.azure.search.documents.codesnippets;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;

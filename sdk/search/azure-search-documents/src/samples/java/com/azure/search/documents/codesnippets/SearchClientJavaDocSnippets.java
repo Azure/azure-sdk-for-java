@@ -3,7 +3,6 @@
 package com.azure.search.documents.codesnippets;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchDocument;
@@ -17,7 +16,6 @@ import com.azure.search.documents.util.SuggestPagedIterable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 @SuppressWarnings("unused")
 public class SearchClientJavaDocSnippets {
 

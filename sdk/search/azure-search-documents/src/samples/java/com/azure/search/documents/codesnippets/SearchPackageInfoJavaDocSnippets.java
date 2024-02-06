@@ -36,15 +36,15 @@ public class SearchPackageInfoJavaDocSnippets {
     *
     * @return the created SearchIndexClient
     */
-     public SearchIndexClient createSearchIndexClient() {
-         // BEGIN: com.azure.search.documents.packageInfo-SearchIndexClient.instantiation
-         SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-             .endpoint("{endpoint}")
-             .credential(new AzureKeyCredential("{key}"))
-             .buildClient();
-         // END: com.azure.search.documents.packageInfo-SearchIndexClient.instantiation
-         return searchIndexClient;
-     }
+    public SearchIndexClient createSearchIndexClient() {
+        // BEGIN: com.azure.search.documents.packageInfo-SearchIndexClient.instantiation
+        SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(new AzureKeyCredential("{key}"))
+            .buildClient();
+        // END: com.azure.search.documents.packageInfo-SearchIndexClient.instantiation
+        return searchIndexClient;
+    }
 
     /**
      * Code snippet for creating a {@link SearchIndexerClient}

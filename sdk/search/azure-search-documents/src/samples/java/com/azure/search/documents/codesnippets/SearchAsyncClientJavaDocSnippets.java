@@ -6,20 +6,14 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.SuggestResult;
 import com.azure.search.documents.util.AutocompletePagedFlux;
-import com.azure.search.documents.util.AutocompletePagedIterable;
 import com.azure.search.documents.util.SearchPagedFlux;
-import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SuggestPagedFlux;
-import com.azure.search.documents.util.SuggestPagedIterable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @SuppressWarnings("unused")
 public class SearchAsyncClientJavaDocSnippets {
