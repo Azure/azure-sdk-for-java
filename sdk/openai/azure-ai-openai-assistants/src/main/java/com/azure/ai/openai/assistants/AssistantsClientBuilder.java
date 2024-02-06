@@ -348,7 +348,8 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         AssistantsClientImpl client
             = new AssistantsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
                 useAzureOpenAIService(this.endpoint)
-                    ? (this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai")) : OpenAIUtils.getOpenAIEndpoint(),
+                    ? (this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"))
+                    : OpenAIUtils.getOpenAIEndpoint(),
                 localServiceVersion);
         return client;
     }
