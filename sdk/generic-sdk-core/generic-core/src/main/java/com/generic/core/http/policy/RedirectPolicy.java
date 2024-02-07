@@ -3,12 +3,14 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
+import com.generic.core.models.HeaderName;
+import com.generic.core.util.ClientLogger;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -18,6 +20,8 @@ import java.util.Set;
  * {@link HttpResponse response}.
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(RedirectPolicy.class);
+
     private final RedirectStrategy redirectStrategy;
 
     /**
@@ -65,7 +69,11 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
 
         HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(redirectResponse);
 
-        redirectResponse.close();
+        try {
+            redirectResponse.close();
+        } catch (IOException e) {
+            LOGGER.logThrowableAsError(new RuntimeException(e));
+        }
 
         return redirectRequestCopy;
     }

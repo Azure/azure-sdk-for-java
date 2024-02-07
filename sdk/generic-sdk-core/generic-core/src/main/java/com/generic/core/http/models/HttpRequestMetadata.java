@@ -67,6 +67,26 @@ public final class HttpRequestMetadata {
     }
 
     /**
+     * Gets the {@link ClientLogger} used to log during the request and response.
+     *
+     * @return The {@link ClientLogger} used to log during the request and response.
+     */
+    public ClientLogger getRequestLogger() {
+        return requestLogger;
+    }
+
+    /**
+     * Sets the {@link ClientLogger} used to log during the request and response.
+     *
+     * @param requestLogger The {@link ClientLogger} used to log during the request and response.
+     * @return The updated {@link HttpRequestMetadata} object.
+     */
+    public HttpRequestMetadata setRequestLogger(ClientLogger requestLogger) {
+        this.requestLogger = requestLogger;
+        return this;
+    }
+
+    /**
      * Whether the response headers should be eagerly converted.
      *
      * @return Whether the response headers should be eagerly converted.

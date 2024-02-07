@@ -124,7 +124,11 @@ public class RestProxyImpl extends RestProxyBase {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                response.getSourceResponse().close();
+                try {
+                    response.getSourceResponse().close();
+                } catch (IOException e) {
+                    LOGGER.logThrowableAsError(new RuntimeException(e));
+                }
 
                 return createResponse(response, entityType, null);
             } else {
@@ -200,7 +204,11 @@ public class RestProxyImpl extends RestProxyBase {
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
             Void.class)) {
             // ProxyMethod ReturnType: Void
-            expectedResponse.close();
+            try {
+                expectedResponse.close();
+            } catch (IOException e) {
+                LOGGER.logThrowableAsError(new RuntimeException(e));
+            }
 
             result = null;
         } else {
@@ -225,32 +233,32 @@ public class RestProxyImpl extends RestProxyBase {
 
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
         if (supportsJsonSerializable(bodyContentObject.getClass())) {
-            request.setBody(serializeJsonSerializableToBytes((JsonSerializable<?>) bodyContentObject));
+            request.setBody(BinaryData.fromBytes(serializeJsonSerializableToBytes((JsonSerializable<?>) bodyContentObject)));
 
             return;
         }
 
         if (isJson) {
-            request.setBody(serializerAdapter.serializeToBytes(bodyContentObject));
+            request.setBody(BinaryData.fromBytes(serializerAdapter.serializeToBytes(bodyContentObject)));
         } else if (bodyContentObject instanceof byte[]) {
-            request.setBody((byte[]) bodyContentObject);
+            request.setBody(BinaryData.fromBytes((byte[]) bodyContentObject));
         } else if (bodyContentObject instanceof String) {
             final String bodyContentString = (String) bodyContentObject;
 
             if (!bodyContentString.isEmpty()) {
-                request.setBody(bodyContentString);
+                request.setBody(BinaryData.fromString(bodyContentString));
             }
         } else if (bodyContentObject instanceof ByteBuffer) {
             if (((ByteBuffer) bodyContentObject).hasArray()) {
-                request.setBody(((ByteBuffer) bodyContentObject).array());
+                request.setBody(BinaryData.fromBytes(((ByteBuffer) bodyContentObject).array()));
             } else {
                 byte[] array = new byte[((ByteBuffer) bodyContentObject).remaining()];
 
                 ((ByteBuffer) bodyContentObject).get(array);
-                request.setBody(array);
+                request.setBody(BinaryData.fromBytes(array));
             }
         } else {
-            request.setBody(serializerAdapter.serializeToBytes(bodyContentObject));
+            request.setBody(BinaryData.fromBytes(serializerAdapter.serializeToBytes(bodyContentObject)));
         }
     }
 }

@@ -183,7 +183,7 @@ public abstract class RestProxyBase {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
 
         if (bodyContentObject == null) {
-            request.setHeader(HeaderName.CONTENT_LENGTH, "0");
+            request.getHeaders().set(HeaderName.CONTENT_LENGTH, "0");
         } else {
             // We read the content type from the @BodyParam annotation
             String contentType = methodParser.getBodyContentType();
@@ -198,13 +198,13 @@ public abstract class RestProxyBase {
                 }
             }
 
-            request.setHeader(HeaderName.CONTENT_TYPE, contentType);
+            request.getHeaders().set(HeaderName.CONTENT_TYPE, contentType);
 
             if (bodyContentObject instanceof BinaryData) {
                 BinaryData binaryData = (BinaryData) bodyContentObject;
 
                 if (binaryData.getLength() != null) {
-                    request.setHeader(HeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
+                    request.getHeaders().set(HeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
                 }
 
                 // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying

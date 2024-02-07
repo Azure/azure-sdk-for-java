@@ -73,7 +73,7 @@ public class RequestOptionsTests {
             .addRequestCallback(r -> r.setHttpMethod(HttpMethod.GET))
             .addRequestCallback(r -> r.setUrl("https://request.url"))
             .addQueryParam("$skipToken", "1")
-            .addRequestCallback(r -> r.setHeader(X_MS_FOO, "baz"));
+            .addRequestCallback(r -> r.getHeaders().set(X_MS_FOO, "baz"));
 
         options.getRequestCallback().accept(request);
 

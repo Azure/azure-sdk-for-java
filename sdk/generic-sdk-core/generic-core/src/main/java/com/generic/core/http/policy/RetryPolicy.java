@@ -183,7 +183,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
             logRetry(tryCount, delayDuration);
 
-            httpResponse.close();
+            try {
+                httpResponse.close();
+            } catch (IOException e) {
+                LOGGER.logThrowableAsError(new RuntimeException(e));
+            }
 
             try {
                 Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
