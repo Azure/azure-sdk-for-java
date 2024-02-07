@@ -457,7 +457,7 @@ class DefaultHttpClient implements HttpClient {
             throws IOException {
             httpRequest.setHeader(HeaderName.HOST, httpRequest.getUrl().getHost());
             if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HeaderName.CONNECTION))) {
-                httpRequest.setHeaders(new Headers().add(HeaderName.CONNECTION, "close"));
+                httpRequest.setHeader(HeaderName.CONNECTION, "close");
             }
 
             try (BufferedReader in = new BufferedReader(
