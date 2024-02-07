@@ -4,24 +4,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-client-sdk-parent</artifactId>
+  <groupId>com.generic</groupId>
+  <artifactId>generic-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.generic:generic-client-sdk-parent;current} -->
 
-  <name>Microsoft Azure SDK for Java - Client Libraries</name>
-  <description>Parent POM for Microsoft Azure SDK for Java</description>
+  <name>Java - Client Libraries</name>
+  <description>Java Client libraries</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
-  <organization>
-    <name>Microsoft Corporation</name>
-    <url>http://microsoft.com</url>
-  </organization>
 
   <parent>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-sdk-parent</artifactId>
-    <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
-    <relativePath>../azure-sdk-parent/pom.xml</relativePath>
+    <groupId>com.generic</groupId>
+    <artifactId>generic-sdk-parent</artifactId>
+    <version>1.0.0</version> <!-- {x-version-update;com.generic:generic-sdk-parent;current} -->
+    <relativePath>../generic-sdk-parent/pom.xml</relativePath>
   </parent>
 
   <licenses>
@@ -31,13 +27,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
-  <developers>
-    <developer>
-      <id>microsoft</id>
-      <name>Microsoft Corporation</name>
-    </developer>
-  </developers>
 
   <!-- Repositories definitions -->
   <repositories>
@@ -103,7 +92,7 @@
 
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
-    <build.context>azure-client-sdk-parent</build.context>
+    <build.context>generic-client-sdk-parent</build.context>
     <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
@@ -167,7 +156,7 @@
     <parallelizeLiveTests>same_thread</parallelizeLiveTests>
 
     <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
-    <codesnippet.skip>false</codesnippet.skip>
+    <codesnippet.skip>true</codesnippet.skip>
 
     <!-- The following properties configure the maven-checkstyle-plugin. -->
     <!-- This property configures whether the maven-checkstyle-plugin should be used. -->
@@ -199,9 +188,6 @@
     <!-- This property configures where the Spotbugs exclusion file can be found. -->
     <spotbugs.excludeFilterFile>spotbugs/spotbugs-exclude.xml</spotbugs.excludeFilterFile>
 
-    <graalvm.disable>true</graalvm.disable>
-    <nativeImage.buildArgs></nativeImage.buildArgs>
-
     <!-- The following properties configure the revapi-maven-plugin. -->
     <!-- This property configures whether the revapi-maven-plugin should run. -->
     <revapi.skip>false</revapi.skip>
@@ -232,13 +218,8 @@
     <!-- Azure core source path is included here and it's packages are excluded as almost all client libraries
     need inherited javadocs from core and explicitly adding this exclusion in each library is not maintainable. So,
     by default, we exclude core packages in the parent pom and in core packages override this exclusion -->
-    <javadoc.excludePackageNames>com.azure.json,com.azure.core.*</javadoc.excludePackageNames>
-    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java:${basedir}/../../core/azure-json/src/main/java</javadoc.sourcepath>
-
-    <!-- Used to skip maven-shade-plugin. This should only be used as part of CI builds to allow for parallel builds in non-shipping pipelines. -->
-    <!-- In the future this should be removed once maven-shade-plugin no longer as a possibility of deadlocking in parallel builds. -->
-    <!-- See https://issues.apache.org/jira/projects/MSHADE/issues/MSHADE-384 -->
-    <shade.skip>false</shade.skip>
+    <javadoc.excludePackageNames>com.generic.json,com.generic.core.*</javadoc.excludePackageNames>
+    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../generic-sdk-core/generic-core/src/main/java:${basedir}/../../generic-sdk-core/generic-json/src/main/java</javadoc.sourcepath>
   </properties>
 
   <build>
@@ -556,9 +537,7 @@
                 <exclude>*:*:*:*:provided</exclude>
               </excludes>
               <includes combine.children="append">
-                <include>com.azure:*</include>
-                <include>com.azure.resourcemanager:*</include>
-                <include>com.azure.spring:*</include>
+                <include>com.generic:*</include>
 
                 <!-- Used by many libraries to bring in annotations used by Reactor -->
                 <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
@@ -779,42 +758,6 @@
                 <url>https://docs.oracle.com/javase/8/docs/api/</url>
                 <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/java8/</location>
               </offlineLink>
-
-              <!-- Reactor APIs -->
-              <offlineLink>
-                <url>https://projectreactor.io/docs/core/release/api/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/reactor-core/</location>
-              </offlineLink>
-              <offlineLink>
-                <url>https://projectreactor.io/docs/netty/release/api/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/reactor-netty/</location>
-              </offlineLink>
-
-              <!-- Jackson APIs -->
-              <offlineLink>
-                <url>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-annotations/</location>
-              </offlineLink>
-              <offlineLink>
-                <url>https://fasterxml.github.io/jackson-core/javadoc/2.12/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-core/</location>
-              </offlineLink>
-              <offlineLink>
-                <url>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-databind/</location>
-              </offlineLink>
-
-              <!-- Netty APIs -->
-              <offlineLink>
-                <url>https://netty.io/4.1/api/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/netty/</location>
-              </offlineLink>
-
-              <!-- Avro APIs -->
-              <offlineLink>
-                <url>https://avro.apache.org/docs/current/api/java/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/apache-avro/</location>
-              </offlineLink>
             </offlineLinks>
             <failOnError>true</failOnError>
             <failOnWarnings>false</failOnWarnings>
@@ -949,15 +892,6 @@
               <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
             </dependency>
           </dependencies>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-shade-plugin</artifactId>
-          <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
-          <configuration>
-            <skip>${shade.skip}</skip>
-          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -1217,8 +1151,8 @@
                 ${defaultSurefireArgLine}
                 ${javaModulesSurefireArgLine}
                 <!-- This is required as the Java 8 based implementation for ReflectionUtils may be loaded by IntelliJ when running tests with later versions of Java. -->
-                <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
-                --add-opens java.base/java.lang.invoke=com.azure.core
+                <!-- In later versions of Java, java.base doesn't open java.lang.invoke to generic-core, so it needs to be done with this directive. This only affects tests. -->
+                --add-opens java.base/java.lang.invoke=com.generic.core
                 ${additionalSurefireArgLine}
               </argLine>
             </configuration>
@@ -1233,8 +1167,8 @@
                 ${defaultFailsafeArgLine}
                 ${javaModulesFailsafeArgLine}
                 <!-- This is required as the Java 8 based implementation for ReflectionUtils may be loaded by IntelliJ when running tests with later versions of Java. -->
-                <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
-                --add-opens java.base/java.lang.invoke=com.azure.core
+                <!-- In later versions of Java, java.base doesn't open java.lang.invoke to generic-core, so it needs to be done with this directive. This only affects tests. -->
+                --add-opens java.base/java.lang.invoke=com.generic.core
                 ${additionalFailsafeArgLine}
                 ${java.security.manager.configuration}
               </argLine>
@@ -1381,157 +1315,12 @@
                 <configuration>
                   <baseDir>.</baseDir>
                   <reportFile>target/dependency-allowlist.json</reportFile>
-                  <ignoredGA>
-                    <param>com.azure:azure-cosmos-benchmark</param>
-                    <param>com.azure:azure-core-test</param>
-                    <param>com.azure:azure-e2e</param>
-                    <param>com.azure:azure-storage-perf</param>
-                    <param>com.azure:perf-test-core</param>
-                  </ignoredGA>
                 </configuration>
               </execution>
             </executions>
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <profile>
-      <id>parallel-test-playback-no-azure-test-mode-env</id>
-      <activation>
-        <property>
-          <name>!env.AZURE_TEST_MODE</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>parallel-test-playback-azure-test-mode-playback-env</id>
-      <activation>
-        <property>
-          <name>env.AZURE_TEST_MODE</name>
-          <value>PLAYBACK</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>parallel-test-playback-no-azure-test-mode-prop</id>
-      <activation>
-        <property>
-          <name>AZURE_TEST_MODE</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>parallel-test-playback-azure-test-mode-playback-prop</id>
-      <activation>
-        <property>
-          <name>AZURE_TEST_MODE</name>
-          <value>PLAYBACK</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>sequential-test-azure-test-mode-live-env</id>
-      <activation>
-        <property>
-          <name>env.AZURE_TEST_MODE</name>
-          <value>LIVE</value>
-        </property>
-      </activation>
-      <properties>
-        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>sequential-test-azure-test-mode-record-env</id>
-      <activation>
-        <property>
-          <name>env.AZURE_TEST_MODE</name>
-          <value>RECORD</value>
-        </property>
-      </activation>
-      <properties>
-        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>sequential-test-azure-test-mode-live-prop</id>
-      <activation>
-        <property>
-          <name>AZURE_TEST_MODE</name>
-          <value>LIVE</value>
-        </property>
-      </activation>
-      <properties>
-        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>sequential-test-azure-test-mode-record-prop</id>
-      <activation>
-        <property>
-          <name>AZURE_TEST_MODE</name>
-          <value>RECORD</value>
-        </property>
-      </activation>
-      <properties>
-        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
-      </properties>
     </profile>
 
     <profile>
@@ -1584,67 +1373,6 @@
         </plugins>
       </build>
     </profile>
-
-    <profile>
-      <id>native</id>
-      <dependencies>
-        <!-- graalvm test dependencies -->
-        <dependency>
-          <groupId>org.graalvm.buildtools</groupId>
-          <artifactId>junit-platform-native</artifactId>
-          <version>0.9.19</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.graalvm.buildtools</groupId>
-            <artifactId>native-maven-plugin</artifactId>
-            <version>0.9.19</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
-            <configuration>
-              <skip>${graalvm.disable}</skip>
-              <buildArgs>--no-fallback ${nativeImage.buildArgs} -H:IncludeResources=.*</buildArgs>
-            </configuration>
-            <extensions>true</extensions>
-            <executions>
-              <execution>
-                <id>test-native</id>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-                <phase>test</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Used when Reactor had milestone releases to the Spring Milestone repository. -->
-    <!-- If Reactor milestones are needed again in the future, and they're being released -->
-    <!-- to the Spring Milestone repository uncomment the XML below. -->
-<!--    <profile>-->
-<!--      <id>external-dependency-version-overrides</id>-->
-<!--      <activation>-->
-<!--        <property>-->
-<!--          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>-->
-<!--        </property>-->
-<!--      </activation>-->
-<!--      <repositories>-->
-<!--        <repository>-->
-<!--          <id>repository.spring.milestone</id>-->
-<!--          <name>Spring Milestone Repository</name>-->
-<!--          <url>https://repo.spring.io/milestone</url>-->
-<!--          <releases>-->
-<!--            <enabled>true</enabled>-->
-<!--          </releases>-->
-<!--          <snapshots>-->
-<!--            <enabled>true</enabled>-->
-<!--          </snapshots>-->
-<!--        </repository>-->
-<!--      </repositories>-->
-<!--    </profile>-->
 
     <profile>
       <id>test-module-base-compile</id>

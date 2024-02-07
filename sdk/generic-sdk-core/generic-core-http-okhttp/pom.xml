@@ -6,10 +6,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+    <groupId>com.generic</groupId>
+    <artifactId>generic-client-sdk-parent</artifactId>
+    <version>1.0.0</version> <!-- {x-version-update;com.generic:generic-client-sdk-parent;current} -->
+    <relativePath>../../parents/generic-client-sdk-parent</relativePath>
   </parent>
 
   <groupId>com.generic</groupId>

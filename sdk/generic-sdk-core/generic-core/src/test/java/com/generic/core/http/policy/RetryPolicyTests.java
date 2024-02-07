@@ -129,7 +129,7 @@ public class RetryPolicyTests {
     @ParameterizedTest
     @MethodSource("customRetryPolicyCanDetermineRetryStatusCodesSupplier")
     public void customRetryPolicyCanDetermineRetryStatusCodes(RetryPolicy.RetryStrategy retryStrategy, int[] statusCodes,
-                                                              int expectedStatusCode)  {
+                                                              int expectedStatusCode) throws IOException {
         AtomicInteger attempt = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(retryStrategy, 2, null))
@@ -148,7 +148,7 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void retryMax() {
+    public void retryMax() throws IOException {
         final int maxRetries = 5;
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
@@ -169,7 +169,7 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void fixedDelayRetry() {
+    public void fixedDelayRetry() throws IOException {
         final int maxRetries = 5;
         final long delayMillis = 500;
         final HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -202,7 +202,7 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void exponentialDelayRetry() {
+    public void exponentialDelayRetry() throws IOException {
         final int maxRetries = 5;
         final long baseDelayMillis = 100;
         final long maxDelayMillis = 1000;
