@@ -5,7 +5,7 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.MessageRole;
-import com.azure.ai.openai.assistants.models.PagedResult;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
@@ -61,7 +61,7 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
             // List the messages, it should contain the answer other than the question.
-            PagedResult<ThreadMessage> openAIPageableListOfThreadMessage = client.listMessages(threadId);
+            PageableList<ThreadMessage> openAIPageableListOfThreadMessage = client.listMessages(threadId);
             assertNotNull(openAIPageableListOfThreadMessage);
             assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
         });
@@ -105,7 +105,7 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
             // List the messages, it should contain the answer other than the question.
-            PagedResult<ThreadMessage> openAIPageableListOfThreadMessage = client.listMessages(threadId);
+            PageableList<ThreadMessage> openAIPageableListOfThreadMessage = client.listMessages(threadId);
             assertNotNull(openAIPageableListOfThreadMessage);
             assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
         });
@@ -144,7 +144,7 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
             // List the messages, it should contain the answer other than the question.
-            PagedResult<ThreadMessage> openAIPageableListOfThreadMessage = client.listMessages(threadId);
+            PageableList<ThreadMessage> openAIPageableListOfThreadMessage = client.listMessages(threadId);
             assertNotNull(openAIPageableListOfThreadMessage);
             assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
 
@@ -186,7 +186,7 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
             // List the messages, it should contain the answer other than the question.
-            PagedResult<ThreadMessage> openAIPageableListOfThreadMessage = client.listMessages(threadId);
+            PageableList<ThreadMessage> openAIPageableListOfThreadMessage = client.listMessages(threadId);
             assertNotNull(openAIPageableListOfThreadMessage);
             assertTrue(openAIPageableListOfThreadMessage.getData().size() > 1);
 
@@ -249,15 +249,15 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             ThreadRun run = createThreadAndRun(client, createAndRunThreadOptions);
             String threadId = run.getThreadId();
             // List runs
-            PagedResult<ThreadRun> runs = client.listRuns(threadId);
+            PageableList<ThreadRun> runs = client.listRuns(threadId);
             List<ThreadRun> data = runs.getData();
             assertNotNull(data);
             assertEquals(1, data.size());
             validateThreadRun(run, data.get(0));
             // List runs with response
             Response<BinaryData> response = client.listRunsWithResponse(threadId, new RequestOptions());
-            PagedResult<ThreadRun> runsWithResponse = assertAndGetValueFromResponse(response,
-                new TypeReference<PagedResult<ThreadRun>>() {}, 200);
+            PageableList<ThreadRun> runsWithResponse = assertAndGetValueFromResponse(response,
+                new TypeReference<PageableList<ThreadRun>>() {}, 200);
             List<ThreadRun> dataWithResponse = runsWithResponse.getData();
             assertNotNull(dataWithResponse);
             assertEquals(1, dataWithResponse.size());
@@ -292,7 +292,7 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
             // List run steps
-            PagedResult<RunStep> runSteps = client.listRunSteps(threadId, runId);
+            PageableList<RunStep> runSteps = client.listRunSteps(threadId, runId);
             assertNotNull(runSteps);
 
             List<RunStep> runStepsData = runSteps.getData();
@@ -310,8 +310,8 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
 
             // List run steps with response
             Response<BinaryData> response = client.listRunStepsWithResponse(threadId, runId, new RequestOptions());
-            PagedResult<RunStep> runStepsWithResponse = assertAndGetValueFromResponse(response,
-                new TypeReference<PagedResult<RunStep>>() {}, 200);
+            PageableList<RunStep> runStepsWithResponse = assertAndGetValueFromResponse(response,
+                new TypeReference<PageableList<RunStep>>() {}, 200);
             assertNotNull(runStepsWithResponse);
             List<RunStep> runStepsDataWithResponse = runStepsWithResponse.getData();
             assertNotNull(runStepsDataWithResponse);

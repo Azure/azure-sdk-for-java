@@ -5,7 +5,7 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.MessageRole;
-import com.azure.ai.openai.assistants.models.PagedResult;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadRun;
@@ -356,8 +356,8 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
             // List runs with response
             StepVerifier.create(client.listRunsWithResponse(threadId, new RequestOptions()))
                     .assertNext(response -> {
-                        PagedResult<ThreadRun> runs = assertAndGetValueFromResponse(response,
-                            new TypeReference<PagedResult<ThreadRun>>() {}, 200);
+                        PageableList<ThreadRun> runs = assertAndGetValueFromResponse(response,
+                            new TypeReference<PageableList<ThreadRun>>() {}, 200);
                         List<ThreadRun> data = runs.getData();
                         assertNotNull(data);
                         assertEquals(1, data.size());
@@ -428,8 +428,8 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
             // List run steps with response
             StepVerifier.create(client.listRunStepsWithResponse(threadId, runId, new RequestOptions()))
                     .assertNext(response -> {
-                        PagedResult<RunStep> runStepsWithResponse = assertAndGetValueFromResponse(response,
-                            new TypeReference<PagedResult<RunStep>>() {}, 200);
+                        PageableList<RunStep> runStepsWithResponse = assertAndGetValueFromResponse(response,
+                            new TypeReference<PageableList<RunStep>>() {}, 200);
                         assertNotNull(runStepsWithResponse);
                         List<RunStep> runStepsDataWithResponse = runStepsWithResponse.getData();
                         assertNotNull(runStepsDataWithResponse);

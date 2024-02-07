@@ -131,7 +131,7 @@ do {
 Assuming the run successfully completed, listing messages from the thread that was run will now reflect new information
 added by the assistant:
 ```java readme-sample-listMessagesAfterRun
-PagedResult<ThreadMessage> messages = client.listMessages(run.getThreadId());
+PageableList<ThreadMessage> messages = client.listMessages(run.getThreadId());
 List<ThreadMessage> data = messages.getData();
 for (int i = 0; i < data.size(); i++) {
     ThreadMessage dataMessage = data.get(i);

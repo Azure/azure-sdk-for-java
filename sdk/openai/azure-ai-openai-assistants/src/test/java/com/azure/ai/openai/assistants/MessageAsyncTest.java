@@ -6,7 +6,7 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
 import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
-import com.azure.ai.openai.assistants.models.PagedResult;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
@@ -148,8 +148,8 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
             // List messages with response
             StepVerifier.create(client.listMessagesWithResponse(threadId, new RequestOptions()))
                     .assertNext(response -> {
-                        PagedResult<ThreadMessage> listedMessagesWithResponse = assertAndGetValueFromResponse(
-                            response, new TypeReference<PagedResult<ThreadMessage>>() {}, 200);
+                        PageableList<ThreadMessage> listedMessagesWithResponse = assertAndGetValueFromResponse(
+                            response, new TypeReference<PageableList<ThreadMessage>>() {}, 200);
                         assertNotNull(listedMessagesWithResponse);
                         assertNotNull(listedMessagesWithResponse.getData());
                         assertEquals(2, listedMessagesWithResponse.getData().size());
@@ -216,8 +216,8 @@ public class MessageAsyncTest extends AssistantsClientTestBase {
             // List messages with response
             StepVerifier.create(client.listMessageFilesWithResponse(threadId, messageId, new RequestOptions()))
                     .assertNext(response -> {
-                        PagedResult<MessageFile> listMessageFilesResponse = assertAndGetValueFromResponse(
-                            response, new TypeReference<PagedResult<MessageFile>>() {}, 200);
+                        PageableList<MessageFile> listMessageFilesResponse = assertAndGetValueFromResponse(
+                            response, new TypeReference<PageableList<MessageFile>>() {}, 200);
                         validateOpenAIPageableListOfMessageFile(listMessageFilesResponse, messageId,
                                 Arrays.asList(fileId1, fileId2));
                     })

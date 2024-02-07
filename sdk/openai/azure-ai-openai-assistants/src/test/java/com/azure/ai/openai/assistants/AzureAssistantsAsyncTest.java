@@ -7,7 +7,7 @@ import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantFile;
 import com.azure.ai.openai.assistants.models.AssistantFileDeletionStatus;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
-import com.azure.ai.openai.assistants.models.PagedResult;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
@@ -164,8 +164,8 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
             // List all the assistants with response; sort by name ascending
             StepVerifier.create(client.listAssistantsWithResponse(new RequestOptions()))
                     .assertNext(response -> {
-                        PagedResult<Assistant> assistantsAscending = assertAndGetValueFromResponse(response,
-                            new TypeReference<PagedResult<Assistant>>() {}, 200);
+                        PageableList<Assistant> assistantsAscending = assertAndGetValueFromResponse(response,
+                            new TypeReference<PageableList<Assistant>>() {}, 200);
                         List<Assistant> dataAscending = assistantsAscending.getData();
                         assertTrue(dataAscending.size() >= 2);
                     })
@@ -337,8 +337,8 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
             StepVerifier.create(client.listAssistantFilesWithResponse(assistantId,
                             new RequestOptions()))
                     .assertNext(response -> {
-                        PagedResult<AssistantFile> assistantFileList = assertAndGetValueFromResponse(response,
-                            new TypeReference<PagedResult<AssistantFile>>() {}, 200);
+                        PageableList<AssistantFile> assistantFileList = assertAndGetValueFromResponse(response,
+                            new TypeReference<PageableList<AssistantFile>>() {}, 200);
                         List<AssistantFile> assistantFilesData = assistantFileList.getData();
                         assertEquals(1, assistantFilesData.size());
                         AssistantFile assistantFileOnly = assistantFilesData.get(0);

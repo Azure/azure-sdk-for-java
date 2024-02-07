@@ -6,7 +6,7 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.implementation.AsyncUtils;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.MessageRole;
-import com.azure.ai.openai.assistants.models.PagedResult;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
 import com.azure.ai.openai.assistants.models.RequiredToolCall;
 import com.azure.ai.openai.assistants.models.RunStatus;
@@ -92,7 +92,7 @@ public class AzureFunctionsAsyncTests extends AssistantsClientTestBase {
                         return client.listRunSteps(cleanUp.getThread().getId(), run.getId()).zipWith(Mono.just(cleanUp));
                     }).map(tuple -> {
                         // Detailed step list assertions
-                        PagedResult<RunStep> runSteps = tuple.getT1();
+                        PageableList<RunStep> runSteps = tuple.getT1();
                         AsyncUtils cleanUp = tuple.getT2();
 
                         assertFalse(runSteps.getData().isEmpty());

@@ -6,7 +6,7 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
-import com.azure.ai.openai.assistants.models.PagedResult;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -40,7 +40,7 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            PagedResult<OpenAIFile> files = client.listFiles(filePurpose);
+            PageableList<OpenAIFile> files = client.listFiles(filePurpose);
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
@@ -65,7 +65,7 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            PagedResult<OpenAIFile> files = client.listFiles(filePurpose);
+            PageableList<OpenAIFile> files = client.listFiles(filePurpose);
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
@@ -91,7 +91,7 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            PagedResult<OpenAIFile> files = client.listFiles(filePurpose);
+            PageableList<OpenAIFile> files = client.listFiles(filePurpose);
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
@@ -122,8 +122,8 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             requestOptions.addQueryParam("purpose", FilePurpose.ASSISTANTS.toString());
             Response<BinaryData> listFilesResponse = client.listFilesWithResponse(requestOptions);
             assertEquals(200, listFilesResponse.getStatusCode());
-            PagedResult<OpenAIFile> files = listFilesResponse.getValue()
-                .toObject(new TypeReference<PagedResult<OpenAIFile>>() {});
+            PageableList<OpenAIFile> files = listFilesResponse.getValue()
+                .toObject(new TypeReference<PageableList<OpenAIFile>>() {});
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
@@ -156,8 +156,8 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             requestOptions.addQueryParam("purpose", FilePurpose.ASSISTANTS.toString());
             Response<BinaryData> listFilesResponse = client.listFilesWithResponse(requestOptions);
             assertEquals(200, listFilesResponse.getStatusCode());
-            PagedResult<OpenAIFile> files = listFilesResponse.getValue()
-                .toObject(new TypeReference<PagedResult<OpenAIFile>>() {});
+            PageableList<OpenAIFile> files = listFilesResponse.getValue()
+                .toObject(new TypeReference<PageableList<OpenAIFile>>() {});
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
@@ -191,8 +191,8 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             requestOptions.addQueryParam("purpose", FilePurpose.FINE_TUNE.toString());
             Response<BinaryData> listFilesResponse = client.listFilesWithResponse(requestOptions);
             assertEquals(200, listFilesResponse.getStatusCode());
-            PagedResult<OpenAIFile> files = listFilesResponse.getValue()
-                .toObject(new TypeReference<PagedResult<OpenAIFile>>() {});
+            PageableList<OpenAIFile> files = listFilesResponse.getValue()
+                .toObject(new TypeReference<PageableList<OpenAIFile>>() {});
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file

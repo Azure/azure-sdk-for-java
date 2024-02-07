@@ -14,7 +14,7 @@ import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.MessageTextDetails;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
-import com.azure.ai.openai.assistants.models.PagedResult;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
@@ -82,7 +82,7 @@ public class RetrievalToolSample {
             || run.getStatus() == RunStatus.QUEUED);
 
         // List messages from the thread
-        PagedResult<ThreadMessage> messages = client.listMessages(thread.getId());
+        PageableList<ThreadMessage> messages = client.listMessages(thread.getId());
         for (ThreadMessage message : messages.getData()) {
             message.getContent().forEach(content -> {
                 if (content instanceof MessageTextContent) {
