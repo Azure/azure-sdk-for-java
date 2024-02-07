@@ -171,6 +171,14 @@
             <id>base-testCompile</id>
             <phase>none</phase>
           </execution>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <release>17</release>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
