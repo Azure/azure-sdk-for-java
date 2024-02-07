@@ -26,7 +26,11 @@ public class MessagesSdkCustomization extends Customization {
         updateHttpPipelineMethod(messageTemplateClientBuilderCustomization);
 
         updateTemplateLocationConstructorWithGeoPositionParameter(libraryCustomization);
+        addPositionGetterInTemplateLocation(libraryCustomization);
         updateWhatsAppMessageTemplateItemWithBinaryDataContent(libraryCustomization);
+
+        MethodCustomization connectionStringMethod = notificationMessagesClientBuilderCustomization.getMethod("connectionString");
+        connectionStringMethod.addAnnotation("Override");
     }
 
     private void addAuthTrait(ClassCustomization classCustomization) {
@@ -152,6 +156,26 @@ public class MessagesSdkCustomization extends Customization {
             .removeParam("longitude")
             .removeParam("latitude")
             .setParam("geoPosition", "the geoPosition value to set.");
+    }
+
+    private void addPositionGetterInTemplateLocation(LibraryCustomization libraryCustomization) {
+        ClassCustomization messageTemplateLocationCustomization = libraryCustomization
+            .getPackage("com.azure.communication.messages.models")
+            .getClass("MessageTemplateLocation");
+
+        messageTemplateLocationCustomization.removeMethod("getLatitude");
+        messageTemplateLocationCustomization.removeMethod("getLongitude");
+
+        messageTemplateLocationCustomization.addMethod(
+            "public GeoPosition getPosition() {" +
+            "    return new GeoPosition(this.longitude, this.latitude);" +
+            "}");
+
+        messageTemplateLocationCustomization
+            .getMethod("getPosition")
+            .getJavadoc()
+            .setDescription("Get the geo position: The longitude and latitude of the location.\n" +
+                "@return the GeoPosition object.");
     }
 
     private void updateWhatsAppMessageTemplateItemWithBinaryDataContent(LibraryCustomization libraryCustomization) {

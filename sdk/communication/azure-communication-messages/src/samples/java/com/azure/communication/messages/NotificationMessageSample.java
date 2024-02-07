@@ -32,13 +32,13 @@ public class NotificationMessageSample {
 
         NotificationMessagesClient client = createClientWithConnectionString();
         SendMessageResult result = client.send(
-            new TemplateNotificationContent("972e282c-ea60-4bc7-bd22-b9e0b3d99bd3", List.of("+14014507114"), messageTemplate));
+            new TemplateNotificationContent("channel_id", List.of("phone_num"), messageTemplate));
 
         result.getReceipts().forEach(r -> System.out.println("Message sent to:"+r.getTo() + " and message id:"+ r.getMessageId()));
     }
 
     private static NotificationMessagesClient createClientWithConnectionString() {
-        String connectionString = "endpoint=https://acsxplatmg-sandbox-ppe.unitedstates.ppe.communication.azure.net/;accesskey=3+An2BA5YBmoeTdqHAU59gxPEcygwKunoOjjaDx045VdfaVzTLcn4q3xHpJ5Gt34I0fCstQiFK2HgwX+0sqsdA==";
+        String connectionString = "<conn_str>";
         return new NotificationMessagesClientBuilder()
             .connectionString(connectionString)
             .buildClient();
