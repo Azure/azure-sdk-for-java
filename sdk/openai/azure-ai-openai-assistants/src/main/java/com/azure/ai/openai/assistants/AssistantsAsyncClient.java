@@ -9,7 +9,6 @@ import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.assistants.implementation.models.CreateAssistantFileRequest;
 import com.azure.ai.openai.assistants.implementation.models.CreateMessageRequest;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep;
 import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
@@ -2388,13 +2387,13 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of run steps from a thread run on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfRunStep> listRunSteps(String threadId, String runId) {
+    public Mono<PagedResult<RunStep>> listRunSteps(String threadId, String runId) {
         // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<RunStep>>() {
+            }));
     }
 
     /**
