@@ -194,6 +194,8 @@ public class CosmosException extends AzureException {
      * @param message         the string message.
      * @param responseHeaders the response headers.
      * @param cause           the inner exception
+     * @param itemId          the itemId for the failed operation
+     * @param partitionKey    the partitionKey for the failed operation
      */
     protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause,
                               String itemId, PartitionKey partitionKey) {
@@ -454,6 +456,11 @@ public class CosmosException extends AzureException {
         return itemId;
     }
 
+    /**
+     * Sets the itemId linked to the item that encountered the failed operation.
+     *
+     * @param itemId linked to the item that encountered the failed operation.
+     */
     public void setItemId(String itemId) {
         this.itemId = itemId;
     }
@@ -467,6 +474,11 @@ public class CosmosException extends AzureException {
         return partitionKey;
     }
 
+    /**
+     * Sets the partitionKey linked to the item that encountered the failed operation.
+     *
+     * @param partitionKey linked to the item that encountered the failed operation.
+     */
     public void setPartitionKey(PartitionKey partitionKey) {
         this.partitionKey = partitionKey;
     }
