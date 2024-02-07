@@ -15,6 +15,7 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -132,14 +133,12 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
-                .skipRequest((ignored1, ignored2) -> false)
                 .assertAsync()
                 .build();
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
-                .skipRequest((ignored1, ignored2) -> false)
                 .assertSync()
                 .build();
     }
@@ -170,7 +169,7 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             loadTestAdministrationClientBuilder
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                    .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             loadTestAdministrationClientBuilder
                     .addPolicy(interceptorManager.getRecordPolicy())
