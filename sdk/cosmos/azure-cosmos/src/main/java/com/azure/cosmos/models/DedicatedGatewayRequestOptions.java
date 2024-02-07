@@ -10,8 +10,14 @@ import java.time.Duration;
  */
 public final class DedicatedGatewayRequestOptions implements Serializable {
 
+    /**
+     * The staleness value associated with the request in the Azure CosmosDB service.
+     */
     private Duration maxIntegratedCacheStaleness;
 
+    /**
+     * A flag indicating whether the integrated cache is enabled or bypassed with the request in Azure CosmosDB service.
+     */
     private boolean integratedCacheBypassed;
 
     /**
