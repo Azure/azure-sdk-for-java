@@ -7,24 +7,38 @@ package com.azure.resourcemanager.monitor.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Operators allowed in the rule condition. */
+/**
+ * Operators allowed in the rule condition.
+ */
 public enum ConditionOperator {
-    /** Enum value GreaterThan. */
+    /**
+     * Enum value GreaterThan.
+     */
     GREATER_THAN("GreaterThan"),
 
-    /** Enum value GreaterThanOrEqual. */
+    /**
+     * Enum value GreaterThanOrEqual.
+     */
     GREATER_THAN_OR_EQUAL("GreaterThanOrEqual"),
 
-    /** Enum value LessThan. */
+    /**
+     * Enum value LessThan.
+     */
     LESS_THAN("LessThan"),
 
-    /** Enum value LessThanOrEqual. */
+    /**
+     * Enum value LessThanOrEqual.
+     */
     LESS_THAN_OR_EQUAL("LessThanOrEqual"),
 
-    /** Enum value Equals. */
+    /**
+     * Enum value Equals.
+     */
     EQUALS("Equals");
 
-    /** The actual serialized value for a ConditionOperator instance. */
+    /**
+     * The actual serialized value for a ConditionOperator instance.
+     */
     private final String value;
 
     ConditionOperator(String value) {
@@ -33,7 +47,7 @@ public enum ConditionOperator {
 
     /**
      * Parses a serialized value to a ConditionOperator instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ConditionOperator object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum ConditionOperator {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

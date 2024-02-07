@@ -7,39 +7,49 @@ package com.azure.resourcemanager.monitor.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleAssociation;
 
-/** Resource properties. */
+/**
+ * Resource properties.
+ */
 @Fluent
 public final class DataCollectionRuleAssociationProxyOnlyResourceProperties extends DataCollectionRuleAssociation {
-    /** Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceProperties class. */
+    /**
+     * Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceProperties class.
+     */
     public DataCollectionRuleAssociationProxyOnlyResourceProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionRuleAssociationProxyOnlyResourceProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DataCollectionRuleAssociationProxyOnlyResourceProperties withDataCollectionRuleId(
-        String dataCollectionRuleId) {
+    public DataCollectionRuleAssociationProxyOnlyResourceProperties
+        withDataCollectionRuleId(String dataCollectionRuleId) {
         super.withDataCollectionRuleId(dataCollectionRuleId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DataCollectionRuleAssociationProxyOnlyResourceProperties withDataCollectionEndpointId(
-        String dataCollectionEndpointId) {
+    public DataCollectionRuleAssociationProxyOnlyResourceProperties
+        withDataCollectionEndpointId(String dataCollectionEndpointId) {
         super.withDataCollectionEndpointId(dataCollectionEndpointId);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
