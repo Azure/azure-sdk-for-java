@@ -53,6 +53,7 @@ public class HttpClientTestsServer {
     private static final byte[] UTF_32LE_BOM = {(byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00};
 
     private static final byte[] RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
+    private static final String SSE_RESPONSE = "/serversentevent";
 
     public static LocalTestServer getHttpClientTestsServer() {
         return new LocalTestServer((req, resp, requestBody) -> {
@@ -115,9 +116,13 @@ public class HttpClientTestsServer {
                 handleRequest(resp, "charset=UTF-16", addBom(UTF_8_BOM));
             } else if (put && ECHO_RESPONSE.equals(path)) {
                 handleRequest(resp, "application/octet-stream", requestBody);
-            } else if (get && ECHO_RESPONSE.equals(path)) {
-                sendSSEResponse(resp);
-            }else {
+            } else if (get || post && SSE_RESPONSE.equals(path)) {
+                if (req.getHeader("Last-Event-Id") != null) {
+                    sendSSELastEventIdResponse(resp);
+                } else {
+                    sendSSEResponse(resp);
+                }
+            } else {
                 throw new ServletException("Unexpected method: " + req.getMethod());
             }
         }, 100);
@@ -133,10 +138,14 @@ public class HttpClientTestsServer {
     }
 
     private static String addServerSentEvent() {
-        return "data: This is the first message.\n\n" +
+        return ": test stream\n" +
+            "data: first event\n" +
+            "id: 1\n" +
+            "retry: 100\n\n" +
             "data: This is the second message, it\n" +
-            "data: has two lines.\n\n" +
-            "data: This is the third message.\n";
+            "data: has two lines.\n" +
+            "id: 2\n\n" +
+            "data:  third event";
     }
 
     private static void sendSSEResponse(Response resp)
@@ -144,6 +153,21 @@ public class HttpClientTestsServer {
         setBaseHttpHeaders(resp);
         resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
         resp.getOutputStream().write(addServerSentEvent().getBytes());
+        resp.flushBuffer();
+    }
+
+    private static String addServerSentEventLast() {
+        return "data: This is the second message, it\n" +
+            "data: has two lines.\n" +
+            "id: 2\n\n" +
+            "data:  third event";
+    }
+
+    private static void sendSSELastEventIdResponse(Response resp)
+        throws IOException {
+        setBaseHttpHeaders(resp);
+        resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
+        resp.getOutputStream().write(addServerSentEventLast().getBytes());
         resp.flushBuffer();
     }
 

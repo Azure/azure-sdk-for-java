@@ -3,24 +3,32 @@
 
 package com.generic.core.http.models;
 
+import com.generic.core.util.ClientLogger;
+
+import java.io.IOException;
+
 /**
  * Interface to implement event stream listeners for handling {@link ServerSentEvent}.
  */
-public interface EventStreamListener {
+public interface ServerSentEventListener {
+    ClientLogger LOGGER = new ClientLogger(ServerSentEventListener.class);
 
     /**
      * Gets called every time an event or data is received.
      *
      * @param sse the instance of {@link ServerSentEvent}
      */
-    void onEvent(ServerSentEvent sse);
+    void onEvent(ServerSentEvent sse) throws IOException;
 
     /**
      * Gets called if an error has occurred
      *
      * @param throwable Error that occurred
      */
-    void onError(Throwable throwable);
+    default void onError(Throwable throwable) {
+        LOGGER.atWarning().log("Unexpected failure in handling server sent event: {}", throwable.getMessage(),
+            throwable);
+    }
 
     /**
      * The stream can define the retry time sending a message with "retry: milliseconds"
@@ -33,15 +41,18 @@ public interface EventStreamListener {
      * </p>
      *
      * @param throwable the instance of the error that caused the failure
-     * @param milliseconds new retry time in milliseconds
-     * @param lastEventID ID of last event that was received
+     * @param retryAfter new retry time in milliseconds
+     * @param lastEventId ID of last event that was received
      */
-    boolean shouldRetry(Throwable throwable, long milliseconds, long lastEventID);
+    default boolean shouldRetry(Throwable throwable, long retryAfter, long lastEventId) {
+        // do not auto-retry.
+        return false;
+    }
 
     /**
      * Notify that the connection was closed.
-     *
-     * @param sse the instance of {@link ServerSentEvent}
      */
-    void onClose(ServerSentEvent sse);
+    default void onClose() {
+        LOGGER.atInfo().log("Connection closed");
+    }
 }

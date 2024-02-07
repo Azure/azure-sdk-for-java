@@ -27,7 +27,6 @@ import java.util.function.Consumer;
 import static com.generic.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
 
 public class RestProxyImpl extends RestProxyBase {
-    private static final String TEXT_EVENT_STREAM = "text/event-stream";
 
     /**
      * Create a RestProxy.

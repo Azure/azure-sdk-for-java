@@ -4,7 +4,7 @@
 package com.generic.core.http.models;
 
 /**
- * Represents the  SSE response from the server on event stream interpretation
+ * Represents the SSE response from the server on event stream interpretation
  * <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream">here</a>.
  */
 public class ServerSentEvent {
@@ -12,7 +12,7 @@ public class ServerSentEvent {
     private String event;
     private String data;
     private String comment;
-    private long retryAfter;
+    private Long retryAfter;
 
     /**
      * Get event identifier.
@@ -68,7 +68,7 @@ public class ServerSentEvent {
      *
      * @return reconnection delay in milliseconds or 0 if no value has been set.
      */
-    public long getRetryAfter() {
+    public Long getRetryAfter() {
         return this.retryAfter;
     }
 
@@ -118,7 +118,7 @@ public class ServerSentEvent {
      * @param retryAfter the new connection retry time in milliseconds
      * @return the {@link ServerSentEvent} object
      */
-    public ServerSentEvent setRetryAfter(long retryAfter) {
+    public ServerSentEvent setRetryAfter(Long retryAfter) {
         this.retryAfter = retryAfter;
         return this;
     }

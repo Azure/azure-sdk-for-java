@@ -15,12 +15,13 @@ import com.generic.core.models.Headers;
 class DefaultHttpClientResponse extends HttpResponse {
     private final int statusCode;
     private final Headers headers;
-    private BinaryData body;
+    private final BinaryData body;
 
     public DefaultHttpClientResponse(HttpRequest request, int statusCode, Headers headers) {
         super(request);
         this.statusCode = statusCode;
         this.headers = headers;
+        this.body = null;
     }
 
     DefaultHttpClientResponse(HttpRequest request, int statusCode, Headers headers, BinaryData body) {

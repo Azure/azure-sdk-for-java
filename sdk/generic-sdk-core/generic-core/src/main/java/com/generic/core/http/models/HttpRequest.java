@@ -28,9 +28,8 @@ public class HttpRequest {
     private URL url;
     private Headers headers;
     private BinaryData body;
-
     private HttpRequestMetadata metadata;
-    private EventStreamListener listener;
+    private ServerSentEventListener serverSentEventListener;
 
     /**
      * Create a new HttpRequest instance.
@@ -266,17 +265,17 @@ public class HttpRequest {
      * Get the specified event stream listener for this request.
      * @return the listener for this request.
      */
-    public EventStreamListener getListener() {
-        return listener;
+    public ServerSentEventListener getServerSentEventListener() {
+        return serverSentEventListener;
     }
 
     /**
      * Set an event stream listener for this request.
-     * @param listener the listener to set for this request.
+     * @param serverSentEventListener the listener to set for this request.
      * @return This HttpRequest.
      */
-    public HttpRequest setListener(EventStreamListener listener) {
-        this.listener = listener;
+    public HttpRequest setServerSentEventListener(ServerSentEventListener serverSentEventListener) {
+        this.serverSentEventListener = serverSentEventListener;
         return this;
     }
 }
