@@ -8,14 +8,13 @@ import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
 import com.azure.ai.openai.assistants.models.AssistantFile;
 import com.azure.ai.openai.assistants.models.AssistantFileDeletionStatus;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistant;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistantFile;
 import com.azure.ai.openai.assistants.models.PagedResult;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -136,8 +135,8 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             assertTrue(dataAscending.size() >= 2);
 
             Response<BinaryData> response = client.listAssistantsWithResponse(new RequestOptions());
-            OpenAIPageableListOfAssistant assistantsAscendingResponse = assertAndGetValueFromResponse(response,
-                    OpenAIPageableListOfAssistant.class, 200);
+            PagedResult<Assistant> assistantsAscendingResponse = assertAndGetValueFromResponse(response,
+                new TypeReference<PagedResult<Assistant>>() {}, 200);
             List<Assistant> dataAscendingResponse = assistantsAscendingResponse.getData();
             assertTrue(dataAscendingResponse.size() >= 2);
 
@@ -321,8 +320,8 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             Response<BinaryData> response = client.listAssistantFilesWithResponse(assistantId,
                     new RequestOptions());
 
-            OpenAIPageableListOfAssistantFile assistantFileList = assertAndGetValueFromResponse(response,
-                    OpenAIPageableListOfAssistantFile.class, 200);
+            PagedResult<AssistantFile> assistantFileList = assertAndGetValueFromResponse(response,
+                new TypeReference<PagedResult<AssistantFile>>() {}, 200);
             List<AssistantFile> assistantFilesData = assistantFileList.getData();
             assertEquals(1, assistantFilesData.size());
             AssistantFile assistantFileOnly = assistantFilesData.get(0);
