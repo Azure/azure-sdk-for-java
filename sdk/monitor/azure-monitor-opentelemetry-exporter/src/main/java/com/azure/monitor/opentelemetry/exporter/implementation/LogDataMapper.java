@@ -17,7 +17,7 @@ import io.opentelemetry.sdk.logs.data.LogRecordData;
 import io.opentelemetry.sdk.resources.Resource;
 import reactor.util.annotation.Nullable;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -30,7 +30,7 @@ public class LogDataMapper {
 
     private static final ClientLogger logger = new ClientLogger(LogDataMapper.class);
 
-    private static final Set<String> EXCLUDE_LOGGER_NAMES = new HashSet<>(1);
+    private static final Set<String> EXCLUDE_LOGGER_NAMES = getExcludedLoggerNames();
 
     private static final String LOG4J_MDC_PREFIX = "log4j.mdc."; // log4j 1.2
     private static final String LOG4J_CONTEXT_DATA_PREFIX = "log4j.context_data."; // log4j 2.x
@@ -87,8 +87,6 @@ public class LogDataMapper {
         SpanDataMapper.applyCommonTags(mappingsBuilder);
 
         MAPPINGS = mappingsBuilder.build();
-
-        EXCLUDE_LOGGER_NAMES.add("org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet]");
     }
 
     private final boolean captureLoggingLevelAsCustomDimension;
@@ -356,5 +354,9 @@ public class LogDataMapper {
                 logger.error("Unexpected severity {}", severity);
                 return null;
         }
+    }
+
+    private static Set<String> getExcludedLoggerNames() {
+        return Collections.singleton("org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet]");
     }
 }
