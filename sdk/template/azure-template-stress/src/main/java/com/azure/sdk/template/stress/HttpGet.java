@@ -58,7 +58,6 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private void runInternal() {
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
         try (HttpResponse response = pipeline.sendSync(createRequest(), Context.NONE)) {
-            //response.buffer().close();
             response.getBodyAsBinaryData().toBytes();
         }
     }
