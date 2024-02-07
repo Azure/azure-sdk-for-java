@@ -21,5 +21,5 @@ public interface HttpPipelinePolicy {
      *
      * @return A publisher that initiates the request upon subscription and emits a response on completion.
      */
-    HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next);
+    HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next);
 }

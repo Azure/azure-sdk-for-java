@@ -103,11 +103,11 @@ public final class ResponseConstructorsCache {
      */
     public Response<?> invoke(ReflectiveInvoker reflectiveInvoker, HttpResponseDecoder.HttpDecodedResponse decodedResponse,
         Object bodyAsObject) {
-        final HttpResponse httpResponse = null;
+        final HttpResponse<?> httpResponse = null;
         final HttpRequest httpRequest = httpResponse.getRequest();
         final int responseStatusCode = httpResponse.getStatusCode();
-
         final int paramCount = reflectiveInvoker.getParameterCount();
+
         switch (paramCount) {
             case 3:
                 return constructResponse(reflectiveInvoker, THREE_PARAM_ERROR, httpRequest, responseStatusCode,

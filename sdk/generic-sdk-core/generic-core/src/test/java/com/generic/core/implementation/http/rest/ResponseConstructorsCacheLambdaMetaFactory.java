@@ -111,7 +111,7 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
          * @return an instance of a {@link Response} implementation
          */
         Response<?> invoke(final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
-            final HttpResponse httpResponse = decodedResponse.getSourceResponse();
+            final HttpResponse<?> httpResponse = decodedResponse.getSourceResponse();
             final HttpRequest httpRequest = httpResponse.getRequest();
             final int responseStatusCode = httpResponse.getStatusCode();
             final Headers responseHeaders = httpResponse.getHeaders();

@@ -1,67 +1,81 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.generic.core.http.models;
 
 import com.generic.core.models.BinaryData;
-import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 
 import java.io.Closeable;
 
-/**
- * The response of an {@link HttpRequest}.
- */
-public abstract class HttpResponse implements Closeable {
-    private final HttpRequest request;
-    private BinaryData binaryData = null;
-    private final byte[] bodyBytes;
+public class HttpResponse<T> implements Closeable {
+    protected final T body;
+    protected final Headers headers;
+    protected final HttpRequest request;
+    protected final int statusCode;
+    protected BinaryData bodyBinaryData = null;
 
     /**
-     * Creates an instance of {@link HttpResponse}.
+     * Creates a {@link HttpResponse}.
      *
-     * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
+     * @param request The request which resulted in this response.
+     * @param statusCode The status code of the HTTP response.
+     * @param body The deserialized value of the HTTP response.
      */
-    protected HttpResponse(HttpRequest request) {
+    public HttpResponse(HttpRequest request, int statusCode, T body) {
         this.request = request;
-        this.bodyBytes = null;
+        this.statusCode = statusCode;
+        this.headers = request == null ? null : request.getHeaders();
+        this.body = body;
     }
 
     /**
-     * Creates an instance of {@link HttpResponse}.
+     * Creates a {@link HttpResponse}.
      *
-     * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
-     * @param bodyBytes The response body as a byte array.
+     * @param request The request which resulted in this response.
+     * @param statusCode The status code of the HTTP response.
+     * @param headers The headers of the HTTP response.
+     * @param body The deserialized value of the HTTP response.
      */
-    protected HttpResponse(HttpRequest request, byte[] bodyBytes) {
+    public HttpResponse(HttpRequest request, int statusCode, Headers headers, T body) {
         this.request = request;
-        this.bodyBytes = bodyBytes;
+        this.statusCode = statusCode;
+        this.headers = headers;
+        this.body = body;
     }
 
     /**
-     * Get the response status code.
+     * Gets the HTTP response status code.
      *
-     * @return The response status code.
+     * @return The status code of the HTTP response.
      */
-    public abstract int getStatusCode();
+    public int getStatusCode() {
+        return this.statusCode;
+    };
 
     /**
-     * Lookup a response header with the provider {@link HeaderName}.
+     * Gets the headers from the HTTP response.
      *
-     * @param headerName The name of the header to lookup.
-     *
-     * @return The value of the header, or {@code null} if the header doesn't exist in the response.
+     * @return The HTTP response headers.
      */
-    public String getHeaderValue(HeaderName headerName) {
-        return getHeaders().getValue(headerName);
+    public Headers getHeaders() {
+        return this.headers;
+    };
+
+    /**
+     * Gets the HTTP request which resulted in this response.
+     *
+     * @return The HTTP request.
+     */
+    public HttpRequest getRequest() {
+        return this.request;
     }
 
     /**
-     * Get all response headers.
+     * Gets the deserialized value of the HTTP response.
      *
-     * @return the response headers
+     * @return The deserialized value of the HTTP response.
      */
-    public abstract Headers getHeaders();
+    public T getBody() {
+        return body;
+    };
 
     /**
      * Gets the {@link BinaryData} that represents the body of the response.
@@ -70,22 +84,13 @@ public abstract class HttpResponse implements Closeable {
      *
      * @return The {@link BinaryData} response body.
      */
-    public BinaryData getBody() {
+    public BinaryData getBodyAsBinaryData() {
         // We shouldn't create multiple binary data instances for a single stream.
-        if (binaryData == null && bodyBytes != null) {
-            binaryData = BinaryData.fromBytes(bodyBytes);
+        if (bodyBinaryData == null && body != null) {
+            bodyBinaryData = BinaryData.fromObject(body);
         }
 
-        return binaryData;
-    }
-
-    /**
-     * Gets the {@link HttpRequest request} which resulted in this response.
-     *
-     * @return The {@link HttpRequest request} which resulted in this response.
-     */
-    public final HttpRequest getRequest() {
-        return request;
+        return bodyBinaryData;
     }
 
     /**

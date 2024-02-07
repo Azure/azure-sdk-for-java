@@ -10,18 +10,18 @@ import okhttp3.Response;
 /**
  * An OkHttp response where the response body has been buffered into memory.
  */
-public final class OkHttpBufferedResponse extends OkHttpResponseBase {
-    private final byte[] body;
-
+public final class OkHttpBufferedResponse extends OkHttpResponseBase<byte[]> {
     public OkHttpBufferedResponse(Response response, HttpRequest request, byte[] body,
                                   boolean eagerlyConvertHeaders) {
-        super(response, request, eagerlyConvertHeaders);
-
-        this.body = body;
+        super(response, request, eagerlyConvertHeaders, body);
     }
 
     @Override
-    public BinaryData getBody() {
-        return BinaryData.fromBytes(body);
+    public BinaryData getBodyAsBinaryData() {
+        if (bodyBinaryData == null) {
+            bodyBinaryData = BinaryData.fromBytes(body);
+        }
+
+        return bodyBinaryData;
     }
 }

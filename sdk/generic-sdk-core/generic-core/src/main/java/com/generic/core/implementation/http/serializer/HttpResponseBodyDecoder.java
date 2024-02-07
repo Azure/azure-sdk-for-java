@@ -47,7 +47,7 @@ public final class HttpResponseBodyDecoder {
      *
      * @throws HttpResponseException If the body cannot be decoded.
      */
-    public static Object decodeByteArray(byte[] body, HttpResponse httpResponse, ObjectSerializer serializer,
+    public static Object decodeByteArray(byte[] body, HttpResponse<?> httpResponse, ObjectSerializer serializer,
                                          HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
 
@@ -85,7 +85,7 @@ public final class HttpResponseBodyDecoder {
                 return null;
             }
 
-            byte[] bodyAsByteArray = body == null ? httpResponse.getBody().toBytes() : body;
+            byte[] bodyAsByteArray = body == null ? httpResponse.getBodyAsBinaryData().toBytes() : body;
 
             try {
                 return deserializeBody(bodyAsByteArray, extractEntityTypeFromReturnType(decodeData),
@@ -101,7 +101,7 @@ public final class HttpResponseBodyDecoder {
     /**
      * @return The decoded type used to decode the response body, null if the body is not decodable.
      */
-    public static Type decodedType(final HttpResponse httpResponse, final HttpResponseDecodeData decodeData) {
+    public static Type decodedType(final HttpResponse<?> httpResponse, final HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
 
         if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
@@ -278,7 +278,7 @@ public final class HttpResponseBodyDecoder {
      *
      * @param httpResponse The {@link HttpResponse response} to validate.
      */
-    private static void ensureRequestSet(HttpResponse httpResponse) {
+    private static void ensureRequestSet(HttpResponse<?> httpResponse) {
         Objects.requireNonNull(httpResponse.getRequest());
         Objects.requireNonNull(httpResponse.getRequest().getHttpMethod());
     }

@@ -246,7 +246,7 @@ public class RestProxyTests {
         private volatile boolean closeCalledOnResponse;
 
         @Override
-        public HttpResponse send(HttpRequest request) {
+        public HttpResponse<?> send(HttpRequest request) {
             lastHttpRequest = request;
             boolean success = request.getUrl().getPath().equals("/my/url/path");
 

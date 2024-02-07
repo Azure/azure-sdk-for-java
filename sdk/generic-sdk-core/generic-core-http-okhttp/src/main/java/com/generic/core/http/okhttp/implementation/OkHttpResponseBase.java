@@ -3,36 +3,35 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.models.HeaderName;
 import okhttp3.Headers;
 import okhttp3.Response;
 
 /**
  * Base response class for OkHttp with implementations for response metadata.
  */
-abstract class OkHttpResponseBase extends HttpResponse {
-    private final int statusCode;
-    private final com.generic.core.models.Headers headers;
+@SuppressWarnings("rawtypes")
+abstract class OkHttpResponseBase<T> extends HttpResponse<T> {
 
     OkHttpResponseBase(Response response, HttpRequest request, boolean eagerlyConvertHeaders) {
-        super(request);
+        this(response, request, eagerlyConvertHeaders, null);
+    }
 
-        this.statusCode = response.code();
-        this.headers = eagerlyConvertHeaders
-            ? fromOkHttpHeaders(response.headers())
-            : new OkHttpToAzureCoreHttpHeadersWrapper(response.headers());
+    OkHttpResponseBase(Response response, HttpRequest request, boolean eagerlyConvertHeaders, T body) {
+        //noinspection unchecked
+        super(request,
+            response.code(),
+            eagerlyConvertHeaders
+                ? fromOkHttpHeaders(response.headers())
+                : new OkHttpToAzureCoreHttpHeadersWrapper(response.headers()),
+            body);
     }
 
     @Override
     public final int getStatusCode() {
         return this.statusCode;
-    }
-
-
-    public final String getHeaderValue(HeaderName headerName) {
-        return this.headers.getValue(headerName);
     }
 
     @Override

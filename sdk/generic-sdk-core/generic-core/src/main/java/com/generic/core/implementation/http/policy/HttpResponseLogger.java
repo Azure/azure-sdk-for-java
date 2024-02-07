@@ -22,7 +22,7 @@ public interface HttpResponseLogger {
      * @param response The response being logged.
      * @return The {@link ClientLogger.LogLevel} used to log the HTTP response.
      */
-    default ClientLogger.LogLevel getLogLevel(HttpResponse response) {
+    default ClientLogger.LogLevel getLogLevel(HttpResponse<?> response) {
         return ClientLogger.LogLevel.INFORMATIONAL;
     }
 
@@ -36,5 +36,5 @@ public interface HttpResponseLogger {
      * @param duration The duration of the HTTP call.
      * @return The HTTP response that was logged.
      */
-    HttpResponse logResponse(ClientLogger logger, HttpResponse response, Duration duration);
+    HttpResponse<?> logResponse(ClientLogger logger, HttpResponse<?> response, Duration duration);
 }

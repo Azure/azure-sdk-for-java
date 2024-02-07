@@ -24,7 +24,7 @@ public class HttpPipelineTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public HttpResponse send(HttpRequest request) {
+                public HttpResponse<Void> send(HttpRequest request) {
                     // do nothing
                     return null;
                 }
@@ -40,7 +40,7 @@ public class HttpPipelineTests {
             .policies(new RetryPolicy())
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public HttpResponse send(HttpRequest request) {
+                public HttpResponse<Void> send(HttpRequest request) {
                     // do nothing
                     return null;
                 }
@@ -52,12 +52,12 @@ public class HttpPipelineTests {
     }
 
     @Test
-    public void withRequestOptions() throws MalformedURLException {
+    public void withRequestOptions() {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public HttpResponse send(HttpRequest request) {
+                public HttpResponse<Void> send(HttpRequest request) {
                     // do nothing
                     return null;
                 }
@@ -73,7 +73,7 @@ public class HttpPipelineTests {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public HttpResponse send(HttpRequest request) {
+                public HttpResponse<?> send(HttpRequest request) {
                     assertEquals(0, request.getHeaders().getSize());
                     assertEquals(expectedHttpMethod, request.getHttpMethod());
                     assertEquals(expectedUrl, request.getUrl());
@@ -82,7 +82,7 @@ public class HttpPipelineTests {
                 }
             })
             .build();
-        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl));
+        final HttpResponse<?> response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl));
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
@@ -95,7 +95,7 @@ public class HttpPipelineTests {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public HttpResponse send(HttpRequest request) {
+                public HttpResponse<?> send(HttpRequest request) {
                     assertEquals(0, request.getHeaders().getSize());
                     assertEquals(expectedHttpMethod, request.getHttpMethod());
                     assertEquals(expectedUrl, request.getUrl());
@@ -104,7 +104,7 @@ public class HttpPipelineTests {
                 }
             })
             .build();
-        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl));
+        final HttpResponse<?> response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl));
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());

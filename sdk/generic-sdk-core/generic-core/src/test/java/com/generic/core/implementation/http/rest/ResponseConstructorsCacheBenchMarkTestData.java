@@ -3,7 +3,6 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -12,7 +11,7 @@ import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.util.UrlBuilder;
-import com.generic.core.models.BinaryData;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.serializer.ObjectSerializer;
 
@@ -71,36 +70,6 @@ class ResponseConstructorsCacheBenchMarkTestData {
         FooSimpleResponse getFooSimpleResponse();
     }
 
-    // Mock Http Response
-    static final class MockResponse extends HttpResponse {
-        private final int statusCode;
-        private final Headers headers;
-        private final byte[] bodyBytes;
-
-        MockResponse(HttpRequest request, int statusCode, Headers headers, byte[] body) {
-            super(request, body);
-
-            this.statusCode = statusCode;
-            this.headers = headers;
-            this.bodyBytes = body;
-        }
-
-        @Override
-        public int getStatusCode() {
-            return this.statusCode;
-        }
-
-        @Override
-        public Headers getHeaders() {
-            return this.headers;
-        }
-
-        @Override
-        public BinaryData getBody() {
-            return BinaryData.fromBytes(bodyBytes);
-        }
-    }
-
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
     private static final HttpResponseDecoder RESPONSE_DECODER = new HttpResponseDecoder(SERIALIZER);
     private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUrl());
@@ -115,14 +84,14 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);
     private static final byte[] STREAM_BYTE_ARRAY = new byte[1];
     // MOCK RESPONSES
-    private static final HttpResponse VOID_RESPONSE = new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final HttpResponse<Void> VOID_RESPONSE = new HttpResponse<>(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, null);
-    private static final HttpResponse FOO_RESPONSE = new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final HttpResponse<byte[]> FOO_RESPONSE = new HttpResponse<>(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, FOO_BYTE_ARRAY);
-    private static final HttpResponse STREAM_RESPONSE = new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final HttpResponse<byte[]> STREAM_RESPONSE = new HttpResponse<>(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, STREAM_BYTE_ARRAY);
-    private static final HttpResponse FOO_CUSTOM_HEADER_RESPONSE = new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
-        RESPONSE_CUSTOM_HEADERS, FOO_BYTE_ARRAY);
+    private static final HttpResponse<byte[]> FOO_CUSTOM_HEADER_RESPONSE = new HttpResponse<>(HTTP_REQUEST,
+        RESPONSE_STATUS_CODE, RESPONSE_CUSTOM_HEADERS, FOO_BYTE_ARRAY);
 
     // ARRAY HOLDING TEST DATA
     private final Input[] inputs;
@@ -161,7 +130,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         private final HttpResponseDecoder.HttpDecodedResponse decodedResponse;
         private final Object bodyAsObject;
 
-        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, HttpResponse httpResponse,
+        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, HttpResponse<?> httpResponse,
               Object bodyAsObject) {
 
             this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();

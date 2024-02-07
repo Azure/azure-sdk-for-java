@@ -45,6 +45,7 @@ class OkHttpHttpClient implements HttpClient {
         this.httpClient = httpClient;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public HttpResponse send(HttpRequest request) {
         boolean eagerlyConvertHeaders = request.getMetadata().isEagerlyConvertHeaders();
@@ -140,6 +141,7 @@ class OkHttpHttpClient implements HttpClient {
         return contentLength;
     }
 
+    @SuppressWarnings("rawtypes")
     private static HttpResponse toHttpResponse(HttpRequest request, okhttp3.Response response,
                                                boolean eagerlyReadResponse, boolean ignoreResponseBody,
                                                boolean eagerlyConvertHeaders) throws IOException {

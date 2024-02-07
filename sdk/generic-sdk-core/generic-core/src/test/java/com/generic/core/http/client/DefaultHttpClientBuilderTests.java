@@ -72,7 +72,7 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
+            HttpResponse<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
 
             assertEquals(200, response.getStatusCode());
         } finally {
@@ -101,7 +101,7 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
+            HttpResponse<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
 
             assertEquals(200, response.getStatusCode());
         } finally {
@@ -128,7 +128,7 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
+            HttpResponse<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
 
             assertEquals(200, response.getStatusCode());
         } finally {
@@ -186,7 +186,7 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            try (HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+            try (HttpResponse<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
                 assertNotNull(response);
             }
         } finally {
@@ -211,7 +211,7 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            try (HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+            try (HttpResponse<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
                 assertNotNull(response);
             }
         } finally {

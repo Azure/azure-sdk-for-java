@@ -93,11 +93,11 @@ public abstract class RestProxyBase {
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
                                        ObjectSerializer objectSerializer) throws IOException;
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
+    @SuppressWarnings("unchecked")
+    public Response<?> createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
                                    Object bodyAsObject) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
-        final HttpResponse httpResponse = response.getSourceResponse();
+        final HttpResponse<?> httpResponse = response.getSourceResponse();
         final HttpRequest request = httpResponse.getRequest();
         final int statusCode = httpResponse.getStatusCode();
         final Headers headers = httpResponse.getHeaders();
@@ -247,17 +247,17 @@ public abstract class RestProxyBase {
      * @return The {@link HttpResponseException} created from the provided details.
      */
     public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
-                                                                       HttpResponse httpResponse,
+                                                                       HttpResponse<?> httpResponse,
                                                                        byte[] responseContent,
                                                                        Object responseDecodedContent) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")
             .append(httpResponse.getStatusCode())
             .append(", ");
 
-        final String contentType = httpResponse.getHeaderValue(HeaderName.CONTENT_TYPE);
+        final String contentType = httpResponse.getHeaders().getValue(HeaderName.CONTENT_TYPE);
 
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            String contentLength = httpResponse.getHeaderValue(HeaderName.CONTENT_LENGTH);
+            String contentLength = httpResponse.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
 
             exceptionMessage.append("(").append(contentLength).append("-byte body)");
         } else if (responseContent == null || responseContent.length == 0) {

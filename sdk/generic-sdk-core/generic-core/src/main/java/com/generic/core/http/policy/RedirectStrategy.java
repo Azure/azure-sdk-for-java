@@ -29,7 +29,7 @@ public interface RedirectStrategy {
      *
      * @return {@code true} if the request should be redirected, {@code false} otherwise.
      */
-    boolean shouldAttemptRedirect(HttpRequest httpRequest, HttpResponse httpResponse, int tryCount,
+    boolean shouldAttemptRedirect(HttpRequest httpRequest, HttpResponse<?> httpResponse, int tryCount,
                                   Set<String> attemptedRedirectUrls);
 
     /**
@@ -39,5 +39,5 @@ public interface RedirectStrategy {
      *
      * @return The modified {@link HttpRequest} to redirect the incoming request.
      */
-    HttpRequest createRedirectRequest(HttpResponse httpResponse);
+    HttpRequest createRedirectRequest(HttpResponse<?> httpResponse);
 }
