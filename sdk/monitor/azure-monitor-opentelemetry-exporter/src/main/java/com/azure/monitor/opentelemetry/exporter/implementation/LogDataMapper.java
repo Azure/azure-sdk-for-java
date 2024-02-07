@@ -17,7 +17,9 @@ import io.opentelemetry.sdk.logs.data.LogRecordData;
 import io.opentelemetry.sdk.resources.Resource;
 import reactor.util.annotation.Nullable;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.MappingType.LOG;
@@ -27,6 +29,8 @@ import static io.opentelemetry.api.common.AttributeKey.stringKey;
 public class LogDataMapper {
 
     private static final ClientLogger logger = new ClientLogger(LogDataMapper.class);
+
+    private static final Set<String> EXCLUDE_LOGGER_NAMES = new HashSet<>(4);
 
     private static final String LOG4J_MDC_PREFIX = "log4j.mdc."; // log4j 1.2
     private static final String LOG4J_CONTEXT_DATA_PREFIX = "log4j.context_data."; // log4j 2.x
@@ -83,6 +87,8 @@ public class LogDataMapper {
         SpanDataMapper.applyCommonTags(mappingsBuilder);
 
         MAPPINGS = mappingsBuilder.build();
+
+        EXCLUDE_LOGGER_NAMES.add("org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet]");
     }
 
     private final boolean captureLoggingLevelAsCustomDimension;
@@ -100,7 +106,7 @@ public class LogDataMapper {
     }
 
     public TelemetryItem map(LogRecordData log, @Nullable String stack, @Nullable Long itemCount) {
-        if (stack == null) {
+        if (stack == null && !EXCLUDE_LOGGER_NAMES.contains(log.getInstrumentationScopeInfo().getName())) {
             return createMessageTelemetryItem(log, itemCount);
         } else {
             return createExceptionTelemetryItem(log, stack, itemCount);
