@@ -106,22 +106,12 @@ public final class MessageTemplateLocation extends MessageTemplateValue {
     }
 
     /**
-     * Get the latitude property: The latitude of the location.
+     * Get the geo position: The longitude and latitude of the location.
      * 
-     * @return the latitude value.
+     * @return the GeoPosition object.
      */
-    @Generated
-    public double getLatitude() {
-        return this.latitude;
+    public GeoPosition getPosition() {
+        return new GeoPosition(this.longitude, this.latitude);
     }
 
-    /**
-     * Get the longitude property: The longitude of the location.
-     * 
-     * @return the longitude value.
-     */
-    @Generated
-    public double getLongitude() {
-        return this.longitude;
-    }
 }

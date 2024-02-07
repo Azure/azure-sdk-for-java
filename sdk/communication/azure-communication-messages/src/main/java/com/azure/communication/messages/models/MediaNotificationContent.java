@@ -31,21 +31,21 @@ public final class MediaNotificationContent extends NotificationContent {
      */
     @Generated
     @JsonProperty(value = "mediaUri")
-    private String mediaUri;
+    private String mediaUrl;
 
     /**
      * Creates an instance of MediaNotificationContent class.
      * 
      * @param channelRegistrationId the channelRegistrationId value to set.
      * @param to the to value to set.
-     * @param mediaUri the mediaUri value to set.
+     * @param mediaUrl the mediaUrl value to set.
      */
     @Generated
     @JsonCreator
     public MediaNotificationContent(@JsonProperty(value = "channelRegistrationId") String channelRegistrationId,
-        @JsonProperty(value = "to") List<String> to, @JsonProperty(value = "mediaUri") String mediaUri) {
+        @JsonProperty(value = "to") List<String> to, @JsonProperty(value = "mediaUri") String mediaUrl) {
         super(channelRegistrationId, to);
-        this.mediaUri = mediaUri;
+        this.mediaUrl = mediaUrl;
     }
 
     /**
@@ -71,13 +71,13 @@ public final class MediaNotificationContent extends NotificationContent {
     }
 
     /**
-     * Get the mediaUri property: A media url for the file. Required if the type is one of the supported media types,
+     * Get the mediaUrl property: A media url for the file. Required if the type is one of the supported media types,
      * e.g. image.
      * 
-     * @return the mediaUri value.
+     * @return the mediaUrl value.
      */
     @Generated
-    public String getMediaUri() {
-        return this.mediaUri;
+    public String getMediaUrl() {
+        return this.mediaUrl;
     }
 }

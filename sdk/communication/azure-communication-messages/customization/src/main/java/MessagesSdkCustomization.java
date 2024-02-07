@@ -28,9 +28,6 @@ public class MessagesSdkCustomization extends Customization {
         updateTemplateLocationConstructorWithGeoPositionParameter(libraryCustomization);
         addPositionGetterInTemplateLocation(libraryCustomization);
         updateWhatsAppMessageTemplateItemWithBinaryDataContent(libraryCustomization);
-
-        MethodCustomization connectionStringMethod = notificationMessagesClientBuilderCustomization.getMethod("connectionString");
-        connectionStringMethod.addAnnotation("Override");
     }
 
     private void addAuthTrait(ClassCustomization classCustomization) {
