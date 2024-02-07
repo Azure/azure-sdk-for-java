@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.models.CategoryType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The diagnostic settings Category. */
+/**
+ * The diagnostic settings Category.
+ */
 @Fluent
 public final class DiagnosticSettingsCategory {
     /*
@@ -24,13 +26,15 @@ public final class DiagnosticSettingsCategory {
     @JsonProperty(value = "categoryGroups")
     private List<String> categoryGroups;
 
-    /** Creates an instance of DiagnosticSettingsCategory class. */
+    /**
+     * Creates an instance of DiagnosticSettingsCategory class.
+     */
     public DiagnosticSettingsCategory() {
     }
 
     /**
      * Get the categoryType property: The type of the diagnostic settings category.
-     *
+     * 
      * @return the categoryType value.
      */
     public CategoryType categoryType() {
@@ -39,7 +43,7 @@ public final class DiagnosticSettingsCategory {
 
     /**
      * Set the categoryType property: The type of the diagnostic settings category.
-     *
+     * 
      * @param categoryType the categoryType value to set.
      * @return the DiagnosticSettingsCategory object itself.
      */
@@ -50,7 +54,7 @@ public final class DiagnosticSettingsCategory {
 
     /**
      * Get the categoryGroups property: the collection of what category groups are supported.
-     *
+     * 
      * @return the categoryGroups value.
      */
     public List<String> categoryGroups() {
@@ -59,7 +63,7 @@ public final class DiagnosticSettingsCategory {
 
     /**
      * Set the categoryGroups property: the collection of what category groups are supported.
-     *
+     * 
      * @param categoryGroups the categoryGroups value to set.
      * @return the DiagnosticSettingsCategory object itself.
      */
@@ -70,7 +74,7 @@ public final class DiagnosticSettingsCategory {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
