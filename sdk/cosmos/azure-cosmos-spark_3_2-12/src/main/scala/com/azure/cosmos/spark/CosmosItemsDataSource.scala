@@ -83,7 +83,7 @@ object CosmosItemsDataSource {
   }
 
   def readMany(df: DataFrame, userConfig: java.util.Map[String, String]): DataFrame = {
-    readMany(df,  userConfig,null)
+    readMany(df, userConfig, null)
   }
 
   def readMany(df: DataFrame, userConfig: java.util.Map[String, String], userProvidedSchema: StructType): DataFrame = {
