@@ -152,6 +152,7 @@
 
 # PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang
+/sdk/openai/azure-ai-openai-assistants/              @brandom-msft @jpalvarezl @mssfang
 
 # PRLabel: %Image Analysis
 # ServiceLabel: %Image Analysis %Service Attention
