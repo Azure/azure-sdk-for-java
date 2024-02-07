@@ -153,6 +153,8 @@ With Gradle, you can import the `spring-cloud-azure-dependencies` BOM in [two wa
 You can use the Gradle’s native BOM support by adding dependencies:
 
 ```kotlin
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
   id("java")
   id("org.springframework.boot") version "3.2.O"
