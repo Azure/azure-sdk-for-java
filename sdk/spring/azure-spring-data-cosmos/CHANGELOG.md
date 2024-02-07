@@ -3,7 +3,7 @@
 ### 5.9.1 (202-02-08)
 
 #### Other Changes
-* Build target Jdk 17
+* Fix 5.9.0 released using Java 21 instead of Java 17. - See [PR 38679](https://github.com/Azure/azure-sdk-for-java/pull/38679).
 
 ### 5.9.0 (2024-02-04)
 
