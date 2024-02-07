@@ -49,7 +49,6 @@
       --add-opens com.azure.resourcemanager.appplatform/com.azure.resourcemanager.appplatform=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>
