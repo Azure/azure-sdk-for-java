@@ -293,36 +293,26 @@ public abstract class TestBase implements BeforeEachCallback {
 
         List<HttpClient> httpClientsToTest = new ArrayList<>();
         ServiceLoader<HttpClientProvider> httpClientLoader = ServiceLoader.load(HttpClientProvider.class);
-        Iterator<HttpClientProvider> iterator = httpClientLoader.iterator();
-        while (true) {
-
-            if (!iterator.hasNext()) {
-                break;
-            }
-
+        Iterator<HttpClientProvider> httpClientProviderIterator = httpClientLoader.iterator();
+        while (httpClientProviderIterator.hasNext()) {
             String simpleName;
             HttpClientProvider httpClientProvider;
             try {
-                httpClientProvider = iterator.next();
+                httpClientProvider = httpClientProviderIterator.next();
                 simpleName = httpClientProvider.getClass().getSimpleName();
-            } catch (UnsupportedClassVersionError exception) {
+                if (includeHttpClientOrHttpClientProvider(simpleName.toLowerCase(Locale.ROOT))) {
+                    httpClientsToTest.add(httpClientProvider.createInstance());
+                }
+            } catch (UnsupportedOperationException exception) {
                 // The JDK HttpClient in combination with the Azure SDK for Java is only supported with JDK 12 and higher.
-                int javaVersion = Integer.parseInt(System.getProperty("java.version").split("\\.")[0]);
-                if (exception.getMessage().contains(
-                    "JdkHttpClientProvider has been compiled by a more recent version of the Java Runtime")
-                        && !(javaVersion > 11)) {
+                if ("JdkAsyncHttpClient is not supported in Java version 11 and below.".equals(exception.getMessage())) {
+                    // Skip testing the JDK HttpClient if the current Java version is 11 or lower.
                     continue;
                 } else {
                     throw LOGGER.logExceptionAsError(new RuntimeException(exception));
                 }
             }
-
-            if (includeHttpClientOrHttpClientProvider(simpleName.toLowerCase(Locale.ROOT))) {
-                httpClientsToTest.add(httpClientProvider.createInstance());
-            }
-
         }
-
         return httpClientsToTest.stream();
     }
 
