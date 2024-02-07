@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import java.util.*;
 
 public class RegionNameToRegionIdMap {
-    private static final Map<String, Integer> regionNameToRegionIdMappings = new HashMap<>() {
+    private static final Map<String, Integer> regionNameToRegionIdMappings = new HashMap<String, Integer>() {
         {
             put("East US", 1);
             put("East US 2", 2);
@@ -86,85 +86,7 @@ public class RegionNameToRegionIdMap {
         }
     };
 
-    private static final Map<String, Integer> normalizedRegionNameToRegionIdMappings = new HashMap<>() {
-        {
-            put("southafricanorth", 48);
-            put("westus2", 8);
-            put("australiacentral", 28);
-            put("apacsoutheast2", 55);
-            put("eastasia", 25);
-            put("uknorth", 57);
-            put("francecentral", 14);
-            put("southafricawest", 47);
-            put("usgovtexas", 42);
-            put("koreacentral", 37);
-            put("centralus", 3);
-            put("japaneast", 35);
-            put("westeurope", 13);
-            put("norwayeast", 60);
-            put("eastus", 1);
-            put("australiasoutheast", 27);
-            put("centralindia", 32);
-            put("usdodeast", 43);
-            put("germanycentral", 18);
-            put("usdodwestcentral", 64);
-            put("switzerlandwest", 23);
-            put("chinaeast2", 66);
-            put("westus", 7);
-            put("northcentralus", 4);
-            put("usdodcentral", 44);
-            put("uaenorth", 50);
-            put("centraluseuap", 51);
-            put("germanywestcentral", 21);
-            put("ussecwest", 46);
-            put("usnateast", 68);
-            put("uksouth", 17);
-            put("usgovvirginia", 39);
-            put("usgoviowa", 40);
-            put("chinanorth2", 67);
-            put("germanynorth", 20);
-            put("easteurope", 54);
-            put("uksouth2", 56);
-            put("ukwest", 16);
-            put("japanwest", 36);
-            put("usdodsouthcentral", 65);
-            put("australiaeast", 26);
-            put("westindia", 33);
-            put("australiacentral2", 29);
-            put("southindia", 34);
-            put("eastus2euap", 52);
-            put("canadaeast", 9);
-            put("southeastasia", 24);
-            put("koreasouth", 38);
-            put("southcentralus", 5);
-            put("eastusstg", 58);
-            put("chinanorth10", 70);
-            put("swedensouth", 72);
-            put("westcentralus", 6);
-            put("eastus2", 2);
-            put("chinaeast", 30);
-            put("usgovarizona", 41);
-            put("norwaywest", 61);
-            put("uaecentral", 49);
-            put("swedencentral", 71);
-            put("usdodsouthwest", 63);
-            put("usnatwest", 69);
-            put("chinanorth", 31);
-            put("northeurope2", 53);
-            put("usgovwyoming", 62);
-            put("brazilsouth", 11);
-            put("koreasouth2", 73);
-            put("canadacentral", 10);
-            put("southcentralusstg", 59);
-            put("usseceast", 45);
-            put("francesouth", 15);
-            put("germanynortheast", 19);
-            put("switzerlandnorth", 22);
-            put("northeurope", 12);
-        }
-    };
-
-    private static final Map<Integer, String> regionIdToNormalizedRegionNameMappings = new HashMap<>() {
+    private static final Map<Integer, String> regionIdToNormalizedRegionNameMappings = new HashMap<Integer, String>() {
         {
             put(49, "uaecentral");
             put(14, "francecentral");
@@ -242,17 +164,7 @@ public class RegionNameToRegionIdMap {
         }
     };
 
-    public static int getRegionId(String regionName) {
-        return normalizedRegionNameToRegionIdMappings.getOrDefault(regionName, -1);
-    }
-
     public static String getRegionName(int regionId) {
         return regionIdToNormalizedRegionNameMappings.getOrDefault(regionId, StringUtils.EMPTY);
-    }
-
-    public static void main(String[] args) {
-        for (Map.Entry<String, Integer> normalizedRegionNameToRegionIdMapping : normalizedRegionNameToRegionIdMappings.entrySet()) {
-            System.out.printf("put(%d, \"%s\");%n", normalizedRegionNameToRegionIdMapping.getValue(), normalizedRegionNameToRegionIdMapping.getKey());
-        }
     }
 }
