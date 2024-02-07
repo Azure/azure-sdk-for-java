@@ -1024,7 +1024,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
           }
 
           log.logInfo(s"invoking bulkInputEmitter.onComplete(), Context: ${operationContext.toString} $getThreadInfo")
-          semaphore.release(activeTasks.get())
+          semaphore.release(Math.max(0, activeTasks.get()))
           val completeBulkWriteEmitResult = bulkInputEmitter.tryEmitComplete()
           if (completeBulkWriteEmitResult eq Sinks.EmitResult.OK) {
             log.logDebug(s"bulkInputEmitter sink completed, Context: ${operationContext.toString} $getThreadInfo")
