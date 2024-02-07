@@ -132,24 +132,41 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
                     readerToUse.skipChildren();
                 }
             }
-
-            if (discriminatorValue != null) {
-                readerToUse = readerToUse.reset();
-            }
             // Use the discriminator value to determine which subtype should be deserialized.
             if ("AzureSQLConnectionString".equals(discriminatorValue)) {
-                return AzureSQLConnectionStringCredential.fromJson(readerToUse);
+                return AzureSQLConnectionStringCredential.fromJson(readerToUse.reset());
             } else if ("DataLakeGen2SharedKey".equals(discriminatorValue)) {
-                return DataLakeGen2SharedKeyCredential.fromJson(readerToUse);
+                return DataLakeGen2SharedKeyCredential.fromJson(readerToUse.reset());
             } else if ("ServicePrincipal".equals(discriminatorValue)) {
-                return ServicePrincipalCredential.fromJson(readerToUse);
+                return ServicePrincipalCredential.fromJson(readerToUse.reset());
             } else if ("ServicePrincipalInKV".equals(discriminatorValue)) {
-                return ServicePrincipalInKVCredential.fromJson(readerToUse);
+                return ServicePrincipalInKVCredential.fromJson(readerToUse.reset());
             } else {
-                throw new IllegalStateException(
-                    "Discriminator field 'dataSourceCredentialType' didn't match one of the expected values 'AzureSQLConnectionString', 'DataLakeGen2SharedKey', 'ServicePrincipal', or 'ServicePrincipalInKV'. It was: '"
-                        + discriminatorValue + "'.");
+                return fromJsonKnownDiscriminator(readerToUse.reset());
             }
+        });
+    }
+
+    static DataSourceCredential fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataSourceCredential deserializedDataSourceCredential = new DataSourceCredential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataSourceCredentialName".equals(fieldName)) {
+                    deserializedDataSourceCredential.dataSourceCredentialName = reader.getString();
+                } else if ("dataSourceCredentialId".equals(fieldName)) {
+                    deserializedDataSourceCredential.dataSourceCredentialId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("dataSourceCredentialDescription".equals(fieldName)) {
+                    deserializedDataSourceCredential.dataSourceCredentialDescription = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataSourceCredential;
         });
     }
 }
