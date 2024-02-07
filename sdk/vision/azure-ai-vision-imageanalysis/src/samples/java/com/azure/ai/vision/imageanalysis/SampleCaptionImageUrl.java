@@ -29,7 +29,6 @@ import java.net.MalformedURLException;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
-import java.net.URL;
 import java.util.Arrays;
 // END: imports-caption-url-snippet
 
@@ -54,8 +53,8 @@ public class SampleCaptionImageUrl {
 
         // Generate a caption for an input image buffer. This is a synchronous (blocking) call.
         // BEGIN: caption-url-snippet
-        ImageAnalysisResult result = client.analyze(
-            new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
+        ImageAnalysisResult result = client.analyzeFromUrl(
+            "https://aka.ms/azsdk/image-analysis/sample.jpg", // imageUrl: the URL of the image to analyze
             Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
             new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 

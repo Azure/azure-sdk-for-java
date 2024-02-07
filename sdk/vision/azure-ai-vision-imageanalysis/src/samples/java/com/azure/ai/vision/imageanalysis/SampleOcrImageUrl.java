@@ -34,7 +34,6 @@ import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
 import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
-import java.net.URL;
 import java.util.Arrays;
 // END: imports-ocr-url-snippet
 
@@ -59,8 +58,8 @@ public class SampleOcrImageUrl {
 
         // Extract text from an input image URL. This is a synchronous (blocking) call.
         // BEGIN: ocr-url-snippet
-        ImageAnalysisResult result = client.analyze(
-            new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
+        ImageAnalysisResult result = client.analyzeFromUrl(
+            "https://aka.ms/azsdk/image-analysis/sample.jpg", // imageUrl: the URL of the image to analyze
             Arrays.asList(VisualFeatures.READ), // visualFeatures
             null); // options: There are no options for READ visual feature
 
