@@ -1054,7 +1054,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
 
           throwIfCapturedExceptionExists()
 
-          assume(activeTasks.get() == 0)
+          assume(activeTasks.get() <= 0)
           assume(activeBulkWriteOperations.isEmpty)
           assume(activeReadManyOperations.isEmpty)
           assume(semaphore.availablePermits() >= maxPendingOperations)
