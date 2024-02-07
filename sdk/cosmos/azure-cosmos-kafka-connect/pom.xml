@@ -95,6 +95,13 @@ Licensed under the MIT License.
     </dependency>
 
     <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>connect-runtime</artifactId>
+      <version>3.6.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>7.5.1</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->

@@ -34,11 +34,11 @@ module com.azure.cosmos {
     exports com.azure.cosmos.util;
 
     // export packages for multiple different modules
-    exports com.azure.cosmos.implementation to com.azure.cosmos.encryption, com.azure.cosmos.test;
+    exports com.azure.cosmos.implementation to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
     exports com.azure.cosmos.implementation.caches to com.azure.cosmos.encryption, com.azure.cosmos.test;
-    exports com.azure.cosmos.implementation.feedranges to com.azure.cosmos.encryption, com.azure.cosmos.test;
-    exports com.azure.cosmos.implementation.apachecommons.lang to com.azure.cosmos.encryption, com.azure.cosmos.test;
-    exports com.azure.cosmos.implementation.guava25.base to com.azure.cosmos.encryption, com.azure.cosmos.test;
+    exports com.azure.cosmos.implementation.feedranges to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
+    exports com.azure.cosmos.implementation.apachecommons.lang to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
+    exports com.azure.cosmos.implementation.guava25.base to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
     exports com.azure.cosmos.implementation.guava25.collect to com.azure.cosmos.encryption, com.azure.cosmos.test;
     exports com.azure.cosmos.implementation.guava27 to com.azure.cosmos.encryption, com.azure.cosmos.test;
     exports com.azure.cosmos.implementation.directconnectivity to com.azure.cosmos.encryption, com.azure.cosmos.test;
@@ -47,8 +47,8 @@ module com.azure.cosmos {
     // exporting implementation packages specifically for cosmos encryption
     exports com.azure.cosmos.implementation.batch to com.azure.cosmos.encryption;
     exports com.azure.cosmos.implementation.patch to com.azure.cosmos.encryption;
-    exports com.azure.cosmos.implementation.query to com.azure.cosmos.encryption;
-    exports com.azure.cosmos.implementation.apachecommons.lang.tuple to com.azure.cosmos.encryption;
+    exports com.azure.cosmos.implementation.query to com.azure.cosmos.encryption, com.azure.cosmos.kafka.connect;
+    exports com.azure.cosmos.implementation.apachecommons.lang.tuple to com.azure.cosmos.encryption, com.azure.cosmos.kafka.connect;
 
     // exporting some packages specifically for Jackson
     opens com.azure.cosmos.implementation.caches to com.fasterxml.jackson.databind;
@@ -74,9 +74,10 @@ module com.azure.cosmos {
     // exporting packages specifically for cosmos test
     exports com.azure.cosmos.implementation.faultinjection to com.azure.cosmos.test;
     exports com.azure.cosmos.implementation.directconnectivity.rntbd to com.azure.cosmos.test;
-    exports com.azure.cosmos.implementation.routing to com.azure.cosmos.test;
+    exports com.azure.cosmos.implementation.routing to com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
     opens com.azure.cosmos to com.azure.cosmos.test, com.azure.spring.data.cosmos, com.fasterxml.jackson.databind, com.fasterxml.jackson.module.afterburner, java.logging;
     opens com.azure.cosmos.models to com.azure.cosmos.test, com.azure.spring.data.cosmos, com.fasterxml.jackson.databind, com.fasterxml.jackson.module.afterburner, java.logging;
+    exports com.azure.cosmos.implementation.changefeed.common;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
     uses com.azure.core.util.tracing.Tracer;
