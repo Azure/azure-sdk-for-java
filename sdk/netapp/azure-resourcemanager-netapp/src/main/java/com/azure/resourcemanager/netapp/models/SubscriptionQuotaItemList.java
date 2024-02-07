@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Subscription Quota Items. */
+/**
+ * List of Subscription Quota Items.
+ */
 @Fluent
 public final class SubscriptionQuotaItemList {
     /*
@@ -18,13 +20,15 @@ public final class SubscriptionQuotaItemList {
     @JsonProperty(value = "value")
     private List<SubscriptionQuotaItemInner> value;
 
-    /** Creates an instance of SubscriptionQuotaItemList class. */
+    /**
+     * Creates an instance of SubscriptionQuotaItemList class.
+     */
     public SubscriptionQuotaItemList() {
     }
 
     /**
      * Get the value property: A list of SubscriptionQuotaItems.
-     *
+     * 
      * @return the value value.
      */
     public List<SubscriptionQuotaItemInner> value() {
@@ -33,7 +37,7 @@ public final class SubscriptionQuotaItemList {
 
     /**
      * Set the value property: A list of SubscriptionQuotaItems.
-     *
+     * 
      * @param value the value value to set.
      * @return the SubscriptionQuotaItemList object itself.
      */
@@ -44,7 +48,7 @@ public final class SubscriptionQuotaItemList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * The type Cosmos permission response.
@@ -13,11 +14,11 @@ public class CosmosPermissionResponse extends CosmosResponse<CosmosPermissionPro
 
     CosmosPermissionResponse(ResourceResponse<Permission> response) {
         super(response);
-        String bodyAsString = response.getBodyAsString();
-        if (StringUtils.isEmpty(bodyAsString)) {
+        ObjectNode bodyAsJson = (ObjectNode)response.getBody();
+        if (bodyAsJson == null) {
             super.setProperties(null);
         } else {
-            CosmosPermissionProperties props = new CosmosPermissionProperties(bodyAsString);
+            CosmosPermissionProperties props = new CosmosPermissionProperties(bodyAsJson);
             super.setProperties(props);
         }
     }

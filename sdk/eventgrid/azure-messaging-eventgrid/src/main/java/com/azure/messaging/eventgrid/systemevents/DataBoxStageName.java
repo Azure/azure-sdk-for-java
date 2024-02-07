@@ -5,42 +5,49 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Schema of DataBox Stage Name enumeration. */
+/**
+ * Schema of DataBox Stage Name enumeration.
+ */
 public final class DataBoxStageName extends ExpandableStringEnum<DataBoxStageName> {
-    /** Copy has started. */
+    /**
+     * Copy has started.
+     */
     public static final DataBoxStageName COPY_STARTED = fromString("CopyStarted");
 
-    /** Copy has completed. */
+    /**
+     * Copy has completed.
+     */
     public static final DataBoxStageName COPY_COMPLETED = fromString("CopyCompleted");
 
-    /** Order has been completed. */
+    /**
+     * Order has been completed.
+     */
     public static final DataBoxStageName ORDER_COMPLETED = fromString("OrderCompleted");
 
     /**
      * Creates a new instance of DataBoxStageName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DataBoxStageName() {}
+    public DataBoxStageName() {
+    }
 
     /**
      * Creates or finds a DataBoxStageName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataBoxStageName.
      */
-    @JsonCreator
     public static DataBoxStageName fromString(String name) {
         return fromString(name, DataBoxStageName.class);
     }
 
     /**
      * Gets known DataBoxStageName values.
-     *
+     * 
      * @return known DataBoxStageName values.
      */
     public static Collection<DataBoxStageName> values() {

@@ -6,19 +6,15 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.FunctionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A function object, containing all information associated with the named function. All functions are contained under a
- * streaming job.
+ * A function object, containing all information associated with the named function. All functions are contained under
+ * a streaming job.
  */
 @Fluent
 public final class FunctionInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionInner.class);
-
     /*
      * The properties that are associated with a function.
      */
@@ -38,8 +34,14 @@ public final class FunctionInner extends SubResource {
     private String type;
 
     /**
+     * Creates an instance of FunctionInner class.
+     */
+    public FunctionInner() {
+    }
+
+    /**
      * Get the properties property: The properties that are associated with a function.
-     *
+     * 
      * @return the properties value.
      */
     public FunctionProperties properties() {
@@ -48,7 +50,7 @@ public final class FunctionInner extends SubResource {
 
     /**
      * Set the properties property: The properties that are associated with a function.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the FunctionInner object itself.
      */
@@ -59,7 +61,7 @@ public final class FunctionInner extends SubResource {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +70,7 @@ public final class FunctionInner extends SubResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the FunctionInner object itself.
      */
@@ -79,14 +81,16 @@ public final class FunctionInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FunctionInner withId(String id) {
         super.withId(id);
@@ -95,7 +99,7 @@ public final class FunctionInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

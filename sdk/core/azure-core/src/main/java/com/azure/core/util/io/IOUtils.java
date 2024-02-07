@@ -6,9 +6,12 @@ package com.azure.core.util.io;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.AsynchronousFileChannelAdapter;
 import com.azure.core.implementation.ByteCountingAsynchronousByteChannel;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
@@ -23,13 +26,15 @@ import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
+import static com.azure.core.http.HttpHeaderName.TRACEPARENT;
+import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
+
 /**
  * Utilities related to IO operations that involve channels, streams, byte transfers.
  */
 public final class IOUtils {
 
     private static final ClientLogger LOGGER = new ClientLogger(IOUtils.class);
-
     private static final int DEFAULT_BUFFER_SIZE = 8192;
     private static final int SIXTY_FOUR_KB = 64 * 1024;
     private static final int THIRTY_TWO_KB = 32 * 1024;
@@ -92,9 +97,7 @@ public final class IOUtils {
             buffer.clear();
             read = source.read(buffer);
             buffer.flip();
-            while (buffer.hasRemaining()) {
-                destination.write(buffer);
-            }
+            ImplUtils.fullyWriteBuffer(buffer, destination);
         } while (read >= 0);
     }
 
@@ -210,16 +213,19 @@ public final class IOUtils {
                 int updatedRetryCount = retryCount + 1;
 
                 if (updatedRetryCount > maxRetries) {
-                    LOGGER.atError()
+                    createBasicLoggingContext(LogLevel.ERROR, response)
                         .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
-                        .log(() -> "Retry attempts have been exhausted.", exception);
+                        .log("Retry attempts have been exhausted.", exception);
                     return Mono.error(exception);
                 }
 
-                LOGGER.atInfo().addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
-                    .log(() -> String.format("Using retry attempt %d of %d.", updatedRetryCount, maxRetries),
-                        exception);
-                return onErrorResume.apply(exception, targetChannel.getBytesWritten())
+                long bytesWritten = targetChannel.getBytesWritten();
+                createBasicLoggingContext(LogLevel.INFORMATIONAL, response)
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
+                    .addKeyValue("maxRetries", maxRetries)
+                    .addKeyValue("bytesWritten", bytesWritten)
+                    .log("Attempt failed. Scheduling retry.", exception);
+                return onErrorResume.apply(exception, bytesWritten)
                     .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(targetChannel,
                         newResponse, onErrorResume, maxRetries, updatedRetryCount));
             }), StreamResponse::close);
@@ -255,6 +261,23 @@ public final class IOUtils {
         } else {
             return DEFAULT_BUFFER_SIZE;
         }
+    }
+
+    private static LoggingEventBuilder createBasicLoggingContext(LogLevel level, StreamResponse response) {
+        LoggingEventBuilder log = LOGGER.atLevel(level);
+        if (LOGGER.canLogAtLevel(level)) {
+            String clientRequestId = response.getRequest().getHeaders().getValue(X_MS_CLIENT_REQUEST_ID);
+            if (clientRequestId != null) {
+                log.addKeyValue(X_MS_CLIENT_REQUEST_ID.getCaseInsensitiveName(), clientRequestId);
+            }
+
+            String traceparent = response.getRequest().getHeaders().getValue(TRACEPARENT);
+            if (traceparent != null) {
+                log.addKeyValue(TRACEPARENT.getCaseInsensitiveName(), traceparent);
+            }
+        }
+
+        return log;
     }
 
     private IOUtils() {

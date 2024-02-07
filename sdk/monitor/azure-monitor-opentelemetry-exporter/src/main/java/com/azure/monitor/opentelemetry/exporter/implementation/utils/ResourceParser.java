@@ -6,18 +6,33 @@ package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
-import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.resources.Resource;
 
+import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
 
 public final class ResourceParser {
 
     private static final String DEFAULT_SERVICE_NAME = "unknown_service:java";
 
+    // these are only used in App Services environment
+    private final String websiteSiteName;
+    private final String websiteSiteInstance;
+
+    public ResourceParser() {
+        this(System.getenv());
+    }
+
     // visible for testing
-    public static void updateRoleNameAndInstance(
-        AbstractTelemetryBuilder builder, Resource resource, ConfigProperties configProperties) {
+    ResourceParser(Map<String, String> envVars) {
+        websiteSiteName = getWebsiteSiteNameEnvVar(envVars::get);
+        websiteSiteInstance = envVars.get("WEBSITE_INSTANCE_ID");
+    }
+
+    // visible for testing
+    public void updateRoleNameAndInstance(
+        AbstractTelemetryBuilder builder, Resource resource) {
 
         // update AKS role name and role instance
         if (AksResourceAttributes.isAks(resource)) {
@@ -26,45 +41,56 @@ public final class ResourceParser {
             return;
         }
 
-        Map<String, String> existingTags = builder.build().getTags();
-        if (existingTags == null
-            || !existingTags.containsKey(ContextTagKeys.AI_CLOUD_ROLE.toString())) {
-            String serviceName = resource.getAttribute(ResourceAttributes.SERVICE_NAME);
-            if (serviceName == null || DEFAULT_SERVICE_NAME.equals(serviceName)) {
-                String websiteSiteName = Strings.trimAndEmptyToNull(configProperties.getString("WEBSITE_SITE_NAME"));
-                if (websiteSiteName != null) {
-                    serviceName = websiteSiteName;
-                }
-            }
-            String serviceNamespace = resource.getAttribute(ResourceAttributes.SERVICE_NAMESPACE);
-            String roleName = null;
-            if (serviceName != null && serviceNamespace != null) {
-                roleName = "[" + serviceNamespace + "]/" + serviceName;
-            } else if (serviceName != null) {
-                roleName = serviceName;
-            } else if (serviceNamespace != null) {
-                roleName = "[" + serviceNamespace + "]";
-            }
-            if (roleName != null) {
-                builder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), roleName);
-            }
+        Map<String, String> tags = builder.build().getTags();
+        if (tags == null || !tags.containsKey(ContextTagKeys.AI_CLOUD_ROLE.toString())) {
+            builder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), getRoleName(resource));
         }
 
-        if (existingTags == null
-            || !existingTags.containsKey(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString())) {
-            String roleInstance = resource.getAttribute(ResourceAttributes.SERVICE_INSTANCE_ID);
-            if (roleInstance == null) {
-                roleInstance = Strings.trimAndEmptyToNull(configProperties.getString("WEBSITE_INSTANCE_ID"));
-            }
-            if (roleInstance == null) {
-                roleInstance = HostName.get(); // default hostname
-            }
-            if (roleInstance != null) {
-                builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), roleInstance);
-            }
+        if (tags == null || !tags.containsKey(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString())) {
+            builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), getRoleInstance(resource));
         }
     }
 
-    private ResourceParser() {
+    private String getRoleName(Resource resource) {
+        String serviceName = resource.getAttribute(ResourceAttributes.SERVICE_NAME);
+        if (serviceName == null || DEFAULT_SERVICE_NAME.equals(serviceName)) {
+            if (websiteSiteName != null) {
+                serviceName = websiteSiteName;
+            }
+        }
+        String serviceNamespace = resource.getAttribute(ResourceAttributes.SERVICE_NAMESPACE);
+        if (serviceName != null && serviceNamespace != null) {
+            return "[" + serviceNamespace + "]/" + serviceName;
+        } else if (serviceName != null) {
+            return serviceName;
+        } else if (serviceNamespace != null) {
+            return "[" + serviceNamespace + "]";
+        }
+        return DEFAULT_SERVICE_NAME; // service.name is required so shouldn't get here anyways
+    }
+
+    private String getRoleInstance(Resource resource) {
+        String roleInstance = resource.getAttribute(ResourceAttributes.SERVICE_INSTANCE_ID);
+        if (roleInstance != null) {
+            return roleInstance;
+        }
+        roleInstance = websiteSiteInstance;
+        if (roleInstance != null) {
+            return roleInstance;
+        }
+        return HostName.get(); // default hostname
+    }
+
+    public static String getWebsiteSiteNameEnvVar(Function<String, String> envVars) {
+        String websiteSiteName = envVars.apply("WEBSITE_SITE_NAME");
+        if (websiteSiteName != null && inAzureFunctionsWorker(envVars)) {
+            // special case for Azure Functions
+            return websiteSiteName.toLowerCase(Locale.ROOT);
+        }
+        return websiteSiteName;
+    }
+
+    public static boolean inAzureFunctionsWorker(Function<String, String> envVars) {
+        return "java".equals(envVars.apply("FUNCTIONS_WORKER_RUNTIME"));
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AzureDisk CSI Driver settings for the storage profile. */
+/**
+ * AzureDisk CSI Driver settings for the storage profile.
+ */
 @Fluent
 public final class ManagedClusterStorageProfileDiskCsiDriver {
     /*
@@ -16,13 +18,15 @@ public final class ManagedClusterStorageProfileDiskCsiDriver {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of ManagedClusterStorageProfileDiskCsiDriver class. */
+    /**
+     * Creates an instance of ManagedClusterStorageProfileDiskCsiDriver class.
+     */
     public ManagedClusterStorageProfileDiskCsiDriver() {
     }
 
     /**
      * Get the enabled property: Whether to enable AzureDisk CSI Driver. The default value is true.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -31,7 +35,7 @@ public final class ManagedClusterStorageProfileDiskCsiDriver {
 
     /**
      * Set the enabled property: Whether to enable AzureDisk CSI Driver. The default value is true.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterStorageProfileDiskCsiDriver object itself.
      */
@@ -42,7 +46,7 @@ public final class ManagedClusterStorageProfileDiskCsiDriver {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Represents a server to be updated. */
+/**
+ * Represents a server to be updated.
+ */
 @Fluent
 public final class ServerForUpdate {
     /*
@@ -38,13 +40,15 @@ public final class ServerForUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ServerForUpdate class. */
+    /**
+     * Creates an instance of ServerForUpdate class.
+     */
     public ServerForUpdate() {
     }
 
     /**
      * Get the sku property: The SKU (pricing tier) of the server.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -53,7 +57,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the sku property: The SKU (pricing tier) of the server.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -64,7 +68,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the identity property: Describes the identity of the application.
-     *
+     * 
      * @return the identity value.
      */
     public UserAssignedIdentity identity() {
@@ -73,7 +77,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the identity property: Describes the identity of the application.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -84,7 +88,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the innerProperties property: Properties of the server.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerPropertiesForUpdate innerProperties() {
@@ -93,7 +97,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the tags property: Application-specific metadata in the form of key-value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -102,7 +106,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the tags property: Application-specific metadata in the form of key-value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -113,7 +117,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the administratorLoginPassword property: The password of the administrator login.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -122,7 +126,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the administratorLoginPassword property: The password of the administrator login.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -136,7 +140,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the version property: PostgreSQL Server version. Version 16 is currently not supported for MVU.
-     *
+     * 
      * @return the version value.
      */
     public ServerVersion version() {
@@ -145,7 +149,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the version property: PostgreSQL Server version. Version 16 is currently not supported for MVU.
-     *
+     * 
      * @param version the version value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -159,7 +163,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the storage property: Storage properties of a server.
-     *
+     * 
      * @return the storage value.
      */
     public Storage storage() {
@@ -168,7 +172,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the storage property: Storage properties of a server.
-     *
+     * 
      * @param storage the storage value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -182,7 +186,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the backup property: Backup properties of a server.
-     *
+     * 
      * @return the backup value.
      */
     public Backup backup() {
@@ -191,7 +195,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the backup property: Backup properties of a server.
-     *
+     * 
      * @param backup the backup value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -205,7 +209,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the highAvailability property: High availability properties of a server.
-     *
+     * 
      * @return the highAvailability value.
      */
     public HighAvailability highAvailability() {
@@ -214,7 +218,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the highAvailability property: High availability properties of a server.
-     *
+     * 
      * @param highAvailability the highAvailability value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -228,7 +232,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the maintenanceWindow property: Maintenance window properties of a server.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public MaintenanceWindow maintenanceWindow() {
@@ -237,7 +241,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the maintenanceWindow property: Maintenance window properties of a server.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -251,7 +255,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the authConfig property: AuthConfig properties of a server.
-     *
+     * 
      * @return the authConfig value.
      */
     public AuthConfig authConfig() {
@@ -260,7 +264,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the authConfig property: AuthConfig properties of a server.
-     *
+     * 
      * @param authConfig the authConfig value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -274,7 +278,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the dataEncryption property: Data encryption properties of a server.
-     *
+     * 
      * @return the dataEncryption value.
      */
     public DataEncryption dataEncryption() {
@@ -283,7 +287,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the dataEncryption property: Data encryption properties of a server.
-     *
+     * 
      * @param dataEncryption the dataEncryption value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -297,7 +301,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the createMode property: The mode to update a new PostgreSQL server.
-     *
+     * 
      * @return the createMode value.
      */
     public CreateModeForUpdate createMode() {
@@ -306,7 +310,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the createMode property: The mode to update a new PostgreSQL server.
-     *
+     * 
      * @param createMode the createMode value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -320,7 +324,7 @@ public final class ServerForUpdate {
 
     /**
      * Get the replicationRole property: Replication role of the server.
-     *
+     * 
      * @return the replicationRole value.
      */
     public ReplicationRole replicationRole() {
@@ -329,7 +333,7 @@ public final class ServerForUpdate {
 
     /**
      * Set the replicationRole property: Replication role of the server.
-     *
+     * 
      * @param replicationRole the replicationRole value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -342,9 +346,9 @@ public final class ServerForUpdate {
     }
 
     /**
-     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed only
-     * in case you want to Promote a server.
-     *
+     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed
+     * only in case you want to Promote a server.
+     * 
      * @return the replica value.
      */
     public Replica replica() {
@@ -352,9 +356,9 @@ public final class ServerForUpdate {
     }
 
     /**
-     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed only
-     * in case you want to Promote a server.
-     *
+     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed
+     * only in case you want to Promote a server.
+     * 
      * @param replica the replica value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -369,7 +373,7 @@ public final class ServerForUpdate {
     /**
      * Get the network property: Network properties of a server. These are required to be passed only in case if server
      * is a private access server.
-     *
+     * 
      * @return the network value.
      */
     public Network network() {
@@ -379,7 +383,7 @@ public final class ServerForUpdate {
     /**
      * Set the network property: Network properties of a server. These are required to be passed only in case if server
      * is a private access server.
-     *
+     * 
      * @param network the network value to set.
      * @return the ServerForUpdate object itself.
      */
@@ -393,7 +397,7 @@ public final class ServerForUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

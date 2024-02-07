@@ -108,7 +108,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
      *
      * @param error The error to emit.
      */
-    void onError(Throwable error) {
+    public void onError(Throwable error) {
         if (isTerminal.getAndSet(true)) {
             return;
         }

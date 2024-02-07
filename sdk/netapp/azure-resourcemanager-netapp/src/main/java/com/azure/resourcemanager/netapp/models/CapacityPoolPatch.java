@@ -10,7 +10,9 @@ import com.azure.resourcemanager.netapp.fluent.models.PoolPatchProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Capacity pool patch resource. */
+/**
+ * Capacity pool patch resource.
+ */
 @Fluent
 public final class CapacityPoolPatch extends Resource {
     /*
@@ -19,27 +21,33 @@ public final class CapacityPoolPatch extends Resource {
     @JsonProperty(value = "properties")
     private PoolPatchProperties innerProperties;
 
-    /** Creates an instance of CapacityPoolPatch class. */
+    /**
+     * Creates an instance of CapacityPoolPatch class.
+     */
     public CapacityPoolPatch() {
     }
 
     /**
      * Get the innerProperties property: Capacity pool properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PoolPatchProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CapacityPoolPatch withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CapacityPoolPatch withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,10 +56,10 @@ public final class CapacityPoolPatch extends Resource {
 
     /**
      * Get the size property: size
-     *
-     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 
+     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
      * 4398046511104).
-     *
+     * 
      * @return the size value.
      */
     public Long size() {
@@ -60,10 +68,10 @@ public final class CapacityPoolPatch extends Resource {
 
     /**
      * Set the size property: size
-     *
-     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 
+     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
      * 4398046511104).
-     *
+     * 
      * @param size the size value to set.
      * @return the CapacityPoolPatch object itself.
      */
@@ -77,7 +85,7 @@ public final class CapacityPoolPatch extends Resource {
 
     /**
      * Get the qosType property: The qos type of the pool.
-     *
+     * 
      * @return the qosType value.
      */
     public QosType qosType() {
@@ -86,7 +94,7 @@ public final class CapacityPoolPatch extends Resource {
 
     /**
      * Set the qosType property: The qos type of the pool.
-     *
+     * 
      * @param qosType the qosType value to set.
      * @return the CapacityPoolPatch object itself.
      */
@@ -100,7 +108,7 @@ public final class CapacityPoolPatch extends Resource {
 
     /**
      * Get the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
-     *
+     * 
      * @return the coolAccess value.
      */
     public Boolean coolAccess() {
@@ -109,7 +117,7 @@ public final class CapacityPoolPatch extends Resource {
 
     /**
      * Set the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
-     *
+     * 
      * @param coolAccess the coolAccess value to set.
      * @return the CapacityPoolPatch object itself.
      */
@@ -123,7 +131,7 @@ public final class CapacityPoolPatch extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.deviceupdate.fluent.models.AccountInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Accounts. */
+/**
+ * List of Accounts.
+ */
 @Fluent
 public final class AccountList {
     /*
@@ -25,8 +27,14 @@ public final class AccountList {
     private List<AccountInner> value;
 
     /**
+     * Creates an instance of AccountList class.
+     */
+    public AccountList() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of Accounts list.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +43,7 @@ public final class AccountList {
 
     /**
      * Set the nextLink property: The link used to get the next page of Accounts list.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AccountList object itself.
      */
@@ -46,7 +54,7 @@ public final class AccountList {
 
     /**
      * Get the value property: List of Accounts.
-     *
+     * 
      * @return the value value.
      */
     public List<AccountInner> value() {
@@ -55,7 +63,7 @@ public final class AccountList {
 
     /**
      * Set the value property: List of Accounts.
-     *
+     * 
      * @param value the value value to set.
      * @return the AccountList object itself.
      */
@@ -66,7 +74,7 @@ public final class AccountList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

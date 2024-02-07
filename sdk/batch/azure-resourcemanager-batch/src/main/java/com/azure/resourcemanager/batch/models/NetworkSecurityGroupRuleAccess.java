@@ -7,15 +7,23 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The action that should be taken for a specified IP address, subnet range or tag. */
+/**
+ * The action that should be taken for a specified IP address, subnet range or tag.
+ */
 public enum NetworkSecurityGroupRuleAccess {
-    /** Enum value Allow. */
+    /**
+     * Enum value Allow.
+     */
     ALLOW("Allow"),
 
-    /** Enum value Deny. */
+    /**
+     * Enum value Deny.
+     */
     DENY("Deny");
 
-    /** The actual serialized value for a NetworkSecurityGroupRuleAccess instance. */
+    /**
+     * The actual serialized value for a NetworkSecurityGroupRuleAccess instance.
+     */
     private final String value;
 
     NetworkSecurityGroupRuleAccess(String value) {
@@ -24,7 +32,7 @@ public enum NetworkSecurityGroupRuleAccess {
 
     /**
      * Parses a serialized value to a NetworkSecurityGroupRuleAccess instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed NetworkSecurityGroupRuleAccess object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum NetworkSecurityGroupRuleAccess {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

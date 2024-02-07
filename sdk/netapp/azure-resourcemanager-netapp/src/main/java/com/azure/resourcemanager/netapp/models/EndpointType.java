@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether the local volume is the source or destination for the Volume Replication. */
+/**
+ * Indicates whether the local volume is the source or destination for the Volume Replication.
+ */
 public final class EndpointType extends ExpandableStringEnum<EndpointType> {
-    /** Static value src for EndpointType. */
+    /**
+     * Static value src for EndpointType.
+     */
     public static final EndpointType SRC = fromString("src");
 
-    /** Static value dst for EndpointType. */
+    /**
+     * Static value dst for EndpointType.
+     */
     public static final EndpointType DST = fromString("dst");
 
     /**
      * Creates a new instance of EndpointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
 
     /**
      * Creates or finds a EndpointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EndpointType.
      */
@@ -38,7 +44,7 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
 
     /**
      * Gets known EndpointType values.
-     *
+     * 
      * @return known EndpointType values.
      */
     public static Collection<EndpointType> values() {

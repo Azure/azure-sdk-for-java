@@ -11,14 +11,14 @@ public final class NetezzaPartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetezzaPartitionSettings model = BinaryData.fromString(
-            "{\"partitionColumnName\":\"dataasc\",\"partitionUpperBound\":\"datadwijx\",\"partitionLowerBound\":\"dataltowdwiffagfe\"}")
+            "{\"partitionColumnName\":\"datagfnaoehkgpkss\",\"partitionUpperBound\":\"datawkwxdgcfcfkyyrj\",\"partitionLowerBound\":\"datahslrbwwkbyw\"}")
             .toObject(NetezzaPartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetezzaPartitionSettings model = new NetezzaPartitionSettings().withPartitionColumnName("dataasc")
-            .withPartitionUpperBound("datadwijx").withPartitionLowerBound("dataltowdwiffagfe");
+        NetezzaPartitionSettings model = new NetezzaPartitionSettings().withPartitionColumnName("datagfnaoehkgpkss")
+            .withPartitionUpperBound("datawkwxdgcfcfkyyrj").withPartitionLowerBound("datahslrbwwkbyw");
         model = BinaryData.fromObject(model).toObject(NetezzaPartitionSettings.class);
     }
 }

@@ -34,7 +34,7 @@ public final class ResourceProvidersPutKubernetesVersionsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"kagfhsxtt\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"values\":[{\"version\":\"aa\",\"capabilities\":{\"supportPlan\":[\"tnkdmkqj\",\"lwuenvrkp\"]},\"isPreview\":true,\"patchVersions\":{\"bre\":{},\"qaaysjkixqt\":{}}},{\"version\":\"ttezlw\",\"capabilities\":{\"supportPlan\":[\"akpjpqqmtedlt\"]},\"isPreview\":false,\"patchVersions\":{\"yeozphvwauyqncy\":{},\"upkvipmdsc\":{},\"xqupevzhf\":{}}},{\"version\":\"otxhojujby\",\"capabilities\":{\"supportPlan\":[\"c\"]},\"isPreview\":true,\"patchVersions\":{\"bjx\":{},\"fw\":{},\"yl\":{},\"coolsttpkiwkkb\":{}}},{\"version\":\"jrywvtylbfpnc\",\"capabilities\":{\"supportPlan\":[\"iwii\",\"htywubxcbihwq\",\"nfdn\"]},\"isPreview\":true,\"patchVersions\":{\"rdgoihxumw\":{},\"ton\":{},\"zj\":{},\"uu\":{}}}]},\"id\":\"dlwggytsbwtovv\",\"name\":\"gseinq\",\"type\":\"iufxqknpir\"}";
+            = "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"iin\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"values\":[{\"version\":\"lwbtlhf\",\"isPreview\":false,\"patchVersions\":{\"hszfjvfb\":{},\"ofel\":{}}},{\"version\":\"grqmqhldvrii\",\"isPreview\":false,\"patchVersions\":{\"lg\":{}}},{\"version\":\"kvtvsexso\",\"isPreview\":false,\"patchVersions\":{\"qhhahhxvrhmzkwpj\":{},\"wws\":{},\"ughftqsx\":{}}}]},\"id\":\"xujxuknd\",\"name\":\"digrjguufzdmsyqt\",\"type\":\"ihwhbotzingamvpp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,12 +51,12 @@ public final class ResourceProvidersPutKubernetesVersionsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        KubernetesVersionProfile response = manager.resourceProviders().putKubernetesVersions("tmtdhtmdvypgik",
+        KubernetesVersionProfile response = manager.resourceProviders().putKubernetesVersions("yhgbijtjivfx",
             new KubernetesVersionProfileInner().withExtendedLocation(
-                new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("w")),
+                new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("ibsystawf")),
             com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, response.extendedLocation().type());
-        Assertions.assertEquals("kagfhsxtt", response.extendedLocation().name());
+        Assertions.assertEquals("iin", response.extendedLocation().name());
     }
 }

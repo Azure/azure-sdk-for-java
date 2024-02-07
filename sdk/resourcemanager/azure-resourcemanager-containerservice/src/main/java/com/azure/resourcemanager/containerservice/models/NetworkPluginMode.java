@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The mode the network plugin should use. */
+/**
+ * The mode the network plugin should use.
+ */
 public final class NetworkPluginMode extends ExpandableStringEnum<NetworkPluginMode> {
-    /** Static value overlay for NetworkPluginMode. */
+    /**
+     * Static value overlay for NetworkPluginMode.
+     */
     public static final NetworkPluginMode OVERLAY = fromString("overlay");
 
     /**
      * Creates a new instance of NetworkPluginMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class NetworkPluginMode extends ExpandableStringEnum<NetworkPluginM
 
     /**
      * Creates or finds a NetworkPluginMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkPluginMode.
      */
@@ -35,7 +39,7 @@ public final class NetworkPluginMode extends ExpandableStringEnum<NetworkPluginM
 
     /**
      * Gets known NetworkPluginMode values.
-     *
+     * 
      * @return known NetworkPluginMode values.
      */
     public static Collection<NetworkPluginMode> values() {

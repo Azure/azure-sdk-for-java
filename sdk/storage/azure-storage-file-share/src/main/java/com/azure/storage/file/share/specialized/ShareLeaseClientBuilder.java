@@ -6,6 +6,7 @@ package com.azure.storage.file.share.specialized;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareFileAsyncClient;
@@ -199,7 +200,7 @@ public final class ShareLeaseClientBuilder {
     }
 
     private String getLeaseId() {
-        return (leaseId == null) ? UUID.randomUUID().toString() : leaseId;
+        return (leaseId == null) ? CoreUtils.randomUuid().toString() : leaseId;
     }
 
 

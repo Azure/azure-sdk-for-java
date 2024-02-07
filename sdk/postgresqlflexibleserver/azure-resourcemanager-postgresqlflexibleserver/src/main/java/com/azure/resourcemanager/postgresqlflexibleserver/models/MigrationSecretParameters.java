@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Migration secret parameters. */
+/**
+ * Migration secret parameters.
+ */
 @Fluent
 public final class MigrationSecretParameters {
     /*
@@ -29,13 +31,15 @@ public final class MigrationSecretParameters {
     @JsonProperty(value = "targetServerUsername")
     private String targetServerUsername;
 
-    /** Creates an instance of MigrationSecretParameters class. */
+    /**
+     * Creates an instance of MigrationSecretParameters class.
+     */
     public MigrationSecretParameters() {
     }
 
     /**
      * Get the adminCredentials property: Admin credentials for source and target servers.
-     *
+     * 
      * @return the adminCredentials value.
      */
     public AdminCredentials adminCredentials() {
@@ -44,7 +48,7 @@ public final class MigrationSecretParameters {
 
     /**
      * Set the adminCredentials property: Admin credentials for source and target servers.
-     *
+     * 
      * @param adminCredentials the adminCredentials value to set.
      * @return the MigrationSecretParameters object itself.
      */
@@ -56,7 +60,7 @@ public final class MigrationSecretParameters {
     /**
      * Get the sourceServerUsername property: Gets or sets the username for the source server. This user need not be an
      * admin.
-     *
+     * 
      * @return the sourceServerUsername value.
      */
     public String sourceServerUsername() {
@@ -66,7 +70,7 @@ public final class MigrationSecretParameters {
     /**
      * Set the sourceServerUsername property: Gets or sets the username for the source server. This user need not be an
      * admin.
-     *
+     * 
      * @param sourceServerUsername the sourceServerUsername value to set.
      * @return the MigrationSecretParameters object itself.
      */
@@ -78,7 +82,7 @@ public final class MigrationSecretParameters {
     /**
      * Get the targetServerUsername property: Gets or sets the username for the target server. This user need not be an
      * admin.
-     *
+     * 
      * @return the targetServerUsername value.
      */
     public String targetServerUsername() {
@@ -88,7 +92,7 @@ public final class MigrationSecretParameters {
     /**
      * Set the targetServerUsername property: Gets or sets the username for the target server. This user need not be an
      * admin.
-     *
+     * 
      * @param targetServerUsername the targetServerUsername value to set.
      * @return the MigrationSecretParameters object itself.
      */
@@ -99,15 +103,13 @@ public final class MigrationSecretParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (adminCredentials() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property adminCredentials in model MigrationSecretParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property adminCredentials in model MigrationSecretParameters"));
         } else {
             adminCredentials().validate();
         }

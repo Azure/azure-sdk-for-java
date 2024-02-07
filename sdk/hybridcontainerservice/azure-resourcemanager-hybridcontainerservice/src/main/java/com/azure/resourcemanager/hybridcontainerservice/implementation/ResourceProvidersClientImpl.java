@@ -119,17 +119,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Gets the supported kubernetes versions
+     * Lists the supported kubernetes versions
      * 
-     * Gets the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported kubernetes versions from the underlying custom location along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return the supported kubernetes versions along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<KubernetesVersionProfileInner>>
@@ -150,18 +149,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Gets the supported kubernetes versions
+     * Lists the supported kubernetes versions
      * 
-     * Gets the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported kubernetes versions from the underlying custom location along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return the supported kubernetes versions along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<KubernetesVersionProfileInner>>
@@ -181,17 +179,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Gets the supported kubernetes versions
+     * Lists the supported kubernetes versions
      * 
-     * Gets the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported kubernetes versions from the underlying custom location on successful completion of
-     * {@link Mono}.
+     * @return the supported kubernetes versions on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<KubernetesVersionProfileInner> getKubernetesVersionsAsync(String customLocationResourceUri) {
@@ -200,17 +197,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Gets the supported kubernetes versions
+     * Lists the supported kubernetes versions
      * 
-     * Gets the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported kubernetes versions from the underlying custom location along with {@link Response}.
+     * @return the supported kubernetes versions along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KubernetesVersionProfileInner> getKubernetesVersionsWithResponse(String customLocationResourceUri,
@@ -219,16 +216,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Gets the supported kubernetes versions
+     * Lists the supported kubernetes versions
      * 
-     * Gets the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported kubernetes versions from the underlying custom location.
+     * @return the supported kubernetes versions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubernetesVersionProfileInner getKubernetesVersions(String customLocationResourceUri) {
@@ -236,11 +233,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the kubernetes version
+     * Puts the default kubernetes version resource type (one time operation, before listing the kubernetes versions).
      * 
-     * Puts the kubernetes version resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param kubernetesVersions Kubernetes Versions resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -273,11 +268,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the kubernetes version
+     * Puts the default kubernetes version resource type (one time operation, before listing the kubernetes versions).
      * 
-     * Puts the kubernetes version resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param kubernetesVersions Kubernetes Versions resource definition.
      * @param context The context to associate with this operation.
@@ -310,11 +303,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the kubernetes version
+     * Puts the default kubernetes version resource type (one time operation, before listing the kubernetes versions).
      * 
-     * Puts the kubernetes version resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param kubernetesVersions Kubernetes Versions resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -334,11 +325,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the kubernetes version
+     * Puts the default kubernetes version resource type (one time operation, before listing the kubernetes versions).
      * 
-     * Puts the kubernetes version resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param kubernetesVersions Kubernetes Versions resource definition.
      * @param context The context to associate with this operation.
@@ -360,11 +349,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the kubernetes version
+     * Puts the default kubernetes version resource type (one time operation, before listing the kubernetes versions).
      * 
-     * Puts the kubernetes version resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param kubernetesVersions Kubernetes Versions resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -379,11 +366,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the kubernetes version
+     * Puts the default kubernetes version resource type (one time operation, before listing the kubernetes versions).
      * 
-     * Puts the kubernetes version resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param kubernetesVersions Kubernetes Versions resource definition.
      * @param context The context to associate with this operation.
@@ -401,11 +386,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the kubernetes version
+     * Puts the default kubernetes version resource type (one time operation, before listing the kubernetes versions).
      * 
-     * Puts the kubernetes version resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param kubernetesVersions Kubernetes Versions resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -421,11 +404,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the kubernetes version
+     * Puts the default kubernetes version resource type (one time operation, before listing the kubernetes versions).
      * 
-     * Puts the kubernetes version resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param kubernetesVersions Kubernetes Versions resource definition.
      * @param context The context to associate with this operation.
@@ -442,11 +423,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the kubernetes version
+     * Puts the default kubernetes version resource type (one time operation, before listing the kubernetes versions).
      * 
-     * Puts the kubernetes version resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param kubernetesVersions Kubernetes Versions resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -461,11 +440,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the kubernetes version
+     * Puts the default kubernetes version resource type (one time operation, before listing the kubernetes versions).
      * 
-     * Puts the kubernetes version resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param kubernetesVersions Kubernetes Versions resource definition.
      * @param context The context to associate with this operation.
@@ -481,11 +458,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Delete the kubernetes versions
+     * Deletes the default kubernetes version resource type
      * 
-     * Delete the kubernetes versions resource type.
+     * Delete the default kubernetes versions resource type.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -511,11 +488,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Delete the kubernetes versions
+     * Deletes the default kubernetes version resource type
      * 
-     * Delete the kubernetes versions resource type.
+     * Delete the default kubernetes versions resource type.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -541,11 +518,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Delete the kubernetes versions
+     * Deletes the default kubernetes version resource type
      * 
-     * Delete the kubernetes versions resource type.
+     * Delete the default kubernetes versions resource type.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -560,11 +537,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Delete the kubernetes versions
+     * Deletes the default kubernetes version resource type
      * 
-     * Delete the kubernetes versions resource type.
+     * Delete the default kubernetes versions resource type.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -583,11 +560,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Delete the kubernetes versions
+     * Deletes the default kubernetes version resource type
      * 
-     * Delete the kubernetes versions resource type.
+     * Delete the default kubernetes versions resource type.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -600,11 +577,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Delete the kubernetes versions
+     * Deletes the default kubernetes version resource type
      * 
-     * Delete the kubernetes versions resource type.
+     * Delete the default kubernetes versions resource type.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -619,11 +596,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Delete the kubernetes versions
+     * Deletes the default kubernetes version resource type
      * 
-     * Delete the kubernetes versions resource type.
+     * Delete the default kubernetes versions resource type.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -637,11 +614,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Delete the kubernetes versions
+     * Deletes the default kubernetes version resource type
      * 
-     * Delete the kubernetes versions resource type.
+     * Delete the default kubernetes versions resource type.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -656,11 +633,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Delete the kubernetes versions
+     * Deletes the default kubernetes version resource type
      * 
-     * Delete the kubernetes versions resource type.
+     * Delete the default kubernetes versions resource type.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -672,11 +649,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Delete the kubernetes versions
+     * Deletes the default kubernetes version resource type
      * 
-     * Delete the kubernetes versions resource type.
+     * Delete the default kubernetes versions resource type.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -689,17 +666,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Gets the supported VM skus
+     * Lists the supported VM skus
      * 
-     * Gets the supported VM skus from the underlying custom location.
+     * Lists the supported VM skus for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported VM skus from the underlying custom location along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the list of supported VM SKUs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VmSkuProfileInner>> getVMSkusWithResponseAsync(String customLocationResourceUri) {
@@ -719,18 +695,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Gets the supported VM skus
+     * Lists the supported VM skus
      * 
-     * Gets the supported VM skus from the underlying custom location.
+     * Lists the supported VM skus for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported VM skus from the underlying custom location along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the list of supported VM SKUs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VmSkuProfileInner>> getVMSkusWithResponseAsync(String customLocationResourceUri,
@@ -750,16 +725,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Gets the supported VM skus
+     * Lists the supported VM skus
      * 
-     * Gets the supported VM skus from the underlying custom location.
+     * Lists the supported VM skus for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported VM skus from the underlying custom location on successful completion of {@link Mono}.
+     * @return the list of supported VM SKUs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VmSkuProfileInner> getVMSkusAsync(String customLocationResourceUri) {
@@ -767,17 +742,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Gets the supported VM skus
+     * Lists the supported VM skus
      * 
-     * Gets the supported VM skus from the underlying custom location.
+     * Lists the supported VM skus for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported VM skus from the underlying custom location along with {@link Response}.
+     * @return the list of supported VM SKUs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VmSkuProfileInner> getVMSkusWithResponse(String customLocationResourceUri, Context context) {
@@ -785,16 +760,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Gets the supported VM skus
+     * Lists the supported VM skus
      * 
-     * Gets the supported VM skus from the underlying custom location.
+     * Lists the supported VM skus for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported VM skus from the underlying custom location.
+     * @return the list of supported VM SKUs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VmSkuProfileInner getVMSkus(String customLocationResourceUri) {
@@ -802,11 +777,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the VM SKUs
+     * Puts the default VM skus resource type (one time operation, before listing the VM skus).
      * 
-     * Puts the VM SKUs resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param skus VM SKUs resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -838,11 +811,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the VM SKUs
+     * Puts the default VM skus resource type (one time operation, before listing the VM skus).
      * 
-     * Puts the VM SKUs resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param skus VM SKUs resource definition.
      * @param context The context to associate with this operation.
@@ -874,11 +845,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the VM SKUs
+     * Puts the default VM skus resource type (one time operation, before listing the VM skus).
      * 
-     * Puts the VM SKUs resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param skus VM SKUs resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -895,11 +864,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the VM SKUs
+     * Puts the default VM skus resource type (one time operation, before listing the VM skus).
      * 
-     * Puts the VM SKUs resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param skus VM SKUs resource definition.
      * @param context The context to associate with this operation.
@@ -918,11 +885,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the VM SKUs
+     * Puts the default VM skus resource type (one time operation, before listing the VM skus).
      * 
-     * Puts the VM SKUs resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param skus VM SKUs resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -937,11 +902,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the VM SKUs
+     * Puts the default VM skus resource type (one time operation, before listing the VM skus).
      * 
-     * Puts the VM SKUs resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param skus VM SKUs resource definition.
      * @param context The context to associate with this operation.
@@ -957,11 +920,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the VM SKUs
+     * Puts the default VM skus resource type (one time operation, before listing the VM skus).
      * 
-     * Puts the VM SKUs resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param skus VM SKUs resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -976,11 +937,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the VM SKUs
+     * Puts the default VM skus resource type (one time operation, before listing the VM skus).
      * 
-     * Puts the VM SKUs resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param skus VM SKUs resource definition.
      * @param context The context to associate with this operation.
@@ -997,11 +956,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the VM SKUs
+     * Puts the default VM skus resource type (one time operation, before listing the VM skus).
      * 
-     * Puts the VM SKUs resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param skus VM SKUs resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1015,11 +972,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Puts the VM SKUs
+     * Puts the default VM skus resource type (one time operation, before listing the VM skus).
      * 
-     * Puts the VM SKUs resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param skus VM SKUs resource definition.
      * @param context The context to associate with this operation.
@@ -1034,11 +989,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Deletes the Vm Skus
+     * Deletes the default VM skus resource type.
      * 
-     * Deletes the Vm Sku resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1063,11 +1016,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Deletes the Vm Skus
+     * Deletes the default VM skus resource type.
      * 
-     * Deletes the Vm Sku resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1093,11 +1044,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Deletes the Vm Skus
+     * Deletes the default VM skus resource type.
      * 
-     * Deletes the Vm Sku resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1112,11 +1061,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Deletes the Vm Skus
+     * Deletes the default VM skus resource type.
      * 
-     * Deletes the Vm Sku resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1134,11 +1081,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Deletes the Vm Skus
+     * Deletes the default VM skus resource type.
      * 
-     * Deletes the Vm Sku resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1151,11 +1096,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Deletes the Vm Skus
+     * Deletes the default VM skus resource type.
      * 
-     * Deletes the Vm Sku resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1169,11 +1112,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Deletes the Vm Skus
+     * Deletes the default VM skus resource type.
      * 
-     * Deletes the Vm Sku resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1186,11 +1127,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Deletes the Vm Skus
+     * Deletes the default VM skus resource type.
      * 
-     * Deletes the Vm Sku resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1205,11 +1144,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Deletes the Vm Skus
+     * Deletes the default VM skus resource type.
      * 
-     * Deletes the Vm Sku resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1221,11 +1158,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Deletes the Vm Skus
+     * Deletes the default VM skus resource type.
      * 
-     * Deletes the Vm Sku resource type.
-     * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

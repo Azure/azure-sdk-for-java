@@ -13,33 +13,27 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"endTime\":\"2021-02-09T00:09:24Z\",\"id\":\"mexgstxgcp\",\"name\":\"gmaajrm\",\"properties\":{\"objectType\":\"OperationExtendedInfo\"},\"startTime\":\"2021-05-16T07:57:55Z\",\"status\":\"rlovmclwhijcoej\"}")
-                .toObject(OperationResourceInner.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-09T00:09:24Z"), model.endTime());
-        Assertions.assertEquals("mexgstxgcp", model.id());
-        Assertions.assertEquals("gmaajrm", model.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T07:57:55Z"), model.startTime());
-        Assertions.assertEquals("rlovmclwhijcoej", model.status());
+        OperationResourceInner model = BinaryData.fromString(
+            "{\"endTime\":\"2021-02-17T19:22:59Z\",\"id\":\"cyddglmjthjqk\",\"name\":\"yeicxmqciwqvhk\",\"properties\":{\"objectType\":\"OperationExtendedInfo\"},\"startTime\":\"2021-04-08T23:48:15Z\",\"status\":\"gdtopbobjogh\"}")
+            .toObject(OperationResourceInner.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T19:22:59Z"), model.endTime());
+        Assertions.assertEquals("cyddglmjthjqk", model.id());
+        Assertions.assertEquals("yeicxmqciwqvhk", model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-08T23:48:15Z"), model.startTime());
+        Assertions.assertEquals("gdtopbobjogh", model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationResourceInner model =
-            new OperationResourceInner()
-                .withEndTime(OffsetDateTime.parse("2021-02-09T00:09:24Z"))
-                .withId("mexgstxgcp")
-                .withName("gmaajrm")
-                .withProperties(new OperationExtendedInfo())
-                .withStartTime(OffsetDateTime.parse("2021-05-16T07:57:55Z"))
-                .withStatus("rlovmclwhijcoej");
+        OperationResourceInner model
+            = new OperationResourceInner().withEndTime(OffsetDateTime.parse("2021-02-17T19:22:59Z"))
+                .withId("cyddglmjthjqk").withName("yeicxmqciwqvhk").withProperties(new OperationExtendedInfo())
+                .withStartTime(OffsetDateTime.parse("2021-04-08T23:48:15Z")).withStatus("gdtopbobjogh");
         model = BinaryData.fromObject(model).toObject(OperationResourceInner.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-09T00:09:24Z"), model.endTime());
-        Assertions.assertEquals("mexgstxgcp", model.id());
-        Assertions.assertEquals("gmaajrm", model.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T07:57:55Z"), model.startTime());
-        Assertions.assertEquals("rlovmclwhijcoej", model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T19:22:59Z"), model.endTime());
+        Assertions.assertEquals("cyddglmjthjqk", model.id());
+        Assertions.assertEquals("yeicxmqciwqvhk", model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-08T23:48:15Z"), model.startTime());
+        Assertions.assertEquals("gdtopbobjogh", model.status());
     }
 }

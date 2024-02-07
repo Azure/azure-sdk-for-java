@@ -12,7 +12,13 @@ import okhttp3.ConnectionPool;
 import java.util.concurrent.TimeUnit;
 
 /**
- * An {@link HttpClientProvider} that provides an implementation of HttpClient based on OkHttp.
+ * <p>This class provides an OkHttp-based implementation for the {@link HttpClientProvider} interface.
+ * It is designed to create instances of {@link HttpClient} using OkHttp as the underlying client.</p>
+ *
+ * @see com.azure.core.http.okhttp
+ * @see HttpClientProvider
+ * @see HttpClient
+ * @see OkHttpAsyncHttpClientBuilder
  */
 public final class OkHttpAsyncClientProvider implements HttpClientProvider {
     private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =

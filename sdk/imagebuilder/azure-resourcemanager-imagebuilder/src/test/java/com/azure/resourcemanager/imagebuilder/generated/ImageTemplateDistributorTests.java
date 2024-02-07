@@ -13,35 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateDistributorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateDistributor model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ImageTemplateDistributor\",\"runOutputName\":\"zfsinzgvf\",\"artifactTags\":{\"xjtfelluwfzit\":\"wzo\",\"qfpjk\":\"np\",\"nmayhuybb\":\"lxofpdvhpfxxypin\",\"inuvamiheogn\":\"podepoo\"}}")
-                .toObject(ImageTemplateDistributor.class);
-        Assertions.assertEquals("zfsinzgvf", model.runOutputName());
-        Assertions.assertEquals("wzo", model.artifactTags().get("xjtfelluwfzit"));
+        ImageTemplateDistributor model = BinaryData.fromString(
+            "{\"type\":\"ImageTemplateDistributor\",\"runOutputName\":\"mvtzfkufub\",\"artifactTags\":{\"aeqjhqjbasvms\":\"fxqeof\"}}")
+            .toObject(ImageTemplateDistributor.class);
+        Assertions.assertEquals("mvtzfkufub", model.runOutputName());
+        Assertions.assertEquals("fxqeof", model.artifactTags().get("aeqjhqjbasvms"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateDistributor model =
-            new ImageTemplateDistributor()
-                .withRunOutputName("zfsinzgvf")
-                .withArtifactTags(
-                    mapOf(
-                        "xjtfelluwfzit",
-                        "wzo",
-                        "qfpjk",
-                        "np",
-                        "nmayhuybb",
-                        "lxofpdvhpfxxypin",
-                        "inuvamiheogn",
-                        "podepoo"));
+        ImageTemplateDistributor model = new ImageTemplateDistributor().withRunOutputName("mvtzfkufub")
+            .withArtifactTags(mapOf("aeqjhqjbasvms", "fxqeof"));
         model = BinaryData.fromObject(model).toObject(ImageTemplateDistributor.class);
-        Assertions.assertEquals("zfsinzgvf", model.runOutputName());
-        Assertions.assertEquals("wzo", model.artifactTags().get("xjtfelluwfzit"));
+        Assertions.assertEquals("mvtzfkufub", model.runOutputName());
+        Assertions.assertEquals("fxqeof", model.artifactTags().get("aeqjhqjbasvms"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

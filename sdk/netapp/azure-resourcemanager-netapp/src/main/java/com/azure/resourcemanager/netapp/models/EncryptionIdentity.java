@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Identity used to authenticate with key vault. */
+/**
+ * Identity used to authenticate with key vault.
+ */
 @Fluent
 public final class EncryptionIdentity {
     /*
@@ -23,14 +25,16 @@ public final class EncryptionIdentity {
     @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
-    /** Creates an instance of EncryptionIdentity class. */
+    /**
+     * Creates an instance of EncryptionIdentity class.
+     */
     public EncryptionIdentity() {
     }
 
     /**
      * Get the principalId property: The principal ID (object ID) of the identity used to authenticate with key vault.
      * Read-only.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -41,7 +45,7 @@ public final class EncryptionIdentity {
      * Get the userAssignedIdentity property: The ARM resource identifier of the user assigned identity used to
      * authenticate with key vault. Applicable if identity.type has 'UserAssigned'. It should match key of
      * identity.userAssignedIdentities.
-     *
+     * 
      * @return the userAssignedIdentity value.
      */
     public String userAssignedIdentity() {
@@ -52,7 +56,7 @@ public final class EncryptionIdentity {
      * Set the userAssignedIdentity property: The ARM resource identifier of the user assigned identity used to
      * authenticate with key vault. Applicable if identity.type has 'UserAssigned'. It should match key of
      * identity.userAssignedIdentities.
-     *
+     * 
      * @param userAssignedIdentity the userAssignedIdentity value to set.
      * @return the EncryptionIdentity object itself.
      */
@@ -63,7 +67,7 @@ public final class EncryptionIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

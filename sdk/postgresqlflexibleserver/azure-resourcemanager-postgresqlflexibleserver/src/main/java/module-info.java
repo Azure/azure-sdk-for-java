@@ -10,10 +10,7 @@ module com.azure.resourcemanager.postgresqlflexibleserver {
     exports com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
     exports com.azure.resourcemanager.postgresqlflexibleserver.models;
 
-    opens com.azure.resourcemanager.postgresqlflexibleserver.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.postgresqlflexibleserver.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.postgresqlflexibleserver.fluent.models
+        to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.postgresqlflexibleserver.models to com.azure.core, com.fasterxml.jackson.databind;
 }

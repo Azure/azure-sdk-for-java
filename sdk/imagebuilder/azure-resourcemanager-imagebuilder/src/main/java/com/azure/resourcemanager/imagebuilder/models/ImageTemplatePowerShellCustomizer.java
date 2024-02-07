@@ -55,14 +55,16 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
     @JsonProperty(value = "validExitCodes")
     private List<Integer> validExitCodes;
 
-    /** Creates an instance of ImageTemplatePowerShellCustomizer class. */
+    /**
+     * Creates an instance of ImageTemplatePowerShellCustomizer class.
+     */
     public ImageTemplatePowerShellCustomizer() {
     }
 
     /**
      * Get the scriptUri property: URI of the PowerShell script to be run for customizing. It can be a github link, SAS
      * URI for Azure Storage, etc.
-     *
+     * 
      * @return the scriptUri value.
      */
     public String scriptUri() {
@@ -72,7 +74,7 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
     /**
      * Set the scriptUri property: URI of the PowerShell script to be run for customizing. It can be a github link, SAS
      * URI for Azure Storage, etc.
-     *
+     * 
      * @param scriptUri the scriptUri value to set.
      * @return the ImageTemplatePowerShellCustomizer object itself.
      */
@@ -82,8 +84,9 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
     }
 
     /**
-     * Get the sha256Checksum property: SHA256 checksum of the power shell script provided in the scriptUri field above.
-     *
+     * Get the sha256Checksum property: SHA256 checksum of the power shell script provided in the scriptUri field
+     * above.
+     * 
      * @return the sha256Checksum value.
      */
     public String sha256Checksum() {
@@ -91,8 +94,9 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
     }
 
     /**
-     * Set the sha256Checksum property: SHA256 checksum of the power shell script provided in the scriptUri field above.
-     *
+     * Set the sha256Checksum property: SHA256 checksum of the power shell script provided in the scriptUri field
+     * above.
+     * 
      * @param sha256Checksum the sha256Checksum value to set.
      * @return the ImageTemplatePowerShellCustomizer object itself.
      */
@@ -103,7 +107,7 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
 
     /**
      * Get the inline property: Array of PowerShell commands to execute.
-     *
+     * 
      * @return the inline value.
      */
     public List<String> inline() {
@@ -112,7 +116,7 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
 
     /**
      * Set the inline property: Array of PowerShell commands to execute.
-     *
+     * 
      * @param inline the inline value to set.
      * @return the ImageTemplatePowerShellCustomizer object itself.
      */
@@ -123,7 +127,7 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
 
     /**
      * Get the runElevated property: If specified, the PowerShell script will be run with elevated privileges.
-     *
+     * 
      * @return the runElevated value.
      */
     public Boolean runElevated() {
@@ -132,7 +136,7 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
 
     /**
      * Set the runElevated property: If specified, the PowerShell script will be run with elevated privileges.
-     *
+     * 
      * @param runElevated the runElevated value to set.
      * @return the ImageTemplatePowerShellCustomizer object itself.
      */
@@ -144,7 +148,7 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
     /**
      * Get the runAsSystem property: If specified, the PowerShell script will be run with elevated privileges using the
      * Local System user. Can only be true when the runElevated field above is set to true.
-     *
+     * 
      * @return the runAsSystem value.
      */
     public Boolean runAsSystem() {
@@ -154,7 +158,7 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
     /**
      * Set the runAsSystem property: If specified, the PowerShell script will be run with elevated privileges using the
      * Local System user. Can only be true when the runElevated field above is set to true.
-     *
+     * 
      * @param runAsSystem the runAsSystem value to set.
      * @return the ImageTemplatePowerShellCustomizer object itself.
      */
@@ -165,7 +169,7 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
 
     /**
      * Get the validExitCodes property: Valid exit codes for the PowerShell script. [Default: 0].
-     *
+     * 
      * @return the validExitCodes value.
      */
     public List<Integer> validExitCodes() {
@@ -174,7 +178,7 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
 
     /**
      * Set the validExitCodes property: Valid exit codes for the PowerShell script. [Default: 0].
-     *
+     * 
      * @param validExitCodes the validExitCodes value to set.
      * @return the ImageTemplatePowerShellCustomizer object itself.
      */
@@ -183,7 +187,9 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplatePowerShellCustomizer withName(String name) {
         super.withName(name);
@@ -192,7 +198,7 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -25,32 +25,28 @@ public final class FlexibleServersImpl implements FlexibleServers {
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public FlexibleServersImpl(
-        FlexibleServersClient innerClient,
+    public FlexibleServersImpl(FlexibleServersClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<LtrPreBackupResponse> triggerLtrPreBackupWithResponse(
-        String resourceGroupName, String serverName, LtrPreBackupRequest parameters, Context context) {
-        FlexibleServersTriggerLtrPreBackupResponse inner =
-            this.serviceClient().triggerLtrPreBackupWithResponse(resourceGroupName, serverName, parameters, context);
+    public Response<LtrPreBackupResponse> triggerLtrPreBackupWithResponse(String resourceGroupName, String serverName,
+        LtrPreBackupRequest parameters, Context context) {
+        FlexibleServersTriggerLtrPreBackupResponse inner
+            = this.serviceClient().triggerLtrPreBackupWithResponse(resourceGroupName, serverName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LtrPreBackupResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public LtrPreBackupResponse triggerLtrPreBackup(
-        String resourceGroupName, String serverName, LtrPreBackupRequest parameters) {
-        LtrPreBackupResponseInner inner =
-            this.serviceClient().triggerLtrPreBackup(resourceGroupName, serverName, parameters);
+    public LtrPreBackupResponse triggerLtrPreBackup(String resourceGroupName, String serverName,
+        LtrPreBackupRequest parameters) {
+        LtrPreBackupResponseInner inner
+            = this.serviceClient().triggerLtrPreBackup(resourceGroupName, serverName, parameters);
         if (inner != null) {
             return new LtrPreBackupResponseImpl(inner, this.manager());
         } else {
@@ -67,10 +63,10 @@ public final class FlexibleServersImpl implements FlexibleServers {
         }
     }
 
-    public LtrBackupResponse startLtrBackup(
-        String resourceGroupName, String serverName, LtrBackupRequest parameters, Context context) {
-        LtrBackupResponseInner inner =
-            this.serviceClient().startLtrBackup(resourceGroupName, serverName, parameters, context);
+    public LtrBackupResponse startLtrBackup(String resourceGroupName, String serverName, LtrBackupRequest parameters,
+        Context context) {
+        LtrBackupResponseInner inner
+            = this.serviceClient().startLtrBackup(resourceGroupName, serverName, parameters, context);
         if (inner != null) {
             return new LtrBackupResponseImpl(inner, this.manager());
         } else {

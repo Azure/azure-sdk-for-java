@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * DatasourceSet
- *
- * <p>DatasourceSet details of datasource to be backed up.
+ * 
+ * DatasourceSet details of datasource to be backed up.
  */
 @Fluent
 public final class DatasourceSet {
@@ -64,13 +64,15 @@ public final class DatasourceSet {
     @JsonProperty(value = "resourceProperties")
     private BaseResourceProperties resourceProperties;
 
-    /** Creates an instance of DatasourceSet class. */
+    /**
+     * Creates an instance of DatasourceSet class.
+     */
     public DatasourceSet() {
     }
 
     /**
      * Get the datasourceType property: DatasourceType of the resource.
-     *
+     * 
      * @return the datasourceType value.
      */
     public String datasourceType() {
@@ -79,7 +81,7 @@ public final class DatasourceSet {
 
     /**
      * Set the datasourceType property: DatasourceType of the resource.
-     *
+     * 
      * @param datasourceType the datasourceType value to set.
      * @return the DatasourceSet object itself.
      */
@@ -90,7 +92,7 @@ public final class DatasourceSet {
 
     /**
      * Get the objectType property: Type of Datasource object, used to initialize the right inherited type.
-     *
+     * 
      * @return the objectType value.
      */
     public String objectType() {
@@ -99,7 +101,7 @@ public final class DatasourceSet {
 
     /**
      * Set the objectType property: Type of Datasource object, used to initialize the right inherited type.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the DatasourceSet object itself.
      */
@@ -111,7 +113,7 @@ public final class DatasourceSet {
     /**
      * Get the resourceId property: Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure
      * resources, this will be the ID created by backup service via Fabric/Vault.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -121,7 +123,7 @@ public final class DatasourceSet {
     /**
      * Set the resourceId property: Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure
      * resources, this will be the ID created by backup service via Fabric/Vault.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the DatasourceSet object itself.
      */
@@ -132,7 +134,7 @@ public final class DatasourceSet {
 
     /**
      * Get the resourceLocation property: Location of datasource.
-     *
+     * 
      * @return the resourceLocation value.
      */
     public String resourceLocation() {
@@ -141,7 +143,7 @@ public final class DatasourceSet {
 
     /**
      * Set the resourceLocation property: Location of datasource.
-     *
+     * 
      * @param resourceLocation the resourceLocation value to set.
      * @return the DatasourceSet object itself.
      */
@@ -152,7 +154,7 @@ public final class DatasourceSet {
 
     /**
      * Get the resourceName property: Unique identifier of the resource in the context of parent.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -161,7 +163,7 @@ public final class DatasourceSet {
 
     /**
      * Set the resourceName property: Unique identifier of the resource in the context of parent.
-     *
+     * 
      * @param resourceName the resourceName value to set.
      * @return the DatasourceSet object itself.
      */
@@ -172,7 +174,7 @@ public final class DatasourceSet {
 
     /**
      * Get the resourceType property: Resource Type of Datasource.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -181,7 +183,7 @@ public final class DatasourceSet {
 
     /**
      * Set the resourceType property: Resource Type of Datasource.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the DatasourceSet object itself.
      */
@@ -192,7 +194,7 @@ public final class DatasourceSet {
 
     /**
      * Get the resourceUri property: Uri of the resource.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String resourceUri() {
@@ -201,7 +203,7 @@ public final class DatasourceSet {
 
     /**
      * Set the resourceUri property: Uri of the resource.
-     *
+     * 
      * @param resourceUri the resourceUri value to set.
      * @return the DatasourceSet object itself.
      */
@@ -212,7 +214,7 @@ public final class DatasourceSet {
 
     /**
      * Get the resourceProperties property: Properties specific to data source set.
-     *
+     * 
      * @return the resourceProperties value.
      */
     public BaseResourceProperties resourceProperties() {
@@ -221,7 +223,7 @@ public final class DatasourceSet {
 
     /**
      * Set the resourceProperties property: Properties specific to data source set.
-     *
+     * 
      * @param resourceProperties the resourceProperties value to set.
      * @return the DatasourceSet object itself.
      */
@@ -232,14 +234,13 @@ public final class DatasourceSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model DatasourceSet"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property resourceId in model DatasourceSet"));
         }
         if (resourceProperties() != null) {
             resourceProperties().validate();

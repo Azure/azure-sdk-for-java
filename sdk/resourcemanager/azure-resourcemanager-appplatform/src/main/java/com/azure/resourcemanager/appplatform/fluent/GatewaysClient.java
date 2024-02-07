@@ -17,33 +17,36 @@ import com.azure.resourcemanager.appplatform.fluent.models.GatewayResourceInner;
 import com.azure.resourcemanager.appplatform.models.CustomDomainValidatePayload;
 import com.azure.resourcemanager.appplatform.models.CustomDomainValidateResult;
 import java.nio.ByteBuffer;
+import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GatewaysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GatewaysClient.
+ */
 public interface GatewaysClient {
     /**
      * Get the Spring Cloud Gateway and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Spring Cloud Gateway and its properties along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<GatewayResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayName);
+    Mono<Response<GatewayResourceInner>> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String gatewayName);
 
     /**
      * Get the Spring Cloud Gateway and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,9 +59,26 @@ public interface GatewaysClient {
 
     /**
      * Get the Spring Cloud Gateway and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Spring Cloud Gateway and its properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GatewayResourceInner> getWithResponse(String resourceGroupName, String serviceName, String gatewayName,
+        Context context);
+
+    /**
+     * Get the Spring Cloud Gateway and its properties.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -70,27 +90,10 @@ public interface GatewaysClient {
     GatewayResourceInner get(String resourceGroupName, String serviceName, String gatewayName);
 
     /**
-     * Get the Spring Cloud Gateway and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param gatewayName The name of Spring Cloud Gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Spring Cloud Gateway and its properties along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GatewayResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String gatewayName, Context context);
-
-    /**
      * Create the default Spring Cloud Gateway or update the existing Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param gatewayResource The gateway for the create or update operation.
@@ -100,14 +103,14 @@ public interface GatewaysClient {
      * @return spring Cloud Gateway resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayName, GatewayResourceInner gatewayResource);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serviceName,
+        String gatewayName, GatewayResourceInner gatewayResource);
 
     /**
      * Create the default Spring Cloud Gateway or update the existing Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param gatewayResource The gateway for the create or update operation.
@@ -122,9 +125,9 @@ public interface GatewaysClient {
 
     /**
      * Create the default Spring Cloud Gateway or update the existing Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param gatewayResource The gateway for the create or update operation.
@@ -134,14 +137,14 @@ public interface GatewaysClient {
      * @return the {@link SyncPoller} for polling of spring Cloud Gateway resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GatewayResourceInner>, GatewayResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String serviceName, String gatewayName, GatewayResourceInner gatewayResource);
+    SyncPoller<PollResult<GatewayResourceInner>, GatewayResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String serviceName, String gatewayName, GatewayResourceInner gatewayResource);
 
     /**
      * Create the default Spring Cloud Gateway or update the existing Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param gatewayResource The gateway for the create or update operation.
@@ -152,18 +155,14 @@ public interface GatewaysClient {
      * @return the {@link SyncPoller} for polling of spring Cloud Gateway resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GatewayResourceInner>, GatewayResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        GatewayResourceInner gatewayResource,
-        Context context);
+    SyncPoller<PollResult<GatewayResourceInner>, GatewayResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String serviceName, String gatewayName, GatewayResourceInner gatewayResource, Context context);
 
     /**
      * Create the default Spring Cloud Gateway or update the existing Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param gatewayResource The gateway for the create or update operation.
@@ -173,14 +172,14 @@ public interface GatewaysClient {
      * @return spring Cloud Gateway resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GatewayResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String gatewayName, GatewayResourceInner gatewayResource);
+    Mono<GatewayResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String gatewayName,
+        GatewayResourceInner gatewayResource);
 
     /**
      * Create the default Spring Cloud Gateway or update the existing Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param gatewayResource The gateway for the create or update operation.
@@ -190,14 +189,14 @@ public interface GatewaysClient {
      * @return spring Cloud Gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String gatewayName, GatewayResourceInner gatewayResource);
+    GatewayResourceInner createOrUpdate(String resourceGroupName, String serviceName, String gatewayName,
+        GatewayResourceInner gatewayResource);
 
     /**
      * Create the default Spring Cloud Gateway or update the existing Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param gatewayResource The gateway for the create or update operation.
@@ -208,18 +207,14 @@ public interface GatewaysClient {
      * @return spring Cloud Gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        GatewayResourceInner gatewayResource,
-        Context context);
+    GatewayResourceInner createOrUpdate(String resourceGroupName, String serviceName, String gatewayName,
+        GatewayResourceInner gatewayResource, Context context);
 
     /**
      * Disable the default Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,14 +223,14 @@ public interface GatewaysClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String gatewayName);
 
     /**
      * Disable the default Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,14 +239,14 @@ public interface GatewaysClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String gatewayName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String gatewayName);
 
     /**
      * Disable the default Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,9 +259,9 @@ public interface GatewaysClient {
 
     /**
      * Disable the default Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param context The context to associate with this operation.
@@ -276,14 +271,14 @@ public interface GatewaysClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String gatewayName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String gatewayName,
+        Context context);
 
     /**
      * Disable the default Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -296,9 +291,9 @@ public interface GatewaysClient {
 
     /**
      * Disable the default Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -310,9 +305,9 @@ public interface GatewaysClient {
 
     /**
      * Disable the default Spring Cloud Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param context The context to associate with this operation.
@@ -324,56 +319,228 @@ public interface GatewaysClient {
     void delete(String resourceGroupName, String serviceName, String gatewayName, Context context);
 
     /**
-     * Handles requests to list all resources in a Service.
-     *
+     * List sensitive environment variables of Spring Cloud Gateway.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sensitive properties for Spring Cloud Gateway along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Map<String, String>>> listEnvSecretsWithResponseAsync(String resourceGroupName, String serviceName,
+        String gatewayName);
+
+    /**
+     * List sensitive environment variables of Spring Cloud Gateway.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sensitive properties for Spring Cloud Gateway on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Map<String, String>> listEnvSecretsAsync(String resourceGroupName, String serviceName, String gatewayName);
+
+    /**
+     * List sensitive environment variables of Spring Cloud Gateway.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sensitive properties for Spring Cloud Gateway along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, String>> listEnvSecretsWithResponse(String resourceGroupName, String serviceName,
+        String gatewayName, Context context);
+
+    /**
+     * List sensitive environment variables of Spring Cloud Gateway.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sensitive properties for Spring Cloud Gateway.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, String> listEnvSecrets(String resourceGroupName, String serviceName, String gatewayName);
+
+    /**
+     * Restart the Spring Cloud Gateway.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String serviceName,
+        String gatewayName);
+
+    /**
+     * Restart the Spring Cloud Gateway.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String serviceName,
+        String gatewayName);
+
+    /**
+     * Restart the Spring Cloud Gateway.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String serviceName, String gatewayName);
+
+    /**
+     * Restart the Spring Cloud Gateway.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String serviceName, String gatewayName,
+        Context context);
+
+    /**
+     * Restart the Spring Cloud Gateway.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> restartAsync(String resourceGroupName, String serviceName, String gatewayName);
+
+    /**
+     * Restart the Spring Cloud Gateway.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restart(String resourceGroupName, String serviceName, String gatewayName);
+
+    /**
+     * Restart the Spring Cloud Gateway.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restart(String resourceGroupName, String serviceName, String gatewayName, Context context);
+
+    /**
+     * Handles requests to list all resources in a Service.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of gateway resources and a possible link for next set as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<GatewayResourceInner> listAsync(String resourceGroupName, String serviceName);
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of gateway resources and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GatewayResourceInner> list(String resourceGroupName, String serviceName);
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of gateway resources and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GatewayResourceInner> list(String resourceGroupName, String serviceName, Context context);
 
     /**
      * Check the domains are valid as well as not in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param validatePayload Custom domain payload to be validated.
@@ -383,14 +550,14 @@ public interface GatewaysClient {
      * @return validation result for custom domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CustomDomainValidateResult>> validateDomainWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayName, CustomDomainValidatePayload validatePayload);
+    Mono<Response<CustomDomainValidateResult>> validateDomainWithResponseAsync(String resourceGroupName,
+        String serviceName, String gatewayName, CustomDomainValidatePayload validatePayload);
 
     /**
      * Check the domains are valid as well as not in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param validatePayload Custom domain payload to be validated.
@@ -400,31 +567,14 @@ public interface GatewaysClient {
      * @return validation result for custom domain on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomDomainValidateResult> validateDomainAsync(
-        String resourceGroupName, String serviceName, String gatewayName, CustomDomainValidatePayload validatePayload);
+    Mono<CustomDomainValidateResult> validateDomainAsync(String resourceGroupName, String serviceName,
+        String gatewayName, CustomDomainValidatePayload validatePayload);
 
     /**
      * Check the domains are valid as well as not in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param gatewayName The name of Spring Cloud Gateway.
-     * @param validatePayload Custom domain payload to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainValidateResult validateDomain(
-        String resourceGroupName, String serviceName, String gatewayName, CustomDomainValidatePayload validatePayload);
-
-    /**
-     * Check the domains are valid as well as not in use.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param validatePayload Custom domain payload to be validated.
@@ -435,10 +585,23 @@ public interface GatewaysClient {
      * @return validation result for custom domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomDomainValidateResult> validateDomainWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        CustomDomainValidatePayload validatePayload,
-        Context context);
+    Response<CustomDomainValidateResult> validateDomainWithResponse(String resourceGroupName, String serviceName,
+        String gatewayName, CustomDomainValidatePayload validatePayload, Context context);
+
+    /**
+     * Check the domains are valid as well as not in use.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @param validatePayload Custom domain payload to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainValidateResult validateDomain(String resourceGroupName, String serviceName, String gatewayName,
+        CustomDomainValidatePayload validatePayload);
 }

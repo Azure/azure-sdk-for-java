@@ -15,57 +15,61 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterUpgradeDeltaHealthPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterUpgradeDeltaHealthPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"maxPercentDeltaUnhealthyNodes\":1676988315,\"maxPercentUpgradeDomainDeltaUnhealthyNodes\":354282788,\"maxPercentDeltaUnhealthyApplications\":180815183,\"applicationDeltaHealthPolicies\":{\"lxofpdvhpfxxypin\":{\"defaultServiceTypeDeltaHealthPolicy\":{\"maxPercentDeltaUnhealthyServices\":1432370634},\"serviceTypeDeltaHealthPolicies\":{}},\"uybbkpodep\":{\"defaultServiceTypeDeltaHealthPolicy\":{\"maxPercentDeltaUnhealthyServices\":1257825373},\"serviceTypeDeltaHealthPolicies\":{}}}}")
-                .toObject(ClusterUpgradeDeltaHealthPolicy.class);
-        Assertions.assertEquals(1676988315, model.maxPercentDeltaUnhealthyNodes());
-        Assertions.assertEquals(354282788, model.maxPercentUpgradeDomainDeltaUnhealthyNodes());
-        Assertions.assertEquals(180815183, model.maxPercentDeltaUnhealthyApplications());
-        Assertions
-            .assertEquals(
-                1432370634,
-                model
-                    .applicationDeltaHealthPolicies()
-                    .get("lxofpdvhpfxxypin")
-                    .defaultServiceTypeDeltaHealthPolicy()
-                    .maxPercentDeltaUnhealthyServices());
+        ClusterUpgradeDeltaHealthPolicy model = BinaryData.fromString(
+            "{\"maxPercentDeltaUnhealthyNodes\":1154463022,\"maxPercentUpgradeDomainDeltaUnhealthyNodes\":595941541,\"maxPercentDeltaUnhealthyApplications\":1356626713,\"applicationDeltaHealthPolicies\":{\"vmgxsab\":{\"defaultServiceTypeDeltaHealthPolicy\":{\"maxPercentDeltaUnhealthyServices\":461040275},\"serviceTypeDeltaHealthPolicies\":{\"ljfmppee\":{\"maxPercentDeltaUnhealthyServices\":347858915}}},\"dkvwrwjfe\":{\"defaultServiceTypeDeltaHealthPolicy\":{\"maxPercentDeltaUnhealthyServices\":1160647104},\"serviceTypeDeltaHealthPolicies\":{\"tcj\":{\"maxPercentDeltaUnhealthyServices\":2066308678},\"zevndhkrwpdappds\":{\"maxPercentDeltaUnhealthyServices\":372276294}}},\"tqxhocdgeab\":{\"defaultServiceTypeDeltaHealthPolicy\":{\"maxPercentDeltaUnhealthyServices\":1102727938},\"serviceTypeDeltaHealthPolicies\":{\"ltmrldh\":{\"maxPercentDeltaUnhealthyServices\":1936335434},\"zzd\":{\"maxPercentDeltaUnhealthyServices\":885785432}}},\"aozwyiftyhxhu\":{\"defaultServiceTypeDeltaHealthPolicy\":{\"maxPercentDeltaUnhealthyServices\":743985587},\"serviceTypeDeltaHealthPolicies\":{\"ndv\":{\"maxPercentDeltaUnhealthyServices\":1962929741}}}}}")
+            .toObject(ClusterUpgradeDeltaHealthPolicy.class);
+        Assertions.assertEquals(1154463022, model.maxPercentDeltaUnhealthyNodes());
+        Assertions.assertEquals(595941541, model.maxPercentUpgradeDomainDeltaUnhealthyNodes());
+        Assertions.assertEquals(1356626713, model.maxPercentDeltaUnhealthyApplications());
+        Assertions.assertEquals(461040275, model.applicationDeltaHealthPolicies().get("vmgxsab")
+            .defaultServiceTypeDeltaHealthPolicy().maxPercentDeltaUnhealthyServices());
+        Assertions.assertEquals(347858915, model.applicationDeltaHealthPolicies().get("vmgxsab")
+            .serviceTypeDeltaHealthPolicies().get("ljfmppee").maxPercentDeltaUnhealthyServices());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterUpgradeDeltaHealthPolicy model =
-            new ClusterUpgradeDeltaHealthPolicy()
-                .withMaxPercentDeltaUnhealthyNodes(1676988315)
-                .withMaxPercentUpgradeDomainDeltaUnhealthyNodes(354282788)
-                .withMaxPercentDeltaUnhealthyApplications(180815183)
-                .withApplicationDeltaHealthPolicies(
-                    mapOf(
-                        "lxofpdvhpfxxypin",
-                        new ApplicationDeltaHealthPolicy()
-                            .withDefaultServiceTypeDeltaHealthPolicy(
-                                new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(1432370634))
-                            .withServiceTypeDeltaHealthPolicies(mapOf()),
-                        "uybbkpodep",
-                        new ApplicationDeltaHealthPolicy()
-                            .withDefaultServiceTypeDeltaHealthPolicy(
-                                new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(1257825373))
-                            .withServiceTypeDeltaHealthPolicies(mapOf())));
+        ClusterUpgradeDeltaHealthPolicy model = new ClusterUpgradeDeltaHealthPolicy()
+            .withMaxPercentDeltaUnhealthyNodes(1154463022).withMaxPercentUpgradeDomainDeltaUnhealthyNodes(595941541)
+            .withMaxPercentDeltaUnhealthyApplications(1356626713)
+            .withApplicationDeltaHealthPolicies(mapOf("vmgxsab",
+                new ApplicationDeltaHealthPolicy()
+                    .withDefaultServiceTypeDeltaHealthPolicy(
+                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(461040275))
+                    .withServiceTypeDeltaHealthPolicies(mapOf("ljfmppee",
+                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(347858915))),
+                "dkvwrwjfe",
+                new ApplicationDeltaHealthPolicy()
+                    .withDefaultServiceTypeDeltaHealthPolicy(
+                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(1160647104))
+                    .withServiceTypeDeltaHealthPolicies(mapOf("tcj",
+                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(2066308678),
+                        "zevndhkrwpdappds",
+                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(372276294))),
+                "tqxhocdgeab",
+                new ApplicationDeltaHealthPolicy()
+                    .withDefaultServiceTypeDeltaHealthPolicy(
+                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(1102727938))
+                    .withServiceTypeDeltaHealthPolicies(mapOf("ltmrldh",
+                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(1936335434), "zzd",
+                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(885785432))),
+                "aozwyiftyhxhu",
+                new ApplicationDeltaHealthPolicy()
+                    .withDefaultServiceTypeDeltaHealthPolicy(
+                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(743985587))
+                    .withServiceTypeDeltaHealthPolicies(mapOf("ndv",
+                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(1962929741)))));
         model = BinaryData.fromObject(model).toObject(ClusterUpgradeDeltaHealthPolicy.class);
-        Assertions.assertEquals(1676988315, model.maxPercentDeltaUnhealthyNodes());
-        Assertions.assertEquals(354282788, model.maxPercentUpgradeDomainDeltaUnhealthyNodes());
-        Assertions.assertEquals(180815183, model.maxPercentDeltaUnhealthyApplications());
-        Assertions
-            .assertEquals(
-                1432370634,
-                model
-                    .applicationDeltaHealthPolicies()
-                    .get("lxofpdvhpfxxypin")
-                    .defaultServiceTypeDeltaHealthPolicy()
-                    .maxPercentDeltaUnhealthyServices());
+        Assertions.assertEquals(1154463022, model.maxPercentDeltaUnhealthyNodes());
+        Assertions.assertEquals(595941541, model.maxPercentUpgradeDomainDeltaUnhealthyNodes());
+        Assertions.assertEquals(1356626713, model.maxPercentDeltaUnhealthyApplications());
+        Assertions.assertEquals(461040275, model.applicationDeltaHealthPolicies().get("vmgxsab")
+            .defaultServiceTypeDeltaHealthPolicy().maxPercentDeltaUnhealthyServices());
+        Assertions.assertEquals(347858915, model.applicationDeltaHealthPolicies().get("vmgxsab")
+            .serviceTypeDeltaHealthPolicies().get("ljfmppee").maxPercentDeltaUnhealthyServices());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

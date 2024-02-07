@@ -24,8 +24,8 @@ public final class RestSink extends CopySink {
     private Object requestMethod;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
-     * string).
+     * The additional HTTP headers in the request to the RESTful API. Type: key value pairs (value should be string
+     * type).
      */
     @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
@@ -46,7 +46,7 @@ public final class RestSink extends CopySink {
 
     /*
      * Http Compression Type to Send data in compressed format with Optimal Compression Level, Default is None. And The
-     * Only Supported option is Gzip.
+     * Only Supported option is Gzip. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "httpCompressionType")
     private Object httpCompressionType;
@@ -80,8 +80,8 @@ public final class RestSink extends CopySink {
     }
 
     /**
-     * Get the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
-     * (or Expression with resultType string).
+     * Get the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: key
+     * value pairs (value should be string type).
      * 
      * @return the additionalHeaders value.
      */
@@ -90,8 +90,8 @@ public final class RestSink extends CopySink {
     }
 
     /**
-     * Set the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
-     * (or Expression with resultType string).
+     * Set the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: key
+     * value pairs (value should be string type).
      * 
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the RestSink object itself.
@@ -147,7 +147,8 @@ public final class RestSink extends CopySink {
 
     /**
      * Get the httpCompressionType property: Http Compression Type to Send data in compressed format with Optimal
-     * Compression Level, Default is None. And The Only Supported option is Gzip.
+     * Compression Level, Default is None. And The Only Supported option is Gzip. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the httpCompressionType value.
      */
@@ -157,7 +158,8 @@ public final class RestSink extends CopySink {
 
     /**
      * Set the httpCompressionType property: Http Compression Type to Send data in compressed format with Optimal
-     * Compression Level, Default is None. And The Only Supported option is Gzip.
+     * Compression Level, Default is None. And The Only Supported option is Gzip. Type: string (or Expression with
+     * resultType string).
      * 
      * @param httpCompressionType the httpCompressionType value to set.
      * @return the RestSink object itself.

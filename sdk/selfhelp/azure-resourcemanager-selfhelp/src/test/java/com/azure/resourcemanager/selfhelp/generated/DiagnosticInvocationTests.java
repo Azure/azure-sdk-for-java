@@ -13,21 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DiagnosticInvocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnosticInvocation model =
-            BinaryData
-                .fromString(
-                    "{\"solutionId\":\"gou\",\"additionalParameters\":{\"gakeqsr\":\"dlikwyqkgfgibma\",\"qqedqytbciqfou\":\"yb\"}}")
-                .toObject(DiagnosticInvocation.class);
+        DiagnosticInvocation model = BinaryData.fromString(
+            "{\"solutionId\":\"gou\",\"additionalParameters\":{\"gakeqsr\":\"dlikwyqkgfgibma\",\"qqedqytbciqfou\":\"yb\"}}")
+            .toObject(DiagnosticInvocation.class);
         Assertions.assertEquals("gou", model.solutionId());
         Assertions.assertEquals("dlikwyqkgfgibma", model.additionalParameters().get("gakeqsr"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticInvocation model =
-            new DiagnosticInvocation()
-                .withSolutionId("gou")
-                .withAdditionalParameters(mapOf("gakeqsr", "dlikwyqkgfgibma", "qqedqytbciqfou", "yb"));
+        DiagnosticInvocation model = new DiagnosticInvocation().withSolutionId("gou")
+            .withAdditionalParameters(mapOf("gakeqsr", "dlikwyqkgfgibma", "qqedqytbciqfou", "yb"));
         model = BinaryData.fromObject(model).toObject(DiagnosticInvocation.class);
         Assertions.assertEquals("gou", model.solutionId());
         Assertions.assertEquals("dlikwyqkgfgibma", model.additionalParameters().get("gakeqsr"));

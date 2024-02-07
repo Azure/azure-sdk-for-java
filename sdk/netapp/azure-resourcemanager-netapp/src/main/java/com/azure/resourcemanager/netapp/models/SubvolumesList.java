@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.fluent.models.SubvolumeInfoInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Subvolumes. */
+/**
+ * List of Subvolumes.
+ */
 @Fluent
 public final class SubvolumesList {
     /*
@@ -24,13 +26,15 @@ public final class SubvolumesList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SubvolumesList class. */
+    /**
+     * Creates an instance of SubvolumesList class.
+     */
     public SubvolumesList() {
     }
 
     /**
      * Get the value property: A list of Subvolumes.
-     *
+     * 
      * @return the value value.
      */
     public List<SubvolumeInfoInner> value() {
@@ -39,7 +43,7 @@ public final class SubvolumesList {
 
     /**
      * Set the value property: A list of Subvolumes.
-     *
+     * 
      * @param value the value value to set.
      * @return the SubvolumesList object itself.
      */
@@ -50,7 +54,7 @@ public final class SubvolumesList {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SubvolumesList {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SubvolumesList object itself.
      */
@@ -70,7 +74,7 @@ public final class SubvolumesList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

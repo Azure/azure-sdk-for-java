@@ -19,39 +19,41 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CredentialSetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CredentialSetsClient.
+ */
 public interface CredentialSetsClient {
     /**
      * Lists all credential set resources for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list credential sets for a container registry as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CredentialSetInner> listAsync(String resourceGroupName, String registryName);
 
     /**
      * Lists all credential set resources for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list credential sets for a container registry as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CredentialSetInner> list(String resourceGroupName, String registryName);
 
     /**
      * Lists all credential set resources for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
@@ -59,14 +61,14 @@ public interface CredentialSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list credential sets for a container registry as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CredentialSetInner> list(String resourceGroupName, String registryName, Context context);
 
     /**
      * Gets the properties of the specified credential set resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -74,15 +76,15 @@ public interface CredentialSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified credential set resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CredentialSetInner>> getWithResponseAsync(
-        String resourceGroupName, String registryName, String credentialSetName);
+    Mono<Response<CredentialSetInner>> getWithResponseAsync(String resourceGroupName, String registryName,
+        String credentialSetName);
 
     /**
      * Gets the properties of the specified credential set resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -96,7 +98,7 @@ public interface CredentialSetsClient {
 
     /**
      * Gets the properties of the specified credential set resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -107,12 +109,12 @@ public interface CredentialSetsClient {
      * @return the properties of the specified credential set resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CredentialSetInner> getWithResponse(
-        String resourceGroupName, String registryName, String credentialSetName, Context context);
+    Response<CredentialSetInner> getWithResponse(String resourceGroupName, String registryName,
+        String credentialSetName, Context context);
 
     /**
      * Gets the properties of the specified credential set resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -126,7 +128,7 @@ public interface CredentialSetsClient {
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -135,18 +137,15 @@ public interface CredentialSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a credential set resource for a container registry along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName,
+        String credentialSetName, CredentialSetInner credentialSetCreateParameters);
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -155,18 +154,15 @@ public interface CredentialSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CredentialSetInner>, CredentialSetInner> beginCreateAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters);
+    PollerFlux<PollResult<CredentialSetInner>, CredentialSetInner> beginCreateAsync(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetInner credentialSetCreateParameters);
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -175,18 +171,15 @@ public interface CredentialSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginCreate(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters);
+    SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginCreate(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetInner credentialSetCreateParameters);
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -196,19 +189,16 @@ public interface CredentialSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginCreate(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters,
+    SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginCreate(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetInner credentialSetCreateParameters,
         Context context);
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -217,18 +207,15 @@ public interface CredentialSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a credential set resource for a container registry on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CredentialSetInner> createAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
+    Mono<CredentialSetInner> createAsync(String resourceGroupName, String registryName, String credentialSetName,
         CredentialSetInner credentialSetCreateParameters);
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -239,15 +226,12 @@ public interface CredentialSetsClient {
      * @return an object that represents a credential set resource for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CredentialSetInner create(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
+    CredentialSetInner create(String resourceGroupName, String registryName, String credentialSetName,
         CredentialSetInner credentialSetCreateParameters);
 
     /**
      * Creates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -259,16 +243,12 @@ public interface CredentialSetsClient {
      * @return an object that represents a credential set resource for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CredentialSetInner create(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetInner credentialSetCreateParameters,
-        Context context);
+    CredentialSetInner create(String resourceGroupName, String registryName, String credentialSetName,
+        CredentialSetInner credentialSetCreateParameters, Context context);
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -278,12 +258,12 @@ public interface CredentialSetsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String registryName, String credentialSetName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+        String credentialSetName);
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -293,12 +273,12 @@ public interface CredentialSetsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String registryName, String credentialSetName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
+        String credentialSetName);
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -308,12 +288,12 @@ public interface CredentialSetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String registryName, String credentialSetName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
+        String credentialSetName);
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -324,12 +304,12 @@ public interface CredentialSetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String registryName, String credentialSetName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
+        String credentialSetName, Context context);
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -343,7 +323,7 @@ public interface CredentialSetsClient {
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -356,7 +336,7 @@ public interface CredentialSetsClient {
 
     /**
      * Deletes a credential set from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -370,7 +350,7 @@ public interface CredentialSetsClient {
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -379,18 +359,15 @@ public interface CredentialSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a credential set resource for a container registry along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
+        String credentialSetName, CredentialSetUpdateParameters credentialSetUpdateParameters);
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -399,18 +376,15 @@ public interface CredentialSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdateAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters);
+    PollerFlux<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdateAsync(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetUpdateParameters credentialSetUpdateParameters);
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -419,18 +393,15 @@ public interface CredentialSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdate(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters);
+    SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdate(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetUpdateParameters credentialSetUpdateParameters);
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -440,19 +411,16 @@ public interface CredentialSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an object that represents a credential set resource for a container
-     *     registry.
+     * registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdate(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters,
+    SyncPoller<PollResult<CredentialSetInner>, CredentialSetInner> beginUpdate(String resourceGroupName,
+        String registryName, String credentialSetName, CredentialSetUpdateParameters credentialSetUpdateParameters,
         Context context);
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -461,18 +429,15 @@ public interface CredentialSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a credential set resource for a container registry on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CredentialSetInner> updateAsync(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
+    Mono<CredentialSetInner> updateAsync(String resourceGroupName, String registryName, String credentialSetName,
         CredentialSetUpdateParameters credentialSetUpdateParameters);
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -483,15 +448,12 @@ public interface CredentialSetsClient {
      * @return an object that represents a credential set resource for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CredentialSetInner update(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
+    CredentialSetInner update(String resourceGroupName, String registryName, String credentialSetName,
         CredentialSetUpdateParameters credentialSetUpdateParameters);
 
     /**
      * Updates a credential set for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param credentialSetName The name of the credential set.
@@ -503,10 +465,6 @@ public interface CredentialSetsClient {
      * @return an object that represents a credential set resource for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CredentialSetInner update(
-        String resourceGroupName,
-        String registryName,
-        String credentialSetName,
-        CredentialSetUpdateParameters credentialSetUpdateParameters,
-        Context context);
+    CredentialSetInner update(String resourceGroupName, String registryName, String credentialSetName,
+        CredentialSetUpdateParameters credentialSetUpdateParameters, Context context);
 }

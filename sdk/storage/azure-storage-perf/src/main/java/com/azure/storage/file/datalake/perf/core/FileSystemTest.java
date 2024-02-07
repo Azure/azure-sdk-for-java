@@ -3,15 +3,14 @@
 
 package com.azure.storage.file.datalake.perf.core;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 public abstract class FileSystemTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
-    private static final String FILE_SYSTEM_NAME = "perfstress-dl-" + UUID.randomUUID().toString();
+    private static final String FILE_SYSTEM_NAME = "perfstress-dl-" + CoreUtils.randomUuid();
 
     protected final DataLakeFileSystemClient dataLakeFileSystemClient;
     protected final DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient;

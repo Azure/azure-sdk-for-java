@@ -13,48 +13,32 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for CassandraClusters Update. */
+/**
+ * Samples for CassandraClusters Update.
+ */
 public final class CassandraClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBManagedCassandraClusterPatch.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBManagedCassandraClusterPatch.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterPatch.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBManagedCassandraClusterPatch(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getCassandraClusters()
-            .update(
-                "cassandra-prod-rg",
-                "cassandra-prod",
-                new ClusterResourceInner()
-                    .withTags(mapOf("owner", "mike"))
-                    .withProperties(
-                        new ClusterResourceProperties()
-                            .withAuthenticationMethod(AuthenticationMethod.NONE)
-                            .withExternalGossipCertificates(
-                                Arrays
-                                    .asList(
-                                        new Certificate()
-                                            .withPem(
-                                                "-----BEGIN CERTIFICATE-----\n"
-                                                    + "...Base64 encoded certificate...\n"
-                                                    + "-----END CERTIFICATE-----")))
-                            .withExternalSeedNodes(
-                                Arrays
-                                    .asList(
-                                        new SeedNode().withIpAddress("10.52.221.2"),
-                                        new SeedNode().withIpAddress("10.52.221.3"),
-                                        new SeedNode().withIpAddress("10.52.221.4")))
-                            .withHoursBetweenBackups(12)),
+        azure.cosmosDBAccounts().manager().serviceClient().getCassandraClusters()
+            .update("cassandra-prod-rg", "cassandra-prod", new ClusterResourceInner().withTags(mapOf("owner", "mike"))
+                .withProperties(new ClusterResourceProperties().withAuthenticationMethod(AuthenticationMethod.NONE)
+                    .withExternalGossipCertificates(Arrays.asList(new Certificate().withPem(
+                        "-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----")))
+                    .withExternalSeedNodes(Arrays.asList(new SeedNode().withIpAddress("10.52.221.2"),
+                        new SeedNode().withIpAddress("10.52.221.3"), new SeedNode().withIpAddress("10.52.221.4")))
+                    .withHoursBetweenBackups(12)),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

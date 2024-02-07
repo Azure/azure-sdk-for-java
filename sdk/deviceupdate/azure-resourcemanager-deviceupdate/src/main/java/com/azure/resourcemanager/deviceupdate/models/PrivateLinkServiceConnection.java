@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Private link service connection details. */
+/**
+ * Private link service connection details.
+ */
 @Fluent
 public final class PrivateLinkServiceConnection {
     /*
@@ -30,8 +32,14 @@ public final class PrivateLinkServiceConnection {
     private String requestMessage;
 
     /**
+     * Creates an instance of PrivateLinkServiceConnection class.
+     */
+    public PrivateLinkServiceConnection() {
+    }
+
+    /**
      * Get the name property: Private link service connection name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -40,7 +48,7 @@ public final class PrivateLinkServiceConnection {
 
     /**
      * Set the name property: Private link service connection name.
-     *
+     * 
      * @param name the name value to set.
      * @return the PrivateLinkServiceConnection object itself.
      */
@@ -51,7 +59,7 @@ public final class PrivateLinkServiceConnection {
 
     /**
      * Get the groupIds property: List of group IDs.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -60,7 +68,7 @@ public final class PrivateLinkServiceConnection {
 
     /**
      * Set the groupIds property: List of group IDs.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the PrivateLinkServiceConnection object itself.
      */
@@ -71,7 +79,7 @@ public final class PrivateLinkServiceConnection {
 
     /**
      * Get the requestMessage property: Request message.
-     *
+     * 
      * @return the requestMessage value.
      */
     public String requestMessage() {
@@ -80,7 +88,7 @@ public final class PrivateLinkServiceConnection {
 
     /**
      * Set the requestMessage property: Request message.
-     *
+     * 
      * @param requestMessage the requestMessage value to set.
      * @return the PrivateLinkServiceConnection object itself.
      */
@@ -91,7 +99,7 @@ public final class PrivateLinkServiceConnection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

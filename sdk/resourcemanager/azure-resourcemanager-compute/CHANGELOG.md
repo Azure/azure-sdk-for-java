@@ -1,6 +1,29 @@
 # Release History
 
-## 2.34.0-beta.1 (Unreleased)
+## 2.36.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.35.0 (2024-01-26)
+
+### Features Added
+
+- Supported `WINDOWS_DESKTOP_10_PRO` in `KnownWindowsVirtualMachineImage`.
+- Added `withEncryptionAtHost` in `VirtualMachine`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-10-02`.
+
+## 2.34.0 (2023-12-22)
 
 ### Features Added
 

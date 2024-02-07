@@ -29,10 +29,11 @@ import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -191,7 +192,7 @@ public class RxDocumentClientImplTest {
                 Mockito.any(),
                 Mockito.any()
             ))
-            .thenReturn(Flux.just(dummyExecutionContextForQuery(queryResults, headersForQueries)));
+            .thenReturn(Flux.just(dummyExecutionContextForQuery(queryResults, headersForQueries, InternalObjectNode.class)));
         observableHelperMock
             .when(() -> ObservableHelper.inlineIfPossibleAsObs(Mockito.any(), Mockito.any()))
             .thenReturn(Mono.just(dummyResourceResponse(pointReadResult, headersForPointReads)));
@@ -376,9 +377,18 @@ public class RxDocumentClientImplTest {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> IDocumentQueryExecutionContext<T> dummyExecutionContextForQuery(List<String> results, Map<String, String> headers) {
-        List<Document> documentResults = results.stream().map(str -> new Document(str)).collect(Collectors.toList());
-        return () -> Flux.just((FeedResponse<T>) ModelBridgeInternal.createFeedResponse(documentResults, headers));
+    private static <T> IDocumentQueryExecutionContext<T> dummyExecutionContextForQuery(
+            List<String> results,
+            Map<String, String> headers,
+            Class<T> klass) {
+        List<T> documentResults =
+                results
+                        .stream()
+                        .map(str -> new Document(str))
+                        .map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, klass))
+                        .collect(Collectors.toList());
+
+        return () -> Flux.just(ModelBridgeInternal.createFeedResponse(documentResults, headers));
     }
 
     private static DocumentClientRetryPolicy dummyDocumentClientRetryPolicy() {
@@ -400,10 +410,12 @@ public class RxDocumentClientImplTest {
 
     private static ResourceResponse<Document> dummyResourceResponse(String content, Map<String, String> headers) {
 
+        byte[] blob = content.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
             HttpResponseStatus.OK.code(),
             headers,
-            content.getBytes(StandardCharsets.UTF_8));
+            new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
+            blob.length);
 
         RxDocumentServiceResponse documentServiceResponse = new RxDocumentServiceResponse(new DiagnosticsClientContext() {
 

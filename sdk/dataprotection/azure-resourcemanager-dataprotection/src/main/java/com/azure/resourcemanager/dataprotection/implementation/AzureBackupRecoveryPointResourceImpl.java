@@ -14,8 +14,7 @@ public final class AzureBackupRecoveryPointResourceImpl implements AzureBackupRe
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    AzureBackupRecoveryPointResourceImpl(
-        AzureBackupRecoveryPointResourceInner innerObject,
+    AzureBackupRecoveryPointResourceImpl(AzureBackupRecoveryPointResourceInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

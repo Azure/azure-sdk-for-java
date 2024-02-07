@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hardwaresecuritymodules.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The display string. */
+/**
+ * The display string.
+ */
 @Fluent
 public final class DedicatedHsmOperationDisplay {
     /*
@@ -35,8 +37,14 @@ public final class DedicatedHsmOperationDisplay {
     private String description;
 
     /**
+     * Creates an instance of DedicatedHsmOperationDisplay class.
+     */
+    public DedicatedHsmOperationDisplay() {
+    }
+
+    /**
      * Get the provider property: The Resource Provider of the operation.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -45,7 +53,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Set the provider property: The Resource Provider of the operation.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the DedicatedHsmOperationDisplay object itself.
      */
@@ -56,7 +64,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Get the resource property: Resource on which the operation is performed.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -65,7 +73,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Set the resource property: Resource on which the operation is performed.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the DedicatedHsmOperationDisplay object itself.
      */
@@ -76,7 +84,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Get the operation property: Operation type: Read, write, delete, etc.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -85,7 +93,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Set the operation property: Operation type: Read, write, delete, etc.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the DedicatedHsmOperationDisplay object itself.
      */
@@ -96,7 +104,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Get the description property: The object that represents the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -105,7 +113,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Set the description property: The object that represents the operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the DedicatedHsmOperationDisplay object itself.
      */
@@ -116,7 +124,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

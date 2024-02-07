@@ -45,7 +45,7 @@ public final class IntegrationRuntimesUpgradeWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.integrationRuntimes().upgradeWithResponse("zwqjpudupishcvsj", "aedsqfdulndy", "ghnptfvoljnrom",
+        manager.integrationRuntimes().upgradeWithResponse("yuillrrqw", "phiqje", "eafgo",
             com.azure.core.util.Context.NONE);
 
     }

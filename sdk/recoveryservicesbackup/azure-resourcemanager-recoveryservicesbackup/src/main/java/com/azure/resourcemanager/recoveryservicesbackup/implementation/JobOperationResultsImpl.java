@@ -17,15 +17,14 @@ public final class JobOperationResultsImpl implements JobOperationResults {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public JobOperationResultsImpl(
-        JobOperationResultsClient innerClient,
+    public JobOperationResultsImpl(JobOperationResultsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> getWithResponse(
-        String vaultName, String resourceGroupName, String jobName, String operationId, Context context) {
+    public Response<Void> getWithResponse(String vaultName, String resourceGroupName, String jobName,
+        String operationId, Context context) {
         return this.serviceClient().getWithResponse(vaultName, resourceGroupName, jobName, operationId, context);
     }
 

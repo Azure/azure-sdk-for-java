@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Troubleshooter ContinueRequest body. */
+/**
+ * Troubleshooter ContinueRequest body.
+ */
 @Fluent
 public final class ContinueRequestBody {
     /*
@@ -23,13 +25,15 @@ public final class ContinueRequestBody {
     @JsonProperty(value = "responses")
     private List<TroubleshooterResponse> responses;
 
-    /** Creates an instance of ContinueRequestBody class. */
+    /**
+     * Creates an instance of ContinueRequestBody class.
+     */
     public ContinueRequestBody() {
     }
 
     /**
      * Get the stepId property: Unique id of the result.
-     *
+     * 
      * @return the stepId value.
      */
     public String stepId() {
@@ -38,7 +42,7 @@ public final class ContinueRequestBody {
 
     /**
      * Set the stepId property: Unique id of the result.
-     *
+     * 
      * @param stepId the stepId value to set.
      * @return the ContinueRequestBody object itself.
      */
@@ -49,7 +53,7 @@ public final class ContinueRequestBody {
 
     /**
      * Get the responses property: The responses property.
-     *
+     * 
      * @return the responses value.
      */
     public List<TroubleshooterResponse> responses() {
@@ -58,7 +62,7 @@ public final class ContinueRequestBody {
 
     /**
      * Set the responses property: The responses property.
-     *
+     * 
      * @param responses the responses value to set.
      * @return the ContinueRequestBody object itself.
      */
@@ -69,7 +73,7 @@ public final class ContinueRequestBody {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

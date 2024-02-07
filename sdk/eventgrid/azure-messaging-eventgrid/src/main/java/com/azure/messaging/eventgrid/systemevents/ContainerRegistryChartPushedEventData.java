@@ -5,54 +5,129 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ChartPushed event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ChartPushed event.
+ */
 @Fluent
 public final class ContainerRegistryChartPushedEventData extends ContainerRegistryArtifactEventData {
-    /** Creates an instance of ContainerRegistryChartPushedEventData class. */
-    public ContainerRegistryChartPushedEventData() {}
+    /**
+     * Creates an instance of ContainerRegistryChartPushedEventData class.
+     */
+    public ContainerRegistryChartPushedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerRegistryChartPushedEventData setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerRegistryChartPushedEventData setTimestamp(OffsetDateTime timestamp) {
         super.setTimestamp(timestamp);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerRegistryChartPushedEventData setAction(String action) {
         super.setAction(action);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerRegistryChartPushedEventData setLocation(String location) {
         super.setLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerRegistryChartPushedEventData setTarget(ContainerRegistryArtifactEventTarget target) {
         super.setTarget(target);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ContainerRegistryChartPushedEventData setConnectedRegistry(
-            ContainerRegistryEventConnectedRegistry connectedRegistry) {
+    public ContainerRegistryChartPushedEventData
+        setConnectedRegistry(ContainerRegistryEventConnectedRegistry connectedRegistry) {
         super.setConnectedRegistry(connectedRegistry);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeStringField("timestamp",
+            getTimestamp() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getTimestamp()));
+        jsonWriter.writeStringField("action", getAction());
+        jsonWriter.writeStringField("location", getLocation());
+        jsonWriter.writeJsonField("target", getTarget());
+        jsonWriter.writeJsonField("connectedRegistry", getConnectedRegistry());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerRegistryChartPushedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerRegistryChartPushedEventData if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerRegistryChartPushedEventData.
+     */
+    public static ContainerRegistryChartPushedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerRegistryChartPushedEventData deserializedContainerRegistryChartPushedEventData
+                = new ContainerRegistryChartPushedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedContainerRegistryChartPushedEventData.setId(reader.getString());
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedContainerRegistryChartPushedEventData.setTimestamp(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("action".equals(fieldName)) {
+                    deserializedContainerRegistryChartPushedEventData.setAction(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedContainerRegistryChartPushedEventData.setLocation(reader.getString());
+                } else if ("target".equals(fieldName)) {
+                    deserializedContainerRegistryChartPushedEventData
+                        .setTarget(ContainerRegistryArtifactEventTarget.fromJson(reader));
+                } else if ("connectedRegistry".equals(fieldName)) {
+                    deserializedContainerRegistryChartPushedEventData
+                        .setConnectedRegistry(ContainerRegistryEventConnectedRegistry.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerRegistryChartPushedEventData;
+        });
     }
 }

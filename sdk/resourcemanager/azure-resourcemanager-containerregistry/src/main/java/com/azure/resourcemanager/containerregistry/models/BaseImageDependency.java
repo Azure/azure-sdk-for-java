@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties that describe a base image dependency. */
+/**
+ * Properties that describe a base image dependency.
+ */
 @Fluent
 public final class BaseImageDependency {
     /*
@@ -40,13 +42,15 @@ public final class BaseImageDependency {
     @JsonProperty(value = "digest")
     private String digest;
 
-    /** Creates an instance of BaseImageDependency class. */
+    /**
+     * Creates an instance of BaseImageDependency class.
+     */
     public BaseImageDependency() {
     }
 
     /**
      * Get the type property: The type of the base image dependency.
-     *
+     * 
      * @return the type value.
      */
     public BaseImageDependencyType type() {
@@ -55,7 +59,7 @@ public final class BaseImageDependency {
 
     /**
      * Set the type property: The type of the base image dependency.
-     *
+     * 
      * @param type the type value to set.
      * @return the BaseImageDependency object itself.
      */
@@ -66,7 +70,7 @@ public final class BaseImageDependency {
 
     /**
      * Get the registry property: The registry login server.
-     *
+     * 
      * @return the registry value.
      */
     public String registry() {
@@ -75,7 +79,7 @@ public final class BaseImageDependency {
 
     /**
      * Set the registry property: The registry login server.
-     *
+     * 
      * @param registry the registry value to set.
      * @return the BaseImageDependency object itself.
      */
@@ -86,7 +90,7 @@ public final class BaseImageDependency {
 
     /**
      * Get the repository property: The repository name.
-     *
+     * 
      * @return the repository value.
      */
     public String repository() {
@@ -95,7 +99,7 @@ public final class BaseImageDependency {
 
     /**
      * Set the repository property: The repository name.
-     *
+     * 
      * @param repository the repository value to set.
      * @return the BaseImageDependency object itself.
      */
@@ -106,7 +110,7 @@ public final class BaseImageDependency {
 
     /**
      * Get the tag property: The tag name.
-     *
+     * 
      * @return the tag value.
      */
     public String tag() {
@@ -115,7 +119,7 @@ public final class BaseImageDependency {
 
     /**
      * Set the tag property: The tag name.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the BaseImageDependency object itself.
      */
@@ -126,7 +130,7 @@ public final class BaseImageDependency {
 
     /**
      * Get the digest property: The sha256-based digest of the image manifest.
-     *
+     * 
      * @return the digest value.
      */
     public String digest() {
@@ -135,7 +139,7 @@ public final class BaseImageDependency {
 
     /**
      * Set the digest property: The sha256-based digest of the image manifest.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the BaseImageDependency object itself.
      */
@@ -146,7 +150,7 @@ public final class BaseImageDependency {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

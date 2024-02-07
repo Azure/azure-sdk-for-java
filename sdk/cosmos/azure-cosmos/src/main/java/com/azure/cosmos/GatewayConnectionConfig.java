@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.http.ProxyOptions;
+import com.azure.cosmos.implementation.Configs;
 
 import java.time.Duration;
 
@@ -18,7 +19,6 @@ public final class GatewayConnectionConfig {
     private static final Duration MIN_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
-    private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
 
     private Duration networkRequestTimeout;
     private int maxConnectionPoolSize;
@@ -30,7 +30,7 @@ public final class GatewayConnectionConfig {
      */
     public GatewayConnectionConfig() {
         this.idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
-        this.maxConnectionPoolSize = DEFAULT_MAX_CONNECTION_POOL_SIZE;
+        this.maxConnectionPoolSize = Configs.getDefaultHttpPoolSize();
         this.networkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
     }
 

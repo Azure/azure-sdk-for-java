@@ -17,12 +17,14 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SnapshotsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SnapshotsClient.
+ */
 public interface SnapshotsClient
     extends InnerSupportsGet<SnapshotInner>, InnerSupportsListing<SnapshotInner>, InnerSupportsDelete<Void> {
     /**
      * Gets a list of snapshots in the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of snapshots in the specified subscription as paginated response with {@link PagedFlux}.
@@ -32,7 +34,7 @@ public interface SnapshotsClient
 
     /**
      * Gets a list of snapshots in the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of snapshots in the specified subscription as paginated response with {@link PagedIterable}.
@@ -42,7 +44,7 @@ public interface SnapshotsClient
 
     /**
      * Gets a list of snapshots in the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +56,7 @@ public interface SnapshotsClient
 
     /**
      * Lists snapshots in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,7 +68,7 @@ public interface SnapshotsClient
 
     /**
      * Lists snapshots in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,7 +80,7 @@ public interface SnapshotsClient
 
     /**
      * Lists snapshots in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,7 +93,7 @@ public interface SnapshotsClient
 
     /**
      * Gets a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,7 +106,7 @@ public interface SnapshotsClient
 
     /**
      * Gets a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,7 +119,7 @@ public interface SnapshotsClient
 
     /**
      * Gets a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -127,12 +129,12 @@ public interface SnapshotsClient
      * @return a snapshot along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SnapshotInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<SnapshotInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +147,7 @@ public interface SnapshotsClient
 
     /**
      * Creates or updates a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
@@ -155,12 +157,12 @@ public interface SnapshotsClient
      * @return a node pool snapshot resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SnapshotInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, SnapshotInner parameters);
+    Mono<Response<SnapshotInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName,
+        SnapshotInner parameters);
 
     /**
      * Creates or updates a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
@@ -174,7 +176,7 @@ public interface SnapshotsClient
 
     /**
      * Creates or updates a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
@@ -185,12 +187,12 @@ public interface SnapshotsClient
      * @return a node pool snapshot resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SnapshotInner> createOrUpdateWithResponse(
-        String resourceGroupName, String resourceName, SnapshotInner parameters, Context context);
+    Response<SnapshotInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
+        SnapshotInner parameters, Context context);
 
     /**
      * Creates or updates a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
@@ -204,7 +206,7 @@ public interface SnapshotsClient
 
     /**
      * Updates tags on a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
@@ -214,12 +216,12 @@ public interface SnapshotsClient
      * @return a node pool snapshot resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SnapshotInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String resourceName, TagsObject parameters);
+    Mono<Response<SnapshotInner>> updateTagsWithResponseAsync(String resourceGroupName, String resourceName,
+        TagsObject parameters);
 
     /**
      * Updates tags on a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
@@ -233,7 +235,7 @@ public interface SnapshotsClient
 
     /**
      * Updates tags on a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
@@ -244,12 +246,12 @@ public interface SnapshotsClient
      * @return a node pool snapshot resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SnapshotInner> updateTagsWithResponse(
-        String resourceGroupName, String resourceName, TagsObject parameters, Context context);
+    Response<SnapshotInner> updateTagsWithResponse(String resourceGroupName, String resourceName, TagsObject parameters,
+        Context context);
 
     /**
      * Updates tags on a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
@@ -263,7 +265,7 @@ public interface SnapshotsClient
 
     /**
      * Deletes a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,7 +278,7 @@ public interface SnapshotsClient
 
     /**
      * Deletes a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,7 +291,7 @@ public interface SnapshotsClient
 
     /**
      * Deletes a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -303,7 +305,7 @@ public interface SnapshotsClient
 
     /**
      * Deletes a snapshot.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
