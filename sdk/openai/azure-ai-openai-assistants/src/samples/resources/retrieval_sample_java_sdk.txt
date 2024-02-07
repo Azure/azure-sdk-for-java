@@ -1,0 +1,1 @@
+The word 'apple' uses the code 442345, while the word 'banana' uses the code 673457.
