@@ -30,7 +30,7 @@ public class LogDataMapper {
 
     private static final ClientLogger logger = new ClientLogger(LogDataMapper.class);
 
-    private static final Set<String> EXCLUDE_LOGGER_NAMES = new HashSet<>(4);
+    private static final Set<String> EXCLUDE_LOGGER_NAMES = new HashSet<>(1);
 
     private static final String LOG4J_MDC_PREFIX = "log4j.mdc."; // log4j 1.2
     private static final String LOG4J_CONTEXT_DATA_PREFIX = "log4j.context_data."; // log4j 2.x
