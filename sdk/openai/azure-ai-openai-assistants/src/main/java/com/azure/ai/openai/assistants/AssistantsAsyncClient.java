@@ -2120,7 +2120,8 @@ public final class AssistantsAsyncClient {
         // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listMessageFilesWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<MessageFile>>() {}));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<MessageFile>>() {
+            }));
     }
 
     /**
@@ -2353,8 +2354,8 @@ public final class AssistantsAsyncClient {
      * @return a list of run steps from a thread run on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResult<RunStep>> listRunSteps(String threadId, String runId, Integer limit,
-        ListSortOrder order, String after, String before) {
+    public Mono<PagedResult<RunStep>> listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order,
+        String after, String before) {
         // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2370,7 +2371,8 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<RunStep>>() {}));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<RunStep>>() {
+            }));
     }
 
     /**
@@ -2415,7 +2417,8 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
         }
         return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<OpenAIFile>>() {}));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<OpenAIFile>>() {
+            }));
     }
 
     /**
@@ -2433,7 +2436,8 @@ public final class AssistantsAsyncClient {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<OpenAIFile>>() {}));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<OpenAIFile>>() {
+            }));
     }
 
     /**

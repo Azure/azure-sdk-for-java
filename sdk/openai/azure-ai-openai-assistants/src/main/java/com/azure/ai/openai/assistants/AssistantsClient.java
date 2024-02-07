@@ -435,8 +435,7 @@ public final class AssistantsClient {
      * @return a list of assistants that were previously created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResult<Assistant> listAssistants(Integer limit, ListSortOrder order, String after,
-        String before) {
+    public PagedResult<Assistant> listAssistants(Integer limit, ListSortOrder order, String after, String before) {
         // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -452,7 +451,8 @@ public final class AssistantsClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listAssistantsWithResponse(requestOptions).getValue()
-            .toObject(new TypeReference<PagedResult<Assistant>>() {});
+            .toObject(new TypeReference<PagedResult<Assistant>>() {
+            });
     }
 
     /**
