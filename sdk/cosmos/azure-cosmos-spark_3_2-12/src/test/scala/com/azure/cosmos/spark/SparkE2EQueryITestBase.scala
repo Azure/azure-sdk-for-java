@@ -1378,12 +1378,12 @@ abstract class SparkE2EQueryITestBase
 
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
     val requestOptions = new CosmosItemRequestOptions()
-    container.createItem(blob, new PartitionKey(id), requestOptions).block()
+    container.createItem(blob, new PartitionKey(pk), requestOptions).block()
 
     val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey,
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
       "spark.cosmos.read.readManyFiltering.enabled" -> "true"
     )
