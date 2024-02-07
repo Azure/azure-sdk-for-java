@@ -7,6 +7,7 @@ import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileListResponse;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
+import com.azure.ai.openai.assistants.models.PagedResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -38,7 +39,7 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            FileListResponse files = client.listFiles(filePurpose);
+            PagedResult<OpenAIFile> files = client.listFiles(filePurpose);
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
@@ -63,7 +64,7 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            FileListResponse files = client.listFiles(filePurpose);
+            PagedResult<OpenAIFile> files = client.listFiles(filePurpose);
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
@@ -88,7 +89,7 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            FileListResponse files = client.listFiles(filePurpose);
+            PagedResult<OpenAIFile> files = client.listFiles(filePurpose);
             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file

@@ -25,18 +25,12 @@ import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileDetails;
-import com.azure.ai.openai.assistants.models.FileListResponse;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
 import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistant;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistantFile;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfMessageFile;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfRunStep;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadRun;
+import com.azure.ai.openai.assistants.models.PagedResult;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
@@ -58,6 +52,8 @@ import com.azure.core.util.FluxUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
 /**
@@ -2083,10 +2079,9 @@ public final class AssistantsAsyncClient {
      * @return a list of previously uploaded files associated with a message from a thread on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfMessageFile> listMessageFiles(String threadId, String messageId, Integer limit,
-        ListSortOrder order, String after, String before) {
+    public Mono<PagedResult<MessageFile>> listMessageFiles(String threadId, String messageId, Integer limit,
+                                              ListSortOrder order, String after, String before) {
         // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2102,7 +2097,7 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listMessageFilesWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfMessageFile.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<MessageFile>>() {}));
     }
 
     /**
@@ -2121,11 +2116,11 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfMessageFile> listMessageFiles(String threadId, String messageId) {
+    public Mono<PagedResult<MessageFile>> listMessageFiles(String threadId, String messageId) {
         // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listMessageFilesWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfMessageFile.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<MessageFile>>() {}));
     }
 
     /**

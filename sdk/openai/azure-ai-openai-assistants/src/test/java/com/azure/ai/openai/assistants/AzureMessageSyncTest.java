@@ -8,11 +8,13 @@ import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfMessageFile;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.PagedResult;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -164,12 +166,12 @@ public class AzureMessageSyncTest extends AssistantsClientTestBase {
             validateThreadMessage(threadMessage, threadId);
             String messageId = threadMessage.getId();
             // List message files
-            OpenAIPageableListOfMessageFile listMessageFiles = client.listMessageFiles(threadId, messageId);
+            PagedResult<MessageFile> listMessageFiles = client.listMessageFiles(threadId, messageId);
             validateOpenAIPageableListOfMessageFile(listMessageFiles, messageId, Arrays.asList(fileId1, fileId2));
             // List messages with response
             Response<BinaryData> listedMessagesResponse = client.listMessageFilesWithResponse(threadId, messageId, new RequestOptions());
-            OpenAIPageableListOfMessageFile listMessageFilesResponse = assertAndGetValueFromResponse(
-                    listedMessagesResponse, OpenAIPageableListOfMessageFile.class, 200);
+            PagedResult<MessageFile> listMessageFilesResponse = assertAndGetValueFromResponse(
+                listedMessagesResponse, new TypeReference<PagedResult<MessageFile>>() {}, 200);
             validateOpenAIPageableListOfMessageFile(listMessageFilesResponse, messageId, Arrays.asList(fileId1, fileId2));
         });
         deleteFile(client, fileId1);
@@ -192,7 +194,7 @@ public class AzureMessageSyncTest extends AssistantsClientTestBase {
             validateThreadMessage(threadMessage, threadId);
             String messageId = threadMessage.getId();
             // List message files between two file ids
-            OpenAIPageableListOfMessageFile listMessageFiles = client.listMessageFiles(threadId, messageId, 10,
+            PagedResult<MessageFile> listMessageFiles = client.listMessageFiles(threadId, messageId, 10,
                     ListSortOrder.ASCENDING, fileId1, fileId4);
             List<MessageFile> dataAscending = listMessageFiles.getData();
             assertEquals(2, dataAscending.size());

@@ -8,10 +8,12 @@ import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfMessageFile;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.PagedResult;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -264,8 +266,8 @@ public class AzureMessageAsyncTest extends AssistantsClientTestBase {
             // List messages with response
             StepVerifier.create(client.listMessageFilesWithResponse(threadId, messageId, new RequestOptions()))
                     .assertNext(response -> {
-                        OpenAIPageableListOfMessageFile listMessageFilesResponse = assertAndGetValueFromResponse(
-                                response, OpenAIPageableListOfMessageFile.class, 200);
+                        PagedResult<MessageFile> listMessageFilesResponse = assertAndGetValueFromResponse(
+                            response, new TypeReference<PagedResult<MessageFile>>() {}, 200);
                         validateOpenAIPageableListOfMessageFile(listMessageFilesResponse, messageId,
                                 Arrays.asList(fileId1, fileId2));
                     })

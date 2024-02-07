@@ -7,9 +7,11 @@ import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfRunStep;
+import com.azure.ai.openai.assistants.models.PagedResult;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
 import com.azure.ai.openai.assistants.models.RequiredToolCall;
 import com.azure.ai.openai.assistants.models.RunStatus;
+import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.RunStepToolCallDetails;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
 import com.azure.ai.openai.assistants.models.ThreadRun;
@@ -68,7 +70,7 @@ public class FunctionsSyncTests extends AssistantsClientTestBase {
                 assertInstanceOf(RequiredFunctionToolCall.class, outputAction);
             }
 
-            OpenAIPageableListOfRunStep runSteps = client.listRunSteps(assistantThread.getId(), run.getId());
+            PagedResult<RunStep> runSteps = client.listRunSteps(assistantThread.getId(), run.getId());
             assertFalse(runSteps.getData().isEmpty());
 
             RunStepToolCallDetails toolCallDetails = (RunStepToolCallDetails) runSteps.getData().get(0).getStepDetails();

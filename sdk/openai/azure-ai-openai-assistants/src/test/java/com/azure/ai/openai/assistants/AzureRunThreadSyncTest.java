@@ -8,6 +8,7 @@ import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfRunStep;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadRun;
+import com.azure.ai.openai.assistants.models.PagedResult;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
@@ -252,7 +253,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             String threadId = run.getThreadId();
             String runId = run.getId();
             // List runs
-            OpenAIPageableListOfThreadRun runs = client.listRuns(threadId);
+            PagedResult<ThreadRun> runs = client.listRuns(threadId);
             List<ThreadRun> data = runs.getData();
             assertNotNull(data);
             assertEquals(1, data.size());
@@ -295,7 +296,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             assertSame(RunStatus.COMPLETED, run.getStatus());
 
             // List run steps
-            OpenAIPageableListOfRunStep runSteps = client.listRunSteps(threadId, runId);
+            PagedResult<RunStep> runSteps = client.listRunSteps(threadId, runId);
             assertNotNull(runSteps);
 
             List<RunStep> runStepsData = runSteps.getData();
