@@ -26,7 +26,7 @@ abstract class SparkE2EQueryITestBase
   extends IntegrationSpec
     with SparkWithJustDropwizardAndNoSlf4jMetrics
     with CosmosClient
-    with AutoCleanableCosmosContainer
+    with AutoCleanableCosmosContainersWithPkAsPartitionKey
     with BasicLoggingTrait
     with MetricAssertions {
 
@@ -1543,6 +1543,48 @@ abstract class SparkE2EQueryITestBase
       joinContainer.delete().block()
       containerWithSubPartitions.delete().block()
     }
+  }
+
+  "spark query" should "always populate the readMany filtering property if readMany filtering enabled" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val id = UUID.randomUUID().toString
+    val pk = UUID.randomUUID().toString
+    val rawItem =
+      s"""
+         | {
+         |   "id" : "${id}",
+         |   "pk" : "${pk}",
+         |   "prop1" : 5,
+         |   "nestedObject" : {
+         |     "prop2" : "6"
+         |   }
+         | }
+         |""".stripMargin
+
+    val blob = rawItem.getBytes("UTF-8")
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+    val requestOptions = new CosmosItemRequestOptions()
+    container.createItem(blob, new PartitionKey(pk), requestOptions).block()
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.read.readManyFiltering.enabled" -> "true"
+    )
+
+    val df = spark.read.format("cosmos.oltp").options(cfg).load()
+    val rowsArray = df.collect()
+    rowsArray should have size 1
+
+    val item = rowsArray(0)
+    item.getAs[String]("id") shouldEqual id
+    item.getAs[Int]("prop1") shouldEqual 5
+    item.getAs[String]("_itemIdentity") shouldEqual CosmosItemIdentityHelper.getCosmosItemIdentityValueString(id, List[String](pk))
   }
 
   private def getDefaultPartitionKeyDefinitionWithSubpartitions: PartitionKeyDefinition = {
