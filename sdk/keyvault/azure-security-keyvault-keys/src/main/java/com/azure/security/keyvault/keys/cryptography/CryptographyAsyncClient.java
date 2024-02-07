@@ -191,6 +191,7 @@ public class CryptographyAsyncClient {
 
         try {
             this.localKeyCryptographyClient = initializeLocalClient(jsonWebKey, null);
+            this.attemptedToInitializeLocalClient = true;
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("Could not initialize local cryptography client.", e));

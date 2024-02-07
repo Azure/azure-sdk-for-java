@@ -184,6 +184,7 @@ public class CryptographyClient {
 
         try {
             this.localKeyCryptographyClient = initializeLocalClient(jsonWebKey, null);
+            this.attemptedToInitializeLocalClient = true;
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("Could not initialize local cryptography client.", e));
@@ -1259,12 +1260,11 @@ public class CryptographyClient {
             try {
                 localKeyCryptographyClient = retrieveJwkAndInitializeLocalClient();
                 jsonWebKey = localKeyCryptographyClient.getJsonWebKey();
+                attemptedToInitializeLocalClient = true;
             } catch (RuntimeException e) {
                 LOGGER.info(
                     "Cannot perform cryptographic operations locally. Defaulting to service-side cryptography.", e);
             }
-
-            attemptedToInitializeLocalClient = true;
         }
 
         return localKeyCryptographyClient != null;
