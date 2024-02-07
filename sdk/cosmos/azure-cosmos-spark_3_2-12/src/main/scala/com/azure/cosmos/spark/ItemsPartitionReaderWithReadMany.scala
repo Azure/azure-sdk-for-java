@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkRowItem}
-import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal, PartitionKeyDefinition}
+import com.azure.cosmos.models.{CosmosItemIdentity, CosmosQueryRequestOptions, ModelBridgeInternal, PartitionKeyDefinition}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
@@ -28,7 +28,7 @@ private[spark] case class ItemsPartitionReaderWithReadMany
   diagnosticsConfig: DiagnosticsConfig,
   sparkEnvironmentInfo: String,
   taskContext: TaskContext,
-  readManyFilters: List[String]
+  readManyFilters: Iterator[CosmosItemIdentity]
 )
   extends PartitionReader[InternalRow] {
 
@@ -76,11 +76,11 @@ private[spark] case class ItemsPartitionReaderWithReadMany
   log.logInfo(s"Using ReadMany from feed range $feedRange of " +
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container} - " +
     s"correlationActivityId ${diagnosticsContext.correlationActivityId}, " +
-    s"readManyFilter: [ feedRange: $feedRange. total size ${readManyFilters.size}], " +
+    s"readManyFilter: [feedRange: $feedRange], " +
     s"Context: ${operationContext.toString} ${getThreadInfo}")
 
   log.logTrace(s"container ${containerTargetConfig.database}.${containerTargetConfig.container} - " +
-    s"readManyFilterDetails: [feedRange: $feedRange. Details: ${readManyFilters.reduce((left, right) => s"$left;$right")}]" +
+    s"readManyFilterDetails: [feedRange: $feedRange." +
     s"Context: ${operationContext.toString} ${getThreadInfo}"
   )
 
@@ -161,7 +161,7 @@ private[spark] case class ItemsPartitionReaderWithReadMany
 
   private lazy val iterator = new TransientIOErrorsRetryingReadManyIterator[SparkRowItem](
     cosmosAsyncContainer,
-    readManyFilters.map(CosmosItemIdentityHelper.tryParseCosmosItemIdentity(_).get),
+    readManyFilters,
     queryOptions,
     readConfig.maxItemCount,
     operationContextAndListenerTuple,
@@ -174,6 +174,8 @@ private[spark] case class ItemsPartitionReaderWithReadMany
   override def get(): InternalRow = {
     cosmosRowConverter.fromRowToInternalRow(iterator.next().row, rowSerializer)
   }
+
+  def getCurrentRow(): Row = iterator.next().row
 
   override def close(): Unit = {
     this.iterator.close()

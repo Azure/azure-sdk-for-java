@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import java.io.Serializable;
 import java.time.Duration;
 
 /**
  * Dedicated Gateway Request Options
  */
-public final class DedicatedGatewayRequestOptions {
+public final class DedicatedGatewayRequestOptions implements Serializable {
 
     private Duration maxIntegratedCacheStaleness;
 
