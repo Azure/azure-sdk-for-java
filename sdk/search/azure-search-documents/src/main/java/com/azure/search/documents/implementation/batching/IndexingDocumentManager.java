@@ -129,10 +129,8 @@ final class IndexingDocumentManager<T> {
         }
     }
 
-    private int fillFromQueue(List<TryTrackingIndexAction<T>> batch,
-        Collection<TryTrackingIndexAction<T>> queue,
-        int requested,
-        Set<String> duplicateKeyTracker) {
+    private int fillFromQueue(List<TryTrackingIndexAction<T>> batch, Collection<TryTrackingIndexAction<T>> queue,
+        int requested, Set<String> duplicateKeyTracker) {
         int actionsAdded = 0;
 
         Iterator<TryTrackingIndexAction<T>> iterator = queue.iterator();
@@ -178,7 +176,6 @@ final class IndexingDocumentManager<T> {
         try {
             semaphore.acquire();
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }

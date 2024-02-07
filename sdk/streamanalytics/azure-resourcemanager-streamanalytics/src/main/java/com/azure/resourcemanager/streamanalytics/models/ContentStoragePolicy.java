@@ -8,17 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentStoragePolicy. */
+/**
+ * Valid values are JobStorageAccount and SystemAccount. If set to JobStorageAccount, this requires the user to also
+ * specify jobStorageAccount property. .
+ */
 public final class ContentStoragePolicy extends ExpandableStringEnum<ContentStoragePolicy> {
-    /** Static value SystemAccount for ContentStoragePolicy. */
+    /**
+     * Static value SystemAccount for ContentStoragePolicy.
+     */
     public static final ContentStoragePolicy SYSTEM_ACCOUNT = fromString("SystemAccount");
 
-    /** Static value JobStorageAccount for ContentStoragePolicy. */
+    /**
+     * Static value JobStorageAccount for ContentStoragePolicy.
+     */
     public static final ContentStoragePolicy JOB_STORAGE_ACCOUNT = fromString("JobStorageAccount");
 
     /**
+     * Creates a new instance of ContentStoragePolicy value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContentStoragePolicy() {
+    }
+
+    /**
      * Creates or finds a ContentStoragePolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContentStoragePolicy.
      */
@@ -27,7 +43,11 @@ public final class ContentStoragePolicy extends ExpandableStringEnum<ContentStor
         return fromString(name, ContentStoragePolicy.class);
     }
 
-    /** @return known ContentStoragePolicy values. */
+    /**
+     * Gets known ContentStoragePolicy values.
+     * 
+     * @return known ContentStoragePolicy values.
+     */
     public static Collection<ContentStoragePolicy> values() {
         return values(ContentStoragePolicy.class);
     }

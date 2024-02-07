@@ -2,77 +2,50 @@
 {{- define "stress.java-servicebus" -}}
 metadata:
   labels:
-    testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
-    testName: java-sb-stress
-    chaos: "{{ default false .Stress.chaos }}"
+    testName: "{{ .Release.Name }}"
 spec:
   nodeSelector:
     sku: chaosperf
   containers:
-    - name: sender1
+    - name: sender
       image: {{ .Stress.imageTag }}
       imagePullPolicy: Always
       command: ['sh', '-c']
       args:
         - |
           set -a &&
+          mkdir -p "$DEBUG_SHARE"
           source $ENV_FILE &&
           export TEST_CLASS={{ .Stress.senderTestClass }}
           export DURATION_MINUTES={{ .Stress.testDurationMin }}
           export SEND_MESSAGE_RATE={{ .Stress.sendRate }}
           export BATCH_SIZE={{ default 5 .Stress.batchSize }}
           export SEND_CONCURRENCY={{ default 20 .Stress.sendConcurrency }}
-          export ANNOTATION={{ default .Stress.Scenario .Stress.annotation }}
-          export APPLICATIONINSIGHTS_ROLE_INSTANCE=sender1 &&
-          export APPLICATIONINSIGHTS_ROLE_NAME=sender-{{ .Stress.BaseName }} &&
-          export OTEL_INSTRUMENTATION_REACTOR_ENABLED=false &&
-          java -javaagent:applicationinsights-agent.jar \
-          -Dreactor.schedulers.defaultBoundedElasticSize={{ default 20 .Stress.sendConcurrency }} \
+          export CONTAINER_NAME=sender
+          export MESSAGE_SIZE_IN_BYTES={{ .Stress.messageSizeInBytes }}
+          java \
+          -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
+          -Dotel.traces.sampler=traceidratio \
+          -Dotel.traces.sampler.arg=0.00001 \
+          -XX:InitialRAMPercentage=75.0 \
+          -XX:MaxRAMPercentage=75.0 \
+          -XX:+HeapDumpOnOutOfMemoryError \
+          -XX:HeapDumpPath="${DEBUG_SHARE}" \
+          -Dreactor.schedulers.defaultBoundedElasticSize={{ mul (default 20 .Stress.sendConcurrency) 4 }} \
           -jar /app/azure-messaging-servicebus-stress-1.0.0-beta.1.jar
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
       resources:
-        requests:
-          memory: "500Mi"
-          cpu: "0.5"
         limits:
-          memory: "500Mi"
+          memory: "1Gi"
           cpu: "0.5"
-    - name: sender2
+    - name: receiver
       image: {{ .Stress.imageTag }}
       imagePullPolicy: Always
       command: ['sh', '-c']
       args:
         - |
           set -a &&
-          source $ENV_FILE &&
-          export TEST_CLASS={{ .Stress.senderTestClass }}
-          export DURATION_MINUTES={{ .Stress.testDurationMin }}
-          export SEND_MESSAGE_RATE={{ .Stress.sendRate }}
-          export BATCH_SIZE={{ default 5 .Stress.batchSize }}
-          export SEND_CONCURRENCY={{ default 20 .Stress.sendConcurrency }}
-          export TRY_TIMEOUT_SECONDS={{ default 60 .Stress.tryTimeout }}
-          export ANNOTATION={{ default .Stress.Scenario .Stress.annotation }}
-          export APPLICATIONINSIGHTS_ROLE_INSTANCE=sender2 &&
-          export APPLICATIONINSIGHTS_ROLE_NAME=sender-{{ .Stress.BaseName }} &&
-          export OTEL_INSTRUMENTATION_REACTOR_ENABLED=false &&
-          java -javaagent:applicationinsights-agent.jar \
-          -Dreactor.schedulers.defaultBoundedElasticSize={{ default 20 .Stress.sendConcurrency }} \
-          -jar /app/azure-messaging-servicebus-stress-1.0.0-beta.1.jar
-      {{- include "stress-test-addons.container-env" . | nindent 6 }}
-      resources:
-        requests:
-          memory: "500Mi"
-          cpu: "0.5"
-        limits:
-          memory: "500Mi"
-          cpu: "0.5"
-    - name: receiver1
-      image: {{ .Stress.imageTag }}
-      imagePullPolicy: Always
-      command: ['sh', '-c']
-      args:
-        - |
-          set -a &&
+          mkdir -p "$DEBUG_SHARE"
           source $ENV_FILE &&
           export LOCK_DURATION_IN_MS={{ .Stress.lockDurationInMs }}
           export TEST_CLASS={{ .Stress.receiverTestClass }}
@@ -86,54 +59,21 @@ spec:
           export AUTO_RENEW_LOCK={{ default "true" .Stress.autoRenewLock }}
           export PROCESS_CALLBACK_DURATION_MAX_IN_MS={{ default 0 .Stress.processCallbackDurationMaxInMs }}
           export PREFETCH_COUNT={{ default 0 .Stress.prefetchCount }}
-          export ANNOTATION={{ default .Stress.Scenario .Stress.annotation }}
-          export APPLICATIONINSIGHTS_ROLE_INSTANCE=receiver1 &&
-          export APPLICATIONINSIGHTS_ROLE_NAME=receiver-{{ .Stress.BaseName }} &&
-          export OTEL_INSTRUMENTATION_REACTOR_ENABLED=false &&
-          java -javaagent:applicationinsights-agent.jar \
+          export CONTAINER_NAME=receiver
+          export MESSAGE_SIZE_IN_BYTES={{ default 1024 .Stress.messageSizeInBytes }}
+          java \
+          -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
+          -Dotel.traces.sampler=traceidratio \
+          -Dotel.traces.sampler.arg=0.00001 \
+          -XX:InitialRAMPercentage=75.0 \
+          -XX:MaxRAMPercentage=75.0 \
+          -XX:+HeapDumpOnOutOfMemoryError \
+          -XX:HeapDumpPath="${DEBUG_SHARE}" \
           -Dreactor.schedulers.defaultBoundedElasticSize={{ default 64 .Stress.processingConcurrency }} \
           -jar /app/azure-messaging-servicebus-stress-1.0.0-beta.1.jar
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
       resources:
-        requests:
-          memory: "1Gi"
-          cpu: "0.5"
         limits:
-          memory: "1Gi"
-          cpu: "0.5"
-    - name: receiver2
-      image: {{ .Stress.imageTag }}
-      imagePullPolicy: Always
-      command: ['sh', '-c']
-      args:
-        - |
-          set -a &&
-          source $ENV_FILE &&
-          export TEST_CLASS={{ .Stress.receiverTestClass }}
-          export DURATION_MINUTES={{ .Stress.testDurationMin }}
-          export LOCK_DURATION_IN_MS={{ .Stress.lockDurationInMs }}
-          export MAX_CONCURRENT_CALLS={{ .Stress.processingConcurrency }}
-          export TRY_TIMEOUT_SECONDS={{ default 60 .Stress.tryTimeout }}
-          export ABANDON_RATIO={{ default 0 .Stress.abandonRatio }}
-          export NO_DISPOSITION_RATIO={{ default 0 .Stress.noDispositionRatio }}
-          export LOCK_DURATION_IN_SEC={{ default 5 .Stress.lockDurationInSec }}
-          export LOCK_RENEWAL_NEEDED_RATIO={{ default 0 .Stress.lockRenewalNeededRatio }}
-          export AUTO_RENEW_LOCK={{ default "true" .Stress.autoRenewLock }}
-          export PROCESS_CALLBACK_DURATION_MAX_IN_MS={{ default 0 .Stress.processCallbackDurationMaxInMs }}
-          export PREFETCH_COUNT={{ default 0 .Stress.prefetchCount }}
-          export ANNOTATION={{ default .Stress.Scenario .Stress.annotation }}
-          export APPLICATIONINSIGHTS_ROLE_INSTANCE=receiver2 &&
-          export APPLICATIONINSIGHTS_ROLE_NAME=receiver-{{ .Stress.BaseName }} &&
-          export OTEL_INSTRUMENTATION_REACTOR_ENABLED=false &&
-          java -javaagent:applicationinsights-agent.jar \
-          -Dreactor.schedulers.defaultBoundedElasticSize={{ default 64 .Stress.processingConcurrency }} \
-          -jar /app/azure-messaging-servicebus-stress-1.0.0-beta.1.jar
-      {{- include "stress-test-addons.container-env" . | nindent 6 }}
-      resources:
-        requests:
-          memory: "1Gi"
-          cpu: "0.5"
-        limits:
-          memory: "1Gi"
-          cpu: "0.5"
+          memory: {{ default "1Gi" .Stress.memory }}
+          cpu: {{ default 1 .Stress.cores }}
 {{- end -}}

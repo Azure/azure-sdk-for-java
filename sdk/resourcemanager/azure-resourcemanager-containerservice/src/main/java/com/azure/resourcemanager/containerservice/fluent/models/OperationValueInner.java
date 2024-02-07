@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a Operation value. */
+/**
+ * Describes the properties of a Operation value.
+ */
 @Immutable
 public final class OperationValueInner {
     /*
@@ -28,13 +30,15 @@ public final class OperationValueInner {
     @JsonProperty(value = "display")
     private OperationValueDisplay innerDisplay;
 
-    /** Creates an instance of OperationValueInner class. */
+    /**
+     * Creates an instance of OperationValueInner class.
+     */
     public OperationValueInner() {
     }
 
     /**
      * Get the origin property: The origin of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -43,7 +47,7 @@ public final class OperationValueInner {
 
     /**
      * Get the name property: The name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +56,7 @@ public final class OperationValueInner {
 
     /**
      * Get the innerDisplay property: Describes the properties of a Operation Value Display.
-     *
+     * 
      * @return the innerDisplay value.
      */
     private OperationValueDisplay innerDisplay() {
@@ -61,7 +65,7 @@ public final class OperationValueInner {
 
     /**
      * Get the operation property: The display name of the operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -70,7 +74,7 @@ public final class OperationValueInner {
 
     /**
      * Get the resource property: The display name of the resource the operation applies to.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -79,7 +83,7 @@ public final class OperationValueInner {
 
     /**
      * Get the description property: The description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -88,7 +92,7 @@ public final class OperationValueInner {
 
     /**
      * Get the provider property: The resource provider for the operation.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -97,7 +101,7 @@ public final class OperationValueInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

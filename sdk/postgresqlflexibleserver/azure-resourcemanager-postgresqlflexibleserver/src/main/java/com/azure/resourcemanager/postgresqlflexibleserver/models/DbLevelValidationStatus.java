@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Validation status summary for an individual database. */
+/**
+ * Validation status summary for an individual database.
+ */
 @Fluent
 public final class DbLevelValidationStatus {
     /*
@@ -36,13 +38,15 @@ public final class DbLevelValidationStatus {
     @JsonProperty(value = "summary")
     private List<ValidationSummaryItem> summary;
 
-    /** Creates an instance of DbLevelValidationStatus class. */
+    /**
+     * Creates an instance of DbLevelValidationStatus class.
+     */
     public DbLevelValidationStatus() {
     }
 
     /**
      * Get the databaseName property: Name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -51,7 +55,7 @@ public final class DbLevelValidationStatus {
 
     /**
      * Set the databaseName property: Name of the database.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the DbLevelValidationStatus object itself.
      */
@@ -62,7 +66,7 @@ public final class DbLevelValidationStatus {
 
     /**
      * Get the startedOn property: Start date-time of a database level validation.
-     *
+     * 
      * @return the startedOn value.
      */
     public OffsetDateTime startedOn() {
@@ -71,7 +75,7 @@ public final class DbLevelValidationStatus {
 
     /**
      * Set the startedOn property: Start date-time of a database level validation.
-     *
+     * 
      * @param startedOn the startedOn value to set.
      * @return the DbLevelValidationStatus object itself.
      */
@@ -82,7 +86,7 @@ public final class DbLevelValidationStatus {
 
     /**
      * Get the endedOn property: End date-time of a database level validation.
-     *
+     * 
      * @return the endedOn value.
      */
     public OffsetDateTime endedOn() {
@@ -91,7 +95,7 @@ public final class DbLevelValidationStatus {
 
     /**
      * Set the endedOn property: End date-time of a database level validation.
-     *
+     * 
      * @param endedOn the endedOn value to set.
      * @return the DbLevelValidationStatus object itself.
      */
@@ -102,7 +106,7 @@ public final class DbLevelValidationStatus {
 
     /**
      * Get the summary property: Summary of database level validations.
-     *
+     * 
      * @return the summary value.
      */
     public List<ValidationSummaryItem> summary() {
@@ -111,7 +115,7 @@ public final class DbLevelValidationStatus {
 
     /**
      * Set the summary property: Summary of database level validations.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the DbLevelValidationStatus object itself.
      */
@@ -122,7 +126,7 @@ public final class DbLevelValidationStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

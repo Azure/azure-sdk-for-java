@@ -9,6 +9,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.Locale;
 
@@ -29,10 +30,10 @@ public final class Permission extends Resource {
     /**
      * Initialize a permission object from json string.
      *
-     * @param jsonString the json string that represents the permission.
+     * @param jsonNode the json string that represents the permission.
      */
-    public Permission(String jsonString) {
-        super(jsonString);
+    public Permission(ObjectNode jsonNode) {
+        super(jsonNode);
     }
 
     /**
@@ -119,6 +120,6 @@ public final class Permission extends Resource {
 
         BridgeInternal.setProperty(this,
             Constants.Properties.RESOURCE_PARTITION_KEY,
-            new Object[]{ModelBridgeInternal.getPartitionKeyObject(partitionkey)});
+            ModelBridgeInternal.getPartitionKeyInternal(partitionkey).toObjectArray());
     }
 }

@@ -13,6 +13,7 @@ import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
+import com.azure.resourcemanager.appservice.models.ConnectionStringType;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
@@ -248,10 +249,12 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
                 .withHttpsOnly(true)
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
+                .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)
                 .create();
         Assertions.assertNotNull(functionApp1);
         assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8);
         Assertions.assertFalse(functionApp1.alwaysOn());
+        Assertions.assertEquals("connectionValue", functionApp1.getConnectionStrings().get("connectionName").value());
 
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
@@ -510,6 +513,10 @@ public class FunctionAppsTests extends AppServiceTest {
             .withMaxReplicas(10)
             .withMinReplicas(3)
             .withPublicDockerHubImage("mcr.microsoft.com/azure-functions/dotnet7-quickstart-demo:1.0")
+            // backend has bug, it returns Array instead of Object:
+            // https://github.com/Azure/azure-rest-api-specs/issues/27176
+//            .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)
+            .withAppSetting("customSetting", "mySettingValue")
             .create();
 
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName1, webappName1);
@@ -517,6 +524,10 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertEquals(managedEnvironmentId, functionApp.managedEnvironmentId());
         Assertions.assertEquals(10, functionApp.maxReplicas());
         Assertions.assertEquals(3, functionApp.minReplicas());
+
+        Assertions.assertNotNull(functionApp.getAppSettings());
+        Assertions.assertEquals("mySettingValue", functionApp.getAppSettings().get("customSetting").value());
+//        Assertions.assertEquals("connectionValue", functionApp.getConnectionStrings().get("connectionName").value());
 
         functionApp.update()
             .withMaxReplicas(15)
@@ -533,6 +544,54 @@ public class FunctionAppsTests extends AppServiceTest {
         // only changed min, max not changed
         Assertions.assertEquals(15, functionApp.maxReplicas());
         Assertions.assertEquals(5, functionApp.minReplicas());
+    }
+
+    @Test
+    @Disabled("need private registry image")
+    public void canCreateAndUpdateFunctionAppOnAcaWithPrivateRegistryImage() {
+        Region region = Region.US_EAST;
+        ResourceGroup resourceGroup = appServiceManager.resourceManager()
+            .resourceGroups()
+            .define(rgName1)
+            .withRegion(region)
+            .create();
+        webappName1 = generateRandomResourceName("java-function-", 20);
+        // function app not created, get will throw exception
+        Assertions.assertThrows(ManagementException.class, () -> appServiceManager
+            .serviceClient().getWebApps().getByResourceGroup(rgName1, webappName1));
+
+        String managedEnvironmentId = createAcaEnvironment(region, resourceGroup);
+        appServiceManager
+            .functionApps()
+            .define(webappName1)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withManagedEnvironmentId(managedEnvironmentId)
+            .withMaxReplicas(10)
+            .withMinReplicas(3)
+            .withPrivateRegistryImage("xiaofeiacr.azurecr.io/samples/nginx:latest", "xiaofeiacr.azurecr.io")
+            .withCredentials("xiaofeiacr", "PASSWORD")
+            .withRuntimeVersion("4")
+            .create();
+
+        FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName1, webappName1);
+
+        Assertions.assertEquals(managedEnvironmentId, functionApp.managedEnvironmentId());
+        Assertions.assertEquals(10, functionApp.maxReplicas());
+        Assertions.assertEquals(3, functionApp.minReplicas());
+
+        String connectionString = functionApp.getAppSettings().get(KEY_AZURE_WEB_JOBS_STORAGE).value();
+
+        functionApp.update()
+            .withMaxReplicas(15)
+            .withNewStorageAccount(generateRandomResourceName("as", 15), StorageAccountSkuType.STANDARD_LRS)
+            .apply();
+
+        // only changed max, min not changed
+        Assertions.assertEquals(15, functionApp.maxReplicas());
+        Assertions.assertEquals(3, functionApp.minReplicas());
+
+        Assertions.assertNotEquals(connectionString, functionApp.getAppSettings().get(KEY_AZURE_WEB_JOBS_STORAGE).value());
     }
 
     private String createAcaEnvironment(Region region, ResourceGroup resourceGroup) {

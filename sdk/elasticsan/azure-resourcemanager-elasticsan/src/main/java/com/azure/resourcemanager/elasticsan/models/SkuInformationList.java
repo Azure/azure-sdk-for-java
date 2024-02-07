@@ -9,7 +9,9 @@ import com.azure.resourcemanager.elasticsan.fluent.models.SkuInformationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of SKU Information objects. */
+/**
+ * List of SKU Information objects.
+ */
 @Immutable
 public final class SkuInformationList {
     /*
@@ -24,13 +26,15 @@ public final class SkuInformationList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SkuInformationList class. */
+    /**
+     * Creates an instance of SkuInformationList class.
+     */
     public SkuInformationList() {
     }
 
     /**
      * Get the value property: List of ResourceType Sku.
-     *
+     * 
      * @return the value value.
      */
     public List<SkuInformationInner> value() {
@@ -39,7 +43,7 @@ public final class SkuInformationList {
 
     /**
      * Get the nextLink property: URI to fetch the next section of the paginated response.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class SkuInformationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

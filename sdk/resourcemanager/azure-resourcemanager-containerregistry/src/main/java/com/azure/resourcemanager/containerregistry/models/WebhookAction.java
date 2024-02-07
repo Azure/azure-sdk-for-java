@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebhookAction. */
+/**
+ * Defines values for WebhookAction.
+ */
 public final class WebhookAction extends ExpandableStringEnum<WebhookAction> {
-    /** Static value push for WebhookAction. */
+    /**
+     * Static value push for WebhookAction.
+     */
     public static final WebhookAction PUSH = fromString("push");
 
-    /** Static value delete for WebhookAction. */
+    /**
+     * Static value delete for WebhookAction.
+     */
     public static final WebhookAction DELETE = fromString("delete");
 
-    /** Static value quarantine for WebhookAction. */
+    /**
+     * Static value quarantine for WebhookAction.
+     */
     public static final WebhookAction QUARANTINE = fromString("quarantine");
 
-    /** Static value chart_push for WebhookAction. */
+    /**
+     * Static value chart_push for WebhookAction.
+     */
     public static final WebhookAction CHART_PUSH = fromString("chart_push");
 
-    /** Static value chart_delete for WebhookAction. */
+    /**
+     * Static value chart_delete for WebhookAction.
+     */
     public static final WebhookAction CHART_DELETE = fromString("chart_delete");
 
     /**
      * Creates a new instance of WebhookAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class WebhookAction extends ExpandableStringEnum<WebhookAction> {
 
     /**
      * Creates or finds a WebhookAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WebhookAction.
      */
@@ -47,7 +59,7 @@ public final class WebhookAction extends ExpandableStringEnum<WebhookAction> {
 
     /**
      * Gets known WebhookAction values.
-     *
+     * 
      * @return known WebhookAction values.
      */
     public static Collection<WebhookAction> values() {

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Git repository property payload for config server. */
+/**
+ * Git repository property payload for config server.
+ */
 @Fluent
 public final class GitPatternRepository {
     /*
@@ -79,8 +81,14 @@ public final class GitPatternRepository {
     private Boolean strictHostKeyChecking;
 
     /**
+     * Creates an instance of GitPatternRepository class.
+     */
+    public GitPatternRepository() {
+    }
+
+    /**
      * Get the name property: Name of the repository.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -89,7 +97,7 @@ public final class GitPatternRepository {
 
     /**
      * Set the name property: Name of the repository.
-     *
+     * 
      * @param name the name value to set.
      * @return the GitPatternRepository object itself.
      */
@@ -100,7 +108,7 @@ public final class GitPatternRepository {
 
     /**
      * Get the pattern property: Collection of pattern of the repository.
-     *
+     * 
      * @return the pattern value.
      */
     public List<String> pattern() {
@@ -109,7 +117,7 @@ public final class GitPatternRepository {
 
     /**
      * Set the pattern property: Collection of pattern of the repository.
-     *
+     * 
      * @param pattern the pattern value to set.
      * @return the GitPatternRepository object itself.
      */
@@ -120,7 +128,7 @@ public final class GitPatternRepository {
 
     /**
      * Get the uri property: URI of the repository.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -129,7 +137,7 @@ public final class GitPatternRepository {
 
     /**
      * Set the uri property: URI of the repository.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the GitPatternRepository object itself.
      */
@@ -140,7 +148,7 @@ public final class GitPatternRepository {
 
     /**
      * Get the label property: Label of the repository.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -149,7 +157,7 @@ public final class GitPatternRepository {
 
     /**
      * Set the label property: Label of the repository.
-     *
+     * 
      * @param label the label value to set.
      * @return the GitPatternRepository object itself.
      */
@@ -160,7 +168,7 @@ public final class GitPatternRepository {
 
     /**
      * Get the searchPaths property: Searching path of the repository.
-     *
+     * 
      * @return the searchPaths value.
      */
     public List<String> searchPaths() {
@@ -169,7 +177,7 @@ public final class GitPatternRepository {
 
     /**
      * Set the searchPaths property: Searching path of the repository.
-     *
+     * 
      * @param searchPaths the searchPaths value to set.
      * @return the GitPatternRepository object itself.
      */
@@ -180,7 +188,7 @@ public final class GitPatternRepository {
 
     /**
      * Get the username property: Username of git repository basic auth.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -189,7 +197,7 @@ public final class GitPatternRepository {
 
     /**
      * Set the username property: Username of git repository basic auth.
-     *
+     * 
      * @param username the username value to set.
      * @return the GitPatternRepository object itself.
      */
@@ -200,7 +208,7 @@ public final class GitPatternRepository {
 
     /**
      * Get the password property: Password of git repository basic auth.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -209,7 +217,7 @@ public final class GitPatternRepository {
 
     /**
      * Set the password property: Password of git repository basic auth.
-     *
+     * 
      * @param password the password value to set.
      * @return the GitPatternRepository object itself.
      */
@@ -220,7 +228,7 @@ public final class GitPatternRepository {
 
     /**
      * Get the hostKey property: Public sshKey of git repository.
-     *
+     * 
      * @return the hostKey value.
      */
     public String hostKey() {
@@ -229,7 +237,7 @@ public final class GitPatternRepository {
 
     /**
      * Set the hostKey property: Public sshKey of git repository.
-     *
+     * 
      * @param hostKey the hostKey value to set.
      * @return the GitPatternRepository object itself.
      */
@@ -240,7 +248,7 @@ public final class GitPatternRepository {
 
     /**
      * Get the hostKeyAlgorithm property: SshKey algorithm of git repository.
-     *
+     * 
      * @return the hostKeyAlgorithm value.
      */
     public String hostKeyAlgorithm() {
@@ -249,7 +257,7 @@ public final class GitPatternRepository {
 
     /**
      * Set the hostKeyAlgorithm property: SshKey algorithm of git repository.
-     *
+     * 
      * @param hostKeyAlgorithm the hostKeyAlgorithm value to set.
      * @return the GitPatternRepository object itself.
      */
@@ -260,7 +268,7 @@ public final class GitPatternRepository {
 
     /**
      * Get the privateKey property: Private sshKey algorithm of git repository.
-     *
+     * 
      * @return the privateKey value.
      */
     public String privateKey() {
@@ -269,7 +277,7 @@ public final class GitPatternRepository {
 
     /**
      * Set the privateKey property: Private sshKey algorithm of git repository.
-     *
+     * 
      * @param privateKey the privateKey value to set.
      * @return the GitPatternRepository object itself.
      */
@@ -280,7 +288,7 @@ public final class GitPatternRepository {
 
     /**
      * Get the strictHostKeyChecking property: Strict host key checking or not.
-     *
+     * 
      * @return the strictHostKeyChecking value.
      */
     public Boolean strictHostKeyChecking() {
@@ -289,7 +297,7 @@ public final class GitPatternRepository {
 
     /**
      * Set the strictHostKeyChecking property: Strict host key checking or not.
-     *
+     * 
      * @param strictHostKeyChecking the strictHostKeyChecking value to set.
      * @return the GitPatternRepository object itself.
      */
@@ -300,19 +308,17 @@ public final class GitPatternRepository {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model GitPatternRepository"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model GitPatternRepository"));
         }
         if (uri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property uri in model GitPatternRepository"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property uri in model GitPatternRepository"));
         }
     }
 

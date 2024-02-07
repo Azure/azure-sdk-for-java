@@ -6,40 +6,43 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.PreValidateEnableBackupResponseInner;
 
-/** An immutable client-side representation of PreValidateEnableBackupResponse. */
+/**
+ * An immutable client-side representation of PreValidateEnableBackupResponse.
+ */
 public interface PreValidateEnableBackupResponse {
     /**
      * Gets the status property: Validation Status.
-     *
+     * 
      * @return the status value.
      */
     ValidationStatus status();
 
     /**
      * Gets the errorCode property: Response error code.
-     *
+     * 
      * @return the errorCode value.
      */
     String errorCode();
 
     /**
      * Gets the errorMessage property: Response error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     String errorMessage();
 
     /**
      * Gets the recommendation property: Recommended action for user.
-     *
+     * 
      * @return the recommendation value.
      */
     String recommendation();
 
     /**
      * Gets the containerName property: Specifies the product specific container name. E.g.
-     * iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required for portal.
-     *
+     * iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required
+     * for portal.
+     * 
      * @return the containerName value.
      */
     String containerName();
@@ -47,7 +50,7 @@ public interface PreValidateEnableBackupResponse {
     /**
      * Gets the protectedItemName property: Specifies the product specific ds name. E.g.
      * vm;iaasvmcontainer;rgname;vmname. This is required for portal.
-     *
+     * 
      * @return the protectedItemName value.
      */
     String protectedItemName();
@@ -55,7 +58,7 @@ public interface PreValidateEnableBackupResponse {
     /**
      * Gets the inner
      * com.azure.resourcemanager.recoveryservicesbackup.fluent.models.PreValidateEnableBackupResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     PreValidateEnableBackupResponseInner innerModel();

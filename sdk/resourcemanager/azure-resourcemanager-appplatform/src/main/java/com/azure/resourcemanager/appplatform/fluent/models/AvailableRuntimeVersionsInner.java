@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appplatform.models.SupportedRuntimeVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AvailableRuntimeVersions model. */
+/**
+ * The AvailableRuntimeVersions model.
+ */
 @Immutable
 public final class AvailableRuntimeVersionsInner {
     /*
@@ -19,8 +21,14 @@ public final class AvailableRuntimeVersionsInner {
     private List<SupportedRuntimeVersion> value;
 
     /**
+     * Creates an instance of AvailableRuntimeVersionsInner class.
+     */
+    public AvailableRuntimeVersionsInner() {
+    }
+
+    /**
      * Get the value property: A list of all supported runtime versions.
-     *
+     * 
      * @return the value value.
      */
     public List<SupportedRuntimeVersion> value() {
@@ -29,7 +37,7 @@ public final class AvailableRuntimeVersionsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

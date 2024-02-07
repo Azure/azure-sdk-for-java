@@ -290,6 +290,7 @@ public class RntbdClientChannelHealthCheckerTests {
         Mockito.when(timestampsMock.tansitTimeoutWriteCount()).thenReturn(writeTimeoutCount);
         Mockito.when(timestampsMock.lastChannelWriteTime()).thenReturn(lastChannelWriteTime);
         Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
+        Mockito.doNothing().when(timestampsMock).resetTransitTimeout();
 
         try(MockedStatic<CpuMemoryMonitor> cpuMemoryMonitorMock = Mockito.mockStatic(CpuMemoryMonitor.class)) {
             CpuLoadHistory cpuLoadHistoryMock = Mockito.mock(CpuLoadHistory.class);
@@ -300,10 +301,14 @@ public class RntbdClientChannelHealthCheckerTests {
                 Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
                 assertThat(healthyResult.isSuccess()).isTrue();
                 assertThat(healthyResult.getNow()).isEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+                // Verify under high CPU load, the transitTimeout will be reset
+                Mockito.verify(timestampsMock, Mockito.times(1)).resetTransitTimeout();
             } else {
                 Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
                 assertThat(healthyResult.isSuccess()).isTrue();
                 assertThat(healthyResult.getNow()).isTrue();
+                // Verify under high CPU load, the transitTimeout will be reset
+                Mockito.verify(timestampsMock, Mockito.times(1)).resetTransitTimeout();
             }
         }
     }
@@ -394,6 +399,7 @@ public class RntbdClientChannelHealthCheckerTests {
         Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteTime);
         Mockito.when(timestampsMock.transitTimeoutCount()).thenReturn(0);
         Mockito.when(timestampsMock.cancellationCount()).thenReturn(config.cancellationCountSinceLastReadThreshold());
+        Mockito.doNothing().when(timestampsMock).resetCancellationCount();
 
         try(MockedStatic<CpuMemoryMonitor> cpuMemoryMonitorMock = Mockito.mockStatic(CpuMemoryMonitor.class)) {
             CpuLoadHistory cpuLoadHistoryMock = Mockito.mock(CpuLoadHistory.class);
@@ -404,10 +410,14 @@ public class RntbdClientChannelHealthCheckerTests {
                 Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
                 assertThat(healthyResult.isSuccess()).isTrue();
                 assertThat(healthyResult.getNow()).isEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+                // Verify under high CPU load, the cancellationCount will be reset
+                Mockito.verify(timestampsMock, Mockito.times(1)).resetCancellationCount();
             } else {
                 Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
                 assertThat(healthyResult.isSuccess()).isTrue();
                 assertThat(healthyResult.getNow()).isTrue();
+                // Verify under high CPU load, the transitTimeout will be reset
+                Mockito.verify(timestampsMock, Mockito.times(1)).resetCancellationCount();
             }
         }
     }

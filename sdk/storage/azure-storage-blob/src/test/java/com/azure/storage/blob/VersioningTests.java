@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.sas.AccountSasPermission;
@@ -105,8 +106,8 @@ public class VersioningTests extends BlobTestBase {
 
         ByteArrayOutputStream outputV1 = new ByteArrayOutputStream();
         ByteArrayOutputStream outputV2 = new ByteArrayOutputStream();
-        blobClient.getVersionClient(blobItemV1.getVersionId()).downloadStream(outputV1);
-        blobClient.getVersionClient(blobItemV2.getVersionId()).downloadStream(outputV2);
+        blobClient.getVersionClient(blobItemV1.getVersionId()).download(outputV1);
+        blobClient.getVersionClient(blobItemV2.getVersionId()).download(outputV2);
 
         TestUtils.assertArraysEqual(outputV1.toByteArray(), contentV1.getBytes(StandardCharsets.UTF_8));
         TestUtils.assertArraysEqual(outputV2.toByteArray(), contentV2.getBytes(StandardCharsets.UTF_8));
@@ -289,8 +290,8 @@ public class VersioningTests extends BlobTestBase {
         BlobClient sourceBlob = blobContainerClient.getBlobClient(generateBlobName());
         sourceBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        SyncPoller<BlobCopyInfo, Void> poller = blobClient.beginCopy(sourceBlob.getBlobUrl(),
-            getPollingDuration(1000));
+        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
+            blobClient.beginCopy(sourceBlob.getBlobUrl(), null));
         BlobCopyInfo copyInfo = poller.waitForCompletion().getValue();
 
         assertNotNull(copyInfo.getVersionId());
@@ -305,8 +306,10 @@ public class VersioningTests extends BlobTestBase {
         BlobClient sourceBlob = blobContainerClient.getBlobClient(generateBlobName());
         sourceBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        Response<String> response = blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl(), null, null,
-            null, null, null, Context.NONE);
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        Response<String> response = blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas,
+            null, null, null, null, null, Context.NONE);
         String versionIdAfterCopy = response.getHeaders().getValue(X_MS_VERSION_ID);
 
         assertNotNull(versionIdAfterCopy);
@@ -372,8 +375,8 @@ public class VersioningTests extends BlobTestBase {
         BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize());
 
-        String versionIdAfterSnapshot = blobClient.createSnapshotWithResponse(null, null, null, Context.NONE)
-            .getHeaders().getValue(X_MS_VERSION_ID);
+        String versionIdAfterSnapshot = blobClient.createSnapshotWithResponse(null, null,
+            null, Context.NONE).getHeaders().getValue(X_MS_VERSION_ID);
 
         assertNotNull(versionIdAfterSnapshot);
         assertNotEquals(blobItemV1.getVersionId(), versionIdAfterSnapshot);

@@ -31,7 +31,7 @@ public final class IntegrationRuntimesGetMonitoringDataWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"name\":\"ygimohrllxj\",\"nodes\":[{\"nodeName\":\"vnyupszchqwnuddl\",\"availableMemoryInMB\":1536231346,\"cpuUtilization\":369062496,\"concurrentJobsLimit\":1868818718,\"concurrentJobsRunning\":679866047,\"maxConcurrentJobs\":119858132,\"sentBytes\":67.79936,\"receivedBytes\":63.317204,\"\":{\"meoxehynurbwv\":\"datawdxu\",\"rymklztorvwgpjxd\":\"dataiiuqmdaqoqjnvmf\",\"uavotfmgtxz\":\"dataiiutdzhkbc\"}},{\"nodeName\":\"dzqmlkrx\",\"availableMemoryInMB\":1365369416,\"cpuUtilization\":1361138327,\"concurrentJobsLimit\":1201070487,\"concurrentJobsRunning\":55729362,\"maxConcurrentJobs\":1590635251,\"sentBytes\":42.207695,\"receivedBytes\":31.539654,\"\":{\"kjirti\":\"datamy\",\"gonrrarznlrr\":\"databvyud\",\"udfhclssedxiigw\":\"datasexaejbmtoun\"}}]}";
+            = "{\"name\":\"f\",\"nodes\":[{\"nodeName\":\"ueprpnzbfoldb\",\"availableMemoryInMB\":1536179630,\"cpuUtilization\":2072525779,\"concurrentJobsLimit\":1312014405,\"concurrentJobsRunning\":242782811,\"maxConcurrentJobs\":1274504130,\"sentBytes\":11.889243,\"receivedBytes\":34.154594,\"\":{\"qbnzr\":\"datao\",\"yabvvbsi\":\"datakmanrowdqoj\"}},{\"nodeName\":\"hs\",\"availableMemoryInMB\":546680352,\"cpuUtilization\":284097172,\"concurrentJobsLimit\":81274646,\"concurrentJobsRunning\":1068311231,\"maxConcurrentJobs\":753240513,\"sentBytes\":84.65222,\"receivedBytes\":93.84653,\"\":{\"h\":\"databtgexiwcqe\",\"pbvzbt\":\"datayrzidoyvquufpl\",\"lqrxewdgzfqsr\":\"dataftotpvoehsfwra\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,9 +49,8 @@ public final class IntegrationRuntimesGetMonitoringDataWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeMonitoringData response = manager.integrationRuntimes()
-            .getMonitoringDataWithResponse("pnsbbhdjeegllcy", "ihy", "dgukfmkqokzvx", com.azure.core.util.Context.NONE)
-            .getValue();
+            .getMonitoringDataWithResponse("fe", "s", "ktreihlszpu", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("ygimohrllxj", response.name());
+        Assertions.assertEquals("f", response.name());
     }
 }

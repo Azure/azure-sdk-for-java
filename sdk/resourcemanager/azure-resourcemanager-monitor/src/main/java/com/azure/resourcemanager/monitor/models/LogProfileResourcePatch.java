@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The log profile resource for patch operations. */
+/**
+ * The log profile resource for patch operations.
+ */
 @Fluent
 public final class LogProfileResourcePatch {
     /*
@@ -27,13 +29,15 @@ public final class LogProfileResourcePatch {
     @JsonProperty(value = "properties")
     private LogProfileProperties innerProperties;
 
-    /** Creates an instance of LogProfileResourcePatch class. */
+    /**
+     * Creates an instance of LogProfileResourcePatch class.
+     */
     public LogProfileResourcePatch() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -42,7 +46,7 @@ public final class LogProfileResourcePatch {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the LogProfileResourcePatch object itself.
      */
@@ -53,7 +57,7 @@ public final class LogProfileResourcePatch {
 
     /**
      * Get the innerProperties property: The log profile properties for an update operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LogProfileProperties innerProperties() {
@@ -63,7 +67,7 @@ public final class LogProfileResourcePatch {
     /**
      * Get the storageAccountId property: the resource id of the storage account to which you would like to send the
      * Activity Log.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -73,7 +77,7 @@ public final class LogProfileResourcePatch {
     /**
      * Set the storageAccountId property: the resource id of the storage account to which you would like to send the
      * Activity Log.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the LogProfileResourcePatch object itself.
      */
@@ -89,7 +93,7 @@ public final class LogProfileResourcePatch {
      * Get the serviceBusRuleId property: The service bus rule ID of the service bus namespace in which you would like
      * to have Event Hubs created for streaming the Activity Log. The rule ID is of the format: '{service bus resource
      * ID}/authorizationrules/{key name}'.
-     *
+     * 
      * @return the serviceBusRuleId value.
      */
     public String serviceBusRuleId() {
@@ -100,7 +104,7 @@ public final class LogProfileResourcePatch {
      * Set the serviceBusRuleId property: The service bus rule ID of the service bus namespace in which you would like
      * to have Event Hubs created for streaming the Activity Log. The rule ID is of the format: '{service bus resource
      * ID}/authorizationrules/{key name}'.
-     *
+     * 
      * @param serviceBusRuleId the serviceBusRuleId value to set.
      * @return the LogProfileResourcePatch object itself.
      */
@@ -115,7 +119,7 @@ public final class LogProfileResourcePatch {
     /**
      * Get the locations property: List of regions for which Activity Log events should be stored or streamed. It is a
      * comma separated list of valid ARM locations including the 'global' location.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -125,7 +129,7 @@ public final class LogProfileResourcePatch {
     /**
      * Set the locations property: List of regions for which Activity Log events should be stored or streamed. It is a
      * comma separated list of valid ARM locations including the 'global' location.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the LogProfileResourcePatch object itself.
      */
@@ -140,7 +144,7 @@ public final class LogProfileResourcePatch {
     /**
      * Get the categories property: the categories of the logs. These categories are created as is convenient to the
      * user. Some values are: 'Write', 'Delete', and/or 'Action.'.
-     *
+     * 
      * @return the categories value.
      */
     public List<String> categories() {
@@ -150,7 +154,7 @@ public final class LogProfileResourcePatch {
     /**
      * Set the categories property: the categories of the logs. These categories are created as is convenient to the
      * user. Some values are: 'Write', 'Delete', and/or 'Action.'.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the LogProfileResourcePatch object itself.
      */
@@ -164,7 +168,7 @@ public final class LogProfileResourcePatch {
 
     /**
      * Get the retentionPolicy property: the retention policy for the events in the log.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
@@ -173,7 +177,7 @@ public final class LogProfileResourcePatch {
 
     /**
      * Set the retentionPolicy property: the retention policy for the events in the log.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the LogProfileResourcePatch object itself.
      */
@@ -187,7 +191,7 @@ public final class LogProfileResourcePatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

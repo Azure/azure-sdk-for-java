@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ProtectableContainers. */
+/**
+ * Resource collection API of ProtectableContainers.
+ */
 public interface ProtectableContainers {
     /**
      * Lists the containers that can be registered to Recovery Services Vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -24,7 +26,7 @@ public interface ProtectableContainers {
 
     /**
      * Lists the containers that can be registered to Recovery Services Vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -35,6 +37,6 @@ public interface ProtectableContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ProtectableContainer resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ProtectableContainerResource> list(
-        String vaultName, String resourceGroupName, String fabricName, String filter, Context context);
+    PagedIterable<ProtectableContainerResource> list(String vaultName, String resourceGroupName, String fabricName,
+        String filter, Context context);
 }

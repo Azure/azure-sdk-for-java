@@ -22,13 +22,15 @@ public final class TagsResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of TagsResource class. */
+    /**
+     * Creates an instance of TagsResource class.
+     */
     public TagsResource() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -37,7 +39,7 @@ public final class TagsResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TagsResource object itself.
      */
@@ -48,7 +50,7 @@ public final class TagsResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

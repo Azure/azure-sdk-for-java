@@ -12,27 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.healthcareapis.fluent.models.IotFhirDestinationInner;
 
-/** An instance of this class provides access to all the operations defined in IotConnectorFhirDestinationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IotConnectorFhirDestinationsClient.
+ */
 public interface IotConnectorFhirDestinationsClient {
     /**
      * Gets the properties of the specified Iot Connector FHIR destination.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param workspaceName The name of workspace resource.
-     * @param iotConnectorName The name of IoT Connector resource.
-     * @param fhirDestinationName The name of IoT Connector FHIR destination resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified Iot Connector FHIR destination.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    IotFhirDestinationInner get(
-        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName);
-
-    /**
-     * Gets the properties of the specified Iot Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -44,16 +30,28 @@ public interface IotConnectorFhirDestinationsClient {
      * @return the properties of the specified Iot Connector FHIR destination along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IotFhirDestinationInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        Context context);
+    Response<IotFhirDestinationInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName, Context context);
+
+    /**
+     * Gets the properties of the specified Iot Connector FHIR destination.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param workspaceName The name of workspace resource.
+     * @param iotConnectorName The name of IoT Connector resource.
+     * @param fhirDestinationName The name of IoT Connector FHIR destination resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified Iot Connector FHIR destination.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IotFhirDestinationInner get(String resourceGroupName, String workspaceName, String iotConnectorName,
+        String fhirDestinationName);
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -66,15 +64,12 @@ public interface IotConnectorFhirDestinationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IotFhirDestinationInner>, IotFhirDestinationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
+        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName,
         IotFhirDestinationInner iotFhirDestination);
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -88,16 +83,12 @@ public interface IotConnectorFhirDestinationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IotFhirDestinationInner>, IotFhirDestinationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        IotFhirDestinationInner iotFhirDestination,
-        Context context);
+        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName,
+        IotFhirDestinationInner iotFhirDestination, Context context);
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -109,16 +100,12 @@ public interface IotConnectorFhirDestinationsClient {
      * @return ioT Connector FHIR destination definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IotFhirDestinationInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        IotFhirDestinationInner iotFhirDestination);
+    IotFhirDestinationInner createOrUpdate(String resourceGroupName, String workspaceName, String iotConnectorName,
+        String fhirDestinationName, IotFhirDestinationInner iotFhirDestination);
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -131,17 +118,12 @@ public interface IotConnectorFhirDestinationsClient {
      * @return ioT Connector FHIR destination definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IotFhirDestinationInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        IotFhirDestinationInner iotFhirDestination,
-        Context context);
+    IotFhirDestinationInner createOrUpdate(String resourceGroupName, String workspaceName, String iotConnectorName,
+        String fhirDestinationName, IotFhirDestinationInner iotFhirDestination, Context context);
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -152,12 +134,12 @@ public interface IotConnectorFhirDestinationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName);
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -169,16 +151,12 @@ public interface IotConnectorFhirDestinationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName, Context context);
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -192,7 +170,7 @@ public interface IotConnectorFhirDestinationsClient {
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -203,10 +181,6 @@ public interface IotConnectorFhirDestinationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
+    void delete(String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName,
         Context context);
 }

@@ -11,17 +11,17 @@ public final class AzureDataExplorerSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataExplorerSink model = BinaryData.fromString(
-            "{\"type\":\"AzureDataExplorerSink\",\"ingestionMappingName\":\"datagqsbjcvaaruvbzcq\",\"ingestionMappingAsJson\":\"datazxtlrmrtdznvj\",\"flushImmediately\":\"datavyqpppswleptta\",\"writeBatchSize\":\"datakntfwxkeu\",\"writeBatchTimeout\":\"datagpcrvv\",\"sinkRetryCount\":\"datadlckpznoveabwpai\",\"sinkRetryWait\":\"datakzysdhars\",\"maxConcurrentConnections\":\"dataqmrpdx\",\"disableMetricsCollection\":\"datadvtv\",\"\":{\"f\":\"datalthnn\"}}")
+            "{\"type\":\"AzureDataExplorerSink\",\"ingestionMappingName\":\"dataqekqtiuveaz\",\"ingestionMappingAsJson\":\"dataiwbiwygwpwq\",\"flushImmediately\":\"dataiqgslspihu\",\"writeBatchSize\":\"datavviotvoolkm\",\"writeBatchTimeout\":\"datazefbbr\",\"sinkRetryCount\":\"dataa\",\"sinkRetryWait\":\"dataxvufrfwa\",\"maxConcurrentConnections\":\"datas\",\"disableMetricsCollection\":\"datas\",\"\":{\"eyeblkgupgnstq\":\"datavpys\"}}")
             .toObject(AzureDataExplorerSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataExplorerSink model = new AzureDataExplorerSink().withWriteBatchSize("datakntfwxkeu")
-            .withWriteBatchTimeout("datagpcrvv").withSinkRetryCount("datadlckpznoveabwpai")
-            .withSinkRetryWait("datakzysdhars").withMaxConcurrentConnections("dataqmrpdx")
-            .withDisableMetricsCollection("datadvtv").withIngestionMappingName("datagqsbjcvaaruvbzcq")
-            .withIngestionMappingAsJson("datazxtlrmrtdznvj").withFlushImmediately("datavyqpppswleptta");
+        AzureDataExplorerSink model
+            = new AzureDataExplorerSink().withWriteBatchSize("datavviotvoolkm").withWriteBatchTimeout("datazefbbr")
+                .withSinkRetryCount("dataa").withSinkRetryWait("dataxvufrfwa").withMaxConcurrentConnections("datas")
+                .withDisableMetricsCollection("datas").withIngestionMappingName("dataqekqtiuveaz")
+                .withIngestionMappingAsJson("dataiwbiwygwpwq").withFlushImmediately("dataiqgslspihu");
         model = BinaryData.fromObject(model).toObject(AzureDataExplorerSink.class);
     }
 }

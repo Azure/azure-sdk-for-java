@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.fluent.models.OperationDefini
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of a request to list container registry operations. */
+/**
+ * The result of a request to list container registry operations.
+ */
 @Fluent
 public final class OperationListResult {
     /*
@@ -25,14 +27,16 @@ public final class OperationListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of OperationListResult class. */
+    /**
+     * Creates an instance of OperationListResult class.
+     */
     public OperationListResult() {
     }
 
     /**
      * Get the value property: The list of container registry operations. Since this list may be incomplete, the
      * nextLink field should be used to request the next list of operations.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationDefinitionInner> value() {
@@ -42,7 +46,7 @@ public final class OperationListResult {
     /**
      * Set the value property: The list of container registry operations. Since this list may be incomplete, the
      * nextLink field should be used to request the next list of operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class OperationListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next list of container registry operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class OperationListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next list of container registry operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OperationListResult object itself.
      */
@@ -73,7 +77,7 @@ public final class OperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationNameAvailabilityReason;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a migration name's availability. */
+/**
+ * Represents a migration name's availability.
+ */
 @Fluent
 public final class MigrationNameAvailabilityResourceInner {
     /*
@@ -42,13 +44,15 @@ public final class MigrationNameAvailabilityResourceInner {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of MigrationNameAvailabilityResourceInner class. */
+    /**
+     * Creates an instance of MigrationNameAvailabilityResourceInner class.
+     */
     public MigrationNameAvailabilityResourceInner() {
     }
 
     /**
      * Get the name property: The resource name to verify.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +61,7 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Set the name property: The resource name to verify.
-     *
+     * 
      * @param name the name value to set.
      * @return the MigrationNameAvailabilityResourceInner object itself.
      */
@@ -68,7 +72,7 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Get the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -77,7 +81,7 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Set the type property: The type of the resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the MigrationNameAvailabilityResourceInner object itself.
      */
@@ -88,7 +92,7 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Get the nameAvailable property: Indicates whether the resource name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -97,7 +101,7 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Get the reason property: Migration name availability reason.
-     *
+     * 
      * @return the reason value.
      */
     public MigrationNameAvailabilityReason reason() {
@@ -106,7 +110,7 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Get the message property: Migration name availability message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -115,21 +119,17 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model MigrationNameAvailabilityResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model MigrationNameAvailabilityResourceInner"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model MigrationNameAvailabilityResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property type in model MigrationNameAvailabilityResourceInner"));
         }
     }
 

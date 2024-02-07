@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** App resource properties payload. */
+/**
+ * App resource properties payload.
+ */
 @Fluent
 public final class AppResourceProperties {
     /*
@@ -93,8 +95,14 @@ public final class AppResourceProperties {
     private IngressSettings ingressSettings;
 
     /**
+     * Creates an instance of AppResourceProperties class.
+     */
+    public AppResourceProperties() {
+    }
+
+    /**
      * Get the publicProperty property: Indicates whether the App exposes public endpoint.
-     *
+     * 
      * @return the publicProperty value.
      */
     public Boolean publicProperty() {
@@ -103,7 +111,7 @@ public final class AppResourceProperties {
 
     /**
      * Set the publicProperty property: Indicates whether the App exposes public endpoint.
-     *
+     * 
      * @param publicProperty the publicProperty value to set.
      * @return the AppResourceProperties object itself.
      */
@@ -114,7 +122,7 @@ public final class AppResourceProperties {
 
     /**
      * Get the url property: URL of the App.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -123,7 +131,7 @@ public final class AppResourceProperties {
 
     /**
      * Get the addonConfigs property: Collection of addons.
-     *
+     * 
      * @return the addonConfigs value.
      */
     public Map<String, Map<String, Object>> addonConfigs() {
@@ -132,7 +140,7 @@ public final class AppResourceProperties {
 
     /**
      * Set the addonConfigs property: Collection of addons.
-     *
+     * 
      * @param addonConfigs the addonConfigs value to set.
      * @return the AppResourceProperties object itself.
      */
@@ -143,7 +151,7 @@ public final class AppResourceProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the App.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AppResourceProvisioningState provisioningState() {
@@ -152,7 +160,7 @@ public final class AppResourceProperties {
 
     /**
      * Get the fqdn property: Fully qualified dns Name.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -161,7 +169,7 @@ public final class AppResourceProperties {
 
     /**
      * Get the httpsOnly property: Indicate if only https is allowed.
-     *
+     * 
      * @return the httpsOnly value.
      */
     public Boolean httpsOnly() {
@@ -170,7 +178,7 @@ public final class AppResourceProperties {
 
     /**
      * Set the httpsOnly property: Indicate if only https is allowed.
-     *
+     * 
      * @param httpsOnly the httpsOnly value to set.
      * @return the AppResourceProperties object itself.
      */
@@ -181,7 +189,7 @@ public final class AppResourceProperties {
 
     /**
      * Get the temporaryDisk property: Temporary disk settings.
-     *
+     * 
      * @return the temporaryDisk value.
      */
     public TemporaryDisk temporaryDisk() {
@@ -190,7 +198,7 @@ public final class AppResourceProperties {
 
     /**
      * Set the temporaryDisk property: Temporary disk settings.
-     *
+     * 
      * @param temporaryDisk the temporaryDisk value to set.
      * @return the AppResourceProperties object itself.
      */
@@ -201,7 +209,7 @@ public final class AppResourceProperties {
 
     /**
      * Get the persistentDisk property: Persistent disk settings.
-     *
+     * 
      * @return the persistentDisk value.
      */
     public PersistentDisk persistentDisk() {
@@ -210,7 +218,7 @@ public final class AppResourceProperties {
 
     /**
      * Set the persistentDisk property: Persistent disk settings.
-     *
+     * 
      * @param persistentDisk the persistentDisk value to set.
      * @return the AppResourceProperties object itself.
      */
@@ -221,7 +229,7 @@ public final class AppResourceProperties {
 
     /**
      * Get the customPersistentDisks property: List of custom persistent disks.
-     *
+     * 
      * @return the customPersistentDisks value.
      */
     public List<CustomPersistentDiskResource> customPersistentDisks() {
@@ -230,7 +238,7 @@ public final class AppResourceProperties {
 
     /**
      * Set the customPersistentDisks property: List of custom persistent disks.
-     *
+     * 
      * @param customPersistentDisks the customPersistentDisks value to set.
      * @return the AppResourceProperties object itself.
      */
@@ -241,7 +249,7 @@ public final class AppResourceProperties {
 
     /**
      * Get the enableEndToEndTls property: Indicate if end to end TLS is enabled.
-     *
+     * 
      * @return the enableEndToEndTls value.
      */
     public Boolean enableEndToEndTls() {
@@ -250,7 +258,7 @@ public final class AppResourceProperties {
 
     /**
      * Set the enableEndToEndTls property: Indicate if end to end TLS is enabled.
-     *
+     * 
      * @param enableEndToEndTls the enableEndToEndTls value to set.
      * @return the AppResourceProperties object itself.
      */
@@ -261,7 +269,7 @@ public final class AppResourceProperties {
 
     /**
      * Get the loadedCertificates property: Collection of loaded certificates.
-     *
+     * 
      * @return the loadedCertificates value.
      */
     public List<LoadedCertificate> loadedCertificates() {
@@ -270,7 +278,7 @@ public final class AppResourceProperties {
 
     /**
      * Set the loadedCertificates property: Collection of loaded certificates.
-     *
+     * 
      * @param loadedCertificates the loadedCertificates value to set.
      * @return the AppResourceProperties object itself.
      */
@@ -281,7 +289,7 @@ public final class AppResourceProperties {
 
     /**
      * Get the vnetAddons property: Additional App settings in vnet injection instance.
-     *
+     * 
      * @return the vnetAddons value.
      */
     public AppVNetAddons vnetAddons() {
@@ -290,7 +298,7 @@ public final class AppResourceProperties {
 
     /**
      * Set the vnetAddons property: Additional App settings in vnet injection instance.
-     *
+     * 
      * @param vnetAddons the vnetAddons value to set.
      * @return the AppResourceProperties object itself.
      */
@@ -301,7 +309,7 @@ public final class AppResourceProperties {
 
     /**
      * Get the ingressSettings property: App ingress settings payload.
-     *
+     * 
      * @return the ingressSettings value.
      */
     public IngressSettings ingressSettings() {
@@ -310,7 +318,7 @@ public final class AppResourceProperties {
 
     /**
      * Set the ingressSettings property: App ingress settings payload.
-     *
+     * 
      * @param ingressSettings the ingressSettings value to set.
      * @return the AppResourceProperties object itself.
      */
@@ -321,7 +329,7 @@ public final class AppResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -25,6 +25,7 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
@@ -179,7 +180,6 @@ public class ImplementationBridgeHelpers {
 
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
-            PartitionKey toPartitionKey(Object objectKey, PartitionKeyInternal partitionKeyInternal);
         }
     }
 
@@ -495,8 +495,8 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosItemResponseBuilderAccessor {
-            <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response,
-                                                               byte[] contentAsByteArray, Class<T> classType,
+            <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosItemResponse<byte[]> response,
+                                                               Class<T> classType,
                                                                ItemDeserializer itemDeserializer);
 
 
@@ -508,7 +508,7 @@ public class ImplementationBridgeHelpers {
 
             byte[] getByteArrayContent(CosmosItemResponse<byte[]> response);
 
-            void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content);
+            void setByteArrayContent(CosmosItemResponse<byte[]> response, Pair<byte[], JsonNode> content);
 
             ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response);
 

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-/** Samples for BackupProtectionIntent List. */
+/**
+ * Samples for BackupProtectionIntent List.
+ */
 public final class BackupProtectionIntentListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/AzureWorkload/BackupProtectionIntent_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
+     * AzureWorkload/BackupProtectionIntent_List.json
      */
     /**
      * Sample code: List protection intent with backupManagementType filter.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void listProtectionIntentWithBackupManagementTypeFilter(

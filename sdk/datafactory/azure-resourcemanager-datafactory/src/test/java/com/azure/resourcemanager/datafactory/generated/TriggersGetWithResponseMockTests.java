@@ -31,7 +31,7 @@ public final class TriggersGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"ub\",\"runtimeState\":\"Stopped\",\"annotations\":[\"dataqmydpoj\",\"dataifixdgkvlze\",\"datadqop\",\"dataabrzrhdezlhsdcp\"],\"\":{\"cdemfatftzxtrjr\":\"datalczhyqdvxqoajfo\",\"qq\":\"datawljfdcyq\"}},\"name\":\"lydywbnerygsi\",\"type\":\"a\",\"etag\":\"ccsvajn\",\"id\":\"uxbyrvgu\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"t\",\"runtimeState\":\"Stopped\",\"annotations\":[\"datamtyfgswpqunvxt\",\"datambwydqoqpqyjebg\",\"dataeuazwkzedifw\",\"datarrgzguupwqoohz\"],\"\":{\"dlxqjshyyrcr\":\"databsncorini\"}},\"name\":\"z\",\"type\":\"faurmqpk\",\"etag\":\"fb\",\"id\":\"fxh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,9 +49,9 @@ public final class TriggersGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TriggerResource response = manager.triggers()
-            .getWithResponse("govnrkyb", "tcrxcnuyfvri", "zqoi", "onnvay", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("zglgx", "qdlwuzkz", "hbieeswb", "bijtepr", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("uxbyrvgu", response.id());
-        Assertions.assertEquals("ub", response.properties().description());
+        Assertions.assertEquals("fxh", response.id());
+        Assertions.assertEquals("t", response.properties().description());
     }
 }

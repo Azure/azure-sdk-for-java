@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ProtectedItemOperationResults. */
+/**
+ * Resource collection API of ProtectedItemOperationResults.
+ */
 public interface ProtectedItemOperationResults {
     /**
      * Fetches the result of any operation on the backup item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -24,18 +26,12 @@ public interface ProtectedItemOperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base class for backup items along with {@link Response}.
      */
-    Response<ProtectedItemResource> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId,
-        Context context);
+    Response<ProtectedItemResource> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String operationId, Context context);
 
     /**
      * Fetches the result of any operation on the backup item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -47,11 +43,6 @@ public interface ProtectedItemOperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base class for backup items.
      */
-    ProtectedItemResource get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId);
+    ProtectedItemResource get(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String operationId);
 }

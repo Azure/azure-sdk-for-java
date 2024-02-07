@@ -10,8 +10,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.models.MetricResult;
-import com.azure.monitor.query.models.MetricsBatchResult;
-import com.azure.monitor.query.models.MetricsQueryOptions;
+import com.azure.monitor.query.models.MetricsBatchQueryOptions;
+import com.azure.monitor.query.models.MetricsBatchQueryResult;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import org.junit.jupiter.api.Test;
 
@@ -19,9 +19,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for {@link MetricsBatchQueryClient}.
@@ -42,12 +40,12 @@ public class MetricsBatchQueryClientTest extends MetricsBatchQueryTestBase {
             // ignore as this is only to generate some metrics
         }
 
-        MetricsQueryOptions options = new MetricsQueryOptions()
+        MetricsBatchQueryOptions options = new MetricsBatchQueryOptions()
             .setGranularity(Duration.ofMinutes(15))
             .setTop(10)
             .setTimeInterval(new QueryTimeInterval(OffsetDateTime.now().minusDays(1), OffsetDateTime.now()));
 
-        MetricsBatchResult metricsQueryResults = metricsBatchQueryClient.queryBatchWithResponse(
+        MetricsBatchQueryResult metricsQueryResults = metricsBatchQueryClient.queryBatchWithResponse(
                 Arrays.asList(resourceId),
                 Arrays.asList("HttpIncomingRequestCount"), "microsoft.appconfiguration/configurationstores", options, Context.NONE)
             .getValue();

@@ -11,8 +11,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -764,9 +764,11 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("dataFeedName", this.dataFeedName);
-        jsonWriter.writeStringField("granularityName", Objects.toString(this.granularityName, null));
+        jsonWriter.writeStringField("granularityName",
+            this.granularityName == null ? null : this.granularityName.toString());
         jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("dataStartFrom", Objects.toString(this.dataStartFrom, null));
+        jsonWriter.writeStringField("dataStartFrom",
+            this.dataStartFrom == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dataStartFrom));
         jsonWriter.writeStringField("dataFeedDescription", this.dataFeedDescription);
         jsonWriter.writeNumberField("granularityAmount", this.granularityAmount);
         jsonWriter.writeArrayField("dimension", this.dimension, (writer, element) -> writer.writeJson(element));
@@ -775,18 +777,20 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
         jsonWriter.writeNumberField("maxConcurrency", this.maxConcurrency);
         jsonWriter.writeNumberField("minRetryIntervalInSeconds", this.minRetryIntervalInSeconds);
         jsonWriter.writeNumberField("stopRetryAfterInSeconds", this.stopRetryAfterInSeconds);
-        jsonWriter.writeStringField("needRollup", Objects.toString(this.needRollup, null));
-        jsonWriter.writeStringField("rollUpMethod", Objects.toString(this.rollUpMethod, null));
+        jsonWriter.writeStringField("needRollup", this.needRollup == null ? null : this.needRollup.toString());
+        jsonWriter.writeStringField("rollUpMethod", this.rollUpMethod == null ? null : this.rollUpMethod.toString());
         jsonWriter.writeArrayField("rollUpColumns", this.rollUpColumns,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("allUpIdentification", this.allUpIdentification);
-        jsonWriter.writeStringField("fillMissingPointType", Objects.toString(this.fillMissingPointType, null));
+        jsonWriter.writeStringField("fillMissingPointType",
+            this.fillMissingPointType == null ? null : this.fillMissingPointType.toString());
         jsonWriter.writeNumberField("fillMissingPointValue", this.fillMissingPointValue);
-        jsonWriter.writeStringField("viewMode", Objects.toString(this.viewMode, null));
+        jsonWriter.writeStringField("viewMode", this.viewMode == null ? null : this.viewMode.toString());
         jsonWriter.writeArrayField("admins", this.admins, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("viewers", this.viewers, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("actionLinkTemplate", this.actionLinkTemplate);
-        jsonWriter.writeStringField("authenticationType", Objects.toString(this.authenticationType, null));
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
         jsonWriter.writeStringField("credentialId", this.credentialId);
         return jsonWriter.writeEndObject();
     }
@@ -817,42 +821,121 @@ public class DataFeedDetail implements JsonSerializable<DataFeedDetail> {
                     readerToUse.skipChildren();
                 }
             }
-
-            if (discriminatorValue != null) {
-                readerToUse = readerToUse.reset();
-            }
             // Use the discriminator value to determine which subtype should be deserialized.
             if ("AzureApplicationInsights".equals(discriminatorValue)) {
-                return AzureApplicationInsightsDataFeed.fromJson(readerToUse);
+                return AzureApplicationInsightsDataFeed.fromJson(readerToUse.reset());
             } else if ("AzureBlob".equals(discriminatorValue)) {
-                return AzureBlobDataFeed.fromJson(readerToUse);
+                return AzureBlobDataFeed.fromJson(readerToUse.reset());
             } else if ("AzureCosmosDB".equals(discriminatorValue)) {
-                return AzureCosmosDBDataFeed.fromJson(readerToUse);
+                return AzureCosmosDBDataFeed.fromJson(readerToUse.reset());
             } else if ("AzureDataExplorer".equals(discriminatorValue)) {
-                return AzureDataExplorerDataFeed.fromJson(readerToUse);
+                return AzureDataExplorerDataFeed.fromJson(readerToUse.reset());
             } else if ("AzureDataLakeStorageGen2".equals(discriminatorValue)) {
-                return AzureDataLakeStorageGen2DataFeed.fromJson(readerToUse);
+                return AzureDataLakeStorageGen2DataFeed.fromJson(readerToUse.reset());
             } else if ("AzureEventHubs".equals(discriminatorValue)) {
-                return AzureEventHubsDataFeed.fromJson(readerToUse);
+                return AzureEventHubsDataFeed.fromJson(readerToUse.reset());
             } else if ("AzureLogAnalytics".equals(discriminatorValue)) {
-                return AzureLogAnalyticsDataFeed.fromJson(readerToUse);
+                return AzureLogAnalyticsDataFeed.fromJson(readerToUse.reset());
             } else if ("AzureTable".equals(discriminatorValue)) {
-                return AzureTableDataFeed.fromJson(readerToUse);
+                return AzureTableDataFeed.fromJson(readerToUse.reset());
             } else if ("InfluxDB".equals(discriminatorValue)) {
-                return InfluxDBDataFeed.fromJson(readerToUse);
+                return InfluxDBDataFeed.fromJson(readerToUse.reset());
             } else if ("MySql".equals(discriminatorValue)) {
-                return MySqlDataFeed.fromJson(readerToUse);
+                return MySqlDataFeed.fromJson(readerToUse.reset());
             } else if ("PostgreSql".equals(discriminatorValue)) {
-                return PostgreSqlDataFeed.fromJson(readerToUse);
+                return PostgreSqlDataFeed.fromJson(readerToUse.reset());
             } else if ("SqlServer".equals(discriminatorValue)) {
-                return SQLServerDataFeed.fromJson(readerToUse);
+                return SQLServerDataFeed.fromJson(readerToUse.reset());
             } else if ("MongoDB".equals(discriminatorValue)) {
-                return MongoDBDataFeed.fromJson(readerToUse);
+                return MongoDBDataFeed.fromJson(readerToUse.reset());
             } else {
-                throw new IllegalStateException(
-                    "Discriminator field 'dataSourceType' didn't match one of the expected values 'AzureApplicationInsights', 'AzureBlob', 'AzureCosmosDB', 'AzureDataExplorer', 'AzureDataLakeStorageGen2', 'AzureEventHubs', 'AzureLogAnalytics', 'AzureTable', 'InfluxDB', 'MySql', 'PostgreSql', 'SqlServer', or 'MongoDB'. It was: '"
-                        + discriminatorValue + "'.");
+                return fromJsonKnownDiscriminator(readerToUse.reset());
             }
+        });
+    }
+
+    static DataFeedDetail fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFeedDetail deserializedDataFeedDetail = new DataFeedDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataFeedName".equals(fieldName)) {
+                    deserializedDataFeedDetail.dataFeedName = reader.getString();
+                } else if ("granularityName".equals(fieldName)) {
+                    deserializedDataFeedDetail.granularityName = Granularity.fromString(reader.getString());
+                } else if ("metrics".equals(fieldName)) {
+                    List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
+                    deserializedDataFeedDetail.metrics = metrics;
+                } else if ("dataStartFrom".equals(fieldName)) {
+                    deserializedDataFeedDetail.dataStartFrom
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("dataFeedId".equals(fieldName)) {
+                    deserializedDataFeedDetail.dataFeedId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("dataFeedDescription".equals(fieldName)) {
+                    deserializedDataFeedDetail.dataFeedDescription = reader.getString();
+                } else if ("granularityAmount".equals(fieldName)) {
+                    deserializedDataFeedDetail.granularityAmount = reader.getNullable(JsonReader::getInt);
+                } else if ("dimension".equals(fieldName)) {
+                    List<DataFeedDimension> dimension
+                        = reader.readArray(reader1 -> DataFeedDimension.fromJson(reader1));
+                    deserializedDataFeedDetail.dimension = dimension;
+                } else if ("timestampColumn".equals(fieldName)) {
+                    deserializedDataFeedDetail.timestampColumn = reader.getString();
+                } else if ("startOffsetInSeconds".equals(fieldName)) {
+                    deserializedDataFeedDetail.startOffsetInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedDataFeedDetail.maxConcurrency = reader.getNullable(JsonReader::getInt);
+                } else if ("minRetryIntervalInSeconds".equals(fieldName)) {
+                    deserializedDataFeedDetail.minRetryIntervalInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("stopRetryAfterInSeconds".equals(fieldName)) {
+                    deserializedDataFeedDetail.stopRetryAfterInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("needRollup".equals(fieldName)) {
+                    deserializedDataFeedDetail.needRollup = NeedRollupEnum.fromString(reader.getString());
+                } else if ("rollUpMethod".equals(fieldName)) {
+                    deserializedDataFeedDetail.rollUpMethod = RollUpMethod.fromString(reader.getString());
+                } else if ("rollUpColumns".equals(fieldName)) {
+                    List<String> rollUpColumns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataFeedDetail.rollUpColumns = rollUpColumns;
+                } else if ("allUpIdentification".equals(fieldName)) {
+                    deserializedDataFeedDetail.allUpIdentification = reader.getString();
+                } else if ("fillMissingPointType".equals(fieldName)) {
+                    deserializedDataFeedDetail.fillMissingPointType
+                        = FillMissingPointType.fromString(reader.getString());
+                } else if ("fillMissingPointValue".equals(fieldName)) {
+                    deserializedDataFeedDetail.fillMissingPointValue = reader.getNullable(JsonReader::getDouble);
+                } else if ("viewMode".equals(fieldName)) {
+                    deserializedDataFeedDetail.viewMode = ViewMode.fromString(reader.getString());
+                } else if ("admins".equals(fieldName)) {
+                    List<String> admins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataFeedDetail.admins = admins;
+                } else if ("viewers".equals(fieldName)) {
+                    List<String> viewers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataFeedDetail.viewers = viewers;
+                } else if ("isAdmin".equals(fieldName)) {
+                    deserializedDataFeedDetail.isAdmin = reader.getNullable(JsonReader::getBoolean);
+                } else if ("creator".equals(fieldName)) {
+                    deserializedDataFeedDetail.creator = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedDataFeedDetail.status = EntityStatus.fromString(reader.getString());
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedDataFeedDetail.createdTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("actionLinkTemplate".equals(fieldName)) {
+                    deserializedDataFeedDetail.actionLinkTemplate = reader.getString();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedDataFeedDetail.authenticationType
+                        = AuthenticationTypeEnum.fromString(reader.getString());
+                } else if ("credentialId".equals(fieldName)) {
+                    deserializedDataFeedDetail.credentialId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataFeedDetail;
         });
     }
 }
