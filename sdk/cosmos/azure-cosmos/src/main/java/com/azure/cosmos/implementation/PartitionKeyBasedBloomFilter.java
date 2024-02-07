@@ -12,9 +12,9 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,13 +40,14 @@ public class PartitionKeyBasedBloomFilter {
                     .putString(from.region, StandardCharsets.UTF_8);
             }
         };
+        this.pkBasedBloomFilter = BloomFilter.create(this.funnel, EXPECTED_INSERTIONS, ALLOWED_FALSE_POSITIVE_RATE);
     }
 
-    public void tryInitializeBloomFilter() {
-        if (this.isBloomFilterInitialized.compareAndSet(false, true)) {
-            this.pkBasedBloomFilter = BloomFilter.create(this.funnel, EXPECTED_INSERTIONS, ALLOWED_FALSE_POSITIVE_RATE);
-        }
-    }
+//    public void tryInitializeBloomFilter() {
+//        if (this.isBloomFilterInitialized.compareAndSet(false, true)) {
+//            this.pkBasedBloomFilter = BloomFilter.create(this.funnel, EXPECTED_INSERTIONS, ALLOWED_FALSE_POSITIVE_RATE);
+//        }
+//    }
 
     public void tryRecordPartitionKey(
         Long collectionRid,
@@ -75,19 +76,16 @@ public class PartitionKeyBasedBloomFilter {
         // a session token should have been received from a region to consider an EPK
         // to also have been requested from the region
         if (!normalizedRegionRoutedTo.equals(firstPreferredWritableRegion)) {
-
-            if (isBloomFilterInitialized.get()) {
-                this.pkBasedBloomFilter.put(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyString,
-                    normalizedRegionRoutedTo, collectionRid));
-                this.recordedRegions.add(normalizedRegionRoutedTo);
-            }
+            this.pkBasedBloomFilter.put(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyString,
+                normalizedRegionRoutedTo, collectionRid));
+            this.recordedRegions.add(normalizedRegionRoutedTo);
         }
     }
 
-    public List<String> tryResolvePartitionKeyPossibleRegions(
+    public Set<String> tryResolveLogicalPartitionPossibleRegions(
         Long collectionRid, PartitionKeyInternal partitionKey, PartitionKeyDefinition partitionKeyDefinition) {
 
-        List<String> regionsPartitionKeyHasProbablySeen = new ArrayList<>();
+        Set<String> regionsPartitionKeyHasProbablySeen = new HashSet<>();
         String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
 
         for (String region : this.recordedRegions) {

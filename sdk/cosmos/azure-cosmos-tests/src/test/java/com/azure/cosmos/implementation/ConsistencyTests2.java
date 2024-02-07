@@ -395,6 +395,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             Mono.whenDelayError(task1, task2).block();
         } finally {
             safeClose(client);
+            System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
         }
     }
 

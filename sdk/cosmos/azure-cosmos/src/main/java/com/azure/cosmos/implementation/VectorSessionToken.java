@@ -213,6 +213,14 @@ public class VectorSessionToken implements ISessionToken {
         return this.sessionToken;
     }
 
+    public long getVersion() {
+        return version;
+    }
+
+    public UnmodifiableMap<Integer, Long> getLocalLsnByRegion() {
+        return localLsnByRegion;
+    }
+
     private boolean areRegionProgressEqual(UnmodifiableMap<Integer, Long> other) {
         if (this.localLsnByRegion.size() != other.size()) {
             return false;
@@ -287,7 +295,7 @@ public class VectorSessionToken implements ISessionToken {
         return true;
     }
 
-    private static boolean tryParseLong(String str, ValueHolder<Long> value) {
+    public static boolean tryParseLong(String str, ValueHolder<Long> value) {
         try {
             value.v = Long.parseLong(str);
             return true;
@@ -296,7 +304,7 @@ public class VectorSessionToken implements ISessionToken {
         }
     }
 
-    private static boolean tryParseInt(String str, ValueHolder<Integer> value) {
+    public static boolean tryParseInt(String str, ValueHolder<Integer> value) {
         try {
             value.v = Integer.parseInt(str);
             return true;
