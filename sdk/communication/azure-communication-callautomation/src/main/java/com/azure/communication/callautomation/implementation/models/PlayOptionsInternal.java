@@ -16,6 +16,13 @@ public final class PlayOptionsInternal {
     @JsonProperty(value = "loop", required = true)
     private boolean loop;
 
+    /*
+     * If set play can barge into other existing queued-up/currently-processing
+     * requests.
+     */
+    @JsonProperty(value = "interruptCallMediaOperation")
+    private Boolean interruptCallMediaOperation;
+
     /**
      * Get the loop property: The option to play the provided audio source in loop when set to true.
      *
@@ -33,6 +40,28 @@ public final class PlayOptionsInternal {
      */
     public PlayOptionsInternal setLoop(boolean loop) {
         this.loop = loop;
+        return this;
+    }
+
+    /**
+     * Get the interruptCallMediaOperation property: If set play can barge into other existing
+     * queued-up/currently-processing requests.
+     *
+     * @return the interruptCallMediaOperation value.
+     */
+    public Boolean isInterruptCallMediaOperation() {
+        return this.interruptCallMediaOperation;
+    }
+
+    /**
+     * Set the interruptCallMediaOperation property: If set play can barge into other existing
+     * queued-up/currently-processing requests.
+     *
+     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
+     * @return the PlayOptionsInternal object itself.
+     */
+    public PlayOptionsInternal setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
+        this.interruptCallMediaOperation = interruptCallMediaOperation;
         return this;
     }
 }
