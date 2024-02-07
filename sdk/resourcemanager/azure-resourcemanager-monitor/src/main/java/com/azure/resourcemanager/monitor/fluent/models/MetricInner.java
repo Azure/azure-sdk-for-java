@@ -11,7 +11,9 @@ import com.azure.resourcemanager.monitor.models.Unit;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result data of a query. */
+/**
+ * The result data of a query.
+ */
 @Fluent
 public final class MetricInner {
     /*
@@ -62,13 +64,15 @@ public final class MetricInner {
     @JsonProperty(value = "timeseries", required = true)
     private List<TimeSeriesElement> timeseries;
 
-    /** Creates an instance of MetricInner class. */
+    /**
+     * Creates an instance of MetricInner class.
+     */
     public MetricInner() {
     }
 
     /**
      * Get the id property: the metric Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -77,7 +81,7 @@ public final class MetricInner {
 
     /**
      * Set the id property: the metric Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the MetricInner object itself.
      */
@@ -88,7 +92,7 @@ public final class MetricInner {
 
     /**
      * Get the type property: the resource type of the metric resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -97,7 +101,7 @@ public final class MetricInner {
 
     /**
      * Set the type property: the resource type of the metric resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the MetricInner object itself.
      */
@@ -108,7 +112,7 @@ public final class MetricInner {
 
     /**
      * Get the name property: the name and the display name of the metric, i.e. it is localizable string.
-     *
+     * 
      * @return the name value.
      */
     public LocalizableStringInner name() {
@@ -117,7 +121,7 @@ public final class MetricInner {
 
     /**
      * Set the name property: the name and the display name of the metric, i.e. it is localizable string.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricInner object itself.
      */
@@ -128,7 +132,7 @@ public final class MetricInner {
 
     /**
      * Get the displayDescription property: Detailed description of this metric.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -137,7 +141,7 @@ public final class MetricInner {
 
     /**
      * Set the displayDescription property: Detailed description of this metric.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the MetricInner object itself.
      */
@@ -148,7 +152,7 @@ public final class MetricInner {
 
     /**
      * Get the errorCode property: 'Success' or the error details on query failures for this metric.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -157,7 +161,7 @@ public final class MetricInner {
 
     /**
      * Set the errorCode property: 'Success' or the error details on query failures for this metric.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the MetricInner object itself.
      */
@@ -168,7 +172,7 @@ public final class MetricInner {
 
     /**
      * Get the errorMessage property: Error message encountered querying this specific metric.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -177,7 +181,7 @@ public final class MetricInner {
 
     /**
      * Set the errorMessage property: Error message encountered querying this specific metric.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the MetricInner object itself.
      */
@@ -188,7 +192,7 @@ public final class MetricInner {
 
     /**
      * Get the unit property: The unit of the metric.
-     *
+     * 
      * @return the unit value.
      */
     public Unit unit() {
@@ -197,7 +201,7 @@ public final class MetricInner {
 
     /**
      * Set the unit property: The unit of the metric.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the MetricInner object itself.
      */
@@ -208,7 +212,7 @@ public final class MetricInner {
 
     /**
      * Get the timeseries property: the time series returned when a data query is performed.
-     *
+     * 
      * @return the timeseries value.
      */
     public List<TimeSeriesElement> timeseries() {
@@ -217,7 +221,7 @@ public final class MetricInner {
 
     /**
      * Set the timeseries property: the time series returned when a data query is performed.
-     *
+     * 
      * @param timeseries the timeseries value to set.
      * @return the MetricInner object itself.
      */
@@ -228,7 +232,7 @@ public final class MetricInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -237,26 +241,22 @@ public final class MetricInner {
                 .logExceptionAsError(new IllegalArgumentException("Missing required property id in model MetricInner"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model MetricInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model MetricInner"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model MetricInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model MetricInner"));
         } else {
             name().validate();
         }
         if (unit() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property unit in model MetricInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property unit in model MetricInner"));
         }
         if (timeseries() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeseries in model MetricInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property timeseries in model MetricInner"));
         } else {
             timeseries().forEach(e -> e.validate());
         }

@@ -30,22 +30,28 @@ import com.azure.resourcemanager.monitor.fluent.models.EventDataInner;
 import com.azure.resourcemanager.monitor.models.EventDataCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TenantActivityLogsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TenantActivityLogsClient.
+ */
 public final class TenantActivityLogsClientImpl implements TenantActivityLogsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TenantActivityLogsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MonitorClientImpl client;
 
     /**
      * Initializes an instance of TenantActivityLogsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TenantActivityLogsClientImpl(MonitorClientImpl client) {
-        this.service =
-            RestProxy.create(TenantActivityLogsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(TenantActivityLogsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,27 +62,20 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientTenantA")
     public interface TenantActivityLogsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Insights/eventtypes/management/values")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventDataCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$select") String select,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EventDataCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$select") String select, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventDataCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EventDataCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -84,56 +83,46 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point out
      * here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces
      * the logs that were generated at the tenant level.
-     *
+     * 
      * @param filter Reduces the set of data collected. &lt;br&gt;The **$filter** is very restricted and allows only the
-     *     following patterns.&lt;br&gt;- List events for a resource group: $filter=eventTimestamp ge '&lt;Start
-     *     Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and
-     *     resourceGroupName eq '&lt;ResourceGroupName&gt;'.&lt;br&gt;- List events for resource: $filter=eventTimestamp
-     *     ge '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and
-     *     resourceUri eq '&lt;ResourceURI&gt;'.&lt;br&gt;- List events for a subscription: $filter=eventTimestamp ge
-     *     '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin,
-     *     Operation'.&lt;br&gt;- List events for a resource provider: $filter=eventTimestamp ge '&lt;Start Time&gt;'
-     *     and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceProvider eq
-     *     '&lt;ResourceProviderName&gt;'.&lt;br&gt;- List events for a correlation Id:
-     *     api-version=2014-04-01&amp;$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     *     '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin, Operation' and correlationId eq
-     *     '&lt;CorrelationID&gt;'.&lt;br&gt;**NOTE**: No other syntax is allowed.
+     * following patterns.&lt;br&gt;- List events for a resource group: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceGroupName eq
+     * '&lt;ResourceGroupName&gt;'.&lt;br&gt;- List events for resource: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceUri eq
+     * '&lt;ResourceURI&gt;'.&lt;br&gt;- List events for a subscription: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation'.&lt;br&gt;- List events for a
+     * resource provider: $filter=eventTimestamp ge '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and
+     * eventChannels eq 'Admin, Operation' and resourceProvider eq '&lt;ResourceProviderName&gt;'.&lt;br&gt;- List
+     * events for a correlation Id: api-version=2014-04-01&amp;$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z'
+     * and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin, Operation' and correlationId eq
+     * '&lt;CorrelationID&gt;'.&lt;br&gt;**NOTE**: No other syntax is allowed.
      * @param select Used to fetch events with only the given properties.&lt;br&gt;The **$select** argument is a comma
-     *     separated list of property names to be returned. Possible values are: *authorization*, *claims*,
-     *     *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*,
-     *     *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*,
-     *     *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*.
+     * separated list of property names to be returned. Possible values are: *authorization*, *claims*, *correlationId*,
+     * *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*, *operationId*,
+     * *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*, *status*,
+     * *submissionTimestamp*, *subStatus*, *subscriptionId*.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point
+     * out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only
+     * surfaces the logs that were generated at the tenant level along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listSinglePageAsync(String filter, String select) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.list(this.client.getEndpoint(), apiVersion, filter, select, accept, context))
-            .<PagedResponse<EventDataInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventDataInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -142,57 +131,46 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point out
      * here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces
      * the logs that were generated at the tenant level.
-     *
+     * 
      * @param filter Reduces the set of data collected. &lt;br&gt;The **$filter** is very restricted and allows only the
-     *     following patterns.&lt;br&gt;- List events for a resource group: $filter=eventTimestamp ge '&lt;Start
-     *     Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and
-     *     resourceGroupName eq '&lt;ResourceGroupName&gt;'.&lt;br&gt;- List events for resource: $filter=eventTimestamp
-     *     ge '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and
-     *     resourceUri eq '&lt;ResourceURI&gt;'.&lt;br&gt;- List events for a subscription: $filter=eventTimestamp ge
-     *     '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin,
-     *     Operation'.&lt;br&gt;- List events for a resource provider: $filter=eventTimestamp ge '&lt;Start Time&gt;'
-     *     and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceProvider eq
-     *     '&lt;ResourceProviderName&gt;'.&lt;br&gt;- List events for a correlation Id:
-     *     api-version=2014-04-01&amp;$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     *     '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin, Operation' and correlationId eq
-     *     '&lt;CorrelationID&gt;'.&lt;br&gt;**NOTE**: No other syntax is allowed.
+     * following patterns.&lt;br&gt;- List events for a resource group: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceGroupName eq
+     * '&lt;ResourceGroupName&gt;'.&lt;br&gt;- List events for resource: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceUri eq
+     * '&lt;ResourceURI&gt;'.&lt;br&gt;- List events for a subscription: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation'.&lt;br&gt;- List events for a
+     * resource provider: $filter=eventTimestamp ge '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and
+     * eventChannels eq 'Admin, Operation' and resourceProvider eq '&lt;ResourceProviderName&gt;'.&lt;br&gt;- List
+     * events for a correlation Id: api-version=2014-04-01&amp;$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z'
+     * and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin, Operation' and correlationId eq
+     * '&lt;CorrelationID&gt;'.&lt;br&gt;**NOTE**: No other syntax is allowed.
      * @param select Used to fetch events with only the given properties.&lt;br&gt;The **$select** argument is a comma
-     *     separated list of property names to be returned. Possible values are: *authorization*, *claims*,
-     *     *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*,
-     *     *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*,
-     *     *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*.
+     * separated list of property names to be returned. Possible values are: *authorization*, *claims*, *correlationId*,
+     * *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*, *operationId*,
+     * *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*, *status*,
+     * *submissionTimestamp*, *subStatus*, *subscriptionId*.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point
+     * out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only
+     * surfaces the logs that were generated at the tenant level along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listSinglePageAsync(String filter, String select, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, filter, select, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, filter, select, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -200,37 +178,36 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point out
      * here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces
      * the logs that were generated at the tenant level.
-     *
+     * 
      * @param filter Reduces the set of data collected. &lt;br&gt;The **$filter** is very restricted and allows only the
-     *     following patterns.&lt;br&gt;- List events for a resource group: $filter=eventTimestamp ge '&lt;Start
-     *     Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and
-     *     resourceGroupName eq '&lt;ResourceGroupName&gt;'.&lt;br&gt;- List events for resource: $filter=eventTimestamp
-     *     ge '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and
-     *     resourceUri eq '&lt;ResourceURI&gt;'.&lt;br&gt;- List events for a subscription: $filter=eventTimestamp ge
-     *     '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin,
-     *     Operation'.&lt;br&gt;- List events for a resource provider: $filter=eventTimestamp ge '&lt;Start Time&gt;'
-     *     and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceProvider eq
-     *     '&lt;ResourceProviderName&gt;'.&lt;br&gt;- List events for a correlation Id:
-     *     api-version=2014-04-01&amp;$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     *     '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin, Operation' and correlationId eq
-     *     '&lt;CorrelationID&gt;'.&lt;br&gt;**NOTE**: No other syntax is allowed.
+     * following patterns.&lt;br&gt;- List events for a resource group: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceGroupName eq
+     * '&lt;ResourceGroupName&gt;'.&lt;br&gt;- List events for resource: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceUri eq
+     * '&lt;ResourceURI&gt;'.&lt;br&gt;- List events for a subscription: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation'.&lt;br&gt;- List events for a
+     * resource provider: $filter=eventTimestamp ge '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and
+     * eventChannels eq 'Admin, Operation' and resourceProvider eq '&lt;ResourceProviderName&gt;'.&lt;br&gt;- List
+     * events for a correlation Id: api-version=2014-04-01&amp;$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z'
+     * and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin, Operation' and correlationId eq
+     * '&lt;CorrelationID&gt;'.&lt;br&gt;**NOTE**: No other syntax is allowed.
      * @param select Used to fetch events with only the given properties.&lt;br&gt;The **$select** argument is a comma
-     *     separated list of property names to be returned. Possible values are: *authorization*, *claims*,
-     *     *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*,
-     *     *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*,
-     *     *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*.
+     * separated list of property names to be returned. Possible values are: *authorization*, *claims*, *correlationId*,
+     * *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*, *operationId*,
+     * *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*, *status*,
+     * *submissionTimestamp*, *subStatus*, *subscriptionId*.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link PagedFlux}.
+     * Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point
+     * out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only
+     * surfaces the logs that were generated at the tenant level as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EventDataInner> listAsync(String filter, String select) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, select), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, select),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -238,20 +215,20 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point out
      * here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces
      * the logs that were generated at the tenant level.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link PagedFlux}.
+     * Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point
+     * out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only
+     * surfaces the logs that were generated at the tenant level as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EventDataInner> listAsync() {
         final String filter = null;
         final String select = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, select), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, select),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -259,38 +236,37 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point out
      * here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces
      * the logs that were generated at the tenant level.
-     *
+     * 
      * @param filter Reduces the set of data collected. &lt;br&gt;The **$filter** is very restricted and allows only the
-     *     following patterns.&lt;br&gt;- List events for a resource group: $filter=eventTimestamp ge '&lt;Start
-     *     Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and
-     *     resourceGroupName eq '&lt;ResourceGroupName&gt;'.&lt;br&gt;- List events for resource: $filter=eventTimestamp
-     *     ge '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and
-     *     resourceUri eq '&lt;ResourceURI&gt;'.&lt;br&gt;- List events for a subscription: $filter=eventTimestamp ge
-     *     '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin,
-     *     Operation'.&lt;br&gt;- List events for a resource provider: $filter=eventTimestamp ge '&lt;Start Time&gt;'
-     *     and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceProvider eq
-     *     '&lt;ResourceProviderName&gt;'.&lt;br&gt;- List events for a correlation Id:
-     *     api-version=2014-04-01&amp;$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     *     '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin, Operation' and correlationId eq
-     *     '&lt;CorrelationID&gt;'.&lt;br&gt;**NOTE**: No other syntax is allowed.
+     * following patterns.&lt;br&gt;- List events for a resource group: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceGroupName eq
+     * '&lt;ResourceGroupName&gt;'.&lt;br&gt;- List events for resource: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceUri eq
+     * '&lt;ResourceURI&gt;'.&lt;br&gt;- List events for a subscription: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation'.&lt;br&gt;- List events for a
+     * resource provider: $filter=eventTimestamp ge '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and
+     * eventChannels eq 'Admin, Operation' and resourceProvider eq '&lt;ResourceProviderName&gt;'.&lt;br&gt;- List
+     * events for a correlation Id: api-version=2014-04-01&amp;$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z'
+     * and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin, Operation' and correlationId eq
+     * '&lt;CorrelationID&gt;'.&lt;br&gt;**NOTE**: No other syntax is allowed.
      * @param select Used to fetch events with only the given properties.&lt;br&gt;The **$select** argument is a comma
-     *     separated list of property names to be returned. Possible values are: *authorization*, *claims*,
-     *     *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*,
-     *     *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*,
-     *     *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*.
+     * separated list of property names to be returned. Possible values are: *authorization*, *claims*, *correlationId*,
+     * *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*, *operationId*,
+     * *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*, *status*,
+     * *submissionTimestamp*, *subStatus*, *subscriptionId*.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link PagedFlux}.
+     * Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point
+     * out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only
+     * surfaces the logs that were generated at the tenant level as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventDataInner> listAsync(String filter, String select, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, select, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, select, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -298,14 +274,13 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point out
      * here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces
      * the logs that were generated at the tenant level.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link
-     *     PagedIterable}.
+     * Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point
+     * out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only
+     * surfaces the logs that were generated at the tenant level as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventDataInner> list() {
@@ -319,34 +294,32 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point out
      * here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces
      * the logs that were generated at the tenant level.
-     *
+     * 
      * @param filter Reduces the set of data collected. &lt;br&gt;The **$filter** is very restricted and allows only the
-     *     following patterns.&lt;br&gt;- List events for a resource group: $filter=eventTimestamp ge '&lt;Start
-     *     Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and
-     *     resourceGroupName eq '&lt;ResourceGroupName&gt;'.&lt;br&gt;- List events for resource: $filter=eventTimestamp
-     *     ge '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and
-     *     resourceUri eq '&lt;ResourceURI&gt;'.&lt;br&gt;- List events for a subscription: $filter=eventTimestamp ge
-     *     '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin,
-     *     Operation'.&lt;br&gt;- List events for a resource provider: $filter=eventTimestamp ge '&lt;Start Time&gt;'
-     *     and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceProvider eq
-     *     '&lt;ResourceProviderName&gt;'.&lt;br&gt;- List events for a correlation Id:
-     *     api-version=2014-04-01&amp;$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     *     '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin, Operation' and correlationId eq
-     *     '&lt;CorrelationID&gt;'.&lt;br&gt;**NOTE**: No other syntax is allowed.
+     * following patterns.&lt;br&gt;- List events for a resource group: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceGroupName eq
+     * '&lt;ResourceGroupName&gt;'.&lt;br&gt;- List events for resource: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation' and resourceUri eq
+     * '&lt;ResourceURI&gt;'.&lt;br&gt;- List events for a subscription: $filter=eventTimestamp ge '&lt;Start Time&gt;'
+     * and eventTimestamp le '&lt;End Time&gt;' and eventChannels eq 'Admin, Operation'.&lt;br&gt;- List events for a
+     * resource provider: $filter=eventTimestamp ge '&lt;Start Time&gt;' and eventTimestamp le '&lt;End Time&gt;' and
+     * eventChannels eq 'Admin, Operation' and resourceProvider eq '&lt;ResourceProviderName&gt;'.&lt;br&gt;- List
+     * events for a correlation Id: api-version=2014-04-01&amp;$filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z'
+     * and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and eventChannels eq 'Admin, Operation' and correlationId eq
+     * '&lt;CorrelationID&gt;'.&lt;br&gt;**NOTE**: No other syntax is allowed.
      * @param select Used to fetch events with only the given properties.&lt;br&gt;The **$select** argument is a comma
-     *     separated list of property names to be returned. Possible values are: *authorization*, *claims*,
-     *     *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*,
-     *     *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*,
-     *     *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*.
+     * separated list of property names to be returned. Possible values are: *authorization*, *claims*, *correlationId*,
+     * *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*, *operationId*,
+     * *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*, *status*,
+     * *submissionTimestamp*, *subStatus*, *subscriptionId*.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link
-     *     PagedIterable}.
+     * Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point
+     * out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only
+     * surfaces the logs that were generated at the tenant level as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventDataInner> list(String filter, String select, Context context) {
@@ -355,14 +328,15 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return represents collection of events along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listNextSinglePageAsync(String nextLink) {
@@ -370,37 +344,28 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventDataInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EventDataInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return represents collection of events along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -408,23 +373,13 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

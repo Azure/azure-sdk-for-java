@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An SMS receiver. */
+/**
+ * An SMS receiver.
+ */
 @Fluent
 public final class SmsReceiver {
     /*
@@ -35,14 +37,16 @@ public final class SmsReceiver {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ReceiverStatus status;
 
-    /** Creates an instance of SmsReceiver class. */
+    /**
+     * Creates an instance of SmsReceiver class.
+     */
     public SmsReceiver() {
     }
 
     /**
      * Get the name property: The name of the SMS receiver. Names must be unique across all receivers within an action
      * group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +56,7 @@ public final class SmsReceiver {
     /**
      * Set the name property: The name of the SMS receiver. Names must be unique across all receivers within an action
      * group.
-     *
+     * 
      * @param name the name value to set.
      * @return the SmsReceiver object itself.
      */
@@ -63,7 +67,7 @@ public final class SmsReceiver {
 
     /**
      * Get the countryCode property: The country code of the SMS receiver.
-     *
+     * 
      * @return the countryCode value.
      */
     public String countryCode() {
@@ -72,7 +76,7 @@ public final class SmsReceiver {
 
     /**
      * Set the countryCode property: The country code of the SMS receiver.
-     *
+     * 
      * @param countryCode the countryCode value to set.
      * @return the SmsReceiver object itself.
      */
@@ -83,7 +87,7 @@ public final class SmsReceiver {
 
     /**
      * Get the phoneNumber property: The phone number of the SMS receiver.
-     *
+     * 
      * @return the phoneNumber value.
      */
     public String phoneNumber() {
@@ -92,7 +96,7 @@ public final class SmsReceiver {
 
     /**
      * Set the phoneNumber property: The phone number of the SMS receiver.
-     *
+     * 
      * @param phoneNumber the phoneNumber value to set.
      * @return the SmsReceiver object itself.
      */
@@ -103,7 +107,7 @@ public final class SmsReceiver {
 
     /**
      * Get the status property: The status of the receiver.
-     *
+     * 
      * @return the status value.
      */
     public ReceiverStatus status() {
@@ -112,24 +116,21 @@ public final class SmsReceiver {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model SmsReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model SmsReceiver"));
         }
         if (countryCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property countryCode in model SmsReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property countryCode in model SmsReceiver"));
         }
         if (phoneNumber() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property phoneNumber in model SmsReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property phoneNumber in model SmsReceiver"));
         }
     }
 

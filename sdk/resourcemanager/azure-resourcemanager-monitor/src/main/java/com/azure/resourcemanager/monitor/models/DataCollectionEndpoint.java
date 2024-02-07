@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of data collection endpoint. */
+/**
+ * Definition of data collection endpoint.
+ */
 @Fluent
 public class DataCollectionEndpoint {
     /*
@@ -46,13 +48,15 @@ public class DataCollectionEndpoint {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private KnownDataCollectionEndpointProvisioningState provisioningState;
 
-    /** Creates an instance of DataCollectionEndpoint class. */
+    /**
+     * Creates an instance of DataCollectionEndpoint class.
+     */
     public DataCollectionEndpoint() {
     }
 
     /**
      * Get the description property: Description of the data collection endpoint.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -61,7 +65,7 @@ public class DataCollectionEndpoint {
 
     /**
      * Set the description property: Description of the data collection endpoint.
-     *
+     * 
      * @param description the description value to set.
      * @return the DataCollectionEndpoint object itself.
      */
@@ -73,7 +77,7 @@ public class DataCollectionEndpoint {
     /**
      * Get the immutableId property: The immutable ID of this data collection endpoint resource. This property is
      * READ-ONLY.
-     *
+     * 
      * @return the immutableId value.
      */
     public String immutableId() {
@@ -83,7 +87,7 @@ public class DataCollectionEndpoint {
     /**
      * Set the immutableId property: The immutable ID of this data collection endpoint resource. This property is
      * READ-ONLY.
-     *
+     * 
      * @param immutableId the immutableId value to set.
      * @return the DataCollectionEndpoint object itself.
      */
@@ -94,7 +98,7 @@ public class DataCollectionEndpoint {
 
     /**
      * Get the configurationAccess property: The endpoint used by clients to access their configuration.
-     *
+     * 
      * @return the configurationAccess value.
      */
     public DataCollectionEndpointConfigurationAccess configurationAccess() {
@@ -103,19 +107,19 @@ public class DataCollectionEndpoint {
 
     /**
      * Set the configurationAccess property: The endpoint used by clients to access their configuration.
-     *
+     * 
      * @param configurationAccess the configurationAccess value to set.
      * @return the DataCollectionEndpoint object itself.
      */
-    public DataCollectionEndpoint withConfigurationAccess(
-        DataCollectionEndpointConfigurationAccess configurationAccess) {
+    public DataCollectionEndpoint
+        withConfigurationAccess(DataCollectionEndpointConfigurationAccess configurationAccess) {
         this.configurationAccess = configurationAccess;
         return this;
     }
 
     /**
      * Get the logsIngestion property: The endpoint used by clients to ingest logs.
-     *
+     * 
      * @return the logsIngestion value.
      */
     public DataCollectionEndpointLogsIngestion logsIngestion() {
@@ -124,7 +128,7 @@ public class DataCollectionEndpoint {
 
     /**
      * Set the logsIngestion property: The endpoint used by clients to ingest logs.
-     *
+     * 
      * @param logsIngestion the logsIngestion value to set.
      * @return the DataCollectionEndpoint object itself.
      */
@@ -135,7 +139,7 @@ public class DataCollectionEndpoint {
 
     /**
      * Get the networkAcls property: Network access control rules for the endpoints.
-     *
+     * 
      * @return the networkAcls value.
      */
     public DataCollectionEndpointNetworkAcls networkAcls() {
@@ -144,7 +148,7 @@ public class DataCollectionEndpoint {
 
     /**
      * Set the networkAcls property: Network access control rules for the endpoints.
-     *
+     * 
      * @param networkAcls the networkAcls value to set.
      * @return the DataCollectionEndpoint object itself.
      */
@@ -155,7 +159,7 @@ public class DataCollectionEndpoint {
 
     /**
      * Get the provisioningState property: The resource provisioning state. This property is READ-ONLY.
-     *
+     * 
      * @return the provisioningState value.
      */
     public KnownDataCollectionEndpointProvisioningState provisioningState() {
@@ -164,7 +168,7 @@ public class DataCollectionEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

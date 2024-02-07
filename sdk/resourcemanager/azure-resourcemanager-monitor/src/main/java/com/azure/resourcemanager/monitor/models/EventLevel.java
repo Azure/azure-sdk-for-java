@@ -7,24 +7,38 @@ package com.azure.resourcemanager.monitor.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** the event level. */
+/**
+ * the event level.
+ */
 public enum EventLevel {
-    /** Enum value Critical. */
+    /**
+     * Enum value Critical.
+     */
     CRITICAL("Critical"),
 
-    /** Enum value Error. */
+    /**
+     * Enum value Error.
+     */
     ERROR("Error"),
 
-    /** Enum value Warning. */
+    /**
+     * Enum value Warning.
+     */
     WARNING("Warning"),
 
-    /** Enum value Informational. */
+    /**
+     * Enum value Informational.
+     */
     INFORMATIONAL("Informational"),
 
-    /** Enum value Verbose. */
+    /**
+     * Enum value Verbose.
+     */
     VERBOSE("Verbose");
 
-    /** The actual serialized value for a EventLevel instance. */
+    /**
+     * The actual serialized value for a EventLevel instance.
+     */
     private final String value;
 
     EventLevel(String value) {
@@ -33,7 +47,7 @@ public enum EventLevel {
 
     /**
      * Parses a serialized value to a EventLevel instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed EventLevel object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum EventLevel {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {
