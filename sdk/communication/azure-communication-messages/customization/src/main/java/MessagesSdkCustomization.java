@@ -4,6 +4,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import org.slf4j.Logger;
 
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 public class MessagesSdkCustomization extends Customization {
@@ -28,6 +29,35 @@ public class MessagesSdkCustomization extends Customization {
         updateTemplateLocationConstructorWithGeoPositionParameter(libraryCustomization);
         addPositionGetterInTemplateLocation(libraryCustomization);
         updateWhatsAppMessageTemplateItemWithBinaryDataContent(libraryCustomization);
+
+        customizeNotificationContentModel(libraryCustomization);
+        customizeMessageTemplateValueModel(libraryCustomization);
+        customizeMessageTemplateItemModel(libraryCustomization);
+    }
+
+    private void customizeNotificationContentModel(LibraryCustomization customization) {
+        PackageCustomization modelPackageCustomization = customization.getPackage("com.azure.communication.messages.models");
+        ClassCustomization notificationContentModelCustomization = modelPackageCustomization.getClass("NotificationContent");
+        notificationContentModelCustomization
+            .setModifier(Modifier.PUBLIC | Modifier.ABSTRACT)
+            .getConstructor("NotificationContent")
+            .setModifier(Modifier.PROTECTED);
+    }
+
+    private void customizeMessageTemplateValueModel(LibraryCustomization customization) {
+        PackageCustomization modelPackageCustomization = customization.getPackage("com.azure.communication.messages.models");
+        ClassCustomization notificationContentModelCustomization = modelPackageCustomization.getClass("MessageTemplateValue");
+        notificationContentModelCustomization
+            .setModifier(Modifier.PUBLIC | Modifier.ABSTRACT)
+            .getConstructor("MessageTemplateValue")
+            .setModifier(Modifier.PROTECTED);
+    }
+
+    private void customizeMessageTemplateItemModel(LibraryCustomization customization) {
+        PackageCustomization modelPackageCustomization = customization.getPackage("com.azure.communication.messages.models");
+        ClassCustomization notificationContentModelCustomization = modelPackageCustomization.getClass("MessageTemplateItem");
+        notificationContentModelCustomization
+            .setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
     }
 
     private void addAuthTrait(ClassCustomization classCustomization) {
@@ -177,7 +207,7 @@ public class MessagesSdkCustomization extends Customization {
 
     private void updateWhatsAppMessageTemplateItemWithBinaryDataContent(LibraryCustomization libraryCustomization) {
         ClassCustomization whatsAppMessageTemplateItemCustomization = libraryCustomization
-            .getPackage("com.azure.communication.messages.models.whatsapp")
+            .getPackage("com.azure.communication.messages.models.channels")
             .getClass("WhatsAppMessageTemplateItem");
 
         whatsAppMessageTemplateItemCustomization

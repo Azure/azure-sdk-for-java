@@ -27,7 +27,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "image", value = MediaNotificationContent.class),
     @JsonSubTypes.Type(name = "template", value = TemplateNotificationContent.class) })
 @Immutable
-public class NotificationContent {
+public abstract class NotificationContent {
     /*
      * The Channel Registration ID for the Business Identifier.
      */
@@ -50,7 +50,7 @@ public class NotificationContent {
      */
     @Generated
     @JsonCreator
-    public NotificationContent(@JsonProperty(value = "channelRegistrationId") String channelRegistrationId,
+    protected NotificationContent(@JsonProperty(value = "channelRegistrationId") String channelRegistrationId,
         @JsonProperty(value = "to") List<String> to) {
         this.channelRegistrationId = channelRegistrationId;
         this.to = to;

@@ -344,10 +344,11 @@ public final class MessageTemplateClientBuilder
 
     /**
      * Set a connection string for authorization.
-     * 
+     *
      * @param connectionString valid connectionString as a string.
      * @return the updated NotificationMessagesClientBuilder object.
      */
+    @Override
     public MessageTemplateClientBuilder connectionString(String connectionString) {
         CommunicationConnectionString connection = new CommunicationConnectionString(connectionString);
         this.credential(new KeyCredential(connection.getAccessKey()));

@@ -4,7 +4,7 @@
 
 package com.azure.communication.messages.models;
 
-import com.azure.communication.messages.models.whatsapp.WhatsAppMessageTemplateItem;
+import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateItem;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("MessageTemplateItem")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "whatsApp", value = WhatsAppMessageTemplateItem.class) })
 @Immutable
-public class MessageTemplateItem {
+public abstract class MessageTemplateItem {
     /*
      * The template's name.
      */

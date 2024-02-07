@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "location", value = MessageTemplateLocation.class),
     @JsonSubTypes.Type(name = "quickAction", value = MessageTemplateQuickAction.class) })
 @Immutable
-public class MessageTemplateValue {
+public abstract class MessageTemplateValue {
     /*
      * Name of the Template value
      */
@@ -44,7 +44,7 @@ public class MessageTemplateValue {
      */
     @Generated
     @JsonCreator
-    public MessageTemplateValue(@JsonProperty(value = "name") String name) {
+    protected MessageTemplateValue(@JsonProperty(value = "name") String name) {
         this.name = name;
     }
 

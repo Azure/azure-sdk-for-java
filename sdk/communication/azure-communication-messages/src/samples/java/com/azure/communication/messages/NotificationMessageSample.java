@@ -1,10 +1,10 @@
 package com.azure.communication.messages;
 
 import com.azure.communication.messages.models.*;
-import com.azure.communication.messages.models.whatsapp.WhatsAppMessageButtonSubType;
-import com.azure.communication.messages.models.whatsapp.WhatsAppMessageTemplateBindings;
-import com.azure.communication.messages.models.whatsapp.WhatsAppMessageTemplateBindingsButton;
-import com.azure.communication.messages.models.whatsapp.WhatsAppMessageTemplateBindingsComponent;
+import com.azure.communication.messages.models.channels.WhatsAppMessageButtonSubType;
+import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindings;
+import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsButton;
+import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsComponent;
 
 import java.util.List;
 

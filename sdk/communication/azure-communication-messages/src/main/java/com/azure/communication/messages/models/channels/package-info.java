@@ -8,4 +8,4 @@
  * Azure Communication Messages Service.
  * <!-- end generated doc -->
  */
-package com.azure.communication.messages.models.whatsapp;
+package com.azure.communication.messages.models.channels;
