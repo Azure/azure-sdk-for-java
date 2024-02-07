@@ -7,6 +7,7 @@ import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileListResponse;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
+import com.azure.ai.openai.assistants.models.PagedResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -51,7 +52,7 @@ public class AzureFilesAsyncTest extends AssistantsClientTestBase {
                         })
                         // Check for existence of file when fetched by purpose
                         .flatMap(tuple -> {
-                            FileListResponse files = tuple.getT1();
+                            PagedResult<OpenAIFile> files = tuple.getT1();
                             OpenAIFile uploadedFile = tuple.getT2();
 
                             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
@@ -96,7 +97,7 @@ public class AzureFilesAsyncTest extends AssistantsClientTestBase {
                         })
                         // Check for existence of file when fetched by purpose
                         .flatMap(tuple -> {
-                            FileListResponse files = tuple.getT1();
+                            PagedResult<OpenAIFile> files = tuple.getT1();
                             OpenAIFile uploadedFile = tuple.getT2();
 
                             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
@@ -142,7 +143,7 @@ public class AzureFilesAsyncTest extends AssistantsClientTestBase {
                         })
                         // Check for existence of file when fetched by purpose
                         .flatMap(tuple -> {
-                            FileListResponse files = tuple.getT1();
+                            PagedResult<OpenAIFile> files = tuple.getT1();
                             OpenAIFile uploadedFile = tuple.getT2();
 
                             assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));

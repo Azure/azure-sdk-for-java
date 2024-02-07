@@ -5,14 +5,14 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.MessageRole;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfRunStep;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadRun;
+import com.azure.ai.openai.assistants.models.PagedResult;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -358,8 +358,8 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             // List runs with response
             StepVerifier.create(client.listRunsWithResponse(threadId, new RequestOptions()))
                     .assertNext(response -> {
-                        OpenAIPageableListOfThreadRun runs = assertAndGetValueFromResponse(response,
-                                OpenAIPageableListOfThreadRun.class, 200);
+                        PagedResult<ThreadRun> runs = assertAndGetValueFromResponse(response,
+                            new TypeReference<PagedResult<ThreadRun>>() {}, 200);
                         List<ThreadRun> data = runs.getData();
                         assertNotNull(data);
                         assertEquals(1, data.size());
@@ -430,8 +430,8 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
             // List run steps with response
             StepVerifier.create(client.listRunStepsWithResponse(threadId, runId, new RequestOptions()))
                     .assertNext(response -> {
-                        OpenAIPageableListOfRunStep runStepsWithResponse = assertAndGetValueFromResponse(response,
-                                OpenAIPageableListOfRunStep.class, 200);
+                        PagedResult<RunStep> runStepsWithResponse = assertAndGetValueFromResponse(response,
+                            new TypeReference<PagedResult<RunStep>>() {}, 200);
                         assertNotNull(runStepsWithResponse);
                         List<RunStep> runStepsDataWithResponse = runStepsWithResponse.getData();
                         assertNotNull(runStepsDataWithResponse);

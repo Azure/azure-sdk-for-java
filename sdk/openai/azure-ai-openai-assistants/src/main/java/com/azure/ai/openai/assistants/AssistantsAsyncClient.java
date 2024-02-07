@@ -442,9 +442,8 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of assistants that were previously created on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfAssistant> listAssistants(Integer limit, ListSortOrder order, String after,
+    public Mono<PagedResult<Assistant>> listAssistants(Integer limit, ListSortOrder order, String after,
         String before) {
         // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -461,7 +460,7 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistant.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<Assistant>>() {}));
     }
 
     /**
@@ -474,13 +473,12 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of assistants that were previously created on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfAssistant> listAssistants() {
+    public Mono<PagedResult<Assistant>> listAssistants() {
         // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistant.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<Assistant>>() {}));
     }
 
     /**
@@ -552,9 +550,8 @@ public final class AssistantsAsyncClient {
      * @return a list of files attached to a specific assistant, as used by tools that can read files on successful
      * completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfAssistantFile> listAssistantFiles(String assistantId, Integer limit,
+    public Mono<PagedResult<AssistantFile>> listAssistantFiles(String assistantId, Integer limit,
         ListSortOrder order, String after, String before) {
         // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -571,7 +568,7 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistantFile.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<AssistantFile>>() {}));
     }
 
     /**
@@ -587,13 +584,12 @@ public final class AssistantsAsyncClient {
      * @return a list of files attached to a specific assistant, as used by tools that can read files on successful
      * completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfAssistantFile> listAssistantFiles(String assistantId) {
+    public Mono<PagedResult<AssistantFile>> listAssistantFiles(String assistantId) {
         // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistantFile.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<AssistantFile>>() {}));
     }
 
     /**
@@ -1990,9 +1986,8 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of messages that exist on a thread on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfThreadMessage> listMessages(String threadId, Integer limit, ListSortOrder order,
+    public Mono<PagedResult<ThreadMessage>> listMessages(String threadId, Integer limit, ListSortOrder order,
         String after, String before) {
         // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2009,7 +2004,7 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listMessagesWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadMessage.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<ThreadMessage>>() {}));
     }
 
     /**
@@ -2024,13 +2019,12 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of messages that exist on a thread on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfThreadMessage> listMessages(String threadId) {
+    public Mono<PagedResult<ThreadMessage>> listMessages(String threadId) {
         // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listMessagesWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadMessage.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<ThreadMessage>>() {}));
     }
 
     /**
@@ -2169,9 +2163,8 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of runs for a specified thread on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfThreadRun> listRuns(String threadId, Integer limit, ListSortOrder order,
+    public Mono<PagedResult<ThreadRun>> listRuns(String threadId, Integer limit, ListSortOrder order,
         String after, String before) {
         // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2188,7 +2181,7 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listRunsWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadRun.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<ThreadRun>>() {}));
     }
 
     /**
@@ -2203,13 +2196,12 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of runs for a specified thread on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfThreadRun> listRuns(String threadId) {
+    public Mono<PagedResult<ThreadRun>> listRuns(String threadId) {
         // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listRunsWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadRun.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<ThreadRun>>() {}));
     }
 
     /**
@@ -2354,7 +2346,7 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfRunStep> listRunSteps(String threadId, String runId, Integer limit,
+    public Mono<PagedResult<RunStep>> listRunSteps(String threadId, String runId, Integer limit,
         ListSortOrder order, String after, String before) {
         // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2371,7 +2363,7 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<RunStep>>() {}));
     }
 
     /**
@@ -2389,11 +2381,11 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfRunStep> listRunSteps(String threadId, String runId) {
+    public Mono<PagedResult<RunStep>> listRunSteps(String threadId, String runId) {
         // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<RunStep>>() {}));
     }
 
     /**
@@ -2410,14 +2402,14 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileListResponse> listFiles(FilePurpose purpose) {
+    public Mono<PagedResult<OpenAIFile>> listFiles(FilePurpose purpose) {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
         }
         return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<OpenAIFile>>() {}));
     }
 
     /**
@@ -2432,11 +2424,11 @@ public final class AssistantsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileListResponse> listFiles() {
+    public Mono<PagedResult<OpenAIFile>> listFiles() {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PagedResult<OpenAIFile>>() {}));
     }
 
     /**

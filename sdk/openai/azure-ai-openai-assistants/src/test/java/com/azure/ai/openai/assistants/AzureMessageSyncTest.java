@@ -6,8 +6,6 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
 import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfMessageFile;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.openai.assistants.models.PagedResult;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.core.http.HttpClient;
@@ -113,14 +111,14 @@ public class AzureMessageSyncTest extends AssistantsClientTestBase {
             ThreadMessage threadMessage2 = client.createMessage(threadId, MessageRole.USER, message + "second message");
             validateThreadMessage(threadMessage2, threadId);
             // List messages
-            OpenAIPageableListOfThreadMessage listedMessages = client.listMessages(threadId);
+            PagedResult<ThreadMessage> listedMessages = client.listMessages(threadId);
             assertNotNull(listedMessages);
             assertNotNull(listedMessages.getData());
             assertEquals(2, listedMessages.getData().size());
             // List messages with response
             Response<BinaryData> listedMessagesResponse = client.listMessagesWithResponse(threadId, new RequestOptions());
-            OpenAIPageableListOfThreadMessage listedMessagesWithResponse = assertAndGetValueFromResponse(
-                    listedMessagesResponse, OpenAIPageableListOfThreadMessage.class, 200);
+            PagedResult<ThreadMessage> listedMessagesWithResponse = assertAndGetValueFromResponse(
+                listedMessagesResponse, new TypeReference<PagedResult<ThreadMessage>>() {}, 200);
             assertNotNull(listedMessagesWithResponse);
             assertNotNull(listedMessagesWithResponse.getData());
             assertEquals(2, listedMessagesWithResponse.getData().size());

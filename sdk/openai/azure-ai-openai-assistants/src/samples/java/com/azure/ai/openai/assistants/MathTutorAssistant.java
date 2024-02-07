@@ -11,7 +11,7 @@ import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.MessageContent;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.PagedResult;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
@@ -69,7 +69,7 @@ public class MathTutorAssistant {
         // Now that the Run has completed, we can list the Messages in the Thread to see what got added by the Assistant.
         // Messages are ordered in reverse-chronological order – this was done so the most recent results are always on
         // the first page (since results can be paginated).
-        OpenAIPageableListOfThreadMessage messages = client.listMessages(threadId);
+        PagedResult<ThreadMessage> messages = client.listMessages(threadId);
         List<ThreadMessage> data = messages.getData();
         for (int i = 0; i < data.size(); i++) {
             ThreadMessage dataMessage = data.get(i);
