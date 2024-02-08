@@ -739,17 +739,20 @@ public final class PhoneNumbersAsyncClient {
      * Searches for operator information for a given list of phone numbers.
      *
      * @param phoneNumbers The phone number(s) whose operator information should be searched.
-     * @param includeAdditionalPhoneAndOperatorDetails Modifies the search to include additional fields in the response.
+     * @param includeAdditionalOperatorDetails Modifies the search to include additional fields in the response.
      *                  Please note: use of this option will affect the cost of the search.
-     * @param context A {@link Context} representing the request context.
      *
      * @return A {@link OperatorInformationResult} which contains the results of the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<OperatorInformationResult>> searchOperatorInformationWithResponse(List<String> phoneNumbers, boolean includeAdditionalPhoneAndOperatorDetails, Context context) {
+    public Mono<Response<OperatorInformationResult>> searchOperatorInformationWithResponse(List<String> phoneNumbers, boolean includeAdditionalOperatorDetails) {
+        return searchOperatorInformationWithResponse(phoneNumbers, includeAdditionalOperatorDetails, null);
+    }
+
+    private Mono<Response<OperatorInformationResult>> searchOperatorInformationWithResponse(List<String> phoneNumbers, boolean includeAdditionalOperatorDetails, Context context) {
         OperatorInformationRequest request = new OperatorInformationRequest();
         request.setPhoneNumbers(phoneNumbers);
-        request.setOptions(new OperatorInformationOptions().setIncludeAdditionalOperatorDetails(includeAdditionalPhoneAndOperatorDetails));
+        request.setOptions(new OperatorInformationOptions().setIncludeAdditionalOperatorDetails(includeAdditionalOperatorDetails));
 
         return withContext(contextValue -> {
             if (context != null) {

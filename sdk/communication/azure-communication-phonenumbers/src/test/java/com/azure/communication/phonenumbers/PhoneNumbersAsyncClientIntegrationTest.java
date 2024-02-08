@@ -477,7 +477,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
-                        .searchOperatorInformationWithResponse(phoneNumbers, false, Context.NONE))
+                        .searchOperatorInformationWithResponse(phoneNumbers, false))
                 .assertNext((Response<OperatorInformationResult> result) -> {
                     assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
                     assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
@@ -490,7 +490,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
-                        .searchOperatorInformationWithResponse(phoneNumbers, true, Context.NONE))
+                        .searchOperatorInformationWithResponse(phoneNumbers, true))
                 .assertNext((Response<OperatorInformationResult> result) -> {
                     assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
                     assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
