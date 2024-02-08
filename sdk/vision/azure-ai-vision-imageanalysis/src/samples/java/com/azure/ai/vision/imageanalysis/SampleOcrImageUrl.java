@@ -5,7 +5,7 @@
 //     This sample demonstrates how to extract printed or hand-written text for of a publicly accessible
 //     image URL, using a synchronous client.
 //
-//     The synchronous (blocking) `analyze` method call returns an `ImageAnalysisResult` object.
+//     The synchronous (blocking) `analyzeFromUrl` method call returns an `ImageAnalysisResult` object.
 //     A call to `getRead()` on the result will return a `ReadResult` object. It includes a list of 
 //     `DetectedTextBlock` objects. Currently, the list will always contain one block, as the service does 
 //     not yet support grouping text lines into separate blocks. The `DetectedTextBlock` object contains a 
