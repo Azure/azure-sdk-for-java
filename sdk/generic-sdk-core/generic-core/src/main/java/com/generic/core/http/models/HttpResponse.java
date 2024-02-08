@@ -8,7 +8,6 @@ import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 
 import java.io.Closeable;
-import java.io.IOException;
 
 /**
  * The response of an {@link HttpRequest}.
@@ -93,6 +92,6 @@ public abstract class HttpResponse implements Closeable {
      * Closes the response content stream, if any.
      */
     @Override
-    public void close() throws IOException {
+    public void close() {
     }
 }

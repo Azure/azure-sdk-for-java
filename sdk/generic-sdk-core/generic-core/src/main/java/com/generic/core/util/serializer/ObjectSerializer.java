@@ -5,7 +5,6 @@ package com.generic.core.util.serializer;
 
 import com.generic.core.models.TypeReference;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -20,9 +19,8 @@ public interface ObjectSerializer {
      * @param typeReference {@link TypeReference} representing the object.
      * @param <T> Type of the object.
      * @return The object represented by the deserialized byte array.
-     * @throws IOException If the byte array cannot be deserialized.
      */
-    <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) throws IOException;
+    <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference);
 
     /**
      * Reads a stream into its object representation.
@@ -31,25 +29,22 @@ public interface ObjectSerializer {
      * @param typeReference {@link TypeReference} representing the object.
      * @param <T> Type of the object.
      * @return The object represented by the deserialized stream.
-     * @throws IOException If the stream cannot be deserialized.
      */
-    <T> T deserializeFromStream(InputStream stream, TypeReference<T> typeReference) throws IOException;
+    <T> T deserializeFromStream(InputStream stream, TypeReference<T> typeReference);
 
     /**
      * Serializes an object into a byte array.
      *
      * @param value The object to serialize.
      * @return The binary representation of the serialized object.
-     * @throws IOException If the object cannot be serialized.
      */
-    byte[] serializeToBytes(Object value) throws IOException;
+    byte[] serializeToBytes(Object value);
 
     /**
      * Serializes and writes an object into a provided stream.
      *
      * @param stream {@link OutputStream} where the serialized object will be written.
      * @param value The object to serialize.
-     * @throws IOException If the object cannot be serialized.
      */
-    void serializeToStream(OutputStream stream, Object value) throws IOException;
+    void serializeToStream(OutputStream stream, Object value);
 }
