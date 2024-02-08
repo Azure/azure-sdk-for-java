@@ -4,35 +4,39 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for StreamingJobs List. */
+/**
+ * Samples for StreamingJobs List.
+ */
 public final class StreamingJobsListSamples {
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/StreamingJob_List_BySubscription_Expand.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * StreamingJob_List_BySubscription_Expand.json
      */
     /**
      * Sample code: List all streaming jobs in a subscription and use the $expand OData query parameter to expand
      * inputs, outputs, transformation, and functions.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void
         listAllStreamingJobsInASubscriptionAndUseTheExpandODataQueryParameterToExpandInputsOutputsTransformationAndFunctions(
             com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().list("inputs,outputs,transformation,functions", Context.NONE);
+        manager.streamingJobs().list("inputs,outputs,transformation,functions", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/StreamingJob_List_BySubscription_NoExpand.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * StreamingJob_List_BySubscription_NoExpand.json
      */
     /**
      * Sample code: List all streaming jobs in a subscription and do not use the $expand OData query parameter.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void listAllStreamingJobsInASubscriptionAndDoNotUseTheExpandODataQueryParameter(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().list(null, Context.NONE);
+        manager.streamingJobs().list(null, com.azure.core.util.Context.NONE);
     }
 }

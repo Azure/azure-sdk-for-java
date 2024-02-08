@@ -5,27 +5,23 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.OAuthBasedDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties that are associated with a Power BI output. */
+/**
+ * The properties that are associated with a Power BI output.
+ */
 @Fluent
 public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PowerBIOutputDataSourceProperties.class);
-
     /*
-     * The name of the Power BI dataset. Required on PUT (CreateOrReplace)
-     * requests.
+     * The name of the Power BI dataset. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "dataset")
     private String dataset;
 
     /*
-     * The name of the Power BI table under the specified dataset. Required on
-     * PUT (CreateOrReplace) requests.
+     * The name of the Power BI table under the specified dataset. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "table")
     private String table;
@@ -37,8 +33,7 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
     private String groupId;
 
     /*
-     * The name of the Power BI group. Use this property to help remember which
-     * specific Power BI group id was used.
+     * The name of the Power BI group. Use this property to help remember which specific Power BI group id was used.
      */
     @JsonProperty(value = "groupName")
     private String groupName;
@@ -50,8 +45,14 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
     private AuthenticationMode authenticationMode;
 
     /**
+     * Creates an instance of PowerBIOutputDataSourceProperties class.
+     */
+    public PowerBIOutputDataSourceProperties() {
+    }
+
+    /**
      * Get the dataset property: The name of the Power BI dataset. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the dataset value.
      */
     public String dataset() {
@@ -60,7 +61,7 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
 
     /**
      * Set the dataset property: The name of the Power BI dataset. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the PowerBIOutputDataSourceProperties object itself.
      */
@@ -72,7 +73,7 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
     /**
      * Get the table property: The name of the Power BI table under the specified dataset. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the table value.
      */
     public String table() {
@@ -82,7 +83,7 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
     /**
      * Set the table property: The name of the Power BI table under the specified dataset. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @param table the table value to set.
      * @return the PowerBIOutputDataSourceProperties object itself.
      */
@@ -93,7 +94,7 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
 
     /**
      * Get the groupId property: The ID of the Power BI group.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -102,7 +103,7 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
 
     /**
      * Set the groupId property: The ID of the Power BI group.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the PowerBIOutputDataSourceProperties object itself.
      */
@@ -114,7 +115,7 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
     /**
      * Get the groupName property: The name of the Power BI group. Use this property to help remember which specific
      * Power BI group id was used.
-     *
+     * 
      * @return the groupName value.
      */
     public String groupName() {
@@ -124,7 +125,7 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
     /**
      * Set the groupName property: The name of the Power BI group. Use this property to help remember which specific
      * Power BI group id was used.
-     *
+     * 
      * @param groupName the groupName value to set.
      * @return the PowerBIOutputDataSourceProperties object itself.
      */
@@ -135,7 +136,7 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
 
     /**
      * Get the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @return the authenticationMode value.
      */
     public AuthenticationMode authenticationMode() {
@@ -144,7 +145,7 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
 
     /**
      * Set the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @param authenticationMode the authenticationMode value to set.
      * @return the PowerBIOutputDataSourceProperties object itself.
      */
@@ -153,21 +154,27 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerBIOutputDataSourceProperties withRefreshToken(String refreshToken) {
         super.withRefreshToken(refreshToken);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerBIOutputDataSourceProperties withTokenUserPrincipalName(String tokenUserPrincipalName) {
         super.withTokenUserPrincipalName(tokenUserPrincipalName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerBIOutputDataSourceProperties withTokenUserDisplayName(String tokenUserDisplayName) {
         super.withTokenUserDisplayName(tokenUserDisplayName);
@@ -176,7 +183,7 @@ public final class PowerBIOutputDataSourceProperties extends OAuthBasedDataSourc
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

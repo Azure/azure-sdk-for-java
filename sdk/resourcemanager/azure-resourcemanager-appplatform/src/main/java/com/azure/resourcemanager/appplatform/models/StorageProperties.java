@@ -9,19 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Storage resource payload. */
+/**
+ * Storage resource payload.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "storageType",
     defaultImpl = StorageProperties.class)
 @JsonTypeName("StorageProperties")
-@JsonSubTypes({@JsonSubTypes.Type(name = "StorageAccount", value = StorageAccount.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "StorageAccount", value = StorageAccount.class) })
 @Immutable
 public class StorageProperties {
     /**
+     * Creates an instance of StorageProperties class.
+     */
+    public StorageProperties() {
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -17,13 +17,6 @@
 //     For more information on a particular visual feature, and optional setting associated with it,
 //     have a look at the sample in this folder dedicated to that visual feature.
 //
-// USAGE:
-//     Compile the sample:
-//         mvn clean dependency:copy-dependencies
-//         javac SampleAnalyzeAllImageFile.java -cp target\dependency\*
-//     Run the sample:
-//         java -cp ".;target\dependency\*" SampleAnalyzeAllImageFile
-//
 //     Set these two environment variables before running the sample:
 //     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
 //                          where `your-resource-name` is your unique Azure Computer Vision resource name.
@@ -31,7 +24,6 @@
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.CropRegion;
 import com.azure.ai.vision.imageanalysis.models.DenseCaption;
 import com.azure.ai.vision.imageanalysis.models.DetectedObject;
@@ -39,6 +31,7 @@ import com.azure.ai.vision.imageanalysis.models.DetectedPerson;
 import com.azure.ai.vision.imageanalysis.models.DetectedTag;
 import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
 import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;

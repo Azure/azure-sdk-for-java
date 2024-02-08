@@ -25,6 +25,26 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|${ManagementFactory.getRuntimeMXBean.getName}"
   }
 
+  "CosmosClientConfiguration" should "process http connection pool size configuration" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.useGatewayMode" -> "true",
+      "spark.cosmos.http.connectionPoolSize" -> "1111"
+    )
+
+    val forceEventual = false
+    val configuration = CosmosClientConfiguration(userConfig, forceEventual, sparkEnvironmentInfo = "")
+
+    configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
+    configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.useGatewayMode shouldBe true
+    configuration.httpConnectionPoolSize shouldBe 1111
+    configuration.useEventualConsistency shouldEqual forceEventual
+    configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|${ManagementFactory.getRuntimeMXBean.getName}"
+  }
+
   "CosmosClientConfiguration" should "process Spark environment info" in {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",

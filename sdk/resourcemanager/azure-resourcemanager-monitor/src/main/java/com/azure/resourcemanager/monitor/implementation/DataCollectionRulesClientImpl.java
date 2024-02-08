@@ -38,26 +38,29 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DataCollectionRulesClient. */
-public final class DataCollectionRulesClientImpl
-    implements InnerSupportsGet<DataCollectionRuleResourceInner>,
-        InnerSupportsListing<DataCollectionRuleResourceInner>,
-        InnerSupportsDelete<Void>,
-        DataCollectionRulesClient {
-    /** The proxy service used to perform REST calls. */
+/**
+ * An instance of this class provides access to all the operations defined in DataCollectionRulesClient.
+ */
+public final class DataCollectionRulesClientImpl implements InnerSupportsGet<DataCollectionRuleResourceInner>,
+    InnerSupportsListing<DataCollectionRuleResourceInner>, InnerSupportsDelete<Void>, DataCollectionRulesClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DataCollectionRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MonitorClientImpl client;
 
     /**
      * Initializes an instance of DataCollectionRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DataCollectionRulesClientImpl(MonitorClientImpl client) {
-        this.service =
-            RestProxy.create(DataCollectionRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DataCollectionRulesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,117 +71,86 @@ public final class DataCollectionRulesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientDataCol")
     public interface DataCollectionRulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
-                + "/dataCollectionRules")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataCollectionRuleResourceListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DataCollectionRuleResourceListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/dataCollectionRules")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataCollectionRuleResourceListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DataCollectionRuleResourceListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
-                + "/dataCollectionRules/{dataCollectionRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dataCollectionRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataCollectionRuleResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DataCollectionRuleResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("dataCollectionRuleName") String dataCollectionRuleName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dataCollectionRuleName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DataCollectionRuleResourceInner>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dataCollectionRuleName") String dataCollectionRuleName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DataCollectionRuleResourceInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
-                + "/dataCollectionRules/{dataCollectionRuleName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dataCollectionRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataCollectionRuleResourceInner>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DataCollectionRuleResourceInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dataCollectionRuleName") String dataCollectionRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DataCollectionRuleResourceInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ResourceForUpdate body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
-                + "/dataCollectionRules/{dataCollectionRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dataCollectionRuleName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataCollectionRuleResourceInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dataCollectionRuleName") String dataCollectionRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ResourceForUpdate body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
-                + "/dataCollectionRules/{dataCollectionRuleName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("dataCollectionRuleName") String dataCollectionRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataCollectionRuleResourceListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataCollectionRuleResourceListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all data collection rules in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -186,19 +158,15 @@ public final class DataCollectionRulesClientImpl
      * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataCollectionRuleResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<DataCollectionRuleResourceInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -207,31 +175,16 @@ public final class DataCollectionRulesClientImpl
         final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<DataCollectionRuleResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, apiVersion, accept, context))
+            .<PagedResponse<DataCollectionRuleResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all data collection rules in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,19 +193,15 @@ public final class DataCollectionRulesClientImpl
      * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataCollectionRuleResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<DataCollectionRuleResourceInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -262,27 +211,15 @@ public final class DataCollectionRulesClientImpl
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all data collection rules in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -291,14 +228,13 @@ public final class DataCollectionRulesClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCollectionRuleResourceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all data collection rules in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,16 +243,15 @@ public final class DataCollectionRulesClientImpl
      * @return a pageable list of resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataCollectionRuleResourceInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+    private PagedFlux<DataCollectionRuleResourceInner> listByResourceGroupAsync(String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all data collection rules in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -330,7 +265,7 @@ public final class DataCollectionRulesClientImpl
 
     /**
      * Lists all data collection rules in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -339,14 +274,14 @@ public final class DataCollectionRulesClientImpl
      * @return a pageable list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataCollectionRuleResourceInner> listByResourceGroup(
-        String resourceGroupName, Context context) {
+    public PagedIterable<DataCollectionRuleResourceInner> listByResourceGroup(String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
     /**
      * Lists all data collection rules in the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -354,39 +289,26 @@ public final class DataCollectionRulesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataCollectionRuleResourceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
-            .<PagedResponse<DataCollectionRuleResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
+            .<PagedResponse<DataCollectionRuleResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all data collection rules in the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -396,49 +318,37 @@ public final class DataCollectionRulesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataCollectionRuleResourceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all data collection rules in the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pageable list of resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCollectionRuleResourceInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all data collection rules in the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -447,13 +357,13 @@ public final class DataCollectionRulesClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataCollectionRuleResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all data collection rules in the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pageable list of resources as paginated response with {@link PagedIterable}.
@@ -465,7 +375,7 @@ public final class DataCollectionRulesClientImpl
 
     /**
      * Lists all data collection rules in the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -479,59 +389,46 @@ public final class DataCollectionRulesClientImpl
 
     /**
      * Returns the specified data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataCollectionRuleResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String dataCollectionRuleName) {
+    public Mono<Response<DataCollectionRuleResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String dataCollectionRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dataCollectionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
         final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dataCollectionRuleName,
-                            apiVersion,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, dataCollectionRuleName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the specified data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -539,49 +436,37 @@ public final class DataCollectionRulesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataCollectionRuleResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String dataCollectionRuleName, Context context) {
+    private Mono<Response<DataCollectionRuleResourceInner>>
+        getByResourceGroupWithResponseAsync(String resourceGroupName, String dataCollectionRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dataCollectionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
         final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dataCollectionRuleName,
-                apiVersion,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dataCollectionRuleName, apiVersion, accept, context);
     }
 
     /**
      * Returns the specified data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -590,15 +475,15 @@ public final class DataCollectionRulesClientImpl
      * @return definition of ARM tracked top level resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataCollectionRuleResourceInner> getByResourceGroupAsync(
-        String resourceGroupName, String dataCollectionRuleName) {
+    public Mono<DataCollectionRuleResourceInner> getByResourceGroupAsync(String resourceGroupName,
+        String dataCollectionRuleName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, dataCollectionRuleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns the specified data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -608,14 +493,14 @@ public final class DataCollectionRulesClientImpl
      * @return definition of ARM tracked top level resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataCollectionRuleResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String dataCollectionRuleName, Context context) {
+    public Response<DataCollectionRuleResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String dataCollectionRuleName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, dataCollectionRuleName, context).block();
     }
 
     /**
      * Returns the specified data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -630,7 +515,7 @@ public final class DataCollectionRulesClientImpl
 
     /**
      * Creates or updates a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @param body The payload.
@@ -638,31 +523,26 @@ public final class DataCollectionRulesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataCollectionRuleResourceInner>> createWithResponseAsync(
-        String resourceGroupName, String dataCollectionRuleName, DataCollectionRuleResourceInner body) {
+    public Mono<Response<DataCollectionRuleResourceInner>> createWithResponseAsync(String resourceGroupName,
+        String dataCollectionRuleName, DataCollectionRuleResourceInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dataCollectionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
@@ -670,24 +550,14 @@ public final class DataCollectionRulesClientImpl
         final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dataCollectionRuleName,
-                            apiVersion,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, dataCollectionRuleName, apiVersion, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @param body The payload.
@@ -696,34 +566,26 @@ public final class DataCollectionRulesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataCollectionRuleResourceInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String dataCollectionRuleName,
-        DataCollectionRuleResourceInner body,
-        Context context) {
+    private Mono<Response<DataCollectionRuleResourceInner>> createWithResponseAsync(String resourceGroupName,
+        String dataCollectionRuleName, DataCollectionRuleResourceInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dataCollectionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
@@ -731,21 +593,13 @@ public final class DataCollectionRulesClientImpl
         final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dataCollectionRuleName,
-                apiVersion,
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dataCollectionRuleName, apiVersion, body, accept, context);
     }
 
     /**
      * Creates or updates a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -762,7 +616,7 @@ public final class DataCollectionRulesClientImpl
 
     /**
      * Creates or updates a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @param body The payload.
@@ -773,17 +627,14 @@ public final class DataCollectionRulesClientImpl
      * @return definition of ARM tracked top level resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataCollectionRuleResourceInner> createWithResponse(
-        String resourceGroupName,
-        String dataCollectionRuleName,
-        DataCollectionRuleResourceInner body,
-        Context context) {
+    public Response<DataCollectionRuleResourceInner> createWithResponse(String resourceGroupName,
+        String dataCollectionRuleName, DataCollectionRuleResourceInner body, Context context) {
         return createWithResponseAsync(resourceGroupName, dataCollectionRuleName, body, context).block();
     }
 
     /**
      * Creates or updates a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -799,7 +650,7 @@ public final class DataCollectionRulesClientImpl
 
     /**
      * Updates part of a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @param body The payload.
@@ -807,31 +658,26 @@ public final class DataCollectionRulesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataCollectionRuleResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String dataCollectionRuleName, ResourceForUpdate body) {
+    public Mono<Response<DataCollectionRuleResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String dataCollectionRuleName, ResourceForUpdate body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dataCollectionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
@@ -839,24 +685,14 @@ public final class DataCollectionRulesClientImpl
         final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dataCollectionRuleName,
-                            apiVersion,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, dataCollectionRuleName, apiVersion, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates part of a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @param body The payload.
@@ -865,31 +701,26 @@ public final class DataCollectionRulesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataCollectionRuleResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String dataCollectionRuleName, ResourceForUpdate body, Context context) {
+    private Mono<Response<DataCollectionRuleResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String dataCollectionRuleName, ResourceForUpdate body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dataCollectionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
@@ -897,21 +728,13 @@ public final class DataCollectionRulesClientImpl
         final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dataCollectionRuleName,
-                apiVersion,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dataCollectionRuleName, apiVersion, body, accept, context);
     }
 
     /**
      * Updates part of a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -928,7 +751,7 @@ public final class DataCollectionRulesClientImpl
 
     /**
      * Updates part of a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @param body The payload.
@@ -939,14 +762,14 @@ public final class DataCollectionRulesClientImpl
      * @return definition of ARM tracked top level resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataCollectionRuleResourceInner> updateWithResponse(
-        String resourceGroupName, String dataCollectionRuleName, ResourceForUpdate body, Context context) {
+    public Response<DataCollectionRuleResourceInner> updateWithResponse(String resourceGroupName,
+        String dataCollectionRuleName, ResourceForUpdate body, Context context) {
         return updateWithResponseAsync(resourceGroupName, dataCollectionRuleName, body, context).block();
     }
 
     /**
      * Updates part of a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -962,7 +785,7 @@ public final class DataCollectionRulesClientImpl
 
     /**
      * Deletes a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -973,46 +796,32 @@ public final class DataCollectionRulesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String dataCollectionRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dataCollectionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
         final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dataCollectionRuleName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, dataCollectionRuleName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -1022,46 +831,34 @@ public final class DataCollectionRulesClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String dataCollectionRuleName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String dataCollectionRuleName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dataCollectionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
         final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dataCollectionRuleName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dataCollectionRuleName, apiVersion, accept, context);
     }
 
     /**
      * Deletes a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1076,7 +873,7 @@ public final class DataCollectionRulesClientImpl
 
     /**
      * Deletes a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -1092,7 +889,7 @@ public final class DataCollectionRulesClientImpl
 
     /**
      * Deletes a data collection rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1106,47 +903,40 @@ public final class DataCollectionRulesClientImpl
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataCollectionRuleResourceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<DataCollectionRuleResourceInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DataCollectionRuleResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DataCollectionRuleResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1154,75 +944,58 @@ public final class DataCollectionRulesClientImpl
      * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataCollectionRuleResourceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DataCollectionRuleResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataCollectionRuleResourceInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<DataCollectionRuleResourceInner>>
+        listBySubscriptionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DataCollectionRuleResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DataCollectionRuleResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1230,29 +1003,19 @@ public final class DataCollectionRulesClientImpl
      * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataCollectionRuleResourceInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DataCollectionRuleResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

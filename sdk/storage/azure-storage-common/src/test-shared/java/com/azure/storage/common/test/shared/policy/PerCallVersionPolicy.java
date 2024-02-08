@@ -39,13 +39,13 @@ public final class PerCallVersionPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        context.getHttpRequest().setHeader(X_MS_VERSION, "2017-11-09");
+        context.getHttpRequest().setHeader(X_MS_VERSION, version);
         return next.process();
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        context.getHttpRequest().setHeader(X_MS_VERSION, "2017-11-09");
+        context.getHttpRequest().setHeader(X_MS_VERSION, version);
         return next.processSync();
     }
 

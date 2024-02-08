@@ -19,6 +19,7 @@ private object CosmosConstants {
   val maxRetryIntervalForTransientFailuresInMs = 5000
   val maxRetryCountForTransientFailures = 100
   val defaultDirectRequestTimeoutInSeconds = 10L
+  val defaultHttpRequestTimeoutInSeconds = 70L
   val feedRangesCacheIntervalInMinutes = 1L
   val defaultIoThreadCountFactorPerCore = 4
   val smallestPossibleReactorQueueSizeLargerThanOne: Int = math.min(8, Queues.XS_BUFFER_SIZE)
@@ -41,6 +42,7 @@ private object CosmosConstants {
   object Properties {
     val Id = "id"
     val ETag = "_etag"
+    val ItemIdentity = "_itemIdentity"
   }
 
   object StatusCodes {

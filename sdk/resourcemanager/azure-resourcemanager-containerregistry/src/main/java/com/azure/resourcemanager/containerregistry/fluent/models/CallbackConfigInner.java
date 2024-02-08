@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The configuration of service URI and custom headers for the webhook. */
+/**
+ * The configuration of service URI and custom headers for the webhook.
+ */
 @Fluent
 public final class CallbackConfigInner {
     /*
@@ -26,13 +28,15 @@ public final class CallbackConfigInner {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customHeaders;
 
-    /** Creates an instance of CallbackConfigInner class. */
+    /**
+     * Creates an instance of CallbackConfigInner class.
+     */
     public CallbackConfigInner() {
     }
 
     /**
      * Get the serviceUri property: The service URI for the webhook to post notifications.
-     *
+     * 
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -41,7 +45,7 @@ public final class CallbackConfigInner {
 
     /**
      * Set the serviceUri property: The service URI for the webhook to post notifications.
-     *
+     * 
      * @param serviceUri the serviceUri value to set.
      * @return the CallbackConfigInner object itself.
      */
@@ -52,7 +56,7 @@ public final class CallbackConfigInner {
 
     /**
      * Get the customHeaders property: Custom headers that will be added to the webhook notifications.
-     *
+     * 
      * @return the customHeaders value.
      */
     public Map<String, String> customHeaders() {
@@ -61,7 +65,7 @@ public final class CallbackConfigInner {
 
     /**
      * Set the customHeaders property: Custom headers that will be added to the webhook notifications.
-     *
+     * 
      * @param customHeaders the customHeaders value to set.
      * @return the CallbackConfigInner object itself.
      */
@@ -72,14 +76,13 @@ public final class CallbackConfigInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property serviceUri in model CallbackConfigInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property serviceUri in model CallbackConfigInner"));
         }
     }
 

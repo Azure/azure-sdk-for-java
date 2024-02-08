@@ -41,7 +41,7 @@ public final class DetectedTextWord {
 
     /**
      * Creates an instance of DetectedTextWord class.
-     * 
+     *
      * @param text the text value to set.
      * @param boundingPolygon the boundingPolygon value to set.
      * @param confidence the confidence value to set.
@@ -58,7 +58,7 @@ public final class DetectedTextWord {
 
     /**
      * Get the text property: Text content of the word.
-     * 
+     *
      * @return the text value.
      */
     @Generated
@@ -69,7 +69,7 @@ public final class DetectedTextWord {
     /**
      * Get the boundingPolygon property: A bounding polygon around the word. At the moment only quadrilaterals are
      * supported (represented by 4 image points).
-     * 
+     *
      * @return the boundingPolygon value.
      */
     @Generated
@@ -80,7 +80,7 @@ public final class DetectedTextWord {
     /**
      * Get the confidence property: The level of confidence that the word was detected. Confidence scores span the
      * range of 0.0 to 1.0 (inclusive), with higher values indicating a higher confidence of detection.
-     * 
+     *
      * @return the confidence value.
      */
     @Generated

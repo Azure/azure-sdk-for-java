@@ -34,7 +34,7 @@ public class MessageSessionProcessor extends ServiceBusScenario {
                 .maxConcurrentCalls(maxConcurrentCalls)
                 .prefetchCount(prefetchCount)
                 .processMessage(messageContext -> messageContext.complete())
-                .processError(err -> recordError(err.getException().getClass().getName(), err.getException(), "processError"))
+                .processError(err -> telemetryHelper.recordError(err.getException(), "processError"))
                 .buildProcessorClient());
         processor.start();
 

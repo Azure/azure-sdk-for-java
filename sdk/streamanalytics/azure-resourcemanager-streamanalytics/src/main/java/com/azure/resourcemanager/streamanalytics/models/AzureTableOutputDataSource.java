@@ -5,32 +5,35 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.AzureTableOutputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Describes an Azure Table output data source. */
+/**
+ * Describes an Azure Table output data source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Microsoft.Storage/Table")
 @Fluent
 public final class AzureTableOutputDataSource extends OutputDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureTableOutputDataSource.class);
-
     /*
-     * The properties that are associated with an Azure Table output. Required
-     * on PUT (CreateOrReplace) requests.
+     * The properties that are associated with an Azure Table output. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "properties")
     private AzureTableOutputDataSourceProperties innerProperties;
 
     /**
+     * Creates an instance of AzureTableOutputDataSource class.
+     */
+    public AzureTableOutputDataSource() {
+    }
+
+    /**
      * Get the innerProperties property: The properties that are associated with an Azure Table output. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AzureTableOutputDataSourceProperties innerProperties() {
@@ -39,7 +42,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
 
     /**
      * Get the accountName property: The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -48,7 +51,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
 
     /**
      * Set the accountName property: The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the AzureTableOutputDataSource object itself.
      */
@@ -63,7 +66,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
     /**
      * Get the accountKey property: The account key for the Azure Storage account. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @return the accountKey value.
      */
     public String accountKey() {
@@ -73,7 +76,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
     /**
      * Set the accountKey property: The account key for the Azure Storage account. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the AzureTableOutputDataSource object itself.
      */
@@ -87,7 +90,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
 
     /**
      * Get the table property: The name of the Azure Table. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the table value.
      */
     public String table() {
@@ -96,7 +99,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
 
     /**
      * Set the table property: The name of the Azure Table. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureTableOutputDataSource object itself.
      */
@@ -109,9 +112,9 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the partitionKey property: This element indicates the name of a column from the SELECT statement in the query
-     * that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
-     *
+     * Get the partitionKey property: This element indicates the name of a column from the SELECT statement in the
+     * query that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
+     * 
      * @return the partitionKey value.
      */
     public String partitionKey() {
@@ -119,9 +122,9 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the partitionKey property: This element indicates the name of a column from the SELECT statement in the query
-     * that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
-     *
+     * Set the partitionKey property: This element indicates the name of a column from the SELECT statement in the
+     * query that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
+     * 
      * @param partitionKey the partitionKey value to set.
      * @return the AzureTableOutputDataSource object itself.
      */
@@ -136,7 +139,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
     /**
      * Get the rowKey property: This element indicates the name of a column from the SELECT statement in the query that
      * will be used as the row key for the Azure Table. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the rowKey value.
      */
     public String rowKey() {
@@ -146,7 +149,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
     /**
      * Set the rowKey property: This element indicates the name of a column from the SELECT statement in the query that
      * will be used as the row key for the Azure Table. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param rowKey the rowKey value to set.
      * @return the AzureTableOutputDataSource object itself.
      */
@@ -161,7 +164,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
     /**
      * Get the columnsToRemove property: If specified, each item in the array is the name of a column to remove (if
      * present) from output event entities.
-     *
+     * 
      * @return the columnsToRemove value.
      */
     public List<String> columnsToRemove() {
@@ -171,7 +174,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
     /**
      * Set the columnsToRemove property: If specified, each item in the array is the name of a column to remove (if
      * present) from output event entities.
-     *
+     * 
      * @param columnsToRemove the columnsToRemove value to set.
      * @return the AzureTableOutputDataSource object itself.
      */
@@ -185,7 +188,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
 
     /**
      * Get the batchSize property: The number of rows to write to the Azure Table at a time.
-     *
+     * 
      * @return the batchSize value.
      */
     public Integer batchSize() {
@@ -194,7 +197,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
 
     /**
      * Set the batchSize property: The number of rows to write to the Azure Table at a time.
-     *
+     * 
      * @param batchSize the batchSize value to set.
      * @return the AzureTableOutputDataSource object itself.
      */
@@ -208,7 +211,7 @@ public final class AzureTableOutputDataSource extends OutputDataSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

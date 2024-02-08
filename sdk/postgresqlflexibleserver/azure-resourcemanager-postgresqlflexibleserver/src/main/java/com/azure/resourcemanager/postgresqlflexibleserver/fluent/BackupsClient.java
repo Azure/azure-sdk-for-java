@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerBackupInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BackupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupsClient.
+ */
 public interface BackupsClient {
     /**
      * Get specific backup for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -27,12 +29,12 @@ public interface BackupsClient {
      * @return specific backup for a given server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServerBackupInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String backupName);
+    Mono<Response<ServerBackupInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String backupName);
 
     /**
      * Get specific backup for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -46,7 +48,7 @@ public interface BackupsClient {
 
     /**
      * Get specific backup for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -57,12 +59,12 @@ public interface BackupsClient {
      * @return specific backup for a given server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerBackupInner> getWithResponse(
-        String resourceGroupName, String serverName, String backupName, Context context);
+    Response<ServerBackupInner> getWithResponse(String resourceGroupName, String serverName, String backupName,
+        Context context);
 
     /**
      * Get specific backup for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -76,7 +78,7 @@ public interface BackupsClient {
 
     /**
      * List all the backups for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,7 +91,7 @@ public interface BackupsClient {
 
     /**
      * List all the backups for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +104,7 @@ public interface BackupsClient {
 
     /**
      * List all the backups for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.

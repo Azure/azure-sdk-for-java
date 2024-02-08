@@ -40,7 +40,7 @@ public final class CmdkeySetup extends CustomSetupBase {
     }
 
     /**
-     * Get the targetName property: The server name of data source access.
+     * Get the targetName property: The server name of data source access. Type: string.
      * 
      * @return the targetName value.
      */
@@ -49,7 +49,7 @@ public final class CmdkeySetup extends CustomSetupBase {
     }
 
     /**
-     * Set the targetName property: The server name of data source access.
+     * Set the targetName property: The server name of data source access. Type: string.
      * 
      * @param targetName the targetName value to set.
      * @return the CmdkeySetup object itself.
@@ -63,7 +63,7 @@ public final class CmdkeySetup extends CustomSetupBase {
     }
 
     /**
-     * Get the username property: The user name of data source access.
+     * Get the username property: The user name of data source access. Type: string.
      * 
      * @return the username value.
      */
@@ -72,7 +72,7 @@ public final class CmdkeySetup extends CustomSetupBase {
     }
 
     /**
-     * Set the username property: The user name of data source access.
+     * Set the username property: The user name of data source access. Type: string.
      * 
      * @param username the username value to set.
      * @return the CmdkeySetup object itself.

@@ -11,13 +11,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * The type of identity used for the image template. The type 'None' will remove any identities from the image template.
  */
 public enum ResourceIdentityType {
-    /** Enum value UserAssigned. */
+    /**
+     * Enum value UserAssigned.
+     */
     USER_ASSIGNED("UserAssigned"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None");
 
-    /** The actual serialized value for a ResourceIdentityType instance. */
+    /**
+     * The actual serialized value for a ResourceIdentityType instance.
+     */
     private final String value;
 
     ResourceIdentityType(String value) {
@@ -26,7 +32,7 @@ public enum ResourceIdentityType {
 
     /**
      * Parses a serialized value to a ResourceIdentityType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ResourceIdentityType object, or null if unable to parse.
      */
@@ -44,7 +50,9 @@ public enum ResourceIdentityType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

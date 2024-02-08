@@ -8,12 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * AgentPool Name.
+ * Name of the default Agent Pool.
  */
 @Fluent
 public class AgentPoolName {
     /*
-     * Unique name of the agent pool profile in the context of the subscription and resource group.
+     * Unique name of the default agent pool in the context of the provisioned cluster. Default value is
+     * <clusterName>-nodepool1
      */
     @JsonProperty(value = "name")
     private String name;
@@ -25,8 +26,8 @@ public class AgentPoolName {
     }
 
     /**
-     * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
+     * Get the name property: Unique name of the default agent pool in the context of the provisioned cluster. Default
+     * value is &lt;clusterName&gt;-nodepool1.
      * 
      * @return the name value.
      */
@@ -35,8 +36,8 @@ public class AgentPoolName {
     }
 
     /**
-     * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
+     * Set the name property: Unique name of the default agent pool in the context of the provisioned cluster. Default
+     * value is &lt;clusterName&gt;-nodepool1.
      * 
      * @param name the name value to set.
      * @return the AgentPoolName object itself.

@@ -232,7 +232,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                     this.resourceId = null;
                 }
             } else {
-                throw new IllegalArgumentException(RMResources.NotFound);
+                throw new IllegalArgumentException(RMResources.NotFound + ", - Path: " + path);
             }
         } else {
             this.isNameBased = false;

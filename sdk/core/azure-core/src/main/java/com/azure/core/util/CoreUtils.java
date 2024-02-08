@@ -26,6 +26,7 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
@@ -564,30 +565,67 @@ public final class CoreUtils {
         throws InterruptedException, ExecutionException, TimeoutException {
         Objects.requireNonNull(future, "'future' cannot be null.");
 
-        if (!hasTimeout(timeout)) {
+        if (timeout == null) {
             return future.get();
         }
 
-        try {
-            return future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
-        } catch (TimeoutException e) {
-            future.cancel(true);
-            throw e;
-        } catch (ExecutionException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof Error) {
-                throw (Error) cause;
-            } else if (cause instanceof RuntimeException) {
-                throw (RuntimeException) cause;
-            } else {
-                ImplUtils.sneakyThrows(cause);
-                throw e;
-            }
-        }
+        return ImplUtils.getResultWithTimeout(future, timeout.toMillis());
     }
 
-    private static boolean hasTimeout(Duration timeout) {
-        return timeout != null && !timeout.isZero() && !timeout.isNegative();
+    /**
+     * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will close the
+     * {@code executorService} when the JVM is shutting down.
+     * <p>
+     * {@link Runtime#addShutdownHook(Thread)} checks for security privileges and will throw an exception if the proper
+     * security isn't available. So, if running with a security manager, setting
+     * {@code AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to add
+     * the shutdown hook with privileged permissions.
+     * <p>
+     * If {@code executorService} is null, no shutdown hook will be added and this method will return null.
+     * <p>
+     * The {@code shutdownTimeout} is the amount of time to wait for the {@code executorService} to shutdown. If the
+     * {@code executorService} doesn't shutdown within half the timeout, it will be forcefully shutdown.
+     *
+     * @param executorService The {@link ExecutorService} to shutdown when the JVM is shutting down.
+     * @param shutdownTimeout The amount of time to wait for the {@code executorService} to shutdown.
+     * @return The {@code executorService} that was passed in.
+     * @throws NullPointerException If {@code shutdownTimeout} is null.
+     * @throws IllegalArgumentException If {@code shutdownTimeout} is zero or negative.
+     */
+    @SuppressWarnings({"deprecation", "removal"})
+    public static ExecutorService addShutdownHookSafely(ExecutorService executorService, Duration shutdownTimeout) {
+        if (executorService == null) {
+            return null;
+        }
+        Objects.requireNonNull(shutdownTimeout, "'shutdownTimeout' cannot be null.");
+        if (shutdownTimeout.isZero() || shutdownTimeout.isNegative()) {
+            throw new IllegalArgumentException("'shutdownTimeout' must be a non-zero positive duration.");
+        }
+
+        long timeoutNanos = shutdownTimeout.toNanos();
+        Thread shutdownThread = new Thread(() -> {
+            try {
+                executorService.shutdown();
+                if (!executorService.awaitTermination(timeoutNanos / 2, TimeUnit.NANOSECONDS)) {
+                    executorService.shutdownNow();
+                    executorService.awaitTermination(timeoutNanos / 2, TimeUnit.NANOSECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                executorService.shutdown();
+            }
+        });
+
+        if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
+            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
+                Runtime.getRuntime().addShutdownHook(shutdownThread);
+                return null;
+            });
+        } else {
+            Runtime.getRuntime().addShutdownHook(shutdownThread);
+        }
+
+        return executorService;
     }
 
     /**
@@ -687,5 +725,28 @@ public final class CoreUtils {
         }
 
         return builder.toString();
+    }
+
+    /*
+     * This looks a bit strange but is needed as CoreUtils is used within Configuration code and if this was done in
+     * the static constructor for CoreUtils it would cause a circular dependency, potentially causing a deadlock.
+     * Since this is in a static holder class, it will only be loaded when CoreUtils accesses it, which won't happen
+     * until CoreUtils is loaded.
+     */
+    private static final class ShutdownHookAccessHelperHolder {
+        private static boolean shutdownHookAccessHelper;
+
+        static {
+            shutdownHookAccessHelper = Boolean.parseBoolean(Configuration.getGlobalConfiguration()
+                .get("AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE"));
+        }
+    }
+
+    static boolean isShutdownHookAccessHelper() {
+        return ShutdownHookAccessHelperHolder.shutdownHookAccessHelper;
+    }
+
+    static void setShutdownHookAccessHelper(boolean shutdownHookAccessHelper) {
+        ShutdownHookAccessHelperHolder.shutdownHookAccessHelper = shutdownHookAccessHelper;
     }
 }

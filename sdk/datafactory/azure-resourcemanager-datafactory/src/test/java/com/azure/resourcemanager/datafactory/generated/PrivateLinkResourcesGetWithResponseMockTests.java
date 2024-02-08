@@ -31,7 +31,7 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"yvqofpemcf\",\"requiredMembers\":[\"ifjvi\",\"azo\",\"wudbewb\",\"aufowhmdpggaktu\"],\"requiredZoneNames\":[\"hqdoctgno\",\"qw\",\"wtwjzzyi\"]},\"name\":\"bklyaelvhxutct\",\"type\":\"kdjusasfjwty\",\"etag\":\"knbucjybt\",\"id\":\"dlfg\"},{\"properties\":{\"groupId\":\"jnikwzlowus\",\"requiredMembers\":[\"mjiz\",\"tdf\"],\"requiredZoneNames\":[\"gjcepx\",\"yswvpavutiszwy\",\"lehagbjmwe\"]},\"name\":\"mpzamq\",\"type\":\"it\",\"etag\":\"yphtdwhmwxhvs\",\"id\":\"mokmymspatpvebxe\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"ipptpreputu\",\"requiredMembers\":[\"wnkzwyry\",\"hhnoiqtvfruy\",\"navbfkzvvrzdbr\"],\"requiredZoneNames\":[\"ey\"]},\"name\":\"dzuldtfx\",\"type\":\"mmxzszhvjfijx\",\"etag\":\"ojbgiip\",\"id\":\"qyapn\"},{\"properties\":{\"groupId\":\"y\",\"requiredMembers\":[\"jy\",\"uswdwdau\"],\"requiredZoneNames\":[\"v\"]},\"name\":\"fso\",\"type\":\"hjkiaj\",\"etag\":\"juehcrywwfns\",\"id\":\"cjadnwafjib\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,8 +49,8 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkResourcesWrapper response = manager.privateLinkResources()
-            .getWithResponse("plkemvvlg", "zyishipl", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("agsx", "shau", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("dlfg", response.value().get(0).id());
+        Assertions.assertEquals("qyapn", response.value().get(0).id());
     }
 }

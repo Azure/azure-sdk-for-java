@@ -6,16 +6,20 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Immutable;
 
-/** Metadata about the resource. */
+/**
+ * Metadata about the resource.
+ */
 @Immutable
 public final class DataCollectionRuleAssociationMetadata extends Metadata {
-    /** Creates an instance of DataCollectionRuleAssociationMetadata class. */
+    /**
+     * Creates an instance of DataCollectionRuleAssociationMetadata class.
+     */
     public DataCollectionRuleAssociationMetadata() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

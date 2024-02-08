@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerregistry.fluent.models.CacheRuleUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The parameters for updating a cache rule. */
+/**
+ * The parameters for updating a cache rule.
+ */
 @Fluent
 public final class CacheRuleUpdateParameters {
     /*
@@ -17,13 +19,15 @@ public final class CacheRuleUpdateParameters {
     @JsonProperty(value = "properties")
     private CacheRuleUpdateProperties innerProperties;
 
-    /** Creates an instance of CacheRuleUpdateParameters class. */
+    /**
+     * Creates an instance of CacheRuleUpdateParameters class.
+     */
     public CacheRuleUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The properties of the cache rule update parameters.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CacheRuleUpdateProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class CacheRuleUpdateParameters {
     /**
      * Get the credentialSetResourceId property: The ARM resource ID of the credential store which is associated with
      * the Cache rule.
-     *
+     * 
      * @return the credentialSetResourceId value.
      */
     public String credentialSetResourceId() {
@@ -43,7 +47,7 @@ public final class CacheRuleUpdateParameters {
     /**
      * Set the credentialSetResourceId property: The ARM resource ID of the credential store which is associated with
      * the Cache rule.
-     *
+     * 
      * @param credentialSetResourceId the credentialSetResourceId value to set.
      * @return the CacheRuleUpdateParameters object itself.
      */
@@ -57,7 +61,7 @@ public final class CacheRuleUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

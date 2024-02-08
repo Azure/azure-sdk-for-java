@@ -28,6 +28,11 @@ public final class ResourceProvisioningState extends ExpandableStringEnum<Resour
     public static final ResourceProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Static value Pending for ResourceProvisioningState.
+     */
+    public static final ResourceProvisioningState PENDING = fromString("Pending");
+
+    /**
      * Static value Creating for ResourceProvisioningState.
      */
     public static final ResourceProvisioningState CREATING = fromString("Creating");
@@ -48,19 +53,9 @@ public final class ResourceProvisioningState extends ExpandableStringEnum<Resour
     public static final ResourceProvisioningState UPGRADING = fromString("Upgrading");
 
     /**
-     * Static value InProgress for ResourceProvisioningState.
-     */
-    public static final ResourceProvisioningState IN_PROGRESS = fromString("InProgress");
-
-    /**
      * Static value Accepted for ResourceProvisioningState.
      */
     public static final ResourceProvisioningState ACCEPTED = fromString("Accepted");
-
-    /**
-     * Static value Created for ResourceProvisioningState.
-     */
-    public static final ResourceProvisioningState CREATED = fromString("Created");
 
     /**
      * Creates a new instance of ResourceProvisioningState value.

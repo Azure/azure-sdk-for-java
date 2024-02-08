@@ -4,7 +4,6 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.ContentType;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -20,6 +19,7 @@ import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.ByteBufferContent;
+import com.azure.core.implementation.util.HttpHeadersAccessHelper;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
@@ -47,6 +47,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static com.azure.core.http.HttpHeaderName.TRACEPARENT;
+import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
+
 /**
  * The pipeline policy that handles logging of HTTP requests and responses.
  */
@@ -70,7 +73,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private final Set<String> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
     private final boolean prettyPrintBody;
-
+    private final boolean disableRedactedHeaderLogging;
     private final HttpRequestLogger requestLogger;
     private final HttpResponseLogger responseLogger;
 
@@ -99,6 +102,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
             this.prettyPrintBody = false;
+            this.disableRedactedHeaderLogging = false;
 
             this.requestLogger = new DefaultHttpRequestLogger();
             this.responseLogger = new DefaultHttpResponseLogger();
@@ -113,6 +117,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
             this.prettyPrintBody = httpLogOptions.isPrettyPrintBody();
+            this.disableRedactedHeaderLogging = httpLogOptions.isRedactedHeaderLoggingDisabled();
 
             this.requestLogger = (httpLogOptions.getRequestLogger() == null)
                 ? new DefaultHttpRequestLogger()
@@ -137,7 +142,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             .then(next.process())
             .flatMap(response -> responseLogger.logResponse(logger,
                 getResponseLoggingOptions(response, startNs, context)))
-            .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
+            .doOnError(throwable -> createBasicLoggingContext(logger, LogLevel.WARNING, context.getHttpRequest()).log("HTTP FAILED", throwable));
     }
 
     @Override
@@ -159,9 +164,31 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
             return response;
         } catch (RuntimeException e) {
-            logger.log(LogLevel.WARNING, () -> "<-- HTTP FAILED: ", e);
+            createBasicLoggingContext(logger, LogLevel.WARNING, context.getHttpRequest())
+                .log("HTTP FAILED", e);
             throw e;
         }
+    }
+
+    private LoggingEventBuilder createBasicLoggingContext(ClientLogger logger, LogLevel level, HttpRequest request) {
+        LoggingEventBuilder log = logger.atLevel(level);
+        if (LOGGER.canLogAtLevel(level) && request != null) {
+            if (allowedHeaderNames.contains(X_MS_CLIENT_REQUEST_ID.getCaseInsensitiveName())) {
+                String clientRequestId = request.getHeaders().getValue(X_MS_CLIENT_REQUEST_ID);
+                if (clientRequestId != null) {
+                    log.addKeyValue(X_MS_CLIENT_REQUEST_ID.getCaseInsensitiveName(), clientRequestId);
+                }
+            }
+
+            if (allowedHeaderNames.contains(TRACEPARENT.getCaseInsensitiveName())) {
+                String traceparent = request.getHeaders().getValue(TRACEPARENT);
+                if (traceparent != null) {
+                    log.addKeyValue(TRACEPARENT.getCaseInsensitiveName(), traceparent);
+                }
+            }
+        }
+
+        return log;
     }
 
     private HttpRequestLoggingContext getRequestLoggingOptions(HttpPipelineCallContext callContext) {
@@ -212,7 +239,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
-                addHeadersToLogMessage(allowedHeaderNames, request.getHeaders(), logBuilder);
+                addHeadersToLogMessage(allowedHeaderNames, request.getHeaders(), logBuilder, disableRedactedHeaderLogging);
             }
 
             if (request.getBody() == null) {
@@ -301,7 +328,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         private void logHeaders(ClientLogger logger, HttpResponse response, LoggingEventBuilder logBuilder) {
             if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
-                addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder);
+                addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder, disableRedactedHeaderLogging);
             }
         }
 
@@ -388,11 +415,24 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param logLevel Log level the environment is configured to use.
      */
     private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders headers,
-        LoggingEventBuilder logBuilder) {
-        for (HttpHeader header : headers) {
-            String headerName = header.getName();
-            logBuilder.addKeyValue(headerName, allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))
-                ? header.getValue() : REDACTED_PLACEHOLDER);
+        LoggingEventBuilder logBuilder, boolean disableRedactedHeaderLogging) {
+
+        final StringBuilder redactedHeaders = new StringBuilder();
+
+        // The raw header map uses keys that are already lower-cased.
+        HttpHeadersAccessHelper.getRawHeaderMap(headers).forEach((key, value) -> {
+            if (allowedHeaderNames.contains(key)) {
+                logBuilder.addKeyValue(value.getName(), value.getValue());
+            } else if (!disableRedactedHeaderLogging) {
+                if (redactedHeaders.length() > 0) {
+                    redactedHeaders.append(',');
+                }
+                redactedHeaders.append(value.getName());
+            }
+        });
+
+        if (redactedHeaders.length() > 0) {
+            logBuilder.addKeyValue("redactedHeaders", redactedHeaders.toString());
         }
     }
 
@@ -477,8 +517,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             return Integer.valueOf(rawRetryCount.toString());
         } catch (NumberFormatException ex) {
-            LOGGER.log(LogLevel.INFORMATIONAL,
-                () -> "Could not parse the request retry count: '" + rawRetryCount + "'.");
+            LOGGER.atInfo()
+                .addKeyValue(LoggingKeys.TRY_COUNT_KEY, rawRetryCount)
+                .log("Could not parse the request retry count.");
             return null;
         }
     }

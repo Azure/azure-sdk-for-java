@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents capability of a storage tier. */
+/**
+ * Represents capability of a storage tier.
+ */
 @Immutable
 public final class StorageTierCapability extends CapabilityBase {
     /*
@@ -22,13 +24,15 @@ public final class StorageTierCapability extends CapabilityBase {
     @JsonProperty(value = "iops", access = JsonProperty.Access.WRITE_ONLY)
     private Integer iops;
 
-    /** Creates an instance of StorageTierCapability class. */
+    /**
+     * Creates an instance of StorageTierCapability class.
+     */
     public StorageTierCapability() {
     }
 
     /**
      * Get the name property: Name to represent Storage tier capability.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class StorageTierCapability extends CapabilityBase {
 
     /**
      * Get the iops property: Supported IOPS for this storage tier.
-     *
+     * 
      * @return the iops value.
      */
     public Integer iops() {
@@ -46,7 +50,7 @@ public final class StorageTierCapability extends CapabilityBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

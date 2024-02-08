@@ -221,7 +221,10 @@
       </And>
       <And>
         <Class name="com.azure.core.http.HttpRequest" />
-        <Method name="getHeaders" />
+        <Or>
+          <Method name="getHeaders" />
+          <Method name="getBodyAsBinaryData" />
+        </Or>
       </And>
       <And>
         <Class name="com.azure.core.http.HttpResponse" />
@@ -343,6 +346,22 @@
         <Class name="com.azure.core.util.tracing.TracingLink" />
         <Method name="getAttributes" />
       </And>
+      <And>
+        <Class name="com.azure.core.models.CloudEvent" />
+        <Method name="getData" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.MessageContent" />
+        <Method name="getBodyAsBinaryData" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.policy.RequestRetryCondition" />
+        <Or>
+          <Method name="getResponse" />
+          <Method name="getThrowable" />
+          <Method name="getRetriedThrowables" />
+        </Or>
+      </And>
     </Or>
   </Match>
 
@@ -367,6 +386,7 @@
           <Class name="com.azure.core.implementation.http.rest.RequestDataConfiguration" />
           <Class name="com.azure.core.implementation.jackson.ObjectMapperShim" />
           <Class name="com.azure.core.util.tracing.TracingLink" />
+          <Class name="com.azure.core.models.CloudEvent" />
         </Or>
         <Method name="&lt;init&gt;" />
       </And>
@@ -380,7 +400,10 @@
       </And>
       <And>
         <Class name="com.azure.core.http.HttpRequest" />
-        <Method name="setHeaders" />
+        <Or>
+          <Method name="setHeaders" />
+          <Method name="setBody" />
+        </Or>
       </And>
       <And>
         <Class name="com.azure.core.implementation.http.policy.InstrumentationPolicy" />
@@ -389,6 +412,10 @@
       <And>
         <Class name="com.azure.core.util.HttpClientOptions" />
         <Method name="setConfiguration" />
+      </And>
+      <And>
+        <Class name="com.azure.core.models.MessageContent" />
+        <Method name="setBodyAsBinaryData" />
       </And>
     </Or>
   </Match>

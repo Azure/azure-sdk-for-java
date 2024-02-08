@@ -52,6 +52,7 @@
     <javadoc.excludePackageNames/>
     <javadoc.sourcepath>${basedir}/src/main/java</javadoc.sourcepath>
 
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
   </properties>
 
   <developers>

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a response to source upload request. */
+/**
+ * The properties of a response to source upload request.
+ */
 @Fluent
 public final class SourceUploadDefinitionInner {
     /*
@@ -22,13 +24,15 @@ public final class SourceUploadDefinitionInner {
     @JsonProperty(value = "relativePath")
     private String relativePath;
 
-    /** Creates an instance of SourceUploadDefinitionInner class. */
+    /**
+     * Creates an instance of SourceUploadDefinitionInner class.
+     */
     public SourceUploadDefinitionInner() {
     }
 
     /**
      * Get the uploadUrl property: The URL where the client can upload the source.
-     *
+     * 
      * @return the uploadUrl value.
      */
     public String uploadUrl() {
@@ -37,7 +41,7 @@ public final class SourceUploadDefinitionInner {
 
     /**
      * Set the uploadUrl property: The URL where the client can upload the source.
-     *
+     * 
      * @param uploadUrl the uploadUrl value to set.
      * @return the SourceUploadDefinitionInner object itself.
      */
@@ -47,9 +51,9 @@ public final class SourceUploadDefinitionInner {
     }
 
     /**
-     * Get the relativePath property: The relative path to the source. This is used to submit the subsequent queue build
-     * request.
-     *
+     * Get the relativePath property: The relative path to the source. This is used to submit the subsequent queue
+     * build request.
+     * 
      * @return the relativePath value.
      */
     public String relativePath() {
@@ -57,9 +61,9 @@ public final class SourceUploadDefinitionInner {
     }
 
     /**
-     * Set the relativePath property: The relative path to the source. This is used to submit the subsequent queue build
-     * request.
-     *
+     * Set the relativePath property: The relative path to the source. This is used to submit the subsequent queue
+     * build request.
+     * 
      * @param relativePath the relativePath value to set.
      * @return the SourceUploadDefinitionInner object itself.
      */
@@ -70,7 +74,7 @@ public final class SourceUploadDefinitionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

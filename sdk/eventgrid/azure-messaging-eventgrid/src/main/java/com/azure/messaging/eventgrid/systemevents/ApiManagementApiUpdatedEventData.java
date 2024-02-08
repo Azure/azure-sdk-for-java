@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiUpdated event.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIUpdated event.
  */
 @Fluent
 public final class ApiManagementApiUpdatedEventData implements JsonSerializable<ApiManagementApiUpdatedEventData> {

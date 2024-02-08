@@ -7,7 +7,9 @@ package com.azure.resourcemanager.elasticsan.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parent resource information. */
+/**
+ * Parent resource information.
+ */
 @Fluent
 public final class ManagedByInfo {
     /*
@@ -17,14 +19,16 @@ public final class ManagedByInfo {
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
-    /** Creates an instance of ManagedByInfo class. */
+    /**
+     * Creates an instance of ManagedByInfo class.
+     */
     public ManagedByInfo() {
     }
 
     /**
      * Get the resourceId property: Resource ID of the resource managing the volume, this is a restricted field and can
      * only be set for internal use.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -34,7 +38,7 @@ public final class ManagedByInfo {
     /**
      * Set the resourceId property: Resource ID of the resource managing the volume, this is a restricted field and can
      * only be set for internal use.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ManagedByInfo object itself.
      */
@@ -45,7 +49,7 @@ public final class ManagedByInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

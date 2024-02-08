@@ -38,6 +38,14 @@ public class ManagementChannel implements AmqpManagementNode {
     private final ClientLogger logger;
     private final String entityPath;
 
+    /**
+     * Creates a new instance of ManagementChannel.
+     *
+     * @param createChannel Creates a new AMQP channel.
+     * @param fullyQualifiedNamespace Fully qualified namespace for the message broker.
+     * @param entityPath The entity path for the message broker.
+     * @param tokenManager Manages tokens for authorization.
+     */
     public ManagementChannel(AmqpChannelProcessor<RequestResponseChannel> createChannel,
         String fullyQualifiedNamespace, String entityPath, TokenManager tokenManager) {
         this.createChannel = Objects.requireNonNull(createChannel, "'createChannel' cannot be null.");

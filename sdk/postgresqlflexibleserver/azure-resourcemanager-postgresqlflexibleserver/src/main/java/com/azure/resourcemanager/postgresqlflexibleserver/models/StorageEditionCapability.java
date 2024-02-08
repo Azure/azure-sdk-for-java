@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Storage edition capability. */
+/**
+ * Storage edition capability.
+ */
 @Immutable
 public final class StorageEditionCapability extends CapabilityBase {
     /*
@@ -29,13 +31,15 @@ public final class StorageEditionCapability extends CapabilityBase {
     @JsonProperty(value = "supportedStorageMb", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageMbCapability> supportedStorageMb;
 
-    /** Creates an instance of StorageEditionCapability class. */
+    /**
+     * Creates an instance of StorageEditionCapability class.
+     */
     public StorageEditionCapability() {
     }
 
     /**
      * Get the name property: Storage edition name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +48,7 @@ public final class StorageEditionCapability extends CapabilityBase {
 
     /**
      * Get the defaultStorageSizeMb property: Default storage size in MB for storage edition.
-     *
+     * 
      * @return the defaultStorageSizeMb value.
      */
     public Long defaultStorageSizeMb() {
@@ -53,7 +57,7 @@ public final class StorageEditionCapability extends CapabilityBase {
 
     /**
      * Get the supportedStorageMb property: Flexible server supported storage range in MB.
-     *
+     * 
      * @return the supportedStorageMb value.
      */
     public List<StorageMbCapability> supportedStorageMb() {
@@ -62,7 +66,7 @@ public final class StorageEditionCapability extends CapabilityBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
