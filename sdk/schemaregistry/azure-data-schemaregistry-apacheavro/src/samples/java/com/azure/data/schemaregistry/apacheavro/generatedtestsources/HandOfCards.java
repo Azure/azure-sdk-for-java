@@ -23,10 +23,10 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
   private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<HandOfCards> ENCODER =
-      new BinaryMessageEncoder<HandOfCards>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<HandOfCards> DECODER =
-      new BinaryMessageDecoder<HandOfCards>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -50,7 +50,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<HandOfCards> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<HandOfCards>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -90,9 +90,14 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
     this.cards = cards;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return cards;
@@ -101,6 +106,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
