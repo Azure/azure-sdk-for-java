@@ -18,85 +18,68 @@ import org.junit.jupiter.api.Assertions;
 public final class JobResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"lopwiyig\",\"backupManagementType\":\"MAB\",\"operation\":\"dwzbaiue\",\"status\":\"a\",\"startTime\":\"2021-03-01T01:27:20Z\",\"endTime\":\"2021-03-15T03:03:20Z\",\"activityId\":\"ped\"},\"eTag\":\"jn\",\"location\":\"bckhsmtxpsi\",\"tags\":{\"rdqmhjjdhtldwkyz\":\"fhvpesaps\",\"cwsvlxotog\":\"uutkncw\",\"o\":\"wrupqsxvnmicykvc\",\"vnotyfjfcnj\":\"eil\"},\"id\":\"k\",\"name\":\"nxdhbt\",\"type\":\"kphywpnvjto\"},{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"rmclfplphoxu\",\"backupManagementType\":\"DefaultBackup\",\"operation\":\"abgy\",\"status\":\"sbj\",\"startTime\":\"2021-11-02T03:38:26Z\",\"endTime\":\"2021-10-14T16:25:44Z\",\"activityId\":\"xywpmueefjzwfqkq\"},\"eTag\":\"ids\",\"location\":\"yonobgl\",\"tags\":{\"tlmoyrx\":\"qxtccmgyudx\"},\"id\":\"wfudwpzntxhdzhl\",\"name\":\"qj\",\"type\":\"hckfrlhrx\"}],\"nextLink\":\"kyv\"}")
-                .toObject(JobResourceList.class);
-        Assertions.assertEquals("kyv", model.nextLink());
-        Assertions.assertEquals("bckhsmtxpsi", model.value().get(0).location());
-        Assertions.assertEquals("fhvpesaps", model.value().get(0).tags().get("rdqmhjjdhtldwkyz"));
-        Assertions.assertEquals("lopwiyig", model.value().get(0).properties().entityFriendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("dwzbaiue", model.value().get(0).properties().operation());
-        Assertions.assertEquals("a", model.value().get(0).properties().status());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-03-01T01:27:20Z"), model.value().get(0).properties().startTime());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-03-15T03:03:20Z"), model.value().get(0).properties().endTime());
-        Assertions.assertEquals("ped", model.value().get(0).properties().activityId());
-        Assertions.assertEquals("jn", model.value().get(0).etag());
+        JobResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"xpsiebtfhvpes\",\"backupManagementType\":\"AzureSql\",\"operation\":\"rdqmhjjdhtldwkyz\",\"status\":\"utknc\",\"startTime\":\"2021-08-19T11:27:34Z\",\"endTime\":\"2021-08-07T22:24:06Z\",\"activityId\":\"lxotogtwrupq\"},\"eTag\":\"vnm\",\"location\":\"cykvceo\",\"tags\":{\"notyfjfcnjbkcn\":\"lo\",\"kphywpnvjto\":\"dhbt\"},\"id\":\"nermcl\",\"name\":\"plpho\",\"type\":\"uscrpabgyepsb\"},{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"zq\",\"backupManagementType\":\"AzureWorkload\",\"operation\":\"wpmueefj\",\"status\":\"fqkquj\",\"startTime\":\"2021-07-14T16:34:27Z\",\"endTime\":\"2021-08-09T22:38:08Z\",\"activityId\":\"nobglaocq\"},\"eTag\":\"ccm\",\"location\":\"yudxytlmoy\",\"tags\":{\"qj\":\"wfudwpzntxhdzhl\",\"bkyvp\":\"hckfrlhrx\",\"uzbpzkafku\":\"ca\",\"rnwb\":\"b\"},\"id\":\"ehhseyvjusrts\",\"name\":\"hspkdeemao\",\"type\":\"mx\"},{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"vt\",\"backupManagementType\":\"MAB\",\"operation\":\"qkrhahvljua\",\"status\":\"quhcdhmduala\",\"startTime\":\"2021-12-01T16:06:51Z\",\"endTime\":\"2021-05-16T16:57:57Z\",\"activityId\":\"adm\"},\"eTag\":\"rcrgvx\",\"location\":\"vgomz\",\"tags\":{\"ali\":\"isgwbnbbeldawkz\",\"hashsfwxosow\":\"urqhaka\"},\"id\":\"xcug\",\"name\":\"cjooxdjebwpucwwf\",\"type\":\"ovbvmeueciv\"}],\"nextLink\":\"zceuojgjrw\"}")
+            .toObject(JobResourceList.class);
+        Assertions.assertEquals("zceuojgjrw", model.nextLink());
+        Assertions.assertEquals("cykvceo", model.value().get(0).location());
+        Assertions.assertEquals("lo", model.value().get(0).tags().get("notyfjfcnjbkcn"));
+        Assertions.assertEquals("xpsiebtfhvpes", model.value().get(0).properties().entityFriendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL,
+            model.value().get(0).properties().backupManagementType());
+        Assertions.assertEquals("rdqmhjjdhtldwkyz", model.value().get(0).properties().operation());
+        Assertions.assertEquals("utknc", model.value().get(0).properties().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T11:27:34Z"),
+            model.value().get(0).properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-07T22:24:06Z"),
+            model.value().get(0).properties().endTime());
+        Assertions.assertEquals("lxotogtwrupq", model.value().get(0).properties().activityId());
+        Assertions.assertEquals("vnm", model.value().get(0).etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobResourceList model =
-            new JobResourceList()
-                .withNextLink("kyv")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new JobResourceInner()
-                                .withLocation("bckhsmtxpsi")
-                                .withTags(
-                                    mapOf(
-                                        "rdqmhjjdhtldwkyz",
-                                        "fhvpesaps",
-                                        "cwsvlxotog",
-                                        "uutkncw",
-                                        "o",
-                                        "wrupqsxvnmicykvc",
-                                        "vnotyfjfcnj",
-                                        "eil"))
-                                .withProperties(
-                                    new Job()
-                                        .withEntityFriendlyName("lopwiyig")
-                                        .withBackupManagementType(BackupManagementType.MAB)
-                                        .withOperation("dwzbaiue")
-                                        .withStatus("a")
-                                        .withStartTime(OffsetDateTime.parse("2021-03-01T01:27:20Z"))
-                                        .withEndTime(OffsetDateTime.parse("2021-03-15T03:03:20Z"))
-                                        .withActivityId("ped"))
-                                .withEtag("jn"),
-                            new JobResourceInner()
-                                .withLocation("yonobgl")
-                                .withTags(mapOf("tlmoyrx", "qxtccmgyudx"))
-                                .withProperties(
-                                    new Job()
-                                        .withEntityFriendlyName("rmclfplphoxu")
-                                        .withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
-                                        .withOperation("abgy")
-                                        .withStatus("sbj")
-                                        .withStartTime(OffsetDateTime.parse("2021-11-02T03:38:26Z"))
-                                        .withEndTime(OffsetDateTime.parse("2021-10-14T16:25:44Z"))
-                                        .withActivityId("xywpmueefjzwfqkq"))
-                                .withEtag("ids")));
+        JobResourceList model = new JobResourceList().withNextLink("zceuojgjrw")
+            .withValue(Arrays.asList(
+                new JobResourceInner().withLocation("cykvceo")
+                    .withTags(mapOf("notyfjfcnjbkcn", "lo", "kphywpnvjto", "dhbt"))
+                    .withProperties(new Job().withEntityFriendlyName("xpsiebtfhvpes")
+                        .withBackupManagementType(BackupManagementType.AZURE_SQL).withOperation("rdqmhjjdhtldwkyz")
+                        .withStatus("utknc").withStartTime(OffsetDateTime.parse("2021-08-19T11:27:34Z"))
+                        .withEndTime(OffsetDateTime.parse("2021-08-07T22:24:06Z")).withActivityId("lxotogtwrupq"))
+                    .withEtag("vnm"),
+                new JobResourceInner().withLocation("yudxytlmoy")
+                    .withTags(mapOf("qj", "wfudwpzntxhdzhl", "bkyvp", "hckfrlhrx", "uzbpzkafku", "ca", "rnwb", "b"))
+                    .withProperties(new Job().withEntityFriendlyName("zq")
+                        .withBackupManagementType(BackupManagementType.AZURE_WORKLOAD).withOperation("wpmueefj")
+                        .withStatus("fqkquj").withStartTime(OffsetDateTime.parse("2021-07-14T16:34:27Z"))
+                        .withEndTime(OffsetDateTime.parse("2021-08-09T22:38:08Z")).withActivityId("nobglaocq"))
+                    .withEtag("ccm"),
+                new JobResourceInner().withLocation("vgomz")
+                    .withTags(mapOf("ali", "isgwbnbbeldawkz", "hashsfwxosow", "urqhaka"))
+                    .withProperties(new Job().withEntityFriendlyName("vt")
+                        .withBackupManagementType(BackupManagementType.MAB).withOperation("qkrhahvljua")
+                        .withStatus("quhcdhmduala").withStartTime(OffsetDateTime.parse("2021-12-01T16:06:51Z"))
+                        .withEndTime(OffsetDateTime.parse("2021-05-16T16:57:57Z")).withActivityId("adm"))
+                    .withEtag("rcrgvx")));
         model = BinaryData.fromObject(model).toObject(JobResourceList.class);
-        Assertions.assertEquals("kyv", model.nextLink());
-        Assertions.assertEquals("bckhsmtxpsi", model.value().get(0).location());
-        Assertions.assertEquals("fhvpesaps", model.value().get(0).tags().get("rdqmhjjdhtldwkyz"));
-        Assertions.assertEquals("lopwiyig", model.value().get(0).properties().entityFriendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.value().get(0).properties().backupManagementType());
-        Assertions.assertEquals("dwzbaiue", model.value().get(0).properties().operation());
-        Assertions.assertEquals("a", model.value().get(0).properties().status());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-03-01T01:27:20Z"), model.value().get(0).properties().startTime());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-03-15T03:03:20Z"), model.value().get(0).properties().endTime());
-        Assertions.assertEquals("ped", model.value().get(0).properties().activityId());
-        Assertions.assertEquals("jn", model.value().get(0).etag());
+        Assertions.assertEquals("zceuojgjrw", model.nextLink());
+        Assertions.assertEquals("cykvceo", model.value().get(0).location());
+        Assertions.assertEquals("lo", model.value().get(0).tags().get("notyfjfcnjbkcn"));
+        Assertions.assertEquals("xpsiebtfhvpes", model.value().get(0).properties().entityFriendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL,
+            model.value().get(0).properties().backupManagementType());
+        Assertions.assertEquals("rdqmhjjdhtldwkyz", model.value().get(0).properties().operation());
+        Assertions.assertEquals("utknc", model.value().get(0).properties().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T11:27:34Z"),
+            model.value().get(0).properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-07T22:24:06Z"),
+            model.value().get(0).properties().endTime());
+        Assertions.assertEquals("lxotogtwrupq", model.value().get(0).properties().activityId());
+        Assertions.assertEquals("vnm", model.value().get(0).etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

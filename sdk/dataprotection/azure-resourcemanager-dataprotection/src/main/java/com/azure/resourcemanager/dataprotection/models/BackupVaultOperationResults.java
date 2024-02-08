@@ -7,11 +7,13 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BackupVaultOperationResults. */
+/**
+ * Resource collection API of BackupVaultOperationResults.
+ */
 public interface BackupVaultOperationResults {
     /**
      * The get operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.
@@ -21,12 +23,12 @@ public interface BackupVaultOperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backupVault Resource.
      */
-    Response<BackupVaultResource> getWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context);
+    Response<BackupVaultResource> getWithResponse(String resourceGroupName, String vaultName, String operationId,
+        Context context);
 
     /**
      * The get operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.

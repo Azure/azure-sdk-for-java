@@ -12,14 +12,13 @@ public final class ArmTemplateInfoInnerTests {
     public void testDeserialize() throws Exception {
         ArmTemplateInfoInner model =
             BinaryData
-                .fromString("{\"template\":\"dataxjyngudivk\",\"parameters\":\"dataswbxqz\"}")
+                .fromString("{\"template\":\"datat\",\"parameters\":\"datafikdowwqu\"}")
                 .toObject(ArmTemplateInfoInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmTemplateInfoInner model =
-            new ArmTemplateInfoInner().withTemplate("dataxjyngudivk").withParameters("dataswbxqz");
+        ArmTemplateInfoInner model = new ArmTemplateInfoInner().withTemplate("datat").withParameters("datafikdowwqu");
         model = BinaryData.fromObject(model).toObject(ArmTemplateInfoInner.class);
     }
 }

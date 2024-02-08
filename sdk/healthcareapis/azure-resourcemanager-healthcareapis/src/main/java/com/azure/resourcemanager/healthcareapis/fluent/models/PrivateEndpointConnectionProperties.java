@@ -11,7 +11,9 @@ import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection
 import com.azure.resourcemanager.healthcareapis.models.PrivateLinkServiceConnectionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the PrivateEndpointConnectProperties. */
+/**
+ * Properties of the PrivateEndpointConnectProperties.
+ */
 @Fluent
 public final class PrivateEndpointConnectionProperties {
     /*
@@ -21,8 +23,7 @@ public final class PrivateEndpointConnectionProperties {
     private PrivateEndpoint privateEndpoint;
 
     /*
-     * A collection of information about the state of the connection between
-     * service consumer and provider.
+     * A collection of information about the state of the connection between service consumer and provider.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState", required = true)
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
@@ -34,8 +35,14 @@ public final class PrivateEndpointConnectionProperties {
     private PrivateEndpointConnectionProvisioningState provisioningState;
 
     /**
+     * Creates an instance of PrivateEndpointConnectionProperties class.
+     */
+    public PrivateEndpointConnectionProperties() {
+    }
+
+    /**
      * Get the privateEndpoint property: The resource of private end point.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpoint privateEndpoint() {
@@ -44,7 +51,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Set the privateEndpoint property: The resource of private end point.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
@@ -54,9 +61,9 @@ public final class PrivateEndpointConnectionProperties {
     }
 
     /**
-     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
-     *
+     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the
+     * connection between service consumer and provider.
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -64,21 +71,21 @@ public final class PrivateEndpointConnectionProperties {
     }
 
     /**
-     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
-     *
+     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the
+     * connection between service consumer and provider.
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
-    public PrivateEndpointConnectionProperties withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionProperties
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the private endpoint connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PrivateEndpointConnectionProvisioningState provisioningState() {
@@ -87,7 +94,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -95,11 +102,8 @@ public final class PrivateEndpointConnectionProperties {
             privateEndpoint().validate();
         }
         if (privateLinkServiceConnectionState() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateLinkServiceConnectionState in model"
-                            + " PrivateEndpointConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property privateLinkServiceConnectionState in model PrivateEndpointConnectionProperties"));
         } else {
             privateLinkServiceConnectionState().validate();
         }

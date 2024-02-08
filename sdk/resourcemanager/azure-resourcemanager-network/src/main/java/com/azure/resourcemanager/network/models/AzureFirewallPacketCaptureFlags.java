@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the AzureFirewallRCAction. */
+/**
+ * Properties of the AzureFirewallRCAction.
+ */
 @Fluent
 public final class AzureFirewallPacketCaptureFlags {
     /*
@@ -16,13 +18,15 @@ public final class AzureFirewallPacketCaptureFlags {
     @JsonProperty(value = "type")
     private AzureFirewallPacketCaptureFlagsType type;
 
-    /** Creates an instance of AzureFirewallPacketCaptureFlags class. */
+    /**
+     * Creates an instance of AzureFirewallPacketCaptureFlags class.
+     */
     public AzureFirewallPacketCaptureFlags() {
     }
 
     /**
      * Get the type property: Flags to capture.
-     *
+     * 
      * @return the type value.
      */
     public AzureFirewallPacketCaptureFlagsType type() {
@@ -31,7 +35,7 @@ public final class AzureFirewallPacketCaptureFlags {
 
     /**
      * Set the type property: Flags to capture.
-     *
+     * 
      * @param type the type value to set.
      * @return the AzureFirewallPacketCaptureFlags object itself.
      */
@@ -42,7 +46,7 @@ public final class AzureFirewallPacketCaptureFlags {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ScopeClusterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScopeCluster model = BinaryData.fromString("{\"releaseNamespace\":\"smy\"}").toObject(ScopeCluster.class);
-        Assertions.assertEquals("smy", model.releaseNamespace());
+        ScopeCluster model = BinaryData.fromString("{\"releaseNamespace\":\"rkxvdum\"}").toObject(ScopeCluster.class);
+        Assertions.assertEquals("rkxvdum", model.releaseNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScopeCluster model = new ScopeCluster().withReleaseNamespace("smy");
+        ScopeCluster model = new ScopeCluster().withReleaseNamespace("rkxvdum");
         model = BinaryData.fromObject(model).toObject(ScopeCluster.class);
-        Assertions.assertEquals("smy", model.releaseNamespace());
+        Assertions.assertEquals("rkxvdum", model.releaseNamespace());
     }
 }

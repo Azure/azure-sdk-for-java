@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * CopyOption
- *
- * <p>Options to copy.
+ * 
+ * Options to copy.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -23,17 +23,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "CopyOnExpiryOption", value = CopyOnExpiryOption.class),
     @JsonSubTypes.Type(name = "CustomCopyOption", value = CustomCopyOption.class),
-    @JsonSubTypes.Type(name = "ImmediateCopyOption", value = ImmediateCopyOption.class)
-})
+    @JsonSubTypes.Type(name = "ImmediateCopyOption", value = ImmediateCopyOption.class) })
 @Immutable
 public class CopyOption {
-    /** Creates an instance of CopyOption class. */
+    /**
+     * Creates an instance of CopyOption class.
+     */
     public CopyOption() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

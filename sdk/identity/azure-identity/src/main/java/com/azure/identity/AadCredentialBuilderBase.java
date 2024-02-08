@@ -13,8 +13,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
 /**
- * <p>The base class for credential builders that allow specifying a client ID, tenant ID, authority host and
- * additionally allowed tenants for an Azure Active Directory.</p>
+ * <p>The base class for credential builders that allow specifying a client ID, tenant ID, authority host, and
+ * additionally allowed tenants for Microsoft Entra ID.</p>
  *
  * @param <T> the type of the credential builder
  */
@@ -25,8 +25,15 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     String tenantId;
 
     /**
-     * Specifies the Azure Active Directory endpoint to acquire tokens.
-     * @param authorityHost the Azure Active Directory endpoint
+     * Constructs an instance of AadCredentialBuilderBase.
+     */
+    public AadCredentialBuilderBase() {
+        super();
+    }
+
+    /**
+     * Specifies the Microsoft Entra endpoint to acquire tokens.
+     * @param authorityHost the Microsoft Entra endpoint
      * @return An updated instance of this builder with the authority host set as specified.
      */
     @SuppressWarnings("unchecked")

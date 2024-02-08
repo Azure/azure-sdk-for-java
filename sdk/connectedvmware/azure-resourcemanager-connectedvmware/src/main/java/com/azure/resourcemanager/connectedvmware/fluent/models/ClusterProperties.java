@@ -5,11 +5,12 @@
 package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the resource properties. */
+/** Describes the properties of a Cluster. */
 @Fluent
 public final class ClusterProperties {
     /*
@@ -55,22 +56,50 @@ public final class ClusterProperties {
     private String customResourceName;
 
     /*
-     * Gets or sets the datastore ARM ids.
+     * Gets the used physical memory on the cluster in GB.
+     */
+    @JsonProperty(value = "usedMemoryGB", access = JsonProperty.Access.WRITE_ONLY)
+    private Long usedMemoryGB;
+
+    /*
+     * Gets the total amount of physical memory on the cluster in GB.
+     */
+    @JsonProperty(value = "totalMemoryGB", access = JsonProperty.Access.WRITE_ONLY)
+    private Long totalMemoryGB;
+
+    /*
+     * Gets the used CPU usage across all cores on the cluster in MHz.
+     */
+    @JsonProperty(value = "usedCpuMHz", access = JsonProperty.Access.WRITE_ONLY)
+    private Long usedCpuMHz;
+
+    /*
+     * Gets the max CPU usage across all cores on the cluster in MHz.
+     */
+    @JsonProperty(value = "totalCpuMHz", access = JsonProperty.Access.WRITE_ONLY)
+    private Long totalCpuMHz;
+
+    /*
+     * Gets the datastore ARM ids.
      */
     @JsonProperty(value = "datastoreIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> datastoreIds;
 
     /*
-     * Gets or sets the network ARM ids.
+     * Gets the network ARM ids.
      */
     @JsonProperty(value = "networkIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> networkIds;
 
     /*
-     * Gets or sets the provisioning state.
+     * Gets the provisioning state.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
+
+    /** Creates an instance of ClusterProperties class. */
+    public ClusterProperties() {
+    }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
@@ -169,7 +198,43 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the datastoreIds property: Gets or sets the datastore ARM ids.
+     * Get the usedMemoryGB property: Gets the used physical memory on the cluster in GB.
+     *
+     * @return the usedMemoryGB value.
+     */
+    public Long usedMemoryGB() {
+        return this.usedMemoryGB;
+    }
+
+    /**
+     * Get the totalMemoryGB property: Gets the total amount of physical memory on the cluster in GB.
+     *
+     * @return the totalMemoryGB value.
+     */
+    public Long totalMemoryGB() {
+        return this.totalMemoryGB;
+    }
+
+    /**
+     * Get the usedCpuMHz property: Gets the used CPU usage across all cores on the cluster in MHz.
+     *
+     * @return the usedCpuMHz value.
+     */
+    public Long usedCpuMHz() {
+        return this.usedCpuMHz;
+    }
+
+    /**
+     * Get the totalCpuMHz property: Gets the max CPU usage across all cores on the cluster in MHz.
+     *
+     * @return the totalCpuMHz value.
+     */
+    public Long totalCpuMHz() {
+        return this.totalCpuMHz;
+    }
+
+    /**
+     * Get the datastoreIds property: Gets the datastore ARM ids.
      *
      * @return the datastoreIds value.
      */
@@ -178,7 +243,7 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the networkIds property: Gets or sets the network ARM ids.
+     * Get the networkIds property: Gets the network ARM ids.
      *
      * @return the networkIds value.
      */
@@ -187,11 +252,11 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

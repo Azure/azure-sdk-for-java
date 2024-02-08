@@ -23,6 +23,10 @@ public final class UrlSigningParamIdentifier {
     @JsonProperty(value = "paramName", required = true)
     private String paramName;
 
+    /** Creates an instance of UrlSigningParamIdentifier class. */
+    public UrlSigningParamIdentifier() {
+    }
+
     /**
      * Get the paramIndicator property: Indicates the purpose of the parameter.
      *

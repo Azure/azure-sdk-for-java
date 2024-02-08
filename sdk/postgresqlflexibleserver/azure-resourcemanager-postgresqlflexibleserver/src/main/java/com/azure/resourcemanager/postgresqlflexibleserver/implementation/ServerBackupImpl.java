@@ -15,8 +15,7 @@ public final class ServerBackupImpl implements ServerBackup {
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    ServerBackupImpl(
-        ServerBackupInner innerObject,
+    ServerBackupImpl(ServerBackupInner innerObject,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

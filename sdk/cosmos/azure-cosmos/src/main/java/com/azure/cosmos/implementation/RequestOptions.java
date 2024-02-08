@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 /**
  * Encapsulates options that can be specified for a request issued to the Azure Cosmos DB database service.
@@ -50,9 +53,13 @@ public class RequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
     private List<String> excludeRegions;
 
-    private CosmosDiagnosticsContext diagnosticsCtx;
+    private Supplier<CosmosDiagnosticsContext> diagnosticsCtxSupplier;
 
-    public RequestOptions() {}
+    private final AtomicReference<Runnable> markE2ETimeoutInRequestContextCallbackHook;
+
+    public RequestOptions() {
+        this.markE2ETimeoutInRequestContextCallbackHook = new AtomicReference<>(null);
+    }
 
     public RequestOptions(RequestOptions toBeCloned) {
         this.indexingDirective = toBeCloned.indexingDirective;
@@ -76,7 +83,8 @@ public class RequestOptions {
         this.trackingId = toBeCloned.trackingId;
         this.nonIdempotentWriteRetriesEnabled = toBeCloned.nonIdempotentWriteRetriesEnabled;
         this.endToEndOperationLatencyConfig = toBeCloned.endToEndOperationLatencyConfig;
-        this.diagnosticsCtx = toBeCloned.diagnosticsCtx;
+        this.diagnosticsCtxSupplier = toBeCloned.diagnosticsCtxSupplier;
+        this.markE2ETimeoutInRequestContextCallbackHook = new AtomicReference<>(null);
 
         if (toBeCloned.customOptions != null) {
             this.customOptions = new HashMap<>(toBeCloned.customOptions);
@@ -496,12 +504,17 @@ public class RequestOptions {
         this.thresholds = thresholds;
     }
 
-    public void setDiagnosticsContext(CosmosDiagnosticsContext ctx) {
-        this.diagnosticsCtx = ctx;
+    public void setDiagnosticsContextSupplier(Supplier<CosmosDiagnosticsContext> ctxSupplier) {
+        this.diagnosticsCtxSupplier = ctxSupplier;
     }
 
-    public CosmosDiagnosticsContext getDiagnosticsContext() {
-        return this.diagnosticsCtx;
+    public CosmosDiagnosticsContext getDiagnosticsContextSnapshot() {
+        Supplier<CosmosDiagnosticsContext> ctxSupplierSnapshot = this.diagnosticsCtxSupplier;
+        if (ctxSupplierSnapshot == null) {
+            return null;
+        }
+
+        return ctxSupplierSnapshot.get();
     }
 
     public void setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
@@ -518,5 +531,9 @@ public class RequestOptions {
 
     public void setExcludeRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
+    }
+
+    public AtomicReference<Runnable> getMarkE2ETimeoutInRequestContextCallbackHook() {
+        return this.markE2ETimeoutInRequestContextCallbackHook;
     }
 }

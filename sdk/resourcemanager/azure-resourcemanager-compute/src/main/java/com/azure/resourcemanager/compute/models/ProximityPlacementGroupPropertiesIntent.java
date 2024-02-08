@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies the user intent of the proximity placement group. */
+/**
+ * Specifies the user intent of the proximity placement group.
+ */
 @Fluent
 public final class ProximityPlacementGroupPropertiesIntent {
     /*
@@ -17,14 +19,16 @@ public final class ProximityPlacementGroupPropertiesIntent {
     @JsonProperty(value = "vmSizes")
     private List<String> vmSizes;
 
-    /** Creates an instance of ProximityPlacementGroupPropertiesIntent class. */
+    /**
+     * Creates an instance of ProximityPlacementGroupPropertiesIntent class.
+     */
     public ProximityPlacementGroupPropertiesIntent() {
     }
 
     /**
      * Get the vmSizes property: Specifies possible sizes of virtual machines that can be created in the proximity
      * placement group.
-     *
+     * 
      * @return the vmSizes value.
      */
     public List<String> vmSizes() {
@@ -34,7 +38,7 @@ public final class ProximityPlacementGroupPropertiesIntent {
     /**
      * Set the vmSizes property: Specifies possible sizes of virtual machines that can be created in the proximity
      * placement group.
-     *
+     * 
      * @param vmSizes the vmSizes value to set.
      * @return the ProximityPlacementGroupPropertiesIntent object itself.
      */
@@ -45,7 +49,7 @@ public final class ProximityPlacementGroupPropertiesIntent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

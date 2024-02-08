@@ -5,8 +5,8 @@ package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.models.AudioTranscription;
-import com.azure.ai.openai.models.AudioTranscriptionFormat;
+import com.azure.ai.openai.models.AudioTranslation;
+import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
@@ -36,9 +36,9 @@ public class AudioTranslationSample {
             .buildClient();
         byte[] file = BinaryData.fromFile(filePath).toBytes();
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
-            .setResponseFormat(AudioTranscriptionFormat.JSON);
+            .setResponseFormat(AudioTranslationFormat.JSON);
 
-        AudioTranscription translation = client.getAudioTranslation(deploymentOrModelId, fileName, translationOptions);
+        AudioTranslation translation = client.getAudioTranslation(deploymentOrModelId, fileName, translationOptions);
 
         System.out.println("Translation: " + translation.getText());
     }

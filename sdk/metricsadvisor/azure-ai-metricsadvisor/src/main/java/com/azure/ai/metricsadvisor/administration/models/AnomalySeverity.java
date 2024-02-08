@@ -5,19 +5,35 @@
 package com.azure.ai.metricsadvisor.administration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AnomalySeverity. */
+/**
+ * Defines values for AnomalySeverity.
+ */
 public final class AnomalySeverity extends ExpandableStringEnum<AnomalySeverity> {
-    /** Static value Low for AnomalySeverity. */
+    /**
+     * Static value Low for AnomalySeverity.
+     */
     public static final AnomalySeverity LOW = fromString("Low");
 
-    /** Static value Medium for AnomalySeverity. */
+    /**
+     * Static value Medium for AnomalySeverity.
+     */
     public static final AnomalySeverity MEDIUM = fromString("Medium");
 
-    /** Static value High for AnomalySeverity. */
+    /**
+     * Static value High for AnomalySeverity.
+     */
     public static final AnomalySeverity HIGH = fromString("High");
+
+    /**
+     * Constructs a AnomalySeverity object.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AnomalySeverity() {
+    }
 
     /**
      * Creates or finds a AnomalySeverity from its string representation.
@@ -25,12 +41,15 @@ public final class AnomalySeverity extends ExpandableStringEnum<AnomalySeverity>
      * @param name a name to look for.
      * @return the corresponding AnomalySeverity.
      */
-    @JsonCreator
     public static AnomalySeverity fromString(String name) {
         return fromString(name, AnomalySeverity.class);
     }
 
-    /** @return known AnomalySeverity values. */
+    /**
+     * Returns the known AnomalySeverity values.
+     *
+     * @return known AnomalySeverity values.
+     */
     public static Collection<AnomalySeverity> values() {
         return values(AnomalySeverity.class);
     }

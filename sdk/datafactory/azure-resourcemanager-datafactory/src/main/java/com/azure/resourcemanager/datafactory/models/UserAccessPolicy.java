@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Get Data Plane read only token request definition. */
+/**
+ * Get Data Plane read only token request definition.
+ */
 @Fluent
 public final class UserAccessPolicy {
     /*
@@ -43,14 +45,16 @@ public final class UserAccessPolicy {
     @JsonProperty(value = "expireTime")
     private String expireTime;
 
-    /** Creates an instance of UserAccessPolicy class. */
+    /**
+     * Creates an instance of UserAccessPolicy class.
+     */
     public UserAccessPolicy() {
     }
 
     /**
      * Get the permissions property: The string with permissions for Data Plane access. Currently only 'r' is supported
      * which grants read only access.
-     *
+     * 
      * @return the permissions value.
      */
     public String permissions() {
@@ -60,7 +64,7 @@ public final class UserAccessPolicy {
     /**
      * Set the permissions property: The string with permissions for Data Plane access. Currently only 'r' is supported
      * which grants read only access.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the UserAccessPolicy object itself.
      */
@@ -72,7 +76,7 @@ public final class UserAccessPolicy {
     /**
      * Get the accessResourcePath property: The resource path to get access relative to factory. Currently only empty
      * string is supported which corresponds to the factory resource.
-     *
+     * 
      * @return the accessResourcePath value.
      */
     public String accessResourcePath() {
@@ -82,7 +86,7 @@ public final class UserAccessPolicy {
     /**
      * Set the accessResourcePath property: The resource path to get access relative to factory. Currently only empty
      * string is supported which corresponds to the factory resource.
-     *
+     * 
      * @param accessResourcePath the accessResourcePath value to set.
      * @return the UserAccessPolicy object itself.
      */
@@ -92,9 +96,9 @@ public final class UserAccessPolicy {
     }
 
     /**
-     * Get the profileName property: The name of the profile. Currently only the default is supported. The default value
-     * is DefaultProfile.
-     *
+     * Get the profileName property: The name of the profile. Currently only the default is supported. The default
+     * value is DefaultProfile.
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -102,9 +106,9 @@ public final class UserAccessPolicy {
     }
 
     /**
-     * Set the profileName property: The name of the profile. Currently only the default is supported. The default value
-     * is DefaultProfile.
-     *
+     * Set the profileName property: The name of the profile. Currently only the default is supported. The default
+     * value is DefaultProfile.
+     * 
      * @param profileName the profileName value to set.
      * @return the UserAccessPolicy object itself.
      */
@@ -115,7 +119,7 @@ public final class UserAccessPolicy {
 
     /**
      * Get the startTime property: Start time for the token. If not specified the current time will be used.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -124,7 +128,7 @@ public final class UserAccessPolicy {
 
     /**
      * Set the startTime property: Start time for the token. If not specified the current time will be used.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the UserAccessPolicy object itself.
      */
@@ -136,7 +140,7 @@ public final class UserAccessPolicy {
     /**
      * Get the expireTime property: Expiration time for the token. Maximum duration for the token is eight hours and by
      * default the token will expire in eight hours.
-     *
+     * 
      * @return the expireTime value.
      */
     public String expireTime() {
@@ -146,7 +150,7 @@ public final class UserAccessPolicy {
     /**
      * Set the expireTime property: Expiration time for the token. Maximum duration for the token is eight hours and by
      * default the token will expire in eight hours.
-     *
+     * 
      * @param expireTime the expireTime value to set.
      * @return the UserAccessPolicy object itself.
      */
@@ -157,7 +161,7 @@ public final class UserAccessPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

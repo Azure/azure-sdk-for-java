@@ -15,7 +15,7 @@ public final class CreateClassificationPolicyOptions {
     /**
      * Unique identifier of this policy.
      */
-    private final String id;
+    private final String classificationPolicyId;
 
     /**
      * Friendly name of this policy.
@@ -50,18 +50,18 @@ public final class CreateClassificationPolicyOptions {
 
     /**
      * Constructor for CreateClassificationPolicyOptions
-     * @param id ClassificationPolicy id
+     * @param classificationPolicyId ClassificationPolicy id
      */
-    public CreateClassificationPolicyOptions(String id) {
-        this.id = id;
+    public CreateClassificationPolicyOptions(String classificationPolicyId) {
+        this.classificationPolicyId = classificationPolicyId;
     }
 
     /**
      * Returns classification policy id.
      * @return id
      */
-    public String getId() {
-        return this.id;
+    public String getClassificationPolicyId() {
+        return this.classificationPolicyId;
     }
 
     /**

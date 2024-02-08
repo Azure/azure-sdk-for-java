@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVRepli
 /** Samples for ReplicationProtectedItems ApplyRecoveryPoint. */
 public final class ReplicationProtectedItemsApplyRecoveryPointSamp {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_ApplyRecoveryPoint.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_ApplyRecoveryPoint.json
      */
     /**
      * Sample code: Change or apply recovery point.

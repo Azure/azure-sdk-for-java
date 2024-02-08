@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Database server metadata. */
+/**
+ * Database server metadata.
+ */
 @Fluent
 public final class DbServerMetadata {
     /*
@@ -29,18 +31,20 @@ public final class DbServerMetadata {
     private Integer storageMb;
 
     /*
-     * SKU for the database server
+     * SKU for the database server. This object is empty for PG single server
      */
     @JsonProperty(value = "sku")
     private ServerSku sku;
 
-    /** Creates an instance of DbServerMetadata class. */
+    /**
+     * Creates an instance of DbServerMetadata class.
+     */
     public DbServerMetadata() {
     }
 
     /**
      * Get the location property: Location of database server.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -49,7 +53,7 @@ public final class DbServerMetadata {
 
     /**
      * Get the version property: Version for database engine.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -58,7 +62,7 @@ public final class DbServerMetadata {
 
     /**
      * Set the version property: Version for database engine.
-     *
+     * 
      * @param version the version value to set.
      * @return the DbServerMetadata object itself.
      */
@@ -69,7 +73,7 @@ public final class DbServerMetadata {
 
     /**
      * Get the storageMb property: Storage size in MB for database server.
-     *
+     * 
      * @return the storageMb value.
      */
     public Integer storageMb() {
@@ -78,7 +82,7 @@ public final class DbServerMetadata {
 
     /**
      * Set the storageMb property: Storage size in MB for database server.
-     *
+     * 
      * @param storageMb the storageMb value to set.
      * @return the DbServerMetadata object itself.
      */
@@ -88,8 +92,8 @@ public final class DbServerMetadata {
     }
 
     /**
-     * Get the sku property: SKU for the database server.
-     *
+     * Get the sku property: SKU for the database server. This object is empty for PG single server.
+     * 
      * @return the sku value.
      */
     public ServerSku sku() {
@@ -97,8 +101,8 @@ public final class DbServerMetadata {
     }
 
     /**
-     * Set the sku property: SKU for the database server.
-     *
+     * Set the sku property: SKU for the database server. This object is empty for PG single server.
+     * 
      * @param sku the sku value to set.
      * @return the DbServerMetadata object itself.
      */
@@ -109,7 +113,7 @@ public final class DbServerMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

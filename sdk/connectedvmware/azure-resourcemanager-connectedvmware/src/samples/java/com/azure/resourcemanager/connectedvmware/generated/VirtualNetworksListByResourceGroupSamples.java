@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworks ListByResourceGroup. */
 public final class VirtualNetworksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/ListVirtualNetworksByResourceGroup.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListVirtualNetworksByResourceGroup.json
      */
     /**
      * Sample code: ListVirtualNetworksByResourceGroup.
@@ -18,6 +16,6 @@ public final class VirtualNetworksListByResourceGroupSamples {
      */
     public static void listVirtualNetworksByResourceGroup(
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.virtualNetworks().listByResourceGroup("testrg", Context.NONE);
+        manager.virtualNetworks().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }

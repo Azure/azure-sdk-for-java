@@ -11,21 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class MigrationNameAvailabilityResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationNameAvailabilityResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"iplrbpbewtghfgb\",\"type\":\"c\",\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"v\"}")
-                .toObject(MigrationNameAvailabilityResourceInner.class);
-        Assertions.assertEquals("iplrbpbewtghfgb", model.name());
-        Assertions.assertEquals("c", model.type());
+        MigrationNameAvailabilityResourceInner model = BinaryData.fromString(
+            "{\"name\":\"cdl\",\"type\":\"h\",\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"acstwityk\"}")
+            .toObject(MigrationNameAvailabilityResourceInner.class);
+        Assertions.assertEquals("cdl", model.name());
+        Assertions.assertEquals("h", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrationNameAvailabilityResourceInner model =
-            new MigrationNameAvailabilityResourceInner().withName("iplrbpbewtghfgb").withType("c");
+        MigrationNameAvailabilityResourceInner model
+            = new MigrationNameAvailabilityResourceInner().withName("cdl").withType("h");
         model = BinaryData.fromObject(model).toObject(MigrationNameAvailabilityResourceInner.class);
-        Assertions.assertEquals("iplrbpbewtghfgb", model.name());
-        Assertions.assertEquals("c", model.type());
+        Assertions.assertEquals("cdl", model.name());
+        Assertions.assertEquals("h", model.type());
     }
 }

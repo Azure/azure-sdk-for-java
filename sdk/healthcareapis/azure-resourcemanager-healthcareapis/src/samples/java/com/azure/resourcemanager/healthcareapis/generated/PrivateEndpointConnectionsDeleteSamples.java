@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.healthcareapis.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpointConnections Delete. */
+/**
+ * Samples for PrivateEndpointConnections Delete.
+ */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/legacy/ServiceDeletePrivateEndpointConnection.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/legacy/
+     * ServiceDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Delete.
-     *
+     * 
      * @param manager Entry point to HealthcareApisManager.
      */
-    public static void privateEndpointConnectionsDelete(
-        com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.privateEndpointConnections().delete("rgname", "service1", "myConnection", Context.NONE);
+    public static void
+        privateEndpointConnectionsDelete(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
+        manager.privateEndpointConnections().delete("rgname", "service1", "myConnection",
+            com.azure.core.util.Context.NONE);
     }
 }

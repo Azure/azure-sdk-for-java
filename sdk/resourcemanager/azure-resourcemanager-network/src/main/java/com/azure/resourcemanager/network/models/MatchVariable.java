@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Define match variables. */
+/**
+ * Define match variables.
+ */
 @Fluent
 public final class MatchVariable {
     /*
@@ -23,13 +25,15 @@ public final class MatchVariable {
     @JsonProperty(value = "selector")
     private String selector;
 
-    /** Creates an instance of MatchVariable class. */
+    /**
+     * Creates an instance of MatchVariable class.
+     */
     public MatchVariable() {
     }
 
     /**
      * Get the variableName property: Match Variable.
-     *
+     * 
      * @return the variableName value.
      */
     public WebApplicationFirewallMatchVariable variableName() {
@@ -38,7 +42,7 @@ public final class MatchVariable {
 
     /**
      * Set the variableName property: Match Variable.
-     *
+     * 
      * @param variableName the variableName value to set.
      * @return the MatchVariable object itself.
      */
@@ -49,7 +53,7 @@ public final class MatchVariable {
 
     /**
      * Get the selector property: The selector of match variable.
-     *
+     * 
      * @return the selector value.
      */
     public String selector() {
@@ -58,7 +62,7 @@ public final class MatchVariable {
 
     /**
      * Set the selector property: The selector of match variable.
-     *
+     * 
      * @param selector the selector value to set.
      * @return the MatchVariable object itself.
      */
@@ -69,14 +73,13 @@ public final class MatchVariable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (variableName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property variableName in model MatchVariable"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property variableName in model MatchVariable"));
         }
     }
 

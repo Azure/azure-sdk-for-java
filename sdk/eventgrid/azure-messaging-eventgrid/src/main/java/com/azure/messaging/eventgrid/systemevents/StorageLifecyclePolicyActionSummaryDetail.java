@@ -5,35 +5,42 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Execution statistics of a specific policy action in a Blob Management cycle. */
+/**
+ * Execution statistics of a specific policy action in a Blob Management cycle.
+ */
 @Fluent
-public final class StorageLifecyclePolicyActionSummaryDetail {
+public final class StorageLifecyclePolicyActionSummaryDetail
+    implements JsonSerializable<StorageLifecyclePolicyActionSummaryDetail> {
     /*
      * Total number of objects to be acted on by this action.
      */
-    @JsonProperty(value = "totalObjectsCount")
     private Long totalObjectsCount;
 
     /*
      * Number of success operations of this action.
      */
-    @JsonProperty(value = "successCount")
     private Long successCount;
 
     /*
      * Error messages of this action if any.
      */
-    @JsonProperty(value = "errorList")
     private String errorList;
 
-    /** Creates an instance of StorageLifecyclePolicyActionSummaryDetail class. */
-    public StorageLifecyclePolicyActionSummaryDetail() {}
+    /**
+     * Creates an instance of StorageLifecyclePolicyActionSummaryDetail class.
+     */
+    public StorageLifecyclePolicyActionSummaryDetail() {
+    }
 
     /**
      * Get the totalObjectsCount property: Total number of objects to be acted on by this action.
-     *
+     * 
      * @return the totalObjectsCount value.
      */
     public Long getTotalObjectsCount() {
@@ -42,7 +49,7 @@ public final class StorageLifecyclePolicyActionSummaryDetail {
 
     /**
      * Set the totalObjectsCount property: Total number of objects to be acted on by this action.
-     *
+     * 
      * @param totalObjectsCount the totalObjectsCount value to set.
      * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
      */
@@ -53,7 +60,7 @@ public final class StorageLifecyclePolicyActionSummaryDetail {
 
     /**
      * Get the successCount property: Number of success operations of this action.
-     *
+     * 
      * @return the successCount value.
      */
     public Long getSuccessCount() {
@@ -62,7 +69,7 @@ public final class StorageLifecyclePolicyActionSummaryDetail {
 
     /**
      * Set the successCount property: Number of success operations of this action.
-     *
+     * 
      * @param successCount the successCount value to set.
      * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
      */
@@ -73,7 +80,7 @@ public final class StorageLifecyclePolicyActionSummaryDetail {
 
     /**
      * Get the errorList property: Error messages of this action if any.
-     *
+     * 
      * @return the errorList value.
      */
     public String getErrorList() {
@@ -82,12 +89,54 @@ public final class StorageLifecyclePolicyActionSummaryDetail {
 
     /**
      * Set the errorList property: Error messages of this action if any.
-     *
+     * 
      * @param errorList the errorList value to set.
      * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
      */
     public StorageLifecyclePolicyActionSummaryDetail setErrorList(String errorList) {
         this.errorList = errorList;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("totalObjectsCount", this.totalObjectsCount);
+        jsonWriter.writeNumberField("successCount", this.successCount);
+        jsonWriter.writeStringField("errorList", this.errorList);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageLifecyclePolicyActionSummaryDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageLifecyclePolicyActionSummaryDetail if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageLifecyclePolicyActionSummaryDetail.
+     */
+    public static StorageLifecyclePolicyActionSummaryDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageLifecyclePolicyActionSummaryDetail deserializedStorageLifecyclePolicyActionSummaryDetail
+                = new StorageLifecyclePolicyActionSummaryDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("totalObjectsCount".equals(fieldName)) {
+                    deserializedStorageLifecyclePolicyActionSummaryDetail.totalObjectsCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("successCount".equals(fieldName)) {
+                    deserializedStorageLifecyclePolicyActionSummaryDetail.successCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("errorList".equals(fieldName)) {
+                    deserializedStorageLifecyclePolicyActionSummaryDetail.errorList = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageLifecyclePolicyActionSummaryDetail;
+        });
     }
 }

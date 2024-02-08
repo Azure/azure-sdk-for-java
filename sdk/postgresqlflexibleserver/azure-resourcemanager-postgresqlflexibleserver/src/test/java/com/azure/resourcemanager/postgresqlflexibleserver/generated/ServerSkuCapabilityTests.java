@@ -10,11 +10,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerSkuCapabi
 public final class ServerSkuCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerSkuCapability model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"uhmuouqfprwzwbn\",\"vCores\":1555370196,\"supportedIops\":1015054859,\"supportedMemoryPerVcoreMb\":4695405863379842225,\"supportedZones\":[\"a\",\"x\"],\"supportedHaMode\":[\"SameZone\",\"SameZone\",\"SameZone\",\"SameZone\"],\"status\":\"Available\",\"reason\":\"hr\"}")
-                .toObject(ServerSkuCapability.class);
+        ServerSkuCapability model = BinaryData.fromString(
+            "{\"name\":\"uesnzwdejbavo\",\"vCores\":669466066,\"supportedIops\":1432436623,\"supportedMemoryPerVcoreMb\":3481078275751928230,\"supportedZones\":[\"qvudwxdndnvowgu\",\"jugwdkcglhsl\",\"zj\"],\"supportedHaMode\":[\"ZoneRedundant\"],\"status\":\"Disabled\",\"reason\":\"ixhbkuofqweykhm\"}")
+            .toObject(ServerSkuCapability.class);
     }
 
     @org.junit.jupiter.api.Test

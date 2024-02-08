@@ -14,8 +14,8 @@ import java.util.List;
 /**
  * This activity will fail within its own scope and output a custom error message and error code. The error message and
  * code can provided either as a string literal or as an expression that can be evaluated to a string at runtime. The
- * activity scope can be the whole pipeline or a control activity (e.g. foreach, switch, until), if the fail activity is
- * contained in it.
+ * activity scope can be the whole pipeline or a control activity (e.g. foreach, switch, until), if the fail activity
+ * is contained in it.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Fail")
@@ -36,13 +36,16 @@ public class FailActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.errorCode", required = true)
     private Object errorCode;
 
-    /** Creates an instance of FailActivity class. */
-    public FailActivity() {}
+    /**
+     * Creates an instance of FailActivity class.
+     */
+    public FailActivity() {
+    }
 
     /**
      * Get the message property: The error message that surfaced in the Fail activity. It can be dynamic content that's
      * evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the message value.
      */
     public Object getMessage() {
@@ -52,7 +55,7 @@ public class FailActivity extends ControlActivity {
     /**
      * Set the message property: The error message that surfaced in the Fail activity. It can be dynamic content that's
      * evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param message the message value to set.
      * @return the FailActivity object itself.
      */
@@ -65,7 +68,7 @@ public class FailActivity extends ControlActivity {
      * Get the errorCode property: The error code that categorizes the error type of the Fail activity. It can be
      * dynamic content that's evaluated to a non empty/blank string at runtime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the errorCode value.
      */
     public Object getErrorCode() {
@@ -76,7 +79,7 @@ public class FailActivity extends ControlActivity {
      * Set the errorCode property: The error code that categorizes the error type of the Fail activity. It can be
      * dynamic content that's evaluated to a non empty/blank string at runtime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the FailActivity object itself.
      */
@@ -85,42 +88,54 @@ public class FailActivity extends ControlActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

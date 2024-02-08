@@ -7,18 +7,20 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.resourcemanager.servicefabric.fluent.models.UpgradableVersionPathResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of UpgradableVersionPathResult. */
+/**
+ * An immutable client-side representation of UpgradableVersionPathResult.
+ */
 public interface UpgradableVersionPathResult {
     /**
      * Gets the supportedPath property: The supportedPath property.
-     *
+     * 
      * @return the supportedPath value.
      */
     List<String> supportedPath();
 
     /**
      * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.UpgradableVersionPathResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     UpgradableVersionPathResultInner innerModel();

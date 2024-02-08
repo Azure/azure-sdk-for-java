@@ -12,6 +12,15 @@ import java.util.Collection;
  */
 public final class MetricAlertConfigurationsOperator
     extends ExpandableStringEnum<MetricAlertConfigurationsOperator> {
+
+    /**
+     * Constructs a {@link MetricAlertConfigurationsOperator} object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricAlertConfigurationsOperator() {
+    }
+
     /**
      * Indicate that anomaly should be included in an alert when time series with the same
      * dimension combination exist in every {@link MetricAlertConfiguration} and

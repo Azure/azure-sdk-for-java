@@ -70,15 +70,6 @@ public final class QueriesImpl implements Queries {
         return Utils.mapPage(inner, inner1 -> new LogAnalyticsQueryPackQueryImpl(inner1, this.manager()));
     }
 
-    public LogAnalyticsQueryPackQuery get(String resourceGroupName, String queryPackName, String id) {
-        LogAnalyticsQueryPackQueryInner inner = this.serviceClient().get(resourceGroupName, queryPackName, id);
-        if (inner != null) {
-            return new LogAnalyticsQueryPackQueryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<LogAnalyticsQueryPackQuery> getWithResponse(
         String resourceGroupName, String queryPackName, String id, Context context) {
         Response<LogAnalyticsQueryPackQueryInner> inner =
@@ -94,13 +85,22 @@ public final class QueriesImpl implements Queries {
         }
     }
 
-    public void delete(String resourceGroupName, String queryPackName, String id) {
-        this.serviceClient().delete(resourceGroupName, queryPackName, id);
+    public LogAnalyticsQueryPackQuery get(String resourceGroupName, String queryPackName, String id) {
+        LogAnalyticsQueryPackQueryInner inner = this.serviceClient().get(resourceGroupName, queryPackName, id);
+        if (inner != null) {
+            return new LogAnalyticsQueryPackQueryImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String queryPackName, String id, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, queryPackName, id, context);
+    }
+
+    public void delete(String resourceGroupName, String queryPackName, String id) {
+        this.serviceClient().delete(resourceGroupName, queryPackName, id);
     }
 
     public LogAnalyticsQueryPackQuery getById(String id) {

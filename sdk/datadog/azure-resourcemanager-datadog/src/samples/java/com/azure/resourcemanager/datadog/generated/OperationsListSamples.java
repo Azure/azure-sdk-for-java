@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datadog.generated;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Operations_List.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

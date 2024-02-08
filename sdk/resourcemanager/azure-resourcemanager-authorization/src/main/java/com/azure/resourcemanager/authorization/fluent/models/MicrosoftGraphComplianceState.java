@@ -32,6 +32,15 @@ public final class MicrosoftGraphComplianceState extends ExpandableStringEnum<Mi
     public static final MicrosoftGraphComplianceState CONFIG_MANAGER = fromString("configManager");
 
     /**
+     * Creates a new instance of MicrosoftGraphComplianceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphComplianceState() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphComplianceState from its string representation.
      *
      * @param name a name to look for.

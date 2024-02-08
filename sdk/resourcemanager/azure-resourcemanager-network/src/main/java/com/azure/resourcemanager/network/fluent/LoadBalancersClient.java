@@ -27,12 +27,14 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LoadBalancersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LoadBalancersClient.
+ */
 public interface LoadBalancersClient
     extends InnerSupportsGet<LoadBalancerInner>, InnerSupportsListing<LoadBalancerInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface LoadBalancersClient
 
     /**
      * Deletes the specified load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +60,7 @@ public interface LoadBalancersClient
 
     /**
      * Deletes the specified load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +73,7 @@ public interface LoadBalancersClient
 
     /**
      * Deletes the specified load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -85,7 +87,7 @@ public interface LoadBalancersClient
 
     /**
      * Deletes the specified load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +100,7 @@ public interface LoadBalancersClient
 
     /**
      * Deletes the specified load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +112,7 @@ public interface LoadBalancersClient
 
     /**
      * Deletes the specified load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -123,7 +125,7 @@ public interface LoadBalancersClient
 
     /**
      * Gets the specified load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param expand Expands referenced resources.
@@ -133,12 +135,12 @@ public interface LoadBalancersClient
      * @return the specified load balancer along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LoadBalancerInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, String expand);
+    Mono<Response<LoadBalancerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String loadBalancerName, String expand);
 
     /**
      * Gets the specified load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +153,7 @@ public interface LoadBalancersClient
 
     /**
      * Gets the specified load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param expand Expands referenced resources.
@@ -162,12 +164,12 @@ public interface LoadBalancersClient
      * @return the specified load balancer along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LoadBalancerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String loadBalancerName, String expand, Context context);
+    Response<LoadBalancerInner> getByResourceGroupWithResponse(String resourceGroupName, String loadBalancerName,
+        String expand, Context context);
 
     /**
      * Gets the specified load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,7 +182,7 @@ public interface LoadBalancersClient
 
     /**
      * Creates or updates a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -190,12 +192,12 @@ public interface LoadBalancersClient
      * @return loadBalancer resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String loadBalancerName,
+        LoadBalancerInner parameters);
 
     /**
      * Creates or updates a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -205,12 +207,12 @@ public interface LoadBalancersClient
      * @return the {@link PollerFlux} for polling of loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
+    PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String loadBalancerName, LoadBalancerInner parameters);
 
     /**
      * Creates or updates a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -220,12 +222,12 @@ public interface LoadBalancersClient
      * @return the {@link SyncPoller} for polling of loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(
-        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
+    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(String resourceGroupName,
+        String loadBalancerName, LoadBalancerInner parameters);
 
     /**
      * Creates or updates a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -236,12 +238,12 @@ public interface LoadBalancersClient
      * @return the {@link SyncPoller} for polling of loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(
-        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context);
+    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(String resourceGroupName,
+        String loadBalancerName, LoadBalancerInner parameters, Context context);
 
     /**
      * Creates or updates a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -251,12 +253,12 @@ public interface LoadBalancersClient
      * @return loadBalancer resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LoadBalancerInner> createOrUpdateAsync(
-        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
+    Mono<LoadBalancerInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName,
+        LoadBalancerInner parameters);
 
     /**
      * Creates or updates a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -270,7 +272,7 @@ public interface LoadBalancersClient
 
     /**
      * Creates or updates a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -281,12 +283,12 @@ public interface LoadBalancersClient
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LoadBalancerInner createOrUpdate(
-        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context);
+    LoadBalancerInner createOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters,
+        Context context);
 
     /**
      * Updates a load balancer tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -296,12 +298,12 @@ public interface LoadBalancersClient
      * @return loadBalancer resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LoadBalancerInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, TagsObject parameters);
+    Mono<Response<LoadBalancerInner>> updateTagsWithResponseAsync(String resourceGroupName, String loadBalancerName,
+        TagsObject parameters);
 
     /**
      * Updates a load balancer tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -315,7 +317,7 @@ public interface LoadBalancersClient
 
     /**
      * Updates a load balancer tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -326,12 +328,12 @@ public interface LoadBalancersClient
      * @return loadBalancer resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LoadBalancerInner> updateTagsWithResponse(
-        String resourceGroupName, String loadBalancerName, TagsObject parameters, Context context);
+    Response<LoadBalancerInner> updateTagsWithResponse(String resourceGroupName, String loadBalancerName,
+        TagsObject parameters, Context context);
 
     /**
      * Updates a load balancer tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -345,7 +347,7 @@ public interface LoadBalancersClient
 
     /**
      * Gets all the load balancers in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the load balancers in a subscription as paginated response with {@link PagedFlux}.
@@ -355,7 +357,7 @@ public interface LoadBalancersClient
 
     /**
      * Gets all the load balancers in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the load balancers in a subscription as paginated response with {@link PagedIterable}.
@@ -365,7 +367,7 @@ public interface LoadBalancersClient
 
     /**
      * Gets all the load balancers in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -377,7 +379,7 @@ public interface LoadBalancersClient
 
     /**
      * Gets all the load balancers in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -389,7 +391,7 @@ public interface LoadBalancersClient
 
     /**
      * Gets all the load balancers in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -401,7 +403,7 @@ public interface LoadBalancersClient
 
     /**
      * Gets all the load balancers in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -414,7 +416,7 @@ public interface LoadBalancersClient
 
     /**
      * Swaps VIPs between two load balancers.
-     *
+     * 
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,12 +425,12 @@ public interface LoadBalancersClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> swapPublicIpAddressesWithResponseAsync(
-        String location, LoadBalancerVipSwapRequest parameters);
+    Mono<Response<Flux<ByteBuffer>>> swapPublicIpAddressesWithResponseAsync(String location,
+        LoadBalancerVipSwapRequest parameters);
 
     /**
      * Swaps VIPs between two load balancers.
-     *
+     * 
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -437,12 +439,12 @@ public interface LoadBalancersClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginSwapPublicIpAddressesAsync(
-        String location, LoadBalancerVipSwapRequest parameters);
+    PollerFlux<PollResult<Void>, Void> beginSwapPublicIpAddressesAsync(String location,
+        LoadBalancerVipSwapRequest parameters);
 
     /**
      * Swaps VIPs between two load balancers.
-     *
+     * 
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -451,12 +453,12 @@ public interface LoadBalancersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginSwapPublicIpAddresses(
-        String location, LoadBalancerVipSwapRequest parameters);
+    SyncPoller<PollResult<Void>, Void> beginSwapPublicIpAddresses(String location,
+        LoadBalancerVipSwapRequest parameters);
 
     /**
      * Swaps VIPs between two load balancers.
-     *
+     * 
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @param context The context to associate with this operation.
@@ -466,12 +468,12 @@ public interface LoadBalancersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginSwapPublicIpAddresses(
-        String location, LoadBalancerVipSwapRequest parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginSwapPublicIpAddresses(String location,
+        LoadBalancerVipSwapRequest parameters, Context context);
 
     /**
      * Swaps VIPs between two load balancers.
-     *
+     * 
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -484,7 +486,7 @@ public interface LoadBalancersClient
 
     /**
      * Swaps VIPs between two load balancers.
-     *
+     * 
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -496,7 +498,7 @@ public interface LoadBalancersClient
 
     /**
      * Swaps VIPs between two load balancers.
-     *
+     * 
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @param context The context to associate with this operation.
@@ -509,7 +511,7 @@ public interface LoadBalancersClient
 
     /**
      * List of inbound NAT rule port mappings.
-     *
+     * 
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -518,18 +520,15 @@ public interface LoadBalancersClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response for a QueryInboundNatRulePortMapping API along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> listInboundNatRulePortMappingsWithResponseAsync(
-        String groupName,
-        String loadBalancerName,
-        String backendPoolName,
-        QueryInboundNatRulePortMappingRequest parameters);
+    Mono<Response<Flux<ByteBuffer>>> listInboundNatRulePortMappingsWithResponseAsync(String groupName,
+        String loadBalancerName, String backendPoolName, QueryInboundNatRulePortMappingRequest parameters);
 
     /**
      * List of inbound NAT rule port mappings.
-     *
+     * 
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -541,15 +540,12 @@ public interface LoadBalancersClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BackendAddressInboundNatRulePortMappingsInner>, BackendAddressInboundNatRulePortMappingsInner>
-        beginListInboundNatRulePortMappingsAsync(
-            String groupName,
-            String loadBalancerName,
-            String backendPoolName,
+        beginListInboundNatRulePortMappingsAsync(String groupName, String loadBalancerName, String backendPoolName,
             QueryInboundNatRulePortMappingRequest parameters);
 
     /**
      * List of inbound NAT rule port mappings.
-     *
+     * 
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -561,15 +557,12 @@ public interface LoadBalancersClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackendAddressInboundNatRulePortMappingsInner>, BackendAddressInboundNatRulePortMappingsInner>
-        beginListInboundNatRulePortMappings(
-            String groupName,
-            String loadBalancerName,
-            String backendPoolName,
+        beginListInboundNatRulePortMappings(String groupName, String loadBalancerName, String backendPoolName,
             QueryInboundNatRulePortMappingRequest parameters);
 
     /**
      * List of inbound NAT rule port mappings.
-     *
+     * 
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -582,16 +575,12 @@ public interface LoadBalancersClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackendAddressInboundNatRulePortMappingsInner>, BackendAddressInboundNatRulePortMappingsInner>
-        beginListInboundNatRulePortMappings(
-            String groupName,
-            String loadBalancerName,
-            String backendPoolName,
-            QueryInboundNatRulePortMappingRequest parameters,
-            Context context);
+        beginListInboundNatRulePortMappings(String groupName, String loadBalancerName, String backendPoolName,
+            QueryInboundNatRulePortMappingRequest parameters, Context context);
 
     /**
      * List of inbound NAT rule port mappings.
-     *
+     * 
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -602,15 +591,12 @@ public interface LoadBalancersClient
      * @return the response for a QueryInboundNatRulePortMapping API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BackendAddressInboundNatRulePortMappingsInner> listInboundNatRulePortMappingsAsync(
-        String groupName,
-        String loadBalancerName,
-        String backendPoolName,
-        QueryInboundNatRulePortMappingRequest parameters);
+    Mono<BackendAddressInboundNatRulePortMappingsInner> listInboundNatRulePortMappingsAsync(String groupName,
+        String loadBalancerName, String backendPoolName, QueryInboundNatRulePortMappingRequest parameters);
 
     /**
      * List of inbound NAT rule port mappings.
-     *
+     * 
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -621,15 +607,12 @@ public interface LoadBalancersClient
      * @return the response for a QueryInboundNatRulePortMapping API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackendAddressInboundNatRulePortMappingsInner listInboundNatRulePortMappings(
-        String groupName,
-        String loadBalancerName,
-        String backendPoolName,
-        QueryInboundNatRulePortMappingRequest parameters);
+    BackendAddressInboundNatRulePortMappingsInner listInboundNatRulePortMappings(String groupName,
+        String loadBalancerName, String backendPoolName, QueryInboundNatRulePortMappingRequest parameters);
 
     /**
      * List of inbound NAT rule port mappings.
-     *
+     * 
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -641,32 +624,29 @@ public interface LoadBalancersClient
      * @return the response for a QueryInboundNatRulePortMapping API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackendAddressInboundNatRulePortMappingsInner listInboundNatRulePortMappings(
-        String groupName,
-        String loadBalancerName,
-        String backendPoolName,
-        QueryInboundNatRulePortMappingRequest parameters,
+    BackendAddressInboundNatRulePortMappingsInner listInboundNatRulePortMappings(String groupName,
+        String loadBalancerName, String backendPoolName, QueryInboundNatRulePortMappingRequest parameters,
         Context context);
 
     /**
      * Migrate load balancer to IP Based.
-     *
+     * 
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the migrateToIpBased Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for a migrateToIpBased API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the response for a migrateToIpBased API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MigratedPoolsInner>> migrateToIpBasedWithResponseAsync(
-        String groupName, String loadBalancerName, MigrateLoadBalancerToIpBasedRequest parameters);
+    Mono<Response<MigratedPoolsInner>> migrateToIpBasedWithResponseAsync(String groupName, String loadBalancerName,
+        MigrateLoadBalancerToIpBasedRequest parameters);
 
     /**
      * Migrate load balancer to IP Based.
-     *
+     * 
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -679,7 +659,7 @@ public interface LoadBalancersClient
 
     /**
      * Migrate load balancer to IP Based.
-     *
+     * 
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the migrateToIpBased Api.
@@ -690,12 +670,12 @@ public interface LoadBalancersClient
      * @return the response for a migrateToIpBased API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MigratedPoolsInner> migrateToIpBasedWithResponse(
-        String groupName, String loadBalancerName, MigrateLoadBalancerToIpBasedRequest parameters, Context context);
+    Response<MigratedPoolsInner> migrateToIpBasedWithResponse(String groupName, String loadBalancerName,
+        MigrateLoadBalancerToIpBasedRequest parameters, Context context);
 
     /**
      * Migrate load balancer to IP Based.
-     *
+     * 
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

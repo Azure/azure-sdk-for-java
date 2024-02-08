@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datadog.generated;
 /** Samples for SingleSignOnConfigurations CreateOrUpdate. */
 public final class SingleSignOnConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/SingleSignOnConfigurations_CreateOrUpdate.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/SingleSignOnConfigurations_CreateOrUpdate.json
      */
     /**
      * Sample code: SingleSignOnConfigurations_CreateOrUpdate.

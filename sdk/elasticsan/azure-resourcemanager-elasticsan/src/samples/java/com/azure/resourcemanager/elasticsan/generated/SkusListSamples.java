@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.elasticsan.generated;
 
-/** Samples for Skus List. */
+/**
+ * Samples for Skus List.
+ */
 public final class SkusListSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Skus_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * Skus_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Skus_List_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ElasticSanManager.
      */
     public static void skusListMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
@@ -19,14 +22,15 @@ public final class SkusListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Skus_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * Skus_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Skus_List_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ElasticSanManager.
      */
     public static void skusListMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.skus().list("dtycml", com.azure.core.util.Context.NONE);
+        manager.skus().list("obwwdrkq", com.azure.core.util.Context.NONE);
     }
 }

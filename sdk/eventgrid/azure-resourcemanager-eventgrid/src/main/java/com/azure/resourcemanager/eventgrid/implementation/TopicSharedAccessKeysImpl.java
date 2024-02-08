@@ -12,8 +12,8 @@ public final class TopicSharedAccessKeysImpl implements TopicSharedAccessKeys {
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    TopicSharedAccessKeysImpl(
-        TopicSharedAccessKeysInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    TopicSharedAccessKeysImpl(TopicSharedAccessKeysInner innerObject,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

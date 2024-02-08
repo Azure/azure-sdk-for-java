@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Profile for Windows VMs in the managed cluster. */
+/**
+ * Profile for Windows VMs in the managed cluster.
+ */
 @Fluent
 public final class ManagedClusterWindowsProfile {
     /*
@@ -40,7 +42,7 @@ public final class ManagedClusterWindowsProfile {
 
     /*
      * Whether to enable CSI proxy.
-     *
+     * 
      * For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
      */
     @JsonProperty(value = "enableCSIProxy")
@@ -52,7 +54,9 @@ public final class ManagedClusterWindowsProfile {
     @JsonProperty(value = "gmsaProfile")
     private WindowsGmsaProfile gmsaProfile;
 
-    /** Creates an instance of ManagedClusterWindowsProfile class. */
+    /**
+     * Creates an instance of ManagedClusterWindowsProfile class.
+     */
     public ManagedClusterWindowsProfile() {
     }
 
@@ -63,7 +67,7 @@ public final class ManagedClusterWindowsProfile {
      * "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0",
      * "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length:** 1 character
      * &lt;br&gt;&lt;br&gt; **Max-length:** 20 characters.
-     *
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -77,7 +81,7 @@ public final class ManagedClusterWindowsProfile {
      * "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0",
      * "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length:** 1 character
      * &lt;br&gt;&lt;br&gt; **Max-length:** 20 characters.
-     *
+     * 
      * @param adminUsername the adminUsername value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */
@@ -93,7 +97,7 @@ public final class ManagedClusterWindowsProfile {
      * &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special character (Regex match [\W_])
      * &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
      * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!".
-     *
+     * 
      * @return the adminPassword value.
      */
     public String adminPassword() {
@@ -107,7 +111,7 @@ public final class ManagedClusterWindowsProfile {
      * &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special character (Regex match [\W_])
      * &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
      * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!".
-     *
+     * 
      * @param adminPassword the adminPassword value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */
@@ -119,7 +123,7 @@ public final class ManagedClusterWindowsProfile {
     /**
      * Get the licenseType property: The license type to use for Windows VMs. See [Azure Hybrid User
      * Benefits](https://azure.microsoft.com/pricing/hybrid-benefit/faq/) for more details.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -129,7 +133,7 @@ public final class ManagedClusterWindowsProfile {
     /**
      * Set the licenseType property: The license type to use for Windows VMs. See [Azure Hybrid User
      * Benefits](https://azure.microsoft.com/pricing/hybrid-benefit/faq/) for more details.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */
@@ -140,9 +144,9 @@ public final class ManagedClusterWindowsProfile {
 
     /**
      * Get the enableCsiProxy property: Whether to enable CSI proxy.
-     *
-     * <p>For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
-     *
+     * 
+     * For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     * 
      * @return the enableCsiProxy value.
      */
     public Boolean enableCsiProxy() {
@@ -151,9 +155,9 @@ public final class ManagedClusterWindowsProfile {
 
     /**
      * Set the enableCsiProxy property: Whether to enable CSI proxy.
-     *
-     * <p>For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
-     *
+     * 
+     * For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     * 
      * @param enableCsiProxy the enableCsiProxy value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */
@@ -164,7 +168,7 @@ public final class ManagedClusterWindowsProfile {
 
     /**
      * Get the gmsaProfile property: The Windows gMSA Profile in the Managed Cluster.
-     *
+     * 
      * @return the gmsaProfile value.
      */
     public WindowsGmsaProfile gmsaProfile() {
@@ -173,7 +177,7 @@ public final class ManagedClusterWindowsProfile {
 
     /**
      * Set the gmsaProfile property: The Windows gMSA Profile in the Managed Cluster.
-     *
+     * 
      * @param gmsaProfile the gmsaProfile value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */
@@ -184,15 +188,13 @@ public final class ManagedClusterWindowsProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property adminUsername in model ManagedClusterWindowsProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property adminUsername in model ManagedClusterWindowsProfile"));
         }
         if (gmsaProfile() != null) {
             gmsaProfile().validate();

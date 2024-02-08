@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Container App container definition. */
+/**
+ * Container App container definition.
+ */
 @Fluent
 public final class Container {
     /*
@@ -47,13 +49,15 @@ public final class Container {
     @JsonProperty(value = "resources")
     private ContainerResources resources;
 
-    /** Creates an instance of Container class. */
+    /**
+     * Creates an instance of Container class.
+     */
     public Container() {
     }
 
     /**
      * Get the image property: Container image tag.
-     *
+     * 
      * @return the image value.
      */
     public String image() {
@@ -62,7 +66,7 @@ public final class Container {
 
     /**
      * Set the image property: Container image tag.
-     *
+     * 
      * @param image the image value to set.
      * @return the Container object itself.
      */
@@ -73,7 +77,7 @@ public final class Container {
 
     /**
      * Get the name property: Custom container name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -82,7 +86,7 @@ public final class Container {
 
     /**
      * Set the name property: Custom container name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Container object itself.
      */
@@ -93,7 +97,7 @@ public final class Container {
 
     /**
      * Get the command property: Container start command.
-     *
+     * 
      * @return the command value.
      */
     public List<String> command() {
@@ -102,7 +106,7 @@ public final class Container {
 
     /**
      * Set the command property: Container start command.
-     *
+     * 
      * @param command the command value to set.
      * @return the Container object itself.
      */
@@ -113,7 +117,7 @@ public final class Container {
 
     /**
      * Get the args property: Container start command arguments.
-     *
+     * 
      * @return the args value.
      */
     public List<String> args() {
@@ -122,7 +126,7 @@ public final class Container {
 
     /**
      * Set the args property: Container start command arguments.
-     *
+     * 
      * @param args the args value to set.
      * @return the Container object itself.
      */
@@ -133,7 +137,7 @@ public final class Container {
 
     /**
      * Get the env property: Container environment variables.
-     *
+     * 
      * @return the env value.
      */
     public List<EnvironmentVar> env() {
@@ -142,7 +146,7 @@ public final class Container {
 
     /**
      * Set the env property: Container environment variables.
-     *
+     * 
      * @param env the env value to set.
      * @return the Container object itself.
      */
@@ -153,7 +157,7 @@ public final class Container {
 
     /**
      * Get the resources property: Container resource requirements.
-     *
+     * 
      * @return the resources value.
      */
     public ContainerResources resources() {
@@ -162,7 +166,7 @@ public final class Container {
 
     /**
      * Set the resources property: Container resource requirements.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the Container object itself.
      */
@@ -173,7 +177,7 @@ public final class Container {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

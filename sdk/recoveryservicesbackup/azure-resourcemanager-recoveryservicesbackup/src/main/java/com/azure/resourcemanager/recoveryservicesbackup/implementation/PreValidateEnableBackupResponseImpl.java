@@ -13,8 +13,7 @@ public final class PreValidateEnableBackupResponseImpl implements PreValidateEna
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    PreValidateEnableBackupResponseImpl(
-        PreValidateEnableBackupResponseInner innerObject,
+    PreValidateEnableBackupResponseImpl(PreValidateEnableBackupResponseInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

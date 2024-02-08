@@ -41,6 +41,15 @@ public final class PostArgsOperator extends ExpandableStringEnum<PostArgsOperato
     public static final PostArgsOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of PostArgsOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PostArgsOperator() {
+    }
+
+    /**
      * Creates or finds a PostArgsOperator from its string representation.
      *
      * @param name a name to look for.

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+  <!-- Exception is logged in another spot. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.amqp.implementation.handler.ReceiverDeliveryHandler.java" />
+
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.amqp.implementation.ReactorReceiver.java" />
+
+  <suppress checks="com.azure.tools.checkstyle.checks.JavadocThrows" files="com.azure.core.amqp.implementation.ReactorConnectionCache.java" />
+</suppressions>

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.kubernetesconfiguration.generated;
 /** Samples for FluxConfigurations Get. */
 public final class FluxConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/GetFluxConfiguration.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/GetFluxConfiguration.json
      */
     /**
      * Sample code: Get Flux Configuration.

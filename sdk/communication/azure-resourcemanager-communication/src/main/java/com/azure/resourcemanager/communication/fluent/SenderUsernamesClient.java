@@ -11,31 +11,33 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.communication.fluent.models.SenderUsernameResourceInner;
 
-/** An instance of this class provides access to all the operations defined in SenderUsernamesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SenderUsernamesClient.
+ */
 public interface SenderUsernamesClient {
     /**
      * ListBy_Domains
-     *
-     * <p>List all valid sender usernames for a domains resource.
-     *
+     * 
+     * List all valid sender usernames for a domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a Domains SenderUsernames collection as paginated response with {@link
-     *     PagedIterable}.
+     * @return a class representing a Domains SenderUsernames collection as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SenderUsernameResourceInner> listByDomains(
-        String resourceGroupName, String emailServiceName, String domainName);
+    PagedIterable<SenderUsernameResourceInner> listByDomains(String resourceGroupName, String emailServiceName,
+        String domainName);
 
     /**
      * ListBy_Domains
-     *
-     * <p>List all valid sender usernames for a domains resource.
-     *
+     * 
+     * List all valid sender usernames for a domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -43,18 +45,18 @@ public interface SenderUsernamesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a Domains SenderUsernames collection as paginated response with {@link
-     *     PagedIterable}.
+     * @return a class representing a Domains SenderUsernames collection as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SenderUsernameResourceInner> listByDomains(
-        String resourceGroupName, String emailServiceName, String domainName, Context context);
+    PagedIterable<SenderUsernameResourceInner> listByDomains(String resourceGroupName, String emailServiceName,
+        String domainName, Context context);
 
     /**
      * Get
-     *
-     * <p>Get a valid sender username for a domains resource.
-     *
+     * 
+     * Get a valid sender username for a domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -66,14 +68,14 @@ public interface SenderUsernamesClient {
      * @return a valid sender username for a domains resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SenderUsernameResourceInner> getWithResponse(
-        String resourceGroupName, String emailServiceName, String domainName, String senderUsername, Context context);
+    Response<SenderUsernameResourceInner> getWithResponse(String resourceGroupName, String emailServiceName,
+        String domainName, String senderUsername, Context context);
 
     /**
      * Get
-     *
-     * <p>Get a valid sender username for a domains resource.
-     *
+     * 
+     * Get a valid sender username for a domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -84,15 +86,15 @@ public interface SenderUsernamesClient {
      * @return a valid sender username for a domains resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SenderUsernameResourceInner get(
-        String resourceGroupName, String emailServiceName, String domainName, String senderUsername);
+    SenderUsernameResourceInner get(String resourceGroupName, String emailServiceName, String domainName,
+        String senderUsername);
 
     /**
      * Create Or Update
-     *
-     * <p>Add a new SenderUsername resource under the parent Domains resource or update an existing SenderUsername
+     * 
+     * Add a new SenderUsername resource under the parent Domains resource or update an existing SenderUsername
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -105,20 +107,15 @@ public interface SenderUsernamesClient {
      * @return a class representing a SenderUsername resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SenderUsernameResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String emailServiceName,
-        String domainName,
-        String senderUsername,
-        SenderUsernameResourceInner parameters,
-        Context context);
+    Response<SenderUsernameResourceInner> createOrUpdateWithResponse(String resourceGroupName, String emailServiceName,
+        String domainName, String senderUsername, SenderUsernameResourceInner parameters, Context context);
 
     /**
      * Create Or Update
-     *
-     * <p>Add a new SenderUsername resource under the parent Domains resource or update an existing SenderUsername
+     * 
+     * Add a new SenderUsername resource under the parent Domains resource or update an existing SenderUsername
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -130,18 +127,14 @@ public interface SenderUsernamesClient {
      * @return a class representing a SenderUsername resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SenderUsernameResourceInner createOrUpdate(
-        String resourceGroupName,
-        String emailServiceName,
-        String domainName,
-        String senderUsername,
-        SenderUsernameResourceInner parameters);
+    SenderUsernameResourceInner createOrUpdate(String resourceGroupName, String emailServiceName, String domainName,
+        String senderUsername, SenderUsernameResourceInner parameters);
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a SenderUsernames resource.
-     *
+     * 
+     * Operation to delete a SenderUsernames resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -153,14 +146,14 @@ public interface SenderUsernamesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String emailServiceName, String domainName, String senderUsername, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String emailServiceName, String domainName,
+        String senderUsername, Context context);
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a SenderUsernames resource.
-     *
+     * 
+     * Operation to delete a SenderUsernames resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.

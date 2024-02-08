@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response body with a run identifier. */
+/**
+ * Response body with a run identifier.
+ */
 @Fluent
 public final class CreateRunResponse {
     /*
@@ -16,12 +18,15 @@ public final class CreateRunResponse {
     @JsonProperty(value = "runId", required = true)
     private String runId;
 
-    /** Creates an instance of CreateRunResponse class. */
-    public CreateRunResponse() {}
+    /**
+     * Creates an instance of CreateRunResponse class.
+     */
+    public CreateRunResponse() {
+    }
 
     /**
      * Get the runId property: Identifier of a run.
-     *
+     * 
      * @return the runId value.
      */
     public String getRunId() {
@@ -30,7 +35,7 @@ public final class CreateRunResponse {
 
     /**
      * Set the runId property: Identifier of a run.
-     *
+     * 
      * @param runId the runId value to set.
      * @return the CreateRunResponse object itself.
      */

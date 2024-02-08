@@ -20,6 +20,15 @@ public final class CustomDomainResourceState extends ExpandableStringEnum<Custom
     public static final CustomDomainResourceState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of CustomDomainResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomDomainResourceState() {
+    }
+
+    /**
      * Creates or finds a CustomDomainResourceState from its string representation.
      *
      * @param name a name to look for.

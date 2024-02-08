@@ -11,7 +11,7 @@
     
 # Azure identity authentication extensions plugin library for Java
 
-This package contains authentication extensions to get a token from Azure Active Directory (Azure AD) for Azure services, like Azure Database for MySQL.
+This package contains authentication extensions to get a token from Microsoft Entra ID for Azure services, like Azure Database for MySQL.
 
 ## Getting started
 
@@ -23,8 +23,8 @@ This package contains authentication extensions to get a token from Azure Active
 
 ## Key concepts
 
-Azure Identity Extensions contains a common template framework for users to get a token from Azure AD and
-use the token as a password. For example, to connect Azure hosted MySQL, get a token from Azure AD and use the
+Azure Identity Extensions contains a common template framework for users to get a token from Microsoft Entra ID and
+use the token as a password. For example, to connect Azure hosted MySQL, get a token from Microsoft Entra ID and use the
 token as a password to connect with MySQL.
 
 ## Architecture
@@ -52,6 +52,6 @@ Other useful docs are:
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 <!-- LINKS -->
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure-identity-extensions-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity-extensions/Azure-Database-for-MySQL-README.md
 [azure-identity-extensions-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity-extensions/Azure-Database-for-PostgreSQL-README.md

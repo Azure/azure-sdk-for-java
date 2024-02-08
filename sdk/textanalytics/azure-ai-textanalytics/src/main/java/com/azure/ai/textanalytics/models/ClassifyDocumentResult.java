@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link ClassifyDocumentResult} model. It classify the text document one single category.
+ * The {@code ClassifyDocumentResult} model. It classify the text document one single category.
  */
 @Immutable
 public final class ClassifyDocumentResult extends TextAnalyticsResult {
@@ -34,7 +34,7 @@ public final class ClassifyDocumentResult extends TextAnalyticsResult {
     }
 
     /**
-     * Creates a {@link ClassifyDocumentResult} model.
+     * Creates a {@code ClassifyDocumentResult} model.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.

@@ -21,7 +21,7 @@ public final class RecognizeCustomEntitiesPagedIterable extends ContinuablePaged
     RecognizeCustomEntitiesResultCollection, PagedResponse<RecognizeCustomEntitiesResultCollection>> {
 
     /**
-     * Creates instance given {@link RecognizeCustomEntitiesPagedIterable}.
+     * Creates instance given {@code RecognizeCustomEntitiesPagedIterable}.
      *
      * @param pagedFlux It used as iterable.
      */
@@ -30,7 +30,7 @@ public final class RecognizeCustomEntitiesPagedIterable extends ContinuablePaged
     }
 
     /**
-     * Creates an instance of {@link RecognizeCustomEntitiesPagedIterable}. The constructor takes a {@code Supplier} and
+     * Creates an instance of {@code RecognizeCustomEntitiesPagedIterable}. The constructor takes a {@code Supplier} and
      * {@code Function}. The {@code Supplier} returns the first page of {@link RecognizeCustomEntitiesResultCollection},
      * the {@code Function} retrieves subsequent pages of {@link RecognizeCustomEntitiesResultCollection}.
      *

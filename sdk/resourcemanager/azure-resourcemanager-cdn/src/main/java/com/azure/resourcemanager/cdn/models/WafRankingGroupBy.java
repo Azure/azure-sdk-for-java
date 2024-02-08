@@ -17,6 +17,15 @@ public final class WafRankingGroupBy extends ExpandableStringEnum<WafRankingGrou
     public static final WafRankingGroupBy CUSTOM_DOMAIN = fromString("customDomain");
 
     /**
+     * Creates a new instance of WafRankingGroupBy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WafRankingGroupBy() {
+    }
+
+    /**
      * Creates or finds a WafRankingGroupBy from its string representation.
      *
      * @param name a name to look for.

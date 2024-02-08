@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Data flow debug session info. */
+/**
+ * Data flow debug session info.
+ */
 @Fluent
 public final class DataFlowDebugSessionInfo {
     /*
@@ -72,14 +74,18 @@ public final class DataFlowDebugSessionInfo {
     /*
      * Data flow debug session info.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of DataFlowDebugSessionInfo class. */
-    public DataFlowDebugSessionInfo() {}
+    /**
+     * Creates an instance of DataFlowDebugSessionInfo class.
+     */
+    public DataFlowDebugSessionInfo() {
+    }
 
     /**
      * Get the dataFlowName property: The name of the data flow.
-     *
+     * 
      * @return the dataFlowName value.
      */
     public String getDataFlowName() {
@@ -88,7 +94,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Set the dataFlowName property: The name of the data flow.
-     *
+     * 
      * @param dataFlowName the dataFlowName value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
@@ -99,7 +105,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Get the computeType property: Compute type of the cluster.
-     *
+     * 
      * @return the computeType value.
      */
     public String getComputeType() {
@@ -108,7 +114,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Set the computeType property: Compute type of the cluster.
-     *
+     * 
      * @param computeType the computeType value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
@@ -119,7 +125,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Get the coreCount property: Core count of the cluster.
-     *
+     * 
      * @return the coreCount value.
      */
     public Integer getCoreCount() {
@@ -128,7 +134,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Set the coreCount property: Core count of the cluster.
-     *
+     * 
      * @param coreCount the coreCount value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
@@ -139,7 +145,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Get the nodeCount property: Node count of the cluster. (deprecated property).
-     *
+     * 
      * @return the nodeCount value.
      */
     public Integer getNodeCount() {
@@ -148,7 +154,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Set the nodeCount property: Node count of the cluster. (deprecated property).
-     *
+     * 
      * @param nodeCount the nodeCount value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
@@ -159,7 +165,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Get the integrationRuntimeName property: Attached integration runtime name of data flow debug session.
-     *
+     * 
      * @return the integrationRuntimeName value.
      */
     public String getIntegrationRuntimeName() {
@@ -168,7 +174,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Set the integrationRuntimeName property: Attached integration runtime name of data flow debug session.
-     *
+     * 
      * @param integrationRuntimeName the integrationRuntimeName value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
@@ -179,7 +185,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -188,7 +194,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
@@ -199,7 +205,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Get the startTime property: Start time of data flow debug session.
-     *
+     * 
      * @return the startTime value.
      */
     public String getStartTime() {
@@ -208,7 +214,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Set the startTime property: Start time of data flow debug session.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
@@ -219,7 +225,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Get the timeToLiveInMinutes property: Compute type of the cluster.
-     *
+     * 
      * @return the timeToLiveInMinutes value.
      */
     public Integer getTimeToLiveInMinutes() {
@@ -228,7 +234,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Set the timeToLiveInMinutes property: Compute type of the cluster.
-     *
+     * 
      * @param timeToLiveInMinutes the timeToLiveInMinutes value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
@@ -239,7 +245,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Get the lastActivityTime property: Last activity time of data flow debug session.
-     *
+     * 
      * @return the lastActivityTime value.
      */
     public String getLastActivityTime() {
@@ -248,7 +254,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Set the lastActivityTime property: Last activity time of data flow debug session.
-     *
+     * 
      * @param lastActivityTime the lastActivityTime value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
@@ -259,7 +265,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Get the additionalProperties property: Data flow debug session info.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -269,7 +275,7 @@ public final class DataFlowDebugSessionInfo {
 
     /**
      * Set the additionalProperties property: Data flow debug session info.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */

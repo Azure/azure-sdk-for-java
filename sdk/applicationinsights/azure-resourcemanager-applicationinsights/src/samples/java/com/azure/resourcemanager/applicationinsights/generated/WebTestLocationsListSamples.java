@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebTestLocations List. */
 public final class WebTestLocationsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class WebTestLocationsListSamples {
      */
     public static void webTestLocationsList(
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.webTestLocations().list("my-resource-group", "my-component", Context.NONE);
+        manager.webTestLocations().list("my-resource-group", "my-component", com.azure.core.util.Context.NONE);
     }
 }

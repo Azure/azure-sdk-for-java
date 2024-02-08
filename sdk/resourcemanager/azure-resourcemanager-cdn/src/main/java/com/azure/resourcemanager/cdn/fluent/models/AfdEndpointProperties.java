@@ -38,6 +38,10 @@ public final class AfdEndpointProperties extends AfdEndpointPropertiesUpdatePara
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
 
+    /** Creates an instance of AfdEndpointProperties class. */
+    public AfdEndpointProperties() {
+    }
+
     /**
      * Get the hostname property: The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g.
      * contoso.azureedge.net.

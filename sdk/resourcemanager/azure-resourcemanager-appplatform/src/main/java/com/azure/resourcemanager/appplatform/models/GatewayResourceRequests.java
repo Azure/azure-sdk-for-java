@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource request payload of Spring Cloud Gateway. */
+/**
+ * Resource request payload of Spring Cloud Gateway.
+ */
 @Fluent
 public final class GatewayResourceRequests {
     /*
@@ -23,8 +25,14 @@ public final class GatewayResourceRequests {
     private String memory;
 
     /**
+     * Creates an instance of GatewayResourceRequests class.
+     */
+    public GatewayResourceRequests() {
+    }
+
+    /**
      * Get the cpu property: Cpu allocated to each Spring Cloud Gateway instance.
-     *
+     * 
      * @return the cpu value.
      */
     public String cpu() {
@@ -33,7 +41,7 @@ public final class GatewayResourceRequests {
 
     /**
      * Set the cpu property: Cpu allocated to each Spring Cloud Gateway instance.
-     *
+     * 
      * @param cpu the cpu value to set.
      * @return the GatewayResourceRequests object itself.
      */
@@ -44,7 +52,7 @@ public final class GatewayResourceRequests {
 
     /**
      * Get the memory property: Memory allocated to each Spring Cloud Gateway instance.
-     *
+     * 
      * @return the memory value.
      */
     public String memory() {
@@ -53,7 +61,7 @@ public final class GatewayResourceRequests {
 
     /**
      * Set the memory property: Memory allocated to each Spring Cloud Gateway instance.
-     *
+     * 
      * @param memory the memory value to set.
      * @return the GatewayResourceRequests object itself.
      */
@@ -64,7 +72,7 @@ public final class GatewayResourceRequests {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

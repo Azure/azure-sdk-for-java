@@ -4,24 +4,29 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-/** Samples for HybridIdentityMetadata Put. */
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.HybridIdentityMetadataInner;
+import com.azure.resourcemanager.hybridcontainerservice.models.HybridIdentityMetadataProperties;
+
+/**
+ * Samples for HybridIdentityMetadata Put.
+ */
 public final class HybridIdentityMetadataPutSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/CreateHybridIdentityMetadata.json
+     * x-ms-original-file:
+     * specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/
+     * CreateHybridIdentityMetadata.json
      */
     /**
      * Sample code: CreateHybridIdentityMetadata.
-     *
+     * 
      * @param manager Entry point to HybridContainerServiceManager.
      */
     public static void createHybridIdentityMetadata(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager
-            .hybridIdentityMetadatas()
-            .define("default")
-            .withExistingProvisionedCluster("testrg", "ContosoTargetCluster")
-            .withResourceUid("f8b82dff-38ef-4220-99ef-d3a3f86ddc6c")
-            .withPublicKey("8ec7d60c-9700-40b1-8e6e-e5b2f6f477f2")
-            .create();
+        manager.hybridIdentityMetadatas().putWithResponse(
+            "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster",
+            new HybridIdentityMetadataInner().withProperties(new HybridIdentityMetadataProperties()
+                .withResourceUid("f8b82dff-38ef-4220-99ef-d3a3f86ddc6c").withPublicKey("fakeTokenPlaceholder")),
+            com.azure.core.util.Context.NONE);
     }
 }

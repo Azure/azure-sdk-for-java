@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
@@ -18,6 +19,8 @@ import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure storage account. */
@@ -91,6 +94,9 @@ public interface StorageAccount
      *     account.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
+
+    /** @return the resource ids of User Assigned Managed Service Identities associated with the storage account. */
+    Set<String> userAssignedManagedServiceIdentityIds();
 
     /**
      * @return true if authenticated application from any network is allowed to access the storage account, false if
@@ -205,6 +211,20 @@ public interface StorageAccount
      * @return a representation of the deferred computation of this call, returning the regenerated access key
      */
     Mono<List<StorageAccountKey>> regenerateKeyAsync(String keyName);
+
+    /**
+     * Checks whether cross tenant replication is allowed.
+     *
+     * @return true if cross tenant replication is enabled, false otherwise
+     */
+    boolean isAllowCrossTenantReplication();
+
+    /**
+     * Checks whether default to oauth authentication is allowed.
+     *
+     * @return true if default to oauth authentication is enabled, false otherwise
+     */
+    boolean isDefaultToOAuthAuthentication();
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
@@ -401,6 +421,29 @@ public interface StorageAccount
             WithCreate withSystemAssignedManagedServiceIdentity();
         }
 
+        /**
+         * The stage of the storage account definition allowing to specify User Assigned (External) Managed Service
+         * Identities.
+         */
+        interface WithUserAssignedManagedServiceIdentity {
+            /**
+             * Specifies the definition of a not-yet-created user assigned identity to be associated with the Storage
+             * Account.
+             *
+             * @param creatableIdentity a creatable identity definition
+             * @return the next stage of the storage account definition
+             */
+            WithCreate withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
+
+            /**
+             * Specifies an existing user assigned identity to be associated with the storage account.
+             *
+             * @param identity the identity
+             * @return the next stage of the storage account definition
+             */
+            WithCreate withExistingUserAssignedManagedServiceIdentity(Identity identity);
+        }
+
         /** The stage of storage account definition allowing to restrict access protocol. */
         interface WithAccessTraffic {
             /**
@@ -547,6 +590,29 @@ public interface StorageAccount
             WithCreate withHnsEnabled(boolean enabled);
         }
 
+        /** The stage of storage account definition allowing to configure allow cross tenant replication. */
+        interface WithAllowCrossTenantReplication {
+            /**
+             * Disables allow cross tenant replication.
+             *
+             * Disabling in storage account overrides the allow cross tenant replication settings for individual containers.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate disallowCrossTenantReplication();
+
+        }
+
+        /** The stage of storage account definition allowing to configure default to oauth authentication. */
+        interface  WithDefaultToOAuthAuthentication {
+            /**
+             * Allows default to oauth authentication, configured by individual containers.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate enableDefaultToOAuthAuthentication();
+        }
+
         /**
          * A storage account definition with sufficient inputs to create a new storage account in the cloud, but
          * exposing additional optional inputs to specify.
@@ -561,12 +627,15 @@ public interface StorageAccount
                 DefinitionStages.WithEncryption,
                 DefinitionStages.WithCustomDomain,
                 DefinitionStages.WithManagedServiceIdentity,
+                DefinitionStages.WithUserAssignedManagedServiceIdentity,
                 DefinitionStages.WithAccessTraffic,
                 DefinitionStages.WithNetworkAccess,
                 DefinitionStages.WithAzureFilesAadIntegration,
                 DefinitionStages.WithLargeFileShares,
                 DefinitionStages.WithHns,
                 DefinitionStages.WithBlobAccess,
+                DefinitionStages.WithAllowCrossTenantReplication,
+                DefinitionStages.WithDefaultToOAuthAuthentication,
                 Resource.DefinitionWithTags<WithCreate> {
         }
 
@@ -701,6 +770,44 @@ public interface StorageAccount
              * @return the next stage of storage account update
              */
             Update withSystemAssignedManagedServiceIdentity();
+
+            /**
+             * Specifies that a system assigned identity associated with the storage account should be removed.
+             *
+             * @return the next stage of the storage account update
+             */
+            Update withoutSystemAssignedManagedServiceIdentity();
+        }
+
+        /**
+         * The stage of the storage account update allowing to add or remove User Assigned (External) Managed Service
+         * Identities.
+         */
+        interface WithUserAssignedManagedServiceIdentity {
+            /**
+             * Specifies the definition of a not-yet-created user assigned identity to be associated with the storage
+             * account.
+             *
+             * @param creatableIdentity a creatable identity definition
+             * @return the next stage of the storage account update
+             */
+            Update withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
+
+            /**
+             * Specifies an existing user assigned identity to be associated with the storage account.
+             *
+             * @param identity the identity
+             * @return the next stage of the storage account update
+             */
+            Update withExistingUserAssignedManagedServiceIdentity(Identity identity);
+
+            /**
+             * Specifies that an user assigned identity associated with the storage account should be removed.
+             *
+             * @param identityId ARM resource id of the identity
+             * @return the next stage of the storage account update
+             */
+            Update withoutUserAssignedManagedServiceIdentity(String identityId);
         }
 
         /** The stage of the storage account update allowing to specify the protocol to be used to access account. */
@@ -892,6 +999,45 @@ public interface StorageAccount
              */
             Update upgradeToGeneralPurposeAccountKindV2();
         }
+
+        /** The stage of storage account update allowing to allow cross tenant replication. */
+        interface WithAllowCrossTenantReplication {
+            /**
+             * Allows to allow cross tenant replication, configured by individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update allowCrossTenantReplication();
+
+            /**
+             * Disables cross tenant replication.
+             *
+             * Disabling in storage account overrides the cross tenant replication settings for individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update disallowCrossTenantReplication();
+        }
+
+        /** The stage of storage account update allowing to configure default to oauth authentication. */
+        interface  WithDefaultToOAuthAuthentication {
+            /**
+             * Allows default to oauth authentication, configured by individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update enableDefaultToOAuthAuthentication();
+
+            /**
+             * Disables default to oauth authentication.
+             *
+             * Disabling in storage account overrides the default to oauth authentication settings for individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update disableDefaultToOAuthAuthentication();
+        }
+
     }
 
     /** The template for a storage account update operation, containing all the settings that can be modified. */
@@ -902,10 +1048,13 @@ public interface StorageAccount
             UpdateStages.WithEncryption,
             UpdateStages.WithAccessTier,
             UpdateStages.WithManagedServiceIdentity,
+            UpdateStages.WithUserAssignedManagedServiceIdentity,
             UpdateStages.WithAccessTraffic,
             UpdateStages.WithNetworkAccess,
             UpdateStages.WithUpgrade,
             UpdateStages.WithBlobAccess,
+            UpdateStages.WithAllowCrossTenantReplication,
+            UpdateStages.WithDefaultToOAuthAuthentication,
             Resource.UpdateWithTags<Update> {
     }
 }

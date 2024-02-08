@@ -9,36 +9,38 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.CertificateObjectGlobalRulestackResourceInner;
 
-/** Resource collection API of CertificateObjectGlobalRulestacks. */
+/**
+ * Resource collection API of CertificateObjectGlobalRulestacks.
+ */
 public interface CertificateObjectGlobalRulestacks {
     /**
      * List CertificateObjectGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectGlobalRulestackResource list operation as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     PagedIterable<CertificateObjectGlobalRulestackResource> list(String globalRulestackName);
 
     /**
      * List CertificateObjectGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectGlobalRulestackResource list operation as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     PagedIterable<CertificateObjectGlobalRulestackResource> list(String globalRulestackName, Context context);
 
     /**
      * Get a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @param context The context to associate with this operation.
@@ -47,12 +49,12 @@ public interface CertificateObjectGlobalRulestacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a CertificateObjectGlobalRulestackResource along with {@link Response}.
      */
-    Response<CertificateObjectGlobalRulestackResource> getWithResponse(
-        String globalRulestackName, String name, Context context);
+    Response<CertificateObjectGlobalRulestackResource> getWithResponse(String globalRulestackName, String name,
+        Context context);
 
     /**
      * Get a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,7 +66,7 @@ public interface CertificateObjectGlobalRulestacks {
 
     /**
      * Create a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @param resource Resource create parameters.
@@ -73,12 +75,12 @@ public interface CertificateObjectGlobalRulestacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return globalRulestack Certificate Object.
      */
-    CertificateObjectGlobalRulestackResource createOrUpdate(
-        String globalRulestackName, String name, CertificateObjectGlobalRulestackResourceInner resource);
+    CertificateObjectGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
+        CertificateObjectGlobalRulestackResourceInner resource);
 
     /**
      * Create a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @param resource Resource create parameters.
@@ -88,15 +90,12 @@ public interface CertificateObjectGlobalRulestacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return globalRulestack Certificate Object.
      */
-    CertificateObjectGlobalRulestackResource createOrUpdate(
-        String globalRulestackName,
-        String name,
-        CertificateObjectGlobalRulestackResourceInner resource,
-        Context context);
+    CertificateObjectGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
+        CertificateObjectGlobalRulestackResourceInner resource, Context context);
 
     /**
      * Delete a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,7 +106,7 @@ public interface CertificateObjectGlobalRulestacks {
 
     /**
      * Delete a CertificateObjectGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name certificate name.
      * @param context The context to associate with this operation.

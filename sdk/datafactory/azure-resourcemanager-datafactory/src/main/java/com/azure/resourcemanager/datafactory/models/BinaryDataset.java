@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Binary dataset. */
+/**
+ * Binary dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Binary")
 @Fluent
@@ -23,62 +25,78 @@ public final class BinaryDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private BinaryDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of BinaryDataset class. */
+    /**
+     * Creates an instance of BinaryDataset class.
+     */
     public BinaryDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Binary dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private BinaryDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinaryDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinaryDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinaryDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinaryDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinaryDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinaryDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinaryDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -87,7 +105,7 @@ public final class BinaryDataset extends Dataset {
 
     /**
      * Get the location property: The location of the Binary storage.
-     *
+     * 
      * @return the location value.
      */
     public DatasetLocation location() {
@@ -96,7 +114,7 @@ public final class BinaryDataset extends Dataset {
 
     /**
      * Set the location property: The location of the Binary storage.
-     *
+     * 
      * @param location the location value to set.
      * @return the BinaryDataset object itself.
      */
@@ -110,7 +128,7 @@ public final class BinaryDataset extends Dataset {
 
     /**
      * Get the compression property: The data compression method used for the binary dataset.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression compression() {
@@ -119,7 +137,7 @@ public final class BinaryDataset extends Dataset {
 
     /**
      * Set the compression property: The data compression method used for the binary dataset.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the BinaryDataset object itself.
      */
@@ -133,7 +151,7 @@ public final class BinaryDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

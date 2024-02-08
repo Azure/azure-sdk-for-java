@@ -8,12 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** Fixed scale settings for the pool. */
+/**
+ * Fixed scale settings for the pool.
+ */
 @Fluent
 public final class FixedScaleSettings {
     /*
      * The timeout for allocation of compute nodes to the pool.
-     *
+     * 
      * The default value is 15 minutes. Timeout values use ISO 8601 format. For example, use PT10M for 10 minutes. The
      * minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request
      * with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
@@ -23,7 +25,7 @@ public final class FixedScaleSettings {
 
     /*
      * The desired number of dedicated compute nodes in the pool.
-     *
+     * 
      * At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
      */
     @JsonProperty(value = "targetDedicatedNodes")
@@ -31,7 +33,7 @@ public final class FixedScaleSettings {
 
     /*
      * The desired number of Spot/low-priority compute nodes in the pool.
-     *
+     * 
      * At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
      */
     @JsonProperty(value = "targetLowPriorityNodes")
@@ -39,23 +41,25 @@ public final class FixedScaleSettings {
 
     /*
      * Determines what to do with a node and its running task(s) after it has been selected for deallocation.
-     *
+     * 
      * If omitted, the default value is Requeue.
      */
     @JsonProperty(value = "nodeDeallocationOption")
     private ComputeNodeDeallocationOption nodeDeallocationOption;
 
-    /** Creates an instance of FixedScaleSettings class. */
+    /**
+     * Creates an instance of FixedScaleSettings class.
+     */
     public FixedScaleSettings() {
     }
 
     /**
      * Get the resizeTimeout property: The timeout for allocation of compute nodes to the pool.
-     *
-     * <p>The default value is 15 minutes. Timeout values use ISO 8601 format. For example, use PT10M for 10 minutes.
-     * The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request
+     * 
+     * The default value is 15 minutes. Timeout values use ISO 8601 format. For example, use PT10M for 10 minutes. The
+     * minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request
      * with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
-     *
+     * 
      * @return the resizeTimeout value.
      */
     public Duration resizeTimeout() {
@@ -64,11 +68,11 @@ public final class FixedScaleSettings {
 
     /**
      * Set the resizeTimeout property: The timeout for allocation of compute nodes to the pool.
-     *
-     * <p>The default value is 15 minutes. Timeout values use ISO 8601 format. For example, use PT10M for 10 minutes.
-     * The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request
+     * 
+     * The default value is 15 minutes. Timeout values use ISO 8601 format. For example, use PT10M for 10 minutes. The
+     * minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request
      * with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
-     *
+     * 
      * @param resizeTimeout the resizeTimeout value to set.
      * @return the FixedScaleSettings object itself.
      */
@@ -79,9 +83,9 @@ public final class FixedScaleSettings {
 
     /**
      * Get the targetDedicatedNodes property: The desired number of dedicated compute nodes in the pool.
-     *
-     * <p>At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
-     *
+     * 
+     * At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
+     * 
      * @return the targetDedicatedNodes value.
      */
     public Integer targetDedicatedNodes() {
@@ -90,9 +94,9 @@ public final class FixedScaleSettings {
 
     /**
      * Set the targetDedicatedNodes property: The desired number of dedicated compute nodes in the pool.
-     *
-     * <p>At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
-     *
+     * 
+     * At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
+     * 
      * @param targetDedicatedNodes the targetDedicatedNodes value to set.
      * @return the FixedScaleSettings object itself.
      */
@@ -103,9 +107,9 @@ public final class FixedScaleSettings {
 
     /**
      * Get the targetLowPriorityNodes property: The desired number of Spot/low-priority compute nodes in the pool.
-     *
-     * <p>At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
-     *
+     * 
+     * At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
+     * 
      * @return the targetLowPriorityNodes value.
      */
     public Integer targetLowPriorityNodes() {
@@ -114,9 +118,9 @@ public final class FixedScaleSettings {
 
     /**
      * Set the targetLowPriorityNodes property: The desired number of Spot/low-priority compute nodes in the pool.
-     *
-     * <p>At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
-     *
+     * 
+     * At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
+     * 
      * @param targetLowPriorityNodes the targetLowPriorityNodes value to set.
      * @return the FixedScaleSettings object itself.
      */
@@ -128,9 +132,9 @@ public final class FixedScaleSettings {
     /**
      * Get the nodeDeallocationOption property: Determines what to do with a node and its running task(s) after it has
      * been selected for deallocation.
-     *
-     * <p>If omitted, the default value is Requeue.
-     *
+     * 
+     * If omitted, the default value is Requeue.
+     * 
      * @return the nodeDeallocationOption value.
      */
     public ComputeNodeDeallocationOption nodeDeallocationOption() {
@@ -140,9 +144,9 @@ public final class FixedScaleSettings {
     /**
      * Set the nodeDeallocationOption property: Determines what to do with a node and its running task(s) after it has
      * been selected for deallocation.
-     *
-     * <p>If omitted, the default value is Requeue.
-     *
+     * 
+     * If omitted, the default value is Requeue.
+     * 
      * @param nodeDeallocationOption the nodeDeallocationOption value to set.
      * @return the FixedScaleSettings object itself.
      */
@@ -153,7 +157,7 @@ public final class FixedScaleSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

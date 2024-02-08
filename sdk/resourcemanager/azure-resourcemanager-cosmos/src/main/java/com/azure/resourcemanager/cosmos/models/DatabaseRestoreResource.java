@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specific Databases to restore. */
+/**
+ * Specific Databases to restore.
+ */
 @Fluent
 public final class DatabaseRestoreResource {
     /*
@@ -23,13 +25,15 @@ public final class DatabaseRestoreResource {
     @JsonProperty(value = "collectionNames")
     private List<String> collectionNames;
 
-    /** Creates an instance of DatabaseRestoreResource class. */
+    /**
+     * Creates an instance of DatabaseRestoreResource class.
+     */
     public DatabaseRestoreResource() {
     }
 
     /**
      * Get the databaseName property: The name of the database available for restore.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -38,7 +42,7 @@ public final class DatabaseRestoreResource {
 
     /**
      * Set the databaseName property: The name of the database available for restore.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the DatabaseRestoreResource object itself.
      */
@@ -49,7 +53,7 @@ public final class DatabaseRestoreResource {
 
     /**
      * Get the collectionNames property: The names of the collections available for restore.
-     *
+     * 
      * @return the collectionNames value.
      */
     public List<String> collectionNames() {
@@ -58,7 +62,7 @@ public final class DatabaseRestoreResource {
 
     /**
      * Set the collectionNames property: The names of the collections available for restore.
-     *
+     * 
      * @param collectionNames the collectionNames value to set.
      * @return the DatabaseRestoreResource object itself.
      */
@@ -69,7 +73,7 @@ public final class DatabaseRestoreResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

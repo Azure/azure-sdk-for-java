@@ -4,28 +4,30 @@
 
 package com.azure.resourcemanager.azurestackhci.models;
 
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
 /** Resource collection API of Operations. */
 public interface Operations {
     /**
-     * List all available Microsoft.AzureStackHCI provider operations.
+     * List all the supported operations.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with {@link
+     *     PagedIterable}.
      */
-    OperationListResult list();
+    PagedIterable<Operation> list();
 
     /**
-     * List all available Microsoft.AzureStackHCI provider operations.
+     * List all the supported operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link Response}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with {@link
+     *     PagedIterable}.
      */
-    Response<OperationListResult> listWithResponse(Context context);
+    PagedIterable<Operation> list(Context context);
 }

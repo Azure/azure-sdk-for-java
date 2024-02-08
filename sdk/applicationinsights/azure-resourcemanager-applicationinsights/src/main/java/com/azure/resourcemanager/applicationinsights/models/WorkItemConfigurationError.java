@@ -17,6 +17,10 @@ public final class WorkItemConfigurationError extends ManagementError {
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private InnerError innererror;
 
+    /** Creates an instance of WorkItemConfigurationError class. */
+    public WorkItemConfigurationError() {
+    }
+
     /**
      * Get the innererror property: Inner error.
      *

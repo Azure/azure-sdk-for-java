@@ -20,14 +20,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.models.HostKeysInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAuthenticationPolicy;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlots;
@@ -59,6 +63,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** The implementation for FunctionApp. */
 class FunctionAppImpl
@@ -172,6 +178,24 @@ class FunctionAppImpl
     }
 
     @Override
+    Mono<SiteInner> submitSite(SiteInner site) {
+        if (isFunctionAppOnACA()) {
+            return createOrUpdateInner(site);
+        } else {
+            return super.submitSite(site);
+        }
+    }
+
+    @Override
+    Mono<SiteInner> submitSite(SitePatchResourceInner siteUpdate) {
+        if (isFunctionAppOnACA()) {
+            return updateInner(siteUpdate);
+        } else {
+            return super.submitSite(siteUpdate);
+        }
+    }
+
+    @Override
     Mono<Indexable> submitAppSettings() {
         if (storageAccountCreatable != null && this.taskResult(storageAccountCreatable.key()) != null) {
             storageAccountToSet = this.taskResult(storageAccountCreatable.key());
@@ -179,19 +203,20 @@ class FunctionAppImpl
         if (storageAccountToSet == null) {
             return super.submitAppSettings();
         } else {
-            return Flux
-                .concat(
-                    storageAccountToSet
-                        .getKeysAsync()
-                        .map(storageAccountKeys -> storageAccountKeys.get(0))
-                        .zipWith(
-                            this.manager().appServicePlans().getByIdAsync(this.appServicePlanId()),
-                            (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
-                                String connectionString = ResourceManagerUtils
-                                    .getStorageConnectionString(storageAccountToSet.name(), storageAccountKey.value(),
-                                        manager().environment());
-                                addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
-                                addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
+            return storageAccountToSet
+                .getKeysAsync()
+                .flatMap(storageAccountKeys -> {
+                    StorageAccountKey key = storageAccountKeys.get(0);
+                    String connectionString = ResourceManagerUtils
+                        .getStorageConnectionString(storageAccountToSet.name(), key.value(),
+                            manager().environment());
+                    addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
+                    if (!isFunctionAppOnACA()) {
+                        // Function App on ACA only supports Application Insights as log option.
+                        // https://learn.microsoft.com/en-us/azure/azure-functions/functions-app-settings#azurewebjobsdashboard
+                        addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
+                        return this.manager().appServicePlans().getByIdAsync(this.appServicePlanId())
+                            .flatMap(appServicePlan -> {
                                 if (appServicePlan == null
                                     || isConsumptionOrPremiumAppServicePlan(appServicePlan.pricingTier())) {
 
@@ -203,9 +228,11 @@ class FunctionAppImpl
                                             .randomResourceName(name(), 32));
                                 }
                                 return FunctionAppImpl.super.submitAppSettings();
-                            }))
-                .last()
-                .then(
+                            });
+                    } else {
+                        return FunctionAppImpl.super.submitAppSettings();
+                    }
+                }).then(
                     Mono
                         .fromCallable(
                             () -> {
@@ -219,6 +246,11 @@ class FunctionAppImpl
 
     @Override
     public OperatingSystem operatingSystem() {
+        if (isFunctionAppOnACA()) {
+            // TODO(xiaofei) Current Function App on ACA only supports LINUX containers.
+            //  This logic will change after service supports Windows containers.
+            return OperatingSystem.LINUX;
+        }
         return (innerModel().reserved() == null || !innerModel().reserved())
             ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
     }
@@ -514,6 +546,27 @@ class FunctionAppImpl
     }
 
     @Override
+    public String managedEnvironmentId() {
+        return innerModel().managedEnvironmentId();
+    }
+
+    @Override
+    public Integer maxReplicas() {
+        if (this.siteConfig == null) {
+            return null;
+        }
+        return this.siteConfig.functionAppScaleLimit();
+    }
+
+    @Override
+    public Integer minReplicas() {
+        if (this.siteConfig == null) {
+            return null;
+        }
+        return this.siteConfig.minimumElasticInstanceCount();
+    }
+
+    @Override
     public Flux<String> streamApplicationLogsAsync() {
         return functionService
             .ping(functionServiceHost)
@@ -578,9 +631,38 @@ class FunctionAppImpl
     }
 
     @Override
+    public void beforeGroupCreateOrUpdate() {
+        // special handling for Function App on ACA
+        if (isFunctionAppOnACA()) {
+            adaptForFunctionAppOnACA();
+        }
+        super.beforeGroupCreateOrUpdate();
+    }
+
+    private void adaptForFunctionAppOnACA() {
+        this.innerModel().withReserved(null);
+        if (this.siteConfig != null) {
+            SiteConfigInner siteConfigInner = new SiteConfigInner();
+            siteConfigInner.withLinuxFxVersion(this.siteConfig.linuxFxVersion());
+            siteConfigInner.withMinimumElasticInstanceCount(this.siteConfig.minimumElasticInstanceCount());
+            siteConfigInner.withFunctionAppScaleLimit(this.siteConfig.functionAppScaleLimit());
+            siteConfigInner.withAppSettings(this.siteConfig.appSettings());
+            if (!appSettingsToAdd.isEmpty() || !appSettingsToRemove.isEmpty()) {
+                for (String settingToRemove : appSettingsToRemove) {
+                    siteConfigInner.appSettings().removeIf(kvPair -> Objects.equals(settingToRemove, kvPair.name()));
+                }
+                for (Map.Entry<String, String> entry : appSettingsToAdd.entrySet()) {
+                    siteConfigInner.appSettings().add(new NameValuePair().withName(entry.getKey()).withValue(entry.getValue()));
+                }
+            }
+            this.innerModel().withSiteConfig(siteConfigInner);
+        }
+    }
+
+    @Override
     public Mono<FunctionApp> createAsync() {
         if (this.isInCreateMode()) {
-            if (innerModel().serverFarmId() == null) {
+            if (innerModel().serverFarmId() == null && !isFunctionAppOnACA()) {
                 withNewConsumptionPlan();
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
@@ -599,6 +681,74 @@ class FunctionAppImpl
             initializeFunctionService();
         }
         return super.afterPostRunAsync(isGroupFaulted);
+    }
+
+    @Override
+    public FunctionAppImpl withManagedEnvironmentId(String managedEnvironmentId) {
+        this.innerModel().withManagedEnvironmentId(managedEnvironmentId);
+        if (!CoreUtils.isNullOrEmpty(managedEnvironmentId)) {
+            this.innerModel().withKind("functionapp,linux,container,azurecontainerapps");
+            if (this.siteConfig == null) {
+                this.siteConfig = new SiteConfigResourceInner().withAppSettings(new ArrayList<>());
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public FunctionAppImpl withMaxReplicas(int maxReplicas) {
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withFunctionAppScaleLimit(maxReplicas);
+        return this;
+    }
+
+    @Override
+    public FunctionAppImpl withMinReplicas(int minReplicas) {
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withMinimumElasticInstanceCount(minReplicas);
+        return this;
+    }
+
+    @Override
+    public Mono<Map<String, AppSetting>> getAppSettingsAsync() {
+        if (isFunctionAppOnACA()) {
+            // current function app on ACA doesn't support deployment slot, so appSettings sticky is false
+            return listAppSettings()
+                .map(
+                    appSettingsInner ->
+                        appSettingsInner
+                            .properties()
+                            .entrySet()
+                            .stream()
+                            .collect(
+                                Collectors
+                                    .toMap(
+                                        Map.Entry::getKey,
+                                        entry ->
+                                            new AppSettingImpl(
+                                                entry.getKey(),
+                                                entry.getValue(),
+                                                false))));
+        } else {
+            return super.getAppSettingsAsync();
+        }
+    }
+
+    /**
+     * Whether this Function App is on Azure Container Apps environment.
+     *
+     * @return whether this Function App is on Azure Container Apps environment
+     */
+    private boolean isFunctionAppOnACA() {
+        return isFunctionAppOnACA(innerModel());
+    }
+
+    static boolean isFunctionAppOnACA(SiteInner siteInner) {
+        return siteInner != null && !CoreUtils.isNullOrEmpty(siteInner.managedEnvironmentId());
     }
 
     @Host("{$host}")

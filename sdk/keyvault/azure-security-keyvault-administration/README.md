@@ -43,7 +43,7 @@ If you want to take dependency on a particular version of the library that is no
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-administration</artifactId>
-    <version>4.3.5</version>
+    <version>4.5.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -492,7 +492,7 @@ The following sections provide several code snippets covering some of the most c
 - [Updating a setting](#update-a-specific-setting)
 
 ##### Get all settings
-List all the settings for a Key Vault account.
+List all the settings for an Azure Key Vault account.
 
 ```java readme-sample-getSettings
 KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings();

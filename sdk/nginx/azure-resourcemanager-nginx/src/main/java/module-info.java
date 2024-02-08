@@ -10,10 +10,6 @@ module com.azure.resourcemanager.nginx {
     exports com.azure.resourcemanager.nginx.fluent.models;
     exports com.azure.resourcemanager.nginx.models;
 
-    opens com.azure.resourcemanager.nginx.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.nginx.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.nginx.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.nginx.models to com.azure.core, com.fasterxml.jackson.databind;
 }

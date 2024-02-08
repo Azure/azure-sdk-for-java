@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.RestorableGremlinGraphPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Azure Cosmos DB Gremlin graph event. */
+/**
+ * An Azure Cosmos DB Gremlin graph event.
+ */
 @Fluent
 public final class RestorableGremlinGraphGetResultInner {
     /*
@@ -35,13 +37,15 @@ public final class RestorableGremlinGraphGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of RestorableGremlinGraphGetResultInner class. */
+    /**
+     * Creates an instance of RestorableGremlinGraphGetResultInner class.
+     */
     public RestorableGremlinGraphGetResultInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a Gremlin graph event.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RestorableGremlinGraphProperties innerProperties() {
@@ -50,7 +54,7 @@ public final class RestorableGremlinGraphGetResultInner {
 
     /**
      * Get the id property: The unique resource Identifier of the ARM resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -59,7 +63,7 @@ public final class RestorableGremlinGraphGetResultInner {
 
     /**
      * Get the name property: The name of the ARM resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +72,7 @@ public final class RestorableGremlinGraphGetResultInner {
 
     /**
      * Get the type property: The type of Azure resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -77,7 +81,7 @@ public final class RestorableGremlinGraphGetResultInner {
 
     /**
      * Get the resource property: The resource of an Azure Cosmos DB Gremlin graph event.
-     *
+     * 
      * @return the resource value.
      */
     public RestorableGremlinGraphPropertiesResource resource() {
@@ -86,7 +90,7 @@ public final class RestorableGremlinGraphGetResultInner {
 
     /**
      * Set the resource property: The resource of an Azure Cosmos DB Gremlin graph event.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the RestorableGremlinGraphGetResultInner object itself.
      */
@@ -100,7 +104,7 @@ public final class RestorableGremlinGraphGetResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

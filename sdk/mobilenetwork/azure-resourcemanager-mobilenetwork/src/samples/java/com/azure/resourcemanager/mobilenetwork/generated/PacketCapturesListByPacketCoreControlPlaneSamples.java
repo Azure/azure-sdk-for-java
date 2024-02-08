@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 /** Samples for PacketCaptures ListByPacketCoreControlPlane. */
 public final class PacketCapturesListByPacketCoreControlPlaneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCaptureListByPacketCoreControlPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureListByPacketCoreControlPlane.json
      */
     /**
      * Sample code: List packet capture sessions under a packet core control plane.

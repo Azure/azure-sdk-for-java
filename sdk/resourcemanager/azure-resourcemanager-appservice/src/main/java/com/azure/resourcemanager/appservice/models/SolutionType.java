@@ -7,18 +7,28 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Type of Solution. */
+/**
+ * Type of Solution.
+ */
 public enum SolutionType {
-    /** Enum value QuickSolution. */
+    /**
+     * Enum value QuickSolution.
+     */
     QUICK_SOLUTION("QuickSolution"),
 
-    /** Enum value DeepInvestigation. */
+    /**
+     * Enum value DeepInvestigation.
+     */
     DEEP_INVESTIGATION("DeepInvestigation"),
 
-    /** Enum value BestPractices. */
+    /**
+     * Enum value BestPractices.
+     */
     BEST_PRACTICES("BestPractices");
 
-    /** The actual serialized value for a SolutionType instance. */
+    /**
+     * The actual serialized value for a SolutionType instance.
+     */
     private final String value;
 
     SolutionType(String value) {
@@ -27,7 +37,7 @@ public enum SolutionType {
 
     /**
      * Parses a serialized value to a SolutionType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SolutionType object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum SolutionType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

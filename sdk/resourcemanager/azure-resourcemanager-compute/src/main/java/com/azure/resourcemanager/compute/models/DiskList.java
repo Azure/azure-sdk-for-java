@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.DiskInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Disks operation response. */
+/**
+ * The List Disks operation response.
+ */
 @Fluent
 public final class DiskList {
     /*
@@ -25,13 +27,15 @@ public final class DiskList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DiskList class. */
+    /**
+     * Creates an instance of DiskList class.
+     */
     public DiskList() {
     }
 
     /**
      * Get the value property: A list of disks.
-     *
+     * 
      * @return the value value.
      */
     public List<DiskInner> value() {
@@ -40,7 +44,7 @@ public final class DiskList {
 
     /**
      * Set the value property: A list of disks.
-     *
+     * 
      * @param value the value value to set.
      * @return the DiskList object itself.
      */
@@ -52,7 +56,7 @@ public final class DiskList {
     /**
      * Get the nextLink property: The uri to fetch the next page of disks. Call ListNext() with this to fetch the next
      * page of disks.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class DiskList {
     /**
      * Set the nextLink property: The uri to fetch the next page of disks. Call ListNext() with this to fetch the next
      * page of disks.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DiskList object itself.
      */
@@ -73,7 +77,7 @@ public final class DiskList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

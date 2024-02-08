@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Base definition of WebLinkedServiceTypeProperties, this typeProperties is polymorphic based on authenticationType, so
- * not flattened in SDK models.
+ * Base definition of WebLinkedServiceTypeProperties, this typeProperties is polymorphic based on authenticationType,
+ * so not flattened in SDK models.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -24,8 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Anonymous", value = WebAnonymousAuthentication.class),
     @JsonSubTypes.Type(name = "Basic", value = WebBasicAuthentication.class),
-    @JsonSubTypes.Type(name = "ClientCertificate", value = WebClientCertificateAuthentication.class)
-})
+    @JsonSubTypes.Type(name = "ClientCertificate", value = WebClientCertificateAuthentication.class) })
 @Fluent
 public class WebLinkedServiceTypeProperties {
     /*
@@ -35,14 +34,16 @@ public class WebLinkedServiceTypeProperties {
     @JsonProperty(value = "url", required = true)
     private Object url;
 
-    /** Creates an instance of WebLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of WebLinkedServiceTypeProperties class.
+     */
     public WebLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the url property: The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object url() {
@@ -52,7 +53,7 @@ public class WebLinkedServiceTypeProperties {
     /**
      * Set the url property: The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the WebLinkedServiceTypeProperties object itself.
      */
@@ -63,15 +64,13 @@ public class WebLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property url in model WebLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property url in model WebLinkedServiceTypeProperties"));
         }
     }
 

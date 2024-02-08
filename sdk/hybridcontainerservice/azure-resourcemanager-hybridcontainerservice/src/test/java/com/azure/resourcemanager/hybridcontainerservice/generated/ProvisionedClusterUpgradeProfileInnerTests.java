@@ -7,30 +7,24 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterUpgradeProfileInner;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterPoolUpgradeProfile;
+import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterPoolUpgradeProfileProperties;
+import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterUpgradeProfileProperties;
 import java.util.Arrays;
 
 public final class ProvisionedClusterUpgradeProfileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProvisionedClusterUpgradeProfileInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"nxytxh\",\"controlPlaneProfile\":{\"kubernetesVersion\":\"xbzpfzab\",\"name\":\"cuh\",\"osType\":\"Linux\",\"upgrades\":[]},\"agentPoolProfiles\":[{\"kubernetesVersion\":\"iklbbovpl\",\"name\":\"bhvgy\",\"osType\":\"Windows\",\"upgrades\":[]},{\"kubernetesVersion\":\"vmkfssxqu\",\"name\":\"fpl\",\"osType\":\"Windows\",\"upgrades\":[]},{\"kubernetesVersion\":\"nkjzkdeslpvlop\",\"name\":\"yighxpk\",\"osType\":\"Linux\",\"upgrades\":[]},{\"kubernetesVersion\":\"iuebbaumny\",\"name\":\"ped\",\"osType\":\"Linux\",\"upgrades\":[]}]},\"id\":\"a\",\"name\":\"ckhsmtxpsieb\",\"type\":\"fhvpesaps\"}")
-                .toObject(ProvisionedClusterUpgradeProfileInner.class);
+        ProvisionedClusterUpgradeProfileInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Accepted\",\"controlPlaneProfile\":{\"kubernetesVersion\":\"rwzoxxjtfelluwf\",\"osType\":\"Windows\",\"upgrades\":[{\"kubernetesVersion\":\"eqfpj\",\"isPreview\":true}]}},\"id\":\"ofpdvh\",\"name\":\"fxxypininmayhuy\",\"type\":\"bkpodepooginuv\"}")
+            .toObject(ProvisionedClusterUpgradeProfileInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProvisionedClusterUpgradeProfileInner model =
-            new ProvisionedClusterUpgradeProfileInner()
-                .withControlPlaneProfile(new ProvisionedClusterPoolUpgradeProfile().withUpgrades(Arrays.asList()))
-                .withAgentPoolProfiles(
-                    Arrays
-                        .asList(
-                            new ProvisionedClusterPoolUpgradeProfile().withUpgrades(Arrays.asList()),
-                            new ProvisionedClusterPoolUpgradeProfile().withUpgrades(Arrays.asList()),
-                            new ProvisionedClusterPoolUpgradeProfile().withUpgrades(Arrays.asList()),
-                            new ProvisionedClusterPoolUpgradeProfile().withUpgrades(Arrays.asList())));
+        ProvisionedClusterUpgradeProfileInner model = new ProvisionedClusterUpgradeProfileInner()
+            .withProperties(new ProvisionedClusterUpgradeProfileProperties()
+                .withControlPlaneProfile(new ProvisionedClusterPoolUpgradeProfile()
+                    .withUpgrades(Arrays.asList(new ProvisionedClusterPoolUpgradeProfileProperties()))));
         model = BinaryData.fromObject(model).toObject(ProvisionedClusterUpgradeProfileInner.class);
     }
 }

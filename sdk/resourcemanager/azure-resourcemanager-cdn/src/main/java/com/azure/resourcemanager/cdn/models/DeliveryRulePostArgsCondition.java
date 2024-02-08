@@ -21,6 +21,10 @@ public final class DeliveryRulePostArgsCondition extends DeliveryRuleCondition {
     @JsonProperty(value = "parameters", required = true)
     private PostArgsMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRulePostArgsCondition class. */
+    public DeliveryRulePostArgsCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the client certificate details using common name. */
+/**
+ * Describes the client certificate details using common name.
+ */
 @Fluent
 public final class ClientCertificateCommonName {
     /*
@@ -30,14 +32,16 @@ public final class ClientCertificateCommonName {
     @JsonProperty(value = "certificateIssuerThumbprint", required = true)
     private String certificateIssuerThumbprint;
 
-    /** Creates an instance of ClientCertificateCommonName class. */
+    /**
+     * Creates an instance of ClientCertificateCommonName class.
+     */
     public ClientCertificateCommonName() {
     }
 
     /**
      * Get the isAdmin property: Indicates if the client certificate has admin access to the cluster. Non admin clients
      * can perform only read only operations on the cluster.
-     *
+     * 
      * @return the isAdmin value.
      */
     public boolean isAdmin() {
@@ -47,7 +51,7 @@ public final class ClientCertificateCommonName {
     /**
      * Set the isAdmin property: Indicates if the client certificate has admin access to the cluster. Non admin clients
      * can perform only read only operations on the cluster.
-     *
+     * 
      * @param isAdmin the isAdmin value to set.
      * @return the ClientCertificateCommonName object itself.
      */
@@ -58,7 +62,7 @@ public final class ClientCertificateCommonName {
 
     /**
      * Get the certificateCommonName property: The common name of the client certificate.
-     *
+     * 
      * @return the certificateCommonName value.
      */
     public String certificateCommonName() {
@@ -67,7 +71,7 @@ public final class ClientCertificateCommonName {
 
     /**
      * Set the certificateCommonName property: The common name of the client certificate.
-     *
+     * 
      * @param certificateCommonName the certificateCommonName value to set.
      * @return the ClientCertificateCommonName object itself.
      */
@@ -78,7 +82,7 @@ public final class ClientCertificateCommonName {
 
     /**
      * Get the certificateIssuerThumbprint property: The issuer thumbprint of the client certificate.
-     *
+     * 
      * @return the certificateIssuerThumbprint value.
      */
     public String certificateIssuerThumbprint() {
@@ -87,7 +91,7 @@ public final class ClientCertificateCommonName {
 
     /**
      * Set the certificateIssuerThumbprint property: The issuer thumbprint of the client certificate.
-     *
+     * 
      * @param certificateIssuerThumbprint the certificateIssuerThumbprint value to set.
      * @return the ClientCertificateCommonName object itself.
      */
@@ -98,21 +102,17 @@ public final class ClientCertificateCommonName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (certificateCommonName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property certificateCommonName in model ClientCertificateCommonName"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property certificateCommonName in model ClientCertificateCommonName"));
         }
         if (certificateIssuerThumbprint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property certificateIssuerThumbprint in model ClientCertificateCommonName"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property certificateIssuerThumbprint in model ClientCertificateCommonName"));
         }
     }
 

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Profile for enabling a user to access a managed cluster. */
+/**
+ * Profile for enabling a user to access a managed cluster.
+ */
 @Fluent
 public final class AccessProfile {
     /*
@@ -17,13 +19,15 @@ public final class AccessProfile {
     @JsonProperty(value = "kubeConfig")
     private byte[] kubeConfig;
 
-    /** Creates an instance of AccessProfile class. */
+    /**
+     * Creates an instance of AccessProfile class.
+     */
     public AccessProfile() {
     }
 
     /**
      * Get the kubeConfig property: Base64-encoded Kubernetes configuration file.
-     *
+     * 
      * @return the kubeConfig value.
      */
     public byte[] kubeConfig() {
@@ -32,7 +36,7 @@ public final class AccessProfile {
 
     /**
      * Set the kubeConfig property: Base64-encoded Kubernetes configuration file.
-     *
+     * 
      * @param kubeConfig the kubeConfig value to set.
      * @return the AccessProfile object itself.
      */
@@ -43,7 +47,7 @@ public final class AccessProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

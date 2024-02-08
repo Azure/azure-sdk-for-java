@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class KeyVaultProperties {
     /*
-     * The Key Vault uri which holds they key associated with the Log Analytics
-     * cluster.
+     * The Key Vault uri which holds they key associated with the Log Analytics cluster.
      */
     @JsonProperty(value = "keyVaultUri")
     private String keyVaultUri;
@@ -34,6 +33,10 @@ public final class KeyVaultProperties {
      */
     @JsonProperty(value = "keyRsaSize")
     private Integer keyRsaSize;
+
+    /** Creates an instance of KeyVaultProperties class. */
+    public KeyVaultProperties() {
+    }
 
     /**
      * Get the keyVaultUri property: The Key Vault uri which holds they key associated with the Log Analytics cluster.

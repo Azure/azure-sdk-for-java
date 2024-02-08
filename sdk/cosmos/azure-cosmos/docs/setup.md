@@ -112,7 +112,7 @@ Our CI pipelines start Azure Cosmos DB Emulator with these parameters. It is hig
 /enablepreview /EnableSqlComputeEndpoint /disableratelimiting /partitioncount=50 /consistency=Strong
 ```
 
-Other test groups are meant to be tested against Azure Cosmos DB production account, but can also be tested against Emulator. There are multiple different test groups like `groups = {"simple", "long", "direct", "multi-region", "multi-master"}`. For example, `CosmosItemTest` is a simple group test which can be run against Azure Cosmos DB production account, as well as against emulator.
+Other test groups are meant to be tested against Azure Cosmos DB production account, but can also be tested against Emulator. There are multiple different test groups like `groups = {"fast", "long", "direct", "multi-region", "multi-master"}`. For example, `CosmosItemTest` is a simple group test which can be run against Azure Cosmos DB production account, as well as against emulator.
 
 To run any test against Azure Cosmos DB production account, it is required to update `TestConfigurations.java` class with account host and key. 
 NOTE: When creating a PR, make sure to remove any account key and account host information from the PR. To avoid security breaches, never commit and push any keys and host information related to Azure Cosmos DB Account.

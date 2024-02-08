@@ -20,6 +20,15 @@ public final class CacheBehavior extends ExpandableStringEnum<CacheBehavior> {
     public static final CacheBehavior SET_IF_MISSING = fromString("SetIfMissing");
 
     /**
+     * Creates a new instance of CacheBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CacheBehavior() {
+    }
+
+    /**
      * Creates or finds a CacheBehavior from its string representation.
      *
      * @param name a name to look for.

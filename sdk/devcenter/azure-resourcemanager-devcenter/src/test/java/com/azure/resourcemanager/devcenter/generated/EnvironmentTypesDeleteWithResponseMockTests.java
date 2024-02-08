@@ -58,6 +58,6 @@ public final class EnvironmentTypesDeleteWithResponseMockTests {
 
         manager
             .environmentTypes()
-            .deleteWithResponse("hfuk", "vsjcswsmystuluqy", "fcvlerch", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ywuhpsvfuur", "tlwexxwlalniexz", "rzpgep", com.azure.core.util.Context.NONE);
     }
 }

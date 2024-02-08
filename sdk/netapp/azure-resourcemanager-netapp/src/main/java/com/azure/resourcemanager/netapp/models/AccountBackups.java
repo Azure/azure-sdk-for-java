@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AccountBackups. */
+/**
+ * Resource collection API of AccountBackups.
+ */
 public interface AccountBackups {
     /**
      * List Backups for a Netapp Account
-     *
-     * <p>List all Backups for a Netapp Account.
-     *
+     * 
+     * List all Backups for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -22,28 +24,31 @@ public interface AccountBackups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Backups as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Backup> list(String resourceGroupName, String accountName);
+    PagedIterable<Backup> listByNetAppAccount(String resourceGroupName, String accountName);
 
     /**
      * List Backups for a Netapp Account
-     *
-     * <p>List all Backups for a Netapp Account.
-     *
+     * 
+     * List all Backups for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
+     * @param includeOnlyBackupsFromDeletedVolumes An option to specify whether to return backups only from deleted
+     * volumes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Backups as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Backup> list(String resourceGroupName, String accountName, Context context);
+    PagedIterable<Backup> listByNetAppAccount(String resourceGroupName, String accountName,
+        String includeOnlyBackupsFromDeletedVolumes, Context context);
 
     /**
      * Get Backup for a Netapp Account
-     *
-     * <p>Gets the specified backup for a Netapp Account.
-     *
+     * 
+     * Gets the specified backup for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
@@ -57,9 +62,9 @@ public interface AccountBackups {
 
     /**
      * Get Backup for a Netapp Account
-     *
-     * <p>Gets the specified backup for a Netapp Account.
-     *
+     * 
+     * Gets the specified backup for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
@@ -72,9 +77,9 @@ public interface AccountBackups {
 
     /**
      * Delete Backup for a Netapp Account
-     *
-     * <p>Delete the specified Backup for a Netapp Account.
-     *
+     * 
+     * Delete the specified Backup for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
@@ -86,9 +91,9 @@ public interface AccountBackups {
 
     /**
      * Delete Backup for a Netapp Account
-     *
-     * <p>Delete the specified Backup for a Netapp Account.
-     *
+     * 
+     * Delete the specified Backup for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.

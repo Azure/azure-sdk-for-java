@@ -15,31 +15,32 @@ public final class HelmReleasePropertiesDefinitionTests {
         HelmReleasePropertiesDefinition model =
             BinaryData
                 .fromString(
-                    "{\"lastRevisionApplied\":5713676412276621836,\"helmChartRef\":{\"name\":\"tutqxlngxlefgug\",\"namespace\":\"krxd\"},\"failureCount\":979128831673863857,\"installFailureCount\":2903451662374924947,\"upgradeFailureCount\":6746473362008791150}")
+                    "{\"lastRevisionApplied\":247152507284848729,\"helmChartRef\":{\"name\":\"dystkiiuxhqyud\",\"namespace\":\"rrqnbpoczvyifqrv\"},\"failureCount\":4225896230813201107,\"installFailureCount\":3055369044346357730,\"upgradeFailureCount\":4089685326057058408}")
                 .toObject(HelmReleasePropertiesDefinition.class);
-        Assertions.assertEquals(5713676412276621836L, model.lastRevisionApplied());
-        Assertions.assertEquals("tutqxlngxlefgug", model.helmChartRef().name());
-        Assertions.assertEquals("krxd", model.helmChartRef().namespace());
-        Assertions.assertEquals(979128831673863857L, model.failureCount());
-        Assertions.assertEquals(2903451662374924947L, model.installFailureCount());
-        Assertions.assertEquals(6746473362008791150L, model.upgradeFailureCount());
+        Assertions.assertEquals(247152507284848729L, model.lastRevisionApplied());
+        Assertions.assertEquals("dystkiiuxhqyud", model.helmChartRef().name());
+        Assertions.assertEquals("rrqnbpoczvyifqrv", model.helmChartRef().namespace());
+        Assertions.assertEquals(4225896230813201107L, model.failureCount());
+        Assertions.assertEquals(3055369044346357730L, model.installFailureCount());
+        Assertions.assertEquals(4089685326057058408L, model.upgradeFailureCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HelmReleasePropertiesDefinition model =
             new HelmReleasePropertiesDefinition()
-                .withLastRevisionApplied(5713676412276621836L)
-                .withHelmChartRef(new ObjectReferenceDefinition().withName("tutqxlngxlefgug").withNamespace("krxd"))
-                .withFailureCount(979128831673863857L)
-                .withInstallFailureCount(2903451662374924947L)
-                .withUpgradeFailureCount(6746473362008791150L);
+                .withLastRevisionApplied(247152507284848729L)
+                .withHelmChartRef(
+                    new ObjectReferenceDefinition().withName("dystkiiuxhqyud").withNamespace("rrqnbpoczvyifqrv"))
+                .withFailureCount(4225896230813201107L)
+                .withInstallFailureCount(3055369044346357730L)
+                .withUpgradeFailureCount(4089685326057058408L);
         model = BinaryData.fromObject(model).toObject(HelmReleasePropertiesDefinition.class);
-        Assertions.assertEquals(5713676412276621836L, model.lastRevisionApplied());
-        Assertions.assertEquals("tutqxlngxlefgug", model.helmChartRef().name());
-        Assertions.assertEquals("krxd", model.helmChartRef().namespace());
-        Assertions.assertEquals(979128831673863857L, model.failureCount());
-        Assertions.assertEquals(2903451662374924947L, model.installFailureCount());
-        Assertions.assertEquals(6746473362008791150L, model.upgradeFailureCount());
+        Assertions.assertEquals(247152507284848729L, model.lastRevisionApplied());
+        Assertions.assertEquals("dystkiiuxhqyud", model.helmChartRef().name());
+        Assertions.assertEquals("rrqnbpoczvyifqrv", model.helmChartRef().namespace());
+        Assertions.assertEquals(4225896230813201107L, model.failureCount());
+        Assertions.assertEquals(3055369044346357730L, model.installFailureCount());
+        Assertions.assertEquals(4089685326057058408L, model.upgradeFailureCount());
     }
 }

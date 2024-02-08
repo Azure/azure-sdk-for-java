@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** Managed Certificate used for https. */
 @Fluent
 public final class ManagedCertificate extends Certificate {
+    /** Creates an instance of ManagedCertificate class. */
+    public ManagedCertificate() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ManagedCertificate withType(SecretType type) {

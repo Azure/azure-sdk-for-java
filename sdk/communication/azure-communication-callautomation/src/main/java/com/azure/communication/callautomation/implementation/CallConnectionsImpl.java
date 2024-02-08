@@ -13,7 +13,7 @@ import com.azure.communication.callautomation.implementation.models.CancelAddPar
 import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
-import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.MuteParticipantsResultInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
@@ -157,7 +157,7 @@ public final class CallConnectionsImpl {
         @Post("/calling/callConnections/{callConnectionId}/participants:mute")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<MuteParticipantsResponseInternal>> mute(
+        Mono<Response<MuteParticipantsResultInternal>> mute(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -168,7 +168,7 @@ public final class CallConnectionsImpl {
                 Context context);
 
         @Post("/calling/callConnections/{callConnectionId}/participants:unmute")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<UnmuteParticipantsResponseInternal>> unmute(
                 @HostParam("endpoint") String endpoint,
@@ -215,13 +215,13 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get call connection.
+     * Get the detail properties of an ongoing call.
      *
      * @param callConnectionId The call connection id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return call connection.
+     * @return the detail properties of an ongoing call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionPropertiesInternal>> getCallWithResponseAsync(String callConnectionId) {
@@ -237,14 +237,14 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get call connection.
+     * Get the detail properties of an ongoing call.
      *
      * @param callConnectionId The call connection id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return call connection.
+     * @return the detail properties of an ongoing call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionPropertiesInternal>> getCallWithResponseAsync(
@@ -255,13 +255,13 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get call connection.
+     * Get the detail properties of an ongoing call.
      *
      * @param callConnectionId The call connection id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return call connection.
+     * @return the detail properties of an ongoing call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> getCallAsync(String callConnectionId) {
@@ -277,14 +277,14 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get call connection.
+     * Get the detail properties of an ongoing call.
      *
      * @param callConnectionId The call connection id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return call connection.
+     * @return the detail properties of an ongoing call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> getCallAsync(String callConnectionId, Context context) {
@@ -300,13 +300,13 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get call connection.
+     * Get the detail properties of an ongoing call.
      *
      * @param callConnectionId The call connection id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return call connection.
+     * @return the detail properties of an ongoing call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnectionPropertiesInternal getCall(String callConnectionId) {
@@ -314,14 +314,14 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get call connection.
+     * Get the detail properties of an ongoing call.
      *
      * @param callConnectionId The call connection id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return call connection.
+     * @return the detail properties of an ongoing call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallConnectionPropertiesInternal> getCallWithResponse(String callConnectionId, Context context) {
@@ -329,7 +329,8 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Hangup the call.
+     * Hang up call automation service from the call. This will make call automation service leave the call, but does
+     * not terminate if there are more than 1 caller in the call.
      *
      * @param callConnectionId The call connection id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,7 +352,8 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Hangup the call.
+     * Hang up call automation service from the call. This will make call automation service leave the call, but does
+     * not terminate if there are more than 1 caller in the call.
      *
      * @param callConnectionId The call connection id.
      * @param context The context to associate with this operation.
@@ -368,7 +370,8 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Hangup the call.
+     * Hang up call automation service from the call. This will make call automation service leave the call, but does
+     * not terminate if there are more than 1 caller in the call.
      *
      * @param callConnectionId The call connection id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,7 +385,8 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Hangup the call.
+     * Hang up call automation service from the call. This will make call automation service leave the call, but does
+     * not terminate if there are more than 1 caller in the call.
      *
      * @param callConnectionId The call connection id.
      * @param context The context to associate with this operation.
@@ -397,7 +401,8 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Hangup the call.
+     * Hang up call automation service from the call. This will make call automation service leave the call, but does
+     * not terminate if there are more than 1 caller in the call.
      *
      * @param callConnectionId The call connection id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -410,7 +415,8 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Hangup the call.
+     * Hang up call automation service from the call. This will make call automation service leave the call, but does
+     * not terminate if there are more than 1 caller in the call.
      *
      * @param callConnectionId The call connection id.
      * @param context The context to associate with this operation.
@@ -846,7 +852,7 @@ public final class CallConnectionsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValues(),
+                                        res.getValue().getValue(),
                                         res.getValue().getNextLink(),
                                         null));
     }
@@ -873,7 +879,7 @@ public final class CallConnectionsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValues(),
+                                        res.getValue().getValue(),
                                         res.getValue().getNextLink(),
                                         null));
     }
@@ -941,7 +947,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add participants to the call.
+     * Add a participant to the call.
      *
      * @param callConnectionId The call connection Id.
      * @param addParticipantRequest The request payload for adding participant to the call.
@@ -981,7 +987,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add participants to the call.
+     * Add a participant to the call.
      *
      * @param callConnectionId The call connection Id.
      * @param addParticipantRequest The request payload for adding participant to the call.
@@ -1021,7 +1027,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add participants to the call.
+     * Add a participant to the call.
      *
      * @param callConnectionId The call connection Id.
      * @param addParticipantRequest The request payload for adding participant to the call.
@@ -1057,7 +1063,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add participants to the call.
+     * Add a participant to the call.
      *
      * @param callConnectionId The call connection Id.
      * @param addParticipantRequest The request payload for adding participant to the call.
@@ -1099,7 +1105,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add participants to the call.
+     * Add a participant to the call.
      *
      * @param callConnectionId The call connection Id.
      * @param addParticipantRequest The request payload for adding participant to the call.
@@ -1128,7 +1134,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add participants to the call.
+     * Add a participant to the call.
      *
      * @param callConnectionId The call connection Id.
      * @param addParticipantRequest The request payload for adding participant to the call.
@@ -1163,7 +1169,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Remove participant from the call using identifier.
+     * Remove a participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param removeParticipantRequest The participant to be removed from the call.
@@ -1203,7 +1209,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Remove participant from the call using identifier.
+     * Remove a participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param removeParticipantRequest The participant to be removed from the call.
@@ -1243,7 +1249,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Remove participant from the call using identifier.
+     * Remove a participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param removeParticipantRequest The participant to be removed from the call.
@@ -1279,7 +1285,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Remove participant from the call using identifier.
+     * Remove a participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param removeParticipantRequest The participant to be removed from the call.
@@ -1321,7 +1327,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Remove participant from the call using identifier.
+     * Remove a participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param removeParticipantRequest The participant to be removed from the call.
@@ -1350,7 +1356,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Remove participant from the call using identifier.
+     * Remove a participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param removeParticipantRequest The participant to be removed from the call.
@@ -1400,10 +1406,10 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for muting participants from the call.
+     * @return the result payload for muting participants from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MuteParticipantsResponseInternal>> muteWithResponseAsync(
+    public Mono<Response<MuteParticipantsResultInternal>> muteWithResponseAsync(
             String callConnectionId,
             MuteParticipantsRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -1441,10 +1447,10 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for muting participants from the call.
+     * @return the result payload for muting participants from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MuteParticipantsResponseInternal>> muteWithResponseAsync(
+    public Mono<Response<MuteParticipantsResultInternal>> muteWithResponseAsync(
             String callConnectionId,
             MuteParticipantsRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -1480,10 +1486,10 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for muting participants from the call.
+     * @return the result payload for muting participants from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantsResponseInternal> muteAsync(
+    public Mono<MuteParticipantsResultInternal> muteAsync(
             String callConnectionId,
             MuteParticipantsRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -1491,7 +1497,7 @@ public final class CallConnectionsImpl {
         return muteWithResponseAsync(
                         callConnectionId, muteParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
-                        (Response<MuteParticipantsResponseInternal> res) -> {
+                        (Response<MuteParticipantsResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1517,10 +1523,10 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for muting participants from the call.
+     * @return the result payload for muting participants from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantsResponseInternal> muteAsync(
+    public Mono<MuteParticipantsResultInternal> muteAsync(
             String callConnectionId,
             MuteParticipantsRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -1533,7 +1539,7 @@ public final class CallConnectionsImpl {
                         repeatabilityFirstSent,
                         context)
                 .flatMap(
-                        (Response<MuteParticipantsResponseInternal> res) -> {
+                        (Response<MuteParticipantsResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1558,10 +1564,10 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for muting participants from the call.
+     * @return the result payload for muting participants from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MuteParticipantsResponseInternal mute(
+    public MuteParticipantsResultInternal mute(
             String callConnectionId,
             MuteParticipantsRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -1587,10 +1593,10 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for muting participants from the call.
+     * @return the result payload for muting participants from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MuteParticipantsResponseInternal> muteWithResponse(
+    public Response<MuteParticipantsResultInternal> muteWithResponse(
             String callConnectionId,
             MuteParticipantsRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -1842,7 +1848,7 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response payload for cancel add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CancelAddParticipantResponse>> cancelAddParticipantWithResponseAsync(
@@ -1883,7 +1889,7 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response payload for cancel add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CancelAddParticipantResponse>> cancelAddParticipantWithResponseAsync(
@@ -1922,7 +1928,7 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response payload for cancel add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CancelAddParticipantResponse> cancelAddParticipantAsync(
@@ -1959,7 +1965,7 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response payload for cancel add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CancelAddParticipantResponse> cancelAddParticipantAsync(
@@ -2000,7 +2006,7 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response payload for cancel add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CancelAddParticipantResponse cancelAddParticipant(
@@ -2030,7 +2036,7 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response payload for cancel add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CancelAddParticipantResponse> cancelAddParticipantWithResponse(
@@ -2197,7 +2203,7 @@ public final class CallConnectionsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValues(),
+                                        res.getValue().getValue(),
                                         res.getValue().getNextLink(),
                                         null));
     }
@@ -2223,7 +2229,7 @@ public final class CallConnectionsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValues(),
+                                        res.getValue().getValue(),
                                         res.getValue().getNextLink(),
                                         null));
     }

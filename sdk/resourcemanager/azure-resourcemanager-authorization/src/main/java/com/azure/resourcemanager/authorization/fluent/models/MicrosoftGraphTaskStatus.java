@@ -26,6 +26,15 @@ public final class MicrosoftGraphTaskStatus extends ExpandableStringEnum<Microso
     public static final MicrosoftGraphTaskStatus DEFERRED = fromString("deferred");
 
     /**
+     * Creates a new instance of MicrosoftGraphTaskStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphTaskStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphTaskStatus from its string representation.
      *
      * @param name a name to look for.

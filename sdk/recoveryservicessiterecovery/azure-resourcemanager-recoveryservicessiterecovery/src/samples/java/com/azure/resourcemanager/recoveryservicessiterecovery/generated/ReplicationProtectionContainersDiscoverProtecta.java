@@ -10,7 +10,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.DiscoverPro
 /** Samples for ReplicationProtectionContainers DiscoverProtectableItem. */
 public final class ReplicationProtectionContainersDiscoverProtecta {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainers_DiscoverProtectableItem.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainers_DiscoverProtectableItem.json
      */
     /**
      * Sample code: Adds a protectable item to the replication protection container.

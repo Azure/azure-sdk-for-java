@@ -10,18 +10,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * AbsoluteDeleteOption
- *
- * <p>Delete option with duration.
+ * 
+ * Delete option with duration.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AbsoluteDeleteOption")
 @Fluent
 public final class AbsoluteDeleteOption extends DeleteOption {
-    /** Creates an instance of AbsoluteDeleteOption class. */
+    /**
+     * Creates an instance of AbsoluteDeleteOption class.
+     */
     public AbsoluteDeleteOption() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbsoluteDeleteOption withDuration(String duration) {
         super.withDuration(duration);
@@ -30,7 +34,7 @@ public final class AbsoluteDeleteOption extends DeleteOption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

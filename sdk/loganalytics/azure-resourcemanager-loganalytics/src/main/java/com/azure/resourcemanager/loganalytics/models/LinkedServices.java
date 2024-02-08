@@ -43,19 +43,6 @@ public interface LinkedServices {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param linkedServiceName Name of the linked service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service instance.
-     */
-    LinkedService get(String resourceGroupName, String workspaceName, String linkedServiceName);
-
-    /**
-     * Gets a linked service instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param linkedServiceName Name of the linked service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -64,6 +51,19 @@ public interface LinkedServices {
      */
     Response<LinkedService> getWithResponse(
         String resourceGroupName, String workspaceName, String linkedServiceName, Context context);
+
+    /**
+     * Gets a linked service instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param linkedServiceName Name of the linked service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a linked service instance.
+     */
+    LinkedService get(String resourceGroupName, String workspaceName, String linkedServiceName);
 
     /**
      * Gets the linked services instances in a workspace.

@@ -32,7 +32,8 @@ public final class FleetsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"hubProfile\":{\"dnsPrefix\":\"x\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":false,\"enableVnetIntegration\":false,\"subnetId\":\"klwndnhjdauwhv\"},\"agentProfile\":{\"subnetId\":\"zbtd\"},\"fqdn\":\"ujznb\",\"kubernetesVersion\":\"ow\"}},\"eTag\":\"przqlveu\",\"identity\":{\"principalId\":\"33dd153b-be78-4c2c-a8cf-9543907cf01e\",\"tenantId\":\"37865511-d094-4af8-b869-06e99bf6f194\",\"type\":\"None\",\"userAssignedIdentities\":{\"xobbcswsrt\":{\"principalId\":\"9c2d6db5-5d68-4246-bb03-477847387366\",\"clientId\":\"3907f163-e04d-4b86-8911-34f2120724ba\"},\"plrbpbewtghf\":{\"principalId\":\"8ce6bac2-58a7-4ec5-a074-3acedf49b199\",\"clientId\":\"12ead0fb-a5b1-4edf-97fe-79a10f7d4586\"},\"c\":{\"principalId\":\"f14a2cbd-c1f9-4382-9364-022965ade64b\",\"clientId\":\"0f76d48a-6c44-49b6-ad50-a518a8313476\"},\"zvlvqhjkbegib\":{\"principalId\":\"2cdc486d-99d5-4771-b22c-fb2980815399\",\"clientId\":\"05ccb437-d0be-4ead-9e4e-fdfcc189e794\"}}},\"location\":\"mxiebw\",\"tags\":{\"wrtz\":\"oayqc\",\"ngmtsavjcb\":\"uzgwyzmhtx\"},\"id\":\"wxqpsrknftguvri\",\"name\":\"hprwmdyv\",\"type\":\"qtayri\"}";
+            "{\"properties\":{\"provisioningState\":\"Canceled\"},\"eTag\":\"rbpbewtghfgblcg\",\"identity\":{\"principalId\":\"f0f61d0f-c014-4564-89a6-7cff2137dcc6\",\"tenantId\":\"708ef820-279d-43de-b69b-94e9098ab075\",\"type\":\"SystemAssigned,"
+                + " UserAssigned\",\"userAssignedIdentities\":{\"kbegibt\":{\"principalId\":\"c9b19de9-9f16-4d40-be41-39ace52fb22e\",\"clientId\":\"8a366ebc-46dd-4883-9702-535eafc36190\"}}},\"location\":\"xiebwwaloayqcg\",\"tags\":{\"htxongmtsavjc\":\"zjuzgwyz\",\"rknftguvriuhprwm\":\"pwxqp\",\"bexrmcq\":\"yvxqtayriwwroy\",\"e\":\"bycnojvkn\"},\"id\":\"qsgzvahapj\",\"name\":\"zhpvgqzcjrvxd\",\"type\":\"zlmwlxkvugfhz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,16 +64,11 @@ public final class FleetsGetByResourceGroupWithResponseMockTests {
         Fleet response =
             manager
                 .fleets()
-                .getByResourceGroupWithResponse("it", "nrjawgqwg", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("lupj", "khfxobbcswsrt", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("mxiebw", response.location());
-        Assertions.assertEquals("oayqc", response.tags().get("wrtz"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("x", response.hubProfile().dnsPrefix());
-        Assertions.assertEquals(false, response.hubProfile().apiServerAccessProfile().enablePrivateCluster());
-        Assertions.assertEquals(false, response.hubProfile().apiServerAccessProfile().enableVnetIntegration());
-        Assertions.assertEquals("klwndnhjdauwhv", response.hubProfile().apiServerAccessProfile().subnetId());
-        Assertions.assertEquals("zbtd", response.hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("xiebwwaloayqcg", response.location());
+        Assertions.assertEquals("zjuzgwyz", response.tags().get("htxongmtsavjc"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 }

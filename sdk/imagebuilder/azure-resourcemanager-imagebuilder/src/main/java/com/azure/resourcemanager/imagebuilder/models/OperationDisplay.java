@@ -7,7 +7,9 @@ package com.azure.resourcemanager.imagebuilder.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The object that describes the operation. */
+/**
+ * The object that describes the operation.
+ */
 @Fluent
 public final class OperationDisplay {
     /*
@@ -18,7 +20,7 @@ public final class OperationDisplay {
 
     /*
      * The operation type.
-     *
+     * 
      * For example: read, write, delete, or listKeys/action
      */
     @JsonProperty(value = "operation")
@@ -36,13 +38,15 @@ public final class OperationDisplay {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of OperationDisplay class. */
+    /**
+     * Creates an instance of OperationDisplay class.
+     */
     public OperationDisplay() {
     }
 
     /**
      * Get the provider property: Friendly name of the resource provider.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -51,7 +55,7 @@ public final class OperationDisplay {
 
     /**
      * Set the provider property: Friendly name of the resource provider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the OperationDisplay object itself.
      */
@@ -62,9 +66,9 @@ public final class OperationDisplay {
 
     /**
      * Get the operation property: The operation type.
-     *
-     * <p>For example: read, write, delete, or listKeys/action.
-     *
+     * 
+     * For example: read, write, delete, or listKeys/action.
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -73,9 +77,9 @@ public final class OperationDisplay {
 
     /**
      * Set the operation property: The operation type.
-     *
-     * <p>For example: read, write, delete, or listKeys/action.
-     *
+     * 
+     * For example: read, write, delete, or listKeys/action.
+     * 
      * @param operation the operation value to set.
      * @return the OperationDisplay object itself.
      */
@@ -86,7 +90,7 @@ public final class OperationDisplay {
 
     /**
      * Get the resource property: The resource type on which the operation is performed.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -95,7 +99,7 @@ public final class OperationDisplay {
 
     /**
      * Set the resource property: The resource type on which the operation is performed.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the OperationDisplay object itself.
      */
@@ -106,7 +110,7 @@ public final class OperationDisplay {
 
     /**
      * Get the description property: The friendly name of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -115,7 +119,7 @@ public final class OperationDisplay {
 
     /**
      * Set the description property: The friendly name of the operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the OperationDisplay object itself.
      */
@@ -126,7 +130,7 @@ public final class OperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

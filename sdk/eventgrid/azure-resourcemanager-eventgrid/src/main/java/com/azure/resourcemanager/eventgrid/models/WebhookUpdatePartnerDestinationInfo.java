@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Information about the update of the WebHook of the partner destination. */
+/**
+ * Information about the update of the WebHook of the partner destination.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("WebHook")
 @Fluent
@@ -21,13 +23,15 @@ public final class WebhookUpdatePartnerDestinationInfo extends PartnerUpdateDest
     @JsonProperty(value = "properties")
     private WebhookPartnerDestinationProperties innerProperties;
 
-    /** Creates an instance of WebhookUpdatePartnerDestinationInfo class. */
+    /**
+     * Creates an instance of WebhookUpdatePartnerDestinationInfo class.
+     */
     public WebhookUpdatePartnerDestinationInfo() {
     }
 
     /**
      * Get the innerProperties property: WebHook Properties of the partner destination.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebhookPartnerDestinationProperties innerProperties() {
@@ -36,7 +40,7 @@ public final class WebhookUpdatePartnerDestinationInfo extends PartnerUpdateDest
 
     /**
      * Get the endpointUrl property: The URL that represents the endpoint of the partner destination.
-     *
+     * 
      * @return the endpointUrl value.
      */
     public String endpointUrl() {
@@ -45,7 +49,7 @@ public final class WebhookUpdatePartnerDestinationInfo extends PartnerUpdateDest
 
     /**
      * Set the endpointUrl property: The URL that represents the endpoint of the partner destination.
-     *
+     * 
      * @param endpointUrl the endpointUrl value to set.
      * @return the WebhookUpdatePartnerDestinationInfo object itself.
      */
@@ -59,7 +63,7 @@ public final class WebhookUpdatePartnerDestinationInfo extends PartnerUpdateDest
 
     /**
      * Get the endpointBaseUrl property: The base URL that represents the endpoint of the partner destination.
-     *
+     * 
      * @return the endpointBaseUrl value.
      */
     public String endpointBaseUrl() {
@@ -68,7 +72,7 @@ public final class WebhookUpdatePartnerDestinationInfo extends PartnerUpdateDest
 
     /**
      * Set the endpointBaseUrl property: The base URL that represents the endpoint of the partner destination.
-     *
+     * 
      * @param endpointBaseUrl the endpointBaseUrl value to set.
      * @return the WebhookUpdatePartnerDestinationInfo object itself.
      */
@@ -82,7 +86,7 @@ public final class WebhookUpdatePartnerDestinationInfo extends PartnerUpdateDest
 
     /**
      * Get the clientAuthentication property: Partner client authentication.
-     *
+     * 
      * @return the clientAuthentication value.
      */
     public PartnerClientAuthentication clientAuthentication() {
@@ -91,12 +95,12 @@ public final class WebhookUpdatePartnerDestinationInfo extends PartnerUpdateDest
 
     /**
      * Set the clientAuthentication property: Partner client authentication.
-     *
+     * 
      * @param clientAuthentication the clientAuthentication value to set.
      * @return the WebhookUpdatePartnerDestinationInfo object itself.
      */
-    public WebhookUpdatePartnerDestinationInfo withClientAuthentication(
-        PartnerClientAuthentication clientAuthentication) {
+    public WebhookUpdatePartnerDestinationInfo
+        withClientAuthentication(PartnerClientAuthentication clientAuthentication) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WebhookPartnerDestinationProperties();
         }
@@ -106,7 +110,7 @@ public final class WebhookUpdatePartnerDestinationInfo extends PartnerUpdateDest
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

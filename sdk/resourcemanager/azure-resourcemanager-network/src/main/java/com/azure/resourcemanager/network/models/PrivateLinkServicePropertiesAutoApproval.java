@@ -7,14 +7,20 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import java.util.List;
 
-/** The auto-approval list of the private link service. */
+/**
+ * The auto-approval list of the private link service.
+ */
 @Fluent
 public final class PrivateLinkServicePropertiesAutoApproval extends ResourceSet {
-    /** Creates an instance of PrivateLinkServicePropertiesAutoApproval class. */
+    /**
+     * Creates an instance of PrivateLinkServicePropertiesAutoApproval class.
+     */
     public PrivateLinkServicePropertiesAutoApproval() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateLinkServicePropertiesAutoApproval withSubscriptions(List<String> subscriptions) {
         super.withSubscriptions(subscriptions);
@@ -23,7 +29,7 @@ public final class PrivateLinkServicePropertiesAutoApproval extends ResourceSet 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

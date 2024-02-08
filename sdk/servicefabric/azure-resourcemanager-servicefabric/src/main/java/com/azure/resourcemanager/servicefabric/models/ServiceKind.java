@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of service (Stateless or Stateful). */
+/**
+ * The kind of service (Stateless or Stateful).
+ */
 public final class ServiceKind extends ExpandableStringEnum<ServiceKind> {
-    /** Static value Invalid for ServiceKind. */
+    /**
+     * Static value Invalid for ServiceKind.
+     */
     public static final ServiceKind INVALID = fromString("Invalid");
 
-    /** Static value Stateless for ServiceKind. */
+    /**
+     * Static value Stateless for ServiceKind.
+     */
     public static final ServiceKind STATELESS = fromString("Stateless");
 
-    /** Static value Stateful for ServiceKind. */
+    /**
+     * Static value Stateful for ServiceKind.
+     */
     public static final ServiceKind STATEFUL = fromString("Stateful");
 
     /**
      * Creates a new instance of ServiceKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ServiceKind extends ExpandableStringEnum<ServiceKind> {
 
     /**
      * Creates or finds a ServiceKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServiceKind.
      */
@@ -41,7 +49,7 @@ public final class ServiceKind extends ExpandableStringEnum<ServiceKind> {
 
     /**
      * Gets known ServiceKind values.
-     *
+     * 
      * @return known ServiceKind values.
      */
     public static Collection<ServiceKind> values() {

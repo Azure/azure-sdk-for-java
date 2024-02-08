@@ -6,40 +6,25 @@ package com.azure.resourcemanager.selfhelp.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.selfhelp.fluent.models.SolutionMetadataResourceInner;
+import com.azure.resourcemanager.selfhelp.models.SolutionMetadataProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class SolutionMetadataResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SolutionMetadataResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"solutionId\":\"tnwu\",\"solutionType\":\"gazxuf\",\"description\":\"uckyf\",\"requiredParameterSets\":[[\"idf\",\"zwdzuh\"],[\"mwisdkfthwxmnt\",\"i\",\"aop\"],[\"mijcmmxdcufufs\"]]},\"id\":\"ymzidn\",\"name\":\"ezcxtbzsgfyccsne\",\"type\":\"mdwzjeiachboo\"}")
-                .toObject(SolutionMetadataResourceInner.class);
-        Assertions.assertEquals("tnwu", model.solutionId());
-        Assertions.assertEquals("gazxuf", model.solutionType());
-        Assertions.assertEquals("uckyf", model.description());
-        Assertions.assertEquals("idf", model.requiredParameterSets().get(0).get(0));
+        SolutionMetadataResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"solutions\":[{\"solutionId\":\"dtocj\",\"solutionType\":\"Diagnostics\",\"description\":\"pmouexhdz\",\"requiredInputs\":[\"qeojnxqbzvddntw\"]},{\"solutionId\":\"eic\",\"solutionType\":\"Diagnostics\",\"description\":\"pzaoqvuhr\",\"requiredInputs\":[\"fcyddg\"]}]},\"id\":\"jthjqkwpyei\",\"name\":\"xmqci\",\"type\":\"q\"}")
+            .toObject(SolutionMetadataResourceInner.class);
+        Assertions.assertEquals("dtocj", model.solutions().get(0).solutionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionMetadataResourceInner model =
-            new SolutionMetadataResourceInner()
-                .withSolutionId("tnwu")
-                .withSolutionType("gazxuf")
-                .withDescription("uckyf")
-                .withRequiredParameterSets(
-                    Arrays
-                        .asList(
-                            Arrays.asList("idf", "zwdzuh"),
-                            Arrays.asList("mwisdkfthwxmnt", "i", "aop"),
-                            Arrays.asList("mijcmmxdcufufs")));
+        SolutionMetadataResourceInner model = new SolutionMetadataResourceInner()
+            .withSolutions(Arrays.asList(new SolutionMetadataProperties().withSolutionId("dtocj"),
+                new SolutionMetadataProperties().withSolutionId("eic")));
         model = BinaryData.fromObject(model).toObject(SolutionMetadataResourceInner.class);
-        Assertions.assertEquals("tnwu", model.solutionId());
-        Assertions.assertEquals("gazxuf", model.solutionType());
-        Assertions.assertEquals("uckyf", model.description());
-        Assertions.assertEquals("idf", model.requiredParameterSets().get(0).get(0));
+        Assertions.assertEquals("dtocj", model.solutions().get(0).solutionId());
     }
 }

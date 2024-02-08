@@ -9,7 +9,7 @@ import com.azure.resourcemanager.datadog.models.DatadogMonitorResource;
 /** Samples for Monitors Update. */
 public final class MonitorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/Monitors_Update.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Monitors_Update.json
      */
     /**
      * Sample code: Monitors_Update.

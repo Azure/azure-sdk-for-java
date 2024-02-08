@@ -34,6 +34,10 @@ public final class HealthProbeParameters {
     @JsonProperty(value = "probeIntervalInSeconds")
     private Integer probeIntervalInSeconds;
 
+    /** Creates an instance of HealthProbeParameters class. */
+    public HealthProbeParameters() {
+    }
+
     /**
      * Get the probePath property: The path relative to the origin that is used to determine the health of the origin.
      *

@@ -24,6 +24,10 @@ public final class ManagedRuleSetDefinitionList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ManagedRuleSetDefinitionList class. */
+    public ManagedRuleSetDefinitionList() {
+    }
+
     /**
      * Get the value property: List of managed rule set definitions.
      *

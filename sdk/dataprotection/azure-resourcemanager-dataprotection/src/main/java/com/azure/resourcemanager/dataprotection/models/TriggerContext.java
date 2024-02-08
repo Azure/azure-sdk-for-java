@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * TriggerContext
- *
- * <p>Trigger context.
+ * 
+ * Trigger context.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -22,17 +22,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("TriggerContext")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AdhocBasedTriggerContext", value = AdhocBasedTriggerContext.class),
-    @JsonSubTypes.Type(name = "ScheduleBasedTriggerContext", value = ScheduleBasedTriggerContext.class)
-})
+    @JsonSubTypes.Type(name = "ScheduleBasedTriggerContext", value = ScheduleBasedTriggerContext.class) })
 @Immutable
 public class TriggerContext {
-    /** Creates an instance of TriggerContext class. */
+    /**
+     * Creates an instance of TriggerContext class.
+     */
     public TriggerContext() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

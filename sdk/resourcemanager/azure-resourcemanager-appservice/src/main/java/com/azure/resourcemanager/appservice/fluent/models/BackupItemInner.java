@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Backup description. */
+/**
+ * Backup description.
+ */
 @Fluent
 public final class BackupItemInner extends ProxyOnlyResource {
     /*
@@ -21,20 +23,24 @@ public final class BackupItemInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private BackupItemProperties innerProperties;
 
-    /** Creates an instance of BackupItemInner class. */
+    /**
+     * Creates an instance of BackupItemInner class.
+     */
     public BackupItemInner() {
     }
 
     /**
      * Get the innerProperties property: BackupItem resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BackupItemProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupItemInner withKind(String kind) {
         super.withKind(kind);
@@ -43,7 +49,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the backupId property: Id of the backup.
-     *
+     * 
      * @return the backupId value.
      */
     public Integer backupId() {
@@ -52,7 +58,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the storageAccountUrl property: SAS URL for the storage account container which contains this backup.
-     *
+     * 
      * @return the storageAccountUrl value.
      */
     public String storageAccountUrl() {
@@ -61,7 +67,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the blobName property: Name of the blob which contains data for this backup.
-     *
+     * 
      * @return the blobName value.
      */
     public String blobName() {
@@ -70,7 +76,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the name property: Name of this backup.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -79,7 +85,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the status property: Backup status.
-     *
+     * 
      * @return the status value.
      */
     public BackupItemStatus status() {
@@ -88,7 +94,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the sizeInBytes property: Size of the backup in bytes.
-     *
+     * 
      * @return the sizeInBytes value.
      */
     public Long sizeInBytes() {
@@ -97,7 +103,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the created property: Timestamp of the backup creation.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -106,7 +112,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the log property: Details regarding this backup. Might contain an error message.
-     *
+     * 
      * @return the log value.
      */
     public String log() {
@@ -115,7 +121,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the databases property: List of databases included in the backup.
-     *
+     * 
      * @return the databases value.
      */
     public List<DatabaseBackupSetting> databases() {
@@ -124,7 +130,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the scheduled property: True if this backup has been created due to a schedule being triggered.
-     *
+     * 
      * @return the scheduled value.
      */
     public Boolean scheduled() {
@@ -133,7 +139,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the lastRestoreTimestamp property: Timestamp of a last restore operation which used this backup.
-     *
+     * 
      * @return the lastRestoreTimestamp value.
      */
     public OffsetDateTime lastRestoreTimestamp() {
@@ -142,7 +148,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the finishedTimestamp property: Timestamp when this backup finished.
-     *
+     * 
      * @return the finishedTimestamp value.
      */
     public OffsetDateTime finishedTimestamp() {
@@ -152,7 +158,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
     /**
      * Get the correlationId property: Unique correlation identifier. Please use this along with the timestamp while
      * communicating with Azure support.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -161,7 +167,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the websiteSizeInBytes property: Size of the original web app which has been backed up.
-     *
+     * 
      * @return the websiteSizeInBytes value.
      */
     public Long websiteSizeInBytes() {
@@ -170,7 +176,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

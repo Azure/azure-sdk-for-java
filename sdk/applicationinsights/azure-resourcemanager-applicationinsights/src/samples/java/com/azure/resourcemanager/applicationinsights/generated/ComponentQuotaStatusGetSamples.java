@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ComponentQuotaStatus Get. */
 public final class ComponentQuotaStatusGetSamples {
     /*
@@ -18,6 +16,8 @@ public final class ComponentQuotaStatusGetSamples {
      */
     public static void componentCurrentBillingFeaturesGet(
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.componentQuotaStatus().getWithResponse("my-resource-group", "my-component", Context.NONE);
+        manager
+            .componentQuotaStatus()
+            .getWithResponse("my-resource-group", "my-component", com.azure.core.util.Context.NONE);
     }
 }

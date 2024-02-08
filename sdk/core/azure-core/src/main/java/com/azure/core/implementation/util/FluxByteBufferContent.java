@@ -11,14 +11,19 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
-import java.util.function.BiConsumer;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A {@link BinaryDataContent} implementation which is backed by a {@link Flux} of {@link ByteBuffer}.
@@ -110,6 +115,25 @@ public final class FluxByteBufferContent extends BinaryDataContent {
     }
 
     @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        FluxUtil.writeToOutputStream(content, outputStream).block();
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        FluxUtil.writeToWritableByteChannel(content, channel).block();
+    }
+
+    @Override
+    public Mono<Void> writeTo(AsynchronousByteChannel channel) {
+        if (channel == null) {
+            return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
+        }
+
+        return FluxUtil.writeToAsynchronousByteChannel(content, channel);
+    }
+
+    @Override
     public boolean isReplayable() {
         return isReplayable;
     }
@@ -125,30 +149,46 @@ public final class FluxByteBufferContent extends BinaryDataContent {
             return replayableContent;
         }
 
-        Flux<ByteBuffer> bufferedFlux = content
-            .map(buffer -> {
-                // deep copy direct buffers
-                ByteBuffer copy = ByteBuffer.allocate(buffer.remaining());
-                copy.put(buffer);
-                copy.flip();
-                return copy;
-            })
-            // collectList() uses ArrayList. We don't want to be bound by array capacity
-            // and we don't need random access.
-            .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
-            .cache()
-            .flatMapMany(
-                // Duplicate buffers on re-subscription.
-                listOfBuffers -> Flux.fromIterable(listOfBuffers).map(ByteBuffer::duplicate));
-        replayableContent = new FluxByteBufferContent(bufferedFlux, length, true);
-        cachedReplayableContent.set(replayableContent);
-        return replayableContent;
+        return bufferContent().map(bufferedData -> {
+            FluxByteBufferContent bufferedContent = new FluxByteBufferContent(Flux.fromIterable(bufferedData)
+                .map(ByteBuffer::duplicate), length, true);
+            cachedReplayableContent.set(bufferedContent);
+
+            return bufferedContent;
+        }).block();
     }
 
     @Override
     public Mono<BinaryDataContent> toReplayableContentAsync() {
-        return Mono.fromCallable(this::toReplayableContent);
+        if (isReplayable) {
+            return Mono.just(this);
+        }
+
+        FluxByteBufferContent replayableContent = cachedReplayableContent.get();
+        if (replayableContent != null) {
+            return Mono.just(replayableContent);
+        }
+
+        return bufferContent().cache().map(bufferedData -> {
+            Flux<ByteBuffer> bufferedFluxData = Flux.fromIterable(bufferedData).map(ByteBuffer::asReadOnlyBuffer);
+            FluxByteBufferContent bufferedBinaryDataContent = new FluxByteBufferContent(bufferedFluxData, length, true);
+            cachedReplayableContent.set(bufferedBinaryDataContent);
+
+            return bufferedBinaryDataContent;
+        });
     }
+
+    private Mono<LinkedList<ByteBuffer>> bufferContent() {
+        // collectList() uses ArrayList, we don't want to be bound by array capacity and don't need random access
+        return content.map(buffer -> {
+            // deep copy direct buffers
+            ByteBuffer copy = ByteBuffer.allocate(buffer.remaining());
+            copy.put(buffer);
+            copy.flip();
+            return copy;
+        }).collect(LinkedList::new, LinkedList::add);
+    }
+
 
     @Override
     public BinaryDataContentType getContentType() {

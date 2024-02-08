@@ -29,6 +29,15 @@ public final class PolicyResourceState extends ExpandableStringEnum<PolicyResour
     public static final PolicyResourceState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of PolicyResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyResourceState() {
+    }
+
+    /**
      * Creates or finds a PolicyResourceState from its string representation.
      *
      * @param name a name to look for.

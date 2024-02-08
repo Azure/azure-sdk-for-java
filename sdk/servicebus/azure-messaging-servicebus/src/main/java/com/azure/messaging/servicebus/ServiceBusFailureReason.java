@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.ExpandableStringEnum;
 
 /**
- * The set of well-known reasons for an Service Bus operation failure that was the cause of an exception.
+ * The set of well-known reasons for a Service Bus operation failure that was the cause of an exception.
  */
 public final class ServiceBusFailureReason extends ExpandableStringEnum<ServiceBusFailureReason> {
     // NOTE: this list is intended to mirror the reasons we have in .net
@@ -70,4 +70,16 @@ public final class ServiceBusFailureReason extends ExpandableStringEnum<ServiceB
     /** The user doesn't have access to the entity. */
     public static final ServiceBusFailureReason UNAUTHORIZED = fromString("UNAUTHORIZED",
         ServiceBusFailureReason.class);
+
+
+    /**
+     * Creates a new instance of the failure reason.  Use the existing failure reasons and create a new failure reason
+     * using {@link ServiceBusFailureReason#fromString(String, Class)}.
+     *
+     * @deprecated Use {@link ServiceBusErrorSource#fromString(String, Class)} instead.
+     */
+    @Deprecated
+    public ServiceBusFailureReason() {
+        super();
+    }
 }

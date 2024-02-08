@@ -23,6 +23,10 @@ public final class WafRankingsResponseDataItem {
     @JsonProperty(value = "metrics")
     private List<WafRankingsResponseDataItemMetric> metrics;
 
+    /** Creates an instance of WafRankingsResponseDataItem class. */
+    public WafRankingsResponseDataItem() {
+    }
+
     /**
      * Get the groupValues property: The groupValues property.
      *

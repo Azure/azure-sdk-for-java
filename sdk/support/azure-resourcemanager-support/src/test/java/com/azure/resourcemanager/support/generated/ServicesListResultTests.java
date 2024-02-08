@@ -16,9 +16,10 @@ public final class ServicesListResultTests {
         ServicesListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"m\",\"name\":\"fp\",\"type\":\"qobmtukk\",\"properties\":{\"displayName\":\"rtihfxtijbpz\",\"resourceTypes\":[]}},{\"id\":\"wzsymglzufcy\",\"name\":\"ohdbihanufh\",\"type\":\"bj\",\"properties\":{\"displayName\":\"git\",\"resourceTypes\":[]}},{\"id\":\"hab\",\"name\":\"pikxwczbyscnpqxu\",\"type\":\"vyq\",\"properties\":{\"displayName\":\"b\",\"resourceTypes\":[]}},{\"id\":\"k\",\"name\":\"dumjgrtfwvuk\",\"type\":\"audccsnhs\",\"properties\":{\"displayName\":\"yejhk\",\"resourceTypes\":[]}}]}")
+                    "{\"value\":[{\"id\":\"m\",\"name\":\"fp\",\"type\":\"qobmtukk\",\"properties\":{\"displayName\":\"rtihfxtijbpz\",\"resourceTypes\":[\"wzsymglzufcy\",\"kohdbiha\"]}},{\"id\":\"fhfcb\",\"name\":\"s\",\"type\":\"ithxqhabifpi\",\"properties\":{\"displayName\":\"czbysc\",\"resourceTypes\":[\"x\"]}},{\"id\":\"ivyqniwbybrkxvd\",\"name\":\"jgrtfwvukxga\",\"type\":\"ccsnhsjc\",\"properties\":{\"displayName\":\"j\",\"resourceTypes\":[\"yhtnapczwlokjye\",\"kkvnipjox\",\"jnchgej\",\"podmailzydehojwy\"]}},{\"id\":\"uxinpmqnjaq\",\"name\":\"xj\",\"type\":\"r\",\"properties\":{\"displayName\":\"cputegjvwmfdats\",\"resourceTypes\":[\"vpjhulsuuv\",\"kjozkrwfnd\",\"odjpslwejd\",\"vwryoqpso\"]}}]}")
                 .toObject(ServicesListResult.class);
         Assertions.assertEquals("rtihfxtijbpz", model.value().get(0).displayName());
+        Assertions.assertEquals("wzsymglzufcy", model.value().get(0).resourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -28,11 +29,20 @@ public final class ServicesListResultTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new ServiceInner().withDisplayName("rtihfxtijbpz").withResourceTypes(Arrays.asList()),
-                            new ServiceInner().withDisplayName("git").withResourceTypes(Arrays.asList()),
-                            new ServiceInner().withDisplayName("b").withResourceTypes(Arrays.asList()),
-                            new ServiceInner().withDisplayName("yejhk").withResourceTypes(Arrays.asList())));
+                            new ServiceInner()
+                                .withDisplayName("rtihfxtijbpz")
+                                .withResourceTypes(Arrays.asList("wzsymglzufcy", "kohdbiha")),
+                            new ServiceInner().withDisplayName("czbysc").withResourceTypes(Arrays.asList("x")),
+                            new ServiceInner()
+                                .withDisplayName("j")
+                                .withResourceTypes(
+                                    Arrays.asList("yhtnapczwlokjye", "kkvnipjox", "jnchgej", "podmailzydehojwy")),
+                            new ServiceInner()
+                                .withDisplayName("cputegjvwmfdats")
+                                .withResourceTypes(
+                                    Arrays.asList("vpjhulsuuv", "kjozkrwfnd", "odjpslwejd", "vwryoqpso"))));
         model = BinaryData.fromObject(model).toObject(ServicesListResult.class);
         Assertions.assertEquals("rtihfxtijbpz", model.value().get(0).displayName());
+        Assertions.assertEquals("wzsymglzufcy", model.value().get(0).resourceTypes().get(0));
     }
 }

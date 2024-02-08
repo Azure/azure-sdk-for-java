@@ -29,6 +29,12 @@ public final class SignalRNetworkACLs {
     @JsonProperty(value = "privateEndpoints")
     private List<PrivateEndpointAcl> privateEndpoints;
 
+    /*
+     * IP rules for filtering public traffic
+     */
+    @JsonProperty(value = "ipRules")
+    private List<IpRule> ipRules;
+
     /** Creates an instance of SignalRNetworkACLs class. */
     public SignalRNetworkACLs() {
     }
@@ -94,6 +100,26 @@ public final class SignalRNetworkACLs {
     }
 
     /**
+     * Get the ipRules property: IP rules for filtering public traffic.
+     *
+     * @return the ipRules value.
+     */
+    public List<IpRule> ipRules() {
+        return this.ipRules;
+    }
+
+    /**
+     * Set the ipRules property: IP rules for filtering public traffic.
+     *
+     * @param ipRules the ipRules value to set.
+     * @return the SignalRNetworkACLs object itself.
+     */
+    public SignalRNetworkACLs withIpRules(List<IpRule> ipRules) {
+        this.ipRules = ipRules;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -104,6 +130,9 @@ public final class SignalRNetworkACLs {
         }
         if (privateEndpoints() != null) {
             privateEndpoints().forEach(e -> e.validate());
+        }
+        if (ipRules() != null) {
+            ipRules().forEach(e -> e.validate());
         }
     }
 }

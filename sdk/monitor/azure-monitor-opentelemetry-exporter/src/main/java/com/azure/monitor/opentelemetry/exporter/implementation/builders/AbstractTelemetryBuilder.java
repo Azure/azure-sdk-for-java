@@ -8,6 +8,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.configuration.Sta
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import io.opentelemetry.sdk.resources.Resource;
 import reactor.util.annotation.Nullable;
 
 import java.time.OffsetDateTime;
@@ -58,6 +59,10 @@ public abstract class AbstractTelemetryBuilder {
 
     public void setConnectionString(StatsbeatConnectionString connectionString) {
         telemetryItem.setConnectionString(connectionString);
+    }
+
+    public void setResource(Resource resource) {
+        telemetryItem.setResource(resource);
     }
 
     public void addTag(String key, String value) {

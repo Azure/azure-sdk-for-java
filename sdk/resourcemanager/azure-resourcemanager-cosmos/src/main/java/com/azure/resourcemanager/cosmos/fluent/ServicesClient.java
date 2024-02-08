@@ -19,11 +19,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServicesClient.
+ */
 public interface ServicesClient {
     /**
      * Gets the status of service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,7 +38,7 @@ public interface ServicesClient {
 
     /**
      * Gets the status of service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +51,7 @@ public interface ServicesClient {
 
     /**
      * Gets the status of service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -63,7 +65,7 @@ public interface ServicesClient {
 
     /**
      * Creates a service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -74,15 +76,12 @@ public interface ServicesClient {
      * @return properties for the database account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String serviceName,
-        ServiceResourceCreateUpdateParameters createUpdateParameters);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String serviceName, ServiceResourceCreateUpdateParameters createUpdateParameters);
 
     /**
      * Creates a service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -93,15 +92,12 @@ public interface ServicesClient {
      * @return the {@link PollerFlux} for polling of properties for the database account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateAsync(
-        String resourceGroupName,
-        String accountName,
-        String serviceName,
-        ServiceResourceCreateUpdateParameters createUpdateParameters);
+    PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateAsync(String resourceGroupName,
+        String accountName, String serviceName, ServiceResourceCreateUpdateParameters createUpdateParameters);
 
     /**
      * Creates a service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -112,15 +108,12 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of properties for the database account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String serviceName,
-        ServiceResourceCreateUpdateParameters createUpdateParameters);
+    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreate(String resourceGroupName,
+        String accountName, String serviceName, ServiceResourceCreateUpdateParameters createUpdateParameters);
 
     /**
      * Creates a service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -132,16 +125,13 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of properties for the database account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String serviceName,
-        ServiceResourceCreateUpdateParameters createUpdateParameters,
+    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreate(String resourceGroupName,
+        String accountName, String serviceName, ServiceResourceCreateUpdateParameters createUpdateParameters,
         Context context);
 
     /**
      * Creates a service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -152,15 +142,12 @@ public interface ServicesClient {
      * @return properties for the database account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServiceResourceInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String serviceName,
+    Mono<ServiceResourceInner> createAsync(String resourceGroupName, String accountName, String serviceName,
         ServiceResourceCreateUpdateParameters createUpdateParameters);
 
     /**
      * Creates a service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -171,15 +158,12 @@ public interface ServicesClient {
      * @return properties for the database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceResourceInner create(
-        String resourceGroupName,
-        String accountName,
-        String serviceName,
+    ServiceResourceInner create(String resourceGroupName, String accountName, String serviceName,
         ServiceResourceCreateUpdateParameters createUpdateParameters);
 
     /**
      * Creates a service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -191,16 +175,12 @@ public interface ServicesClient {
      * @return properties for the database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceResourceInner create(
-        String resourceGroupName,
-        String accountName,
-        String serviceName,
-        ServiceResourceCreateUpdateParameters createUpdateParameters,
-        Context context);
+    ServiceResourceInner create(String resourceGroupName, String accountName, String serviceName,
+        ServiceResourceCreateUpdateParameters createUpdateParameters, Context context);
 
     /**
      * Gets the status of service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -210,12 +190,12 @@ public interface ServicesClient {
      * @return the status of service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServiceResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String serviceName);
+    Mono<Response<ServiceResourceInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String serviceName);
 
     /**
      * Gets the status of service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -229,7 +209,7 @@ public interface ServicesClient {
 
     /**
      * Gets the status of service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -240,12 +220,12 @@ public interface ServicesClient {
      * @return the status of service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceResourceInner> getWithResponse(
-        String resourceGroupName, String accountName, String serviceName, Context context);
+    Response<ServiceResourceInner> getWithResponse(String resourceGroupName, String accountName, String serviceName,
+        Context context);
 
     /**
      * Gets the status of service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -259,7 +239,7 @@ public interface ServicesClient {
 
     /**
      * Deletes service with the given serviceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -269,12 +249,12 @@ public interface ServicesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String serviceName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String serviceName);
 
     /**
      * Deletes service with the given serviceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -284,12 +264,12 @@ public interface ServicesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String serviceName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String serviceName);
 
     /**
      * Deletes service with the given serviceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -303,7 +283,7 @@ public interface ServicesClient {
 
     /**
      * Deletes service with the given serviceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -314,12 +294,12 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String serviceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String serviceName,
+        Context context);
 
     /**
      * Deletes service with the given serviceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -333,7 +313,7 @@ public interface ServicesClient {
 
     /**
      * Deletes service with the given serviceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
@@ -346,7 +326,7 @@ public interface ServicesClient {
 
     /**
      * Deletes service with the given serviceName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.

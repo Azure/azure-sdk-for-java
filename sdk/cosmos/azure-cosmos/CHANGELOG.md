@@ -1,18 +1,124 @@
 ## Release History
 
-### 4.50.0-beta.1 (Unreleased)
+### 4.55.0-beta.1 (Unreleased)
+* Added option to override the Http Connection Pool size in Gateway mode. Increasing the connection pool size beyond 1000 can be useful when the number of concurrent requests in Gateway mode is very high and you see a `reactor.netty.internal.shaded.reactor.pool.PoolAcquirePendingLimitException: Pending acquire queue has reached its maximum size of 2000` error. - See [PR 38305](https://github.com/Azure/azure-sdk-for-java/pull/38305)
 
 #### Features Added
-* Added throughput control support for `gateway mode`. See [PR 36687](https://github.com/Azure/azure-sdk-for-java/pull/36687)
+* Added payload size metrics for Gateway mode. - See [PR 38517](https://github.com/Azure/azure-sdk-for-java/pull/38517)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+* Reduced CPU overhead slightly for workloads with high throughput of point operations - especially when diagnostics like traces or metrics are enabled. - See [PR 38232](https://github.com/Azure/azure-sdk-for-java/pull/38232)
+* Changed to add `transportRequestChannelAcquisitionContext` in CosmosDiagnostics based on duration in `channelAcquisitionStarted` stage. By default, if `channelAcquisitionStarted` took more than 1s, `transportRequestChannelAcquisitionContext` will be added. - See [PR 38416](https://github.com/Azure/azure-sdk-for-java/pull/38416)
+* Added information about the path when it is invalid in RxDocumentService ctor. - See [PR 38482](https://github.com/Azure/azure-sdk-for-java/pull/38482)
+* Removed `CancellationException` callstack from `RntbdRequestRecord.toString`. - See [PR 38504](https://github.com/Azure/azure-sdk-for-java/pull/38504)
+* Using customized `subStatusCodes` for client generated `InternalServerErrorException`. - See [PR 38518](https://github.com/Azure/azure-sdk-for-java/pull/38518)
+* Added an option to opt-out of E2E timeout defined in CosmosClientBuilder for non-point operations via system property or environment variable. - See [PR 38388](https://github.com/Azure/azure-sdk-for-java/pull/38388)
+
+### 4.54.0 (2024-01-03)
+
+#### Features Added
+* Integrate `ThroughputControl` with ChangeFeedProcessor - See [PR 38052](https://github.com/Azure/azure-sdk-for-java/pull/38052)
+
+#### Bugs Fixed
+* Fixed issue where AAD/Entra ID related exceptions are not fully propagated to the caller when CosmosAsyncClient is created, causing ambiguity for user on the root cause of the error - See [PR 37977](https://github.com/Azure/azure-sdk-for-java/pull/37977) 
+* Fixed a `NullPointerException` issue in `MetadataRequestRetryPolicy` when `locationEndpointToRoute` is not set. - See [PR 38094](https://github.com/Azure/azure-sdk-for-java/pull/38094)
+
+#### Other Changes
+* Reset `transitTimeoutCount` and `cancellationCount` in `RntbdClientChannelHealthChecker` when CPU load is above threshold. - See [PR 38157](https://github.com/Azure/azure-sdk-for-java/pull/38157)
+* Perf-improvement avoiding extra-buffer copy for query and point operations - See [PR 38072](https://github.com/Azure/azure-sdk-for-java/pull/38072)
+
+### 4.53.1 (2023-12-06)
+
+#### Bugs Fixed
+* Fixed high number of PKRangeFeed calls when using BulkExecution without SparkConnector - See [PR 37920](https://github.com/Azure/azure-sdk-for-java/pull/37920) 
+
+#### Other Changes
+* Changed to `DEBUG` log level in `WebExceptionRetryPolicy` for non-handled exception scenario and retry scenario - See [PR 37918](https://github.com/Azure/azure-sdk-for-java/pull/37918)
+
+### 4.53.0 (2023-12-01)
+#### Bugs Fixed
+* Fixed a bug resulting in `CosmosDiagnosticsContext.getStatusCode()` always returning `0` for `readMany` operations. - See [PR 37394](https://github.com/Azure/azure-sdk-for-java/pull/37394)
+* Fixed an issue where PartitionKeyRange request will not do cross region retry. - See [PR 37403](https://github.com/Azure/azure-sdk-for-java/pull/37403)
+* Fixed an issue where Session consistency was not honored when the consistency level on the `CosmosClientBuilder.consistencyLevel` was not explicitly set to `ConsistencyLevel.SESSION` but the default account consistency level is session. If not enforcing session consistency is the intended behavior, you can set the `CosmsoClientBuilder.consistencyLevel` to `ConsistencyLevel.EVENTUAL`. - See [PR 37377](https://github.com/Azure/azure-sdk-for-java/pull/37377)
+* Fixed an issue where client level `EndToEndOperationLatencyPolicyConfig.availabilityStrategy` is not being applied for `query` - See [PR 37511](https://github.com/Azure/azure-sdk-for-java/pull/37511)
+* Fixed an issue where operation is not cancelled based on `CosmosEndToEndOperationLatencyPolicyConfig.endToEndOperationTimeout` when `429` happens - See [PR 37764](https://github.com/Azure/azure-sdk-for-java/pull/37764)
+* Fixed an issue where `CosmosEndToEndOperationLatencyPolicyConfig.endToEndOperationTimeout` is not applied for `ReadMany` - See [PR 37764](https://github.com/Azure/azure-sdk-for-java/pull/37764)
+* Fixed an issue with OFFSET and LIMIT query clause returning partial query results when used with DISTINCT - See [PR 37860](https://github.com/Azure/azure-sdk-for-java/pull/37860)
+
+#### Other Changes
+* Modified the event payload when diagnostic details are traced (vis Open telemetry traces). The diagnostics can exceed the max. attribute size of 8KB. This PR will split the diagnostics and trace them in multiple events (ordered by `SequenceNumber` attribute) to ensure the full diagnostics message is available in logged events. - See [PR 37376](https://github.com/Azure/azure-sdk-for-java/pull/37376)
+* Added `sessionRetryCfg` to the diagnostic string and modified `proactiveInit` key name to `proactiveInitCfg` in the diagnostic string. - See [PR 36711](https://github.com/Azure/azure-sdk-for-java/pull/36711)
+* Modified `429` retry backoff time when `retryAfter` is not being returned from server. For `429/3200`, SDK will retry immediately, for others SDK will backoff 100ms - See [PR 37764](https://github.com/Azure/azure-sdk-for-java/pull/37764)
+
+### 4.52.0 (2023-10-24)
+#### Features Added
+* Added an option to configure the minimum retry duration for 404/1002 session not available. - See [PR 37143](https://github.com/Azure/azure-sdk-for-java/pull/37143) and [PR 37240](https://github.com/Azure/azure-sdk-for-java/pull/37240)
+
+#### Bugs Fixed
+* Fixed an issue where `emptyPageDiagnosticsEnabled` in `CosmosQueryRequestOptions` was being overridden. This caused empty page diagnostics to be logged (with INFO level) even when the flag was set to false - See [PR 37199](https://github.com/Azure/azure-sdk-for-java/pull/37199)
+* Fixed an issue where the HttpTimeoutPolicy was not being used correctly - See [PR 37188](https://github.com/Azure/azure-sdk-for-java/pull/37188) 
+* Fixed an issue where SDK mark region unavailable on http timeout - See [PR 37163](https://github.com/Azure/azure-sdk-for-java/pull/37163)
+* Fixed an issue where SDK do `A, B, C, A` retry pattern for `404/1002` - See [PR 37040](https://github.com/Azure/azure-sdk-for-java/pull/37040)
+* Fixed an issue where SDK do aggressive retry on `449` - See [PR 37040](https://github.com/Azure/azure-sdk-for-java/pull/37040)
+* Fixed an issue where SDK skip cross region retry for server generated `410` for write operations - See [PR 37040](https://github.com/Azure/azure-sdk-for-java/pull/37040)
+* Added 410/1002 handling for `ChangeFeedProcessor#getCurrentState` in **Latest Version**, **All Version and Deletes** changes modes. - See [PR 37107](https://github.com/Azure/azure-sdk-for-java/pull/37107)
+    * **NOTE :** Here the fix is for a `ChangeFeedProcessor` instance built with either `handleLatestVersionChanges` or `handleAllVersionsAndDeletesChanges`.
+* Fixed an issue where SDK does not do retry for `AddressRefresh` on `HttpTimeout` for write operations - See [PR 37286](https://github.com/Azure/azure-sdk-for-java/pull/37286)
+
+### 4.51.0 (2023-09-29)
+
+#### Features Added
+* Added a preview API to `ChangeFeedProcessorBuilder` to process an additional `ChangeFeedProcessorContext` for handling all versions and deletes changes. - See [PR 36715](https://github.com/Azure/azure-sdk-for-java/pull/36715)
+* Added public APIs to configure a `Supplier<CosmosExcludedRegions>` through `CosmosClientBuilder#excludedRegionSupplier` and `CosmosExcludedRegions` - a type which encapsulates a set of excluded regions. See [PR 36616](https://github.com/Azure/azure-sdk-for-java/pull/36616)
+
+#### Bugs Fixed
+* Fixed an issue with the threshold based availability strategy, which could result in missing diagnostics and unnecessarily high tail latency - See [PR 36508](https://github.com/Azure/azure-sdk-for-java/pull/36508) and [PR 36786](https://github.com/Azure/azure-sdk-for-java/pull/36786).
+* Fixed an issue where `sampleDiagnostics` is not being honored for query. See [PR 37015](https://github.com/Azure/azure-sdk-for-java/pull/37015)
+* Fixed the issue of `excludeRegions` not being honored for `CosmosBulkExecutionOptions`. - See[PR 36616](https://github.com/Azure/azure-sdk-for-java/pull/36616)
+* Fixed an issue with missing diagnostics (metrics, logging) for `Cosmos(Async)Container.readMany` calls - See [PR 37009](https://github.com/Azure/azure-sdk-for-java/pull/37009)
+
+### 4.50.0 (2023-09-25)
+
+#### Features Added
+* Added throughput control support for `gateway mode`. See [PR 36687](https://github.com/Azure/azure-sdk-for-java/pull/36687)
+* Added public API to change the initial micro batch size in `CosmosBulkExecutionOptions`. The micro batch size is dynamically adjusted based on throttling rate. By default, it starts with a relatively large micro batch size, which can result in a short spike of throttled requests at the beginning of a bulk execution - reducing the initial micro batch size - for example to 1 - will start with smaller batch size and then dynamically increase it without causing the initial short spike of throttled requests. See [PR 36910](https://github.com/Azure/azure-sdk-for-java/pull/36910)
+
+#### Bugs Fixed
+* Disabled `CosmosEndToEndOperationLatencyPolicyConfig` feature in `ChangeFeedProcessor`. Setting `CosmosEndToEndOperationLatencyPolicyConfig` at `CosmosClient` level will not affect `ChangeFeedProcessor` requests in any way. See [PR 36775](https://github.com/Azure/azure-sdk-for-java/pull/36775)
 * Fixed staleness issue of `COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT` system property - See [PR 36599](https://github.com/Azure/azure-sdk-for-java/pull/36599).
+* Fixed an issue where `pageSize` from `byPage` is not always being honored. This only happens when the same `CosmosQueryRequestOptions` being used through different requests, and different pageSize being used. See [PR 36847](https://github.com/Azure/azure-sdk-for-java/pull/36847)
+* Fixed an issue where build of `CosmosClient` and `CosmosAsyncClient` was getting blocked for the entire aggressive warmup duration even when all the connections have been opened already. - See [PR 36889](https://github.com/Azure/azure-sdk-for-java/pull/36889)
+* Fixed `CosmosClient` connection warm up bug to open connections aggressively. - See [PR 36889](https://github.com/Azure/azure-sdk-for-java/pull/36889)
 
 #### Other Changes
 * Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmsoException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36507](https://github.com/Azure/azure-sdk-for-java/pull/36507)
 * Reverted preserve ordering in bulk mode([PR 35892](https://github.com/Azure/azure-sdk-for-java/pull/35892)). See [PR 36638](https://github.com/Azure/azure-sdk-for-java/pull/36638)
+
+### 4.45.2-hotfix (2023-09-18)
+> [!IMPORTANT]
+> We strongly recommend our customers to upgrade directly to at least 4.48.2 or above if they have been using the 4.45.2-hotfix version of `azure-cosmos`. Versions 4.46.0 - 4.48.1 will miss important fixes that have been backported to 4.45.2-hotfix.
+#### Bugs Fixed
+* Added capability to mark a region as unavailable when a request is cancelled due to end-to-end timeout and connection issues
+  with the region in the direct connectivity mode. - See [PR 35586](https://github.com/Azure/azure-sdk-for-java/pull/35586)
+* Fixed an issue where `ConnectionStateListener` tracked staled `Uris` which fails to mark the current `Uris` unhealthy properly - See [PR 36067](https://github.com/Azure/azure-sdk-for-java/pull/36067)
+* Fixed an issue to update the last unhealthy timestamp for an `Uri` instance only when transitioning to `Unhealthy` from a different health status -  See [36083](https://github.com/Azure/azure-sdk-for-java/pull/36083)
+* Improved the channel health check flow to deem a channel unhealthy when it sees consecutive cancellations. - See [PR 36225](https://github.com/Azure/azure-sdk-for-java/pull/36225)
+* Optimized the replica validation flow to validate replica health with `Unknown` health status only when the replica is
+  used by a container which is also part of the connection warm-up flow. - See [PR 36225](https://github.com/Azure/azure-sdk-for-java/pull/36225)
+* Fixed possible `NullPointerException` issue if health-check flow kicks in before RNTBD context negotiation for a given channel - See [PR 36397](https://github.com/Azure/azure-sdk-for-java/pull/36397).
+
+### 4.48.2 (2023-08-25)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.48.2 and above.
+#### Bugs Fixed
+* Fixed possible `NullPointerException` issue if health-check flow kicks in before RNTBD context negotiation for a given channel - See [PR 36397](https://github.com/Azure/azure-sdk-for-java/pull/36397).
+
+#### Other Changes
+* Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmosException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36535](https://github.com/Azure/azure-sdk-for-java/pull/36535)
 
 ### 4.49.0 (2023-08-21)
 #### Features Added
@@ -26,15 +132,6 @@
 
 #### Other Changes
 * Added coverage for `ChangeFeedProcessor` in `Latest Version` change feed mode to read change feed from a custom start time for multi-write accounts. - See[PR 36257](https://github.com/Azure/azure-sdk-for-java/pull/36257)
-
-### 4.48.2 (2023-08-25)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.48.2 and above.
-#### Bugs Fixed
-* Fixed possible `NullPointerException` issue if health-check flow kicks in before RNTBD context negotiation for a given channel - See [PR 36397](https://github.com/Azure/azure-sdk-for-java/pull/36397).
-
-#### Other Changes
-* Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmosException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36535](https://github.com/Azure/azure-sdk-for-java/pull/36535)
 
 ### 4.48.1 (2023-08-09)
 #### Bugs Fixed
@@ -57,6 +154,10 @@ used by a container which is also part of the connection warm-up flow. - See [PR
 
 #### Other Changes
 * Added fault injection support for Gateway connection mode - See [PR 35378](https://github.com/Azure/azure-sdk-for-java/pull/35378)
+
+### 4.37.2-hotfix (2023-07-17)
+#### Bugs Fixed
+* Fixed an issue with deserialization of `conflictResolutionTimestamp` for All versions and deletes change feed mode. - See [PR 35912](https://github.com/Azure/azure-sdk-for-java/pull/35912)
 
 ### 4.47.0 (2023-06-26)
 #### Features Added
@@ -88,19 +189,6 @@ there are non-existent document IDs also passed through the API - See [PR 35513]
 * Refactored `CosmosContainerProactiveInitConfigBuilder` to make use of `ContainerDirectConnectionMetadata` and to wire `DirectConnectionConfig` with
   JVM configuration - `COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT` - See [PR 34859](https://github.com/Azure/azure-sdk-for-java/pull/34859)
 * Extending maximum retry delay in `SessionTokenMismatchRetryPolicy`. - See [PR 35360](https://github.com/Azure/azure-sdk-for-java/pull/35360)
-
-### 4.45.2-hotfix (2023-09-18)
-> [!IMPORTANT]
-> We strongly recommend our customers to upgrade directly to at least 4.48.2 or above if they have been using the 4.45.2-hotfix version of `azure-cosmos`. Versions 4.46.0 - 4.48.1 will miss important fixes that have been backported to 4.45.2-hotfix.
-#### Bugs Fixed
-* Added capability to mark a region as unavailable when a request is cancelled due to end-to-end timeout and connection issues
-  with the region in the direct connectivity mode. - See [PR 35586](https://github.com/Azure/azure-sdk-for-java/pull/35586)
-* Fixed an issue where `ConnectionStateListener` tracked staled `Uris` which fails to mark the current `Uris` unhealthy properly - See [PR 36067](https://github.com/Azure/azure-sdk-for-java/pull/36067)
-* Fixed an issue to update the last unhealthy timestamp for an `Uri` instance only when transitioning to `Unhealthy` from a different health status -  See [36083](https://github.com/Azure/azure-sdk-for-java/pull/36083)
-* Improved the channel health check flow to deem a channel unhealthy when it sees consecutive cancellations. - See [PR 36225](https://github.com/Azure/azure-sdk-for-java/pull/36225)
-* Optimized the replica validation flow to validate replica health with `Unknown` health status only when the replica is
-  used by a container which is also part of the connection warm-up flow. - See [PR 36225](https://github.com/Azure/azure-sdk-for-java/pull/36225)
-* Fixed possible `NullPointerException` issue if health-check flow kicks in before RNTBD context negotiation for a given channel - See [PR 36397](https://github.com/Azure/azure-sdk-for-java/pull/36397).
 
 ### 4.45.1 (2023-05-19)
 #### Bugs Fixed
@@ -213,10 +301,6 @@ there are non-existent document IDs also passed through the API - See [PR 35513]
 ### 4.38.0 (2022-10-12)
 #### Features Added
 * Added option to set throughput control group name on per-request level for batch and bulk operations. - See [PR 31362](https://github.com/Azure/azure-sdk-for-java/pull/31362)
-
-### 4.37.2-hotfix (2023-07-17)
-#### Bugs Fixed
-* Fixed an issue with deserialization of `conflictResolutionTimestamp` for All versions and deletes change feed mode. - See [PR 35912](https://github.com/Azure/azure-sdk-for-java/pull/35912)
 
 ### 4.37.1 (2022-10-07)
 #### Bugs Fixed

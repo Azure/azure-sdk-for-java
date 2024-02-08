@@ -51,7 +51,7 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
                 break;
             case 206: // PARTIAL CONTENT, Breeze-specific: PARTIAL SUCCESS
             case 400: // breeze returns if json content is bad (e.g. missing required field)
-                Set<String> errors = getErrors(response.getBody());
+                Set<String> errors = response.getErrors();
                 if (!errors.isEmpty()) {
                     operationLogger.recordFailure(
                         "Received response code " + responseCode + " (" + String.join(", ", errors) + ")",
@@ -113,22 +113,6 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
     @Override
     public CompletableResultCode shutdown() {
         return CompletableResultCode.ofSuccess();
-    }
-
-    private static Set<String> getErrors(String body) {
-        JsonNode jsonNode;
-        try {
-            jsonNode = new ObjectMapper().readTree(body);
-        } catch (JsonProcessingException e) {
-            // fallback to generic message
-            return singleton("Could not parse response");
-        }
-        List<JsonNode> errorNodes = new ArrayList<>();
-        jsonNode.get("errors").forEach(errorNodes::add);
-        return errorNodes.stream()
-            .map(errorNode -> errorNode.get("message").asText())
-            .filter(s -> !s.equals("Telemetry sampled out."))
-            .collect(Collectors.toSet());
     }
 
     public static String getErrorMessageFromCredentialRelatedResponse(

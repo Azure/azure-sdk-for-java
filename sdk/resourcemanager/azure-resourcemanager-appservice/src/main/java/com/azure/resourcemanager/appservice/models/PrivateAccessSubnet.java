@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of a Virtual Network subnet that is useable for private site access. */
+/**
+ * Description of a Virtual Network subnet that is useable for private site access.
+ */
 @Fluent
 public final class PrivateAccessSubnet {
     /*
@@ -22,13 +24,15 @@ public final class PrivateAccessSubnet {
     @JsonProperty(value = "key")
     private Integer key;
 
-    /** Creates an instance of PrivateAccessSubnet class. */
+    /**
+     * Creates an instance of PrivateAccessSubnet class.
+     */
     public PrivateAccessSubnet() {
     }
 
     /**
      * Get the name property: The name of the subnet.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class PrivateAccessSubnet {
 
     /**
      * Set the name property: The name of the subnet.
-     *
+     * 
      * @param name the name value to set.
      * @return the PrivateAccessSubnet object itself.
      */
@@ -48,7 +52,7 @@ public final class PrivateAccessSubnet {
 
     /**
      * Get the key property: The key (ID) of the subnet.
-     *
+     * 
      * @return the key value.
      */
     public Integer key() {
@@ -57,7 +61,7 @@ public final class PrivateAccessSubnet {
 
     /**
      * Set the key property: The key (ID) of the subnet.
-     *
+     * 
      * @param key the key value to set.
      * @return the PrivateAccessSubnet object itself.
      */
@@ -68,7 +72,7 @@ public final class PrivateAccessSubnet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Teradata data source. */
+/**
+ * Linked service for Teradata data source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Teradata")
 @Fluent
@@ -24,41 +26,51 @@ public final class TeradataLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private TeradataLinkedServiceTypeProperties innerTypeProperties = new TeradataLinkedServiceTypeProperties();
 
-    /** Creates an instance of TeradataLinkedService class. */
+    /**
+     * Creates an instance of TeradataLinkedService class.
+     */
     public TeradataLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Teradata linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private TeradataLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -68,7 +80,7 @@ public final class TeradataLinkedService extends LinkedService {
     /**
      * Get the connectionString property: Teradata ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -78,7 +90,7 @@ public final class TeradataLinkedService extends LinkedService {
     /**
      * Set the connectionString property: Teradata ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the TeradataLinkedService object itself.
      */
@@ -92,7 +104,7 @@ public final class TeradataLinkedService extends LinkedService {
 
     /**
      * Get the server property: Server name for connection. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the server value.
      */
     public Object server() {
@@ -101,7 +113,7 @@ public final class TeradataLinkedService extends LinkedService {
 
     /**
      * Set the server property: Server name for connection. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param server the server value to set.
      * @return the TeradataLinkedService object itself.
      */
@@ -115,7 +127,7 @@ public final class TeradataLinkedService extends LinkedService {
 
     /**
      * Get the authenticationType property: AuthenticationType to be used for connection.
-     *
+     * 
      * @return the authenticationType value.
      */
     public TeradataAuthenticationType authenticationType() {
@@ -124,7 +136,7 @@ public final class TeradataLinkedService extends LinkedService {
 
     /**
      * Set the authenticationType property: AuthenticationType to be used for connection.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the TeradataLinkedService object itself.
      */
@@ -138,7 +150,7 @@ public final class TeradataLinkedService extends LinkedService {
 
     /**
      * Get the username property: Username for authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -147,7 +159,7 @@ public final class TeradataLinkedService extends LinkedService {
 
     /**
      * Set the username property: Username for authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the TeradataLinkedService object itself.
      */
@@ -161,7 +173,7 @@ public final class TeradataLinkedService extends LinkedService {
 
     /**
      * Get the password property: Password for authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -170,7 +182,7 @@ public final class TeradataLinkedService extends LinkedService {
 
     /**
      * Set the password property: Password for authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the TeradataLinkedService object itself.
      */
@@ -183,23 +195,23 @@ public final class TeradataLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the TeradataLinkedService object itself.
      */
-    public TeradataLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public TeradataLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new TeradataLinkedServiceTypeProperties();
         }
@@ -209,17 +221,15 @@ public final class TeradataLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model TeradataLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model TeradataLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

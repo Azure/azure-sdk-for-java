@@ -4,187 +4,167 @@
 package com.azure.core.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
-import java.security.PrivilegedExceptionAction;
+import java.lang.reflect.Method;
 
 /**
  * Utility methods that aid in performing reflective operations.
  */
-@SuppressWarnings("deprecation")
-public final class ReflectionUtils {
+public abstract class ReflectionUtils {
     private static final ClientLogger LOGGER = new ClientLogger(ReflectionUtils.class);
-
-    private static final boolean MODULE_BASED;
-
-    private static final MethodHandle CLASS_GET_MODULE_METHOD_HANDLE;
-    private static final MethodHandle MODULE_IS_NAMED_METHOD_HANDLE;
-    private static final MethodHandle MODULE_ADD_READS_METHOD_HANDLE;
-    private static final MethodHandle METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE;
-    private static final MethodHandle MODULE_IS_OPEN_UNCONDITIONALLY_METHOD_HANDLE;
-    private static final MethodHandle MODULE_IS_OPEN_TO_OTHER_MODULE_METHOD_HANDLE;
-
-    private static final MethodHandles.Lookup LOOKUP;
-    private static final Object CORE_MODULE;
-
-    private static final MethodHandle JDK_INTERNAL_PRIVATE_LOOKUP_IN_CONSTRUCTOR;
+    private static final ReflectionUtilsApi INSTANCE;
 
     static {
-        boolean moduleBased = false;
-        MethodHandle classGetModule = null;
-        MethodHandle moduleIsNamed = null;
-        MethodHandle moduleAddReads = null;
-        MethodHandle methodHandlesPrivateLookupIn = null;
-        MethodHandle moduleIsOpenUnconditionally = null;
-        MethodHandle moduleIsOpenToOtherModule = null;
-
-        MethodHandles.Lookup lookup = MethodHandles.lookup();
-        Object coreModule = null;
-
-        MethodHandle jdkInternalPrivateLookupInConstructor = null;
-
+        ReflectionUtilsApi instance;
         try {
-            Class<?> moduleClass = Class.forName("java.lang.Module");
-            classGetModule = lookup.unreflect(Class.class.getDeclaredMethod("getModule"));
-            moduleIsNamed = lookup.unreflect(moduleClass.getDeclaredMethod("isNamed"));
-            moduleAddReads = lookup.unreflect(moduleClass.getDeclaredMethod("addReads", moduleClass));
-            methodHandlesPrivateLookupIn = lookup.findStatic(MethodHandles.class, "privateLookupIn",
-                MethodType.methodType(MethodHandles.Lookup.class, Class.class, MethodHandles.Lookup.class));
-            moduleIsOpenUnconditionally = lookup.unreflect(moduleClass.getDeclaredMethod("isOpen", String.class));
-            moduleIsOpenToOtherModule = lookup.unreflect(
-                moduleClass.getDeclaredMethod("isOpen", String.class, moduleClass));
-
-            coreModule = classGetModule.invokeWithArguments(ReflectionUtils.class);
-            moduleBased = true;
-        } catch (Throwable throwable) {
-            if (throwable instanceof Error) {
-                throw (Error) throwable;
-            } else {
-                LOGGER.log(LogLevel.INFORMATIONAL,
-                    () -> "Unable to create MethodHandles to use Java 9+ MethodHandles.privateLookupIn. "
-                        + "Will attempt to fallback to using the package-private constructor.", throwable);
-            }
+            LOGGER.verbose("Attempting to use java.lang.invoke package to handle reflection.");
+            instance = new ReflectionUtilsMethodHandle();
+            LOGGER.verbose("Successfully used java.lang.invoke package to handle reflection.");
+        } catch (LinkageError ignored) {
+            LOGGER.verbose("Failed to use java.lang.invoke package to handle reflection. Falling back to "
+                           + "java.lang.reflect package to handle reflection.");
+            instance = new ReflectionUtilsClassic();
+            LOGGER.verbose("Successfully used java.lang.reflect package to handle reflection.");
         }
 
-        if (!moduleBased) {
-            try {
-                Constructor<MethodHandles.Lookup> privateLookupInConstructor =
-                    MethodHandles.Lookup.class.getDeclaredConstructor(Class.class);
+        INSTANCE = instance;
+    }
 
-                if (!privateLookupInConstructor.isAccessible()) {
-                    privateLookupInConstructor.setAccessible(true);
-                }
 
-                jdkInternalPrivateLookupInConstructor = lookup.unreflectConstructor(privateLookupInConstructor);
-            } catch (ReflectiveOperationException ex) {
-                throw LOGGER.logExceptionAsError(
-                    new RuntimeException("Unable to use package-private MethodHandles.Lookup constructor.", ex));
-            }
-        }
-
-        MODULE_BASED = moduleBased;
-        CLASS_GET_MODULE_METHOD_HANDLE = classGetModule;
-        MODULE_IS_NAMED_METHOD_HANDLE = moduleIsNamed;
-        MODULE_ADD_READS_METHOD_HANDLE = moduleAddReads;
-        METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE = methodHandlesPrivateLookupIn;
-        MODULE_IS_OPEN_UNCONDITIONALLY_METHOD_HANDLE = moduleIsOpenUnconditionally;
-        MODULE_IS_OPEN_TO_OTHER_MODULE_METHOD_HANDLE = moduleIsOpenToOtherModule;
-        LOOKUP = lookup;
-        CORE_MODULE = coreModule;
-        JDK_INTERNAL_PRIVATE_LOOKUP_IN_CONSTRUCTOR = jdkInternalPrivateLookupInConstructor;
+    /**
+     * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Method}.
+     * <p>
+     * Calls {@link #getMethodInvoker(Class, Method, boolean)} with {@code scopeToAzureCore} set to true.
+     *
+     * @param targetClass The class that contains the method.
+     * @param method The method to invoke.
+     * @return An {@link ReflectiveInvoker} instance that will invoke the method.
+     * @throws NullPointerException If {@code method} is null.
+     * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
+     */
+    public static ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method) throws Exception {
+        return getMethodInvoker(targetClass, method, true);
     }
 
     /**
-     * Gets the {@link MethodHandles.Lookup} to use when performing reflective operations.
+     * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Method}.
      * <p>
-     * If Java 8 is being used this will always return {@link MethodHandles.Lookup#publicLookup()} as Java 8 doesn't
-     * have module boundaries that will prevent reflective access to the {@code targetClass}.
+     * {@code targetClass} may be null but when using an environment that supports MethodHandles for handling reflection
+     * this may result in exceptions being thrown due to the inability to scope the MethodHandle to a module. To attempt
+     * to alleviate this issue, if {@code targetClass} is null {@link Method#getDeclaringClass()} will be used to infer
+     * the class.
      * <p>
-     * If Java 9 or above is being used this will return a {@link MethodHandles.Lookup} based on whether the module
-     * containing the {@code targetClass} exports the package containing the class. Otherwise, the
-     * {@link MethodHandles.Lookup} associated to {@code com.azure.core} will attempt to read the module containing
-     * {@code targetClass}.
+     * {@code scopeToAzure} is only when used when MethodHandles are being used and Java 9+ modules are being used. This
+     * will determine whether to use a MethodHandles.Lookup scoped to {@code azure-core} or to use a public
+     * MethodHandles.Lookup. Scoping a MethodHandles.Lookup to {@code azure-core} requires to module containing the
+     * class to open or export to {@code azure-core} which generally only holds true for other Azure SDKs, for example
+     * there are cases where a reflective invocation is needed to Jackson which won't open or export to
+     * {@code azure-core} and the only APIs invoked reflectively are public APIs so the public MethodHandles.Lookup will
+     * be used.
      *
-     * @param targetClass The {@link Class} that will need to be reflectively accessed.
-     * @return The {@link MethodHandles.Lookup} that will allow {@code com.azure.core} to access the {@code targetClass}
-     * reflectively.
-     * @throws Exception If the underlying reflective calls throw an exception.
+     * @param targetClass The class that contains the method.
+     * @param method The method to invoke.
+     * @param scopeToAzureCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
+     * {@code azure-core} as the scoped module, otherwise this is ignored.
+     * @return An {@link ReflectiveInvoker} instance that will invoke the method.
+     * @throws NullPointerException If {@code method} is null.
+     * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    public static MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Exception {
-        try {
-            if (MODULE_BASED) {
-                Object responseModule = CLASS_GET_MODULE_METHOD_HANDLE.invoke(targetClass);
-
-                // The unnamed module is opened unconditionally, have Core read it and use a private proxy lookup to
-                // enable all lookup scenarios.
-                if (!(boolean) MODULE_IS_NAMED_METHOD_HANDLE.invoke(responseModule)) {
-                    MODULE_ADD_READS_METHOD_HANDLE.invokeWithArguments(CORE_MODULE, responseModule);
-                    return performSafePrivateLookupIn(targetClass);
-                }
-
-
-                // If the response module is the Core module return the Core private lookup.
-                if (responseModule == CORE_MODULE) {
-                    return LOOKUP;
-                }
-
-                // Next check if the target class module is opened either unconditionally or to Core's module. If so,
-                // also use a private proxy lookup to enable all lookup scenarios.
-                String packageName = targetClass.getPackage().getName();
-                if ((boolean) MODULE_IS_OPEN_UNCONDITIONALLY_METHOD_HANDLE
-                    .invokeWithArguments(responseModule, packageName)
-                    || (boolean) MODULE_IS_OPEN_TO_OTHER_MODULE_METHOD_HANDLE
-                    .invokeWithArguments(responseModule, packageName, CORE_MODULE)) {
-                    MODULE_ADD_READS_METHOD_HANDLE.invokeWithArguments(CORE_MODULE, responseModule);
-                    return performSafePrivateLookupIn(targetClass);
-                }
-
-                // Otherwise, return the public lookup as there are no specialty ways to access the other module.
-                return MethodHandles.publicLookup();
-            } else {
-                return (MethodHandles.Lookup) JDK_INTERNAL_PRIVATE_LOOKUP_IN_CONSTRUCTOR.invoke(targetClass);
-            }
-        } catch (Throwable throwable) {
-            // invoke(Class<?) throws a Throwable as the underlying method being called through reflection can throw
-            // anything, but the constructor being called is owned by the Java SDKs which won't throw Throwable. So,
-            // only Error needs to be inspected and handled specially, otherwise it can be assumed the Throwable is
-            // a type of Exception which can be thrown based on this method having Exception checked.
-            if (throwable instanceof Error) {
-                throw (Error) throwable;
-            } else {
-                throw (Exception) throwable;
-            }
+    public static ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToAzureCore)
+        throws Exception {
+        if (method == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'method' cannot be null."));
         }
+
+        targetClass = (targetClass == null) ? method.getDeclaringClass() : targetClass;
+        return INSTANCE.getMethodInvoker(targetClass, method, scopeToAzureCore);
     }
 
-    @SuppressWarnings("removal")
-    private static MethodHandles.Lookup performSafePrivateLookupIn(Class<?> targetClass) throws Throwable {
-        // MethodHandles::privateLookupIn() throws SecurityException if denied by the security manager
-        if (System.getSecurityManager() == null) {
-            return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE
-                .invokeExact(targetClass, LOOKUP);
-        } else {
-            return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<MethodHandles.Lookup>) () -> {
-                try {
-                    return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE
-                        .invokeExact(targetClass, LOOKUP);
-                } catch (Throwable throwable) {
-                    if (throwable instanceof Error) {
-                        throw (Error) throwable;
-                    } else {
-                        throw (Exception) throwable;
-                    }
-                }
-            });
-        }
+    /**
+     * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Constructor}.
+     * <p>
+     * Calls {@link #getConstructorInvoker(Class, Constructor, boolean)} with {@code scopeToAzureCore} set to true.
+     *
+     * @param targetClass The class that contains the constructor.
+     * @param constructor The constructor to invoke.
+     * @return An {@link ReflectiveInvoker} instance that will invoke the constructor.
+     * @throws NullPointerException If {@code constructor} is null.
+     * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
+     */
+    public static ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor)
+        throws Exception {
+        return getConstructorInvoker(targetClass, constructor, true);
     }
 
+    /**
+     * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Constructor}.
+     * <p>
+     * {@code targetClass} may be null but when using an environment that supports MethodHandles for handling reflection
+     * this may result in exceptions being thrown due to the inability to scope the MethodHandle to a module. To attempt
+     * to alleviate this issue, if {@code targetClass} is null {@link Constructor#getDeclaringClass()} will be used to
+     * infer the class.
+     * <p>
+     * {@code scopeToAzure} is only when used when MethodHandles are being used and Java 9+ modules are being used. This
+     * will determine whether to use a MethodHandles.Lookup scoped to {@code azure-core} or to use a public
+     * MethodHandles.Lookup. Scoping a MethodHandles.Lookup to {@code azure-core} requires to module containing the
+     * class to open or export to {@code azure-core} which generally only holds true for other Azure SDKs, for example
+     * there are cases where a reflective invocation is needed to Jackson which won't open or export to
+     * {@code azure-core} and the only APIs invoked reflectively are public APIs so the public MethodHandles.Lookup will
+     * be used.
+     *
+     * @param targetClass The class that contains the constructor.
+     * @param constructor The constructor to invoke.
+     * @param scopeToAzureCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
+     * {@code azure-core} as the scoped module, otherwise this is ignored.
+     * @return An {@link ReflectiveInvoker} instance that will invoke the constructor.
+     * @throws NullPointerException If {@code constructor} is null.
+     * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
+     */
+    public static ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
+        boolean scopeToAzureCore) throws Exception {
+        if (constructor == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'constructor' cannot be null."));
+        }
+
+        targetClass = (targetClass == null) ? constructor.getDeclaringClass() : targetClass;
+        return INSTANCE.getConstructorInvoker(targetClass, constructor, scopeToAzureCore);
+    }
+
+    /**
+     * Determines whether a Java 9+ module-based implementation of {@link ReflectionUtilsApi} is being used.
+     *
+     * @return Whether a Java 9+ module-based implementation of {@link ReflectionUtilsApi} is being used.
+     */
     public static boolean isModuleBased() {
-        return MODULE_BASED;
+        return INSTANCE.isModuleBased();
+    }
+
+    /**
+     * Creates a dummy {@link ReflectiveInvoker} that will always return null. Used for scenarios where an {@link ReflectiveInvoker} is
+     * needed as an identifier but will never be used.
+     *
+     * @return A dummy {@link ReflectiveInvoker} that will always return null.
+     */
+    public static ReflectiveInvoker createNoOpInvoker() {
+        return new NoOpReflectiveInvoker();
+    }
+
+    private static final class NoOpReflectiveInvoker implements ReflectiveInvoker {
+        @Override
+        public Object invokeStatic(Object... args) {
+            return null;
+        }
+
+        @Override
+        public Object invokeWithArguments(Object target, Object... args) {
+            return null;
+        }
+
+        @Override
+        public int getParameterCount() {
+            return 0;
+        }
     }
 
     ReflectionUtils() {

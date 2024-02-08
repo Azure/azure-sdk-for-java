@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a virtual machine scale set VM network profile. */
+/**
+ * Describes a virtual machine scale set VM network profile.
+ */
 @Fluent
 public final class VirtualMachineScaleSetVMNetworkProfileConfiguration {
     /*
@@ -17,13 +19,15 @@ public final class VirtualMachineScaleSetVMNetworkProfileConfiguration {
     @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
-    /** Creates an instance of VirtualMachineScaleSetVMNetworkProfileConfiguration class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetVMNetworkProfileConfiguration class.
+     */
     public VirtualMachineScaleSetVMNetworkProfileConfiguration() {
     }
 
     /**
      * Get the networkInterfaceConfigurations property: The list of network configurations.
-     *
+     * 
      * @return the networkInterfaceConfigurations value.
      */
     public List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations() {
@@ -32,7 +36,7 @@ public final class VirtualMachineScaleSetVMNetworkProfileConfiguration {
 
     /**
      * Set the networkInterfaceConfigurations property: The list of network configurations.
-     *
+     * 
      * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set.
      * @return the VirtualMachineScaleSetVMNetworkProfileConfiguration object itself.
      */
@@ -44,7 +48,7 @@ public final class VirtualMachineScaleSetVMNetworkProfileConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

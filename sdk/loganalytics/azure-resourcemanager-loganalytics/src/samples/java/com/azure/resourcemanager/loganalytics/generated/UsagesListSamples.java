@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Usages List. */
 public final class UsagesListSamples {
     /*
@@ -17,6 +15,6 @@ public final class UsagesListSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void usagesList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.usages().list("rg1", "TestLinkWS", Context.NONE);
+        manager.usages().list("rg1", "TestLinkWS", com.azure.core.util.Context.NONE);
     }
 }

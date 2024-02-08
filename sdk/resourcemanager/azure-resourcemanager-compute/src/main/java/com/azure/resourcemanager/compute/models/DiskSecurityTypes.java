@@ -8,26 +8,36 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the SecurityType of the VM. Applicable for OS disks only. */
+/**
+ * Specifies the SecurityType of the VM. Applicable for OS disks only.
+ */
 public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTypes> {
-    /** Static value TrustedLaunch for DiskSecurityTypes. */
+    /**
+     * Static value TrustedLaunch for DiskSecurityTypes.
+     */
     public static final DiskSecurityTypes TRUSTED_LAUNCH = fromString("TrustedLaunch");
 
-    /** Static value ConfidentialVM_VMGuestStateOnlyEncryptedWithPlatformKey for DiskSecurityTypes. */
-    public static final DiskSecurityTypes CONFIDENTIAL_VM_VMGUEST_STATE_ONLY_ENCRYPTED_WITH_PLATFORM_KEY =
-        fromString("ConfidentialVM_VMGuestStateOnlyEncryptedWithPlatformKey");
+    /**
+     * Static value ConfidentialVM_VMGuestStateOnlyEncryptedWithPlatformKey for DiskSecurityTypes.
+     */
+    public static final DiskSecurityTypes CONFIDENTIAL_VM_VMGUEST_STATE_ONLY_ENCRYPTED_WITH_PLATFORM_KEY
+        = fromString("ConfidentialVM_VMGuestStateOnlyEncryptedWithPlatformKey");
 
-    /** Static value ConfidentialVM_DiskEncryptedWithPlatformKey for DiskSecurityTypes. */
-    public static final DiskSecurityTypes CONFIDENTIAL_VM_DISK_ENCRYPTED_WITH_PLATFORM_KEY =
-        fromString("ConfidentialVM_DiskEncryptedWithPlatformKey");
+    /**
+     * Static value ConfidentialVM_DiskEncryptedWithPlatformKey for DiskSecurityTypes.
+     */
+    public static final DiskSecurityTypes CONFIDENTIAL_VM_DISK_ENCRYPTED_WITH_PLATFORM_KEY
+        = fromString("ConfidentialVM_DiskEncryptedWithPlatformKey");
 
-    /** Static value ConfidentialVM_DiskEncryptedWithCustomerKey for DiskSecurityTypes. */
-    public static final DiskSecurityTypes CONFIDENTIAL_VM_DISK_ENCRYPTED_WITH_CUSTOMER_KEY =
-        fromString("ConfidentialVM_DiskEncryptedWithCustomerKey");
+    /**
+     * Static value ConfidentialVM_DiskEncryptedWithCustomerKey for DiskSecurityTypes.
+     */
+    public static final DiskSecurityTypes CONFIDENTIAL_VM_DISK_ENCRYPTED_WITH_CUSTOMER_KEY
+        = fromString("ConfidentialVM_DiskEncryptedWithCustomerKey");
 
     /**
      * Creates a new instance of DiskSecurityTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +46,7 @@ public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTy
 
     /**
      * Creates or finds a DiskSecurityTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiskSecurityTypes.
      */
@@ -47,7 +57,7 @@ public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTy
 
     /**
      * Gets known DiskSecurityTypes values.
-     *
+     * 
      * @return known DiskSecurityTypes values.
      */
     public static Collection<DiskSecurityTypes> values() {

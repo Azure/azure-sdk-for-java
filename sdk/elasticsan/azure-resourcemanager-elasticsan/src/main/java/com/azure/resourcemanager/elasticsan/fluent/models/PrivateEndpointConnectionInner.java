@@ -14,7 +14,9 @@ import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for PrivateEndpoint Connection object. */
+/**
+ * Response for PrivateEndpoint Connection object.
+ */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
     /*
@@ -29,13 +31,15 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PrivateEndpointConnectionInner class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionInner class.
+     */
     public PrivateEndpointConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: Private Endpoint Connection Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateEndpointConnectionProperties innerProperties() {
@@ -44,7 +48,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -53,7 +57,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning State of Private Endpoint connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -62,7 +66,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Get the privateEndpoint property: Private Endpoint resource.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpoint privateEndpoint() {
@@ -71,7 +75,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Set the privateEndpoint property: Private Endpoint resource.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
@@ -85,7 +89,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Get the privateLinkServiceConnectionState property: Private Link Service Connection State.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -94,12 +98,12 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Set the privateLinkServiceConnectionState property: Private Link Service Connection State.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
-    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionInner
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointConnectionProperties();
         }
@@ -109,7 +113,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Get the groupIds property: List of resources private endpoint is mapped.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -118,7 +122,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Set the groupIds property: List of resources private endpoint is mapped.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
@@ -132,15 +136,13 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model PrivateEndpointConnectionInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model PrivateEndpointConnectionInner"));
         } else {
             innerProperties().validate();
         }

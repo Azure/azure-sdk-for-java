@@ -202,6 +202,13 @@ public final class BridgeInternal {
                     cosmosDiagnostics.getFeedResponseDiagnostics()
                                      .getClientSideRequestStatistics());
             }
+
+            if (cosmosDiagnostics.getDiagnosticsContext() != null) {
+                diagnosticsAccessor.setDiagnosticsContext(
+                    feedResponseWithQueryMetrics.getCosmosDiagnostics(),
+                    cosmosDiagnostics.getDiagnosticsContext()
+                );
+            }
         }
 
         return feedResponseWithQueryMetrics;

@@ -21,6 +21,10 @@ public final class DeliveryRuleRemoteAddressCondition extends DeliveryRuleCondit
     @JsonProperty(value = "parameters", required = true)
     private RemoteAddressMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleRemoteAddressCondition class. */
+    public DeliveryRuleRemoteAddressCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

@@ -36,6 +36,12 @@ public final class UsageInner {
     @JsonProperty(value = "name")
     private UsageName name;
 
+    /*
+     * The fully qualified arm resource id.
+     */
+    @JsonProperty(value = "id")
+    private String id;
+
     /** Creates an instance of UsageInner class. */
     public UsageInner() {
     }
@@ -117,6 +123,26 @@ public final class UsageInner {
      */
     public UsageInner withName(UsageName name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the id property: The fully qualified arm resource id.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: The fully qualified arm resource id.
+     *
+     * @param id the id value to set.
+     * @return the UsageInner object itself.
+     */
+    public UsageInner withId(String id) {
+        this.id = id;
         return this;
     }
 

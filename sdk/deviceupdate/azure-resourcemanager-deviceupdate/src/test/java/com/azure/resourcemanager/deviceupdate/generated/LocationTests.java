@@ -8,22 +8,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.models.Location;
 import com.azure.resourcemanager.deviceupdate.models.Role;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LocationTests {
-    @Test
-    public void testDeserialize() {
-        Location model =
-            BinaryData.fromString("{\"name\":\"zgvfcjrwz\",\"role\":\"Failover\"}").toObject(Location.class);
-        Assertions.assertEquals("zgvfcjrwz", model.name());
-        Assertions.assertEquals(Role.FAILOVER, model.role());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Location model
+            = BinaryData.fromString("{\"name\":\"amiheognarxz\",\"role\":\"Primary\"}").toObject(Location.class);
+        Assertions.assertEquals("amiheognarxz", model.name());
+        Assertions.assertEquals(Role.PRIMARY, model.role());
     }
 
-    @Test
-    public void testSerialize() {
-        Location model = new Location().withName("zgvfcjrwz").withRole(Role.FAILOVER);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Location model = new Location().withName("amiheognarxz").withRole(Role.PRIMARY);
         model = BinaryData.fromObject(model).toObject(Location.class);
-        Assertions.assertEquals("zgvfcjrwz", model.name());
-        Assertions.assertEquals(Role.FAILOVER, model.role());
+        Assertions.assertEquals("amiheognarxz", model.name());
+        Assertions.assertEquals(Role.PRIMARY, model.role());
     }
 }

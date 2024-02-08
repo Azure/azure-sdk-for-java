@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionStat
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the PrivateEndpointConnectProperties. */
+/**
+ * Properties of the PrivateEndpointConnectProperties.
+ */
 @Fluent
 public final class PrivateEndpointConnectionPropertiesInner {
     /*
@@ -42,13 +44,15 @@ public final class PrivateEndpointConnectionPropertiesInner {
     @JsonProperty(value = "privateEndpointLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String privateEndpointLocation;
 
-    /** Creates an instance of PrivateEndpointConnectionPropertiesInner class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionPropertiesInner class.
+     */
     public PrivateEndpointConnectionPropertiesInner() {
     }
 
     /**
      * Get the privateEndpoint property: The resource of private end point.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpointInner privateEndpoint() {
@@ -56,9 +60,9 @@ public final class PrivateEndpointConnectionPropertiesInner {
     }
 
     /**
-     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
-     *
+     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the
+     * connection between service consumer and provider.
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -66,21 +70,21 @@ public final class PrivateEndpointConnectionPropertiesInner {
     }
 
     /**
-     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
-     *
+     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the
+     * connection between service consumer and provider.
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionPropertiesInner object itself.
      */
-    public PrivateEndpointConnectionPropertiesInner withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionPropertiesInner
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the private endpoint connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -89,7 +93,7 @@ public final class PrivateEndpointConnectionPropertiesInner {
 
     /**
      * Get the linkIdentifier property: The consumer link id.
-     *
+     * 
      * @return the linkIdentifier value.
      */
     public String linkIdentifier() {
@@ -98,7 +102,7 @@ public final class PrivateEndpointConnectionPropertiesInner {
 
     /**
      * Get the privateEndpointLocation property: The location of the private endpoint.
-     *
+     * 
      * @return the privateEndpointLocation value.
      */
     public String privateEndpointLocation() {
@@ -107,7 +111,7 @@ public final class PrivateEndpointConnectionPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

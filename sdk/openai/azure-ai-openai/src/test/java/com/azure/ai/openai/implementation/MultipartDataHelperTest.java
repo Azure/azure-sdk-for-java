@@ -5,6 +5,7 @@ package com.azure.ai.openai.implementation;
 
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import org.junit.jupiter.api.Test;
@@ -32,9 +33,10 @@ public class MultipartDataHelperTest {
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
         translationOptions.setModel("model_name")
                 .setPrompt("prompt text")
-                .setResponseFormat(AudioTranscriptionFormat.TEXT)
+                .setFilename(fileName)
+                .setResponseFormat(AudioTranslationFormat.TEXT)
                 .setTemperature(0.1);
-        MultipartDataSerializationResult actual = helper.serializeRequest(translationOptions, fileName);
+        MultipartDataSerializationResult actual = helper.serializeRequest(translationOptions);
 
         String expected = multipartFileSegment(fileName, file)
                 + fieldFormData("response_format", "text")
@@ -57,10 +59,11 @@ public class MultipartDataHelperTest {
         AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
         transcriptionOptions.setModel("model_name")
                 .setPrompt("prompt text")
+                .setFilename(fileName)
                 .setResponseFormat(AudioTranscriptionFormat.TEXT)
                 .setLanguage("en")
                 .setTemperature(0.1);
-        MultipartDataSerializationResult actual = helper.serializeRequest(transcriptionOptions, fileName);
+        MultipartDataSerializationResult actual = helper.serializeRequest(transcriptionOptions);
 
         String expected = multipartFileSegment(fileName, file)
                 + fieldFormData("response_format", "text")
@@ -80,7 +83,8 @@ public class MultipartDataHelperTest {
         byte[] file = new byte[] {};
         String fileName = "file_name.wav";
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-        MultipartDataSerializationResult actual = helper.serializeRequest(translationOptions, fileName);
+        translationOptions.setFilename(fileName);
+        MultipartDataSerializationResult actual = helper.serializeRequest(translationOptions);
 
         String expected = multipartFileSegment(fileName, file)
                 + closingMarker();
@@ -95,7 +99,8 @@ public class MultipartDataHelperTest {
         byte[] file = new byte[] {};
         String fileName = "file_name.wav";
         AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
-        MultipartDataSerializationResult actual = helper.serializeRequest(transcriptionOptions, fileName);
+        transcriptionOptions.setFilename(fileName);
+        MultipartDataSerializationResult actual = helper.serializeRequest(transcriptionOptions);
 
         String expected = multipartFileSegment(fileName, file)
                 + closingMarker();
@@ -109,7 +114,7 @@ public class MultipartDataHelperTest {
         assertThrows(IllegalArgumentException.class, () -> {
             MultipartDataHelper helper = new MultipartDataHelper(TEST_BOUNDARY);
             EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(new ArrayList<>());
-            helper.serializeRequest(embeddingsOptions, "path/to/file");
+            helper.serializeRequest(embeddingsOptions);
         });
     }
 

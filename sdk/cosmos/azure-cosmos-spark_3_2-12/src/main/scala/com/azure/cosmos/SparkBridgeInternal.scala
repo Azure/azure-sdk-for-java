@@ -6,9 +6,10 @@ package com.azure.cosmos
 import com.azure.cosmos.implementation.{DocumentCollection, PartitionKeyRange, SparkBridgeImplementationInternal}
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.{FeedRange, ModelBridgeInternal}
+import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange, ModelBridgeInternal}
 import com.azure.cosmos.spark.NormalizedRange
 
+import java.time.Duration
 import scala.collection.mutable.ArrayBuffer
 
 // scalastyle:off underscore.import
@@ -16,6 +17,11 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 private[cosmos] object SparkBridgeInternal {
+
+  //scalastyle:off null
+  val defaultQueryRequestOptions: CosmosQueryRequestOptions = null
+  //scalastyle:on null
+
   def trySplitFeedRange
   (
     container: CosmosAsyncContainer,
@@ -59,7 +65,7 @@ private[cosmos] object SparkBridgeInternal {
     container
       .getDatabase
       .getDocClientWrapper
-      .readPartitionKeyRanges(container.getLink, null)
+      .readPartitionKeyRanges(container.getLink, defaultQueryRequestOptions)
       .collectList
       .block()
       .forEach(feedResponse => feedResponse.getResults.forEach(pkRange => pkRanges += pkRange))

@@ -4,18 +4,34 @@
 
 package com.azure.resourcemanager.signalr.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.signalr.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ReplicaProperties model. */
-@Immutable
+@Fluent
 public final class ReplicaProperties {
     /*
      * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Enable or disable the regional endpoint. Default to "Enabled".
+     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not
+     * be affected.
+     */
+    @JsonProperty(value = "regionEndpointEnabled")
+    private String regionEndpointEnabled;
+
+    /*
+     * Stop or start the resource.  Default to "false".
+     * When it's true, the data plane of the resource is shutdown.
+     * When it's false, the data plane of the resource is started.
+     */
+    @JsonProperty(value = "resourceStopped")
+    private String resourceStopped;
 
     /** Creates an instance of ReplicaProperties class. */
     public ReplicaProperties() {
@@ -28,6 +44,50 @@ public final class ReplicaProperties {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     *
+     * @return the regionEndpointEnabled value.
+     */
+    public String regionEndpointEnabled() {
+        return this.regionEndpointEnabled;
+    }
+
+    /**
+     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     *
+     * @param regionEndpointEnabled the regionEndpointEnabled value to set.
+     * @return the ReplicaProperties object itself.
+     */
+    public ReplicaProperties withRegionEndpointEnabled(String regionEndpointEnabled) {
+        this.regionEndpointEnabled = regionEndpointEnabled;
+        return this;
+    }
+
+    /**
+     * Get the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @return the resourceStopped value.
+     */
+    public String resourceStopped() {
+        return this.resourceStopped;
+    }
+
+    /**
+     * Set the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @param resourceStopped the resourceStopped value to set.
+     * @return the ReplicaProperties object itself.
+     */
+    public ReplicaProperties withResourceStopped(String resourceStopped) {
+        this.resourceStopped = resourceStopped;
+        return this;
     }
 
     /**

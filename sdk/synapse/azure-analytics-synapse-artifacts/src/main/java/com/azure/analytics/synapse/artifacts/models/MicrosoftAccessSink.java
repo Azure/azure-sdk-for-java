@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Microsoft Access sink. */
+/**
+ * A copy activity Microsoft Access sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MicrosoftAccessSink")
 @Fluent
@@ -20,13 +22,16 @@ public final class MicrosoftAccessSink extends CopySink {
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
 
-    /** Creates an instance of MicrosoftAccessSink class. */
-    public MicrosoftAccessSink() {}
+    /**
+     * Creates an instance of MicrosoftAccessSink class.
+     */
+    public MicrosoftAccessSink() {
+    }
 
     /**
      * Get the preCopyScript property: A query to execute before starting the copy. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the preCopyScript value.
      */
     public Object getPreCopyScript() {
@@ -36,7 +41,7 @@ public final class MicrosoftAccessSink extends CopySink {
     /**
      * Set the preCopyScript property: A query to execute before starting the copy. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param preCopyScript the preCopyScript value to set.
      * @return the MicrosoftAccessSink object itself.
      */
@@ -45,35 +50,45 @@ public final class MicrosoftAccessSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftAccessSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftAccessSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftAccessSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftAccessSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftAccessSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

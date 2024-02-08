@@ -29,6 +29,10 @@ public final class ManagedRuleGroupDefinition {
     @JsonProperty(value = "rules", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedRuleDefinition> rules;
 
+    /** Creates an instance of ManagedRuleGroupDefinition class. */
+    public ManagedRuleGroupDefinition() {
+    }
+
     /**
      * Get the ruleGroupName property: Name of the managed rule group.
      *

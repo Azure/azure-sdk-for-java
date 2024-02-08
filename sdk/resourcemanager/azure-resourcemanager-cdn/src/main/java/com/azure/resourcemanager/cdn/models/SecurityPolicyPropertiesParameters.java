@@ -21,6 +21,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class SecurityPolicyPropertiesParameters {
+    /** Creates an instance of SecurityPolicyPropertiesParameters class. */
+    public SecurityPolicyPropertiesParameters() {
+    }
+
     /**
      * Validates the instance.
      *

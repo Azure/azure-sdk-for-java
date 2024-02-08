@@ -6,13 +6,13 @@ package com.azure.resourcemanager.chaos.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.chaos.fluent.models.ExperimentInner;
-import com.azure.resourcemanager.chaos.models.Action;
-import com.azure.resourcemanager.chaos.models.Branch;
-import com.azure.resourcemanager.chaos.models.Filter;
+import com.azure.resourcemanager.chaos.models.ChaosExperimentAction;
+import com.azure.resourcemanager.chaos.models.ChaosExperimentBranch;
+import com.azure.resourcemanager.chaos.models.ChaosExperimentStep;
+import com.azure.resourcemanager.chaos.models.ChaosTargetFilter;
+import com.azure.resourcemanager.chaos.models.ChaosTargetSelector;
 import com.azure.resourcemanager.chaos.models.ResourceIdentity;
 import com.azure.resourcemanager.chaos.models.ResourceIdentityType;
-import com.azure.resourcemanager.chaos.models.Selector;
-import com.azure.resourcemanager.chaos.models.Step;
 import com.azure.resourcemanager.chaos.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,158 +25,115 @@ public final class ExperimentInnerTests {
         ExperimentInner model =
             BinaryData
                 .fromString(
-                    "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"udwtiukbl\":{\"principalId\":\"a61f533d-4cb4-48c5-b497-037970f7a5e4\",\"clientId\":\"a2b0ed87-2549-4a89-a548-e0201ea73b97\"},\"kpoc\":{\"principalId\":\"42cfbeff-7124-4ed5-9328-09adb1b652ac\",\"clientId\":\"dfd5c108-4321-42c2-a063-44f4503fa5fa\"},\"z\":{\"principalId\":\"a42405b6-1569-4569-ad74-4ffedceb4851\",\"clientId\":\"206e8550-f951-4176-b6b6-464869be91a1\"}},\"principalId\":\"o\",\"tenantId\":\"ukgjnpiucgygevq\"},\"properties\":{\"steps\":[{\"name\":\"typmrbpizcdrqjsd\",\"branches\":[{\"name\":\"dnfyhxdeoejzicwi\",\"actions\":[{\"type\":\"Action\",\"name\":\"jttgzf\"},{\"type\":\"Action\",\"name\":\"ishc\"},{\"type\":\"Action\",\"name\":\"khaj\"}]},{\"name\":\"eyeam\",\"actions\":[{\"type\":\"Action\",\"name\":\"hagalpbuxwgipwh\"}]},{\"name\":\"nowkgshw\",\"actions\":[{\"type\":\"Action\",\"name\":\"kix\"},{\"type\":\"Action\",\"name\":\"bin\"},{\"type\":\"Action\",\"name\":\"eputtmrywnuzoqf\"}]},{\"name\":\"iyqzrnk\",\"actions\":[{\"type\":\"Action\",\"name\":\"vyxlwhzlsicohoqq\"},{\"type\":\"Action\",\"name\":\"wvl\"},{\"type\":\"Action\",\"name\":\"yav\"},{\"type\":\"Action\",\"name\":\"hheunmmqhgyx\"}]}]},{\"name\":\"konocu\",\"branches\":[{\"name\":\"klyaxuconu\",\"actions\":[{\"type\":\"Action\",\"name\":\"zf\"},{\"type\":\"Action\",\"name\":\"beypewrmjmw\"}]},{\"name\":\"vjektcxsenh\",\"actions\":[{\"type\":\"Action\",\"name\":\"rsffrzpwvlqdqgbi\"}]},{\"name\":\"ylihkaetckt\",\"actions\":[{\"type\":\"Action\",\"name\":\"civfsnkymuctq\"},{\"type\":\"Action\",\"name\":\"jf\"},{\"type\":\"Action\",\"name\":\"ebrjcxe\"}]}]},{\"name\":\"fuwutttxf\",\"branches\":[{\"name\":\"rbirphxe\",\"actions\":[{\"type\":\"Action\",\"name\":\"yva\"}]},{\"name\":\"fnljky\",\"actions\":[{\"type\":\"Action\",\"name\":\"j\"},{\"type\":\"Action\",\"name\":\"uujqgidokgjljyo\"},{\"type\":\"Action\",\"name\":\"gvcl\"},{\"type\":\"Action\",\"name\":\"bgsncghkjeszzhb\"}]},{\"name\":\"jhtxfvgxbfsmxne\",\"actions\":[{\"type\":\"Action\",\"name\":\"pvecxgodeb\"},{\"type\":\"Action\",\"name\":\"qkkrb\"},{\"type\":\"Action\",\"name\":\"pukgriwflzlfb\"},{\"type\":\"Action\",\"name\":\"zpuzycisp\"}]},{\"name\":\"qzahmgkbrp\",\"actions\":[{\"type\":\"Action\",\"name\":\"dhibnuq\"}]}]},{\"name\":\"kpikadrgvt\",\"branches\":[{\"name\":\"gnbuy\",\"actions\":[{\"type\":\"Action\",\"name\":\"ijggmebfsiar\"},{\"type\":\"Action\",\"name\":\"utrc\"}]}]}],\"selectors\":[{\"type\":\"Selector\",\"id\":\"na\",\"filter\":{\"type\":\"Filter\"},\"\":{\"bh\":\"datajrunmpxtt\"}},{\"type\":\"Selector\",\"id\":\"bnlankxmyskpb\",\"filter\":{\"type\":\"Filter\"},\"\":{\"lqidyby\":\"datatkcxywnytnrsy\",\"haaxdbabphl\":\"dataczfc\",\"yazttbtwwrqpue\":\"datarqlfktsthsucocmn\",\"xibxujwbhqwalm\":\"datackzywbiexzfeyue\"}}],\"startOnCreation\":false},\"location\":\"oxaepd\",\"tags\":{\"bavxbniwdjswzt\":\"ancuxrhd\",\"xbzpfzab\":\"dbpgnxytxhp\"},\"id\":\"lcuhxwtctyqiklb\",\"name\":\"ovplw\",\"type\":\"bhvgy\"}")
+                    "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"hagalpbuxwgipwh\":{\"principalId\":\"9b0db9d2-9556-4d54-973c-006d52ba9b4e\",\"clientId\":\"37bbce60-3515-4461-9385-a696b18becec\"}},\"principalId\":\"ow\",\"tenantId\":\"shwankixzbinje\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"steps\":[{\"name\":\"mryw\",\"branches\":[{\"name\":\"zoqftiyqzrnkcqvy\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"whzlsicohoq\"}]},{\"name\":\"nwvlryavwhheunmm\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"gyxzk\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"noc\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"koklya\"}]}]},{\"name\":\"uconuqszfkbey\",\"branches\":[{\"name\":\"wrmjmwvvjektc\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"enhwlrs\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"frzpwvlqdqgb\"}]},{\"name\":\"qylihkaetckt\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"civfsnkymuctq\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"jf\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"ebrjcxe\"}]},{\"name\":\"fuwutttxf\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"rbirphxe\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"c\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"vahfn\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"jky\"}]},{\"name\":\"xjvuujqgidokg\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"jyoxgvclt\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"gsncghkjeszz\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"bijhtxfvgxbf\"}]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"xnehmpvec\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"ukgri\":\"dataebfqkkrbm\",\"fbxzpuzycisp\":\"dataflz\",\"y\":\"dataqzahmgkbrp\",\"rgvtqag\":\"datahibnuqqkpika\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"buynhijggm\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"zmhjrunmp\":\"dataiarbutrcvpna\",\"nkxmyskpbhenbtk\":\"datattdbhrbnl\",\"yxczfclh\":\"dataxywnytnrsynlqidy\"}}]},\"location\":\"axdbabph\",\"tags\":{\"cocmnyyaztt\":\"qlfktsths\",\"edckzywbiexzfey\":\"twwrqp\",\"ujwb\":\"eaxib\",\"zjancuxr\":\"qwalmuzyoxaepd\"},\"id\":\"d\",\"name\":\"bavxbniwdjswzt\",\"type\":\"dbpgnxytxhp\"}")
                 .toObject(ExperimentInner.class);
-        Assertions.assertEquals("oxaepd", model.location());
-        Assertions.assertEquals("ancuxrhd", model.tags().get("bavxbniwdjswzt"));
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("typmrbpizcdrqjsd", model.steps().get(0).name());
-        Assertions.assertEquals("dnfyhxdeoejzicwi", model.steps().get(0).branches().get(0).name());
-        Assertions.assertEquals("jttgzf", model.steps().get(0).branches().get(0).actions().get(0).name());
-        Assertions.assertEquals("na", model.selectors().get(0).id());
-        Assertions.assertEquals(false, model.startOnCreation());
+        Assertions.assertEquals("axdbabph", model.location());
+        Assertions.assertEquals("qlfktsths", model.tags().get("cocmnyyaztt"));
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("mryw", model.steps().get(0).name());
+        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.steps().get(0).branches().get(0).name());
+        Assertions.assertEquals("whzlsicohoq", model.steps().get(0).branches().get(0).actions().get(0).name());
+        Assertions.assertEquals("xnehmpvec", model.selectors().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExperimentInner model =
             new ExperimentInner()
-                .withLocation("oxaepd")
-                .withTags(mapOf("bavxbniwdjswzt", "ancuxrhd", "xbzpfzab", "dbpgnxytxhp"))
+                .withLocation("axdbabph")
+                .withTags(
+                    mapOf(
+                        "cocmnyyaztt",
+                        "qlfktsths",
+                        "edckzywbiexzfey",
+                        "twwrqp",
+                        "ujwb",
+                        "eaxib",
+                        "zjancuxr",
+                        "qwalmuzyoxaepd"))
                 .withIdentity(
                     new ResourceIdentity()
-                        .withType(ResourceIdentityType.NONE)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "udwtiukbl",
-                                new UserAssignedIdentity(),
-                                "kpoc",
-                                new UserAssignedIdentity(),
-                                "z",
-                                new UserAssignedIdentity())))
+                        .withType(ResourceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("hagalpbuxwgipwh", new UserAssignedIdentity())))
                 .withSteps(
                     Arrays
                         .asList(
-                            new Step()
-                                .withName("typmrbpizcdrqjsd")
+                            new ChaosExperimentStep()
+                                .withName("mryw")
                                 .withBranches(
                                     Arrays
                                         .asList(
-                                            new Branch()
-                                                .withName("dnfyhxdeoejzicwi")
+                                            new ChaosExperimentBranch()
+                                                .withName("zoqftiyqzrnkcqvy")
+                                                .withActions(
+                                                    Arrays.asList(new ChaosExperimentAction().withName("whzlsicohoq"))),
+                                            new ChaosExperimentBranch()
+                                                .withName("nwvlryavwhheunmm")
                                                 .withActions(
                                                     Arrays
                                                         .asList(
-                                                            new Action().withName("jttgzf"),
-                                                            new Action().withName("ishc"),
-                                                            new Action().withName("khaj"))),
-                                            new Branch()
-                                                .withName("eyeam")
-                                                .withActions(Arrays.asList(new Action().withName("hagalpbuxwgipwh"))),
-                                            new Branch()
-                                                .withName("nowkgshw")
-                                                .withActions(
-                                                    Arrays
-                                                        .asList(
-                                                            new Action().withName("kix"),
-                                                            new Action().withName("bin"),
-                                                            new Action().withName("eputtmrywnuzoqf"))),
-                                            new Branch()
-                                                .withName("iyqzrnk")
-                                                .withActions(
-                                                    Arrays
-                                                        .asList(
-                                                            new Action().withName("vyxlwhzlsicohoqq"),
-                                                            new Action().withName("wvl"),
-                                                            new Action().withName("yav"),
-                                                            new Action().withName("hheunmmqhgyx"))))),
-                            new Step()
-                                .withName("konocu")
+                                                            new ChaosExperimentAction().withName("gyxzk"),
+                                                            new ChaosExperimentAction().withName("noc"),
+                                                            new ChaosExperimentAction().withName("koklya"))))),
+                            new ChaosExperimentStep()
+                                .withName("uconuqszfkbey")
                                 .withBranches(
                                     Arrays
                                         .asList(
-                                            new Branch()
-                                                .withName("klyaxuconu")
+                                            new ChaosExperimentBranch()
+                                                .withName("wrmjmwvvjektc")
                                                 .withActions(
                                                     Arrays
                                                         .asList(
-                                                            new Action().withName("zf"),
-                                                            new Action().withName("beypewrmjmw"))),
-                                            new Branch()
-                                                .withName("vjektcxsenh")
-                                                .withActions(Arrays.asList(new Action().withName("rsffrzpwvlqdqgbi"))),
-                                            new Branch()
-                                                .withName("ylihkaetckt")
+                                                            new ChaosExperimentAction().withName("enhwlrs"),
+                                                            new ChaosExperimentAction().withName("frzpwvlqdqgb"))),
+                                            new ChaosExperimentBranch()
+                                                .withName("qylihkaetckt")
                                                 .withActions(
                                                     Arrays
                                                         .asList(
-                                                            new Action().withName("civfsnkymuctq"),
-                                                            new Action().withName("jf"),
-                                                            new Action().withName("ebrjcxe"))))),
-                            new Step()
-                                .withName("fuwutttxf")
-                                .withBranches(
-                                    Arrays
-                                        .asList(
-                                            new Branch()
-                                                .withName("rbirphxe")
-                                                .withActions(Arrays.asList(new Action().withName("yva"))),
-                                            new Branch()
-                                                .withName("fnljky")
+                                                            new ChaosExperimentAction().withName("civfsnkymuctq"),
+                                                            new ChaosExperimentAction().withName("jf"),
+                                                            new ChaosExperimentAction().withName("ebrjcxe"))),
+                                            new ChaosExperimentBranch()
+                                                .withName("fuwutttxf")
                                                 .withActions(
                                                     Arrays
                                                         .asList(
-                                                            new Action().withName("j"),
-                                                            new Action().withName("uujqgidokgjljyo"),
-                                                            new Action().withName("gvcl"),
-                                                            new Action().withName("bgsncghkjeszzhb"))),
-                                            new Branch()
-                                                .withName("jhtxfvgxbfsmxne")
+                                                            new ChaosExperimentAction().withName("rbirphxe"),
+                                                            new ChaosExperimentAction().withName("c"),
+                                                            new ChaosExperimentAction().withName("vahfn"),
+                                                            new ChaosExperimentAction().withName("jky"))),
+                                            new ChaosExperimentBranch()
+                                                .withName("xjvuujqgidokg")
                                                 .withActions(
                                                     Arrays
                                                         .asList(
-                                                            new Action().withName("pvecxgodeb"),
-                                                            new Action().withName("qkkrb"),
-                                                            new Action().withName("pukgriwflzlfb"),
-                                                            new Action().withName("zpuzycisp"))),
-                                            new Branch()
-                                                .withName("qzahmgkbrp")
-                                                .withActions(Arrays.asList(new Action().withName("dhibnuq"))))),
-                            new Step()
-                                .withName("kpikadrgvt")
-                                .withBranches(
-                                    Arrays
-                                        .asList(
-                                            new Branch()
-                                                .withName("gnbuy")
-                                                .withActions(
-                                                    Arrays
-                                                        .asList(
-                                                            new Action().withName("ijggmebfsiar"),
-                                                            new Action().withName("utrc")))))))
+                                                            new ChaosExperimentAction().withName("jyoxgvclt"),
+                                                            new ChaosExperimentAction().withName("gsncghkjeszz"),
+                                                            new ChaosExperimentAction().withName("bijhtxfvgxbf")))))))
                 .withSelectors(
                     Arrays
                         .asList(
-                            new Selector()
-                                .withId("na")
-                                .withFilter(new Filter())
-                                .withAdditionalProperties(mapOf("type", "Selector")),
-                            new Selector()
-                                .withId("bnlankxmyskpb")
-                                .withFilter(new Filter())
-                                .withAdditionalProperties(mapOf("type", "Selector"))))
-                .withStartOnCreation(false);
+                            new ChaosTargetSelector()
+                                .withId("xnehmpvec")
+                                .withFilter(new ChaosTargetFilter())
+                                .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
+                            new ChaosTargetSelector()
+                                .withId("buynhijggm")
+                                .withFilter(new ChaosTargetFilter())
+                                .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"))));
         model = BinaryData.fromObject(model).toObject(ExperimentInner.class);
-        Assertions.assertEquals("oxaepd", model.location());
-        Assertions.assertEquals("ancuxrhd", model.tags().get("bavxbniwdjswzt"));
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("typmrbpizcdrqjsd", model.steps().get(0).name());
-        Assertions.assertEquals("dnfyhxdeoejzicwi", model.steps().get(0).branches().get(0).name());
-        Assertions.assertEquals("jttgzf", model.steps().get(0).branches().get(0).actions().get(0).name());
-        Assertions.assertEquals("na", model.selectors().get(0).id());
-        Assertions.assertEquals(false, model.startOnCreation());
+        Assertions.assertEquals("axdbabph", model.location());
+        Assertions.assertEquals("qlfktsths", model.tags().get("cocmnyyaztt"));
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("mryw", model.steps().get(0).name());
+        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.steps().get(0).branches().get(0).name());
+        Assertions.assertEquals("whzlsicohoq", model.steps().get(0).branches().get(0).actions().get(0).name());
+        Assertions.assertEquals("xnehmpvec", model.selectors().get(0).id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

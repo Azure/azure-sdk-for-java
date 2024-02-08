@@ -25,6 +25,12 @@ public class Checkpoint {
     private Long sequenceNumber;
 
     /**
+     * Creates a new instance.
+     */
+    public Checkpoint() {
+    }
+
+    /**
      * Returns the fully qualified namespace of the Event Hub.
      *
      * @return the fully qualified namespace of the Event Hub.

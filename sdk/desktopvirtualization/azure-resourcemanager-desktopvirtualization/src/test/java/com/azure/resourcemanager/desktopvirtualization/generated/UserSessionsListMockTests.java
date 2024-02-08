@@ -34,7 +34,7 @@ public final class UserSessionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"objectId\":\"hdxbzlm\",\"userPrincipalName\":\"uapcvhdbevwqqxe\",\"applicationType\":\"RemoteApp\",\"sessionState\":\"LogOff\",\"activeDirectoryUserName\":\"zinkfkbgbzbowxeq\",\"createTime\":\"2021-11-27T16:03:54Z\"},\"id\":\"jmygvk\",\"name\":\"qkjjeokbz\",\"type\":\"fezrx\"}]}";
+            "{\"value\":[{\"properties\":{\"objectId\":\"upia\",\"userPrincipalName\":\"xnafbw\",\"applicationType\":\"Desktop\",\"sessionState\":\"LogOff\",\"activeDirectoryUserName\":\"uovmaonurjt\",\"createTime\":\"2021-05-12T05:44:48Z\"},\"id\":\"hihpvecmsl\",\"name\":\"lbl\",\"type\":\"jxl\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,12 +65,13 @@ public final class UserSessionsListMockTests {
         PagedIterable<UserSession> response =
             manager
                 .userSessions()
-                .list("ky", "bcysih", "gqcwdhohsdtmc", 582075475, false, 223413800, com.azure.core.util.Context.NONE);
+                .list(
+                    "dbztjhqtfbov", "ynkbwetnju", "p", 1399052652, true, 1446166939, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uapcvhdbevwqqxe", response.iterator().next().userPrincipalName());
-        Assertions.assertEquals(ApplicationType.REMOTE_APP, response.iterator().next().applicationType());
+        Assertions.assertEquals("xnafbw", response.iterator().next().userPrincipalName());
+        Assertions.assertEquals(ApplicationType.DESKTOP, response.iterator().next().applicationType());
         Assertions.assertEquals(SessionState.LOG_OFF, response.iterator().next().sessionState());
-        Assertions.assertEquals("zinkfkbgbzbowxeq", response.iterator().next().activeDirectoryUsername());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-27T16:03:54Z"), response.iterator().next().createTime());
+        Assertions.assertEquals("uovmaonurjt", response.iterator().next().activeDirectoryUsername());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-12T05:44:48Z"), response.iterator().next().createTime());
     }
 }

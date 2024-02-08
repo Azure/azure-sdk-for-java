@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.13 (Unreleased)
+## 1.0.0-beta.17 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,49 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.16 (2024-02-02)
+
+### Features Added
+
+- Updated OpenTelemetry Semantic Conventions to version 1.23.1.
+
+### Breaking Changes
+
+- Renamed attributes according to OpenTelemetry semantic conventions changes:
+    - `net.peer.name` -> `server.address`
+    - `otel.status_code` -> `error.type`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
+
+## 1.0.0-beta.15 (2023-11-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
+- Upgraded `opentelemetry-api` from `1.28.0` to `1.31.0`.
+
+## 1.0.0-beta.14 (2023-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to `1.44.1`.
+
+## 1.0.0-beta.13 (2023-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to `1.44.0`.
 
 ## 1.0.0-beta.12 (2023-09-07)
 

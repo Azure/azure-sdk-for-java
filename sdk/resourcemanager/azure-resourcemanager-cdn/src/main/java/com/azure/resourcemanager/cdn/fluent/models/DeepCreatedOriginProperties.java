@@ -89,6 +89,10 @@ public final class DeepCreatedOriginProperties {
     @JsonProperty(value = "privateEndpointStatus", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointStatus privateEndpointStatus;
 
+    /** Creates an instance of DeepCreatedOriginProperties class. */
+    public DeepCreatedOriginProperties() {
+    }
+
     /**
      * Get the hostname property: The address of the origin. It can be a domain name, IPv4 address, or IPv6 address.
      * This should be unique across all origins in an endpoint.

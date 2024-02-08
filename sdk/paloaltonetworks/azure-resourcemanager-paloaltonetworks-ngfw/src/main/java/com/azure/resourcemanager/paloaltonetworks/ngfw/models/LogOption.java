@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Log options possible. */
+/**
+ * Log options possible.
+ */
 public final class LogOption extends ExpandableStringEnum<LogOption> {
-    /** Static value SAME_DESTINATION for LogOption. */
+    /**
+     * Static value SAME_DESTINATION for LogOption.
+     */
     public static final LogOption SAME_DESTINATION = fromString("SAME_DESTINATION");
 
-    /** Static value INDIVIDUAL_DESTINATION for LogOption. */
+    /**
+     * Static value INDIVIDUAL_DESTINATION for LogOption.
+     */
     public static final LogOption INDIVIDUAL_DESTINATION = fromString("INDIVIDUAL_DESTINATION");
 
     /**
      * Creates a new instance of LogOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class LogOption extends ExpandableStringEnum<LogOption> {
 
     /**
      * Creates or finds a LogOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LogOption.
      */
@@ -38,7 +44,7 @@ public final class LogOption extends ExpandableStringEnum<LogOption> {
 
     /**
      * Gets known LogOption values.
-     *
+     * 
      * @return known LogOption values.
      */
     public static Collection<LogOption> values() {

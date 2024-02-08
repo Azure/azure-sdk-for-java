@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeterministicOutboundIp. */
+/**
+ * Defines values for DeterministicOutboundIp.
+ */
 public final class DeterministicOutboundIp extends ExpandableStringEnum<DeterministicOutboundIp> {
-    /** Static value Disabled for DeterministicOutboundIp. */
+    /**
+     * Static value Disabled for DeterministicOutboundIp.
+     */
     public static final DeterministicOutboundIp DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for DeterministicOutboundIp. */
+    /**
+     * Static value Enabled for DeterministicOutboundIp.
+     */
     public static final DeterministicOutboundIp ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of DeterministicOutboundIp value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeterministicOutboundIp() {
+    }
+
+    /**
      * Creates or finds a DeterministicOutboundIp from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeterministicOutboundIp.
      */
@@ -29,7 +44,7 @@ public final class DeterministicOutboundIp extends ExpandableStringEnum<Determin
 
     /**
      * Gets known DeterministicOutboundIp values.
-     *
+     * 
      * @return known DeterministicOutboundIp values.
      */
     public static Collection<DeterministicOutboundIp> values() {

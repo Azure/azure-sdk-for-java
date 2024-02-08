@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslProf
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** SSL profile of an application gateway. */
+/**
+ * SSL profile of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewaySslProfile extends SubResource {
     /*
@@ -37,13 +39,15 @@ public final class ApplicationGatewaySslProfile extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewaySslProfile class. */
+    /**
+     * Creates an instance of ApplicationGatewaySslProfile class.
+     */
     public ApplicationGatewaySslProfile() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway SSL profile.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewaySslProfilePropertiesFormat innerProperties() {
@@ -52,7 +56,7 @@ public final class ApplicationGatewaySslProfile extends SubResource {
 
     /**
      * Get the name property: Name of the SSL profile that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class ApplicationGatewaySslProfile extends SubResource {
 
     /**
      * Set the name property: Name of the SSL profile that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewaySslProfile object itself.
      */
@@ -72,7 +76,7 @@ public final class ApplicationGatewaySslProfile extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -81,14 +85,16 @@ public final class ApplicationGatewaySslProfile extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewaySslProfile withId(String id) {
         super.withId(id);
@@ -98,7 +104,7 @@ public final class ApplicationGatewaySslProfile extends SubResource {
     /**
      * Get the trustedClientCertificates property: Array of references to application gateway trusted client
      * certificates.
-     *
+     * 
      * @return the trustedClientCertificates value.
      */
     public List<SubResource> trustedClientCertificates() {
@@ -108,7 +114,7 @@ public final class ApplicationGatewaySslProfile extends SubResource {
     /**
      * Set the trustedClientCertificates property: Array of references to application gateway trusted client
      * certificates.
-     *
+     * 
      * @param trustedClientCertificates the trustedClientCertificates value to set.
      * @return the ApplicationGatewaySslProfile object itself.
      */
@@ -122,7 +128,7 @@ public final class ApplicationGatewaySslProfile extends SubResource {
 
     /**
      * Get the sslPolicy property: SSL policy of the application gateway resource.
-     *
+     * 
      * @return the sslPolicy value.
      */
     public ApplicationGatewaySslPolicy sslPolicy() {
@@ -131,7 +137,7 @@ public final class ApplicationGatewaySslProfile extends SubResource {
 
     /**
      * Set the sslPolicy property: SSL policy of the application gateway resource.
-     *
+     * 
      * @param sslPolicy the sslPolicy value to set.
      * @return the ApplicationGatewaySslProfile object itself.
      */
@@ -146,7 +152,7 @@ public final class ApplicationGatewaySslProfile extends SubResource {
     /**
      * Get the clientAuthConfiguration property: Client authentication configuration of the application gateway
      * resource.
-     *
+     * 
      * @return the clientAuthConfiguration value.
      */
     public ApplicationGatewayClientAuthConfiguration clientAuthConfiguration() {
@@ -156,12 +162,12 @@ public final class ApplicationGatewaySslProfile extends SubResource {
     /**
      * Set the clientAuthConfiguration property: Client authentication configuration of the application gateway
      * resource.
-     *
+     * 
      * @param clientAuthConfiguration the clientAuthConfiguration value to set.
      * @return the ApplicationGatewaySslProfile object itself.
      */
-    public ApplicationGatewaySslProfile withClientAuthConfiguration(
-        ApplicationGatewayClientAuthConfiguration clientAuthConfiguration) {
+    public ApplicationGatewaySslProfile
+        withClientAuthConfiguration(ApplicationGatewayClientAuthConfiguration clientAuthConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewaySslProfilePropertiesFormat();
         }
@@ -171,7 +177,7 @@ public final class ApplicationGatewaySslProfile extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the HTTP listener resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -180,7 +186,7 @@ public final class ApplicationGatewaySslProfile extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

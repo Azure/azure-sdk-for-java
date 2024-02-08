@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A DDoS protection plan in a resource group. */
+/**
+ * A DDoS protection plan in a resource group.
+ */
 @Fluent
 public final class DdosProtectionPlanInner extends Resource {
     /*
@@ -27,13 +29,15 @@ public final class DdosProtectionPlanInner extends Resource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of DdosProtectionPlanInner class. */
+    /**
+     * Creates an instance of DdosProtectionPlanInner class.
+     */
     public DdosProtectionPlanInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the DDoS protection plan.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DdosProtectionPlanPropertiesFormat innerProperties() {
@@ -42,21 +46,25 @@ public final class DdosProtectionPlanInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DdosProtectionPlanInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DdosProtectionPlanInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -67,7 +75,7 @@ public final class DdosProtectionPlanInner extends Resource {
      * Get the resourceGuid property: The resource GUID property of the DDoS protection plan resource. It uniquely
      * identifies the resource, even if the user changes its name or migrate the resource across subscriptions or
      * resource groups.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -76,7 +84,7 @@ public final class DdosProtectionPlanInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the DDoS protection plan resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -86,7 +94,7 @@ public final class DdosProtectionPlanInner extends Resource {
     /**
      * Get the publicIpAddresses property: The list of public IPs associated with the DDoS protection plan resource.
      * This list is read-only.
-     *
+     * 
      * @return the publicIpAddresses value.
      */
     public List<SubResource> publicIpAddresses() {
@@ -94,9 +102,9 @@ public final class DdosProtectionPlanInner extends Resource {
     }
 
     /**
-     * Get the virtualNetworks property: The list of virtual networks associated with the DDoS protection plan resource.
-     * This list is read-only.
-     *
+     * Get the virtualNetworks property: The list of virtual networks associated with the DDoS protection plan
+     * resource. This list is read-only.
+     * 
      * @return the virtualNetworks value.
      */
     public List<SubResource> virtualNetworks() {
@@ -105,7 +113,7 @@ public final class DdosProtectionPlanInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

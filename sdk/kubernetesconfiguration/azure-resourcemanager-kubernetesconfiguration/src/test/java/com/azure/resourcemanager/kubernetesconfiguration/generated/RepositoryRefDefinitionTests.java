@@ -14,26 +14,26 @@ public final class RepositoryRefDefinitionTests {
         RepositoryRefDefinition model =
             BinaryData
                 .fromString(
-                    "{\"branch\":\"ysszdnrujqguh\",\"tag\":\"ouqfprwz\",\"semver\":\"nguitnwuizgazxu\",\"commit\":\"zuckyfi\"}")
+                    "{\"branch\":\"bnbdxkqpxokajion\",\"tag\":\"mexgstxgcp\",\"semver\":\"gmaajrm\",\"commit\":\"jwzrl\"}")
                 .toObject(RepositoryRefDefinition.class);
-        Assertions.assertEquals("ysszdnrujqguh", model.branch());
-        Assertions.assertEquals("ouqfprwz", model.tag());
-        Assertions.assertEquals("nguitnwuizgazxu", model.semver());
-        Assertions.assertEquals("zuckyfi", model.commit());
+        Assertions.assertEquals("bnbdxkqpxokajion", model.branch());
+        Assertions.assertEquals("mexgstxgcp", model.tag());
+        Assertions.assertEquals("gmaajrm", model.semver());
+        Assertions.assertEquals("jwzrl", model.commit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RepositoryRefDefinition model =
             new RepositoryRefDefinition()
-                .withBranch("ysszdnrujqguh")
-                .withTag("ouqfprwz")
-                .withSemver("nguitnwuizgazxu")
-                .withCommit("zuckyfi");
+                .withBranch("bnbdxkqpxokajion")
+                .withTag("mexgstxgcp")
+                .withSemver("gmaajrm")
+                .withCommit("jwzrl");
         model = BinaryData.fromObject(model).toObject(RepositoryRefDefinition.class);
-        Assertions.assertEquals("ysszdnrujqguh", model.branch());
-        Assertions.assertEquals("ouqfprwz", model.tag());
-        Assertions.assertEquals("nguitnwuizgazxu", model.semver());
-        Assertions.assertEquals("zuckyfi", model.commit());
+        Assertions.assertEquals("bnbdxkqpxokajion", model.branch());
+        Assertions.assertEquals("mexgstxgcp", model.tag());
+        Assertions.assertEquals("gmaajrm", model.semver());
+        Assertions.assertEquals("jwzrl", model.commit());
     }
 }
