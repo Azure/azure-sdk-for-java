@@ -18,7 +18,6 @@ public interface ObjectSerializer {
      * @param data The byte array.
      * @param typeReference {@link TypeReference} representing the object.
      * @param <T> Type of the object.
-     *
      * @return The object represented by the deserialized byte array.
      */
     <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference);
@@ -29,7 +28,6 @@ public interface ObjectSerializer {
      * @param stream {@link InputStream} of data.
      * @param typeReference {@link TypeReference} representing the object.
      * @param <T> Type of the object.
-     *
      * @return The object represented by the deserialized stream.
      */
     <T> T deserializeFromStream(InputStream stream, TypeReference<T> typeReference);
@@ -38,7 +36,6 @@ public interface ObjectSerializer {
      * Serializes an object into a byte array.
      *
      * @param value The object to serialize.
-     *
      * @return The binary representation of the serialized object.
      */
     byte[] serializeToBytes(Object value);

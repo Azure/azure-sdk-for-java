@@ -47,7 +47,6 @@ public final class HttpResponseDecoder {
         private final ObjectSerializer serializer;
         private final HttpResponseDecodeData decodeData;
         private Object bodyCached;
-        private Object headersCached;
 
         /**
          * Creates HttpDecodedResponse. Package private Ctr.
