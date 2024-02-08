@@ -1151,8 +1151,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             // loop through the even
             JsonNode event = null;
             for (int j = 0; j < transportRequestTimeline.size(); j++) {
-                if (transportRequestTimeline.get(i).get("eventName").asText().equals(eventName.getEventName())) {
-                    event = transportRequestTimeline.get(i);
+                if (transportRequestTimeline.get(j).get("eventName").asText().equals(eventName.getEventName())) {
+                    event = transportRequestTimeline.get(j);
                     break;
                 }
             }
