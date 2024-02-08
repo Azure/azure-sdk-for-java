@@ -87,6 +87,7 @@ public class ImageBuilderManagerTests extends TestBase {
     @DoNotRecord(skipInPlayback = true)
     public void testCreateImageTemplate() {
         ImageTemplate imageTemplate = null;
+        Identity identity = null;
         try {
             String randomPadding = randomPadding();
             String templateName = "template" + randomPadding;
@@ -94,7 +95,7 @@ public class ImageBuilderManagerTests extends TestBase {
             String identityName = "identity" + randomPadding;
             String imageId = resourceManager.resourceGroups().getByName(resourceGroupName).id() + "/providers/Microsoft.Compute/images/" + imageName;
 
-            Identity identity = msiManager.identities()
+            identity = msiManager.identities()
                 .define(identityName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
@@ -135,6 +136,9 @@ public class ImageBuilderManagerTests extends TestBase {
         } finally {
             if (imageTemplate != null) {
                 imageBuilderManager.virtualMachineImageTemplates().deleteById(imageTemplate.id());
+            }
+            if (identity != null) {
+                msiManager.identities().deleteById(identity.id());
             }
         }
     }
