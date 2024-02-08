@@ -13,10 +13,10 @@ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private[spark] case class TransientIOErrorsRetryingReadManyIterator[TSparkRow]
+private[spark] class TransientIOErrorsRetryingReadManyIterator[TSparkRow]
 (
   val container: CosmosAsyncContainer,
-  val readManyFilterList: List[CosmosItemIdentity],
+  val readManyFilterList: Iterator[CosmosItemIdentity],
   val queryOptions: CosmosQueryRequestOptions,
   val pageSize: Int,
   val operationContextAndListener: Option[OperationContextAndListenerTuple],

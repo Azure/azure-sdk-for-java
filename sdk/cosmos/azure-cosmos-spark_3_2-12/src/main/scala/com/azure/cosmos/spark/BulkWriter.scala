@@ -546,6 +546,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
     bulkOperationResponseFlux.subscribe(
       resp => {
         val isGettingRetried = new AtomicBoolean(false)
+        val shouldSkipTaskCompletion = new AtomicBoolean(false)
         try {
           val itemOperation = resp.getOperation
           val itemOperationFound = activeBulkWriteOperations.remove(itemOperation)
@@ -558,8 +559,9 @@ private class BulkWriter(container: CosmosAsyncContainer,
           if (!itemOperationFound) {
             // can't find the item operation in list of active operations!
             log.logInfo(s"Cannot find active operation for '${itemOperation.getOperationType} " +
-            s"${itemOperation.getPartitionKeyValue}/${itemOperation.getId}'. This can happen when " +
-            s"retries get re-enqueued.")
+              s"${itemOperation.getPartitionKeyValue}/${itemOperation.getId}'. This can happen when " +
+              s"retries get re-enqueued.")
+            shouldSkipTaskCompletion.set(true)
           }
           if (pendingRetriesFound || itemOperationFound) {
             val context = itemOperation.getContext[OperationContext]
@@ -594,7 +596,9 @@ private class BulkWriter(container: CosmosAsyncContainer,
           }
         }
 
-        markTaskCompletion()
+        if (!shouldSkipTaskCompletion.get) {
+          markTaskCompletion()
+        }
       },
       errorConsumer = Option.apply(
         ex => {
@@ -1024,7 +1028,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
           }
 
           log.logInfo(s"invoking bulkInputEmitter.onComplete(), Context: ${operationContext.toString} $getThreadInfo")
-          semaphore.release(activeTasks.get())
+          semaphore.release(Math.max(0, activeTasks.get()))
           val completeBulkWriteEmitResult = bulkInputEmitter.tryEmitComplete()
           if (completeBulkWriteEmitResult eq Sinks.EmitResult.OK) {
             log.logDebug(s"bulkInputEmitter sink completed, Context: ${operationContext.toString} $getThreadInfo")
@@ -1050,7 +1054,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
 
           throwIfCapturedExceptionExists()
 
-          assume(activeTasks.get() == 0)
+          assume(activeTasks.get() <= 0)
           assume(activeBulkWriteOperations.isEmpty)
           assume(activeReadManyOperations.isEmpty)
           assume(semaphore.availablePermits() >= maxPendingOperations)

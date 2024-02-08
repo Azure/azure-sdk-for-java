@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.core.management.AzureEnvironment
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
@@ -24,7 +23,7 @@ private[spark] case class CosmosClientConfiguration (
                                                       subscriptionId: Option[String],
                                                       tenantId: Option[String],
                                                       resourceGroupName: Option[String],
-                                                      azureEnvironment: AzureEnvironment,
+                                                      azureEnvironmentEndpoints: java.util.Map[String, String],
                                                       sparkEnvironmentInfo: String)
 
 private[spark] object CosmosClientConfiguration {
@@ -77,7 +76,7 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.subscriptionId,
       cosmosAccountConfig.tenantId,
       cosmosAccountConfig.resourceGroupName,
-      cosmosAccountConfig.azureEnvironment,
+      cosmosAccountConfig.azureEnvironmentEndpoints,
       sparkEnvironmentInfo)
   }
 
