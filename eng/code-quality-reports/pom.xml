@@ -33,6 +33,7 @@
   <dependencies>
 
     <!-- Transient Direct Dependency until bump to Java 11 baseline -->
+    <!-- Necessary because com.puppycrawl.tools:checkstyle:10+ requires Java 11 -->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
