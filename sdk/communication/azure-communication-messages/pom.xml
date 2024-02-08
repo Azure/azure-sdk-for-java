@@ -17,7 +17,7 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-messages;current} -->
   <packaging>jar</packaging>
 
-  <name>>Microsoft Azure client library for Azure Communication Services - Messaging application</name>
+  <name>Microsoft Azure client library for Azure Communication Services - Messaging application</name>
   <description>The Advance Messaging in Azure Communication Service is used to send messages (text, template and media) to different channels (e.g. WhatsApp).</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
