@@ -30,7 +30,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -45,11 +44,7 @@ import static com.azure.core.test.utils.TestUtils.toURI;
  * Base class for running live and playback tests using {@link InterceptorManager}.
  */
 public abstract class TestBase implements BeforeEachCallback {
-
-    private static final ClientLogger LOGGER = new ClientLogger(TestBase.class);
-
     private static final String AZURE_TEST_DEBUG = "AZURE_TEST_DEBUG";
-
 
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
@@ -292,27 +287,13 @@ public abstract class TestBase implements BeforeEachCallback {
         }
 
         List<HttpClient> httpClientsToTest = new ArrayList<>();
-        ServiceLoader<HttpClientProvider> httpClientLoader = ServiceLoader.load(HttpClientProvider.class);
-        Iterator<HttpClientProvider> httpClientProviderIterator = httpClientLoader.iterator();
-        while (httpClientProviderIterator.hasNext()) {
-            String simpleName;
-            HttpClientProvider httpClientProvider;
-            try {
-                httpClientProvider = httpClientProviderIterator.next();
-                simpleName = httpClientProvider.getClass().getSimpleName();
-                if (includeHttpClientOrHttpClientProvider(simpleName.toLowerCase(Locale.ROOT))) {
-                    httpClientsToTest.add(httpClientProvider.createInstance());
-                }
-            } catch (UnsupportedOperationException exception) {
-                // The JDK HttpClient in combination with the Azure SDK for Java is only supported with JDK 12 and higher.
-                if ("JdkAsyncHttpClient is not supported in Java version 11 and below.".equals(exception.getMessage())) {
-                    // Skip testing the JDK HttpClient if the current Java version is 11 or lower.
-                    continue;
-                } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(exception));
-                }
+        for (HttpClientProvider httpClientProvider : ServiceLoader.load(HttpClientProvider.class)) {
+            if (includeHttpClientOrHttpClientProvider(httpClientProvider.getClass().getSimpleName()
+                .toLowerCase(Locale.ROOT))) {
+                httpClientsToTest.add(httpClientProvider.createInstance());
             }
         }
+
         return httpClientsToTest.stream();
     }
 

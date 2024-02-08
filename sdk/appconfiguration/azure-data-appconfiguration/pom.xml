@@ -129,12 +129,12 @@
         </dependency>
       </dependencies>
     </profile>
+
     <profile>
       <id>java9plus</id>
       <activation>
         <jdk>[9,)</jdk>
       </activation>
-
       <build>
         <plugins>
           <plugin>

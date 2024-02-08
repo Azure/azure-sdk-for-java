@@ -274,8 +274,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     public void getEndpointAtClientInstance() {
         ConfigurationClientBuilder configurationClientBuilder = new ConfigurationClientBuilder()
                                                                           .connectionString(FAKE_CONNECTION_STRING);
-        final ConfigurationClient client = configurationClientBuilder
-            .buildClient();
+        final ConfigurationClient client = configurationClientBuilder.buildClient();
         final ConfigurationAsyncClient asyncClient = configurationClientBuilder.buildAsyncClient();
         assertEquals("https://localhost:8080", client.getEndpoint());
         assertEquals("https://localhost:8080", asyncClient.getEndpoint());
