@@ -85,7 +85,7 @@ public final class HttpResponseBodyDecoder {
                 return null;
             }
 
-            byte[] bodyAsByteArray = body == null ? httpResponse.getBodyAsBinaryData().toBytes() : body;
+            byte[] bodyAsByteArray = body == null ? httpResponse.getBody().toBytes() : body;
 
             try {
                 return deserializeBody(bodyAsByteArray, extractEntityTypeFromReturnType(decodeData),

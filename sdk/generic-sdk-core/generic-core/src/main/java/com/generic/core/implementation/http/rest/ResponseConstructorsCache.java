@@ -101,8 +101,9 @@ public final class ResponseConstructorsCache {
      * @param bodyAsObject The HTTP response body.
      * @return An instance of the {@link Response} implementation.
      */
-    public Response<?> invoke(ReflectiveInvoker reflectiveInvoker, HttpResponseDecoder.HttpDecodedResponse decodedResponse,
-        Object bodyAsObject) {
+    public Response<?> invoke(ReflectiveInvoker reflectiveInvoker,
+                              HttpResponseDecoder.HttpDecodedResponse decodedResponse,
+                              Object bodyAsObject) {
         final HttpResponse<?> httpResponse = null;
         final HttpRequest httpRequest = httpResponse.getRequest();
         final int responseStatusCode = httpResponse.getStatusCode();
@@ -120,7 +121,8 @@ public final class ResponseConstructorsCache {
         }
     }
 
-    private static Response<?> constructResponse(ReflectiveInvoker reflectiveInvoker, String exceptionMessage, Object... params) {
+    private static Response<?> constructResponse(ReflectiveInvoker reflectiveInvoker, String exceptionMessage,
+                                                 Object... params) {
         try {
             return (Response<?>) reflectiveInvoker.invokeStatic(params);
         } catch (Exception exception) {

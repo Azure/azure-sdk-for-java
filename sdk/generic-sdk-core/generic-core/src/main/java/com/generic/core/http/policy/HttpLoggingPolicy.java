@@ -371,7 +371,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         private LoggingHttpResponse(HttpResponse<T> actualResponse, ClientLogger.LoggingEventBuilder logBuilder,
                                     ClientLogger logger, int contentLength, String contentTypeHeader) {
-            super(actualResponse.getRequest(), actualResponse.getStatusCode(), actualResponse.getBody());
+            super(actualResponse.getRequest(), actualResponse.getStatusCode(), actualResponse.getValue());
 
             this.actualResponse = actualResponse;
             this.logBuilder = logBuilder;
@@ -391,15 +391,15 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        public T getBody() {
-            doLog(super.getBodyAsBinaryData().toString());
+        public T getValue() {
+            doLog(super.getBody().toString());
 
-            return actualResponse.getBody();
+            return actualResponse.getValue();
         }
 
         @Override
-        public BinaryData getBodyAsBinaryData() {
-            BinaryData content = super.getBodyAsBinaryData();
+        public BinaryData getBody() {
+            BinaryData content = super.getBody();
 
             doLog(content.toString());
 

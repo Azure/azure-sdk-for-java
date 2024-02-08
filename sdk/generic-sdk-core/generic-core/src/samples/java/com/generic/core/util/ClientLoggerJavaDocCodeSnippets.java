@@ -4,7 +4,7 @@
 package com.generic.core.util;
 
 import com.generic.core.http.Response;
-import com.generic.core.implementation.http.SimpleResponse;
+import com.generic.core.http.models.HttpResponse;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,12 +15,10 @@ import java.util.Map;
  * Code snippets for {@link ClientLogger} javadocs
  */
 public class ClientLoggerJavaDocCodeSnippets {
-
     /**
      * Code snippets to show usage of {@link ClientLogger} at all log levels
      */
     public void loggingSnippets() {
-
         ClientLogger logger = new ClientLogger(ClientLoggerJavaDocCodeSnippets.class);
         String name = getName();
 
@@ -109,7 +107,7 @@ public class ClientLoggerJavaDocCodeSnippets {
         }
         // END: com.generic.core.util.logging.clientlogger.atError#deffered-value
 
-        Response<Void> response = getResponse();
+        Response<Void> response = new HttpResponse<>(null, 200, null, null);
         // BEGIN: com.generic.core.util.logging.clientlogger.atLevel
         ClientLogger.LogLevel level = response.getStatusCode() == 200
             ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;
@@ -138,10 +136,6 @@ public class ClientLoggerJavaDocCodeSnippets {
             .addKeyValue("key", new LoggableObject("string representation"))
             .log("Param 1: {}, Param 2: {}, Param 3: {}", "param1", "param2", "param3");
         // END: com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object
-    }
-
-    private Response<Void> getResponse() {
-        return new SimpleResponse<>(null, 200, null, null);
     }
 
     /**

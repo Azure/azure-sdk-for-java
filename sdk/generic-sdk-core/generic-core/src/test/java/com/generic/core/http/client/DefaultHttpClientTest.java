@@ -68,7 +68,6 @@ public class DefaultHttpClientTest {
                 resp.getOutputStream().write(SHORT_BODY);
             } else if (get && RETURN_HEADERS_AS_IS_PATH.equals(path)) {
                 List<String> headerNames = Collections.list(req.getHeaderNames());
-
                 headerNames.forEach(headerName -> {
                     List<String> headerValues = Collections.list(req.getHeaders(headerName));
                     headerValues.forEach(headerValue -> resp.addHeader(headerName, headerValue));
@@ -100,7 +99,7 @@ public class DefaultHttpClientTest {
         try (HttpResponse<?> response = doRequest(client, "/error")) {
             assertEquals(500, response.getStatusCode());
 
-            String responseBodyAsString = response.getBodyAsBinaryData().toString();
+            String responseBodyAsString = response.getBody().toString();
 
             assertTrue(responseBodyAsString.contains("error"));
         }
@@ -117,7 +116,7 @@ public class DefaultHttpClientTest {
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
                 try (HttpResponse<?> response = doRequest(client, "/error")) {
-                    byte[] body = response.getBodyAsBinaryData().toBytes();
+                    byte[] body = response.getBody().toBytes();
 
                     assertArraysEqual(LONG_BODY, body);
 
@@ -128,7 +127,6 @@ public class DefaultHttpClientTest {
 
         pool.invokeAll(requests);
         pool.shutdown();
-
         assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
     }
 
@@ -170,7 +168,7 @@ public class DefaultHttpClientTest {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse<?> response = getResponse(client, "/short", Context.NONE)) {
-            assertArrayEquals(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
         }
     }
 
@@ -179,7 +177,7 @@ public class DefaultHttpClientTest {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse<?> response = getResponse(client, "/empty", Context.NONE)) {
-            assertEquals(0L, response.getBodyAsBinaryData().getLength());
+            assertEquals(0L, response.getBody().getLength());
         }
     }
 
@@ -194,7 +192,7 @@ public class DefaultHttpClientTest {
 
         //noinspection RedundantExplicitVariableType
         try (HttpResponse<?> response = client.send(request)) {
-            assertArrayEquals(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
         }
     }
 
@@ -227,7 +225,7 @@ public class DefaultHttpClientTest {
 
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new DefaultHttpClientBuilder().build();
-        byte[] response = doRequest(client, path).getBodyAsBinaryData().toBytes();
+        byte[] response = doRequest(client, path).getBody().toBytes();
 
         assertArrayEquals(expectedBody, response);
     }

@@ -30,12 +30,12 @@ public final class OkHttpResponse extends OkHttpResponseBase<BinaryData> {
     }
 
     @Override
-    public BinaryData getBody() {
-        return getBodyAsBinaryData();
+    public BinaryData getValue() {
+        return getBody();
     }
 
     @Override
-    public BinaryData getBodyAsBinaryData() {
+    public BinaryData getBody() {
         if (bodyBinaryData == null) {
             bodyBinaryData = BinaryData.fromStream(this.responseBody.byteStream());
         }

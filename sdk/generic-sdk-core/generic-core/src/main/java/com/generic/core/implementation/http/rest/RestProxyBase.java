@@ -14,7 +14,6 @@ import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.ContentType;
-import com.generic.core.implementation.http.SimpleResponse;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.http.serializer.MalformedValueException;
@@ -95,21 +94,20 @@ public abstract class RestProxyBase {
 
     @SuppressWarnings("unchecked")
     public Response<?> createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
-                                   Object bodyAsObject) {
-        final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
+                                      Object bodyAsObject) {
+        final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
         final HttpResponse<?> httpResponse = response.getSourceResponse();
         final HttpRequest request = httpResponse.getRequest();
         final int statusCode = httpResponse.getStatusCode();
         final Headers headers = httpResponse.getHeaders();
 
         // Inspection of the response type needs to be performed to determine which course of action should be taken to
-        // instantiate the Response<?> from the HttpResponse.
+        // instantiate the Response<?>.
         //
-        // If the type is either the Response or PagedResponse interface from azure-core a new instance of either
-        // ResponseBase or PagedResponseBase can be returned.
-        if (cls.equals(Response.class)) {
-            // For Response return a new instance of SimpleResponse cast to the class.
-            return cls.cast(new SimpleResponse<>(request, statusCode, headers, bodyAsObject));
+        // If the type is the Response interface from generic-core we can simply return a new instance of HttpResponse.
+        if (clazz.equals(Response.class)) {
+            // For Response return a new instance of HttpResponse cast to the class.
+            return clazz.cast(new HttpResponse<>(request, statusCode, headers, bodyAsObject));
         }
 
         // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response subtype.
@@ -117,7 +115,7 @@ public abstract class RestProxyBase {
         // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should be
         // given a way to register their constructor as a callback method that consumes HttpDecodedResponse and the body
         // as an Object.
-        ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
+        ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(clazz);
 
         return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
     }

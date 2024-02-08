@@ -14,10 +14,10 @@ import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.exception.HttpExceptionType;
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
+import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.implementation.TypeUtil;
-import com.generic.core.implementation.http.SimpleResponse;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.implementation.util.DateTimeRfc1123;
@@ -25,9 +25,9 @@ import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.Header;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.models.SimpleClass;
-import com.generic.core.http.models.RequestOptions;
 import com.generic.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -742,15 +742,15 @@ public class SwaggerMethodParserTests {
         return TypeUtil.createParameterizedType(Response.class, genericType);
     }
 
-    private static final class VoidResponse extends SimpleResponse<Void> {
+    private static final class VoidResponse extends HttpResponse<Void> {
         VoidResponse(Response<?> response, Void value) {
-            super(response, value);
+            super(response.getRequest(), response.getStatusCode(), value);
         }
     }
 
-    private static final class StringResponse extends SimpleResponse<String> {
+    private static final class StringResponse extends HttpResponse<String> {
         StringResponse(Response<?> response, String value) {
-            super(response, value);
+            super(response.getRequest(), response.getStatusCode(), value);
         }
     }
 

@@ -6,7 +6,6 @@ package com.generic.core.implementation.http.rest;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.implementation.http.SimpleResponse;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
@@ -23,7 +22,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Optional;
 
-class ResponseConstructorsCacheBenchMarkTestData {
+class ResponseConstructorsCacheBenchmarkTestData {
     // Model type for Http content
     static final class Foo {
         private String name;
@@ -50,14 +49,14 @@ class ResponseConstructorsCacheBenchMarkTestData {
     }
 
     // 1. final VoidResponse               (Ctr_args: 3)
-    static final class VoidResponse extends SimpleResponse<Void> {
+    static final class VoidResponse extends HttpResponse<Void> {
         VoidResponse(HttpRequest request, int statusCode, Headers headers, Void value) {
             super(request, statusCode, headers, value);
         }
     }
 
     // 2. SimpleResponse<Foo> Type         (Ctr_args: 4)
-    static final class FooSimpleResponse extends SimpleResponse<Foo> {
+    static final class FooSimpleResponse extends HttpResponse<Foo> {
         FooSimpleResponse(HttpRequest request, int statusCode, Headers headers, Foo value) {
             super(request, statusCode, headers, value);
         }
@@ -96,7 +95,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
     // ARRAY HOLDING TEST DATA
     private final Input[] inputs;
 
-    ResponseConstructorsCacheBenchMarkTestData() {
+    ResponseConstructorsCacheBenchmarkTestData() {
         this.inputs = new Input[4];
         this.inputs[0] = new Input(RESPONSE_DECODER, FooService.class, "getVoidResponse", VOID_RESPONSE, null);
         this.inputs[1] = new Input(RESPONSE_DECODER, FooService.class, "getFooSimpleResponse", FOO_RESPONSE, FOO);

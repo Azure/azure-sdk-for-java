@@ -17,9 +17,9 @@ public final class OkHttpBufferedResponse extends OkHttpResponseBase<byte[]> {
     }
 
     @Override
-    public BinaryData getBodyAsBinaryData() {
+    public BinaryData getBody() {
         if (bodyBinaryData == null) {
-            bodyBinaryData = BinaryData.fromBytes(body);
+            bodyBinaryData = BinaryData.fromBytes(value);
         }
 
         return bodyBinaryData;

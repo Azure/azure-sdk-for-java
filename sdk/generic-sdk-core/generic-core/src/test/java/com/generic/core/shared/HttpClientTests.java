@@ -263,10 +263,10 @@ public abstract class HttpClientTests {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
         Supplier<HttpResponse<?>> responseSupplier = () -> createHttpClient().send(request);
 
-        assertEquals(requestBody.toString(), responseSupplier.get().getBodyAsBinaryData().toString());
-        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsBinaryData().toBytes());
-        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsBinaryData().toBytes());
-        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsBinaryData().toBytes());
+        assertEquals(requestBody.toString(), responseSupplier.get().getBody().toString());
+        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBody().toBytes());
+        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBody().toBytes());
+        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBody().toBytes());
     }
 
     /**
@@ -280,17 +280,17 @@ public abstract class HttpClientTests {
 
         try (HttpResponse<?> response = createHttpClient().send(request)) {
             // Read response twice using all accessors.
-            assertEquals(requestBody.toString(), response.getBodyAsBinaryData().toString());
-            assertEquals(requestBody.toString(), response.getBodyAsBinaryData().toString());
+            assertEquals(requestBody.toString(), response.getBody().toString());
+            assertEquals(requestBody.toString(), response.getBody().toString());
 
-            assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
-            assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
+            assertArrayEquals(requestBody.toBytes(), response.getBody().toBytes());
+            assertArrayEquals(requestBody.toBytes(), response.getBody().toBytes());
 
-            assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
-            assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
+            assertArrayEquals(requestBody.toBytes(), response.getBody().toBytes());
+            assertArrayEquals(requestBody.toBytes(), response.getBody().toBytes());
 
-            assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
-            assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
+            assertArrayEquals(requestBody.toBytes(), response.getBody().toBytes());
+            assertArrayEquals(requestBody.toBytes(), response.getBody().toBytes());
         }
     }
 
@@ -321,7 +321,7 @@ public abstract class HttpClientTests {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
 
         try (HttpResponse<?> response = createHttpClient().send(request)) {
-            assertArrayEquals(expectedResponseBody, response.getBodyAsBinaryData().toBytes());
+            assertArrayEquals(expectedResponseBody, response.getBody().toBytes());
         }
     }
 
@@ -417,7 +417,7 @@ public abstract class HttpClientTests {
         HttpResponse<?> httpResponse = createHttpClient()
             .send(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)));
 
-        return httpResponse.getBodyAsBinaryData();
+        return httpResponse.getBody();
     }
 
     /**

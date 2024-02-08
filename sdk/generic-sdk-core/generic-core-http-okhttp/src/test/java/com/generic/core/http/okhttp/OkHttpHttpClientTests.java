@@ -110,7 +110,7 @@ public class OkHttpHttpClientTests {
         HttpClient client = new OkHttpHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
 
-        assertThrows(UncheckedIOException.class, () -> client.send(request).getBodyAsBinaryData().toBytes());
+        assertThrows(UncheckedIOException.class, () -> client.send(request).getBody().toBytes());
     }
 
     @SuppressWarnings("rawtypes")
@@ -125,7 +125,7 @@ public class OkHttpHttpClientTests {
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
                 try (HttpResponse response = doRequest(client, "/long")) {
-                    byte[] body = response.getBodyAsBinaryData().toBytes();
+                    byte[] body = response.getBody().toBytes();
                     TestUtils.assertArraysEqual(LONG_BODY, body);
 
                     return null;
@@ -189,7 +189,7 @@ public class OkHttpHttpClientTests {
 
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new OkHttpHttpClientBuilder().build();
-        byte[] bytes = doRequest(client, path).getBodyAsBinaryData().toBytes();
+        byte[] bytes = doRequest(client, path).getBody().toBytes();
 
         assertArrayEquals(expectedBody, bytes);
     }

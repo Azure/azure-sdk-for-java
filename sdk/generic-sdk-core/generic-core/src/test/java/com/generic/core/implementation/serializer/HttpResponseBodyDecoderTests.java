@@ -79,7 +79,7 @@ public class HttpResponseBodyDecoderTests {
     @MethodSource("errorResponseSupplier")
     public void errorResponse(HttpResponse<Object> httpResponse, HttpResponseDecodeData decodeData,
                               boolean isEmpty, Object expected) {
-        BinaryData body = httpResponse.getBodyAsBinaryData();
+        BinaryData body = httpResponse.getBody();
         HttpResponseBodyDecoder.decodeByteArray(body.toBytes(), httpResponse, SERIALIZER, decodeData);
 
         if (!isEmpty) {
@@ -172,7 +172,7 @@ public class HttpResponseBodyDecoderTests {
     @ParameterizedTest
     @MethodSource("decodableResponseSupplier")
     public void decodableResponse(HttpResponse<Object> response, HttpResponseDecodeData decodeData, Object expected) {
-        BinaryData body = response.getBodyAsBinaryData();
+        BinaryData body = response.getBody();
         Object actual = HttpResponseBodyDecoder.decodeByteArray(body.toBytes(), response, SERIALIZER, decodeData);
 
         assertEquals(expected, actual);
@@ -230,7 +230,7 @@ public class HttpResponseBodyDecoderTests {
         List<Base64Url> base64Urls = Arrays.asList(new Base64Url("base"), new Base64Url("64"));
         HttpResponse<?> response = new MockHttpResponse(GET_REQUEST, 200, base64Urls);
 
-        BinaryData body = response.getBodyAsBinaryData();
+        BinaryData body = response.getBody();
         Object actual = HttpResponseBodyDecoder.decodeByteArray(body.toBytes(), response, SERIALIZER, decodeData);
 
         assertTrue(actual instanceof List);

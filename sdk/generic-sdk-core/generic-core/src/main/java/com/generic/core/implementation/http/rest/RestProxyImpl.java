@@ -104,7 +104,7 @@ public class RestProxyImpl extends RestProxyBase {
         }
 
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
-        BinaryData responseData = decodedResponse.getSourceResponse().getBodyAsBinaryData();
+        BinaryData responseData = decodedResponse.getSourceResponse().getBody();
         byte[] responseBytes = responseData == null ? null : responseData.toBytes();
         if (responseBytes == null || responseBytes.length == 0) {
             // No body, create exception empty content string no exception body object.
@@ -155,7 +155,7 @@ public class RestProxyImpl extends RestProxyBase {
             result = (responseStatusCode / 100) == 2;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // byte[]
-            BinaryData binaryData = response.getSourceResponse().getBodyAsBinaryData();
+            BinaryData binaryData = response.getSourceResponse().getBody();
             byte[] responseBodyBytes = binaryData != null ? binaryData.toBytes() : null;
             if (returnValueWireType == Base64Url.class) {
                 // Base64Url
@@ -163,7 +163,7 @@ public class RestProxyImpl extends RestProxyBase {
             }
             result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
-            result = response.getSourceResponse().getBodyAsBinaryData().toStream();
+            result = response.getSourceResponse().getBody().toStream();
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // BinaryData
             //
@@ -171,7 +171,7 @@ public class RestProxyImpl extends RestProxyBase {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            result = response.getSourceResponse().getBodyAsBinaryData();
+            result = response.getSourceResponse().getBody();
         } else {
             // Object or Page<T>
             result = response.getDecodedBody(null);

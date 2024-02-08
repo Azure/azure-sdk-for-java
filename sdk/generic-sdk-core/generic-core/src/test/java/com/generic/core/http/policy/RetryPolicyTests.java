@@ -14,9 +14,8 @@ import com.generic.core.implementation.http.policy.ExponentialBackoff;
 import com.generic.core.implementation.http.policy.FixedDelay;
 import com.generic.core.implementation.http.policy.RetryStrategy;
 import com.generic.core.implementation.util.DateTimeRfc1123;
-import com.generic.core.models.Headers;
 import com.generic.core.models.HeaderName;
-
+import com.generic.core.models.Headers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

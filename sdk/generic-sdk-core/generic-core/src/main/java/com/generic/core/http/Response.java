@@ -4,7 +4,7 @@
 package com.generic.core.http;
 
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.implementation.http.SimpleResponse;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.models.Headers;
 
 /**
@@ -53,6 +53,6 @@ public interface Response<T> {
      * @return A default {@link Response} implementation.
      */
     static <T> Response<T> create(HttpRequest request, int statusCode, Headers headers, T value) {
-        return new SimpleResponse<>(request, statusCode, headers, value);
+        return new HttpResponse<>(request, statusCode, headers, value);
     }
 }
