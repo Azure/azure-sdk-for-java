@@ -149,6 +149,8 @@
     "sdk/eventhubs/azure-messaging-eventhubs/**",
     "sdk/eventhubs/azure-messaging-eventhubs-stress/Dockerfile",
     "sdk/eventgrid/azure-messaging-eventgrid/**",
+    "sdk/generic-sdk-core/generic-core/**",
+    "sdk/generic-sdk-core/generic-core-http-okhttp/**",
     "sdk/cosmos/azure-cosmos/**",
     "sdk/cosmos/azure-cosmos-test/**",
     "sdk/identity/azure-identity/**",
