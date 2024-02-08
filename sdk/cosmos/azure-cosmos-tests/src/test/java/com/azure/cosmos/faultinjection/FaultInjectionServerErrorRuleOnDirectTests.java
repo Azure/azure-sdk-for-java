@@ -1060,7 +1060,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             for (CosmosDiagnostics cosmosDiagnostics : results) {
                 this.validateTransportTimelineLatency(
                     RequestTimeline.EventName.CHANNEL_ACQUISITION_STARTED,
-                    4 * 2000,
+                    2 * 2000,
                     cosmosDiagnostics);
             }
         } finally {
