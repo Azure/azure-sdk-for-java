@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Supported deployment runtime version descriptor. */
+/**
+ * Supported deployment runtime version descriptor.
+ */
 @Fluent
 public final class SupportedRuntimeVersion {
     /*
@@ -17,8 +19,7 @@ public final class SupportedRuntimeVersion {
     private SupportedRuntimeValue value;
 
     /*
-     * The platform of this runtime version (possible values: "Java" or
-     * ".NET").
+     * The platform of this runtime version (possible values: "Java" or ".NET").
      */
     @JsonProperty(value = "platform")
     private SupportedRuntimePlatform platform;
@@ -30,8 +31,14 @@ public final class SupportedRuntimeVersion {
     private String version;
 
     /**
+     * Creates an instance of SupportedRuntimeVersion class.
+     */
+    public SupportedRuntimeVersion() {
+    }
+
+    /**
      * Get the value property: The raw value which could be passed to deployment CRUD operations.
-     *
+     * 
      * @return the value value.
      */
     public SupportedRuntimeValue value() {
@@ -40,7 +47,7 @@ public final class SupportedRuntimeVersion {
 
     /**
      * Set the value property: The raw value which could be passed to deployment CRUD operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the SupportedRuntimeVersion object itself.
      */
@@ -51,7 +58,7 @@ public final class SupportedRuntimeVersion {
 
     /**
      * Get the platform property: The platform of this runtime version (possible values: "Java" or ".NET").
-     *
+     * 
      * @return the platform value.
      */
     public SupportedRuntimePlatform platform() {
@@ -60,7 +67,7 @@ public final class SupportedRuntimeVersion {
 
     /**
      * Set the platform property: The platform of this runtime version (possible values: "Java" or ".NET").
-     *
+     * 
      * @param platform the platform value to set.
      * @return the SupportedRuntimeVersion object itself.
      */
@@ -71,7 +78,7 @@ public final class SupportedRuntimeVersion {
 
     /**
      * Get the version property: The detailed version (major.minor) of the platform.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -80,7 +87,7 @@ public final class SupportedRuntimeVersion {
 
     /**
      * Set the version property: The detailed version (major.minor) of the platform.
-     *
+     * 
      * @param version the version value to set.
      * @return the SupportedRuntimeVersion object itself.
      */
@@ -91,7 +98,7 @@ public final class SupportedRuntimeVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

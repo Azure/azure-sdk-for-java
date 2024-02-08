@@ -38,9 +38,351 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting data
- * source connections, indexers, or skillsets and running or resetting indexers in an Azure Cognitive Search service.
+ * source connections, indexers, or skillsets and running or resetting indexers in an Azure AI Search service.
  *
+ * <h2>
+ *     Overview
+ * </h2>
+ *
+ * <p>
+ *     Indexers provide indexing automation. An indexer connects to a data source, reads in the data, and passes it to a
+ *     skillset pipeline for indexing into a target search index. Indexers read from an external source using connection
+ *     information in a data source, and serialize the incoming data into JSON search documents. In addition to a data
+ *     source, an indexer also requires an index. The index specifies the fields and attributes of the search documents.
+ * </p>
+ *
+ * <p>
+ *     A skillset adds external processing steps to indexer execution, and is usually used to add AI or deep learning
+ *     models to analyze or transform content to make it searchable in an index. The contents of a skillset are one or
+ *     more skills, which can be <a href="https://learn.microsoft.com/azure/search/cognitive-search-predefined-skills">built-in skills</a>
+ *     created by Microsoft, custom skills, or a combination of both. Built-in skills exist for image analysis,
+ *     including OCR, and natural language processing. Other examples of built-in skills include entity recognition,
+ *     key phrase extraction, chunking text into logical pages, among others. A skillset is high-level standalone object
+ *     that exists on a level equivalent to indexes, indexers, and data sources, but it's operational only within indexer
+ *     processing. As a high-level object, you can design a skillset once, and then reference it in multiple indexers.
+ * </p>
+ *
+ * <p>
+ *     This client provides an asynchronous API for accessing indexers and skillsets. This client allows you to create,
+ *     update, list, or delete indexers and skillsets. It can also be used to run or reset indexers.
+ * </p>
+ *
+ * <h2>
+ *     Getting Started
+ * </h2>
+ *
+ * <p>
+ *     Authenticating and building instances of this client are handled by {@link SearchIndexerClientBuilder}. This
+ *     sample shows you how to authenticate and build this client:
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.instantiation -->
+ * <pre>
+ * SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;admin-key&#125;&quot;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.instantiation -->
+ *
+ * <p>
+ *     For more information on authentication and building, see the {@link SearchIndexerClientBuilder} documentation.
+ * </p>
+ *
+ * <h2>
+ *     Examples
+ * </h2>
+ *
+ * <p>
+ *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
+ *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
+ *         import into your own index from the Azure portal.</a>
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ * </p>
+ *
+ * <h3>
+ *     Create an Indexer
+ * </h3>
+ *
+ * <p>
+ *     The following sample creates an indexer.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createIndexer#SearchIndexer -->
+ * <pre>
+ * SearchIndexer indexer = new SearchIndexer&#40;&quot;example-indexer&quot;, &quot;example-datasource&quot;, &quot;example-index&quot;&#41;;
+ * SearchIndexer createdIndexer = searchIndexerAsyncClient.createIndexer&#40;indexer&#41;.block&#40;&#41;;
+ * if &#40;createdIndexer != null&#41; &#123;
+ *     System.out.printf&#40;&quot;Created indexer name: %s%n&quot;, createdIndexer.getName&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createIndexer#SearchIndexer -->
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient#createIndexer(SearchIndexer)}.
+ * </em>
+ *
+ * <h3>
+ *     List all Indexers
+ * </h3>
+ *
+ * <p>
+ *     The following sample lists all indexers.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listIndexers -->
+ * <pre>
+ * searchIndexerAsyncClient.listIndexers&#40;&#41;.subscribe&#40;indexer -&gt;
+ *     System.out.printf&#40;&quot;Retrieved indexer name: %s%n&quot;, indexer.getName&#40;&#41;&#41;
+ * &#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listIndexers -->
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient#listIndexers()}.
+ * </em>
+ *
+ * <h3>
+ *     Get an Indexer
+ * </h3>
+ *
+ * <p>
+ *     The following sample gets an indexer.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.getIndexer#String -->
+ * <pre>
+ * SearchIndexer indexer = searchIndexerAsyncClient.getIndexer&#40;&quot;example-indexer&quot;&#41;.block&#40;&#41;;
+ * if &#40;indexer != null&#41; &#123;
+ *     System.out.printf&#40;&quot;Retrieved indexer name: %s%n&quot;, indexer.getName&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.getIndexer#String -->
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient#getIndexer(String)}.
+ * </em>
+ *
+ * <h3>
+ *     Update an Indexer
+ * </h3>
+ *
+ * <p>
+ *     The following sample updates an indexer.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateIndexer#SearchIndexer -->
+ * <pre>
+ * SearchIndexer indexer = searchIndexerAsyncClient.getIndexer&#40;&quot;example-indexer&quot;&#41;.block&#40;&#41;;
+ * if &#40;indexer != null&#41; &#123;
+ *     System.out.printf&#40;&quot;Retrieved indexer name: %s%n&quot;, indexer.getName&#40;&#41;&#41;;
+ *     indexer.setDescription&#40;&quot;This is a new description for this indexer&quot;&#41;;
+ *     SearchIndexer updatedIndexer = searchIndexerAsyncClient.createOrUpdateIndexer&#40;indexer&#41;.block&#40;&#41;;
+ *
+ *     if &#40;updatedIndexer != null&#41; &#123;
+ *         System.out.printf&#40;&quot;Updated indexer name: %s, description: %s%n&quot;, updatedIndexer.getName&#40;&#41;,
+ *             updatedIndexer.getDescription&#40;&#41;&#41;;
+ *     &#125;
+ * &#125;
+ *
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateIndexer#SearchIndexer -->
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient#createOrUpdateIndexer(SearchIndexer)}.
+ * </em>
+ *
+ * <h3>
+ *     Delete an Indexer
+ * </h3>
+ *
+ * <p>
+ *     The following sample deletes an indexer.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteIndexer#String -->
+ * <pre>
+ * searchIndexerAsyncClient.deleteIndexer&#40;&quot;example-indexer&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteIndexer#String -->
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient#deleteIndexer(String)}.
+ * </em>
+ *
+ * <h3>
+ *     Run an Indexer
+ * </h3>
+ *
+ * <p>
+ *     The following sample runs an indexer.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.runIndexer#String -->
+ * <pre>
+ * searchIndexerAsyncClient.runIndexer&#40;&quot;example-indexer&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.runIndexer#String -->
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient#runIndexer(String)}.
+ * </em>
+ *
+ * <h3>
+ *     Reset an Indexer
+ * </h3>
+ *
+ * <p>
+ *     The following sample resets an indexer.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.resetIndexer#String -->
+ * <pre>
+ * searchIndexerAsyncClient.resetIndexer&#40;&quot;example-indexer&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.resetIndexer#String -->
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient#resetIndexer(String)}.
+ * </em>
+ *
+ * <h3>
+ *     Create a Skillset
+ * </h3>
+ *
+ * <p>
+ *     The following sample creates a skillset.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createSkillset#SearchIndexerSkillset -->
+ * <pre>
+ * List&lt;InputFieldMappingEntry&gt; inputs = Collections.singletonList&#40;
+ *     new InputFieldMappingEntry&#40;&quot;image&quot;&#41;
+ *         .setSource&#40;&quot;&#47;document&#47;normalized_images&#47;*&quot;&#41;
+ * &#41;;
+ *
+ * List&lt;OutputFieldMappingEntry&gt; outputs = Arrays.asList&#40;
+ *     new OutputFieldMappingEntry&#40;&quot;text&quot;&#41;
+ *         .setTargetName&#40;&quot;mytext&quot;&#41;,
+ *     new OutputFieldMappingEntry&#40;&quot;layoutText&quot;&#41;
+ *         .setTargetName&#40;&quot;myLayoutText&quot;&#41;
+ * &#41;;
+ *
+ * List&lt;SearchIndexerSkill&gt; skills = Collections.singletonList&#40;
+ *     new OcrSkill&#40;inputs, outputs&#41;
+ *         .setShouldDetectOrientation&#40;true&#41;
+ *         .setDefaultLanguageCode&#40;null&#41;
+ *         .setName&#40;&quot;myocr&quot;&#41;
+ *         .setDescription&#40;&quot;Extracts text &#40;plain and structured&#41; from image.&quot;&#41;
+ *         .setContext&#40;&quot;&#47;document&#47;normalized_images&#47;*&quot;&#41;
+ * &#41;;
+ *
+ * SearchIndexerSkillset skillset = new SearchIndexerSkillset&#40;&quot;skillsetName&quot;, skills&#41;
+ *     .setDescription&#40;&quot;Extracts text &#40;plain and structured&#41; from image.&quot;&#41;;
+ *
+ * System.out.println&#40;String.format&#40;&quot;Creating OCR skillset '%s'&quot;, skillset.getName&#40;&#41;&#41;&#41;;
+ *
+ * SearchIndexerSkillset createdSkillset = searchIndexerAsyncClient.createSkillset&#40;skillset&#41;.block&#40;&#41;;
+ *
+ * if &#40;createdSkillset != null&#41; &#123;
+ *     System.out.println&#40;&quot;Created OCR skillset&quot;&#41;;
+ *     System.out.println&#40;String.format&#40;&quot;Name: %s&quot;, createdSkillset.getName&#40;&#41;&#41;&#41;;
+ *     System.out.println&#40;String.format&#40;&quot;ETag: %s&quot;, createdSkillset.getETag&#40;&#41;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createSkillset#SearchIndexerSkillset -->
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient#createSkillset(SearchIndexerSkillset)}.
+ * </em>
+ *
+ * <h3>
+ *     List all Skillsets
+ * </h3>
+ *
+ * <p>
+ *     The following sample lists all skillsets.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listSkillsets -->
+ * <pre>
+ * searchIndexerAsyncClient.listSkillsets&#40;&#41;.subscribe&#40;skillset -&gt;
+ *     System.out.printf&#40;&quot;Retrieved skillset name: %s%n&quot;, skillset.getName&#40;&#41;&#41;
+ * &#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listSkillsets -->
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient#listSkillsets()}.
+ * </em>
+ *
+ * <h3>
+ *     Get a Skillset
+ * </h3>
+ *
+ * <p>
+ *     The following sample gets a skillset.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.getSkillset#String -->
+ * <pre>
+ * SearchIndexerSkillset skillset = searchIndexerAsyncClient.getSkillset&#40;&quot;example-skillset&quot;&#41;.block&#40;&#41;;
+ * if &#40;skillset != null&#41; &#123;
+ *     System.out.printf&#40;&quot;Retrieved skillset name: %s%n&quot;, skillset.getName&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.getSkillset#String -->
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient#getSkillset(String)}.
+ * </em>
+ *
+ * <h3>
+ *     Update a Skillset
+ * </h3>
+ *
+ * <p>
+ *     The following sample updates a skillset.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset -->
+ * <pre>
+ * SearchIndexerSkillset skillset = searchIndexerAsyncClient.getSkillset&#40;&quot;example-skillset&quot;&#41;.block&#40;&#41;;
+ * if &#40;skillset != null&#41; &#123;
+ *     System.out.printf&#40;&quot;Retrieved skillset name: %s%n&quot;, skillset.getName&#40;&#41;&#41;;
+ *     SearchIndexerSkillset updatedSkillset = searchIndexerAsyncClient.createOrUpdateSkillset&#40;skillset&#41;.block&#40;&#41;;
+ *
+ *     if &#40;updatedSkillset != null&#41; &#123;
+ *         System.out.printf&#40;&quot;Updated skillset name: %s, description: %s%n&quot;, updatedSkillset.getName&#40;&#41;,
+ *             updatedSkillset.getDescription&#40;&#41;&#41;;
+ *     &#125;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset -->
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient#createOrUpdateSkillset(SearchIndexerSkillset)}.
+ * </em>
+ *
+ * <h3>
+ *     Delete a Skillset
+ * </h3>
+ *
+ * <p>
+ *     The following sample deletes a skillset.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteSkillset#String -->
+ * <pre>
+ * searchIndexerAsyncClient.deleteSkillset&#40;&quot;example-skillset&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteSkillset#String -->
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient#deleteSkillset(String)}.
+ * </em>
+ *
+ * @see SearchIndexerClient
  * @see SearchIndexerClientBuilder
+ * @see com.azure.search.documents.indexes
  */
 @ServiceClient(builder = SearchIndexerClientBuilder.class, isAsync = true)
 public class SearchIndexerAsyncClient {
@@ -52,7 +394,7 @@ public class SearchIndexerAsyncClient {
     private final SearchServiceVersion serviceVersion;
 
     /**
-     * The endpoint for the Azure Cognitive Search service.
+     * The endpoint for the Azure AI Search service.
      */
     private final String endpoint;
 
@@ -79,12 +421,12 @@ public class SearchIndexerAsyncClient {
      *
      * @return the pipeline.
      */
-    HttpPipeline getHttpPipeline() {
+    public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
     /**
-     * Gets the endpoint for the Azure Cognitive Search service.
+     * Gets the endpoint for the Azure AI Search service.
      *
      * @return the endpoint value.
      */
@@ -93,7 +435,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
+     * Creates a new Azure AI Search data source or updates a data source if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -125,7 +467,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
+     * Creates a new Azure AI Search data source or updates a data source if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -162,7 +504,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
+     * Creates a new Azure AI Search data source or updates a data source if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -225,7 +567,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search data source
+     * Creates a new Azure AI Search data source
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -257,7 +599,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search data source
+     * Creates a new Azure AI Search data source
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -299,7 +641,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Retrieves a DataSource from an Azure Cognitive Search service.
+     * Retrieves a DataSource from an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -323,7 +665,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Retrieves a DataSource from an Azure Cognitive Search service.
+     * Retrieves a DataSource from an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -360,7 +702,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * List all DataSources from an Azure Cognitive Search service.
+     * List all DataSources from an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -389,7 +731,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * List all DataSource names from an Azure Cognitive Search service.
+     * List all DataSource names from an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -444,7 +786,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search data source.
+     * Deletes an Azure AI Search data source.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -488,7 +830,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search indexer.
+     * Creates a new Azure AI Search indexer.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -514,7 +856,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search indexer.
+     * Creates a new Azure AI Search indexer.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -550,7 +892,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
+     * Creates a new Azure AI Search indexer or updates an indexer if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -580,7 +922,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
+     * Creates a new Azure AI Search indexer or updates an indexer if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -618,7 +960,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
+     * Creates a new Azure AI Search indexer or updates an indexer if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -737,7 +1079,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Lists all indexers available for an Azure Cognitive Search service.
+     * Lists all indexers available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -765,7 +1107,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Lists all indexers available for an Azure Cognitive Search service.
+     * Lists all indexers available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -796,7 +1138,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search indexer.
+     * Deletes an Azure AI Search indexer.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -818,7 +1160,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search indexer.
+     * Deletes an Azure AI Search indexer.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -851,7 +1193,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search indexer.
+     * Deletes an Azure AI Search indexer.
      *
      * @param indexerName the name of the indexer to delete
      * @param eTag Optional. The eTag to match.
@@ -1120,7 +1462,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new skillset in an Azure Cognitive Search service.
+     * Creates a new skillset in an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1163,7 +1505,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new skillset in an Azure Cognitive Search service.
+     * Creates a new skillset in an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1276,7 +1618,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Lists all skillsets available for an Azure Cognitive Search service.
+     * Lists all skillsets available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1304,7 +1646,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Lists all skillset names for an Azure Cognitive Search service.
+     * Lists all skillset names for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1335,7 +1677,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     * Creates a new Azure AI Search skillset or updates a skillset if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1366,7 +1708,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     * Creates a new Azure AI Search skillset or updates a skillset if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1403,7 +1745,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     * Creates a new Azure AI Search skillset or updates a skillset if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1466,7 +1808,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     * Deletes a cognitive skillset in an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1488,7 +1830,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Deletes a cognitive skillset in an Azure Cognitive Search service.
+     * Deletes a cognitive skillset in an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1532,7 +1874,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Resets skills in an existing skillset in an Azure Cognitive Search service.
+     * Resets skills in an existing skillset in an Azure AI Search service.
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkills#String-List -->
      * <pre>
@@ -1552,7 +1894,7 @@ public class SearchIndexerAsyncClient {
     }
 
     /**
-     * Resets skills in an existing skillset in an Azure Cognitive Search service.
+     * Resets skills in an existing skillset in an Azure AI Search service.
      *
      * <!-- src_embed
      * com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List

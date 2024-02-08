@@ -20,7 +20,9 @@ import com.azure.resourcemanager.monitor.models.WebhookReceiver;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An Azure action group. */
+/**
+ * An Azure action group.
+ */
 @Fluent
 public final class ActionGroup {
     /*
@@ -103,13 +105,15 @@ public final class ActionGroup {
     @JsonProperty(value = "eventHubReceivers")
     private List<EventHubReceiver> eventHubReceivers;
 
-    /** Creates an instance of ActionGroup class. */
+    /**
+     * Creates an instance of ActionGroup class.
+     */
     public ActionGroup() {
     }
 
     /**
      * Get the groupShortName property: The short name of the action group. This will be used in SMS messages.
-     *
+     * 
      * @return the groupShortName value.
      */
     public String groupShortName() {
@@ -118,7 +122,7 @@ public final class ActionGroup {
 
     /**
      * Set the groupShortName property: The short name of the action group. This will be used in SMS messages.
-     *
+     * 
      * @param groupShortName the groupShortName value to set.
      * @return the ActionGroup object itself.
      */
@@ -128,9 +132,9 @@ public final class ActionGroup {
     }
 
     /**
-     * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
-     * none of its receivers will receive communications.
-     *
+     * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled,
+     * then none of its receivers will receive communications.
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -138,9 +142,9 @@ public final class ActionGroup {
     }
 
     /**
-     * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
-     * none of its receivers will receive communications.
-     *
+     * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled,
+     * then none of its receivers will receive communications.
+     * 
      * @param enabled the enabled value to set.
      * @return the ActionGroup object itself.
      */
@@ -151,7 +155,7 @@ public final class ActionGroup {
 
     /**
      * Get the emailReceivers property: The list of email receivers that are part of this action group.
-     *
+     * 
      * @return the emailReceivers value.
      */
     public List<EmailReceiver> emailReceivers() {
@@ -160,7 +164,7 @@ public final class ActionGroup {
 
     /**
      * Set the emailReceivers property: The list of email receivers that are part of this action group.
-     *
+     * 
      * @param emailReceivers the emailReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -171,7 +175,7 @@ public final class ActionGroup {
 
     /**
      * Get the smsReceivers property: The list of SMS receivers that are part of this action group.
-     *
+     * 
      * @return the smsReceivers value.
      */
     public List<SmsReceiver> smsReceivers() {
@@ -180,7 +184,7 @@ public final class ActionGroup {
 
     /**
      * Set the smsReceivers property: The list of SMS receivers that are part of this action group.
-     *
+     * 
      * @param smsReceivers the smsReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -191,7 +195,7 @@ public final class ActionGroup {
 
     /**
      * Get the webhookReceivers property: The list of webhook receivers that are part of this action group.
-     *
+     * 
      * @return the webhookReceivers value.
      */
     public List<WebhookReceiver> webhookReceivers() {
@@ -200,7 +204,7 @@ public final class ActionGroup {
 
     /**
      * Set the webhookReceivers property: The list of webhook receivers that are part of this action group.
-     *
+     * 
      * @param webhookReceivers the webhookReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -211,7 +215,7 @@ public final class ActionGroup {
 
     /**
      * Get the itsmReceivers property: The list of ITSM receivers that are part of this action group.
-     *
+     * 
      * @return the itsmReceivers value.
      */
     public List<ItsmReceiver> itsmReceivers() {
@@ -220,7 +224,7 @@ public final class ActionGroup {
 
     /**
      * Set the itsmReceivers property: The list of ITSM receivers that are part of this action group.
-     *
+     * 
      * @param itsmReceivers the itsmReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -231,7 +235,7 @@ public final class ActionGroup {
 
     /**
      * Get the azureAppPushReceivers property: The list of AzureAppPush receivers that are part of this action group.
-     *
+     * 
      * @return the azureAppPushReceivers value.
      */
     public List<AzureAppPushReceiver> azureAppPushReceivers() {
@@ -240,7 +244,7 @@ public final class ActionGroup {
 
     /**
      * Set the azureAppPushReceivers property: The list of AzureAppPush receivers that are part of this action group.
-     *
+     * 
      * @param azureAppPushReceivers the azureAppPushReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -250,9 +254,9 @@ public final class ActionGroup {
     }
 
     /**
-     * Get the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
-     * group.
-     *
+     * Get the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this
+     * action group.
+     * 
      * @return the automationRunbookReceivers value.
      */
     public List<AutomationRunbookReceiver> automationRunbookReceivers() {
@@ -260,9 +264,9 @@ public final class ActionGroup {
     }
 
     /**
-     * Set the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
-     * group.
-     *
+     * Set the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this
+     * action group.
+     * 
      * @param automationRunbookReceivers the automationRunbookReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -273,7 +277,7 @@ public final class ActionGroup {
 
     /**
      * Get the voiceReceivers property: The list of voice receivers that are part of this action group.
-     *
+     * 
      * @return the voiceReceivers value.
      */
     public List<VoiceReceiver> voiceReceivers() {
@@ -282,7 +286,7 @@ public final class ActionGroup {
 
     /**
      * Set the voiceReceivers property: The list of voice receivers that are part of this action group.
-     *
+     * 
      * @param voiceReceivers the voiceReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -293,7 +297,7 @@ public final class ActionGroup {
 
     /**
      * Get the logicAppReceivers property: The list of logic app receivers that are part of this action group.
-     *
+     * 
      * @return the logicAppReceivers value.
      */
     public List<LogicAppReceiver> logicAppReceivers() {
@@ -302,7 +306,7 @@ public final class ActionGroup {
 
     /**
      * Set the logicAppReceivers property: The list of logic app receivers that are part of this action group.
-     *
+     * 
      * @param logicAppReceivers the logicAppReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -312,8 +316,9 @@ public final class ActionGroup {
     }
 
     /**
-     * Get the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
-     *
+     * Get the azureFunctionReceivers property: The list of azure function receivers that are part of this action
+     * group.
+     * 
      * @return the azureFunctionReceivers value.
      */
     public List<AzureFunctionReceiver> azureFunctionReceivers() {
@@ -321,8 +326,9 @@ public final class ActionGroup {
     }
 
     /**
-     * Set the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
-     *
+     * Set the azureFunctionReceivers property: The list of azure function receivers that are part of this action
+     * group.
+     * 
      * @param azureFunctionReceivers the azureFunctionReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -334,7 +340,7 @@ public final class ActionGroup {
     /**
      * Get the armRoleReceivers property: The list of ARM role receivers that are part of this action group. Roles are
      * Azure RBAC roles and only built-in roles are supported.
-     *
+     * 
      * @return the armRoleReceivers value.
      */
     public List<ArmRoleReceiver> armRoleReceivers() {
@@ -344,7 +350,7 @@ public final class ActionGroup {
     /**
      * Set the armRoleReceivers property: The list of ARM role receivers that are part of this action group. Roles are
      * Azure RBAC roles and only built-in roles are supported.
-     *
+     * 
      * @param armRoleReceivers the armRoleReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -355,7 +361,7 @@ public final class ActionGroup {
 
     /**
      * Get the eventHubReceivers property: The list of event hub receivers that are part of this action group.
-     *
+     * 
      * @return the eventHubReceivers value.
      */
     public List<EventHubReceiver> eventHubReceivers() {
@@ -364,7 +370,7 @@ public final class ActionGroup {
 
     /**
      * Set the eventHubReceivers property: The list of event hub receivers that are part of this action group.
-     *
+     * 
      * @param eventHubReceivers the eventHubReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -375,14 +381,13 @@ public final class ActionGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (groupShortName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property groupShortName in model ActionGroup"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property groupShortName in model ActionGroup"));
         }
         if (emailReceivers() != null) {
             emailReceivers().forEach(e -> e.validate());

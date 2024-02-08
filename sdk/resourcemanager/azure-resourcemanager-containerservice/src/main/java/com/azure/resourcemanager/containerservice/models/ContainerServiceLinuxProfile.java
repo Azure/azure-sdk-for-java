@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Profile for Linux VMs in the container service cluster. */
+/**
+ * Profile for Linux VMs in the container service cluster.
+ */
 @Fluent
 public final class ContainerServiceLinuxProfile {
     /*
@@ -23,13 +25,15 @@ public final class ContainerServiceLinuxProfile {
     @JsonProperty(value = "ssh", required = true)
     private ContainerServiceSshConfiguration ssh;
 
-    /** Creates an instance of ContainerServiceLinuxProfile class. */
+    /**
+     * Creates an instance of ContainerServiceLinuxProfile class.
+     */
     public ContainerServiceLinuxProfile() {
     }
 
     /**
      * Get the adminUsername property: The administrator username to use for Linux VMs.
-     *
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -38,7 +42,7 @@ public final class ContainerServiceLinuxProfile {
 
     /**
      * Set the adminUsername property: The administrator username to use for Linux VMs.
-     *
+     * 
      * @param adminUsername the adminUsername value to set.
      * @return the ContainerServiceLinuxProfile object itself.
      */
@@ -49,7 +53,7 @@ public final class ContainerServiceLinuxProfile {
 
     /**
      * Get the ssh property: The SSH configuration for Linux-based VMs running on Azure.
-     *
+     * 
      * @return the ssh value.
      */
     public ContainerServiceSshConfiguration ssh() {
@@ -58,7 +62,7 @@ public final class ContainerServiceLinuxProfile {
 
     /**
      * Set the ssh property: The SSH configuration for Linux-based VMs running on Azure.
-     *
+     * 
      * @param ssh the ssh value to set.
      * @return the ContainerServiceLinuxProfile object itself.
      */
@@ -69,21 +73,17 @@ public final class ContainerServiceLinuxProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property adminUsername in model ContainerServiceLinuxProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property adminUsername in model ContainerServiceLinuxProfile"));
         }
         if (ssh() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ssh in model ContainerServiceLinuxProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ssh in model ContainerServiceLinuxProfile"));
         } else {
             ssh().validate();
         }

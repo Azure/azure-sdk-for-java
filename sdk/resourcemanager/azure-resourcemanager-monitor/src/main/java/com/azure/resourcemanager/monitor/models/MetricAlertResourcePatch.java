@@ -13,7 +13,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The metric alert resource for patch operations. */
+/**
+ * The metric alert resource for patch operations.
+ */
 @Fluent
 public final class MetricAlertResourcePatch {
     /*
@@ -29,13 +31,15 @@ public final class MetricAlertResourcePatch {
     @JsonProperty(value = "properties")
     private MetricAlertPropertiesPatch innerProperties;
 
-    /** Creates an instance of MetricAlertResourcePatch class. */
+    /**
+     * Creates an instance of MetricAlertResourcePatch class.
+     */
     public MetricAlertResourcePatch() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -44,7 +48,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the MetricAlertResourcePatch object itself.
      */
@@ -55,7 +59,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Get the innerProperties property: The alert rule properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MetricAlertPropertiesPatch innerProperties() {
@@ -64,7 +68,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Get the description property: the description of the metric alert that will be included in the alert email.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -73,7 +77,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Set the description property: the description of the metric alert that will be included in the alert email.
-     *
+     * 
      * @param description the description value to set.
      * @return the MetricAlertResourcePatch object itself.
      */
@@ -87,7 +91,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Get the severity property: Alert severity {0, 1, 2, 3, 4}.
-     *
+     * 
      * @return the severity value.
      */
     public Integer severity() {
@@ -96,7 +100,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Set the severity property: Alert severity {0, 1, 2, 3, 4}.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the MetricAlertResourcePatch object itself.
      */
@@ -110,7 +114,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Get the enabled property: the flag that indicates whether the metric alert is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -119,7 +123,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Set the enabled property: the flag that indicates whether the metric alert is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the MetricAlertResourcePatch object itself.
      */
@@ -133,7 +137,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Get the scopes property: the list of resource id's that this metric alert is scoped to.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -142,7 +146,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Set the scopes property: the list of resource id's that this metric alert is scoped to.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the MetricAlertResourcePatch object itself.
      */
@@ -157,7 +161,7 @@ public final class MetricAlertResourcePatch {
     /**
      * Get the evaluationFrequency property: how often the metric alert is evaluated represented in ISO 8601 duration
      * format.
-     *
+     * 
      * @return the evaluationFrequency value.
      */
     public Duration evaluationFrequency() {
@@ -167,7 +171,7 @@ public final class MetricAlertResourcePatch {
     /**
      * Set the evaluationFrequency property: how often the metric alert is evaluated represented in ISO 8601 duration
      * format.
-     *
+     * 
      * @param evaluationFrequency the evaluationFrequency value to set.
      * @return the MetricAlertResourcePatch object itself.
      */
@@ -182,7 +186,7 @@ public final class MetricAlertResourcePatch {
     /**
      * Get the windowSize property: the period of time (in ISO 8601 duration format) that is used to monitor alert
      * activity based on the threshold.
-     *
+     * 
      * @return the windowSize value.
      */
     public Duration windowSize() {
@@ -192,7 +196,7 @@ public final class MetricAlertResourcePatch {
     /**
      * Set the windowSize property: the period of time (in ISO 8601 duration format) that is used to monitor alert
      * activity based on the threshold.
-     *
+     * 
      * @param windowSize the windowSize value to set.
      * @return the MetricAlertResourcePatch object itself.
      */
@@ -207,7 +211,7 @@ public final class MetricAlertResourcePatch {
     /**
      * Get the targetResourceType property: the resource type of the target resource(s) on which the alert is
      * created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
-     *
+     * 
      * @return the targetResourceType value.
      */
     public String targetResourceType() {
@@ -217,7 +221,7 @@ public final class MetricAlertResourcePatch {
     /**
      * Set the targetResourceType property: the resource type of the target resource(s) on which the alert is
      * created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
-     *
+     * 
      * @param targetResourceType the targetResourceType value to set.
      * @return the MetricAlertResourcePatch object itself.
      */
@@ -232,7 +236,7 @@ public final class MetricAlertResourcePatch {
     /**
      * Get the targetResourceRegion property: the region of the target resource(s) on which the alert is
      * created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
-     *
+     * 
      * @return the targetResourceRegion value.
      */
     public String targetResourceRegion() {
@@ -242,7 +246,7 @@ public final class MetricAlertResourcePatch {
     /**
      * Set the targetResourceRegion property: the region of the target resource(s) on which the alert is
      * created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
-     *
+     * 
      * @param targetResourceRegion the targetResourceRegion value to set.
      * @return the MetricAlertResourcePatch object itself.
      */
@@ -256,7 +260,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Get the criteria property: defines the specific alert criteria information.
-     *
+     * 
      * @return the criteria value.
      */
     public MetricAlertCriteria criteria() {
@@ -265,7 +269,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Set the criteria property: defines the specific alert criteria information.
-     *
+     * 
      * @param criteria the criteria value to set.
      * @return the MetricAlertResourcePatch object itself.
      */
@@ -280,7 +284,7 @@ public final class MetricAlertResourcePatch {
     /**
      * Get the autoMitigate property: the flag that indicates whether the alert should be auto resolved or not. The
      * default is true.
-     *
+     * 
      * @return the autoMitigate value.
      */
     public Boolean autoMitigate() {
@@ -290,7 +294,7 @@ public final class MetricAlertResourcePatch {
     /**
      * Set the autoMitigate property: the flag that indicates whether the alert should be auto resolved or not. The
      * default is true.
-     *
+     * 
      * @param autoMitigate the autoMitigate value to set.
      * @return the MetricAlertResourcePatch object itself.
      */
@@ -303,9 +307,9 @@ public final class MetricAlertResourcePatch {
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
-     *
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
+     * 
      * @return the actions value.
      */
     public List<MetricAlertAction> actions() {
@@ -313,9 +317,9 @@ public final class MetricAlertResourcePatch {
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
-     *
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
+     * 
      * @param actions the actions value to set.
      * @return the MetricAlertResourcePatch object itself.
      */
@@ -329,7 +333,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Get the lastUpdatedTime property: Last time the rule was updated in ISO8601 format.
-     *
+     * 
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {
@@ -338,7 +342,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Get the isMigrated property: the value indicating whether this alert rule is migrated.
-     *
+     * 
      * @return the isMigrated value.
      */
     public Boolean isMigrated() {
@@ -347,7 +351,7 @@ public final class MetricAlertResourcePatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

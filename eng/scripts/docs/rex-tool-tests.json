@@ -1,0 +1,23 @@
+[
+    {
+        "ArtifactId": "package-does-not-exist",
+        "GroupId": "com.azure",
+        "Version": "1.2.3",
+        "ExpectedResult": false,
+        "Comment": "Should always fail, package does not exist"
+    },
+    {
+        "ArtifactId": "azure-sdk-bom",
+        "GroupId": "com.azure",
+        "Version": "1.2.19",
+        "ExpectedResult": false,
+        "Comment": "Fails, no source JAR or other JARs, only pom files and signature"
+    },
+    {
+        "ArtifactId": "azure-core",
+        "GroupId": "com.azure",
+        "Version": "1.45.1",
+        "ExpectedResult": true,
+        "Comment": "Package successfully builds docs"
+    }
+]

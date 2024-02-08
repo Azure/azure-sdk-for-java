@@ -13,29 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkSecurityGroupRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkSecurityGroupRule model =
-            BinaryData
-                .fromString(
-                    "{\"priority\":566556548,\"access\":\"Allow\",\"sourceAddressPrefix\":\"kallatmel\",\"sourcePortRanges\":[\"piccjzkzivgv\",\"c\"]}")
-                .toObject(NetworkSecurityGroupRule.class);
-        Assertions.assertEquals(566556548, model.priority());
+        NetworkSecurityGroupRule model = BinaryData.fromString(
+            "{\"priority\":1262943142,\"access\":\"Allow\",\"sourceAddressPrefix\":\"pwdreqnovvqf\",\"sourcePortRanges\":[\"jxywsuws\",\"rsndsytgadgvra\"]}")
+            .toObject(NetworkSecurityGroupRule.class);
+        Assertions.assertEquals(1262943142, model.priority());
         Assertions.assertEquals(NetworkSecurityGroupRuleAccess.ALLOW, model.access());
-        Assertions.assertEquals("kallatmel", model.sourceAddressPrefix());
-        Assertions.assertEquals("piccjzkzivgv", model.sourcePortRanges().get(0));
+        Assertions.assertEquals("pwdreqnovvqf", model.sourceAddressPrefix());
+        Assertions.assertEquals("jxywsuws", model.sourcePortRanges().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkSecurityGroupRule model =
-            new NetworkSecurityGroupRule()
-                .withPriority(566556548)
-                .withAccess(NetworkSecurityGroupRuleAccess.ALLOW)
-                .withSourceAddressPrefix("kallatmel")
-                .withSourcePortRanges(Arrays.asList("piccjzkzivgv", "c"));
+        NetworkSecurityGroupRule model = new NetworkSecurityGroupRule().withPriority(1262943142)
+            .withAccess(NetworkSecurityGroupRuleAccess.ALLOW).withSourceAddressPrefix("pwdreqnovvqf")
+            .withSourcePortRanges(Arrays.asList("jxywsuws", "rsndsytgadgvra"));
         model = BinaryData.fromObject(model).toObject(NetworkSecurityGroupRule.class);
-        Assertions.assertEquals(566556548, model.priority());
+        Assertions.assertEquals(1262943142, model.priority());
         Assertions.assertEquals(NetworkSecurityGroupRuleAccess.ALLOW, model.access());
-        Assertions.assertEquals("kallatmel", model.sourceAddressPrefix());
-        Assertions.assertEquals("piccjzkzivgv", model.sourcePortRanges().get(0));
+        Assertions.assertEquals("pwdreqnovvqf", model.sourceAddressPrefix());
+        Assertions.assertEquals("jxywsuws", model.sourcePortRanges().get(0));
     }
 }

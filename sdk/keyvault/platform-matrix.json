@@ -28,7 +28,21 @@
       },
       "ArmTemplateParameters": "@{ enableHsm = $true }",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "JavaTestVersion": "1.11",
+      "JavaTestVersion": "1.8",
+      "TestOptions": ""
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04_TestFromSource": {
+          "OSVmImage": "MMSUbuntu20.04",
+          "Pool": "azsdk-pool-mms-ubuntu-2004-general",
+          "TestGoals": "surefire:test",
+          "TestFromSource": true
+        }
+      },
+      "ArmTemplateParameters": "@{ enableHsm = $true }",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "JavaTestVersion": "1.21",
       "TestOptions": ""
     }
   ]

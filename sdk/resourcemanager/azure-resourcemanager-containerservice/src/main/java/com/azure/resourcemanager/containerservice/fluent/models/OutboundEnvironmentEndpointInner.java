@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.models.EndpointDependency;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Egress endpoints which AKS agent nodes connect to for common purpose. */
+/**
+ * Egress endpoints which AKS agent nodes connect to for common purpose.
+ */
 @Fluent
 public final class OutboundEnvironmentEndpointInner {
     /*
@@ -24,14 +26,16 @@ public final class OutboundEnvironmentEndpointInner {
     @JsonProperty(value = "endpoints")
     private List<EndpointDependency> endpoints;
 
-    /** Creates an instance of OutboundEnvironmentEndpointInner class. */
+    /**
+     * Creates an instance of OutboundEnvironmentEndpointInner class.
+     */
     public OutboundEnvironmentEndpointInner() {
     }
 
     /**
      * Get the category property: The category of endpoints accessed by the AKS agent node, e.g.
      * azure-resource-management, apiserver, etc.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -41,7 +45,7 @@ public final class OutboundEnvironmentEndpointInner {
     /**
      * Set the category property: The category of endpoints accessed by the AKS agent node, e.g.
      * azure-resource-management, apiserver, etc.
-     *
+     * 
      * @param category the category value to set.
      * @return the OutboundEnvironmentEndpointInner object itself.
      */
@@ -52,7 +56,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Get the endpoints property: The endpoints that AKS agent nodes connect to.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<EndpointDependency> endpoints() {
@@ -61,7 +65,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Set the endpoints property: The endpoints that AKS agent nodes connect to.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the OutboundEnvironmentEndpointInner object itself.
      */
@@ -72,7 +76,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

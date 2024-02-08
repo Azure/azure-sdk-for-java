@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class WindowsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WindowsConfiguration model =
-            BinaryData.fromString("{\"enableAutomaticUpdates\":false}").toObject(WindowsConfiguration.class);
-        Assertions.assertEquals(false, model.enableAutomaticUpdates());
+        WindowsConfiguration model
+            = BinaryData.fromString("{\"enableAutomaticUpdates\":true}").toObject(WindowsConfiguration.class);
+        Assertions.assertEquals(true, model.enableAutomaticUpdates());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WindowsConfiguration model = new WindowsConfiguration().withEnableAutomaticUpdates(false);
+        WindowsConfiguration model = new WindowsConfiguration().withEnableAutomaticUpdates(true);
         model = BinaryData.fromObject(model).toObject(WindowsConfiguration.class);
-        Assertions.assertEquals(false, model.enableAutomaticUpdates());
+        Assertions.assertEquals(true, model.enableAutomaticUpdates());
     }
 }

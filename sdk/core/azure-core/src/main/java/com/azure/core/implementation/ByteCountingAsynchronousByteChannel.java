@@ -30,6 +30,14 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
         AtomicLongFieldUpdater.newUpdater(ByteCountingAsynchronousByteChannel.class, "bytesRead");
     private volatile long bytesRead;
 
+    /**
+     * Creates an instance of {@link ByteCountingAsynchronousByteChannel} that counts bytes written and read to the
+     * target channel.
+     *
+     * @param channel The {@link AsynchronousByteChannel} to adapt.
+     * @param readProgressReporter The {@link ProgressReporter} to report progress on read operations.
+     * @param writeProgressReporter The {@link ProgressReporter} to report progress on write operations.
+     */
     public ByteCountingAsynchronousByteChannel(
         AsynchronousByteChannel channel,
         ProgressReporter readProgressReporter,
@@ -81,10 +89,20 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
         channel.close();
     }
 
+    /**
+     * Gets the number of bytes written to the target channel.
+     *
+     * @return The number of bytes written to the target channel.
+     */
     public long getBytesWritten() {
         return BYTES_WRITTEN_ATOMIC_UPDATER.get(this);
     }
 
+    /**
+     * Gets the number of bytes read from the target channel.
+     *
+     * @return The number of bytes read from the target channel.
+     */
     public long getBytesRead() {
         return BYTES_READ_ATOMIC_UPDATER.get(this);
     }

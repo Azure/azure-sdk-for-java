@@ -56,4 +56,9 @@ public final class LoggingKeys {
      * Key representing response status code. The value should be a number.
      */
     public static final String STATUS_CODE_KEY = "statusCode";
+
+    /**
+     * Key representing cancelled operation result.
+     */
+    public static final String CANCELLED_ERROR_TYPE = "cancelled";
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** KEK is encryption key for BEK. */
+/**
+ * KEK is encryption key for BEK.
+ */
 @Fluent
 public final class KekDetails {
     /*
@@ -28,13 +30,15 @@ public final class KekDetails {
     @JsonProperty(value = "keyBackupData")
     private String keyBackupData;
 
-    /** Creates an instance of KekDetails class. */
+    /**
+     * Creates an instance of KekDetails class.
+     */
     public KekDetails() {
     }
 
     /**
      * Get the keyUrl property: Key is KEK.
-     *
+     * 
      * @return the keyUrl value.
      */
     public String keyUrl() {
@@ -43,7 +47,7 @@ public final class KekDetails {
 
     /**
      * Set the keyUrl property: Key is KEK.
-     *
+     * 
      * @param keyUrl the keyUrl value to set.
      * @return the KekDetails object itself.
      */
@@ -54,7 +58,7 @@ public final class KekDetails {
 
     /**
      * Get the keyVaultId property: Key Vault ID where this Key is stored.
-     *
+     * 
      * @return the keyVaultId value.
      */
     public String keyVaultId() {
@@ -63,7 +67,7 @@ public final class KekDetails {
 
     /**
      * Set the keyVaultId property: Key Vault ID where this Key is stored.
-     *
+     * 
      * @param keyVaultId the keyVaultId value to set.
      * @return the KekDetails object itself.
      */
@@ -74,7 +78,7 @@ public final class KekDetails {
 
     /**
      * Get the keyBackupData property: KEK data.
-     *
+     * 
      * @return the keyBackupData value.
      */
     public String keyBackupData() {
@@ -83,7 +87,7 @@ public final class KekDetails {
 
     /**
      * Set the keyBackupData property: KEK data.
-     *
+     * 
      * @param keyBackupData the keyBackupData value to set.
      * @return the KekDetails object itself.
      */
@@ -94,7 +98,7 @@ public final class KekDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

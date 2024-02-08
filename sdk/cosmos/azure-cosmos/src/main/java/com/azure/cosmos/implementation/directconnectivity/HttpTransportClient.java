@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
@@ -126,8 +127,14 @@ public class HttpTransportClient extends TransportClient {
                 Map<String, String> errorResponseHeaders = new HashMap<>();
                 errorResponseHeaders.put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
 
-                logger.error("Received Recreate request on Http client");
-                throw new InternalServerErrorException(RMResources.InternalServerError, null, errorResponseHeaders, null);
+                String errorMessage = "Received Recreate request on Http client";
+                logger.error(errorMessage);
+                throw new InternalServerErrorException(
+                    Exceptions.getInternalServerErrorMessage(errorMessage),
+                    null,
+                    errorResponseHeaders,
+                    null,
+                    HttpConstants.SubStatusCodes.RECREATE_REQUEST_ON_HTTP_CLIENT);
             }
 
             HttpRequest httpRequest = prepareHttpMessage(activityId, physicalAddressUri, resourceOperation, request);
@@ -726,11 +733,13 @@ public class HttpTransportClient extends TransportClient {
         if (response == null) {
             InternalServerErrorException exception =
                     new InternalServerErrorException(
-                            String.format(
+                            Exceptions.getInternalServerErrorMessage(
+                                String.format(
                                     RMResources.ExceptionMessage,
-                                    RMResources.InvalidBackendResponse),
+                                    RMResources.InvalidBackendResponse)),
                             null,
-                            physicalAddress);
+                            physicalAddress,
+                        HttpConstants.SubStatusCodes.INVALID_BACKEND_RESPONSE);
             exception.getResponseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
                     activityId);
             exception.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
@@ -741,7 +750,7 @@ public class HttpTransportClient extends TransportClient {
         // If the status code is < 300 or 304 NotModified (we treat not modified as success) then it means that it's a success code and shouldn't throw.
         if (response.statusCode() < HttpConstants.StatusCodes.MINIMUM_STATUSCODE_AS_ERROR_GATEWAY ||
                 response.statusCode() == HttpConstants.StatusCodes.NOT_MODIFIED) {
-            return ResponseUtils.toStoreResponse(response, httpRequest);
+            return ResponseUtils.toStoreResponse(response);
         }
         else {
             return this.createErrorResponseFromHttpResponse(resourceAddress, activityId, httpRequest, response);
@@ -1005,18 +1014,21 @@ public class HttpTransportClient extends TransportClient {
                                             RMResources.ExceptionMessage,
                                             Strings.isNullOrEmpty(errorMessage) ? RMResources.InternalServerError : errorMessage),
                                     response.headers(),
-                                    request.uri());
+                                    request.uri(),
+                                    HttpConstants.SubStatusCodes.UNKNOWN);
                             break;
 
                         default:
                             logger.error("Unrecognized status code {} returned by backend. ActivityId {}", statusCode, activityId);
                             ErrorUtils.logException(request.uri(), activityId);
                             exception = new InternalServerErrorException(
-                                    String.format(
+                                    Exceptions.getInternalServerErrorMessage(
+                                        String.format(
                                             RMResources.ExceptionMessage,
-                                            RMResources.InvalidBackendResponse),
+                                            RMResources.InvalidBackendResponse)),
                                     response.headers(),
-                                    request.uri());
+                                    request.uri(),
+                                    HttpConstants.SubStatusCodes.INVALID_BACKEND_RESPONSE);
                             break;
                     }
 
@@ -1036,11 +1048,13 @@ public class HttpTransportClient extends TransportClient {
         if (!Strings.isNullOrEmpty(valueSubStatus)) {
             if ((nSubStatus = Integers.tryParse(valueSubStatus)) == null) {
                 throw new InternalServerErrorException(
-                    String.format(
-                        RMResources.ExceptionMessage,
-                        RMResources.InvalidBackendResponse),
+                    Exceptions.getInternalServerErrorMessage(
+                        String.format(
+                            RMResources.ExceptionMessage,
+                            RMResources.InvalidBackendResponse)),
                     response.headers(),
-                    response.request().uri());
+                    response.request().uri(),
+                    HttpConstants.SubStatusCodes.INVALID_BACKEND_RESPONSE);
             }
         }
         return nSubStatus;

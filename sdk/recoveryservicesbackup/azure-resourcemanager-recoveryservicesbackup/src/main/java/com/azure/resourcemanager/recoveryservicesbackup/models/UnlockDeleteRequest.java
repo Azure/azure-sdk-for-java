@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Request body of unlock delete API. */
+/**
+ * Request body of unlock delete API.
+ */
 @Fluent
 public final class UnlockDeleteRequest {
     /*
@@ -23,13 +25,15 @@ public final class UnlockDeleteRequest {
     @JsonProperty(value = "resourceToBeDeleted")
     private String resourceToBeDeleted;
 
-    /** Creates an instance of UnlockDeleteRequest class. */
+    /**
+     * Creates an instance of UnlockDeleteRequest class.
+     */
     public UnlockDeleteRequest() {
     }
 
     /**
      * Get the resourceGuardOperationRequests property: The resourceGuardOperationRequests property.
-     *
+     * 
      * @return the resourceGuardOperationRequests value.
      */
     public List<String> resourceGuardOperationRequests() {
@@ -38,7 +42,7 @@ public final class UnlockDeleteRequest {
 
     /**
      * Set the resourceGuardOperationRequests property: The resourceGuardOperationRequests property.
-     *
+     * 
      * @param resourceGuardOperationRequests the resourceGuardOperationRequests value to set.
      * @return the UnlockDeleteRequest object itself.
      */
@@ -49,7 +53,7 @@ public final class UnlockDeleteRequest {
 
     /**
      * Get the resourceToBeDeleted property: The resourceToBeDeleted property.
-     *
+     * 
      * @return the resourceToBeDeleted value.
      */
     public String resourceToBeDeleted() {
@@ -58,7 +62,7 @@ public final class UnlockDeleteRequest {
 
     /**
      * Set the resourceToBeDeleted property: The resourceToBeDeleted property.
-     *
+     * 
      * @param resourceToBeDeleted the resourceToBeDeleted value to set.
      * @return the UnlockDeleteRequest object itself.
      */
@@ -69,7 +73,7 @@ public final class UnlockDeleteRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

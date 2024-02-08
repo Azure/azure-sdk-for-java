@@ -32,48 +32,34 @@ public final class ProtectableContainersListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"jdeolctae\",\"backupManagementType\":\"AzureStorage\",\"healthStatus\":\"rledjcu\",\"containerId\":\"bvt\"},\"eTag\":\"gdxzvsgeafgfoseh\",\"location\":\"lzsxezppkk\",\"tags\":{\"yfjlpzeqto\":\"es\",\"xlaj\":\"rpl\"},\"id\":\"llpquevhamfo\",\"name\":\"gwb\",\"type\":\"mkekxpkzwaqxo\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"s\",\"backupManagementType\":\"AzureStorage\",\"healthStatus\":\"xsmyltrw\",\"containerId\":\"fmtbgwjdxwn\"},\"eTag\":\"kurrdreyzjwh\",\"location\":\"etw\",\"tags\":{\"qseuzuukykcyqhy\":\"z\",\"fop\":\"qzzdcykeyste\",\"azgbsqgpe\":\"z\",\"fut\":\"q\"},\"id\":\"dpvozglqj\",\"name\":\"kn\",\"type\":\"zcl\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ProtectableContainerResource> response =
-            manager
-                .protectableContainers()
-                .list("pqrtvaoznqni", "iezeagm", "eituugedhfpjs", "lzmb", com.azure.core.util.Context.NONE);
+        PagedIterable<ProtectableContainerResource> response = manager.protectableContainers().list("dhsoymhpv",
+            "yqfttehdpboujst", "fvvdshxcdedsue", "ygnxcgjtfrnqukt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lzsxezppkk", response.iterator().next().location());
-        Assertions.assertEquals("es", response.iterator().next().tags().get("yfjlpzeqto"));
-        Assertions.assertEquals("jdeolctae", response.iterator().next().properties().friendlyName());
-        Assertions
-            .assertEquals(
-                BackupManagementType.AZURE_STORAGE, response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("rledjcu", response.iterator().next().properties().healthStatus());
-        Assertions.assertEquals("bvt", response.iterator().next().properties().containerId());
-        Assertions.assertEquals("gdxzvsgeafgfoseh", response.iterator().next().etag());
+        Assertions.assertEquals("etw", response.iterator().next().location());
+        Assertions.assertEquals("z", response.iterator().next().tags().get("qseuzuukykcyqhy"));
+        Assertions.assertEquals("s", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE,
+            response.iterator().next().properties().backupManagementType());
+        Assertions.assertEquals("xsmyltrw", response.iterator().next().properties().healthStatus());
+        Assertions.assertEquals("fmtbgwjdxwn", response.iterator().next().properties().containerId());
+        Assertions.assertEquals("kurrdreyzjwh", response.iterator().next().etag());
     }
 }

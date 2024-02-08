@@ -29,6 +29,11 @@ class MappingsBuilder {
     private static final Set<String> IGNORED_LOG_AND_SPAN_STANDARD_ATTRIBUTE_PREFIXES =
         new HashSet<>(
             asList(
+                "server.",
+                "client.",
+                "network.",
+                "url.",
+                "error.",
                 "http.",
                 "db.",
                 "message.",

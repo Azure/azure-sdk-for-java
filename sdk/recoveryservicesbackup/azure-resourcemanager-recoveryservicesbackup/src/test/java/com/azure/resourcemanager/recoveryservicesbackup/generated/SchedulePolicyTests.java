@@ -10,8 +10,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.SchedulePolicy;
 public final class SchedulePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SchedulePolicy model =
-            BinaryData.fromString("{\"schedulePolicyType\":\"SchedulePolicy\"}").toObject(SchedulePolicy.class);
+        SchedulePolicy model
+            = BinaryData.fromString("{\"schedulePolicyType\":\"SchedulePolicy\"}").toObject(SchedulePolicy.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Desired outbound IP resources for Azure Spring Apps resource. */
+/**
+ * Desired outbound IP resources for Azure Spring Apps resource.
+ */
 @Immutable
 public final class NetworkProfileOutboundIPs {
     /*
@@ -18,8 +20,14 @@ public final class NetworkProfileOutboundIPs {
     private List<String> publicIPs;
 
     /**
+     * Creates an instance of NetworkProfileOutboundIPs class.
+     */
+    public NetworkProfileOutboundIPs() {
+    }
+
+    /**
      * Get the publicIPs property: A list of public IP addresses.
-     *
+     * 
      * @return the publicIPs value.
      */
     public List<String> publicIPs() {
@@ -28,7 +36,7 @@ public final class NetworkProfileOutboundIPs {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

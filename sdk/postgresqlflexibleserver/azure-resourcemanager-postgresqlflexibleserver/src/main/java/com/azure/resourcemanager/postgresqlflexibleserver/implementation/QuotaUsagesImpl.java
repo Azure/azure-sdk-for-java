@@ -19,8 +19,7 @@ public final class QuotaUsagesImpl implements QuotaUsages {
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public QuotaUsagesImpl(
-        QuotaUsagesClient innerClient,
+    public QuotaUsagesImpl(QuotaUsagesClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class QuotaUsagesImpl implements QuotaUsages {
 
     public PagedIterable<QuotaUsage> list(String locationName) {
         PagedIterable<QuotaUsageInner> inner = this.serviceClient().list(locationName);
-        return Utils.mapPage(inner, inner1 -> new QuotaUsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaUsageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<QuotaUsage> list(String locationName, Context context) {
         PagedIterable<QuotaUsageInner> inner = this.serviceClient().list(locationName, context);
-        return Utils.mapPage(inner, inner1 -> new QuotaUsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaUsageImpl(inner1, this.manager()));
     }
 
     private QuotaUsagesClient serviceClient() {

@@ -8,18 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KnownPerfCounterDataSourceStreams. */
+/**
+ * Defines values for KnownPerfCounterDataSourceStreams.
+ */
 public final class KnownPerfCounterDataSourceStreams extends ExpandableStringEnum<KnownPerfCounterDataSourceStreams> {
-    /** Static value Microsoft-Perf for KnownPerfCounterDataSourceStreams. */
+    /**
+     * Static value Microsoft-Perf for KnownPerfCounterDataSourceStreams.
+     */
     public static final KnownPerfCounterDataSourceStreams MICROSOFT_PERF = fromString("Microsoft-Perf");
 
-    /** Static value Microsoft-InsightsMetrics for KnownPerfCounterDataSourceStreams. */
-    public static final KnownPerfCounterDataSourceStreams MICROSOFT_INSIGHTS_METRICS =
-        fromString("Microsoft-InsightsMetrics");
+    /**
+     * Static value Microsoft-InsightsMetrics for KnownPerfCounterDataSourceStreams.
+     */
+    public static final KnownPerfCounterDataSourceStreams MICROSOFT_INSIGHTS_METRICS
+        = fromString("Microsoft-InsightsMetrics");
+
+    /**
+     * Creates a new instance of KnownPerfCounterDataSourceStreams value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KnownPerfCounterDataSourceStreams() {
+    }
 
     /**
      * Creates or finds a KnownPerfCounterDataSourceStreams from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KnownPerfCounterDataSourceStreams.
      */
@@ -30,7 +45,7 @@ public final class KnownPerfCounterDataSourceStreams extends ExpandableStringEnu
 
     /**
      * Gets known KnownPerfCounterDataSourceStreams values.
-     *
+     * 
      * @return known KnownPerfCounterDataSourceStreams values.
      */
     public static Collection<KnownPerfCounterDataSourceStreams> values() {

@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
@@ -112,12 +113,12 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
-        return new CosmosStoredProcedureProperties(jsonString);
+        return new CosmosStoredProcedureProperties(Utils.parseJson(jsonString));
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosPermissionProperties createCosmosPermissionProperties(String jsonString) {
-        return new CosmosPermissionProperties(jsonString);
+        return new CosmosPermissionProperties(Utils.parseJson(jsonString));
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -421,7 +422,7 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Object getPartitionKeyObject(PartitionKey right) {
-        return right.getKeyObject();
+        throw new UnsupportedOperationException("getPartitionKeyObject is not supported");
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -740,7 +741,7 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> int getPayloadLength(CosmosItemResponse<T> cosmosItemResponse) {
-        return cosmosItemResponse.responseBodyAsByteArray != null ? cosmosItemResponse.responseBodyAsByteArray.length : 0;
+        return cosmosItemResponse.getResponsePayloadLength();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

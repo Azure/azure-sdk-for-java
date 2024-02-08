@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProf
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of an orchestrator version profile. */
+/**
+ * The properties of an orchestrator version profile.
+ */
 @Fluent
 public final class OrchestratorVersionProfileProperties {
     /*
@@ -19,13 +21,15 @@ public final class OrchestratorVersionProfileProperties {
     @JsonProperty(value = "orchestrators", required = true)
     private List<OrchestratorVersionProfile> orchestrators;
 
-    /** Creates an instance of OrchestratorVersionProfileProperties class. */
+    /**
+     * Creates an instance of OrchestratorVersionProfileProperties class.
+     */
     public OrchestratorVersionProfileProperties() {
     }
 
     /**
      * Get the orchestrators property: List of orchestrator version profiles.
-     *
+     * 
      * @return the orchestrators value.
      */
     public List<OrchestratorVersionProfile> orchestrators() {
@@ -34,7 +38,7 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Set the orchestrators property: List of orchestrator version profiles.
-     *
+     * 
      * @param orchestrators the orchestrators value to set.
      * @return the OrchestratorVersionProfileProperties object itself.
      */
@@ -45,15 +49,13 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (orchestrators() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property orchestrators in model OrchestratorVersionProfileProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property orchestrators in model OrchestratorVersionProfileProperties"));
         } else {
             orchestrators().forEach(e -> e.validate());
         }

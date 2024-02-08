@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Update snapshot Uri with the correct friendly Name of the source Azure file share. */
+/**
+ * Update snapshot Uri with the correct friendly Name of the source Azure file share.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureFileShareProvisionILRRequest")
 @Fluent
@@ -26,13 +28,15 @@ public final class AzureFileShareProvisionIlrRequest extends IlrRequest {
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
-    /** Creates an instance of AzureFileShareProvisionIlrRequest class. */
+    /**
+     * Creates an instance of AzureFileShareProvisionIlrRequest class.
+     */
     public AzureFileShareProvisionIlrRequest() {
     }
 
     /**
      * Get the recoveryPointId property: Recovery point ID.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -41,7 +45,7 @@ public final class AzureFileShareProvisionIlrRequest extends IlrRequest {
 
     /**
      * Set the recoveryPointId property: Recovery point ID.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the AzureFileShareProvisionIlrRequest object itself.
      */
@@ -52,7 +56,7 @@ public final class AzureFileShareProvisionIlrRequest extends IlrRequest {
 
     /**
      * Get the sourceResourceId property: Source Storage account ARM Id.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -61,7 +65,7 @@ public final class AzureFileShareProvisionIlrRequest extends IlrRequest {
 
     /**
      * Set the sourceResourceId property: Source Storage account ARM Id.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the AzureFileShareProvisionIlrRequest object itself.
      */
@@ -72,7 +76,7 @@ public final class AzureFileShareProvisionIlrRequest extends IlrRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

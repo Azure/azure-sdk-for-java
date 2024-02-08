@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
@@ -10,7 +11,6 @@ import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Code snippets for {@link DataLakeDirectoryAsyncClient}
@@ -122,7 +122,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         String umask = "umask";
         String owner = "rwx";
         String group = "r--";
-        String leaseId = UUID.randomUUID().toString();
+        String leaseId = CoreUtils.randomUuid().toString();
         Integer duration = 15;
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions(permissions)
@@ -204,7 +204,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         String umask = "umask";
         String owner = "rwx";
         String group = "r--";
-        String leaseId = UUID.randomUUID().toString();
+        String leaseId = CoreUtils.randomUuid().toString();
         Integer duration = 15;
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions(permissions)
