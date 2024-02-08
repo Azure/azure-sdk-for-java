@@ -5,7 +5,7 @@
 //     This sample demonstrates how to extract printed or hand-written text for of a publicly accessible
 //     image URL, using a synchronous client.
 //
-//     The synchronous (blocking) `analyze` method call returns an `ImageAnalysisResult` object.
+//     The synchronous (blocking) `analyzeFromUrl` method call returns an `ImageAnalysisResult` object.
 //     A call to `getRead()` on the result will return a `ReadResult` object. It includes a list of 
 //     `DetectedTextBlock` objects. Currently, the list will always contain one block, as the service does 
 //     not yet support grouping text lines into separate blocks. The `DetectedTextBlock` object contains a 
@@ -34,7 +34,6 @@ import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
 import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
-import java.net.URL;
 import java.util.Arrays;
 // END: imports-ocr-url-snippet
 
@@ -59,8 +58,8 @@ public class SampleOcrImageUrl {
 
         // Extract text from an input image URL. This is a synchronous (blocking) call.
         // BEGIN: ocr-url-snippet
-        ImageAnalysisResult result = client.analyze(
-            new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
+        ImageAnalysisResult result = client.analyzeFromUrl(
+            "https://aka.ms/azsdk/image-analysis/sample.jpg", // imageUrl: the URL of the image to analyze
             Arrays.asList(VisualFeatures.READ), // visualFeatures
             null); // options: There are no options for READ visual feature
 
