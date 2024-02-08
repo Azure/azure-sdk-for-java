@@ -6,16 +6,20 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Immutable;
 
-/** The endpoint used by clients to ingest logs. */
+/**
+ * The endpoint used by clients to ingest logs.
+ */
 @Immutable
 public final class DataCollectionEndpointLogsIngestion extends LogsIngestionEndpointSpec {
-    /** Creates an instance of DataCollectionEndpointLogsIngestion class. */
+    /**
+     * Creates an instance of DataCollectionEndpointLogsIngestion class.
+     */
     public DataCollectionEndpointLogsIngestion() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
