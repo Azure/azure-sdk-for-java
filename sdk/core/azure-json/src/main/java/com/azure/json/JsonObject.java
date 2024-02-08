@@ -8,6 +8,7 @@ import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -204,10 +205,11 @@ public class JsonObject extends JsonElement {
      * @param writer is the Writer to write to - this is in turn wrapped in a
      * JsonWriter to abstract the underlying writer or stream
      * @return the Writer that was passed in
-     * @exception IOException if the underlying writer or stream throws an exception
      * @throws IOException if the underlying writer or stream throws an exception
+     * @throws NullPointerException if the writer is null
      */
     public Writer toWriter(Writer writer) throws IOException {
+        Objects.requireNonNull(writer, "Cannot write to a null 'writer'.");
         try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
             serialize(jsonWriter);
         }
@@ -222,8 +224,10 @@ public class JsonObject extends JsonElement {
      * in a JsonWriter to abstract the underlying stream
      * @return the OutputStream that was passed in
      * @throws IOException if the underlying writer or stream throws an exception
+     * @throws NullPointerException if the stream is null
      */
     public OutputStream toStream(OutputStream stream) throws IOException {
+        Objects.requireNonNull(stream, "Cannot write to a null 'stream'.");
         try (JsonWriter jsonWriter = JsonProviders.createWriter(stream)) {
             serialize(jsonWriter);
         }

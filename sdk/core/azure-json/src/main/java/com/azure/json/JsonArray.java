@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class representing the JSON array type
@@ -16,7 +17,7 @@ public class JsonArray extends JsonElement {
      * Each of these elements should be one of the following valid JSON types:
      * object, array, string, number, boolean, and null.
      */
-    private List<JsonElement> elements = new ArrayList<>(0);
+    private final List<JsonElement> elements = new ArrayList<>(0);
 
     /**
      * Default constructor.
@@ -89,11 +90,7 @@ public class JsonArray extends JsonElement {
      */
     public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
         nullCheck(element);
-        if(index >= elements.size()){
-            this.elements.add(element);
-        } else {
-            this.elements.add(index, element);
-        }
+        this.elements.add(index, element);
         return this;
     }
 
@@ -169,39 +166,7 @@ public class JsonArray extends JsonElement {
         }
     }
 
-    /**
-     * Returns the String representation of the JsonArray object
-     * utilising the JsonWriter to abstract. It passes a StringWriter to the
-     * toWriter method and then returns the resulting String.
-     * Then it gets reformatted with line breaks and tabs for easier readability.
-     * @return String representation of the JsonArray object
-     */
-    public String toJsonPretty() throws IOException {
-        int tabCount = 0;
-        String input = toJson();
-        for(int i = 0; i < input.length(); i++){
-            if(input.charAt(i) == '{' || input.charAt(i) == '['){
-                tabCount++;
-                String firstHalf = input.substring(0, i+1);
-                String lastHalf = input.substring(i+1);
-                input = firstHalf + "\n" + "\t".repeat(Math.max(0, tabCount)) + lastHalf;
-            } else if (input.charAt(i) == ',') {
-                String firstHalf = input.substring(0, i+1);
-                String lastHalf = input.substring(i+1);
-                input = firstHalf + "\n" + "\t".repeat(Math.max(0, tabCount)) + lastHalf;
-            } else if (input.charAt(i) == ']' || input.charAt(i) == '}'){
-                tabCount--;
-                String firstHalf = input.substring(0, i);
-                String lastHalf = input.substring(i);
-                StringBuilder tabs = new StringBuilder("\n");
-                tabs.append("\t".repeat(Math.max(0, tabCount)));
-                input = firstHalf + tabs + lastHalf;
-                i = i + tabs.length();
-            }
-        }
-        input = input.replace(":", ": ");
-        return input;
-    }
+
 
     /**
      * Takes a writer and uses it to serialize the JsonArray object
@@ -210,14 +175,14 @@ public class JsonArray extends JsonElement {
      * @throws IOException if the writer throws an exception
      */
     public Writer toWriter(Writer writer) throws IOException {
-        if(writer != null){
-            try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
-                serialize(jsonWriter);
-            }
-            return writer;
-        } else {
-            throw new NullPointerException();
+
+        Objects.requireNonNull(writer, "Cannot write to a null 'writer'.");
+
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
+            serialize(jsonWriter);
         }
+        return writer;
+
     }
 
     /**
@@ -227,14 +192,12 @@ public class JsonArray extends JsonElement {
      * @throws IOException if the output stream throws an exception
      */
     public OutputStream toStream(OutputStream stream) throws IOException {
-        if(stream != null){
-            try (JsonWriter jsonWriter = JsonProviders.createWriter(stream)) {
-                serialize(jsonWriter);
-            }
-            return stream;
-        } else {
-            throw new NullPointerException();
+
+        Objects.requireNonNull(stream, "Cannot write to a null 'stream'.");
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(stream)) {
+            serialize(jsonWriter);
         }
+        return stream;
 
     }
 
@@ -244,12 +207,14 @@ public class JsonArray extends JsonElement {
      * @param jsonWriter the JsonWriter to serialize the JsonArray to
      * @return the same jsonWriter for method chaining
      * @throws IOException if the JsonWriter throws an exception during serialization
+     * @throws NullPointerException if the JsonWriter is null
      */
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
         // Start writing the array into jsonWriter, if it hits another array or
         // object, then pass the writer in to that objects serialize (which will
         // call this method again) and then return the writer to here. This will
         // unnest the lot.
+
 
         jsonWriter.writeStartArray();
 

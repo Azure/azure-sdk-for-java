@@ -47,6 +47,11 @@ public class JsonEditingTests {
     }
 
     @Test
+    public void addArrayElementGreaterThanSize() { //If the index exceeds the size of the array, test that it throws the correct error
+        assertThrows(IndexOutOfBoundsException.class, ()-> array.getElement(array.size()+100));
+    }
+
+    @Test
     public void addArrayElementExistingEntryFullJson() throws IOException { //Test that values behind the index have been properly shifted, and not replaced.
         array.addElement(1, new JsonString("New Value"));
         assertEquals("[\"EntryVariable\",\"New Value\",{\"InnerKey\":\"Data\"},[null,false]]", array.toJson());
