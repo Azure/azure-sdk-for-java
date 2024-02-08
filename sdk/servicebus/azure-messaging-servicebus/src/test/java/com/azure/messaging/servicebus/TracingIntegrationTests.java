@@ -877,11 +877,18 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     static class TestSpanProcessor implements SpanProcessor {
         private static final ClientLogger LOGGER = new ClientLogger(TestSpanProcessor.class);
+        private static final AttributeKey<String> AZ_NAMESPACE = AttributeKey.stringKey("az.namespace");
+        private static final AttributeKey<String> MESSAGING_SYSTEM = AttributeKey.stringKey("messaging.system");
+        private static final AttributeKey<String> MESSAGING_DESTINATION_NAME
+            = AttributeKey.stringKey("messaging.destination.name");
+        private static final AttributeKey<String> NET_PEER_NAME = AttributeKey.stringKey("net.peer.name");
+        private static final AttributeKey<String> SERVER_ADDRESS = AttributeKey.stringKey("server.address");
+
         private final ConcurrentLinkedDeque<ReadableSpan> spans = new ConcurrentLinkedDeque<>();
         private final String entityName;
         private final String namespace;
 
-        private AtomicReference<Consumer<ReadableSpan>> notifier = new AtomicReference<>();
+        private final AtomicReference<Consumer<ReadableSpan>> notifier = new AtomicReference<>();
 
         TestSpanProcessor(String namespace, String entityName) {
             this.namespace = namespace;
@@ -903,10 +910,18 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         @Override
         public void onEnd(ReadableSpan readableSpan) {
             LOGGER.info(readableSpan.toString());
-            assertEquals("Microsoft.ServiceBus", readableSpan.getAttribute(AttributeKey.stringKey("az.namespace")));
-            assertEquals("servicebus", readableSpan.getAttribute(AttributeKey.stringKey("messaging.system")));
-            assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));
-            assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("net.peer.name")));
+            assertEquals("Microsoft.ServiceBus", readableSpan.getAttribute(AZ_NAMESPACE));
+            assertEquals("servicebus", readableSpan.getAttribute(MESSAGING_SYSTEM));
+            assertEquals(entityName, readableSpan.getAttribute(MESSAGING_DESTINATION_NAME));
+
+            // Depending on the version of OpenTelemetry being used, the attribute name for the peer name may be
+            // different. The attribute name was changed from "net.peer.name" to "server.address".
+            String actualNamespace = readableSpan.getAttribute(NET_PEER_NAME);
+            if (actualNamespace == null) {
+                actualNamespace = readableSpan.getAttribute(SERVER_ADDRESS);
+            }
+
+            assertEquals(namespace, actualNamespace);
 
             spans.add(readableSpan);
             Consumer<ReadableSpan> filter = notifier.get();
