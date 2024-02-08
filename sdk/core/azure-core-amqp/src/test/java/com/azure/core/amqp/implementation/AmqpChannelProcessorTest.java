@@ -11,7 +11,6 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -162,12 +161,9 @@ class AmqpChannelProcessorTest {
     /**
      * Verifies that we can get the next connection when the first one encounters a retryable error.
      */
-    @RepeatedTest(1000)
-    //@MethodSource("newConnectionOnRetriableError")
-    //@ParameterizedTest
-    void newConnectionOnRetriableErrorTest() {
-        Throwable exception = new RejectedExecutionException("Rejected test execution");
-
+    @MethodSource("newConnectionOnRetriableError")
+    @ParameterizedTest
+    void newConnectionOnRetriableErrorTest(Throwable exception) {
         // Arrange
         final AtomicInteger failedTries = new AtomicInteger();
 
