@@ -80,8 +80,8 @@ public class ElasticSanManagerTests extends TestBase {
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
-                .withBaseSizeTiB(15L)
-                .withExtendedCapacitySizeTiB(24L)
+                .withBaseSizeTiB(1L)
+                .withExtendedCapacitySizeTiB(1L)
                 .create();
             // @embedEnd
             elasticSan.refresh();
