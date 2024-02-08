@@ -57,25 +57,8 @@ public final class Providers<TProvider, TInstance> {
             defaultProviderName = null;
         }
 
-        while (true) {
-            if (!it.hasNext()) {
-                break;
-            }
-            TProvider additionalProvider;
-            try {
-                additionalProvider = it.next();
-            } catch (final UnsupportedClassVersionError exception) {
-                // The JDK HttpClient in combination with the Azure SDK for Java is only supported with JDK 12 and
-                // higher.
-                int javaVersion = Integer.parseInt(System.getProperty("java.version").split("\\.")[0]);
-                if (exception.getMessage().contains(
-                    "JdkHttpClientProvider has been compiled by a more recent version of the Java Runtime")
-                    && !(javaVersion > 11)) {
-                    continue;
-                } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(exception));
-                }
-            }
+        while (it.hasNext()) {
+            TProvider additionalProvider = it.next();
             String additionalProviderName = additionalProvider.getClass().getName();
             availableProviders.put(additionalProviderName, additionalProvider);
             LOGGER.log(LogLevel.VERBOSE, () -> "Additional provider found on the classpath: " + additionalProviderName);
