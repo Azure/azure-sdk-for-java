@@ -31,14 +31,16 @@ public final class RuleEmailAction extends RuleAction {
     @JsonProperty(value = "customEmails")
     private List<String> customEmails;
 
-    /** Creates an instance of RuleEmailAction class. */
+    /**
+     * Creates an instance of RuleEmailAction class.
+     */
     public RuleEmailAction() {
     }
 
     /**
      * Get the sendToServiceOwners property: Whether the administrators (service and co-administrators) of the service
      * should be notified when the alert is activated.
-     *
+     * 
      * @return the sendToServiceOwners value.
      */
     public Boolean sendToServiceOwners() {
@@ -48,7 +50,7 @@ public final class RuleEmailAction extends RuleAction {
     /**
      * Set the sendToServiceOwners property: Whether the administrators (service and co-administrators) of the service
      * should be notified when the alert is activated.
-     *
+     * 
      * @param sendToServiceOwners the sendToServiceOwners value to set.
      * @return the RuleEmailAction object itself.
      */
@@ -60,7 +62,7 @@ public final class RuleEmailAction extends RuleAction {
     /**
      * Get the customEmails property: the list of administrator's custom email addresses to notify of the activation of
      * the alert.
-     *
+     * 
      * @return the customEmails value.
      */
     public List<String> customEmails() {
@@ -70,7 +72,7 @@ public final class RuleEmailAction extends RuleAction {
     /**
      * Set the customEmails property: the list of administrator's custom email addresses to notify of the activation of
      * the alert.
-     *
+     * 
      * @param customEmails the customEmails value to set.
      * @return the RuleEmailAction object itself.
      */
@@ -81,7 +83,7 @@ public final class RuleEmailAction extends RuleAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

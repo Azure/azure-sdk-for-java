@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Itsm receiver. */
+/**
+ * An Itsm receiver.
+ */
 @Fluent
 public final class ItsmReceiver {
     /*
@@ -38,19 +40,22 @@ public final class ItsmReceiver {
 
     /*
      * Region in which workspace resides. Supported
-     * values:'centralindia','japaneast','southeastasia','australiasoutheast','uksouth','westcentralus','canadacentral','eastus','westeurope'
+     * values:'centralindia','japaneast','southeastasia','australiasoutheast','uksouth','westcentralus','canadacentral',
+     * 'eastus','westeurope'
      */
     @JsonProperty(value = "region", required = true)
     private String region;
 
-    /** Creates an instance of ItsmReceiver class. */
+    /**
+     * Creates an instance of ItsmReceiver class.
+     */
     public ItsmReceiver() {
     }
 
     /**
      * Get the name property: The name of the Itsm receiver. Names must be unique across all receivers within an action
      * group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +65,7 @@ public final class ItsmReceiver {
     /**
      * Set the name property: The name of the Itsm receiver. Names must be unique across all receivers within an action
      * group.
-     *
+     * 
      * @param name the name value to set.
      * @return the ItsmReceiver object itself.
      */
@@ -71,7 +76,7 @@ public final class ItsmReceiver {
 
     /**
      * Get the workspaceId property: OMS LA instance identifier.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -80,7 +85,7 @@ public final class ItsmReceiver {
 
     /**
      * Set the workspaceId property: OMS LA instance identifier.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the ItsmReceiver object itself.
      */
@@ -92,7 +97,7 @@ public final class ItsmReceiver {
     /**
      * Get the connectionId property: Unique identification of ITSM connection among multiple defined in above
      * workspace.
-     *
+     * 
      * @return the connectionId value.
      */
     public String connectionId() {
@@ -102,7 +107,7 @@ public final class ItsmReceiver {
     /**
      * Set the connectionId property: Unique identification of ITSM connection among multiple defined in above
      * workspace.
-     *
+     * 
      * @param connectionId the connectionId value to set.
      * @return the ItsmReceiver object itself.
      */
@@ -114,7 +119,7 @@ public final class ItsmReceiver {
     /**
      * Get the ticketConfiguration property: JSON blob for the configurations of the ITSM action.
      * CreateMultipleWorkItems option will be part of this blob as well.
-     *
+     * 
      * @return the ticketConfiguration value.
      */
     public String ticketConfiguration() {
@@ -124,7 +129,7 @@ public final class ItsmReceiver {
     /**
      * Set the ticketConfiguration property: JSON blob for the configurations of the ITSM action.
      * CreateMultipleWorkItems option will be part of this blob as well.
-     *
+     * 
      * @param ticketConfiguration the ticketConfiguration value to set.
      * @return the ItsmReceiver object itself.
      */
@@ -136,7 +141,7 @@ public final class ItsmReceiver {
     /**
      * Get the region property: Region in which workspace resides. Supported
      * values:'centralindia','japaneast','southeastasia','australiasoutheast','uksouth','westcentralus','canadacentral','eastus','westeurope'.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -146,7 +151,7 @@ public final class ItsmReceiver {
     /**
      * Set the region property: Region in which workspace resides. Supported
      * values:'centralindia','japaneast','southeastasia','australiasoutheast','uksouth','westcentralus','canadacentral','eastus','westeurope'.
-     *
+     * 
      * @param region the region value to set.
      * @return the ItsmReceiver object itself.
      */
@@ -157,35 +162,29 @@ public final class ItsmReceiver {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ItsmReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ItsmReceiver"));
         }
         if (workspaceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property workspaceId in model ItsmReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property workspaceId in model ItsmReceiver"));
         }
         if (connectionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property connectionId in model ItsmReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property connectionId in model ItsmReceiver"));
         }
         if (ticketConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ticketConfiguration in model ItsmReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ticketConfiguration in model ItsmReceiver"));
         }
         if (region() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property region in model ItsmReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property region in model ItsmReceiver"));
         }
     }
 

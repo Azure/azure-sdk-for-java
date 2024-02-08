@@ -331,6 +331,7 @@
     "logit",
     "logprobs",
     "logz",
+    "LOINC",
     "Lucene",
     "mgmt",
     "mibps",
@@ -485,6 +486,14 @@
       "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/WeatherAlongRoutePrecipitation.java",
       "words": [
         "Decibles"
+      ]
+    },
+    {
+      "filename": "sdk/healthinsights/**",
+      "words": [
+        "authorid",
+        "encounterid",
+        "docid"
       ]
     },
     {

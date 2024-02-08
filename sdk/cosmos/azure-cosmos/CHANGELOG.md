@@ -16,6 +16,8 @@
 * Added information about the path when it is invalid in RxDocumentService ctor. - See [PR 38482](https://github.com/Azure/azure-sdk-for-java/pull/38482)
 * Removed `CancellationException` callstack from `RntbdRequestRecord.toString`. - See [PR 38504](https://github.com/Azure/azure-sdk-for-java/pull/38504)
 * Using customized `subStatusCodes` for client generated `InternalServerErrorException`. - See [PR 38518](https://github.com/Azure/azure-sdk-for-java/pull/38518)
+* Added an option to opt-out of E2E timeout defined in CosmosClientBuilder for non-point operations via system property or environment variable. - See [PR 38388](https://github.com/Azure/azure-sdk-for-java/pull/38388)
+* Using `ConnectionTimeout` as the `RNTBD` connection `acquisitionTimeout`. - See [PR 38695](https://github.com/Azure/azure-sdk-for-java/pull/38695)
 
 ### 4.54.0 (2024-01-03)
 

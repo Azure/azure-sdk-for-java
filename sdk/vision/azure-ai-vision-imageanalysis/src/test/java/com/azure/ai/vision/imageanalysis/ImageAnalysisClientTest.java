@@ -31,6 +31,7 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageUrl;
+
         List<VisualFeatures> visualFeatures =  Arrays.asList(
                 VisualFeatures.SMART_CROPS,
                 VisualFeatures.CAPTION,
@@ -39,12 +40,13 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
                 VisualFeatures.PEOPLE,
                 VisualFeatures.READ,
                 VisualFeatures.TAGS);
-        Boolean genderNeutralCaption = true;
-        String language = "en";
-        List<Double> aspectRatios = Arrays.asList(0.9, 1.33);
-        String modelVersion = "latest";
-        ImageAnalysisOptions options = new ImageAnalysisOptions(
-            language, genderNeutralCaption, aspectRatios, modelVersion);
+
+        ImageAnalysisOptions options = new ImageAnalysisOptions()
+            .setLanguage("en")
+            .setGenderNeutralCaption(true)
+            .setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33))
+            .setModelVersion("latest");
+
         doAnalysis(methodName, sync, imageSource, visualFeatures, options);
     }
 

@@ -9,7 +9,7 @@ import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategor
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, GatewayConnectionConfig, SparkBridgeInternal, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, GatewayConnectionConfig, ThrottlingRetryOptions}
 import com.azure.identity.ClientSecretCredentialBuilder
 import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
@@ -142,7 +142,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                         cosmosClientConfiguration.databaseAccountName,
                         createCosmosManagementClient(
                             cosmosClientConfiguration.subscriptionId.get,
-                            cosmosClientConfiguration.azureEnvironment,
+                            new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
                             aadAuthConfig),
                         cosmosAsyncClient)
             case _ =>
@@ -187,7 +187,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
           case aadAuthConfig: CosmosAadAuthConfig =>
               val tokenCredential = new ClientSecretCredentialBuilder()
-                  .authorityHost(cosmosClientConfiguration.azureEnvironment.getActiveDirectoryEndpoint())
+                  .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
                   .tenantId(aadAuthConfig.tenantId)
                   .clientId(aadAuthConfig.clientId)
                   .clientSecret(aadAuthConfig.clientSecret)

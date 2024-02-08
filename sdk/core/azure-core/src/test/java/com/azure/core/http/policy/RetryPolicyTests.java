@@ -811,7 +811,8 @@ public class RetryPolicyTests {
     public void retryOptionsCanConfigureHttpResponseRetryLogic() {
         // Fixed delay retry options which only retries on 429 responses
         RetryOptions retryOptions = new RetryOptions(new FixedDelayOptions(1, Duration.ofMillis(1)))
-            .setShouldRetry(response -> response.getStatusCode() == 429);
+            .setShouldRetryCondition(retryInfo -> retryInfo.getResponse() != null
+                && retryInfo.getResponse().getStatusCode() == 429);
 
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -837,7 +838,7 @@ public class RetryPolicyTests {
     public void retryOptionsCanConfigureThrowableRetryLogic() {
         // Fixed delay retry options which only retries IOException-based exceptions.
         RetryOptions retryOptions = new RetryOptions(new FixedDelayOptions(1, Duration.ofMillis(1)))
-            .setShouldRetryException(throwable -> throwable instanceof IOException);
+            .setShouldRetryCondition(retryInfo -> retryInfo.getThrowable() instanceof IOException);
 
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
