@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Actions to invoke when the alert fires. */
+/**
+ * Actions to invoke when the alert fires.
+ */
 @Fluent
 public final class Actions {
     /*
@@ -26,13 +28,15 @@ public final class Actions {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customProperties;
 
-    /** Creates an instance of Actions class. */
+    /**
+     * Creates an instance of Actions class.
+     */
     public Actions() {
     }
 
     /**
      * Get the actionGroups property: Action Group resource Ids to invoke when the alert fires.
-     *
+     * 
      * @return the actionGroups value.
      */
     public List<String> actionGroups() {
@@ -41,7 +45,7 @@ public final class Actions {
 
     /**
      * Set the actionGroups property: Action Group resource Ids to invoke when the alert fires.
-     *
+     * 
      * @param actionGroups the actionGroups value to set.
      * @return the Actions object itself.
      */
@@ -52,7 +56,7 @@ public final class Actions {
 
     /**
      * Get the customProperties property: The properties of an alert payload.
-     *
+     * 
      * @return the customProperties value.
      */
     public Map<String, String> customProperties() {
@@ -61,7 +65,7 @@ public final class Actions {
 
     /**
      * Set the customProperties property: The properties of an alert payload.
-     *
+     * 
      * @param customProperties the customProperties value to set.
      * @return the Actions object itself.
      */
@@ -72,7 +76,7 @@ public final class Actions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

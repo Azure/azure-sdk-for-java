@@ -13,6 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -182,10 +183,12 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("metricId", Objects.toString(this.metricId, null));
         jsonWriter.writeJsonField("dimensionFilter", this.dimensionFilter);
-        jsonWriter.writeStringField("feedbackType", Objects.toString(this.feedbackType, null));
-        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
-        jsonWriter.writeStringField("endTime", Objects.toString(this.endTime, null));
-        jsonWriter.writeStringField("timeMode", Objects.toString(this.timeMode, null));
+        jsonWriter.writeStringField("feedbackType", this.feedbackType == null ? null : this.feedbackType.toString());
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("timeMode", this.timeMode == null ? null : this.timeMode.toString());
         return jsonWriter.writeEndObject();
     }
 

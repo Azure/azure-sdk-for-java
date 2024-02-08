@@ -195,10 +195,10 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("direction", Objects.toString(this.direction, null));
+        jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
         jsonWriter.writeNumberField("lower", this.lower);
         jsonWriter.writeNumberField("upper", this.upper);
-        jsonWriter.writeStringField("type", Objects.toString(this.type, null));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("metricId", Objects.toString(this.metricId, null));
         jsonWriter.writeBooleanField("triggerForMissing", this.triggerForMissing);
         return jsonWriter.writeEndObject();

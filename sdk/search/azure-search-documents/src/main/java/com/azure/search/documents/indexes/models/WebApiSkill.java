@@ -55,7 +55,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /*
      * Applies to custom skills that connect to external code in an Azure function or some other application that
      * provides the transformations. This value should be the application ID created for the function or app when it
-     * was registered with Azure Active Directory. When specified, the custom skill connects to the function or app
+     * was registered with Microsoft Entra ID. When specified, the custom skill connects to the function or app
      * using a managed ID (either system or user-assigned) of the search service and the access token of the function
      * or app, using this value as the resource id for creating the scope of the access token.
      */
@@ -70,7 +70,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Creates an instance of WebApiSkill class.
-     * 
+     *
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      * @param uri the uri value to set.
@@ -82,7 +82,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Get the uri property: The url for the Web API.
-     * 
+     *
      * @return the uri value.
      */
     public String getUri() {
@@ -91,7 +91,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Get the httpHeaders property: The headers required to make the http request.
-     * 
+     *
      * @return the httpHeaders value.
      */
     public Map<String, String> getHttpHeaders() {
@@ -100,7 +100,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Set the httpHeaders property: The headers required to make the http request.
-     * 
+     *
      * @param httpHeaders the httpHeaders value to set.
      * @return the WebApiSkill object itself.
      */
@@ -111,7 +111,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Get the httpMethod property: The method for the http request.
-     * 
+     *
      * @return the httpMethod value.
      */
     public String getHttpMethod() {
@@ -120,7 +120,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Set the httpMethod property: The method for the http request.
-     * 
+     *
      * @param httpMethod the httpMethod value to set.
      * @return the WebApiSkill object itself.
      */
@@ -131,7 +131,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Get the timeout property: The desired timeout for the request. Default is 30 seconds.
-     * 
+     *
      * @return the timeout value.
      */
     public Duration getTimeout() {
@@ -140,7 +140,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Set the timeout property: The desired timeout for the request. Default is 30 seconds.
-     * 
+     *
      * @param timeout the timeout value to set.
      * @return the WebApiSkill object itself.
      */
@@ -151,7 +151,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Get the batchSize property: The desired batch size which indicates number of documents.
-     * 
+     *
      * @return the batchSize value.
      */
     public Integer getBatchSize() {
@@ -160,7 +160,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Set the batchSize property: The desired batch size which indicates number of documents.
-     * 
+     *
      * @param batchSize the batchSize value to set.
      * @return the WebApiSkill object itself.
      */
@@ -171,7 +171,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Get the degreeOfParallelism property: If set, the number of parallel calls that can be made to the Web API.
-     * 
+     *
      * @return the degreeOfParallelism value.
      */
     public Integer getDegreeOfParallelism() {
@@ -180,7 +180,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Set the degreeOfParallelism property: If set, the number of parallel calls that can be made to the Web API.
-     * 
+     *
      * @param degreeOfParallelism the degreeOfParallelism value to set.
      * @return the WebApiSkill object itself.
      */
@@ -192,11 +192,11 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /**
      * Get the authResourceId property: Applies to custom skills that connect to external code in an Azure function or
      * some other application that provides the transformations. This value should be the application ID created for
-     * the function or app when it was registered with Azure Active Directory. When specified, the custom skill
+     * the function or app when it was registered with Microsoft Entra ID. When specified, the custom skill
      * connects to the function or app using a managed ID (either system or user-assigned) of the search service and
      * the access token of the function or app, using this value as the resource id for creating the scope of the
      * access token.
-     * 
+     *
      * @return the authResourceId value.
      */
     public String getAuthResourceId() {
@@ -206,11 +206,11 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /**
      * Set the authResourceId property: Applies to custom skills that connect to external code in an Azure function or
      * some other application that provides the transformations. This value should be the application ID created for
-     * the function or app when it was registered with Azure Active Directory. When specified, the custom skill
+     * the function or app when it was registered with Microsoft Entra ID. When specified, the custom skill
      * connects to the function or app using a managed ID (either system or user-assigned) of the search service and
      * the access token of the function or app, using this value as the resource id for creating the scope of the
      * access token.
-     * 
+     *
      * @param authResourceId the authResourceId value to set.
      * @return the WebApiSkill object itself.
      */
@@ -224,7 +224,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * authResourceId is provided and it's not specified, the system-assigned managed identity is used. On updates to
      * the indexer, if the identity is unspecified, the value remains unchanged. If set to "none", the value of this
      * property is cleared.
-     * 
+     *
      * @return the authIdentity value.
      */
     public SearchIndexerDataIdentity getAuthIdentity() {
@@ -236,7 +236,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * authResourceId is provided and it's not specified, the system-assigned managed identity is used. On updates to
      * the indexer, if the identity is unspecified, the value remains unchanged. If set to "none", the value of this
      * property is cleared.
-     * 
+     *
      * @param authIdentity the authIdentity value to set.
      * @return the WebApiSkill object itself.
      */
@@ -294,7 +294,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
 
     /**
      * Reads an instance of WebApiSkill from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebApiSkill if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

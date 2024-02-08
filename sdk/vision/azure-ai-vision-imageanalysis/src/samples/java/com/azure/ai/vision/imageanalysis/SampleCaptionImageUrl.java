@@ -7,9 +7,9 @@
 //
 //     By default the caption may contain gender terms such as "man", "woman", or "boy", "girl".
 //     You have the option to request gender-neutral terms such as "person" or "child" by setting
-//     `genderNeutralCaption` to `true` when calling `analyze`, as shown in this example.
+//     `genderNeutralCaption` to `true` when calling `analyzeFromUrl`, as shown in this example.
 //
-//     The synchronous (blocking) `analyze` method call returns an `ImageAnalysisResult` object.
+//     The synchronous (blocking) `analyzeFromUrl` method call returns an `ImageAnalysisResult` object.
 //     A call to `getCaption()` on this result will return a `CaptionResult` object. It contains:
 //     - The text of the caption. Captions are only supported in English at the moment. 
 //     - A confidence score in the range [0, 1], with higher values indicating greater confidences in
@@ -29,7 +29,6 @@ import java.net.MalformedURLException;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
-import java.net.URL;
 import java.util.Arrays;
 // END: imports-caption-url-snippet
 
@@ -54,8 +53,8 @@ public class SampleCaptionImageUrl {
 
         // Generate a caption for an input image buffer. This is a synchronous (blocking) call.
         // BEGIN: caption-url-snippet
-        ImageAnalysisResult result = client.analyze(
-            new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
+        ImageAnalysisResult result = client.analyzeFromUrl(
+            "https://aka.ms/azsdk/image-analysis/sample.jpg", // imageUrl: the URL of the image to analyze
             Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
             new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
