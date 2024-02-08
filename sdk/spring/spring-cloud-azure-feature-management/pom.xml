@@ -40,6 +40,12 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <version>3.2.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
       <version>2.15.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
@@ -125,11 +131,24 @@
             <id>base-testCompile</id>
             <phase>none</phase>
           </execution>
+          <!-- Ensure we compile with Java 17 -->
           <execution>
             <goals>
               <goal>compile</goal>
             </goals>
             <configuration>
+              <release>17</release>
+            </configuration>
+          </execution>
+          <execution>
+            <id>annotation-process</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <compilerArgs>
+                <arg>-proc:only</arg> <!-- Turn on annotation processing -->
+              </compilerArgs>
               <release>17</release>
             </configuration>
           </execution>

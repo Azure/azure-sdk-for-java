@@ -77,6 +77,12 @@
       <version>3.2.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <version>3.2.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
 
     <!-- Add mockito-core 4.11.0 to work with Java 21 -->
     <dependency>
@@ -137,11 +143,24 @@
             <id>base-testCompile</id>
             <phase>none</phase>
           </execution>
+          <!-- Ensure we compile with Java 17 -->
           <execution>
             <goals>
               <goal>compile</goal>
             </goals>
             <configuration>
+              <release>17</release>
+            </configuration>
+          </execution>
+          <execution>
+            <id>annotation-process</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <compilerArgs>
+                <arg>-proc:only</arg> <!-- Turn on annotation processing -->
+              </compilerArgs>
               <release>17</release>
             </configuration>
           </execution>
