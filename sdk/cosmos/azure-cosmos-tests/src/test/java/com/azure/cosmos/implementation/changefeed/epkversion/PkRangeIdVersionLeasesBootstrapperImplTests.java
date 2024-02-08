@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.changefeed.epkversion;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -35,6 +36,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         Mockito.when(leaseStoreMock.releaseInitializationLock()).thenReturn(Mono.empty());
 
         LeaseStoreManager pkRangeIdVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
+        LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.isInitialized()).thenReturn(Mono.just(true));
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.getAllLeases()).thenReturn(Flux.empty());
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.deleteAll(anyList())).thenReturn(Mono.empty());
@@ -44,7 +46,9 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
             leaseStoreMock,
             lockTime,
             expireTIme,
-            pkRangeIdVersionLeaseStoreManagerMock);
+            pkRangeIdVersionLeaseStoreManagerMock,
+            epkRangeVersionLeaseStoreManagerMock,
+            ChangeFeedMode.INCREMENTAL);
 
         bootstrapper.initialize().block();
 
@@ -75,6 +79,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         Mockito.when(leaseStoreMock.releaseInitializationLock()).thenReturn(Mono.just(true));
 
         LeaseStoreManager pkRangeIdVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
+        LeaseStoreManager epkVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.isInitialized()).thenReturn(Mono.just(false));
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.markInitialized()).thenReturn(Mono.empty());
@@ -84,7 +89,9 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
             leaseStoreMock,
             lockTime,
             expireTIme,
-            pkRangeIdVersionLeaseStoreManagerMock);
+            pkRangeIdVersionLeaseStoreManagerMock,
+            epkVersionLeaseStoreManagerMock,
+            ChangeFeedMode.INCREMENTAL);
 
         bootstrapper.initialize().block();
         Mockito.verify(partitionSynchronizerMock, times(0)).createMissingLeases(anyList());

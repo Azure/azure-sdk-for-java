@@ -3,8 +3,15 @@
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
+import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
+import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.exceptions.LeaseConflictException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -23,11 +30,14 @@ class BootstrapperImpl implements Bootstrapper {
     private final LeaseStore leaseStore;
     private final Duration lockTime;
     private final Duration sleepTime;
+    private final LeaseStoreManager leaseStoreManager;
+    private final ChangeFeedMode changeFeedMode;
 
     private volatile boolean isInitialized;
+    private volatile boolean isLeaseValidationQueryRun;
     private volatile boolean isLockAcquired;
 
-    public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime) {
+    public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime, LeaseStoreManager leaseStoreManager, ChangeFeedMode changeFeedMode) {
         checkNotNull(synchronizer, "Argument 'synchronizer' can not be null");
         checkNotNull(leaseStore, "Argument 'leaseStore' can not be null");
         checkArgument(lockTime != null && this.isPositive(lockTime), "lockTime should be non-null and positive");
@@ -35,10 +45,13 @@ class BootstrapperImpl implements Bootstrapper {
 
         this.synchronizer = synchronizer;
         this.leaseStore = leaseStore;
+        this.leaseStoreManager = leaseStoreManager;
+        this.changeFeedMode = changeFeedMode;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
 
         this.isInitialized = false;
+        this.isLeaseValidationQueryRun = false;
     }
 
     private boolean isPositive(Duration duration) {
@@ -50,8 +63,34 @@ class BootstrapperImpl implements Bootstrapper {
         this.isInitialized = false;
 
         return Mono.just(this)
+            .flatMap(value -> {
+                    if (!this.isLeaseValidationQueryRun) {
+                        return this.leaseStoreManager
+                            .getAllLeases()
+                            .next()
+                            .defaultIfEmpty(new ServiceItemLeaseV1())
+                            .doOnSuccess(lease -> this.isLeaseValidationQueryRun = true);
+                    } else {
+                        return Mono.just(new ServiceItemLeaseV1());
+                    }
+                }
+            )
+            .flatMap(lease -> {
+                // lease doesn't have a non-existent id
+                if (!Strings.isNullOrEmpty(lease.getId())) {
+
+                    // lease doesn't have a continuation token
+                    if (!Strings.isNullOrEmpty(lease.getContinuationToken())) {
+                        ChangeFeedState changeFeedState = ChangeFeedState.fromString(lease.getContinuationToken());
+
+                        if (changeFeedState.getMode() == ChangeFeedMode.INCREMENTAL) {
+                            return Mono.error(new IllegalStateException("ChangeFeedProcessor in mode : " + "" + " cannot use a lease in mode : " + changeFeedState.getMode()));
+                        }
+                    }
+                }
+                return Mono.just(true);
+            })
             .flatMap(value -> this.leaseStore.isInitialized())
-            // .zipWith(this.)
             .flatMap(initialized -> {
                 this.isInitialized = initialized;
 
