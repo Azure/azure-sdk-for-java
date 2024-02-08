@@ -10,6 +10,11 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum PhoneNumbersServiceVersion implements ServiceVersion {
     /**
+     * Previous stable service version {@code 2021-03-07}
+     */
+    V2021_03_07("2021-03-07"),
+
+    /**
      * Latest stable service version {@code 2024-03-01}
      */
     V2024_03_01("2024-03-01"),
