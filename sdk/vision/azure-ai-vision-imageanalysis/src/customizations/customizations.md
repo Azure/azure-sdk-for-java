@@ -42,8 +42,6 @@ A new Java file `ImageAnalysisOptions.java` was written and placed in the folder
 The following two public methods were added to the class `ImageAnalysisClient` (file `ImageAnalysisClient.java`):
 
 ```java
-import java.net.URL;
-
     /**
      * Performs a single Image Analysis operation on a give image URL.
      *
@@ -66,12 +64,12 @@ import java.net.URL;
      * <!-- end com.azure.ai.vision.imageanalysis.sync-analysis-from-url -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageAnalysisResult analyze(URL imageUrl, List<VisualFeatures> visualFeatures,
+    public ImageAnalysisResult analyzeFromUrl(String imageUrl, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
-            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), null, null, null, null);
+            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl), null, null, null, null);
         } else {
-            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), options.getLanguage(),
+            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl), options.getLanguage(),
                 options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
@@ -114,8 +112,6 @@ import java.net.URL;
 The following two public methods were added to the class `ImageAnalysisAsyncClient` (file `ImageAnalysisAsyncClient.java`):
 
 ```java
-import java.net.URL;
-
     /**
      * Performs a single Image Analysis operation on a give image URL.
      *
@@ -138,12 +134,12 @@ import java.net.URL;
      * <!-- end com.azure.ai.vision.imageanalysis.async-analysis-from-url -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImageAnalysisResult> analyze(URL imageUrl, List<VisualFeatures> visualFeatures,
+    public Mono<ImageAnalysisResult> analyzeFromUrl(String imageUrl, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
-            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), null, null, null, null);
+            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl), null, null, null, null);
         } else {
-            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), options.getLanguage(),
+            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl), options.getLanguage(),
                 options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }

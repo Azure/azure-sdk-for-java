@@ -169,6 +169,8 @@ public class Configs {
 
     public static final int MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
+    public static final String TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS = "COSMOS.TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS";
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -482,5 +484,14 @@ public class Configs {
                     System.getProperty(MAX_TRACE_MESSAGE_LENGTH),
                     DEFAULT_MAX_TRACE_MESSAGE_LENGTH),
                 MIN_MAX_TRACE_MESSAGE_LENGTH);
+    }
+
+    public static Duration getTcpConnectionAcquisitionTimeout(int defaultValueInMs) {
+        return Duration.ofMillis(
+            getIntValue(
+                System.getProperty(TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS),
+                defaultValueInMs
+            )
+        );
     }
 }
