@@ -13,6 +13,8 @@ import com.azure.core.amqp.exception.AmqpException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.reactivestreams.Subscription;
@@ -162,21 +164,22 @@ class AmqpChannelProcessorTest {
     /**
      * Verifies that we can get the next connection when the first one encounters a retryable error.
      */
+    @Execution(ExecutionMode.SAME_THREAD)
     @RepeatedTest(1000)
     //@MethodSource("newConnectionOnRetriableError")
     //@ParameterizedTest
     void newConnectionOnRetriableErrorTest() {
         Throwable exception = new RejectedExecutionException("Rejected test execution");
-        // Arrange
-        final TestPublisher<TestObject> publisher = TestPublisher.createCold();
 
-        AtomicInteger failedTries = new AtomicInteger(0);
+        // Arrange
+        final AtomicInteger failedTries = new AtomicInteger();
+
         AmqpRetryPolicy retryPolicy = new AmqpRetryPolicy(new AmqpRetryOptions()) {
             @Override
             protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
                                                    ThreadLocalRandom random) {
                 failedTries.incrementAndGet();
-                return null;
+                throw new RuntimeException("Unexpected call to calculateRetryDelay");
             }
 
             @Override
@@ -189,7 +192,7 @@ class AmqpChannelProcessorTest {
                 // that wasn't expected. Previously, this was returning a delay longer than StepVerifer's timeout which
                 // failed the test but didn't provide a clear indication of why it failed (specifically why or what
                 // caused an additional retry).
-                failedTries.incrementAndGet();
+                failedTries.getAndIncrement();
                 if ((lastException == exception || lastException.getCause() == exception) && retryCount == 0) {
                     return Duration.ofMillis(1);
                 } else {
@@ -198,41 +201,36 @@ class AmqpChannelProcessorTest {
             }
         };
 
-        final AmqpChannelProcessor<TestObject> processor = publisher.flux()
-            .subscribeWith(createChannelProcessor(retryPolicy));
+        final AtomicInteger endpointStateRequests = new AtomicInteger();
+        final Flux<AmqpEndpointState> endpointStates = Flux.create(sink -> {
+            if (endpointStateRequests.getAndIncrement() == 0) {
+                sink.error(exception);
+            } else {
+                sink.next(AmqpEndpointState.ACTIVE);
+            }
+        });
+
+        final Object channel = new Object();
+        final AmqpChannelProcessor<Object> processor = Flux.just(channel).repeat()
+            .subscribeWith(new AmqpChannelProcessor<>("test", i -> endpointStates, retryPolicy, new HashMap<>()));
 
         try {
             // Act & Assert
-            // Verify that we get the first connection.
+            // Verify that we get the connection after retry.
             StepVerifier.create(processor, 1)
-                .then(() -> {
-                    publisher.next(connection1);
-                    connection1.getSink().next(AmqpEndpointState.ACTIVE);
-                })
-                .expectNext(connection1)
+                .expectNext(channel)
                 .expectComplete()
                 .verify(VERIFY_TIMEOUT);
 
-            connection1.getSink().error(exception);
-
-            // Expect that the next connection is returned to us.
+            // Expect that we get the same cached connection.
             StepVerifier.create(processor, 1)
-                .then(() -> {
-                    publisher.next(connection2);
-                    connection2.getSink().next(AmqpEndpointState.ACTIVE);
-                })
-                .expectNext(connection2)
+                .expectNext(channel)
                 .expectComplete()
                 .verify(VERIFY_TIMEOUT);
 
-            // Expect that the next connection is returned to us.
-            StepVerifier.create(processor, 1)
-                .expectNext(connection2)
-                .expectComplete()
-                .verify(VERIFY_TIMEOUT);
-
-            // sanity check - we had one failure and should have called retry policy exactly once.
+            // sanity check - we had one failure and should request endpoint states twice.
             assertEquals(1, failedTries.get());
+            assertEquals(2, endpointStateRequests.get());
         } finally {
             processor.dispose();
         }
