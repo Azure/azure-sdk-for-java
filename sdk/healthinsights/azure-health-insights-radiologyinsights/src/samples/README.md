@@ -6,7 +6,6 @@ products:
   - azure
   - azure-cognitive-services
   - azure-health-insights
-  - azure-health-insights-radiologyinsights
 urlFragment: healthinsights-radiologyinsights-java-samples
 ---
 
