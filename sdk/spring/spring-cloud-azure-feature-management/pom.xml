@@ -165,6 +165,7 @@
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.15.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.15.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty:[1.1.13]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[3.2.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[3.2.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-log4j2:[3.2.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-log4j2;external_dependency} -->
                 <include>org.springframework:spring-context:[6.1.1]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->

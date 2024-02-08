@@ -179,6 +179,7 @@
                 <include>org.springframework.boot:spring-boot-actuator:[3.2.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[3.2.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-context:[4.1.0]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[3.2.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-starter-bootstrap:[4.1.0]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
               </includes>
             </bannedDependencies>
