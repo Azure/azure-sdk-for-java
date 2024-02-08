@@ -48,7 +48,7 @@ public final class PageableList<T> {
     private boolean hasMore;
 
     /**
-     * Creates an instance of OpenAIPageableListOfThreadMessage class.
+     * Creates an instance of PageableList class.
      *
      * @param data the data value to set.
      * @param firstId the firstId value to set.
