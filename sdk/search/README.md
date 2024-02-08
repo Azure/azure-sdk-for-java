@@ -1,24 +1,24 @@
-# Azure Cognitive Search libraries for Java
+# Azure AI Search libraries for Java
 
-Azure Cognitive Search ([formerly known as "Azure Search"](https://docs.microsoft.com/azure/search/whats-new#new-service-name))
+Azure AI Search ([formerly known as "Azure Cognitive Search"](https://docs.microsoft.com/azure/search/whats-new#new-service-name))
 is a search-as-a-service cloud solution that gives developers APIs and tools for adding a rich search experience over 
 private, heterogeneous content in web, mobile, and enterprise applications. Your code or a tool invokes data ingestion
 (indexing) to create and load an index. Optionally, you can add cognitive skills to apply AI processes during indexing. 
 Doing so can add new information and structures useful for search and other scenarios.
 
 On the other side of your service, your application code issues query requests and handles responses. The search 
-experience is defined in your client using functionality from Azure Cognitive Search, with query execution over a
+experience is defined in your client using functionality from Azure AI Search, with query execution over a
 persisted index that you create, own, and store in your service.
 
 Functionality is exposed through several client libraries:
 
 - [azure-search-documents](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents) is 
-  the Java client library for building applications with Azure Cognitive Search.  It is built on top of 
+  the Java client library for building applications with Azure AI Search.  It is built on top of 
   [azure-core](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md) and the
   [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html).
 
 - [azure-resourcemanager-search](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager/azure-resourcemanager-search/)
-  supports managing Azure Cognitive Search services and API keys.
+  supports managing Azure AI Search services and API keys.
 
 ## Contributing
 

@@ -13,7 +13,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Recovery point specific to PointInTime. */
+/**
+ * Recovery point specific to PointInTime.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -23,8 +25,7 @@ import java.util.Map;
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "AzureWorkloadSAPHanaPointInTimeRecoveryPoint",
-        value = AzureWorkloadSapHanaPointInTimeRecoveryPoint.class)
-})
+        value = AzureWorkloadSapHanaPointInTimeRecoveryPoint.class) })
 @Fluent
 public class AzureWorkloadPointInTimeRecoveryPoint extends AzureWorkloadRecoveryPoint {
     /*
@@ -33,13 +34,15 @@ public class AzureWorkloadPointInTimeRecoveryPoint extends AzureWorkloadRecovery
     @JsonProperty(value = "timeRanges")
     private List<PointInTimeRange> timeRanges;
 
-    /** Creates an instance of AzureWorkloadPointInTimeRecoveryPoint class. */
+    /**
+     * Creates an instance of AzureWorkloadPointInTimeRecoveryPoint class.
+     */
     public AzureWorkloadPointInTimeRecoveryPoint() {
     }
 
     /**
      * Get the timeRanges property: List of log ranges.
-     *
+     * 
      * @return the timeRanges value.
      */
     public List<PointInTimeRange> timeRanges() {
@@ -48,7 +51,7 @@ public class AzureWorkloadPointInTimeRecoveryPoint extends AzureWorkloadRecovery
 
     /**
      * Set the timeRanges property: List of log ranges.
-     *
+     * 
      * @param timeRanges the timeRanges value to set.
      * @return the AzureWorkloadPointInTimeRecoveryPoint object itself.
      */
@@ -57,47 +60,57 @@ public class AzureWorkloadPointInTimeRecoveryPoint extends AzureWorkloadRecovery
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRecoveryPoint withRecoveryPointTimeInUtc(OffsetDateTime recoveryPointTimeInUtc) {
         super.withRecoveryPointTimeInUtc(recoveryPointTimeInUtc);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRecoveryPoint withType(RestorePointType type) {
         super.withType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadPointInTimeRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
+    public AzureWorkloadPointInTimeRecoveryPoint
+        withRecoveryPointTierDetails(List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         super.withRecoveryPointTierDetails(recoveryPointTierDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadPointInTimeRecoveryPoint withRecoveryPointMoveReadinessInfo(
-        Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo) {
+    public AzureWorkloadPointInTimeRecoveryPoint
+        withRecoveryPointMoveReadinessInfo(Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo) {
         super.withRecoveryPointMoveReadinessInfo(recoveryPointMoveReadinessInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadPointInTimeRecoveryPoint withRecoveryPointProperties(
-        RecoveryPointProperties recoveryPointProperties) {
+    public AzureWorkloadPointInTimeRecoveryPoint
+        withRecoveryPointProperties(RecoveryPointProperties recoveryPointProperties) {
         super.withRecoveryPointProperties(recoveryPointProperties);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

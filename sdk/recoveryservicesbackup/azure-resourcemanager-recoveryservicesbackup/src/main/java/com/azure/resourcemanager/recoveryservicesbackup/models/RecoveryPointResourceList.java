@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPo
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of RecoveryPoint resources. */
+/**
+ * List of RecoveryPoint resources.
+ */
 @Fluent
 public final class RecoveryPointResourceList extends ResourceList {
     /*
@@ -18,13 +20,15 @@ public final class RecoveryPointResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<RecoveryPointResourceInner> value;
 
-    /** Creates an instance of RecoveryPointResourceList class. */
+    /**
+     * Creates an instance of RecoveryPointResourceList class.
+     */
     public RecoveryPointResourceList() {
     }
 
     /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<RecoveryPointResourceInner> value() {
@@ -33,7 +37,7 @@ public final class RecoveryPointResourceList extends ResourceList {
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the RecoveryPointResourceList object itself.
      */
@@ -42,7 +46,9 @@ public final class RecoveryPointResourceList extends ResourceList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPointResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -51,7 +57,7 @@ public final class RecoveryPointResourceList extends ResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

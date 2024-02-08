@@ -7,11 +7,13 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.PrivateEndpointConnectionInner;
 
-/** Resource collection API of PrivateEndpointConnectionOperations. */
+/**
+ * Resource collection API of PrivateEndpointConnectionOperations.
+ */
 public interface PrivateEndpointConnectionOperations {
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -21,15 +23,12 @@ public interface PrivateEndpointConnectionOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection resource.
      */
-    PrivateEndpointConnection update(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
+    PrivateEndpointConnection update(String resourceGroupName, String serverName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -40,16 +39,12 @@ public interface PrivateEndpointConnectionOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection resource.
      */
-    PrivateEndpointConnection update(
-        String resourceGroupName,
-        String serverName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+    PrivateEndpointConnection update(String resourceGroupName, String serverName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -61,7 +56,7 @@ public interface PrivateEndpointConnectionOperations {
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param privateEndpointConnectionName The name of the private endpoint connection.

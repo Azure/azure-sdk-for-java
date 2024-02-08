@@ -15,11 +15,13 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationListFi
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResourceForPatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MigrationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MigrationsClient.
+ */
 public interface MigrationsClient {
     /**
      * Creates a new migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -31,16 +33,12 @@ public interface MigrationsClient {
      * @return represents a migration resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MigrationResourceInner>> createWithResponseAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceInner parameters);
+    Mono<Response<MigrationResourceInner>> createWithResponseAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, MigrationResourceInner parameters);
 
     /**
      * Creates a new migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -52,16 +50,12 @@ public interface MigrationsClient {
      * @return represents a migration resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MigrationResourceInner> createAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceInner parameters);
+    Mono<MigrationResourceInner> createAsync(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName, MigrationResourceInner parameters);
 
     /**
      * Creates a new migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -74,17 +68,12 @@ public interface MigrationsClient {
      * @return represents a migration resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MigrationResourceInner> createWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceInner parameters,
-        Context context);
+    Response<MigrationResourceInner> createWithResponse(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, MigrationResourceInner parameters, Context context);
 
     /**
      * Creates a new migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -96,16 +85,12 @@ public interface MigrationsClient {
      * @return represents a migration resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MigrationResourceInner create(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceInner parameters);
+    MigrationResourceInner create(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName, MigrationResourceInner parameters);
 
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -116,12 +101,12 @@ public interface MigrationsClient {
      * @return details of a migration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MigrationResourceInner>> getWithResponseAsync(
-        String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName);
+    Mono<Response<MigrationResourceInner>> getWithResponseAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName);
 
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -132,12 +117,12 @@ public interface MigrationsClient {
      * @return details of a migration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MigrationResourceInner> getAsync(
-        String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName);
+    Mono<MigrationResourceInner> getAsync(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName);
 
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -149,16 +134,12 @@ public interface MigrationsClient {
      * @return details of a migration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MigrationResourceInner> getWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        Context context);
+    Response<MigrationResourceInner> getWithResponse(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, Context context);
 
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -169,13 +150,13 @@ public interface MigrationsClient {
      * @return details of a migration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MigrationResourceInner get(
-        String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName);
+    MigrationResourceInner get(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName);
 
     /**
      * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
      * migration definition. Certain property updates initiate migration state transitions.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -187,17 +168,13 @@ public interface MigrationsClient {
      * @return represents a migration resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MigrationResourceInner>> updateWithResponseAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceForPatch parameters);
+    Mono<Response<MigrationResourceInner>> updateWithResponseAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, MigrationResourceForPatch parameters);
 
     /**
      * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
      * migration definition. Certain property updates initiate migration state transitions.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -209,17 +186,13 @@ public interface MigrationsClient {
      * @return represents a migration resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MigrationResourceInner> updateAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceForPatch parameters);
+    Mono<MigrationResourceInner> updateAsync(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName, MigrationResourceForPatch parameters);
 
     /**
      * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
      * migration definition. Certain property updates initiate migration state transitions.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -232,18 +205,13 @@ public interface MigrationsClient {
      * @return represents a migration resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MigrationResourceInner> updateWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceForPatch parameters,
-        Context context);
+    Response<MigrationResourceInner> updateWithResponse(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, MigrationResourceForPatch parameters, Context context);
 
     /**
      * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
      * migration definition. Certain property updates initiate migration state transitions.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -255,16 +223,12 @@ public interface MigrationsClient {
      * @return represents a migration resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MigrationResourceInner update(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceForPatch parameters);
+    MigrationResourceInner update(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName, MigrationResourceForPatch parameters);
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -275,12 +239,12 @@ public interface MigrationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(
-        String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName);
+    Mono<Response<Void>> deleteWithResponseAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName);
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -291,12 +255,12 @@ public interface MigrationsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(
-        String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName);
+    Mono<Void> deleteAsync(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName);
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -308,16 +272,12 @@ public interface MigrationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        Context context);
+    Response<Void> deleteWithResponse(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName, Context context);
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -331,7 +291,7 @@ public interface MigrationsClient {
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -342,15 +302,12 @@ public interface MigrationsClient {
      * @return a list of migration resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MigrationResourceInner> listByTargetServerAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationListFilter migrationListFilter);
+    PagedFlux<MigrationResourceInner> listByTargetServerAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, MigrationListFilter migrationListFilter);
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -360,12 +317,12 @@ public interface MigrationsClient {
      * @return a list of migration resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MigrationResourceInner> listByTargetServerAsync(
-        String subscriptionId, String resourceGroupName, String targetDbServerName);
+    PagedFlux<MigrationResourceInner> listByTargetServerAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName);
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -375,12 +332,12 @@ public interface MigrationsClient {
      * @return a list of migration resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MigrationResourceInner> listByTargetServer(
-        String subscriptionId, String resourceGroupName, String targetDbServerName);
+    PagedIterable<MigrationResourceInner> listByTargetServer(String subscriptionId, String resourceGroupName,
+        String targetDbServerName);
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -392,10 +349,6 @@ public interface MigrationsClient {
      * @return a list of migration resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MigrationResourceInner> listByTargetServer(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationListFilter migrationListFilter,
-        Context context);
+    PagedIterable<MigrationResourceInner> listByTargetServer(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, MigrationListFilter migrationListFilter, Context context);
 }

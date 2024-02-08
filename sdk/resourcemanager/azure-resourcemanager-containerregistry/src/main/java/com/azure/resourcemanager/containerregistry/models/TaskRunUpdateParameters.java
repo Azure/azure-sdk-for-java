@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The parameters for updating a task run. */
+/**
+ * The parameters for updating a task run.
+ */
 @Fluent
 public final class TaskRunUpdateParameters {
     /*
@@ -38,13 +40,15 @@ public final class TaskRunUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of TaskRunUpdateParameters class. */
+    /**
+     * Creates an instance of TaskRunUpdateParameters class.
+     */
     public TaskRunUpdateParameters() {
     }
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -53,7 +57,7 @@ public final class TaskRunUpdateParameters {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the TaskRunUpdateParameters object itself.
      */
@@ -64,7 +68,7 @@ public final class TaskRunUpdateParameters {
 
     /**
      * Get the innerProperties property: The properties for updating a task run.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TaskRunPropertiesUpdateParameters innerProperties() {
@@ -73,7 +77,7 @@ public final class TaskRunUpdateParameters {
 
     /**
      * Get the location property: The location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -82,7 +86,7 @@ public final class TaskRunUpdateParameters {
 
     /**
      * Set the location property: The location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the TaskRunUpdateParameters object itself.
      */
@@ -93,7 +97,7 @@ public final class TaskRunUpdateParameters {
 
     /**
      * Get the tags property: The ARM resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -102,7 +106,7 @@ public final class TaskRunUpdateParameters {
 
     /**
      * Set the tags property: The ARM resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TaskRunUpdateParameters object itself.
      */
@@ -113,7 +117,7 @@ public final class TaskRunUpdateParameters {
 
     /**
      * Get the runRequest property: The request (parameters) for the new run.
-     *
+     * 
      * @return the runRequest value.
      */
     public RunRequest runRequest() {
@@ -122,7 +126,7 @@ public final class TaskRunUpdateParameters {
 
     /**
      * Set the runRequest property: The request (parameters) for the new run.
-     *
+     * 
      * @param runRequest the runRequest value to set.
      * @return the TaskRunUpdateParameters object itself.
      */
@@ -137,7 +141,7 @@ public final class TaskRunUpdateParameters {
     /**
      * Get the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -147,7 +151,7 @@ public final class TaskRunUpdateParameters {
     /**
      * Set the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the TaskRunUpdateParameters object itself.
      */
@@ -161,7 +165,7 @@ public final class TaskRunUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

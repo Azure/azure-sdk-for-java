@@ -11,6 +11,11 @@ public class BrowserCustomizationOptions {
     private String errorMessage;
 
     /**
+     * Creates an instance of BrowserCustomizationOptions.
+     */
+    public BrowserCustomizationOptions() { }
+
+    /**
      * Configures the property to set the success message which the browser will show to the user upon successful
      * authentication.
      *

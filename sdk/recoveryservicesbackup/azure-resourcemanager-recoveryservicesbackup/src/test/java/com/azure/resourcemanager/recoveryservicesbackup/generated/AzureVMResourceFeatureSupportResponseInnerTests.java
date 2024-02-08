@@ -12,17 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureVMResourceFeatureSupportResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureVMResourceFeatureSupportResponseInner model =
-            BinaryData
-                .fromString("{\"supportStatus\":\"DefaultOFF\"}")
-                .toObject(AzureVMResourceFeatureSupportResponseInner.class);
+        AzureVMResourceFeatureSupportResponseInner model = BinaryData.fromString("{\"supportStatus\":\"DefaultOFF\"}")
+            .toObject(AzureVMResourceFeatureSupportResponseInner.class);
         Assertions.assertEquals(SupportStatus.DEFAULT_OFF, model.supportStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureVMResourceFeatureSupportResponseInner model =
-            new AzureVMResourceFeatureSupportResponseInner().withSupportStatus(SupportStatus.DEFAULT_OFF);
+        AzureVMResourceFeatureSupportResponseInner model
+            = new AzureVMResourceFeatureSupportResponseInner().withSupportStatus(SupportStatus.DEFAULT_OFF);
         model = BinaryData.fromObject(model).toObject(AzureVMResourceFeatureSupportResponseInner.class);
         Assertions.assertEquals(SupportStatus.DEFAULT_OFF, model.supportStatus());
     }

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Web activity.
@@ -167,7 +168,7 @@ public final class WebActivity extends ExecutionActivity {
      * 
      * @return the headers value.
      */
-    public Object headers() {
+    public Map<String, String> headers() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().headers();
     }
 
@@ -179,7 +180,7 @@ public final class WebActivity extends ExecutionActivity {
      * @param headers the headers value to set.
      * @return the WebActivity object itself.
      */
-    public WebActivity withHeaders(Object headers) {
+    public WebActivity withHeaders(Map<String, String> headers) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new WebActivityTypeProperties();
         }
@@ -255,6 +256,60 @@ public final class WebActivity extends ExecutionActivity {
             this.innerTypeProperties = new WebActivityTypeProperties();
         }
         this.innerTypeProperties().withDisableCertValidation(disableCertValidation);
+        return this;
+    }
+
+    /**
+     * Get the httpRequestTimeout property: Timeout for the HTTP request to get a response. Format is in TimeSpan
+     * (hh:mm:ss). This value is the timeout to get a response, not the activity timeout. The default value is 00:01:00
+     * (1 minute). The range is from 1 to 10 minutes.
+     * 
+     * @return the httpRequestTimeout value.
+     */
+    public Object httpRequestTimeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().httpRequestTimeout();
+    }
+
+    /**
+     * Set the httpRequestTimeout property: Timeout for the HTTP request to get a response. Format is in TimeSpan
+     * (hh:mm:ss). This value is the timeout to get a response, not the activity timeout. The default value is 00:01:00
+     * (1 minute). The range is from 1 to 10 minutes.
+     * 
+     * @param httpRequestTimeout the httpRequestTimeout value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withHttpRequestTimeout(Object httpRequestTimeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withHttpRequestTimeout(httpRequestTimeout);
+        return this;
+    }
+
+    /**
+     * Get the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a
+     * HTTP 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set
+     * false then continues to invoke HTTP GET call on location given in http response headers.
+     * 
+     * @return the turnOffAsync value.
+     */
+    public Boolean turnOffAsync() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().turnOffAsync();
+    }
+
+    /**
+     * Set the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a
+     * HTTP 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set
+     * false then continues to invoke HTTP GET call on location given in http response headers.
+     * 
+     * @param turnOffAsync the turnOffAsync value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withTurnOffAsync(Boolean turnOffAsync) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withTurnOffAsync(turnOffAsync);
         return this;
     }
 

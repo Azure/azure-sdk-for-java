@@ -27,22 +27,28 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupStat
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatusRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BackupStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupStatusClient.
+ */
 public final class BackupStatusClientImpl implements BackupStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BackupStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of BackupStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BackupStatusClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy.create(BackupStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(BackupStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,24 +59,20 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface BackupStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupStatus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupStatus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupStatusResponseInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("azureRegion") String azureRegion,
+        Mono<Response<BackupStatusResponseInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("azureRegion") String azureRegion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") BackupStatusRequest parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BackupStatusRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Get the container backup status.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Container Backup Status Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,22 +81,18 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
      * @return the container backup status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupStatusResponseInner>> getWithResponseAsync(
-        String azureRegion, BackupStatusRequest parameters) {
+    private Mono<Response<BackupStatusResponseInner>> getWithResponseAsync(String azureRegion,
+        BackupStatusRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (azureRegion == null) {
             return Mono.error(new IllegalArgumentException("Parameter azureRegion is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -103,23 +101,14 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            azureRegion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), azureRegion,
+                this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the container backup status.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Container Backup Status Request.
      * @param context The context to associate with this operation.
@@ -129,22 +118,18 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
      * @return the container backup status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupStatusResponseInner>> getWithResponseAsync(
-        String azureRegion, BackupStatusRequest parameters, Context context) {
+    private Mono<Response<BackupStatusResponseInner>> getWithResponseAsync(String azureRegion,
+        BackupStatusRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (azureRegion == null) {
             return Mono.error(new IllegalArgumentException("Parameter azureRegion is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -153,20 +138,13 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                azureRegion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), azureRegion,
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Get the container backup status.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Container Backup Status Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +159,7 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
 
     /**
      * Get the container backup status.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Container Backup Status Request.
      * @param context The context to associate with this operation.
@@ -191,14 +169,14 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
      * @return the container backup status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupStatusResponseInner> getWithResponse(
-        String azureRegion, BackupStatusRequest parameters, Context context) {
+    public Response<BackupStatusResponseInner> getWithResponse(String azureRegion, BackupStatusRequest parameters,
+        Context context) {
         return getWithResponseAsync(azureRegion, parameters, context).block();
     }
 
     /**
      * Get the container backup status.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Container Backup Status Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

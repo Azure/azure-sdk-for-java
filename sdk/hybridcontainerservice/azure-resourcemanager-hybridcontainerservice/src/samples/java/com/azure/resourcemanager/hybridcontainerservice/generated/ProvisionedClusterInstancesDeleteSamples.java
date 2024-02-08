@@ -10,7 +10,7 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 public final class ProvisionedClusterInstancesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/
+     * specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/
      * DeleteProvisionedClusterInstance.json
      */
     /**

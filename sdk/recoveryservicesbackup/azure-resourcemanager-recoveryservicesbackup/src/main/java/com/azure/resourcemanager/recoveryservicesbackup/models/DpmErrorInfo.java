@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** DPM workload-specific error information. */
+/**
+ * DPM workload-specific error information.
+ */
 @Fluent
 public final class DpmErrorInfo {
     /*
@@ -23,13 +25,15 @@ public final class DpmErrorInfo {
     @JsonProperty(value = "recommendations")
     private List<String> recommendations;
 
-    /** Creates an instance of DpmErrorInfo class. */
+    /**
+     * Creates an instance of DpmErrorInfo class.
+     */
     public DpmErrorInfo() {
     }
 
     /**
      * Get the errorString property: Localized error string.
-     *
+     * 
      * @return the errorString value.
      */
     public String errorString() {
@@ -38,7 +42,7 @@ public final class DpmErrorInfo {
 
     /**
      * Set the errorString property: Localized error string.
-     *
+     * 
      * @param errorString the errorString value to set.
      * @return the DpmErrorInfo object itself.
      */
@@ -49,7 +53,7 @@ public final class DpmErrorInfo {
 
     /**
      * Get the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @return the recommendations value.
      */
     public List<String> recommendations() {
@@ -58,7 +62,7 @@ public final class DpmErrorInfo {
 
     /**
      * Set the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @param recommendations the recommendations value to set.
      * @return the DpmErrorInfo object itself.
      */
@@ -69,7 +73,7 @@ public final class DpmErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

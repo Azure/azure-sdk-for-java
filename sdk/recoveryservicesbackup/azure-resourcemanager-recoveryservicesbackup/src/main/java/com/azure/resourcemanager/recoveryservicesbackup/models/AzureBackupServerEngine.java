@@ -8,93 +8,121 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Backup engine type when Azure Backup Server is used to manage the backups. */
+/**
+ * Backup engine type when Azure Backup Server is used to manage the backups.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupEngineType")
 @JsonTypeName("AzureBackupServerEngine")
 @Fluent
 public final class AzureBackupServerEngine extends BackupEngineBase {
-    /** Creates an instance of AzureBackupServerEngine class. */
+    /**
+     * Creates an instance of AzureBackupServerEngine class.
+     */
     public AzureBackupServerEngine() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupServerEngine withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupServerEngine withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupServerEngine withRegistrationStatus(String registrationStatus) {
         super.withRegistrationStatus(registrationStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupServerEngine withBackupEngineState(String backupEngineState) {
         super.withBackupEngineState(backupEngineState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupServerEngine withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupServerEngine withCanReRegister(Boolean canReRegister) {
         super.withCanReRegister(canReRegister);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupServerEngine withBackupEngineId(String backupEngineId) {
         super.withBackupEngineId(backupEngineId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupServerEngine withDpmVersion(String dpmVersion) {
         super.withDpmVersion(dpmVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupServerEngine withAzureBackupAgentVersion(String azureBackupAgentVersion) {
         super.withAzureBackupAgentVersion(azureBackupAgentVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupServerEngine withIsAzureBackupAgentUpgradeAvailable(Boolean isAzureBackupAgentUpgradeAvailable) {
         super.withIsAzureBackupAgentUpgradeAvailable(isAzureBackupAgentUpgradeAvailable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupServerEngine withIsDpmUpgradeAvailable(Boolean isDpmUpgradeAvailable) {
         super.withIsDpmUpgradeAvailable(isDpmUpgradeAvailable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupServerEngine withExtendedInfo(BackupEngineExtendedInfo extendedInfo) {
         super.withExtendedInfo(extendedInfo);
@@ -103,7 +131,7 @@ public final class AzureBackupServerEngine extends BackupEngineBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -19,8 +19,7 @@ import java.util.List;
 @Fluent
 public final class HDInsightOnDemandLinkedServiceTypeProperties {
     /*
-     * Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or Expression with resultType
-     * string).
+     * Number of worker/data nodes in the cluster. Suggestion value: 4. Type: int (or Expression with resultType int).
      */
     @JsonProperty(value = "clusterSize", required = true)
     private Object clusterSize;
@@ -241,8 +240,8 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or
-     * Expression with resultType string).
+     * Get the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: int (or
+     * Expression with resultType int).
      * 
      * @return the clusterSize value.
      */
@@ -251,8 +250,8 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or
-     * Expression with resultType string).
+     * Set the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: int (or
+     * Expression with resultType int).
      * 
      * @param clusterSize the clusterSize value to set.
      * @return the HDInsightOnDemandLinkedServiceTypeProperties object itself.

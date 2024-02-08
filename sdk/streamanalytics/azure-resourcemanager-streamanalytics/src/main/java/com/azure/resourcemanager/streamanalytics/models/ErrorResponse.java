@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the error that occurred. */
+/**
+ * Describes the error that occurred.
+ */
 @Immutable
 public final class ErrorResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorResponse.class);
-
     /*
      * Error code associated with the error that occurred.
      */
@@ -27,8 +25,14 @@ public final class ErrorResponse {
     private String message;
 
     /**
+     * Creates an instance of ErrorResponse class.
+     */
+    public ErrorResponse() {
+    }
+
+    /**
      * Get the code property: Error code associated with the error that occurred.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +41,7 @@ public final class ErrorResponse {
 
     /**
      * Get the message property: Describes the error in detail.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -46,7 +50,7 @@ public final class ErrorResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

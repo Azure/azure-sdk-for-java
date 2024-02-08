@@ -64,7 +64,7 @@ public final class OpenAIAsyncClient {
      * and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation cannot
      * coexist because `OpenAIClient` operates either way in a mutually exclusive way.
      *
-     * @param serviceClient the service client implementation for Azure OpenAI Service client.
+     * @param serviceClient the service client implementation for Azure OpenAI service.
      */
     OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
         this.serviceClient = serviceClient;
@@ -76,7 +76,7 @@ public final class OpenAIAsyncClient {
      * OpenAI and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation
      * cannot coexist because `OpenAIClient` operates either way in a mutually exclusive way.
      *
-     * @param serviceClient the service client implementation for Non-Azure OpenAI Service client.
+     * @param serviceClient the service client implementation for Non-Azure OpenAI service.
      */
     OpenAIAsyncClient(NonAzureOpenAIClientImpl serviceClient) {
         this.serviceClient = null;
@@ -375,7 +375,7 @@ public final class OpenAIAsyncClient {
         EmbeddingsOptions embeddingsOptions, RequestOptions requestOptions) {
         return getEmbeddingsWithResponse(deploymentOrModelName, BinaryData.fromObject(embeddingsOptions),
             requestOptions)
-                .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Embeddings.class)));
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Embeddings.class)));
     }
 
     /**
@@ -467,7 +467,7 @@ public final class OpenAIAsyncClient {
         CompletionsOptions completionsOptions, RequestOptions requestOptions) {
         return getCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(completionsOptions),
             requestOptions)
-                .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Completions.class)));
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Completions.class)));
     }
 
     /**
@@ -550,7 +550,7 @@ public final class OpenAIAsyncClient {
         ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions) {
         return getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
             requestOptions)
-                .map(response -> new SimpleResponse<>(response, response.getValue().toObject(ChatCompletions.class)));
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(ChatCompletions.class)));
     }
 
     /**
@@ -578,7 +578,7 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getEmbeddingsWithResponse(deploymentOrModelName, BinaryData.fromObject(embeddingsOptions),
             requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(Embeddings.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(Embeddings.class));
     }
 
     /**
@@ -608,7 +608,7 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(completionsOptions),
             requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));
     }
 
     /**
@@ -688,7 +688,7 @@ public final class OpenAIAsyncClient {
         } else {
             return getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
                 BinaryData.fromObject(chatCompletionsOptions), requestOptions).flatMap(FluxUtil::toMono)
-                    .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
         }
     }
 
@@ -722,7 +722,7 @@ public final class OpenAIAsyncClient {
         } else {
             responseStream = getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
                 BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                    .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+                .flatMapMany(response -> response.getValue().toFluxByteBuffer());
         }
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream
             = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
@@ -933,21 +933,6 @@ public final class OpenAIAsyncClient {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -1284,21 +1269,6 @@ public final class OpenAIAsyncClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -1326,20 +1296,6 @@ public final class OpenAIAsyncClient {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -1392,20 +1348,6 @@ public final class OpenAIAsyncClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: BinaryData (Required)
-     *     file: String (Optional)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -1453,7 +1395,7 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
             BinaryData.fromObject(audioTranscriptionOptions), requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(String.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(String.class));
     }
 
     /**
@@ -1477,7 +1419,7 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
             BinaryData.fromObject(audioTranslationOptions), requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(String.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(String.class));
     }
 
     /**
@@ -1508,7 +1450,7 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
             BinaryData.fromObject(chatCompletionsOptions), requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
     }
 
     /**
@@ -1584,7 +1526,7 @@ public final class OpenAIAsyncClient {
         ImageGenerationOptions imageGenerationOptions, RequestOptions requestOptions) {
         return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
             requestOptions)
-                .map(response -> new SimpleResponse<>(response, response.getValue().toObject(ImageGenerations.class)));
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(ImageGenerations.class)));
     }
 
     /**
@@ -1609,7 +1551,7 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
             requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ImageGenerations.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ImageGenerations.class));
     }
 
     /**

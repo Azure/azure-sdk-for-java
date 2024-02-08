@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resource Health Status. */
+/**
+ * Resource Health Status.
+ */
 public final class ResourceHealthStatus extends ExpandableStringEnum<ResourceHealthStatus> {
-    /** Static value Healthy for ResourceHealthStatus. */
+    /**
+     * Static value Healthy for ResourceHealthStatus.
+     */
     public static final ResourceHealthStatus HEALTHY = fromString("Healthy");
 
-    /** Static value TransientDegraded for ResourceHealthStatus. */
+    /**
+     * Static value TransientDegraded for ResourceHealthStatus.
+     */
     public static final ResourceHealthStatus TRANSIENT_DEGRADED = fromString("TransientDegraded");
 
-    /** Static value PersistentDegraded for ResourceHealthStatus. */
+    /**
+     * Static value PersistentDegraded for ResourceHealthStatus.
+     */
     public static final ResourceHealthStatus PERSISTENT_DEGRADED = fromString("PersistentDegraded");
 
-    /** Static value TransientUnhealthy for ResourceHealthStatus. */
+    /**
+     * Static value TransientUnhealthy for ResourceHealthStatus.
+     */
     public static final ResourceHealthStatus TRANSIENT_UNHEALTHY = fromString("TransientUnhealthy");
 
-    /** Static value PersistentUnhealthy for ResourceHealthStatus. */
+    /**
+     * Static value PersistentUnhealthy for ResourceHealthStatus.
+     */
     public static final ResourceHealthStatus PERSISTENT_UNHEALTHY = fromString("PersistentUnhealthy");
 
-    /** Static value Invalid for ResourceHealthStatus. */
+    /**
+     * Static value Invalid for ResourceHealthStatus.
+     */
     public static final ResourceHealthStatus INVALID = fromString("Invalid");
 
     /**
      * Creates a new instance of ResourceHealthStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class ResourceHealthStatus extends ExpandableStringEnum<ResourceHea
 
     /**
      * Creates or finds a ResourceHealthStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceHealthStatus.
      */
@@ -50,7 +64,7 @@ public final class ResourceHealthStatus extends ExpandableStringEnum<ResourceHea
 
     /**
      * Gets known ResourceHealthStatus values.
-     *
+     * 
      * @return known ResourceHealthStatus values.
      */
     public static Collection<ResourceHealthStatus> values() {

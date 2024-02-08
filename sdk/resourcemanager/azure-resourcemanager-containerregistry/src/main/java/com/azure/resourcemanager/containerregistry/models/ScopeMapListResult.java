@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.fluent.models.ScopeMapInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of a request to list scope maps for a container registry. */
+/**
+ * The result of a request to list scope maps for a container registry.
+ */
 @Fluent
 public final class ScopeMapListResult {
     /*
@@ -25,14 +27,16 @@ public final class ScopeMapListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ScopeMapListResult class. */
+    /**
+     * Creates an instance of ScopeMapListResult class.
+     */
     public ScopeMapListResult() {
     }
 
     /**
      * Get the value property: The list of scope maps. Since this list may be incomplete, the nextLink field should be
      * used to request the next list of scope maps.
-     *
+     * 
      * @return the value value.
      */
     public List<ScopeMapInner> value() {
@@ -42,7 +46,7 @@ public final class ScopeMapListResult {
     /**
      * Set the value property: The list of scope maps. Since this list may be incomplete, the nextLink field should be
      * used to request the next list of scope maps.
-     *
+     * 
      * @param value the value value to set.
      * @return the ScopeMapListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class ScopeMapListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next list of scope maps.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class ScopeMapListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next list of scope maps.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ScopeMapListResult object itself.
      */
@@ -73,7 +77,7 @@ public final class ScopeMapListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

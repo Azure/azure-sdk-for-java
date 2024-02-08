@@ -120,6 +120,6 @@ public final class Permission extends Resource {
 
         BridgeInternal.setProperty(this,
             Constants.Properties.RESOURCE_PARTITION_KEY,
-            new Object[]{ModelBridgeInternal.getPartitionKeyObject(partitionkey)});
+            ModelBridgeInternal.getPartitionKeyInternal(partitionkey).toObjectArray());
     }
 }

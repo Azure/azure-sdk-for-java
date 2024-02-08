@@ -38,22 +38,22 @@ public final class DataProductsImpl implements DataProducts {
 
     public PagedIterable<DataProduct> list() {
         PagedIterable<DataProductInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DataProductImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataProductImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataProduct> list(Context context) {
         PagedIterable<DataProductInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new DataProductImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataProductImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataProduct> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DataProductInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DataProductImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataProductImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataProduct> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<DataProductInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new DataProductImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataProductImpl(inner1, this.manager()));
     }
 
     public Response<DataProduct> getByResourceGroupWithResponse(String resourceGroupName, String dataProductName,
@@ -171,12 +171,12 @@ public final class DataProductsImpl implements DataProducts {
     }
 
     public DataProduct getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dataProductName = Utils.getValueFromIdByName(id, "dataProducts");
+        String dataProductName = ResourceManagerUtils.getValueFromIdByName(id, "dataProducts");
         if (dataProductName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataProducts'.", id)));
@@ -185,12 +185,12 @@ public final class DataProductsImpl implements DataProducts {
     }
 
     public Response<DataProduct> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dataProductName = Utils.getValueFromIdByName(id, "dataProducts");
+        String dataProductName = ResourceManagerUtils.getValueFromIdByName(id, "dataProducts");
         if (dataProductName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataProducts'.", id)));
@@ -199,12 +199,12 @@ public final class DataProductsImpl implements DataProducts {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dataProductName = Utils.getValueFromIdByName(id, "dataProducts");
+        String dataProductName = ResourceManagerUtils.getValueFromIdByName(id, "dataProducts");
         if (dataProductName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataProducts'.", id)));
@@ -213,12 +213,12 @@ public final class DataProductsImpl implements DataProducts {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dataProductName = Utils.getValueFromIdByName(id, "dataProducts");
+        String dataProductName = ResourceManagerUtils.getValueFromIdByName(id, "dataProducts");
         if (dataProductName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataProducts'.", id)));

@@ -12,7 +12,9 @@ import com.azure.resourcemanager.monitor.models.MetricSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The diagnostic setting resource. */
+/**
+ * The diagnostic setting resource.
+ */
 @Fluent
 public final class DiagnosticSettingsResourceInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DiagnosticSettingsResourceInner class. */
+    /**
+     * Creates an instance of DiagnosticSettingsResourceInner class.
+     */
     public DiagnosticSettingsResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of a Diagnostic Settings Resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiagnosticSettings innerProperties() {
@@ -42,7 +46,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,7 +56,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
     /**
      * Get the storageAccountId property: The resource ID of the storage account to which you would like to send
      * Diagnostic Logs.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -62,7 +66,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
     /**
      * Set the storageAccountId property: The resource ID of the storage account to which you would like to send
      * Diagnostic Logs.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -77,7 +81,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
     /**
      * Get the serviceBusRuleId property: The service bus rule Id of the diagnostic setting. This is here to maintain
      * backwards compatibility.
-     *
+     * 
      * @return the serviceBusRuleId value.
      */
     public String serviceBusRuleId() {
@@ -87,7 +91,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
     /**
      * Set the serviceBusRuleId property: The service bus rule Id of the diagnostic setting. This is here to maintain
      * backwards compatibility.
-     *
+     * 
      * @param serviceBusRuleId the serviceBusRuleId value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -101,7 +105,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
 
     /**
      * Get the eventHubAuthorizationRuleId property: The resource Id for the event hub authorization rule.
-     *
+     * 
      * @return the eventHubAuthorizationRuleId value.
      */
     public String eventHubAuthorizationRuleId() {
@@ -110,7 +114,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
 
     /**
      * Set the eventHubAuthorizationRuleId property: The resource Id for the event hub authorization rule.
-     *
+     * 
      * @param eventHubAuthorizationRuleId the eventHubAuthorizationRuleId value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -125,7 +129,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
     /**
      * Get the eventHubName property: The name of the event hub. If none is specified, the default event hub will be
      * selected.
-     *
+     * 
      * @return the eventHubName value.
      */
     public String eventHubName() {
@@ -135,7 +139,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
     /**
      * Set the eventHubName property: The name of the event hub. If none is specified, the default event hub will be
      * selected.
-     *
+     * 
      * @param eventHubName the eventHubName value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -149,7 +153,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
 
     /**
      * Get the metrics property: The list of metric settings.
-     *
+     * 
      * @return the metrics value.
      */
     public List<MetricSettings> metrics() {
@@ -158,7 +162,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
 
     /**
      * Set the metrics property: The list of metric settings.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -172,7 +176,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
 
     /**
      * Get the logs property: The list of logs settings.
-     *
+     * 
      * @return the logs value.
      */
     public List<LogSettings> logs() {
@@ -181,7 +185,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
 
     /**
      * Set the logs property: The list of logs settings.
-     *
+     * 
      * @param logs the logs value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -197,7 +201,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
      * Get the workspaceId property: The full ARM resource ID of the Log Analytics workspace to which you would like to
      * send Diagnostic Logs. Example:
      * /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -208,7 +212,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
      * Set the workspaceId property: The full ARM resource ID of the Log Analytics workspace to which you would like to
      * send Diagnostic Logs. Example:
      * /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -223,7 +227,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
     /**
      * Get the marketplacePartnerId property: The full ARM resource ID of the Marketplace resource to which you would
      * like to send Diagnostic Logs.
-     *
+     * 
      * @return the marketplacePartnerId value.
      */
     public String marketplacePartnerId() {
@@ -233,7 +237,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
     /**
      * Set the marketplacePartnerId property: The full ARM resource ID of the Marketplace resource to which you would
      * like to send Diagnostic Logs.
-     *
+     * 
      * @param marketplacePartnerId the marketplacePartnerId value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -250,7 +254,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
      * the default destination type, i.e. AzureDiagnostics, or use a destination type constructed as follows:
      * &lt;normalized service identity&gt;_&lt;normalized category name&gt;. Possible values are: Dedicated and null
      * (null is default.).
-     *
+     * 
      * @return the logAnalyticsDestinationType value.
      */
     public String logAnalyticsDestinationType() {
@@ -262,7 +266,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
      * the default destination type, i.e. AzureDiagnostics, or use a destination type constructed as follows:
      * &lt;normalized service identity&gt;_&lt;normalized category name&gt;. Possible values are: Dedicated and null
      * (null is default.).
-     *
+     * 
      * @param logAnalyticsDestinationType the logAnalyticsDestinationType value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -276,7 +280,7 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
