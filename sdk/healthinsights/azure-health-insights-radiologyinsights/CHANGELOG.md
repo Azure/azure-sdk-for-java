@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.1 (Unreleased)
+## 1.0.0 (Unreleased)
 
 - Azure RadiologyInsights client library for Java. This package contains Microsoft Azure RadiologyInsights client library.
 
