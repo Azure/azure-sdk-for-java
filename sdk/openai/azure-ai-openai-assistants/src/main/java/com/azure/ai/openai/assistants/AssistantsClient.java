@@ -2946,9 +2946,8 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an assistant that can call the model and use tools.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIFile uploadFile(FileDetails file, FilePurpose purpose, String filename) {
+    OpenAIFile uploadFile(FileDetails file, FilePurpose purpose, String filename) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest requestObj = new UploadFileRequest(file, purpose).setFilename(filename);

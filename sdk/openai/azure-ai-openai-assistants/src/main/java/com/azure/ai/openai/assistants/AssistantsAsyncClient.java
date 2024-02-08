@@ -3011,9 +3011,8 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
+    Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest requestObj = new UploadFileRequest(file, purpose).setFilename(filename);
