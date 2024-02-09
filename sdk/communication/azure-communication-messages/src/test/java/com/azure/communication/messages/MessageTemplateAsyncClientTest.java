@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,6 +61,8 @@ public class MessageTemplateAsyncClientTest extends CommunicationMessagesTestBas
     public void shouldThrowExceptionForInvalidChannelIdAsync(HttpClient httpClient) {
         messageTemplateClient = buildMessageTemplateAsyncClient(httpClient);
         assertThrows(HttpResponseException.class,
-            () -> messageTemplateClient.listTemplates("INVALID_CHANNEL_ID").toStream().toList());
+            () -> messageTemplateClient.listTemplates("INVALID_CHANNEL_ID")
+                .toStream()
+                .collect(Collectors.toList()));
     }
 }

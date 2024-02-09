@@ -170,10 +170,10 @@ public class MessagesSdkCustomization extends Customization {
             .getClass("MessageTemplateLocation");
         messageTemplateLocationCustomization.getConstructor("MessageTemplateLocation")
             .replaceParameters(
-                "String name, GeoPosition geoPosition",
+                "@JsonProperty(value = \"name\") String refValue, GeoPosition geoPosition",
                 List.of("com.azure.core.models.GeoPosition")
             )
-            .replaceBody( "super(name);" +
+            .replaceBody( "super(refValue);" +
                 "this.latitude = geoPosition.getLatitude();" +
                 "this.longitude = geoPosition.getLongitude();"
             );

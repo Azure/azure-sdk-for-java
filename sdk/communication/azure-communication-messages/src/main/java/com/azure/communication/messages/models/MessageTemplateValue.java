@@ -31,30 +31,30 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Immutable
 public abstract class MessageTemplateValue {
     /*
-     * Name of the Template value
+     * Template binding reference name
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private String refValue;
 
     /**
      * Creates an instance of MessageTemplateValue class.
      * 
-     * @param name the name value to set.
+     * @param refValue the refValue value to set.
      */
     @Generated
     @JsonCreator
-    protected MessageTemplateValue(@JsonProperty(value = "name") String name) {
-        this.name = name;
+    protected MessageTemplateValue(@JsonProperty(value = "name") String refValue) {
+        this.refValue = refValue;
     }
 
     /**
-     * Get the name property: Name of the Template value.
+     * Get the refValue property: Template binding reference name.
      * 
-     * @return the name value.
+     * @return the refValue value.
      */
     @Generated
-    public String getName() {
-        return this.name;
+    public String getRefValue() {
+        return this.refValue;
     }
 }

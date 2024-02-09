@@ -50,13 +50,13 @@ public final class MessageTemplateLocation extends MessageTemplateValue {
     /**
      * Creates an instance of MessageTemplateLocation class.
      * 
-     * @param name the name value to set.
+     * @param refValue the refValue value to set.
      * @param geoPosition the geoPosition value to set.
      */
     @Generated
     @JsonCreator
-    public MessageTemplateLocation(String name, GeoPosition geoPosition) {
-        super(name);
+    public MessageTemplateLocation(@JsonProperty(value = "name") String refValue, GeoPosition geoPosition) {
+        super(refValue);
         this.latitude = geoPosition.getLatitude();
         this.longitude = geoPosition.getLongitude();
     }

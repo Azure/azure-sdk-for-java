@@ -35,12 +35,12 @@ public final class MessageTemplateQuickAction extends MessageTemplateValue {
     /**
      * Creates an instance of MessageTemplateQuickAction class.
      * 
-     * @param name the name value to set.
+     * @param refValue the refValue value to set.
      */
     @Generated
     @JsonCreator
-    public MessageTemplateQuickAction(@JsonProperty(value = "name") String name) {
-        super(name);
+    public MessageTemplateQuickAction(@JsonProperty(value = "name") String refValue) {
+        super(refValue);
     }
 
     /**

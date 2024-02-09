@@ -42,13 +42,14 @@ public final class MessageTemplateDocument extends MessageTemplateValue {
     /**
      * Creates an instance of MessageTemplateDocument class.
      * 
-     * @param name the name value to set.
+     * @param refValue the refValue value to set.
      * @param url the url value to set.
      */
     @Generated
     @JsonCreator
-    public MessageTemplateDocument(@JsonProperty(value = "name") String name, @JsonProperty(value = "url") String url) {
-        super(name);
+    public MessageTemplateDocument(@JsonProperty(value = "name") String refValue,
+        @JsonProperty(value = "url") String url) {
+        super(refValue);
         this.url = url;
     }
 

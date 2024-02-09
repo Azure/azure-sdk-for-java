@@ -28,13 +28,14 @@ public final class MessageTemplateText extends MessageTemplateValue {
     /**
      * Creates an instance of MessageTemplateText class.
      * 
-     * @param name the name value to set.
+     * @param refValue the refValue value to set.
      * @param text the text value to set.
      */
     @Generated
     @JsonCreator
-    public MessageTemplateText(@JsonProperty(value = "name") String name, @JsonProperty(value = "text") String text) {
-        super(name);
+    public MessageTemplateText(@JsonProperty(value = "name") String refValue,
+        @JsonProperty(value = "text") String text) {
+        super(refValue);
         this.text = text;
     }
 

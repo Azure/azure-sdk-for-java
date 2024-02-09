@@ -29,9 +29,11 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendSimpleTextMessage(HttpClient httpClient){
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         StepVerifier
-            .create(messagesClient.send(new TextNotificationContent(CHANNEL_REGISTRATION_ID, List.of(RECIPIENT_IDENTIFIER), "Hello!")))
+            .create(messagesClient.send(new TextNotificationContent(CHANNEL_REGISTRATION_ID, recipients, "Hello!")))
             .assertNext(resp -> {
                 assertEquals(1, resp.getReceipts().size());
                 assertNotNull(resp.getReceipts().get(0).getMessageId());
@@ -44,9 +46,11 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendImageMessage(HttpClient httpClient){
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
         StepVerifier
             .create(messagesClient.send(new MediaNotificationContent(CHANNEL_REGISTRATION_ID,
-                List.of(RECIPIENT_IDENTIFIER), "https://wallpapercave.com/wp/wp2163723.jpg")))
+                recipients, "https://wallpapercave.com/wp/wp2163723.jpg")))
             .assertNext(resp -> {
                 assertEquals(1, resp.getReceipts().size());
                 assertNotNull(resp.getReceipts().get(0).getMessageId());
@@ -58,6 +62,8 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendMessageTemplateWithImage(HttpClient httpClient){
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         //Update Template Name and language according your template associate to your channel.
         MessageTemplate template = new MessageTemplate("sample_shipping_confirmation", "en_US");
@@ -76,7 +82,7 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
 
         StepVerifier
             .create(messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-                List.of(RECIPIENT_IDENTIFIER), template)))
+                recipients, template)))
             .assertNext(resp -> {
                 assertNotNull(resp.getReceipts());
                 assertEquals(1, resp.getReceipts().size());
@@ -89,6 +95,8 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendMessageTemplateWithVideo(HttpClient httpClient){
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         //Update Template Name and language according your template associate to your channel.
         MessageTemplate template = new MessageTemplate("sample_happy_hour_announcement", "en_US");
@@ -118,7 +126,7 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
 
         StepVerifier
             .create(messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-                List.of(RECIPIENT_IDENTIFIER), template)))
+                recipients, template)))
             .assertNext(resp -> {
                 assertNotNull(resp.getReceipts());
                 assertEquals(1, resp.getReceipts().size());
@@ -131,6 +139,8 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendMessageTemplateWithQuickAction(HttpClient httpClient){
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         //Add template parameter type with value in a list
         List<MessageTemplateValue> messageTemplateValues = new ArrayList<>();
@@ -157,7 +167,7 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
 
         StepVerifier
             .create(messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-                List.of(RECIPIENT_IDENTIFIER), messageTemplate)))
+                recipients, messageTemplate)))
             .assertNext(resp -> {
                 assertNotNull(resp.getReceipts());
                 assertEquals(1, resp.getReceipts().size());
@@ -170,6 +180,8 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendMessageQuickActionTemplateWithTokenCredential(HttpClient httpClient){
         messagesClient = buildNotificationMessagesAsyncClientWithTokenCredential(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         //Add template parameter type with value in a list
         List<MessageTemplateValue> messageTemplateValues = new ArrayList<>();
@@ -196,7 +208,7 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
 
         StepVerifier
             .create(messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-                List.of(RECIPIENT_IDENTIFIER), messageTemplate)))
+                recipients, messageTemplate)))
             .assertNext(resp -> {
                 assertNotNull(resp.getReceipts());
                 assertEquals(1, resp.getReceipts().size());
@@ -209,6 +221,8 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendMessageTemplateWithDocument(HttpClient httpClient){
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         //Update Template Name and language according your template associate to your channel.
         MessageTemplate template = new MessageTemplate("sample_flight_confirmation", "en_US");
@@ -240,7 +254,7 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
 
         StepVerifier
             .create(messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-                List.of(RECIPIENT_IDENTIFIER), template)))
+                recipients, template)))
             .assertNext(resp -> {
                 assertNotNull(resp.getReceipts());
                 assertEquals(1, resp.getReceipts().size());

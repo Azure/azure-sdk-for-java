@@ -28,9 +28,11 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendSimpleTextMessage(HttpClient httpClient){
         messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         SendMessageResult result = messagesClient.send(new TextNotificationContent(CHANNEL_REGISTRATION_ID,
-            List.of(RECIPIENT_IDENTIFIER), "Hello!"));
+            recipients, "Hello!"));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -41,9 +43,11 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendImageMessage(HttpClient httpClient){
         messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         SendMessageResult result = messagesClient.send(new MediaNotificationContent(CHANNEL_REGISTRATION_ID,
-            List.of(RECIPIENT_IDENTIFIER), "https://wallpapercave.com/wp/wp2163723.jpg"));
+            recipients, "https://wallpapercave.com/wp/wp2163723.jpg"));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -53,6 +57,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendMessageTemplateWithImage(HttpClient httpClient){
         messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         //Update Template Name and language according your template associate to your channel.
         MessageTemplate template = new MessageTemplate("sample_shipping_confirmation", "en_US");
@@ -70,7 +76,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         template.setBindings(bindings);
 
         SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            List.of(RECIPIENT_IDENTIFIER), template));
+            recipients, template));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -80,6 +86,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendMessageImageTemplateWithTokenCredential(HttpClient httpClient){
         messagesClient = buildNotificationMessagesClientWithTokenCredential(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         //Update Template Name and language according your template associate to your channel.
         MessageTemplate template = new MessageTemplate("sample_shipping_confirmation", "en_US");
@@ -97,7 +105,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         template.setBindings(bindings);
 
         SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            List.of(RECIPIENT_IDENTIFIER), template));
+            recipients, template));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -107,6 +115,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendMessageTemplateWithVideo(HttpClient httpClient){
         messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         //Update Template Name and language according your template associate to your channel.
         MessageTemplate template = new MessageTemplate("sample_happy_hour_announcement", "en_US");
@@ -135,7 +145,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
             .setValues(messageTemplateValues);
 
         SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            List.of(RECIPIENT_IDENTIFIER), template));
+            recipients, template));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -145,6 +155,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendMessageTemplateWithQuickAction(HttpClient httpClient){
         messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         //Add template parameter type with value in a list
         List<MessageTemplateValue> messageTemplateValues = new ArrayList<>();
@@ -170,7 +182,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
             .setValues(messageTemplateValues);
 
         SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            List.of(RECIPIENT_IDENTIFIER), messageTemplate));
+            recipients, messageTemplate));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -180,6 +192,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void shouldSendMessageTemplateWithDocument(HttpClient httpClient){
         messagesClient = buildNotificationMessagesClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
 
         //Update Template Name and language according your template associate to your channel.
         MessageTemplate template = new MessageTemplate("sample_flight_confirmation", "en_US");
@@ -210,7 +224,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
             .setValues(messageTemplateValues);
 
         SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            List.of(RECIPIENT_IDENTIFIER), template));
+            recipients, template));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
