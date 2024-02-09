@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed bug where RequestRetryOptions.tryTimeout adds delay to the client request in the synchronous http client flow.
 
 ### Other Changes
 
