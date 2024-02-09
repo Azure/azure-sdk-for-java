@@ -1,6 +1,6 @@
 # Release History
 
-## 11.7.0-beta.1 (2024-02-08)
+## 11.7.0-beta.1 (2024-02-09)
 
 ### Features Added
 
