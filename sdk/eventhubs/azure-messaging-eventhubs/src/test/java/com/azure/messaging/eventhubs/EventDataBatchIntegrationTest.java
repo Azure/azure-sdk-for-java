@@ -142,7 +142,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
                         countDownLatch.countDown();
                     }
                 }));
-    }
+        }
 
         // Act
         producer.send(batch.getEvents(), sendOptions).block();
