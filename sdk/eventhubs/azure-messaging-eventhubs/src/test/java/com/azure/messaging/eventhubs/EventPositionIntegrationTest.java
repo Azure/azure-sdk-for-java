@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.TestUtils.getEvent;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -175,12 +176,29 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
         final SendOptions options = new SendOptions().setPartitionId(testData.getPartitionId());
         final EventHubProducerClient producer = toClose(createBuilder().buildProducerClient());
         final List<EventData> events = TestUtils.getEvents(15, messageId);
+        final CountDownLatch receivedFirst = new CountDownLatch(1);
         final CountDownLatch receivedAll = new CountDownLatch(numberOfEvents);
         toClose(consumer.receiveFromPartition(testData.getPartitionId(), EventPosition.latest())
+            .doOnNext(e -> receivedFirst.countDown())
             .filter(event -> isMatchingEvent(event, messageId))
             .take(numberOfEvents)
             .subscribe(e -> receivedAll.countDown(), (ex) -> fail(ex)));
 
+        // we don't know when receive link will open. Since we want latest events, whatever we sent
+        // before link is open will not be received.
+        // so we'll try sending one event per sec and wait until something is received.
+        for (int i = 0; i < 20; i++) {
+            producer.send(getEvent("probing", "probing" + i, i), options);
+            logger.atInfo()
+                .addKeyValue("index", i)
+                .log("sent probing event");
+            receivedFirst.await(1, TimeUnit.SECONDS);
+        }
+
+        // we should have received at least 1 event at this point
+        assertTrue(receivedFirst.getCount() <= 0);
+
+        // now link is open and ready so we can start the test
         producer.send(events, options);
         logger.atInfo().log("sent events");
 
