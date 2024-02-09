@@ -13,7 +13,7 @@
 ### 5.9.1 (2024-02-08)
 
 #### Bugs Fixed
-* Fixed issue where running on versions newer than Java 21 would throw a `UnsupportedClassVersionError` - See [PR 38690](https://github.com/Azure/azure-sdk-for-java/pull/38690).
+* Fixed issue where running on versions older than Java 21 would throw a `UnsupportedClassVersionError` - See [PR 38690](https://github.com/Azure/azure-sdk-for-java/pull/38690).
 
 ### 5.9.0 (2024-02-04)
 
