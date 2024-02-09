@@ -16,6 +16,7 @@ import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -110,11 +111,15 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
-        return attempt(httpRequest, next, 0, null);
+        try {
+            return attempt(httpRequest, next, 0, null);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     private HttpResponse attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
-                                 final int tryCount, final List<Throwable> suppressed) {
+                                 final int tryCount, final List<Throwable> suppressed) throws IOException {
         httpRequest.getMetadata().setRetryCount(tryCount + 1);
 
         HttpResponse httpResponse;

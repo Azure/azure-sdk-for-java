@@ -18,6 +18,8 @@ public final class OkHttpResponse extends OkHttpResponseBase {
 
     private final ResponseBody responseBody;
 
+    private BinaryData body;
+
     public OkHttpResponse(Response response, HttpRequest request, boolean eagerlyConvertHeaders) {
         super(response, request, eagerlyConvertHeaders);
 
@@ -31,7 +33,16 @@ public final class OkHttpResponse extends OkHttpResponseBase {
 
     @Override
     public BinaryData getBody() {
-        return BinaryData.fromStream(this.responseBody.byteStream());
+        if (this.body == null) {
+            this.body = BinaryData.fromStream(this.responseBody.byteStream());
+        }
+
+        return body;
+    }
+
+    @Override
+    public byte[] getValue() {
+        return getBody().toBytes();
     }
 
     @Override

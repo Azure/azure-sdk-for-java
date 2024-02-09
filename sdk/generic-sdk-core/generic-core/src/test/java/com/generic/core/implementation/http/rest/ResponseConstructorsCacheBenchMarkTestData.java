@@ -3,7 +3,6 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -13,6 +12,7 @@ import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.serializer.ObjectSerializer;
 
@@ -51,14 +51,14 @@ class ResponseConstructorsCacheBenchMarkTestData {
     }
 
     // 1. final VoidResponse               (Ctr_args: 3)
-    static final class VoidResponse extends SimpleResponse<Void> {
+    public static final class VoidResponse extends SimpleResponse<Void> {
         VoidResponse(HttpRequest request, int statusCode, Headers headers, Void value) {
             super(request, statusCode, headers, value);
         }
     }
 
     // 2. SimpleResponse<Foo> Type         (Ctr_args: 4)
-    static final class FooSimpleResponse extends SimpleResponse<Foo> {
+    public static final class FooSimpleResponse extends SimpleResponse<Foo> {
         FooSimpleResponse(HttpRequest request, int statusCode, Headers headers, Foo value) {
             super(request, statusCode, headers, value);
         }
@@ -93,6 +93,11 @@ class ResponseConstructorsCacheBenchMarkTestData {
         @Override
         public Headers getHeaders() {
             return this.headers;
+        }
+
+        @Override
+        public byte[] getValue() {
+            return bodyBytes;
         }
 
         @Override

@@ -47,7 +47,6 @@ abstract class OkHttpResponseBase extends HttpResponse {
      *
      * @return generic-core Headers
      */
-    @SuppressWarnings("deprecation")
     static com.generic.core.models.Headers fromOkHttpHeaders(Headers okHttpHeaders) {
         /*
          * While OkHttp's Headers class offers a method which converts the headers into a Map<String, List<String>>,

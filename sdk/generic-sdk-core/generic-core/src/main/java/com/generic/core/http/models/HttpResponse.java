@@ -3,16 +3,18 @@
 
 package com.generic.core.http.models;
 
+import com.generic.core.http.Response;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 
 import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * The response of an {@link HttpRequest}.
  */
-public abstract class HttpResponse implements Closeable {
+public abstract class HttpResponse implements Closeable, Response<byte[]> {
     private final HttpRequest request;
     private BinaryData binaryData = null;
     private final byte[] bodyBytes;
@@ -92,6 +94,6 @@ public abstract class HttpResponse implements Closeable {
      * Closes the response content stream, if any.
      */
     @Override
-    public void close() {
+    public void close() throws IOException {
     }
 }

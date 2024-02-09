@@ -9,6 +9,8 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -35,7 +37,11 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     @Override
     public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUrls for each individual request.
-        return attemptRedirect(httpRequest, next, 1, new HashSet<>());
+        try {
+            return attemptRedirect(httpRequest, next, 1, new HashSet<>());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     /**
@@ -43,7 +49,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      * new redirect URL.
      */
     private HttpResponse attemptRedirect(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
-                                         final int redirectAttempt, Set<String> attemptedRedirectUrls) {
+                                            final int redirectAttempt, Set<String> attemptedRedirectUrls) throws IOException {
         // Make sure the context is not modified during retry, except for the URL
         HttpResponse httpResponse = next.clone().process();
 
@@ -58,7 +64,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private HttpRequest createRedirectRequest(HttpResponse redirectResponse) {
+    private HttpRequest createRedirectRequest(HttpResponse redirectResponse) throws IOException {
         // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
         // causing it to leak your authorization token to.
         redirectResponse.getRequest().getHeaders().remove(HeaderName.AUTHORIZATION);

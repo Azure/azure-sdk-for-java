@@ -19,6 +19,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.servlet.ServletException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -94,12 +95,14 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
+    public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = doRequest(client, "/error")) {
             assertEquals(500, response.getStatusCode());
+
             String responseBodyAsString = response.getBody().toString();
+
             assertTrue(responseBodyAsString.contains("error"));
         }
 
@@ -109,9 +112,9 @@ public class DefaultHttpClientTest {
     public void testConcurrentRequests() throws InterruptedException {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new DefaultHttpClientBuilder().build();
-
         ForkJoinPool pool = new ForkJoinPool();
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
+
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
                 try (HttpResponse response = doRequest(client, "/error")) {
@@ -128,7 +131,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void validateHeadersReturnAsIs() {
+    public void validateHeadersReturnAsIs() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         HeaderName singleValueHeaderName = HeaderName.fromString("singleValue");
@@ -161,7 +164,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testBufferedResponse() {
+    public void testBufferedResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = getResponse(client, "/short", Context.NONE)) {
@@ -170,7 +173,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testEmptyBufferResponse() {
+    public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = getResponse(client, "/empty", Context.NONE)) {
@@ -179,7 +182,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testRequestBodyPost() {
+    public void testRequestBodyPost() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;

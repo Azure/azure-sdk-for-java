@@ -37,9 +37,15 @@ class DefaultHttpClientResponse extends HttpResponse {
     }
 
     @Override
+    public byte[] getValue() {
+        return this.body.toBytes();
+    }
+
+    @Override
     public BinaryData getBody() {
         return this.body;
     }
+
     public HttpResponse buffer() {
         return this;
     }

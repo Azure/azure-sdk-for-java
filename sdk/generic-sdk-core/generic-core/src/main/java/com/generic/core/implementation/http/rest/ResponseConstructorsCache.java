@@ -108,6 +108,7 @@ public final class ResponseConstructorsCache {
         final int responseStatusCode = httpResponse.getStatusCode();
 
         final int paramCount = reflectiveInvoker.getParameterCount();
+
         switch (paramCount) {
             case 3:
                 return constructResponse(reflectiveInvoker, THREE_PARAM_ERROR, httpRequest, responseStatusCode,

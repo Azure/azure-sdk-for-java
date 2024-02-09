@@ -18,6 +18,7 @@ import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.configuration.Configuration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Arrays;
@@ -164,8 +165,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private void logBody(HttpRequest request, int contentLength, ClientLogger.LoggingEventBuilder logBuilder, ClientLogger logger,
-                         String contentType) {
+    private void logBody(HttpRequest request, int contentLength, ClientLogger.LoggingEventBuilder logBuilder,
+                         ClientLogger logger, String contentType) {
         BinaryData data = request.getBody();
         // BinaryDataContent content = BinaryDataHelper.getContent(data);
         // if (content instanceof StringContent
@@ -181,14 +182,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         // }
     }
 
-    private void logBody(ClientLogger.LoggingEventBuilder logBuilder, ClientLogger logger, String contentType, String data) {
+    private void logBody(ClientLogger.LoggingEventBuilder logBuilder, ClientLogger logger, String contentType,
+                         String data) {
         // logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentType, data))
         //     .log(REQUEST_LOG_MESSAGE);
     }
 
 
     private final class DefaultHttpResponseLogger implements HttpResponseLogger {
-        private void logHeaders(ClientLogger logger, HttpResponse response, ClientLogger.LoggingEventBuilder logBuilder) {
+        private void logHeaders(ClientLogger logger, HttpResponse response,
+                                ClientLogger.LoggingEventBuilder logBuilder) {
             if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(ClientLogger.LogLevel.INFORMATIONAL)) {
                 addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder);
             }
@@ -397,15 +400,21 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
+        public byte[] getValue() {
+            return actualResponse.getValue();
+        }
+
+        @Override
         public BinaryData getBody() {
             BinaryData content = actualResponse.getBody();
+
             doLog(content.toString());
 
             return content;
         }
 
         @Override
-        public void close() {
+        public void close() throws IOException {
             actualResponse.close();
         }
 
@@ -510,8 +519,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
          * <p>
          * This method sets the provided header names to be the allowed header names which will be logged for all HTTP
          * requests and responses, overwriting any previously configured headers. Additionally, users can use
-         * {@link HttpLogOptions#addAllowedHeaderName(String)} or {@link HttpLogOptions#getAllowedHeaderNames()} to add or
-         * remove more headers names to the existing set of allowed header names.
+         * {@link HttpLogOptions#addAllowedHeaderName(String)} or {@link HttpLogOptions#getAllowedHeaderNames()} to add
+         * or remove more headers names to the existing set of allowed header names.
          * </p>
          *
          * @param allowedHeaderNames The list of allowed header names from the user.
@@ -590,8 +599,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         /**
          * Sets flag to allow pretty printing of message bodies.
          *
-         * @param prettyPrintBody If true, pretty prints message bodies when logging. If the detailLevel does not include
-         * body logging, this flag does nothing.
+         * @param prettyPrintBody If true, pretty prints message bodies when logging. If the detailLevel does not
+         * include body logging, this flag does nothing.
          *
          * @return The updated HttpLogOptions object.
          */
@@ -673,8 +682,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             HEADERS,
 
             /**
-             * Logs everything in BASIC, plus all the request and response body. Note that only payloads in plain text or
-             * plain text encoded in GZIP will be logged.
+             * Logs everything in BASIC, plus all the request and response body. Note that only payloads in plain text
+             * or plain text encoded in GZIP will be logged.
              */
             BODY,
 
@@ -689,7 +698,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             static final String BODY_AND_HEADERS_VALUE = "body_and_headers";
             static final String BODYANDHEADERS_VALUE = "bodyandheaders";
 
-            //    static final HttpLogDetailLevel ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL = fromConfiguration(getGlobalConfiguration());
+            //static final HttpLogDetailLevel ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL =
+            //    fromConfiguration(getGlobalConfiguration());
 
             static HttpLogDetailLevel fromConfiguration(Configuration configuration) {
                 String detailLevel = configuration.get(Configuration.PROPERTY_HTTP_LOG_DETAIL_LEVEL, "none");
