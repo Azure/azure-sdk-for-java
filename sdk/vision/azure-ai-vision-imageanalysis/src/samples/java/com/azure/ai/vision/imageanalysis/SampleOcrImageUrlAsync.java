@@ -31,13 +31,12 @@ import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
-import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class SampleOcrImageUrlAsync {
 
-    public static void main(String[] args) throws MalformedURLException, InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
 
         String endpoint = System.getenv("VISION_ENDPOINT");
         String key = System.getenv("VISION_KEY");

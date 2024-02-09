@@ -27,7 +27,6 @@
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
 import com.azure.core.credential.KeyCredential;
-import java.net.MalformedURLException;
 
 // BEGIN: imports-ocr-url-snippet
 import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
@@ -39,7 +38,7 @@ import java.util.Arrays;
 
 public class SampleOcrImageUrl {
 
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[] args) {
 
         String endpoint = System.getenv("VISION_ENDPOINT");
         String key = System.getenv("VISION_KEY");

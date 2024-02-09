@@ -18,6 +18,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -559,6 +560,48 @@ public final class ImageAnalysisClient {
     }
 
     /**
+     * Apply the Image Analysis Options as query parameters on a given RequestOptions object.
+     * Return an updated RequestOptions object.
+     *
+     * @param inputRequestOptions The input request options (can be null).
+     * @param imageAnalysisOptions The Image Analysis Options to apply to the requestails to be sent (can be null).
+     *
+     * @return An updated RequestOptions with addition query parameters set based on the Image Analysis Options. Can be null.
+     */
+    static RequestOptions updateRequestOptions(RequestOptions inputRequestOptions, ImageAnalysisOptions imageAnalysisOptions) {
+
+        RequestOptions outputRequestOptions = inputRequestOptions;
+
+        if (imageAnalysisOptions != null) {
+            String language = imageAnalysisOptions.getLanguage();
+            Boolean isGenderNeutralCaption = imageAnalysisOptions.isGenderNeutralCaption();
+            List<Double> smartCropsAspectRatios = imageAnalysisOptions.getSmartCropsAspectRatios();
+            String modelVersion = imageAnalysisOptions.getModelVersion();
+
+            if (language != null || isGenderNeutralCaption != null || smartCropsAspectRatios != null || modelVersion != null) {
+                if (outputRequestOptions == null) {
+                    outputRequestOptions = new RequestOptions();
+                }
+                if (language != null) {
+                    outputRequestOptions.addQueryParam("language", language, false);
+                }
+                if (isGenderNeutralCaption != null) {
+                    outputRequestOptions.addQueryParam("gender-neutral-caption", String.valueOf(isGenderNeutralCaption), false);
+                }
+                if (smartCropsAspectRatios != null) {
+                    outputRequestOptions.addQueryParam("smartcrops-aspect-ratios", JacksonAdapter.createDefaultSerializerAdapter()
+                        .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV), false);
+                }
+                if (modelVersion != null) {
+                    outputRequestOptions.addQueryParam("model-version", modelVersion, false);
+                }
+            }
+        }
+
+        return outputRequestOptions;
+    }
+
+    /**
      * Performs a single Image Analysis operation on a give image URL.
      *
      * @param imageUrl The publicly accessible URL of the image to analyze.
@@ -606,16 +649,11 @@ public final class ImageAnalysisClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageAnalysisResult analyzeFromUrl(String imageUrl, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
-        if (options == null) {
-            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl), null, null, null, null);
-        } else {
-            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl), options.getLanguage(),
-                options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
-        }
+        return analyzeFromUrlWithResponse(imageUrl, visualFeatures, options, null).getValue();
     }
 
     /**
-     * Performs a single Image Analysis operation on a give image buffer.
+     * Performs a single Image Analysis operation on a given image buffer.
      *
      * @param imageData The image to analyze.
      * @param visualFeatures A list of visual features to analyze.
@@ -662,11 +700,75 @@ public final class ImageAnalysisClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageAnalysisResult analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
-        if (options == null) {
-            return analyzeFromImageData(visualFeatures, imageData, null, null, null, null);
-        } else {
-            return analyzeFromImageData(visualFeatures, imageData, options.getLanguage(),
-                options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
-        }
+        return analyzeWithResponse(imageData, visualFeatures, options, null).getValue();
+    }
+
+    /**
+     * Performs a single Image Analysis operation on a given image URL, while allowing customization
+     * of the HTTP request and access to HTTP request and response details. This is not commonly used.
+     *
+     * @param imageUrl The publicly accessible URL of the image to analyze.
+     * @param visualFeatures A list of visual features to analyze.
+     * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
+     * At least one visual feature must be specified.
+     * @param imageAnalysisOptions Additional image analysis options.
+     * @param requestOptions The options to configure the HTTP request before the HTTP client sends it.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     *
+     * @return represents the outcome of an Image Analysis operation along with {@link Response}.
+     *
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ImageAnalysisResult> analyzeFromUrlWithResponse(String imageUrl, List<VisualFeatures> visualFeatures,
+        ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
+
+        List<String> visualFeaturesAsStrings = visualFeatures.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
+
+        Response<BinaryData> response = analyzeFromUrlWithResponse(visualFeaturesAsStrings,
+            BinaryData.fromObject(new ImageUrl(imageUrl)), updateRequestOptions(requestOptions, imageAnalysisOptions));
+
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(ImageAnalysisResult.class));
+    }
+
+    /**
+     * Performs a single Image Analysis operation on a given image buffer, while allowing customization
+     * of the HTTP request and access to HTTP request and response details. This is not commonly used.
+     *
+     * @param imageData The image to analyze.
+     * @param visualFeatures A list of visual features to analyze.
+     * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
+     * At least one visual feature must be specified.
+     * @param imageAnalysisOptions Additional image analysis options.
+     * @param requestOptions The options to configure the HTTP request before the HTTP client sends it.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     *
+     * @return represents the outcome of an Image Analysis operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ImageAnalysisResult> analyzeWithResponse(BinaryData imageData, List<VisualFeatures> visualFeatures,
+        ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
+
+        List<String> visualFeaturesAsStrings = visualFeatures.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
+
+        Response<BinaryData> response = analyzeFromImageDataWithResponse(visualFeaturesAsStrings,
+            imageData, updateRequestOptions(requestOptions, imageAnalysisOptions));
+
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(ImageAnalysisResult.class));
     }
 }

@@ -23,7 +23,6 @@
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
 import com.azure.core.credential.KeyCredential;
-import java.net.MalformedURLException;
 
 // BEGIN: imports-caption-url-snippet
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
@@ -34,7 +33,7 @@ import java.util.Arrays;
 
 public class SampleCaptionImageUrl {
 
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[] args) {
 
         String endpoint = System.getenv("VISION_ENDPOINT");
         String key = System.getenv("VISION_KEY");
