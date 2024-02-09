@@ -572,7 +572,7 @@ public final class ImageAnalysisAsyncClient {
      * Return an updated RequestOptions object.
      *
      * @param inputRequestOptions The input request options (can be null).
-     * @param imageAnalysisOptions The Image Analysis Options to apply to the requestails to be sent (can be null).
+     * @param imageAnalysisOptions The Image Analysis Options to apply to the request to be sent (can be null).
      *
      * @return An updated RequestOptions with addition query parameters set based on the Image Analysis Options. Can be
      * null.

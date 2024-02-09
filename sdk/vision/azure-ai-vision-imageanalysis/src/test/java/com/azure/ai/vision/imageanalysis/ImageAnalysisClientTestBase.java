@@ -97,7 +97,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
     }
 
     protected void doAnalysis(
-        String testName, // Any label the uniquely defines the test. Used in console prinout.
+        String testName, // Any label the uniquely defines the test. Used in console printout.
         Boolean sync, // 'true' to use synchronous client. 'false' to use asynchronous client.
         Boolean analyzeWithResponse, // 'true' to use analze()/analyzeFromUrl(). 'false' to use analyzeWithResponse()/analyzeFromUrlWithResponse().
         String imageSource, // Image URL or image file path

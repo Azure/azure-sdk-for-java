@@ -10,16 +10,19 @@
 ### Features Added
 
 Two new public methods were added on the `ImageAnalysisClient`:
-```
+
+```java
 Response<ImageAnalysisResult> analyzeFromUrlWithResponse(String imageUrl, List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions)
 Response<ImageAnalysisResult> analyzeWithResponse(BinaryData imageData, List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions)
 ```
 
 Two new public methods were added on the `ImageAnalysisAsyncClient`:
+
 ```java
 Mono<Response<ImageAnalysisResult>> analyzeFromUrlWithResponse(String imageUrl, List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions)
 Mono<Response<ImageAnalysisResult>> analyzeWithResponse(BinaryData imageData, List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions)
 ```
+
 They provide customization of the HTTP request, and access to HTTP request and response details.
 This is not commonly required, but can be useful for service customization or troubleshooting issues.
 
