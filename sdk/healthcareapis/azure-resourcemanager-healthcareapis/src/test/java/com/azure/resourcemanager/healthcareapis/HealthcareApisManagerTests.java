@@ -77,7 +77,7 @@ public class HealthcareApisManagerTests extends TestBase {
                 .define(workspaceName)
                 .withExistingResourceGroup(resourceGroupName)
                 .withRegion(REGION)
-                .withProperties(new WorkspaceProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
+                .withProperties(new WorkspaceProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
                 .create();
             // @embedEnd
             workspace.refresh();
