@@ -42,13 +42,8 @@ import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownHook;
 
 /**
- * This class provides a synchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace.
- *
- * <h2>Overview</h2>
- *
- * <p>
- *     This client encapsulates REST API calls, used to send data to a Log Analytics workspace, into a set of synchronous operations.
- * </p>
+ * <p>This class provides a synchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace. This client 
+ * encapsulates REST API calls, used to send data to a Log Analytics workspace, into a set of synchronous operations.</p>
  *
  * <h2>Getting Started</h2>
  *
