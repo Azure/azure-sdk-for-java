@@ -690,4 +690,9 @@ public class CoreUtilsTests {
         assertThrows(IllegalArgumentException.class,
             () -> CoreUtils.addShutdownHookSafely(Executors.newSingleThreadExecutor(), Duration.ZERO));
     }
+
+    @Test
+    public void addRuntimeShutdownHookSafelyWithNullThreadDoesNothing() {
+        assertNull(CoreUtils.addRuntimeShutdownHookSafely(null));
+    }
 }

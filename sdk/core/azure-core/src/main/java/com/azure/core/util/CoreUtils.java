@@ -616,14 +616,7 @@ public final class CoreUtils {
             }
         });
 
-        if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
-            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
-                Runtime.getRuntime().addShutdownHook(shutdownThread);
-                return null;
-            });
-        } else {
-            Runtime.getRuntime().addShutdownHook(shutdownThread);
-        }
+        CoreUtils.addRuntimeShutdownHookSafely(shutdownThread);
 
         return executorService;
     }
@@ -639,10 +632,9 @@ public final class CoreUtils {
      * <p>
      * If {@code shutdownThread} is null, no shutdown hook will be added and this method will return null.
      *
-     * @param shutdownThread The {@link Thread} that will shut down the
-     * @return The {@code executorService} that was passed in.
-     * @throws NullPointerException If {@code shutdownTimeout} is null.
-     * @throws IllegalArgumentException If {@code shutdownTimeout} is zero or negative.
+     * @param shutdownThread The {@link Thread} that will be added as a
+     * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
+     * @return The {@link Thread} that was passed in.
      */
     @SuppressWarnings({"deprecation", "removal"})
     public static Thread addRuntimeShutdownHookSafely(Thread shutdownThread) {
