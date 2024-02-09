@@ -19,7 +19,7 @@ import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.MessageTextDetails;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCallDetails;
 import com.azure.ai.openai.assistants.models.RequiredToolCall;
@@ -140,7 +140,7 @@ public final class ReadmeSamples {
         // END: readme-sample-pollRun
 
         // BEGIN: readme-sample-listMessagesAfterRun
-        OpenAIPageableListOfThreadMessage messages = client.listMessages(run.getThreadId());
+        PageableList<ThreadMessage> messages = client.listMessages(run.getThreadId());
         List<ThreadMessage> data = messages.getData();
         for (int i = 0; i < data.size(); i++) {
             ThreadMessage dataMessage = data.get(i);
@@ -197,7 +197,7 @@ public final class ReadmeSamples {
         } while (run.getStatus() == RunStatus.IN_PROGRESS
             || run.getStatus() == RunStatus.QUEUED);
 
-        OpenAIPageableListOfThreadMessage messages = client.listMessages(thread.getId());
+        PageableList<ThreadMessage> messages = client.listMessages(thread.getId());
         for (ThreadMessage message : messages.getData()) {
             message.getContent().forEach(content -> {
                 if (content instanceof MessageTextContent) {
@@ -263,7 +263,7 @@ public final class ReadmeSamples {
         } while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS);
         // END: readme-sample-functionHandlingRunPolling
 
-        OpenAIPageableListOfThreadMessage messagesPage = client.listMessages(thread.getId());
+        PageableList<ThreadMessage> messagesPage = client.listMessages(thread.getId());
         List<ThreadMessage> messages = messagesPage.getData();
 
         for (ThreadMessage message : messages) {

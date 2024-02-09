@@ -6,7 +6,6 @@ package com.azure.ai.vision.imageanalysis.tests;
 import java.io.File;
 import java.util.List;
 import java.util.Map.Entry;
-import java.net.URL;
 import java.net.MalformedURLException;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -103,7 +102,6 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         ImageAnalysisOptions options) throws MalformedURLException {
 
         Boolean fromUrl = imageSource.startsWith("http");
-        URL imageUrl = null;
         Boolean genderNeutralCaption = null;
         List<Double> aspectRatios = null;
 
@@ -115,8 +113,8 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         if (sync) {
             ImageAnalysisResult result = null;
             if (fromUrl) {
-                result = client.analyze(
-                    new URL(imageSource),
+                result = client.analyzeFromUrl(
+                    imageSource,
                     visualFeatures,
                     options);
             } else {
@@ -137,8 +135,8 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         } else { // sync = false
             ImageAnalysisResult result = null;
             if (fromUrl) {
-                result = asyncClient.analyze(
-                    new URL(imageSource),
+                result = asyncClient.analyzeFromUrl(
+                    imageSource,
                     visualFeatures,
                     options).block();
             } else {
@@ -169,13 +167,12 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
 
         Boolean fromUrl = imageSource.startsWith("http");
         ImageAnalysisResult result = null;
-        URL imageUrl = null;
 
         if (sync) {
             try {
                 if (fromUrl) {
-                    result = client.analyze(
-                        new URL(imageSource),
+                    result = client.analyzeFromUrl(
+                        imageSource,
                         visualFeatures,
                         options);
                 } else {
@@ -193,8 +190,8 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         } else {
             try {
                 if (fromUrl) {
-                    result = asyncClient.analyze(
-                        new URL(imageSource),
+                    result = asyncClient.analyzeFromUrl(
+                        imageSource,
                         visualFeatures,
                         options).block();
                 } else {
