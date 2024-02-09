@@ -6,6 +6,24 @@
 
 ### Breaking Changes
 
+- The following class have been removed:
+  - `FileListResponse`
+  - `OpenAIPageableListOfAssistant`
+  - `OpenAIPageableListOfAssistantFile`
+  - `OpenAIPageableListOfMessageFile`
+  - `OpenAIPageableListOfRunStep`
+  - `OpenAIPageableListOfThreadMessage`
+  - `OpenAIPageableListOfThreadRun` 
+
+- We've introduced `PageableList<T>` these classes were used, except for `FileListResponse` where we simply return `List<OpenAIFile>`.
+- If you are using `listFilesWithResponse` and need to manually deserialize the `BinaryData` in the response, you can still use `PageableList<T>` like so:
+```java
+client.listFilesWithResponse(requestOptions)
+    .getValue()
+    .toObject(new TypeReference<PageableList<OpenAIFile>>() {})
+    .getData();
+```
+
 ### Bugs Fixed
 
 ### Other Changes
