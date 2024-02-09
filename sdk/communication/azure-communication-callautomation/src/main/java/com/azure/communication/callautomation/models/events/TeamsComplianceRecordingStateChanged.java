@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
-/** The TeamComplianceRecordingStateChanged model. */
+/** The TeamsComplianceRecordingStateChanged model. */
 @Immutable
-public final class TeamComplianceRecordingStateChanged extends CallAutomationEventBase {
+public final class TeamsComplianceRecordingStateChanged extends CallAutomationEventBase {
 
     /**
      * Recording Id.
@@ -35,7 +35,7 @@ public final class TeamComplianceRecordingStateChanged extends CallAutomationEve
     private final OffsetDateTime startDateTime;
 
     @JsonCreator
-    private TeamComplianceRecordingStateChanged(@JsonProperty("startDateTime") String startDateTime) {
+    private TeamsComplianceRecordingStateChanged(@JsonProperty("startDateTime") String startDateTime) {
         this.startDateTime = OffsetDateTime.parse(startDateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         this.recordingId = null;
         this.recordingState = null;
