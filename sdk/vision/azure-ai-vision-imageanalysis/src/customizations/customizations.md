@@ -49,19 +49,19 @@ The following one private method and four public methods were added at the end o
      * @param inputRequestOptions The input request options (can be null).
      * @param imageAnalysisOptions The Image Analysis Options to apply to the requestails to be sent (can be null).
      *
-     * @return An updated RequestOptions with addition query parameters set based on the Image Analysis Options. Can be null.
+     * @return An updated RequestOptions with addition query parameters set based on the Image Analysis Options. Can be
+     * null.
      */
-    static RequestOptions updateRequestOptions(RequestOptions inputRequestOptions, ImageAnalysisOptions imageAnalysisOptions) {
-
+    static RequestOptions updateRequestOptions(RequestOptions inputRequestOptions,
+        ImageAnalysisOptions imageAnalysisOptions) {
         RequestOptions outputRequestOptions = inputRequestOptions;
-
         if (imageAnalysisOptions != null) {
             String language = imageAnalysisOptions.getLanguage();
             Boolean isGenderNeutralCaption = imageAnalysisOptions.isGenderNeutralCaption();
             List<Double> smartCropsAspectRatios = imageAnalysisOptions.getSmartCropsAspectRatios();
             String modelVersion = imageAnalysisOptions.getModelVersion();
-
-            if (language != null || isGenderNeutralCaption != null || smartCropsAspectRatios != null || modelVersion != null) {
+            if (language != null || isGenderNeutralCaption != null || smartCropsAspectRatios != null
+                || modelVersion != null) {
                 if (outputRequestOptions == null) {
                     outputRequestOptions = new RequestOptions();
                 }
@@ -69,18 +69,20 @@ The following one private method and four public methods were added at the end o
                     outputRequestOptions.addQueryParam("language", language, false);
                 }
                 if (isGenderNeutralCaption != null) {
-                    outputRequestOptions.addQueryParam("gender-neutral-caption", String.valueOf(isGenderNeutralCaption), false);
+                    outputRequestOptions.addQueryParam("gender-neutral-caption", String.valueOf(isGenderNeutralCaption),
+                        false);
                 }
                 if (smartCropsAspectRatios != null) {
-                    outputRequestOptions.addQueryParam("smartcrops-aspect-ratios", JacksonAdapter.createDefaultSerializerAdapter()
-                        .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV), false);
+                    outputRequestOptions.addQueryParam("smartcrops-aspect-ratios",
+                        JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
+                            CollectionFormat.CSV),
+                        false);
                 }
                 if (modelVersion != null) {
                     outputRequestOptions.addQueryParam("model-version", modelVersion, false);
                 }
             }
         }
-
         return outputRequestOptions;
     }
 
@@ -205,20 +207,16 @@ The following one private method and four public methods were added at the end o
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
      * @return represents the outcome of an Image Analysis operation along with {@link Response}.
-     *
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ImageAnalysisResult> analyzeFromUrlWithResponse(String imageUrl, List<VisualFeatures> visualFeatures,
-        ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
-
+    public Response<ImageAnalysisResult> analyzeFromUrlWithResponse(String imageUrl,
+        List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
-
         Response<BinaryData> response = analyzeFromUrlWithResponse(visualFeaturesAsStrings,
             BinaryData.fromObject(new ImageUrl(imageUrl)), updateRequestOptions(requestOptions, imageAnalysisOptions));
-
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(ImageAnalysisResult.class));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            response.getValue().toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -244,15 +242,12 @@ The following one private method and four public methods were added at the end o
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageAnalysisResult> analyzeWithResponse(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
-
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
-
-        Response<BinaryData> response = analyzeFromImageDataWithResponse(visualFeaturesAsStrings,
-            imageData, updateRequestOptions(requestOptions, imageAnalysisOptions));
-
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().toObject(ImageAnalysisResult.class));
+        Response<BinaryData> response = analyzeFromImageDataWithResponse(visualFeaturesAsStrings, imageData,
+            updateRequestOptions(requestOptions, imageAnalysisOptions));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            response.getValue().toObject(ImageAnalysisResult.class));
     }
 ```
 
@@ -268,19 +263,19 @@ The following one private method and four public methods were added at the end o
      * @param inputRequestOptions The input request options (can be null).
      * @param imageAnalysisOptions The Image Analysis Options to apply to the requestails to be sent (can be null).
      *
-     * @return An updated RequestOptions with addition query parameters set based on the Image Analysis Options. Can be null.
+     * @return An updated RequestOptions with addition query parameters set based on the Image Analysis Options. Can be
+     * null.
      */
-    static RequestOptions updateRequestOptions(RequestOptions inputRequestOptions, ImageAnalysisOptions imageAnalysisOptions) {
-
+    static RequestOptions updateRequestOptions(RequestOptions inputRequestOptions,
+        ImageAnalysisOptions imageAnalysisOptions) {
         RequestOptions outputRequestOptions = inputRequestOptions;
-
         if (imageAnalysisOptions != null) {
             String language = imageAnalysisOptions.getLanguage();
             Boolean isGenderNeutralCaption = imageAnalysisOptions.isGenderNeutralCaption();
             List<Double> smartCropsAspectRatios = imageAnalysisOptions.getSmartCropsAspectRatios();
             String modelVersion = imageAnalysisOptions.getModelVersion();
-
-            if (language != null || isGenderNeutralCaption != null || smartCropsAspectRatios != null || modelVersion != null) {
+            if (language != null || isGenderNeutralCaption != null || smartCropsAspectRatios != null
+                || modelVersion != null) {
                 if (outputRequestOptions == null) {
                     outputRequestOptions = new RequestOptions();
                 }
@@ -288,18 +283,20 @@ The following one private method and four public methods were added at the end o
                     outputRequestOptions.addQueryParam("language", language, false);
                 }
                 if (isGenderNeutralCaption != null) {
-                    outputRequestOptions.addQueryParam("gender-neutral-caption", String.valueOf(isGenderNeutralCaption), false);
+                    outputRequestOptions.addQueryParam("gender-neutral-caption", String.valueOf(isGenderNeutralCaption),
+                        false);
                 }
                 if (smartCropsAspectRatios != null) {
-                    outputRequestOptions.addQueryParam("smartcrops-aspect-ratios", JacksonAdapter.createDefaultSerializerAdapter()
-                        .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV), false);
+                    outputRequestOptions.addQueryParam("smartcrops-aspect-ratios",
+                        JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
+                            CollectionFormat.CSV),
+                        false);
                 }
                 if (modelVersion != null) {
                     outputRequestOptions.addQueryParam("model-version", modelVersion, false);
                 }
             }
         }
-
         return outputRequestOptions;
     }
 
@@ -351,7 +348,6 @@ The following one private method and four public methods were added at the end o
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageAnalysisResult> analyzeFromUrl(String imageUrl, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
-
         return analyzeFromUrlWithResponse(imageUrl, visualFeatures, options, null).map(response -> {
             return response.getValue();
         });
@@ -405,7 +401,6 @@ The following one private method and four public methods were added at the end o
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageAnalysisResult> analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
-
         return analyzeWithResponse(imageData, visualFeatures, options, null).map(response -> {
             return response.getValue();
         });
@@ -431,18 +426,14 @@ The following one private method and four public methods were added at the end o
      *
      * @return represents the outcome of an Image Analysis operation along with {@link Response},
      * on successful completion of {@link Mono}.
-     *
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ImageAnalysisResult>> analyzeFromUrlWithResponse(String imageUrl, List<VisualFeatures> visualFeatures,
-        ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
-
+    public Mono<Response<ImageAnalysisResult>> analyzeFromUrlWithResponse(String imageUrl,
+        List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
-
         Mono<Response<BinaryData>> monoResponse = analyzeFromUrlWithResponse(visualFeaturesAsStrings,
             BinaryData.fromObject(new ImageUrl(imageUrl)), updateRequestOptions(requestOptions, imageAnalysisOptions));
-
         return monoResponse.map(response -> {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 response.getValue().toObject(ImageAnalysisResult.class));
@@ -471,15 +462,12 @@ The following one private method and four public methods were added at the end o
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ImageAnalysisResult>> analyzeWithResponse(BinaryData imageData, List<VisualFeatures> visualFeatures,
-        ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
-
+    public Mono<Response<ImageAnalysisResult>> analyzeWithResponse(BinaryData imageData,
+        List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
-
-        Mono<Response<BinaryData>> monoResponse = analyzeFromImageDataWithResponse(visualFeaturesAsStrings,
-            imageData, updateRequestOptions(requestOptions, imageAnalysisOptions));
-
+        Mono<Response<BinaryData>> monoResponse = analyzeFromImageDataWithResponse(visualFeaturesAsStrings, imageData,
+            updateRequestOptions(requestOptions, imageAnalysisOptions));
         return monoResponse.map(response -> {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 response.getValue().toObject(ImageAnalysisResult.class));

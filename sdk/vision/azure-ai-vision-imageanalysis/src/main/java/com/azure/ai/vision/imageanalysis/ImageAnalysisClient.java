@@ -524,7 +524,7 @@ public final class ImageAnalysisClient {
         }
         if (smartCropsAspectRatios != null) {
             requestOptions.addQueryParam("smartcrops-aspect-ratios", JacksonAdapter.createDefaultSerializerAdapter()
-            .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV), false);
+                .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV), false);
         }
         if (modelVersion != null) {
             requestOptions.addQueryParam("model-version", modelVersion, false);

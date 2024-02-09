@@ -16,7 +16,7 @@ Response<ImageAnalysisResult> analyzeWithResponse(BinaryData imageData, List<Vis
 ```
 
 Two new public methods were added on the `ImageAnalysisAsyncClient`:
-```
+```java
 Mono<Response<ImageAnalysisResult>> analyzeFromUrlWithResponse(String imageUrl, List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions)
 Mono<Response<ImageAnalysisResult>> analyzeWithResponse(BinaryData imageData, List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions)
 ```
