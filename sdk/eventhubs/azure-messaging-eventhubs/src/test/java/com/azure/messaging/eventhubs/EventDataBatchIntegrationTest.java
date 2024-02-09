@@ -138,11 +138,11 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
             toClose(consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now))
                 .subscribe(partitionEvent -> {
-                        if (isMatchingEvent(partitionEvent.getData(), messageValue)) {
-                            countDownLatch.countDown();
-                        }
-                    }));
-        }
+                    if (isMatchingEvent(partitionEvent.getData(), messageValue)) {
+                        countDownLatch.countDown();
+                    }
+                }));
+    }
 
         // Act
         producer.send(batch.getEvents(), sendOptions).block();
