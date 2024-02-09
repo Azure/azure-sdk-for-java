@@ -17,6 +17,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.List;
+
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -51,10 +53,10 @@ public class FilesAsyncTests extends AssistantsClientTestBase {
                     })
                     // Check for existence of file when fetched by purpose
                     .flatMap(tuple -> {
-                        PageableList<OpenAIFile> files = tuple.getT1();
+                        List<OpenAIFile> files = tuple.getT1();
                         OpenAIFile uploadedFile = tuple.getT2();
 
-                        assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
+                        assertTrue(files.stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
                         return client.deleteFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
                     }))
                 // File deletion
@@ -96,10 +98,10 @@ public class FilesAsyncTests extends AssistantsClientTestBase {
                         })
                         // Check for existence of file when fetched by purpose
                         .flatMap(tuple -> {
-                            PageableList<OpenAIFile> files = tuple.getT1();
+                            List<OpenAIFile> files = tuple.getT1();
                             OpenAIFile uploadedFile = tuple.getT2();
 
-                            assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
+                            assertTrue(files.stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
                             return client.deleteFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
                         }))
                 // File deletion
@@ -141,10 +143,10 @@ public class FilesAsyncTests extends AssistantsClientTestBase {
                         })
                         // Check for existence of file when fetched by purpose
                         .flatMap(tuple -> {
-                            PageableList<OpenAIFile> files = tuple.getT1();
+                            List<OpenAIFile> files = tuple.getT1();
                             OpenAIFile uploadedFile = tuple.getT2();
 
-                            assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
+                            assertTrue(files.stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
                             return client.deleteFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
                         }))
                 // File deletion

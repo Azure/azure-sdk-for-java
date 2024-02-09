@@ -9,6 +9,7 @@ import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.assistants.implementation.models.CreateAssistantFileRequest;
 import com.azure.ai.openai.assistants.implementation.models.CreateMessageRequest;
+import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
 import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
@@ -2363,13 +2364,12 @@ public final class AssistantsClient {
      * @return a list of previously uploaded files.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageableList<OpenAIFile> listFiles(FilePurpose purpose) {
+    public List<OpenAIFile> listFiles(FilePurpose purpose) {
         RequestOptions requestOptions = new RequestOptions();
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
         }
-        return listFilesWithResponse(requestOptions).getValue().toObject(new TypeReference<PageableList<OpenAIFile>>() {
-        });
+        return listFilesWithResponse(requestOptions).getValue().toObject(FileListResponse.class).getData();
     }
 
     /**
@@ -2383,11 +2383,10 @@ public final class AssistantsClient {
      * @return a list of previously uploaded files.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageableList<OpenAIFile> listFiles() {
+    public List<OpenAIFile> listFiles() {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listFilesWithResponse(requestOptions).getValue().toObject(new TypeReference<PageableList<OpenAIFile>>() {
-        });
+        return listFilesWithResponse(requestOptions).getValue().toObject(FileListResponse.class).getData();
     }
 
     /**

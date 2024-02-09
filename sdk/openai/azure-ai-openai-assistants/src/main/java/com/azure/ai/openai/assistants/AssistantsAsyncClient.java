@@ -9,6 +9,7 @@ import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.assistants.implementation.models.CreateAssistantFileRequest;
 import com.azure.ai.openai.assistants.implementation.models.CreateMessageRequest;
+import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
 import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
@@ -2409,15 +2410,14 @@ public final class AssistantsAsyncClient {
      * @return a list of previously uploaded files on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageableList<OpenAIFile>> listFiles(FilePurpose purpose) {
+    public Mono<List<OpenAIFile>> listFiles(FilePurpose purpose) {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
         }
         return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<OpenAIFile>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class).getData());
     }
 
     /**
@@ -2431,12 +2431,11 @@ public final class AssistantsAsyncClient {
      * @return a list of previously uploaded files on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageableList<OpenAIFile>> listFiles() {
+    public Mono<List<OpenAIFile>> listFiles() {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<OpenAIFile>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class).getData());
     }
 
     /**

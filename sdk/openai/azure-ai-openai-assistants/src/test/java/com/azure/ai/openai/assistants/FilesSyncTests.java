@@ -15,6 +15,8 @@ import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.List;
+
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -39,8 +41,8 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            PageableList<OpenAIFile> files = client.listFiles(filePurpose);
-            assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
+            List<OpenAIFile> files = client.listFiles(filePurpose);
+            assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
             FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
@@ -64,8 +66,8 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            PageableList<OpenAIFile> files = client.listFiles(filePurpose);
-            assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
+            List<OpenAIFile> files = client.listFiles(filePurpose);
+            assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
             FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
@@ -89,8 +91,8 @@ public class FilesSyncTests extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            PageableList<OpenAIFile> files = client.listFiles(filePurpose);
-            assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
+            List<OpenAIFile> files = client.listFiles(filePurpose);
+            assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
             FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
