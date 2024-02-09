@@ -276,8 +276,10 @@ public final class ImageAnalysisAsyncClient {
             requestOptions.addQueryParam("gender-neutral-caption", String.valueOf(genderNeutralCaption), false);
         }
         if (smartCropsAspectRatios != null) {
-            requestOptions.addQueryParam("smartcrops-aspect-ratios", JacksonAdapter.createDefaultSerializerAdapter()
-                .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV), false);
+            requestOptions.addQueryParam("smartcrops-aspect-ratios",
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
+                    CollectionFormat.CSV),
+                false);
         }
         if (modelVersion != null) {
             requestOptions.addQueryParam("model-version", modelVersion, false);
@@ -529,8 +531,10 @@ public final class ImageAnalysisAsyncClient {
             requestOptions.addQueryParam("gender-neutral-caption", String.valueOf(genderNeutralCaption), false);
         }
         if (smartCropsAspectRatios != null) {
-            requestOptions.addQueryParam("smartcrops-aspect-ratios", JacksonAdapter.createDefaultSerializerAdapter()
-                .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV), false);
+            requestOptions.addQueryParam("smartcrops-aspect-ratios",
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
+                    CollectionFormat.CSV),
+                false);
         }
         if (modelVersion != null) {
             requestOptions.addQueryParam("model-version", modelVersion, false);
@@ -579,15 +583,12 @@ public final class ImageAnalysisAsyncClient {
      */
     static RequestOptions updateRequestOptions(RequestOptions inputRequestOptions,
         ImageAnalysisOptions imageAnalysisOptions) {
-
         RequestOptions outputRequestOptions = inputRequestOptions;
-
         if (imageAnalysisOptions != null) {
             String language = imageAnalysisOptions.getLanguage();
             Boolean isGenderNeutralCaption = imageAnalysisOptions.isGenderNeutralCaption();
             List<Double> smartCropsAspectRatios = imageAnalysisOptions.getSmartCropsAspectRatios();
             String modelVersion = imageAnalysisOptions.getModelVersion();
-
             if (language != null || isGenderNeutralCaption != null || smartCropsAspectRatios != null
                 || modelVersion != null) {
                 if (outputRequestOptions == null) {
@@ -603,7 +604,8 @@ public final class ImageAnalysisAsyncClient {
                 if (smartCropsAspectRatios != null) {
                     outputRequestOptions.addQueryParam("smartcrops-aspect-ratios",
                         JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
-                            CollectionFormat.CSV), false);
+                            CollectionFormat.CSV),
+                        false);
                 }
                 if (modelVersion != null) {
                     outputRequestOptions.addQueryParam("model-version", modelVersion, false);
@@ -741,15 +743,12 @@ public final class ImageAnalysisAsyncClient {
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ImageAnalysisResult>> analyzeFromUrlWithResponse(String imageUrl, List<VisualFeatures> visualFeatures,
-        ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
-
+    public Mono<Response<ImageAnalysisResult>> analyzeFromUrlWithResponse(String imageUrl,
+        List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
-
         Mono<Response<BinaryData>> monoResponse = analyzeFromUrlWithResponse(visualFeaturesAsStrings,
             BinaryData.fromObject(new ImageUrl(imageUrl)), updateRequestOptions(requestOptions, imageAnalysisOptions));
-
         return monoResponse.map(response -> {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 response.getValue().toObject(ImageAnalysisResult.class));
@@ -778,15 +777,12 @@ public final class ImageAnalysisAsyncClient {
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ImageAnalysisResult>> analyzeWithResponse(BinaryData imageData, List<VisualFeatures> visualFeatures,
-        ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
-
+    public Mono<Response<ImageAnalysisResult>> analyzeWithResponse(BinaryData imageData,
+        List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
-
-        Mono<Response<BinaryData>> monoResponse = analyzeFromImageDataWithResponse(visualFeaturesAsStrings,
-            imageData, updateRequestOptions(requestOptions, imageAnalysisOptions));
-
+        Mono<Response<BinaryData>> monoResponse = analyzeFromImageDataWithResponse(visualFeaturesAsStrings, imageData,
+            updateRequestOptions(requestOptions, imageAnalysisOptions));
         return monoResponse.map(response -> {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 response.getValue().toObject(ImageAnalysisResult.class));

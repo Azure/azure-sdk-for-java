@@ -273,8 +273,10 @@ public final class ImageAnalysisClient {
             requestOptions.addQueryParam("gender-neutral-caption", String.valueOf(genderNeutralCaption), false);
         }
         if (smartCropsAspectRatios != null) {
-            requestOptions.addQueryParam("smartcrops-aspect-ratios", JacksonAdapter.createDefaultSerializerAdapter()
-                .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV), false);
+            requestOptions.addQueryParam("smartcrops-aspect-ratios",
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
+                    CollectionFormat.CSV),
+                false);
         }
         if (modelVersion != null) {
             requestOptions.addQueryParam("model-version", modelVersion, false);
@@ -523,8 +525,10 @@ public final class ImageAnalysisClient {
             requestOptions.addQueryParam("gender-neutral-caption", String.valueOf(genderNeutralCaption), false);
         }
         if (smartCropsAspectRatios != null) {
-            requestOptions.addQueryParam("smartcrops-aspect-ratios", JacksonAdapter.createDefaultSerializerAdapter()
-                .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV), false);
+            requestOptions.addQueryParam("smartcrops-aspect-ratios",
+                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
+                    CollectionFormat.CSV),
+                false);
         }
         if (modelVersion != null) {
             requestOptions.addQueryParam("model-version", modelVersion, false);
@@ -592,7 +596,8 @@ public final class ImageAnalysisClient {
                 if (smartCropsAspectRatios != null) {
                     outputRequestOptions.addQueryParam("smartcrops-aspect-ratios",
                         JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
-                            CollectionFormat.CSV), false);
+                            CollectionFormat.CSV),
+                        false);
                 }
                 if (modelVersion != null) {
                     outputRequestOptions.addQueryParam("model-version", modelVersion, false);
@@ -723,7 +728,6 @@ public final class ImageAnalysisClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
      * @return represents the outcome of an Image Analysis operation along with {@link Response}.
-     *
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageAnalysisResult> analyzeFromUrlWithResponse(String imageUrl,
