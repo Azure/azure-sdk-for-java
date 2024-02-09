@@ -1,14 +1,16 @@
 # Release History
 
-## 11.7.0-beta.1 (Unreleased)
+## 11.7.0-beta.1 (2024-02-09)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Exposing HttpPipeline within clients.
 
 ### Other Changes
+
+- Rebranding Azure Cognitive Search to Azure AI Search within the SDK.
+- Updated JavaDoc to assist with developer experience.
+- Sample added to show how to maintain a consistent sessionId across multiple requests.
 
 ## 11.6.1 (2023-12-06)
 

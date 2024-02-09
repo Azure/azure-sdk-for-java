@@ -6,13 +6,13 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
 import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfMessageFile;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -111,14 +111,14 @@ public class AzureMessageSyncTest extends AssistantsClientTestBase {
             ThreadMessage threadMessage2 = client.createMessage(threadId, MessageRole.USER, message + "second message");
             validateThreadMessage(threadMessage2, threadId);
             // List messages
-            OpenAIPageableListOfThreadMessage listedMessages = client.listMessages(threadId);
+            PageableList<ThreadMessage> listedMessages = client.listMessages(threadId);
             assertNotNull(listedMessages);
             assertNotNull(listedMessages.getData());
             assertEquals(2, listedMessages.getData().size());
             // List messages with response
             Response<BinaryData> listedMessagesResponse = client.listMessagesWithResponse(threadId, new RequestOptions());
-            OpenAIPageableListOfThreadMessage listedMessagesWithResponse = assertAndGetValueFromResponse(
-                    listedMessagesResponse, OpenAIPageableListOfThreadMessage.class, 200);
+            PageableList<ThreadMessage> listedMessagesWithResponse = assertAndGetValueFromResponse(
+                listedMessagesResponse, new TypeReference<PageableList<ThreadMessage>>() {}, 200);
             assertNotNull(listedMessagesWithResponse);
             assertNotNull(listedMessagesWithResponse.getData());
             assertEquals(2, listedMessagesWithResponse.getData().size());
@@ -164,12 +164,12 @@ public class AzureMessageSyncTest extends AssistantsClientTestBase {
             validateThreadMessage(threadMessage, threadId);
             String messageId = threadMessage.getId();
             // List message files
-            OpenAIPageableListOfMessageFile listMessageFiles = client.listMessageFiles(threadId, messageId);
+            PageableList<MessageFile> listMessageFiles = client.listMessageFiles(threadId, messageId);
             validateOpenAIPageableListOfMessageFile(listMessageFiles, messageId, Arrays.asList(fileId1, fileId2));
             // List messages with response
             Response<BinaryData> listedMessagesResponse = client.listMessageFilesWithResponse(threadId, messageId, new RequestOptions());
-            OpenAIPageableListOfMessageFile listMessageFilesResponse = assertAndGetValueFromResponse(
-                    listedMessagesResponse, OpenAIPageableListOfMessageFile.class, 200);
+            PageableList<MessageFile> listMessageFilesResponse = assertAndGetValueFromResponse(
+                listedMessagesResponse, new TypeReference<PageableList<MessageFile>>() {}, 200);
             validateOpenAIPageableListOfMessageFile(listMessageFilesResponse, messageId, Arrays.asList(fileId1, fileId2));
         });
         deleteFile(client, fileId1);
@@ -192,7 +192,7 @@ public class AzureMessageSyncTest extends AssistantsClientTestBase {
             validateThreadMessage(threadMessage, threadId);
             String messageId = threadMessage.getId();
             // List message files between two file ids
-            OpenAIPageableListOfMessageFile listMessageFiles = client.listMessageFiles(threadId, messageId, 10,
+            PageableList<MessageFile> listMessageFiles = client.listMessageFiles(threadId, messageId, 10,
                     ListSortOrder.ASCENDING, fileId1, fileId4);
             List<MessageFile> dataAscending = listMessageFiles.getData();
             assertEquals(2, dataAscending.size());
