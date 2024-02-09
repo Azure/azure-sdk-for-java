@@ -443,7 +443,7 @@ public final class AssistantsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<Assistant>> listAssistants(Integer limit, ListSortOrder order, String after,
-                                                        String before) {
+        String before) {
         // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -553,7 +553,7 @@ public final class AssistantsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<AssistantFile>> listAssistantFiles(String assistantId, Integer limit, ListSortOrder order,
-                                                                String after, String before) {
+        String after, String before) {
         // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -1991,7 +1991,7 @@ public final class AssistantsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<ThreadMessage>> listMessages(String threadId, Integer limit, ListSortOrder order,
-                                                          String after, String before) {
+        String after, String before) {
         // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2080,7 +2080,7 @@ public final class AssistantsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<MessageFile>> listMessageFiles(String threadId, String messageId, Integer limit,
-                                                            ListSortOrder order, String after, String before) {
+        ListSortOrder order, String after, String before) {
         // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2171,7 +2171,7 @@ public final class AssistantsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<ThreadRun>> listRuns(String threadId, Integer limit, ListSortOrder order, String after,
-                                                  String before) {
+        String before) {
         // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2354,7 +2354,7 @@ public final class AssistantsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<RunStep>> listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order,
-                                                    String after, String before) {
+        String after, String before) {
         // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {

@@ -543,7 +543,7 @@ public final class AssistantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<AssistantFile> listAssistantFiles(String assistantId, Integer limit, ListSortOrder order,
-                                                          String after, String before) {
+        String after, String before) {
         // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -1955,7 +1955,7 @@ public final class AssistantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<ThreadMessage> listMessages(String threadId, Integer limit, ListSortOrder order, String after,
-                                                    String before) {
+        String before) {
         // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2042,7 +2042,7 @@ public final class AssistantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<MessageFile> listMessageFiles(String threadId, String messageId, Integer limit,
-                                                      ListSortOrder order, String after, String before) {
+        ListSortOrder order, String after, String before) {
         // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2131,7 +2131,7 @@ public final class AssistantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<ThreadRun> listRuns(String threadId, Integer limit, ListSortOrder order, String after,
-                                            String before) {
+        String before) {
         // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2308,7 +2308,7 @@ public final class AssistantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<RunStep> listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order,
-                                              String after, String before) {
+        String after, String before) {
         // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
