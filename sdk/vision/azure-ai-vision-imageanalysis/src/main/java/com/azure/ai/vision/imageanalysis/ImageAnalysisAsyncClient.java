@@ -574,9 +574,11 @@ public final class ImageAnalysisAsyncClient {
      * @param inputRequestOptions The input request options (can be null).
      * @param imageAnalysisOptions The Image Analysis Options to apply to the requestails to be sent (can be null).
      *
-     * @return An updated RequestOptions with addition query parameters set based on the Image Analysis Options. Can be null.
+     * @return An updated RequestOptions with addition query parameters set based on the Image Analysis Options. Can be
+     * null.
      */
-    static RequestOptions updateRequestOptions(RequestOptions inputRequestOptions, ImageAnalysisOptions imageAnalysisOptions) {
+    static RequestOptions updateRequestOptions(RequestOptions inputRequestOptions,
+        ImageAnalysisOptions imageAnalysisOptions) {
 
         RequestOptions outputRequestOptions = inputRequestOptions;
 
@@ -586,7 +588,8 @@ public final class ImageAnalysisAsyncClient {
             List<Double> smartCropsAspectRatios = imageAnalysisOptions.getSmartCropsAspectRatios();
             String modelVersion = imageAnalysisOptions.getModelVersion();
 
-            if (language != null || isGenderNeutralCaption != null || smartCropsAspectRatios != null || modelVersion != null) {
+            if (language != null || isGenderNeutralCaption != null || smartCropsAspectRatios != null
+                || modelVersion != null) {
                 if (outputRequestOptions == null) {
                     outputRequestOptions = new RequestOptions();
                 }
@@ -594,18 +597,19 @@ public final class ImageAnalysisAsyncClient {
                     outputRequestOptions.addQueryParam("language", language, false);
                 }
                 if (isGenderNeutralCaption != null) {
-                    outputRequestOptions.addQueryParam("gender-neutral-caption", String.valueOf(isGenderNeutralCaption), false);
+                    outputRequestOptions.addQueryParam("gender-neutral-caption", String.valueOf(isGenderNeutralCaption),
+                        false);
                 }
                 if (smartCropsAspectRatios != null) {
-                    outputRequestOptions.addQueryParam("smartcrops-aspect-ratios", JacksonAdapter.createDefaultSerializerAdapter()
-                        .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV), false);
+                    outputRequestOptions.addQueryParam("smartcrops-aspect-ratios",
+                        JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
+                            CollectionFormat.CSV), false);
                 }
                 if (modelVersion != null) {
                     outputRequestOptions.addQueryParam("model-version", modelVersion, false);
                 }
             }
         }
-
         return outputRequestOptions;
     }
 
@@ -657,7 +661,6 @@ public final class ImageAnalysisAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageAnalysisResult> analyzeFromUrl(String imageUrl, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
-
         return analyzeFromUrlWithResponse(imageUrl, visualFeatures, options, null).map(response -> {
             return response.getValue();
         });
@@ -711,7 +714,6 @@ public final class ImageAnalysisAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageAnalysisResult> analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
-
         return analyzeWithResponse(imageData, visualFeatures, options, null).map(response -> {
             return response.getValue();
         });
@@ -737,7 +739,6 @@ public final class ImageAnalysisAsyncClient {
      *
      * @return represents the outcome of an Image Analysis operation along with {@link Response},
      * on successful completion of {@link Mono}.
-     *
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ImageAnalysisResult>> analyzeFromUrlWithResponse(String imageUrl, List<VisualFeatures> visualFeatures,
