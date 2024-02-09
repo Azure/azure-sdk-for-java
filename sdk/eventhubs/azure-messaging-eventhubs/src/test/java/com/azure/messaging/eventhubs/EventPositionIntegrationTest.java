@@ -192,7 +192,9 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
             logger.atInfo()
                 .addKeyValue("index", i)
                 .log("sent probing event");
-            receivedFirst.await(1, TimeUnit.SECONDS);
+            if (receivedFirst.await(1, TimeUnit.SECONDS)) {
+                break;
+            }
         }
 
         // we should have received at least 1 event at this point
