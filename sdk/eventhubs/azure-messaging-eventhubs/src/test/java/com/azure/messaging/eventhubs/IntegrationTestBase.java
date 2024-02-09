@@ -8,8 +8,10 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -79,6 +81,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
     private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
+    private static final ClientOptions OPTIONS_WITH_TRACING = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
 
     private static Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
@@ -259,6 +262,7 @@ public abstract class IntegrationTestBase extends TestBase {
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retry(RETRY_OPTIONS)
+            .clientOptions(OPTIONS_WITH_TRACING)
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler);
 
@@ -303,6 +307,8 @@ public abstract class IntegrationTestBase extends TestBase {
 
         try (EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
+            .retryOptions(RETRY_OPTIONS)
+            .clientOptions(OPTIONS_WITH_TRACING)
             .buildProducerClient()) {
 
             producer.getPartitionIds().forEach(partitionId -> {
