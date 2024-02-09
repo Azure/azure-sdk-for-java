@@ -206,7 +206,7 @@ The following one private method and four public methods were added at the end o
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
-     * @return represents the outcome of an Image Analysis operation along with {@link Response}.
+     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageAnalysisResult> analyzeFromUrlWithResponse(String imageUrl,
@@ -237,7 +237,7 @@ The following one private method and four public methods were added at the end o
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
-     * @return represents the outcome of an Image Analysis operation along with {@link Response}.
+     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageAnalysisResult> analyzeWithResponse(BinaryData imageData, List<VisualFeatures> visualFeatures,
@@ -424,7 +424,7 @@ The following one private method and four public methods were added at the end o
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
-     * @return represents the outcome of an Image Analysis operation along with {@link Response},
+     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>,
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -458,7 +458,7 @@ The following one private method and four public methods were added at the end o
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
-     * @return represents the outcome of an Image Analysis operation along with {@link Response},
+     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>,
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
