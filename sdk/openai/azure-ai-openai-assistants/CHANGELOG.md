@@ -6,6 +6,17 @@
 
 ### Breaking Changes
 
+- The following class have been removed:
+  - `FileListResponse`
+  - `OpenAIPageableListOfAssistant`
+  - `OpenAIPageableListOfAssistantFile`
+  - `OpenAIPageableListOfMessageFile`
+  - `OpenAIPageableListOfRunStep`
+  - `OpenAIPageableListOfThreadMessage`
+  - `OpenAIPageableListOfThreadRun` 
+
+- We've introduced `PageableList<T>` these classes were used, except for `FileListResponse` where we simply return `List<OpenAIFile>`.
+
 ### Bugs Fixed
 
 ### Other Changes
