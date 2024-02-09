@@ -288,9 +288,11 @@ Message: Status code 400, "{"error":{"code":"InvalidRequest","message":"Image fo
 
 ### Enable HTTP request/response logging
 
-Reviewing the HTTP request sent or response received over the wire to the Image Analysis service can be useful in troubleshooting. The Image Analysis client library supports a built-in console logging framework for temporary debugging purposes. It also supports more advanced logging using the [SLF4J](https://www.slf4j.org/) interface. For detailed information see [Use logging in the Azure SDK for Java](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-overview#use-logging-in-the-azure-sdk-for-java).
+Reviewing the HTTP request sent or response received over the wire to the Image Analysis service can be useful in troubleshooting. This can be done in two ways:
+1. The Image Analysis client library supports a built-in console logging framework for temporary debugging purposes. It also supports more advanced logging using the [SLF4J](https://www.slf4j.org/) interface. For detailed information see [Use logging in the Azure SDK for Java](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-overview#use-logging-in-the-azure-sdk-for-java).
+1. By getting access to the [Response](https://learn.microsoft.com/java/api/com.azure.core.http.rest.response) object, and from it the [HttpRequest](https://learn.microsoft.com/java/api/com.azure.core.http.httprequest) object, and printing information provided by these objects. See [SampleCaptionImageFileWithResponse.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFileWithResponse.java) and [SampleOcrImageUrlWithResponseAsync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleOcrImageUrlWithResponseAsync.java).
 
-The sections below discusses enabling console logging using the built-in framework.
+We recommend you enable console logging (option #1). The sections below discusses enabling console logging using the built-in framework.
 
 #### By setting environment variables
 

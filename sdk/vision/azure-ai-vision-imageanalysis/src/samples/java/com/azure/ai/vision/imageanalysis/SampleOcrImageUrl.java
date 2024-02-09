@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 //
 // DESCRIPTION:
-//     This sample demonstrates how to extract printed or hand-written text for of a publicly accessible
+//     This sample demonstrates how to extract printed or hand-written text from a publicly accessible
 //     image URL, using a synchronous client.
 //
 //     The synchronous (blocking) `analyzeFromUrl` method call returns an `ImageAnalysisResult` object.

@@ -580,6 +580,9 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         request.getHeaders().forEach(header -> {
             System.out.println("   " + header.getName() + ": " + header.getValue());
         });
+        if (request.getHeaders().getValue("content-type").contains("application/json")) {
+            System.out.println(" HTTP request body: " + request.getBodyAsBinaryData().toString());
+        }
 
         // Print HTTP response details to console
         System.out.println(" HTTP response status code: " + response.getStatusCode());

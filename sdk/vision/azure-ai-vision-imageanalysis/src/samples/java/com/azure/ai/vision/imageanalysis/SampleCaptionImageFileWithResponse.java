@@ -48,7 +48,7 @@ public class SampleCaptionImageFileWithResponse {
             .credential(new KeyCredential(key))
             .buildClient();
 
-        // Examples of modifying the HTTP request
+        // Examples of modifying the HTTP request. Not commonly used. Set to null if not used.
         RequestOptions requestOptions = new RequestOptions()
             .setHeader(HttpHeaderName.fromString("YourHeaderName"), "YourHeaderValue")
             .addQueryParam("YourQueryParameterName", "YourQueryParameterValue");
@@ -68,6 +68,9 @@ public class SampleCaptionImageFileWithResponse {
         request.getHeaders().forEach(header -> {
             System.out.println("   " + header.getName() + ": " + header.getValue());
         });
+        if (request.getHeaders().getValue("content-type").contains("application/json")) {
+            System.out.println(" HTTP request body: " + request.getBodyAsBinaryData().toString());
+        }        
 
         // Print HTTP response details to console
         System.out.println(" HTTP response status code: " + response.getStatusCode());
