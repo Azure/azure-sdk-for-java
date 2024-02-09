@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Removed methods `uploadFile(FileDetails file, FilePurpose purpose, String filename)` from `AssistantsClient` and `AssistantsAsyncClient` classes. Use `uploadFile(FileDetails file, FilePurpose purpose)` method, and set "filename" via `setFilename` method in `FileDetails` class.
+
 ### Bugs Fixed
 
 ### Other Changes
