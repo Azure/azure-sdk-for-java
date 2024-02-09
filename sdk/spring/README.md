@@ -148,6 +148,38 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
 ```
 [//]: # ({x-version-update-end})
 
+With Gradle, you can import the `spring-cloud-azure-dependencies` BOM in [two ways](https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/).
+
+You can use the Gradle’s native BOM support by adding dependencies:
+
+```kotlin
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+  id("java")
+  id("org.springframework.boot") version "3.2.O"
+}
+
+dependencies {
+    implementation(platform(SpringBootPlugin.BOM_COORDINATES))
+    implementation(platform("com.azure.spring:spring-cloud-azure-dependencies:{version}"))
+}
+```
+
+You can also use the `io.spring.dependency-management` plugin and import the BOM in `dependencyManagement`:
+
+```kotlin
+plugins {
+    id("io.spring.dependency-management") version "1.1.0"
+}
+
+dependencyManagement {
+    imports { 
+        mavenBom("com.azure.spring:spring-cloud-azure-dependencies:{version}")
+    }
+}
+```
+
 ## Spring Boot 3 Support
 
 The source code of Spring Cloud Azure for Spring Boot 3.x can be found on the [feature/spring-boot-3](https://github.com/Azure/azure-sdk-for-java/tree/feature/spring-boot-3) branch.
