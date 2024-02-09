@@ -1,10 +1,21 @@
 ## Release History
 
-### 5.9.0-beta.1 (Unreleased)
+### 5.10.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 5.9.1 (2024-02-08)
+
+#### Bugs Fixed
+* Fixed issue where running on versions older than Java 21 would throw a `UnsupportedClassVersionError` - See [PR 38690](https://github.com/Azure/azure-sdk-for-java/pull/38690).
+
+### 5.9.0 (2024-02-04)
 
 #### Bugs Fixed
 * Fixed a bug with auto generated id's when using bulk `saveAll` - See [PR 38356](https://github.com/Azure/azure-sdk-for-java/pull/38356).

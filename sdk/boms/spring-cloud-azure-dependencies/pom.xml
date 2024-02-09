@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-dependencies</artifactId>
-  <version>5.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
+  <version>5.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
   <packaging>pom</packaging>
 
   <name>Spring Cloud Azure Dependencies</name>
@@ -40,6 +40,8 @@
   </issueManagement>
 
   <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
@@ -51,7 +53,7 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-sdk-bom</artifactId>
-        <version>1.2.19</version>   <!-- NOTE: This should be updated manually. -->
+        <version>1.2.20</version>   <!-- NOTE: This should be updated manually. -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>

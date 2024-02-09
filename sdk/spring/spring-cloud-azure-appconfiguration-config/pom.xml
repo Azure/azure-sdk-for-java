@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-  <version>5.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
+  <version>5.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
   <name>Spring Cloud Azure App Configuration Config</name>
   <description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
   <properties>
@@ -63,12 +63,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-service</artifactId>
-      <version>5.8.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;dependency} -->
+      <version>5.9.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>5.8.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;dependency} -->
+      <version>5.9.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;dependency} -->
     </dependency>
     <!-- Test Dependencies -->
     <dependency>
@@ -76,6 +76,12 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <version>3.2.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <version>3.2.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <optional>true</optional>
     </dependency>
 
     <!-- Add mockito-core 4.11.0 to work with Java 21 -->
@@ -137,11 +143,24 @@
             <id>base-testCompile</id>
             <phase>none</phase>
           </execution>
+          <!-- Ensure we compile with Java 17 -->
           <execution>
             <goals>
               <goal>compile</goal>
             </goals>
             <configuration>
+              <release>17</release>
+            </configuration>
+          </execution>
+          <execution>
+            <id>annotation-process</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <compilerArgs>
+                <arg>-proc:only</arg> <!-- Turn on annotation processing -->
+              </compilerArgs>
               <release>17</release>
             </configuration>
           </execution>
@@ -160,6 +179,7 @@
                 <include>org.springframework.boot:spring-boot-actuator:[3.2.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[3.2.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-context:[4.1.0]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[3.2.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-starter-bootstrap:[4.1.0]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
               </includes>
             </bannedDependencies>
