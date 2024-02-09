@@ -31,13 +31,15 @@ public final class SenderAuthorization {
     @JsonProperty(value = "scope")
     private String scope;
 
-    /** Creates an instance of SenderAuthorization class. */
+    /**
+     * Creates an instance of SenderAuthorization class.
+     */
     public SenderAuthorization() {
     }
 
     /**
      * Get the action property: the permissible actions. For instance: microsoft.support/supporttickets/write.
-     *
+     * 
      * @return the action value.
      */
     public String action() {
@@ -46,7 +48,7 @@ public final class SenderAuthorization {
 
     /**
      * Set the action property: the permissible actions. For instance: microsoft.support/supporttickets/write.
-     *
+     * 
      * @param action the action value to set.
      * @return the SenderAuthorization object itself.
      */
@@ -57,7 +59,7 @@ public final class SenderAuthorization {
 
     /**
      * Get the role property: the role of the user. For instance: Subscription Admin.
-     *
+     * 
      * @return the role value.
      */
     public String role() {
@@ -66,7 +68,7 @@ public final class SenderAuthorization {
 
     /**
      * Set the role property: the role of the user. For instance: Subscription Admin.
-     *
+     * 
      * @param role the role value to set.
      * @return the SenderAuthorization object itself.
      */
@@ -77,7 +79,7 @@ public final class SenderAuthorization {
 
     /**
      * Get the scope property: the scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -86,7 +88,7 @@ public final class SenderAuthorization {
 
     /**
      * Set the scope property: the scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the SenderAuthorization object itself.
      */
@@ -97,7 +99,7 @@ public final class SenderAuthorization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -1,16 +1,13 @@
 ## Release History
 
-### 4.26.0-beta.1 (Unreleased)
+### 4.26.0 (2024-02-08)
 
 #### Features Added
-* Added optimization for query to use readMany internally when applicable - See [PR 38299](https://github.com/Azure/azure-sdk-for-java/pull/38299) and [PR 38433](https://github.com/Azure/azure-sdk-for-java/pull/38433)
+* Added optimization for query to use readMany internally when applicable - See [PR 38299](https://github.com/Azure/azure-sdk-for-java/pull/38299), [PR 38675](https://github.com/Azure/azure-sdk-for-java/pull/38675) and [PR 38433](https://github.com/Azure/azure-sdk-for-java/pull/38433) and [PR 38670](https://github.com/Azure/azure-sdk-for-java/pull/38670)
 * Added option to use custom Schema with StringType (raw json) for a nested property - See [PR 38481](https://github.com/Azure/azure-sdk-for-java/pull/38481)
 
-#### Breaking Changes
-
-#### Bugs Fixed
-
 #### Other Changes
+* Added additional retry being en-queued when bulk ingestion hangs. - See [PR 38630](https://github.com/Azure/azure-sdk-for-java/pull/38630)
 
 ### 4.25.1 (2024-01-14)
 

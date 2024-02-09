@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Http request info. */
+/**
+ * The Http request info.
+ */
 @Fluent
 public final class HttpRequestInfo {
     /*
@@ -34,13 +36,15 @@ public final class HttpRequestInfo {
     @JsonProperty(value = "uri")
     private String uri;
 
-    /** Creates an instance of HttpRequestInfo class. */
+    /**
+     * Creates an instance of HttpRequestInfo class.
+     */
     public HttpRequestInfo() {
     }
 
     /**
      * Get the clientRequestId property: the client request id.
-     *
+     * 
      * @return the clientRequestId value.
      */
     public String clientRequestId() {
@@ -49,7 +53,7 @@ public final class HttpRequestInfo {
 
     /**
      * Set the clientRequestId property: the client request id.
-     *
+     * 
      * @param clientRequestId the clientRequestId value to set.
      * @return the HttpRequestInfo object itself.
      */
@@ -60,7 +64,7 @@ public final class HttpRequestInfo {
 
     /**
      * Get the clientIpAddress property: the client Ip Address.
-     *
+     * 
      * @return the clientIpAddress value.
      */
     public String clientIpAddress() {
@@ -69,7 +73,7 @@ public final class HttpRequestInfo {
 
     /**
      * Set the clientIpAddress property: the client Ip Address.
-     *
+     * 
      * @param clientIpAddress the clientIpAddress value to set.
      * @return the HttpRequestInfo object itself.
      */
@@ -80,7 +84,7 @@ public final class HttpRequestInfo {
 
     /**
      * Get the method property: the Http request method.
-     *
+     * 
      * @return the method value.
      */
     public String method() {
@@ -89,7 +93,7 @@ public final class HttpRequestInfo {
 
     /**
      * Set the method property: the Http request method.
-     *
+     * 
      * @param method the method value to set.
      * @return the HttpRequestInfo object itself.
      */
@@ -100,7 +104,7 @@ public final class HttpRequestInfo {
 
     /**
      * Get the uri property: the Uri.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -109,7 +113,7 @@ public final class HttpRequestInfo {
 
     /**
      * Set the uri property: the Uri.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the HttpRequestInfo object itself.
      */
@@ -120,7 +124,7 @@ public final class HttpRequestInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

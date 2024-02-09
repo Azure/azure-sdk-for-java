@@ -5,7 +5,7 @@
 //     This sample demonstrates how to extract printed or hand-written text for of a publicly accessible
 //     image URL, using an asynchronous client.
 //
-//     The asynchronous `analyze` method call returns an `ImageAnalysisResult` object.
+//     The asynchronous `analyzeFromUrl` method call returns an `ImageAnalysisResult` object.
 //     A call to `getRead()` on the result will return a `ReadResult` object. It includes a list of 
 //     `DetectedTextBlock` objects. Currently, the list will always contain one block, as the service does 
 //     not yet support grouping text lines into separate blocks. The `DetectedTextBlock` object contains a 
@@ -32,7 +32,6 @@ import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -56,8 +55,8 @@ public class SampleOcrImageUrlAsync {
             .buildAsyncClient();
 
         // Extract text from an input image URL. This is an asynchronous (non-blocking) call.
-        client.analyze(
-            new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
+        client.analyzeFromUrl(
+            "https://aka.ms/azsdk/image-analysis/sample.jpg", // imageUrl: the URL of the image to analyze
             Arrays.asList(VisualFeatures.READ), // visualFeatures
             null) // options
             .subscribe(

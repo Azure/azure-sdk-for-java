@@ -9,21 +9,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Reference to a build result. */
+/**
+ * Reference to a build result.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("BuildResult")
 @Fluent
 public final class BuildResultUserSourceInfo extends UserSourceInfo {
     /*
-     * Resource id of an existing succeeded build result under the same Spring
-     * instance.
+     * Resource id of an existing succeeded build result under the same Spring instance.
      */
     @JsonProperty(value = "buildResultId")
     private String buildResultId;
 
     /**
-     * Get the buildResultId property: Resource id of an existing succeeded build result under the same Spring instance.
-     *
+     * Creates an instance of BuildResultUserSourceInfo class.
+     */
+    public BuildResultUserSourceInfo() {
+    }
+
+    /**
+     * Get the buildResultId property: Resource id of an existing succeeded build result under the same Spring
+     * instance.
+     * 
      * @return the buildResultId value.
      */
     public String buildResultId() {
@@ -31,8 +39,9 @@ public final class BuildResultUserSourceInfo extends UserSourceInfo {
     }
 
     /**
-     * Set the buildResultId property: Resource id of an existing succeeded build result under the same Spring instance.
-     *
+     * Set the buildResultId property: Resource id of an existing succeeded build result under the same Spring
+     * instance.
+     * 
      * @param buildResultId the buildResultId value to set.
      * @return the BuildResultUserSourceInfo object itself.
      */
@@ -41,7 +50,9 @@ public final class BuildResultUserSourceInfo extends UserSourceInfo {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BuildResultUserSourceInfo withVersion(String version) {
         super.withVersion(version);
@@ -50,7 +61,7 @@ public final class BuildResultUserSourceInfo extends UserSourceInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

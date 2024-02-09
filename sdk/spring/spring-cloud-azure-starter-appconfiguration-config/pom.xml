@@ -7,7 +7,6 @@
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-appconfiguration-config</artifactId>
   <version>5.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;current} -->
-
   <name>Spring Cloud Azure Starter App Configuration Config</name>
   <description>Spring Cloud Azure Starter App Configuration Config</description>
   <url>https://microsoft.github.io/spring-cloud-azure</url>

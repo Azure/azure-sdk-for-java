@@ -6,7 +6,7 @@ package com.azure.search.documents;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * The versions of Azure Cognitive Search supported by this client library.
+ * The versions of Azure AI Search supported by this client library.
  */
 public enum SearchServiceVersion implements ServiceVersion {
     /**

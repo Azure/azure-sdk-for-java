@@ -148,6 +148,45 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
 ```
 [//]: # ({x-version-update-end})
 
+## Spring Boot 3 Support
+
+The source code of Spring Cloud Azure for Spring Boot 3.x can be found on the [feature/spring-boot-3](https://github.com/Azure/azure-sdk-for-java/tree/feature/spring-boot-3) branch.
+
+#### Spring AOT and Spring native images
+
+Azure SDK JARs are signed. [Spring Boot 3 does not support today signed JARs](https://github.com/Azure/azure-sdk-for-java/issues/30320) when you run your application with [AOT mode on a JVM](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment.efficient.aot) or you [build a native image](https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html).
+
+You can disable the JAR signature verification in the following way for GraalVM Native Build Tools:
+
+* Maven
+```xml
+<plugin>
+    <groupId>org.graalvm.buildtools</groupId>
+    <artifactId>native-maven-plugin</artifactId>
+    <configuration>
+        <buildArgs>
+            <arg>-Djava.security.properties=src/main/resources/custom.security</arg>
+        </buildArgs>
+    </configuration>
+</plugin>
+```
+
+* Gradle:
+```groovy
+graalvmNative {
+  binaries {
+    main {
+      buildArgs('-Djava.security.properties=' + file("$rootDir/custom.security").absolutePath)
+    }
+  }
+}
+```
+
+You have to create a `custom.security file` in `src/main/resources` with the following content:
+```
+jdk.jar.disabledAlgorithms=MD2, MD5, RSA, DSA
+```
+
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 

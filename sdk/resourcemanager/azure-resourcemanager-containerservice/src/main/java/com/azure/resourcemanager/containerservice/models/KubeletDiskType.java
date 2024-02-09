@@ -24,7 +24,7 @@ public final class KubeletDiskType extends ExpandableStringEnum<KubeletDiskType>
 
     /**
      * Creates a new instance of KubeletDiskType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +33,7 @@ public final class KubeletDiskType extends ExpandableStringEnum<KubeletDiskType>
 
     /**
      * Creates or finds a KubeletDiskType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KubeletDiskType.
      */
@@ -44,7 +44,7 @@ public final class KubeletDiskType extends ExpandableStringEnum<KubeletDiskType>
 
     /**
      * Gets known KubeletDiskType values.
-     *
+     * 
      * @return known KubeletDiskType values.
      */
     public static Collection<KubeletDiskType> values() {

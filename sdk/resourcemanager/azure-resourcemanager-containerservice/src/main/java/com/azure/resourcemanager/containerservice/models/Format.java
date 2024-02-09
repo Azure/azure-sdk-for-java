@@ -24,7 +24,7 @@ public final class Format extends ExpandableStringEnum<Format> {
 
     /**
      * Creates a new instance of Format value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +33,7 @@ public final class Format extends ExpandableStringEnum<Format> {
 
     /**
      * Creates or finds a Format from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Format.
      */
@@ -44,7 +44,7 @@ public final class Format extends ExpandableStringEnum<Format> {
 
     /**
      * Gets known Format values.
-     *
+     * 
      * @return known Format values.
      */
     public static Collection<Format> values() {

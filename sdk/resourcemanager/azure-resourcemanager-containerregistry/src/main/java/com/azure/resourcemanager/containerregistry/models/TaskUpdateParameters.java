@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The parameters for updating a task. */
+/**
+ * The parameters for updating a task.
+ */
 @Fluent
 public final class TaskUpdateParameters {
     /*
@@ -32,13 +34,15 @@ public final class TaskUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of TaskUpdateParameters class. */
+    /**
+     * Creates an instance of TaskUpdateParameters class.
+     */
     public TaskUpdateParameters() {
     }
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -47,7 +51,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -58,7 +62,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Get the innerProperties property: The properties for updating a task.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TaskPropertiesUpdateParameters innerProperties() {
@@ -67,7 +71,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Get the tags property: The ARM resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -76,7 +80,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Set the tags property: The ARM resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -87,7 +91,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Get the status property: The current status of task.
-     *
+     * 
      * @return the status value.
      */
     public TaskStatus status() {
@@ -96,7 +100,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Set the status property: The current status of task.
-     *
+     * 
      * @param status the status value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -110,7 +114,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Get the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @return the platform value.
      */
     public PlatformUpdateParameters platform() {
@@ -119,7 +123,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Set the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @param platform the platform value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -133,7 +137,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Get the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
@@ -142,7 +146,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Set the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @param agentConfiguration the agentConfiguration value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -156,7 +160,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Get the agentPoolName property: The dedicated agent pool for the task.
-     *
+     * 
      * @return the agentPoolName value.
      */
     public String agentPoolName() {
@@ -165,7 +169,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Set the agentPoolName property: The dedicated agent pool for the task.
-     *
+     * 
      * @param agentPoolName the agentPoolName value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -179,7 +183,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Get the timeout property: Run timeout in seconds.
-     *
+     * 
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -188,7 +192,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Set the timeout property: Run timeout in seconds.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -202,7 +206,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Get the step property: The properties for updating a task step.
-     *
+     * 
      * @return the step value.
      */
     public TaskStepUpdateParameters step() {
@@ -211,7 +215,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Set the step property: The properties for updating a task step.
-     *
+     * 
      * @param step the step value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -225,7 +229,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Get the trigger property: The properties for updating trigger properties.
-     *
+     * 
      * @return the trigger value.
      */
     public TriggerUpdateParameters trigger() {
@@ -234,7 +238,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Set the trigger property: The properties for updating trigger properties.
-     *
+     * 
      * @param trigger the trigger value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -249,7 +253,7 @@ public final class TaskUpdateParameters {
     /**
      * Get the credentials property: The parameters that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @return the credentials value.
      */
     public Credentials credentials() {
@@ -259,7 +263,7 @@ public final class TaskUpdateParameters {
     /**
      * Set the credentials property: The parameters that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -274,7 +278,7 @@ public final class TaskUpdateParameters {
     /**
      * Get the logTemplate property: The template that describes the repository and tag information for run log
      * artifact.
-     *
+     * 
      * @return the logTemplate value.
      */
     public String logTemplate() {
@@ -284,7 +288,7 @@ public final class TaskUpdateParameters {
     /**
      * Set the logTemplate property: The template that describes the repository and tag information for run log
      * artifact.
-     *
+     * 
      * @param logTemplate the logTemplate value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -298,7 +302,7 @@ public final class TaskUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -27,7 +27,7 @@ public final class OpenShiftManagedClusterAuthProfile {
 
     /**
      * Get the identityProviders property: Type of authentication profile to use.
-     *
+     * 
      * @return the identityProviders value.
      */
     public List<OpenShiftManagedClusterIdentityProvider> identityProviders() {
@@ -36,7 +36,7 @@ public final class OpenShiftManagedClusterAuthProfile {
 
     /**
      * Set the identityProviders property: Type of authentication profile to use.
-     *
+     * 
      * @param identityProviders the identityProviders value to set.
      * @return the OpenShiftManagedClusterAuthProfile object itself.
      */
@@ -48,7 +48,7 @@ public final class OpenShiftManagedClusterAuthProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

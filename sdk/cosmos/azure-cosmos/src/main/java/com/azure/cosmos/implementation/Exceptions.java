@@ -54,4 +54,8 @@ public class Exceptions {
         return Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.NOTFOUND) &&
             Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH);
     }
+
+    public static String getInternalServerErrorMessage(String prefix) {
+        return prefix + " - " + RMResources.InternalServerError;
+    }
 }
