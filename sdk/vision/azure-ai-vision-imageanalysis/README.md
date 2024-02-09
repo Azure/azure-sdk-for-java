@@ -170,12 +170,11 @@ This example is similar to the above, except it calls the `analyze` method and p
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
-import java.net.URL;
 import java.util.Arrays;
 ```
 ```java caption-url-snippet
-ImageAnalysisResult result = client.analyze(
-    new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
+ImageAnalysisResult result = client.analyzeFromUrl(
+    "https://aka.ms/azsdk/image-analysis/sample.jpg", // imageUrl: the URL of the image to analyze
     Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
     new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
@@ -233,12 +232,11 @@ import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
 import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
-import java.net.URL;
 import java.util.Arrays;
 ```
 ```java ocr-url-snippet
-ImageAnalysisResult result = client.analyze(
-    new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
+ImageAnalysisResult result = client.analyzeFromUrl(
+    "https://aka.ms/azsdk/image-analysis/sample.jpg", // imageUrl: the URL of the image to analyze
     Arrays.asList(VisualFeatures.READ), // visualFeatures
     null); // options: There are no options for READ visual feature
 

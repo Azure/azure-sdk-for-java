@@ -51,13 +51,13 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.55.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.55.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-encryption</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+      <version>2.8.0</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
     </dependency>
 
     <dependency>
@@ -85,7 +85,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>32.0.1-jre</version> <!-- {x-version-update;cosmos_com.google.guava:guava;external_dependency} -->
+      <version>33.0.0-jre</version> <!-- {x-version-update;cosmos_com.google.guava:guava;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -263,7 +263,7 @@ Licensed under the MIT License.
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
 
                 <!-- The benchmarking tool is allowed additional dependencies as it is not a library -->
-                <include>com.google.guava:guava:[32.0.1-jre]</include> <!-- {x-include-update;cosmos_com.google.guava:guava;external_dependency} -->
+                <include>com.google.guava:guava:[33.0.0-jre]</include> <!-- {x-include-update;cosmos_com.google.guava:guava;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-graphite:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-graphite;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-jvm:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-jvm;external_dependency} -->
                 <include>io.micrometer:micrometer-registry-azure-monitor:[1.9.17]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
