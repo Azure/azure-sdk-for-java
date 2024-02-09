@@ -41,13 +41,8 @@ import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
 import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 
 /**
- * This class provides an asynchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace.
- *
- * <h2>Overview</h2>
- *
- * <p>
- *     This client encapsulates REST API calls, used to send data to a Log Analytics workspace, into a set of asynchronous operations.
- * </p>
+ * <p>This class provides an asynchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace.
+ * This client encapsulates REST API calls, used to send data to a Log Analytics workspace, into a set of asynchronous operations.</p>
  *
  * <h2>Getting Started</h2>
  *
