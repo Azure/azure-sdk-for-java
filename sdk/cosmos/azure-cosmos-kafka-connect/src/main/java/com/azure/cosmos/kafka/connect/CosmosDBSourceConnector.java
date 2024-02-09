@@ -22,8 +22,8 @@ import com.azure.cosmos.kafka.connect.implementations.source.FeedRangeTaskUnit;
 import com.azure.cosmos.kafka.connect.implementations.source.FeedRangesMetadataTopicOffset;
 import com.azure.cosmos.kafka.connect.implementations.source.MetadataMonitorThread;
 import com.azure.cosmos.kafka.connect.implementations.source.MetadataTaskUnit;
-import com.azure.cosmos.kafka.connect.implementations.source.configs.CosmosSourceConfig;
-import com.azure.cosmos.kafka.connect.implementations.source.configs.CosmosSourceTaskConfig;
+import com.azure.cosmos.kafka.connect.implementations.source.CosmosSourceConfig;
+import com.azure.cosmos.kafka.connect.implementations.source.CosmosSourceTaskConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
@@ -335,8 +335,6 @@ public class CosmosDBSourceConnector extends SourceConnector {
         if (config.configValues().stream().anyMatch(cv -> !cv.errorMessages().isEmpty())) {
             return config;
         }
-
-        // TODO: add validation for the topic map?
         return config;
     }
 }

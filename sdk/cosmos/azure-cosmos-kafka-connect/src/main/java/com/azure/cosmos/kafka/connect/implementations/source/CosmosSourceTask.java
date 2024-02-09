@@ -9,14 +9,15 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.kafka.connect.implementations.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementations.CosmosConstants;
-import com.azure.cosmos.kafka.connect.implementations.source.configs.CosmosChangeFeedModes;
-import com.azure.cosmos.kafka.connect.implementations.source.configs.CosmosSourceTaskConfig;
+import com.azure.cosmos.kafka.connect.implementations.CosmosExceptionsHelper;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
+import org.apache.kafka.connect.errors.ConnectException;
+import org.apache.kafka.connect.errors.RetriableException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
 import org.slf4j.Logger;
@@ -61,27 +62,36 @@ public class CosmosSourceTask extends SourceTask {
         // do not poll it from the queue yet
         // we need to make sure not losing tasks for failure cases
         logger.debug("polling task");
-        ITaskUnit taskUnit = this.taskUnitsQueue.peek();
-        if (taskUnit == null) {
-            // there is no task to do
-            return new ArrayList<>();
+        try {
+            ITaskUnit taskUnit = this.taskUnitsQueue.peek();
+            if (taskUnit == null) {
+                // there is no task to do
+                return new ArrayList<>();
+            }
+
+            List<SourceRecord> results = new ArrayList<>();
+            if (taskUnit instanceof MetadataTaskUnit) {
+                results.addAll(executeMetadataTask((MetadataTaskUnit) taskUnit));
+                // for metadata task, after successfully adding it, we are going to remove it from the queue
+                this.taskUnitsQueue.poll();
+
+            } else {
+                results.addAll(executeFeedRangeTask((FeedRangeTaskUnit) taskUnit));
+                // for feed range task, we will put the task to the end of the queue
+                this.taskUnitsQueue.poll();
+                this.taskUnitsQueue.add(taskUnit);
+            }
+
+            logger.debug("Return {} records", results.size());
+            return results;
+        } catch (Exception e) {
+            // TODO: add checking for max retries checking
+            if (CosmosExceptionsHelper.isTransientFailure(e)) {
+                throw new RetriableException("PollTask failed with transient failure.", e);
+            }
+
+            throw new ConnectException("PollTask failed with non-transient failure. ", e);
         }
-
-        List<SourceRecord> results = new ArrayList<>();
-        if (taskUnit instanceof MetadataTaskUnit) {
-            results.addAll(executeMetadataTask((MetadataTaskUnit) taskUnit));
-            // for metadata task, after successfully adding it, we are going to remove it from the queue
-            this.taskUnitsQueue.poll();
-
-        } else {
-            results.addAll(executeFeedRangeTask((FeedRangeTaskUnit) taskUnit));
-            // for feed range task, we will put the task to the end of the queue
-            this.taskUnitsQueue.poll();
-            this.taskUnitsQueue.add(taskUnit);
-        }
-
-        logger.debug("Return {} records", results.size());
-        return results;
     }
 
     private List<SourceRecord> executeMetadataTask(MetadataTaskUnit taskUnit) {

@@ -11,8 +11,6 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.kafka.connect.implementations.source.configs.CosmosMetadataConfig;
-import com.azure.cosmos.kafka.connect.implementations.source.configs.CosmosSourceContainersConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;

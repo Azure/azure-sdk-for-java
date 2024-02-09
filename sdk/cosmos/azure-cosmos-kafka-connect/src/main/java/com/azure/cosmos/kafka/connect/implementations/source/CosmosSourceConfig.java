@@ -1,16 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.kafka.connect.implementations.source.configs;
+package com.azure.cosmos.kafka.connect.implementations.source;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementations.CosmosConfig;
 import org.apache.kafka.common.config.ConfigDef;
+import org.apache.kafka.common.config.ConfigException;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Common Configuration for Cosmos DB Kafka source connector.
@@ -123,6 +129,7 @@ public class CosmosSourceConfig extends CosmosConfig {
                 DATABASE_NAME_CONF,
                 ConfigDef.Type.STRING,
                 ConfigDef.NO_DEFAULT_VALUE,
+                NON_EMPTY_STRING,
                 ConfigDef.Importance.HIGH,
                 DATABASE_NAME_CONF_DOC,
                 containersGroupName,
@@ -156,6 +163,7 @@ public class CosmosSourceConfig extends CosmosConfig {
                 CONTAINERS_TOPIC_MAP_CONFIG,
                 ConfigDef.Type.LIST,
                 Collections.EMPTY_LIST,
+                new ContainersTopicMapValidator(),
                 ConfigDef.Importance.HIGH,
                 CONTAINERS_TOPIC_MAP_CONFIG_DOC,
                 containersGroupName,
@@ -174,6 +182,7 @@ public class CosmosSourceConfig extends CosmosConfig {
                 METADATA_POLL_DELAY_MS_CONFIG,
                 ConfigDef.Type.INT,
                 DEFAULT_METADATA_POLL_DELAY_MS,
+                new PositiveValueValidator(),
                 ConfigDef.Importance.MEDIUM,
                 METADATA_POLL_DELAY_MS_CONFIG_DOC,
                 metadataGroupName,
@@ -185,6 +194,7 @@ public class CosmosSourceConfig extends CosmosConfig {
                 METADATA_STORAGE_TOPIC_CONFIG,
                 ConfigDef.Type.STRING,
                 DEFAULT_METADATA_STORAGE_TOPIC,
+                NON_EMPTY_STRING,
                 ConfigDef.Importance.HIGH,
                 METADATA_STORAGE_TOPIC_CONFIG_DOC,
                 metadataGroupName,
@@ -203,6 +213,7 @@ public class CosmosSourceConfig extends CosmosConfig {
                 CHANGE_FEED_MODE_CONFIG,
                 ConfigDef.Type.STRING,
                 DEFAULT_CHANGE_FEED_MODE,
+                new ChangeFeedModeValidator(),
                 ConfigDef.Importance.HIGH,
                 CHANGE_FEED_MODE_CONFIG_DOC,
                 changeFeedGroupName,
@@ -214,6 +225,7 @@ public class CosmosSourceConfig extends CosmosConfig {
                 CHANGE_FEED_START_FROM_CONFIG,
                 ConfigDef.Type.STRING,
                 DEFAULT_CHANGE_FEED_START_FROM,
+                new ChangeFeedStartFromValidator(),
                 ConfigDef.Importance.HIGH,
                 CHANGE_FEED_START_FROM_CONFIG_DOC,
                 changeFeedGroupName,
@@ -225,6 +237,7 @@ public class CosmosSourceConfig extends CosmosConfig {
                 CHANGE_FEED_MAX_ITEM_COUNT_CONFIG,
                 ConfigDef.Type.INT,
                 DEFAULT_CHANGE_FEED_MAX_ITEM_COUNT,
+                new PositiveValueValidator(),
                 ConfigDef.Importance.MEDIUM,
                 CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DOC,
                 changeFeedGroupName,
@@ -344,5 +357,103 @@ public class CosmosSourceConfig extends CosmosConfig {
 
     public CosmosSourceMessageKeyConfig getMessageKeyConfig() {
         return messageKeyConfig;
+    }
+
+    public static class ContainersTopicMapValidator implements ConfigDef.Validator {
+        private static final String INVALID_TOPIC_MAP_FORMAT =
+            "Invalid entry for topic-container map. The topic-container map should be a comma-delimited "
+                + "list of Kafka topic to Cosmos containers. Each mapping should be a pair of Kafka "
+                + "topic and Cosmos container separated by '#'. For example: topic1#con1,topic2#con2.";
+
+        @Override
+        public void ensureValid(String name, Object o) {
+            List<String> containerTopicMapList = (List<String>) o;
+
+            if (containerTopicMapList == null || containerTopicMapList.size() == 0) {
+                return;
+            }
+
+            // validate each item should be in topic#container format
+            boolean invalidFormatExists =
+                containerTopicMapList
+                    .stream()
+                    .anyMatch(containerTopicMap ->
+                        containerTopicMap
+                            .split(CosmosSourceContainersConfig.CONTAINER_TOPIC_MAP_SEPARATOR)
+                            .length != 2);
+
+            if (invalidFormatExists) {
+                throw new ConfigException(name, o, INVALID_TOPIC_MAP_FORMAT);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "Containers topic map";
+        }
+    }
+
+    public static class ChangeFeedModeValidator implements ConfigDef.Validator {
+        @Override
+        public void ensureValid(String name, Object o) {
+            String changeFeedModeString = (String) o;
+            if (StringUtils.isEmpty(changeFeedModeString)) {
+                throw new ConfigException(name, o, "ChangeFeedMode can not be empty or null");
+            }
+
+            CosmosChangeFeedModes changeFeedMode = CosmosChangeFeedModes.fromName(name);
+            if (changeFeedMode == null) {
+                throw new ConfigException(name, o, "Invalid ChangeFeedMode, only allow " + CosmosChangeFeedModes.values());
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "ChangeFeedMode. Only allow " + CosmosChangeFeedModes.values();
+        }
+    }
+
+    public static class ChangeFeedStartFromValidator implements ConfigDef.Validator {
+        @Override
+        public void ensureValid(String name, Object o) {
+            String changeFeedStartFromString = (String) o;
+            if (StringUtils.isEmpty(changeFeedStartFromString)) {
+                throw new ConfigException(name, o, "ChangeFeedStartFrom can not be empty or null");
+            }
+
+            CosmosChangeFeedStartFromModes changeFeedStartFromModes = CosmosChangeFeedStartFromModes.fromName(name);
+            if (changeFeedStartFromModes == null) {
+                try {
+                    Instant.parse(changeFeedStartFromString);
+                } catch (DateTimeParseException dateTimeParseException) {
+                    throw new ConfigException(
+                        name,
+                        o,
+                        "Invalid changeFeedStartFrom." +
+                            " only allow Now, Beginning or a certain point in time (UTC) for example 2020-02-10T14:15:03 ");
+                }
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "ChangeFeedStartFrom. Only allow Now, Beginning or a certain point in time (UTC) for example 2020-02-10T14:15:03";
+        }
+    }
+
+    public static class PositiveValueValidator implements ConfigDef.Validator {
+        @Override
+        public void ensureValid(String name, Object o) {
+            long value = (long) o;
+
+            if (value <= 0) {
+                throw new ConfigException(name, o, "Invalid value, need to be >= 0");
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "Value need to be >= 0";
+        }
     }
 }

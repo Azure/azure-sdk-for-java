@@ -7,7 +7,10 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
+import org.apache.kafka.common.config.ConfigException;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +19,7 @@ import java.util.Map;
  * Common Configuration for Cosmos DB Kafka source connector and sink connector.
  */
 public class CosmosConfig extends AbstractConfig {
-    private static final ConfigDef.Validator NON_EMPTY_STRING = new ConfigDef.NonEmptyString();
+    protected static final ConfigDef.Validator NON_EMPTY_STRING = new ConfigDef.NonEmptyString();
     private static final String CONFIG_PREFIX = "kafka.connect.cosmos";
 
     // Account config
@@ -105,7 +108,7 @@ public class CosmosConfig extends AbstractConfig {
                 ACCOUNT_ENDPOINT_CONFIG,
                 ConfigDef.Type.STRING,
                 ConfigDef.NO_DEFAULT_VALUE,
-                NON_EMPTY_STRING, // TODO: add endpoint validator
+                new AccountEndpointValidator(),
                 ConfigDef.Importance.HIGH,
                 ACCOUNT_ENDPOINT_CONFIG_DOC,
                 accountGroupName,
@@ -117,6 +120,7 @@ public class CosmosConfig extends AbstractConfig {
                 ACCOUNT_KEY_CONFIG,
                 ConfigDef.Type.PASSWORD,
                 ConfigDef.NO_DEFAULT_VALUE,
+                NON_EMPTY_STRING,
                 ConfigDef.Importance.HIGH,
                 ACCOUNT_KEY_CONFIG_DOC,
                 accountGroupName,
@@ -194,5 +198,26 @@ public class CosmosConfig extends AbstractConfig {
 
     public CosmosDiagnosticsConfig getDiagnosticsConfig() {
         return diagnosticsConfig;
+    }
+
+    public static class AccountEndpointValidator implements ConfigDef.Validator {
+        @Override
+        public void ensureValid(String name, Object o) {
+            String accountEndpointUriString = (String) o;
+            if (StringUtils.isEmpty(accountEndpointUriString)) {
+                throw new ConfigException(name, o, "Account endpoint can not be empty");
+            }
+
+            try {
+                new URL(accountEndpointUriString);
+            } catch (MalformedURLException e) {
+                throw new ConfigException(name, o, "Invalid account endpoint.");
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "Account endpoint";
+        }
     }
 }

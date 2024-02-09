@@ -25,9 +25,4 @@ public class ContainersMetadataTopicPartition {
         map.put(DATABASE_NAME_KEY, topicPartition.getDatabaseName());
         return map;
     }
-
-    public static ContainersMetadataTopicPartition fromMap(Map<String, Object> partitionMap) {
-        String databaseName = partitionMap.get(DATABASE_NAME_KEY).toString();
-        return new ContainersMetadataTopicPartition(databaseName);
-    }
 }

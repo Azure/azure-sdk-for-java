@@ -1,12 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.kafka.connect.implementations.source.configs;
+package com.azure.cosmos.kafka.connect.implementations.source;
 
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.kafka.connect.implementations.source.FeedRangeTaskUnit;
-import com.azure.cosmos.kafka.connect.implementations.source.MetadataTaskUnit;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

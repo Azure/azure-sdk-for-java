@@ -32,15 +32,4 @@ public class FeedRangesMetadataTopicPartition {
         map.put(CONTAINER_RESOURCE_ID_KEY, partition.getContainerRid());
         return map;
     }
-
-    public static FeedRangesMetadataTopicPartition fromMap(Map<String, Object> partitionMap) {
-        if (partitionMap == null) {
-            return null;
-        }
-
-        String databaseName = partitionMap.get(DATABASE_NAME_KEY).toString();
-        String containerRid = partitionMap.get(CONTAINER_RESOURCE_ID_KEY).toString();
-
-        return new FeedRangesMetadataTopicPartition(databaseName, containerRid);
-    }
 }

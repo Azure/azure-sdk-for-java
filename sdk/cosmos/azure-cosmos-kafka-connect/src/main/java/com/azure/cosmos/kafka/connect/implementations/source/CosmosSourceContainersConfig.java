@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.kafka.connect.implementations.source.configs;
+package com.azure.cosmos.kafka.connect.implementations.source;
 
 import java.util.List;
 
 public class CosmosSourceContainersConfig {
+    public static final String CONTAINER_TOPIC_MAP_SEPARATOR = "#";
+
     private final String databaseName;
     private final boolean includeAllContainers;
     private final List<String> includedContainers;

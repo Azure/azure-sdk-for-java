@@ -47,13 +47,4 @@ public class FeedRangeContinuationTopicPartition {
 
         return map;
     }
-
-    @SuppressWarnings("unchecked")
-    public static FeedRangeContinuationTopicPartition fromMap(Map<String, Object> partitionMap) {
-        String databaseName = partitionMap.get(DATABASE_NAME_KEY).toString();
-        String containerRid = partitionMap.get(CONTAINER_RESOURCE_ID_KEY).toString();
-        Range<String> feedRange = new Range<String>(partitionMap.get(CONTAINER_FEED_RANGE_KEY).toString());
-
-        return new FeedRangeContinuationTopicPartition(databaseName, containerRid, feedRange);
-    }
 }
