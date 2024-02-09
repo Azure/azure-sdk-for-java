@@ -10,7 +10,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.InterceptorManager;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -24,7 +23,6 @@ import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.QueryTimeInterval;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
@@ -94,7 +92,6 @@ public class LogsQueryClientTest extends TestProxyTestBase {
 
         httpClient = new AssertingHttpClientBuilder(httpClient)
             .assertSync()
-            .skipRequest((ignored1, ignored2) -> false)
             .build();
         return httpClient;
     }

@@ -3,8 +3,12 @@
 
 package com.azure.monitor.query;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
@@ -25,39 +29,54 @@ public class MetricsBatchQueryTestBase extends TestProxyTestBase {
     public void beforeTest() {
         metricEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_ENDPOINT", "https://westus.metrics.monitor.azure.com");
 
-        MetricsBatchQueryClientBuilder clientBuilder = new MetricsBatchQueryClientBuilder();
-        ConfigurationClientBuilder configClientBuilder = new ConfigurationClientBuilder();
+        MetricsBatchQueryClientBuilder clientBuilder = new MetricsBatchQueryClientBuilder()
+            .httpClient(getHttpClient(interceptorManager))
+            .credential(getCredential());
+        ConfigurationClientBuilder configClientBuilder = new ConfigurationClientBuilder()
+            .httpClient(getHttpClient(interceptorManager))
+            .credential(getCredential());
+
         if (getTestMode() == TestMode.PLAYBACK) {
-            interceptorManager.addMatchers(new CustomMatcher()
-                .setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
-                .setComparingBodies(false)
-                .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
-            clientBuilder
-                .credential(new MockTokenCredential())
-                .httpClient(interceptorManager.getPlaybackClient());
+            addCustomMatcher();
 
             configClientBuilder
-                .credential(new MockTokenCredential())
-                .endpoint("https://fake.azconfig.io")
-                .httpClient(interceptorManager.getPlaybackClient());
+                .endpoint("https://fake.azconfig.io");
         } else if (getTestMode() == TestMode.RECORD) {
-            interceptorManager.addMatchers(new CustomMatcher()
-                .setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
-                .setComparingBodies(false)
-                .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
+            addCustomMatcher();
             clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build());
+                .addPolicy(interceptorManager.getRecordPolicy());
 
             configClientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .connectionString(Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING"));
+                .addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
-            clientBuilder.credential(new DefaultAzureCredentialBuilder().build());
             configClientBuilder.connectionString(Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING"));
 
         }
         this.clientBuilder = clientBuilder.endpoint(metricEndpoint);
         this.configClient = configClientBuilder.buildClient();
+    }
+
+    private static HttpClient getHttpClient(InterceptorManager interceptorManager) {
+        HttpClient httpClient = interceptorManager.isPlaybackMode()
+            ? interceptorManager.getPlaybackClient() : HttpClient.createDefault();
+
+        httpClient = new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .build();
+        return httpClient;
+    }
+
+    private TokenCredential getCredential() {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
+        } else {
+            return new DefaultAzureCredentialBuilder().build();
+        }
+    }
+    private void addCustomMatcher() {
+        interceptorManager.addMatchers(new CustomMatcher()
+            .setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
+            .setComparingBodies(false)
+            .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
     }
 }
