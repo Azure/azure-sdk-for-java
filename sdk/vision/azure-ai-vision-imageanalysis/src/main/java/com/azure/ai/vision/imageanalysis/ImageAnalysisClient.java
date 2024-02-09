@@ -273,10 +273,8 @@ public final class ImageAnalysisClient {
             requestOptions.addQueryParam("gender-neutral-caption", String.valueOf(genderNeutralCaption), false);
         }
         if (smartCropsAspectRatios != null) {
-            requestOptions.addQueryParam("smartcrops-aspect-ratios",
-                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
-                    CollectionFormat.CSV),
-                false);
+            requestOptions.addQueryParam("smartcrops-aspect-ratios", JacksonAdapter.createDefaultSerializerAdapter()
+                .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV), false);
         }
         if (modelVersion != null) {
             requestOptions.addQueryParam("model-version", modelVersion, false);
@@ -525,10 +523,8 @@ public final class ImageAnalysisClient {
             requestOptions.addQueryParam("gender-neutral-caption", String.valueOf(genderNeutralCaption), false);
         }
         if (smartCropsAspectRatios != null) {
-            requestOptions.addQueryParam("smartcrops-aspect-ratios",
-                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
-                    CollectionFormat.CSV),
-                false);
+            requestOptions.addQueryParam("smartcrops-aspect-ratios", JacksonAdapter.createDefaultSerializerAdapter()
+            .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV), false);
         }
         if (modelVersion != null) {
             requestOptions.addQueryParam("model-version", modelVersion, false);
