@@ -629,6 +629,40 @@ public final class CoreUtils {
     }
 
     /**
+     * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will run when the JVM is
+     * shutting down.
+     * <p>
+     * {@link Runtime#addShutdownHook(Thread)} checks for security privileges and will throw an exception if the proper
+     * security isn't available. So, if running with a security manager, setting
+     * {@code AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to add
+     * the shutdown hook with privileged permissions.
+     * <p>
+     * If {@code shutdownThread} is null, no shutdown hook will be added and this method will return null.
+     *
+     * @param shutdownThread The {@link Thread} that will shut down the
+     * @return The {@code executorService} that was passed in.
+     * @throws NullPointerException If {@code shutdownTimeout} is null.
+     * @throws IllegalArgumentException If {@code shutdownTimeout} is zero or negative.
+     */
+    @SuppressWarnings({"deprecation", "removal"})
+    public static Thread addRuntimeShutdownHookSafely(Thread shutdownThread) {
+        if (shutdownThread == null) {
+            return null;
+        }
+
+        if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
+            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
+                Runtime.getRuntime().addShutdownHook(shutdownThread);
+                return null;
+            });
+        } else {
+            Runtime.getRuntime().addShutdownHook(shutdownThread);
+        }
+
+        return shutdownThread;
+    }
+
+    /**
      * Converts a {@link Duration} to a string in ISO-8601 format with support for a day component.
      * <p>
      * {@link Duration#toString()} doesn't use a day component, so if the duration is greater than 24 hours it would
