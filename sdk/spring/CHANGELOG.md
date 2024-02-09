@@ -7,7 +7,7 @@
 ### Spring Cloud Azure
 
 #### Bugs Fixed
-- Fixed issue where running on versions newer than Java 21 would throw a `UnsupportedClassVersionError` [#38690](https://github.com/Azure/azure-sdk-for-java/pull/38690).
+- Fixed issue where running on versions older than Java 21 would throw a `UnsupportedClassVersionError` [#38690](https://github.com/Azure/azure-sdk-for-java/pull/38690).
 
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
