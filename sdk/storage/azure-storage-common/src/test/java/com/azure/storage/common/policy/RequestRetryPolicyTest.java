@@ -111,7 +111,7 @@ public class RequestRetryPolicyTest {
                 public Mono<HttpResponse> send(HttpRequest request) {
                     beforeSendingRequest(request);
                     return count < 3
-                        ? Mono.just(response).delaySubscription(Duration.ofMillis(2300)) : Mono.just(response);
+                        ? Mono.just(response).delaySubscription(Duration.ofSeconds(5)) : Mono.just(response);
                 }
             })
             .policies(new RequestRetryPolicy(retryTestOptions))
