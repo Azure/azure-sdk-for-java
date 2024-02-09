@@ -11,6 +11,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -51,7 +53,7 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
                 .setComparingBodies(false)));
         }
 
-        if (getTestMode() == TestMode.RECORD) {
+        if (interceptorManager.isRecordMode()) {
             notificationMessagesClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -62,6 +64,8 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
                 .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
                 .credential(token);
         }
+
+        addTestProxySanitizer();
 
         return notificationMessagesClientBuilder;
     }
@@ -87,6 +91,8 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
         if (getTestMode() == TestMode.RECORD) {
             templateClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
+
+        addTestProxySanitizer();
 
         return templateClientBuilder;
     }
@@ -162,6 +168,14 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
                     + bufferedResponse.getRequest().toString());
                 return Mono.just(bufferedResponse);
             });
+    }
+
+    private void addTestProxySanitizer() {
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("$..to", null,
+                "REDACTED",
+                TestProxySanitizerType.BODY_KEY)));
+        }
     }
 
 }
