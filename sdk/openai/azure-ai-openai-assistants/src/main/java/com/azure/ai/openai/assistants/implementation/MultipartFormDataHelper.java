@@ -13,10 +13,8 @@ import java.io.InputStream;
 import java.io.SequenceInputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.text.Normalizer;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 // DO NOT modify this helper class
 
@@ -89,8 +87,8 @@ public final class MultipartFormDataHelper {
      */
     public MultipartFormDataHelper serializeTextField(String fieldName, String value) {
         if (value != null) {
-            String serialized = partSeparator + CRLF + "Content-Disposition: form-data; name=\"" + fieldName + "\""
-                + CRLF + CRLF + value + CRLF;
+            String serialized = partSeparator + CRLF + "Content-Disposition: form-data; name=\"" + escapeName(fieldName)
+                + "\"" + CRLF + CRLF + value + CRLF;
             byte[] data = serialized.getBytes(encoderCharset);
             appendBytes(data);
         }
@@ -107,8 +105,9 @@ public final class MultipartFormDataHelper {
      */
     public MultipartFormDataHelper serializeJsonField(String fieldName, Object jsonObject) {
         if (jsonObject != null) {
-            String serialized = partSeparator + CRLF + "Content-Disposition: form-data; name=\"" + fieldName + "\""
-                + CRLF + "Content-Type: application/json" + CRLF + CRLF + BinaryData.fromObject(jsonObject) + CRLF;
+            String serialized
+                = partSeparator + CRLF + "Content-Disposition: form-data; name=\"" + escapeName(fieldName) + "\"" + CRLF
+                    + "Content-Type: application/json" + CRLF + CRLF + BinaryData.fromObject(jsonObject) + CRLF;
             byte[] data = serialized.getBytes(encoderCharset);
             appendBytes(data);
         }
@@ -130,11 +129,6 @@ public final class MultipartFormDataHelper {
             if (CoreUtils.isNullOrEmpty(contentType)) {
                 contentType = APPLICATION_OCTET_STREAM;
             }
-            if (CoreUtils.isNullOrEmpty(filename)) {
-                filename = fieldName;
-            }
-            filename = normalizeAscii(filename);
-
             writeFileField(fieldName, file, contentType, filename);
         }
         return this;
@@ -159,11 +153,6 @@ public final class MultipartFormDataHelper {
                     contentType = APPLICATION_OCTET_STREAM;
                 }
                 String filename = filenames.get(i);
-                if (CoreUtils.isNullOrEmpty(filename)) {
-                    filename = fieldName + String.valueOf(i + 1);
-                }
-                filename = normalizeAscii(filename);
-
                 writeFileField(fieldName, file, contentType, filename);
             }
         }
@@ -188,9 +177,15 @@ public final class MultipartFormDataHelper {
     }
 
     private void writeFileField(String fieldName, BinaryData file, String contentType, String filename) {
+        String contentDispositionFilename = "";
+        if (!CoreUtils.isNullOrEmpty(filename)) {
+            contentDispositionFilename = "; filename=\"" + escapeName(filename) + "\"";
+        }
+
         // Multipart preamble
-        String fileFieldPreamble = partSeparator + CRLF + "Content-Disposition: form-data; name=\"" + fieldName
-            + "\"; filename=\"" + filename + "\"" + CRLF + "Content-Type: " + contentType + CRLF + CRLF;
+        String fileFieldPreamble
+            = partSeparator + CRLF + "Content-Disposition: form-data; name=\"" + escapeName(fieldName) + "\""
+                + contentDispositionFilename + CRLF + "Content-Type: " + contentType + CRLF + CRLF;
         byte[] data = fileFieldPreamble.getBytes(encoderCharset);
         appendBytes(data);
 
@@ -208,9 +203,7 @@ public final class MultipartFormDataHelper {
         requestDataStream = new SequenceInputStream(requestDataStream, new ByteArrayInputStream(bytes));
     }
 
-    private static final Pattern REDACT_FILENAME = Pattern.compile("[^\\x20-\\x7E]|\"");
-
-    private static String normalizeAscii(String text) {
-        return REDACT_FILENAME.matcher(Normalizer.normalize(text, Normalizer.Form.NFD)).replaceAll("");
+    private static String escapeName(String name) {
+        return name.replace("\n", "%0A").replace("\r", "%0D").replace("\"", "%22");
     }
 }
