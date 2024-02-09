@@ -1,0 +1,6 @@
+# Use the Kafka client image as base
+FROM confluentinc/cp-kafka:6.0.1
+
+COPY perf-payload/sink/ /etc/payload
+
+ENTRYPOINT [ "kafka-producer-perf-test" ]

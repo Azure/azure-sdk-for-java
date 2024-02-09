@@ -11,9 +11,9 @@ module com.azure.cosmos.kafka.connect {
 
     // public API surface area
     exports com.azure.cosmos.kafka.connect;
-    exports com.azure.cosmos.kafka.connect.common;
-    exports com.azure.cosmos.kafka.connect.source;
-    exports com.azure.cosmos.kafka.connect.source.configs;
+    exports com.azure.cosmos.kafka.connect.implementations.source;
+    exports com.azure.cosmos.kafka.connect.implementations.source.configs;
+    exports com.azure.cosmos.kafka.connect.implementations;
 
     uses com.azure.core.util.tracing.Tracer;
 }

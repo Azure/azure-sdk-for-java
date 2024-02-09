@@ -35,7 +35,7 @@ module com.azure.cosmos {
 
     // export packages for multiple different modules
     exports com.azure.cosmos.implementation to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
-    exports com.azure.cosmos.implementation.caches to com.azure.cosmos.encryption, com.azure.cosmos.test;
+    exports com.azure.cosmos.implementation.caches to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
     exports com.azure.cosmos.implementation.feedranges to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
     exports com.azure.cosmos.implementation.apachecommons.lang to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
     exports com.azure.cosmos.implementation.guava25.base to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;

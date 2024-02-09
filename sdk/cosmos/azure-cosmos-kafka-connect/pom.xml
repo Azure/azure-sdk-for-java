@@ -49,6 +49,9 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect=ALL-UNNAMED
       --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.implementation=ALL-UNNAMED
       --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.models=ALL-UNNAMED
+      --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.source=com.fasterxml.jackson.databind
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.apachecommons.lang=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -228,6 +231,7 @@ Licensed under the MIT License.
               <goal>shade</goal>
             </goals>
             <configuration>
+              <finalName>${project.artifactId}-${project.version}-jar-with-dependencies</finalName>
               <filters>
                 <filter>
                   <artifact>*:*:*:*</artifact>
