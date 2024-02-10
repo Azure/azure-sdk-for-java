@@ -38,23 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApiPortalCustomDomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiPortalCustomDomainsClient.
+ */
 public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDomainsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApiPortalCustomDomainsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AppPlatformManagementClientImpl client;
 
     /**
      * Initializes an instance of ApiPortalCustomDomainsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApiPortalCustomDomainsClientImpl(AppPlatformManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ApiPortalCustomDomainsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ApiPortalCustomDomainsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,91 +69,61 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface ApiPortalCustomDomainsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals/{apiPortalName}/domains/{domainName}")
-        @ExpectedResponses({200})
+    public interface ApiPortalCustomDomainsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}/domains/{domainName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiPortalCustomDomainResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiPortalName") String apiPortalName,
-            @PathParam("domainName") String domainName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApiPortalCustomDomainResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiPortalName") String apiPortalName, @PathParam("domainName") String domainName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals/{apiPortalName}/domains/{domainName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}/domains/{domainName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiPortalName") String apiPortalName,
-            @PathParam("domainName") String domainName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiPortalName") String apiPortalName, @PathParam("domainName") String domainName,
             @BodyParam("application/json") ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals/{apiPortalName}/domains/{domainName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}/domains/{domainName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiPortalName") String apiPortalName,
-            @PathParam("domainName") String domainName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiPortalName") String apiPortalName, @PathParam("domainName") String domainName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apiPortals/{apiPortalName}/domains")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}/domains")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiPortalCustomDomainResourceCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiPortalName") String apiPortalName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApiPortalCustomDomainResourceCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiPortalName") String apiPortalName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiPortalCustomDomainResourceCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -158,19 +133,15 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return the API portal custom domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ApiPortalCustomDomainResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName) {
+    public Mono<Response<ApiPortalCustomDomainResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiPortalName, String domainName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -187,27 +158,17 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            apiPortalName,
-                            domainName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, apiPortalName, domainName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -218,19 +179,15 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return the API portal custom domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiPortalCustomDomainResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName, Context context) {
+    private Mono<Response<ApiPortalCustomDomainResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiPortalName, String domainName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -247,24 +204,15 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                apiPortalName,
-                domainName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, apiPortalName, domainName, accept, context);
     }
 
     /**
      * Get the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -274,36 +222,17 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return the API portal custom domain on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ApiPortalCustomDomainResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName) {
+    public Mono<ApiPortalCustomDomainResourceInner> getAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiPortalName, domainName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param apiPortalName The name of API portal.
-     * @param domainName The name of the API portal custom domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the API portal custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiPortalCustomDomainResourceInner get(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName) {
-        return getAsync(resourceGroupName, serviceName, apiPortalName, domainName).block();
-    }
-
-    /**
-     * Get the API portal custom domain.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -314,16 +243,35 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return the API portal custom domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiPortalCustomDomainResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName, Context context) {
+    public Response<ApiPortalCustomDomainResourceInner> getWithResponse(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiPortalName, domainName, context).block();
     }
 
     /**
-     * Create or update the API portal custom domain.
-     *
+     * Get the API portal custom domain.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param apiPortalName The name of API portal.
+     * @param domainName The name of the API portal custom domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the API portal custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiPortalCustomDomainResourceInner get(String resourceGroupName, String serviceName, String apiPortalName,
+        String domainName) {
+        return getWithResponse(resourceGroupName, serviceName, apiPortalName, domainName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update the API portal custom domain.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -334,23 +282,16 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return custom domain of the API portal along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        String domainName,
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiPortalName, String domainName,
         ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -366,37 +307,24 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (apiPortalCustomDomainResource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter apiPortalCustomDomainResource is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter apiPortalCustomDomainResource is required and cannot be null."));
         } else {
             apiPortalCustomDomainResource.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            apiPortalName,
-                            domainName,
-                            apiPortalCustomDomainResource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, apiPortalName, domainName,
+                apiPortalCustomDomainResource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -408,24 +336,16 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return custom domain of the API portal along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        String domainName,
-        ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiPortalName, String domainName,
+        ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -441,34 +361,23 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (apiPortalCustomDomainResource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter apiPortalCustomDomainResource is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter apiPortalCustomDomainResource is required and cannot be null."));
         } else {
             apiPortalCustomDomainResource.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                apiPortalName,
-                domainName,
-                apiPortalCustomDomainResource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serviceName, apiPortalName, domainName,
+            apiPortalCustomDomainResource, accept, context);
     }
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -480,30 +389,20 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ApiPortalCustomDomainResourceInner>, ApiPortalCustomDomainResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serviceName,
-            String apiPortalName,
-            String domainName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String apiPortalName, String domainName,
             ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, apiPortalName, domainName, apiPortalCustomDomainResource);
-        return this
-            .client
-            .<ApiPortalCustomDomainResourceInner, ApiPortalCustomDomainResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiPortalCustomDomainResourceInner.class,
-                ApiPortalCustomDomainResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serviceName,
+            apiPortalName, domainName, apiPortalCustomDomainResource);
+        return this.client.<ApiPortalCustomDomainResourceInner, ApiPortalCustomDomainResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiPortalCustomDomainResourceInner.class,
+            ApiPortalCustomDomainResourceInner.class, this.client.getContext());
     }
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -516,32 +415,21 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiPortalCustomDomainResourceInner>, ApiPortalCustomDomainResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serviceName,
-            String apiPortalName,
-            String domainName,
-            ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String apiPortalName, String domainName,
+            ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, apiPortalName, domainName, apiPortalCustomDomainResource, context);
-        return this
-            .client
-            .<ApiPortalCustomDomainResourceInner, ApiPortalCustomDomainResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiPortalCustomDomainResourceInner.class,
-                ApiPortalCustomDomainResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serviceName,
+            apiPortalName, domainName, apiPortalCustomDomainResource, context);
+        return this.client.<ApiPortalCustomDomainResourceInner, ApiPortalCustomDomainResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiPortalCustomDomainResourceInner.class,
+            ApiPortalCustomDomainResourceInner.class, context);
     }
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -553,22 +441,17 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiPortalCustomDomainResourceInner>, ApiPortalCustomDomainResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serviceName,
-            String apiPortalName,
-            String domainName,
+        beginCreateOrUpdate(String resourceGroupName, String serviceName, String apiPortalName, String domainName,
             ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, apiPortalName, domainName, apiPortalCustomDomainResource)
-            .getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, domainName,
+            apiPortalCustomDomainResource).getSyncPoller();
     }
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -581,23 +464,17 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiPortalCustomDomainResourceInner>, ApiPortalCustomDomainResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serviceName,
-            String apiPortalName,
-            String domainName,
-            ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource,
-            Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, apiPortalName, domainName, apiPortalCustomDomainResource, context)
-            .getSyncPoller();
+        beginCreateOrUpdate(String resourceGroupName, String serviceName, String apiPortalName, String domainName,
+            ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, domainName,
+            apiPortalCustomDomainResource, context).getSyncPoller();
     }
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -608,23 +485,17 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return custom domain of the API portal on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ApiPortalCustomDomainResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        String domainName,
-        ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, apiPortalName, domainName, apiPortalCustomDomainResource)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public Mono<ApiPortalCustomDomainResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, domainName,
+            apiPortalCustomDomainResource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -636,24 +507,18 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return custom domain of the API portal on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiPortalCustomDomainResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        String domainName,
-        ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource,
+    private Mono<ApiPortalCustomDomainResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, apiPortalName, domainName, apiPortalCustomDomainResource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, domainName,
+            apiPortalCustomDomainResource, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -664,22 +529,17 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return custom domain of the API portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiPortalCustomDomainResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        String domainName,
-        ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource) {
-        return createOrUpdateAsync(
-                resourceGroupName, serviceName, apiPortalName, domainName, apiPortalCustomDomainResource)
-            .block();
+    public ApiPortalCustomDomainResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource) {
+        return createOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, domainName,
+            apiPortalCustomDomainResource).block();
     }
 
     /**
      * Create or update the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -691,23 +551,18 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return custom domain of the API portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiPortalCustomDomainResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiPortalName,
-        String domainName,
-        ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource,
+    public ApiPortalCustomDomainResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource,
         Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, serviceName, apiPortalName, domainName, apiPortalCustomDomainResource, context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, domainName,
+            apiPortalCustomDomainResource, context).block();
     }
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -717,19 +572,15 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -746,27 +597,17 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            apiPortalName,
-                            domainName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, apiPortalName, domainName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -777,19 +618,15 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -806,24 +643,15 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                apiPortalName,
-                domainName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, apiPortalName, domainName, accept, context);
     }
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -833,21 +661,19 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serviceName, apiPortalName, domainName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serviceName, apiPortalName, domainName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -858,21 +684,20 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serviceName, apiPortalName, domainName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serviceName, apiPortalName, domainName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -882,16 +707,16 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, domainName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName) {
+        return this.beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, domainName).getSyncPoller();
     }
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -902,16 +727,17 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, domainName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String apiPortalName, String domainName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, domainName, context)
+            .getSyncPoller();
     }
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -921,18 +747,17 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, domainName)
-            .last()
+    public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String apiPortalName,
+        String domainName) {
+        return beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, domainName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -943,18 +768,17 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, domainName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String apiPortalName,
+        String domainName, Context context) {
+        return beginDeleteAsync(resourceGroupName, serviceName, apiPortalName, domainName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -969,9 +793,9 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
 
     /**
      * Delete the API portal custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param domainName The name of the API portal custom domain.
@@ -981,38 +805,34 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serviceName, String apiPortalName, String domainName, Context context) {
+    public void delete(String resourceGroupName, String serviceName, String apiPortalName, String domainName,
+        Context context) {
         deleteAsync(resourceGroupName, serviceName, apiPortalName, domainName, context).block();
     }
 
     /**
      * Handle requests to list all API portal custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of API portal custom domain resources and a possible link for next set
-     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiPortalCustomDomainResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String apiPortalName) {
+    private Mono<PagedResponse<ApiPortalCustomDomainResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String serviceName, String apiPortalName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1026,35 +846,18 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            apiPortalName,
-                            accept,
-                            context))
-            .<PagedResponse<ApiPortalCustomDomainResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, apiPortalName, accept, context))
+            .<PagedResponse<ApiPortalCustomDomainResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Handle requests to list all API portal custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param context The context to associate with this operation.
@@ -1062,22 +865,18 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of API portal custom domain resources and a possible link for next set
-     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiPortalCustomDomainResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, Context context) {
+    private Mono<PagedResponse<ApiPortalCustomDomainResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String serviceName, String apiPortalName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1092,52 +891,37 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                apiPortalName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceName, apiPortalName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Handle requests to list all API portal custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of API portal custom domain resources and a possible link for next set as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ApiPortalCustomDomainResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String apiPortalName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, apiPortalName),
+    public PagedFlux<ApiPortalCustomDomainResourceInner> listAsync(String resourceGroupName, String serviceName,
+        String apiPortalName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName, apiPortalName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Handle requests to list all API portal custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param context The context to associate with this operation.
@@ -1145,40 +929,39 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of API portal custom domain resources and a possible link for next set as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApiPortalCustomDomainResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String apiPortalName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, apiPortalName, context),
+    private PagedFlux<ApiPortalCustomDomainResourceInner> listAsync(String resourceGroupName, String serviceName,
+        String apiPortalName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName, apiPortalName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Handle requests to list all API portal custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of API portal custom domain resources and a possible link for next set as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ApiPortalCustomDomainResourceInner> list(
-        String resourceGroupName, String serviceName, String apiPortalName) {
+    public PagedIterable<ApiPortalCustomDomainResourceInner> list(String resourceGroupName, String serviceName,
+        String apiPortalName) {
         return new PagedIterable<>(listAsync(resourceGroupName, serviceName, apiPortalName));
     }
 
     /**
      * Handle requests to list all API portal custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param apiPortalName The name of API portal.
      * @param context The context to associate with this operation.
@@ -1186,23 +969,25 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of API portal custom domain resources and a possible link for next set as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ApiPortalCustomDomainResourceInner> list(
-        String resourceGroupName, String serviceName, String apiPortalName, Context context) {
+    public PagedIterable<ApiPortalCustomDomainResourceInner> list(String resourceGroupName, String serviceName,
+        String apiPortalName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, serviceName, apiPortalName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of API portal custom domain resources and a possible link for next set
-     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiPortalCustomDomainResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1210,61 +995,43 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ApiPortalCustomDomainResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ApiPortalCustomDomainResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of API portal custom domain resources and a possible link for next set
-     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiPortalCustomDomainResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ApiPortalCustomDomainResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

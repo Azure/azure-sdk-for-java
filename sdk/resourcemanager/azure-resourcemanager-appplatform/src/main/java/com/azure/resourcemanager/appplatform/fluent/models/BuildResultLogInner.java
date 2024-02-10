@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Build result log resource properties payload. */
+/**
+ * Build result log resource properties payload.
+ */
 @Fluent
 public final class BuildResultLogInner {
     /*
@@ -17,8 +19,14 @@ public final class BuildResultLogInner {
     private String blobUrl;
 
     /**
+     * Creates an instance of BuildResultLogInner class.
+     */
+    public BuildResultLogInner() {
+    }
+
+    /**
      * Get the blobUrl property: The public download URL of this build result log.
-     *
+     * 
      * @return the blobUrl value.
      */
     public String blobUrl() {
@@ -27,7 +35,7 @@ public final class BuildResultLogInner {
 
     /**
      * Set the blobUrl property: The public download URL of this build result log.
-     *
+     * 
      * @param blobUrl the blobUrl value to set.
      * @return the BuildResultLogInner object itself.
      */
@@ -38,7 +46,7 @@ public final class BuildResultLogInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

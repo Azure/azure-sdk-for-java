@@ -33,7 +33,7 @@ public final class ExposureControlsQueryFeatureValuesByFactoryWithResponseMockTe
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"exposureControlResponses\":[{\"featureName\":\"odpm\",\"value\":\"sggneocqaejle\"},{\"featureName\":\"ydpqwucprpwsg\",\"value\":\"d\"}]}";
+            = "{\"exposureControlResponses\":[{\"featureName\":\"zcikhcpdohvw\",\"value\":\"tcgybuuubtfxjpg\"},{\"featureName\":\"ynofwyzpn\",\"value\":\"pgwriyxyelzm\"},{\"featureName\":\"harucpkpm\",\"value\":\"nnwob\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,12 +51,11 @@ public final class ExposureControlsQueryFeatureValuesByFactoryWithResponseMockTe
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ExposureControlBatchResponse response = manager.exposureControls()
-            .queryFeatureValuesByFactoryWithResponse("wvatfa", "h",
+            .queryFeatureValuesByFactoryWithResponse("kfdlhytckpfgj", "rd",
                 new ExposureControlBatchRequest().withExposureControlRequests(Arrays.asList(
-                    new ExposureControlRequest().withFeatureName("obdq").withFeatureType("ngjbeihcaxkivr"),
-                    new ExposureControlRequest().withFeatureName("bcxnnirnfuv").withFeatureType("mep"),
-                    new ExposureControlRequest().withFeatureName("k").withFeatureType("ptsvn"),
-                    new ExposureControlRequest().withFeatureName("benfshfmwbt").withFeatureType("igmndtjcyvm"))),
+                    new ExposureControlRequest().withFeatureName("snmzlsgalavx").withFeatureType("vwuhvpipaafvtk"),
+                    new ExposureControlRequest().withFeatureName("ordplhwi").withFeatureType("hox"),
+                    new ExposureControlRequest().withFeatureName("yixbrsjgrjtl").withFeatureType("dcz"))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

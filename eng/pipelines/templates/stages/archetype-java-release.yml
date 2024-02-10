@@ -88,6 +88,9 @@ stages:
                     - '!sdk/**/test-recordings'
                     - '!sdk/**/session-records'
 
+              - download: current
+                displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+                artifact: ${{parameters.ArtifactName}}-signed
               - task: UsePythonVersion@0
                 displayName: 'Use Python $(PythonVersion)'
                 inputs:
@@ -118,6 +121,12 @@ stages:
                     PackageName: ${{artifact.name}}
                     ServiceName: ${{parameters.ServiceDirectory}}
                     ForRelease: true
+              # Verify both TypeSpec and swagger specification are from the main branch of Azure/azure-rest-api-specs repo.
+              - template: /eng/common/pipelines/templates/steps/verify-restapi-spec-location.yml
+                parameters:
+                  PackageName: ${{artifact.name}}
+                  ServiceDirectory: ${{parameters.ServiceDirectory}}
+                  ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
 
               # Only check compilation if this isn't an uber JAR release.
               # Uber JARs are self-contained and a compilation failure during creating it would have prevented its creation.

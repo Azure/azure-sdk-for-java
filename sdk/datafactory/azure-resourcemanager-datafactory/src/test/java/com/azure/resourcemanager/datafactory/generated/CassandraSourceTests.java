@@ -13,18 +13,19 @@ public final class CassandraSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraSource model = BinaryData.fromString(
-            "{\"type\":\"CassandraSource\",\"query\":\"dataejyavkyjvctq\",\"consistencyLevel\":\"SERIAL\",\"queryTimeout\":\"datarw\",\"additionalColumns\":\"dataeyklxs\",\"sourceRetryCount\":\"databrszltvmmdsngoa\",\"sourceRetryWait\":\"datam\",\"maxConcurrentConnections\":\"datahhnsf\",\"disableMetricsCollection\":\"datank\",\"\":{\"oepfba\":\"datanhacexibomrrj\",\"klrjdkypmkvilg\":\"databffxansgntjmnl\"}}")
+            "{\"type\":\"CassandraSource\",\"query\":\"databsxhivncuela\",\"consistencyLevel\":\"THREE\",\"queryTimeout\":\"datanxrtlnzdkbqfe\",\"additionalColumns\":\"datazzpmm\",\"sourceRetryCount\":\"datas\",\"sourceRetryWait\":\"dataxphwynimcp\",\"maxConcurrentConnections\":\"dataakucg\",\"disableMetricsCollection\":\"dataeoaceoaboo\",\"\":{\"mrclsxgpk\":\"datadzmtkmnyufd\",\"mtkhihixi\":\"datae\"}}")
             .toObject(CassandraSource.class);
-        Assertions.assertEquals(CassandraSourceReadConsistencyLevels.SERIAL, model.consistencyLevel());
+        Assertions.assertEquals(CassandraSourceReadConsistencyLevels.THREE, model.consistencyLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CassandraSource model = new CassandraSource().withSourceRetryCount("databrszltvmmdsngoa")
-            .withSourceRetryWait("datam").withMaxConcurrentConnections("datahhnsf")
-            .withDisableMetricsCollection("datank").withQueryTimeout("datarw").withAdditionalColumns("dataeyklxs")
-            .withQuery("dataejyavkyjvctq").withConsistencyLevel(CassandraSourceReadConsistencyLevels.SERIAL);
+        CassandraSource model
+            = new CassandraSource().withSourceRetryCount("datas").withSourceRetryWait("dataxphwynimcp")
+                .withMaxConcurrentConnections("dataakucg").withDisableMetricsCollection("dataeoaceoaboo")
+                .withQueryTimeout("datanxrtlnzdkbqfe").withAdditionalColumns("datazzpmm").withQuery("databsxhivncuela")
+                .withConsistencyLevel(CassandraSourceReadConsistencyLevels.THREE);
         model = BinaryData.fromObject(model).toObject(CassandraSource.class);
-        Assertions.assertEquals(CassandraSourceReadConsistencyLevels.SERIAL, model.consistencyLevel());
+        Assertions.assertEquals(CassandraSourceReadConsistencyLevels.THREE, model.consistencyLevel());
     }
 }

@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the managed inbound Load Balancer BackendPool. */
+/**
+ * The type of the managed inbound Load Balancer BackendPool.
+ */
 public final class BackendPoolType extends ExpandableStringEnum<BackendPoolType> {
-    /** Static value NodeIPConfiguration for BackendPoolType. */
+    /**
+     * Static value NodeIPConfiguration for BackendPoolType.
+     */
     public static final BackendPoolType NODE_IPCONFIGURATION = fromString("NodeIPConfiguration");
 
-    /** Static value NodeIP for BackendPoolType. */
+    /**
+     * Static value NodeIP for BackendPoolType.
+     */
     public static final BackendPoolType NODE_IP = fromString("NodeIP");
 
     /**
      * Creates a new instance of BackendPoolType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class BackendPoolType extends ExpandableStringEnum<BackendPoolType>
 
     /**
      * Creates or finds a BackendPoolType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackendPoolType.
      */
@@ -38,7 +44,7 @@ public final class BackendPoolType extends ExpandableStringEnum<BackendPoolType>
 
     /**
      * Gets known BackendPoolType values.
-     *
+     * 
      * @return known BackendPoolType values.
      */
     public static Collection<BackendPoolType> values() {

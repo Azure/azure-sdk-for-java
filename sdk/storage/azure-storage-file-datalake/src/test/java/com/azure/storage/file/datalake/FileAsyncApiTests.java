@@ -19,8 +19,11 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
+import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -62,8 +65,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -243,7 +244,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-04-10")
     @Test
     public void createEncryptionContext() {
         dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -330,7 +331,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             "0777", "0057", null, null, null), 201);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createOptionsWithACL() {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
@@ -346,7 +347,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createOptionsWithOwnerAndGroup() {
         String ownerName = testResourceNamer.randomUuid();
@@ -429,7 +430,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createOptionsWithLeaseId() {
         String leaseId = CoreUtils.randomUuid().toString();
@@ -448,7 +449,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createOptionsWithLeaseDuration() {
         String leaseId = CoreUtils.randomUuid().toString();
@@ -465,7 +466,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @ParameterizedTest
     @MethodSource("timeExpiresOnOptionsSupplier")
     public void createOptionsWithTimeExpiresOn(DataLakePathScheduleDeletionOptions deletionOptions) {
@@ -478,7 +479,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         return Stream.of(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)), null);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createOptionsWithTimeToExpireRelativeToNow() {
         DataLakePathScheduleDeletionOptions deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6));
@@ -586,7 +587,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setPermissions("0777").setUmask("0057"), Context.NONE), 201);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-04-10")
     @Test
     public void createIfNotExistsEncryptionContext() {
         dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -612,7 +613,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createIfNotExistsOptionsWithACL() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -630,7 +631,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createIfNotExistsOptionsWithOwnerAndGroup() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -723,7 +724,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createIfNotExistsOptionsWithLeaseId() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -745,7 +746,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createIfNotExistsOptionsWithLeaseDuration() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -764,7 +765,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @ParameterizedTest
     @MethodSource("timeExpiresOnOptionsSupplier")
     public void createIfNotExistsOptionsWithTimeExpiresOn(DataLakePathScheduleDeletionOptions deletionOptions) {
@@ -775,7 +776,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         assertAsyncResponseStatusCode(fc.createIfNotExistsWithResponse(options, null), 201);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createIfNotExistsOptionsWithTimeToExpireRelativeToNow() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -1003,7 +1004,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursive() {
         StepVerifier.create(fc.setAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES))
@@ -1015,7 +1016,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursive() {
         StepVerifier.create(fc.updateAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES))
@@ -1027,7 +1028,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursive() {
         List<PathRemoveAccessControlEntry> removeAccessControlEntries = PathRemoveAccessControlEntry.parseList(
@@ -1645,7 +1646,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("downloadFileSupplier")
     public void downloadFile(int fileSize) {
@@ -1684,7 +1685,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("downloadFileSupplier")
     public void downloadFileAsyncBufferCopy(int fileSize) {
@@ -1865,7 +1866,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             });
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void downloadFileEtagLock() throws IOException {
         File file = getRandomFile(Constants.MB);
@@ -1939,7 +1940,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
     public void downloadFileProgressReceiver(int fileSize) {
@@ -1990,7 +1991,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         }
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
     public void downloadFileProgressListener(int fileSize) {
@@ -2298,7 +2299,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
     @Test
     public void appendDataLeaseAcquire() {
         fc = dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName()).block();
@@ -2320,7 +2321,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
     @Test
     public void appendDataLeaseAutoRenew() {
         fc = dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName()).block();
@@ -2369,7 +2370,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
     @Test
     public void appendDataLeaseAcquireRelease() {
         fc = dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName()).block();
@@ -2415,7 +2416,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void appendDataFlush() {
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions().setFlush(true);
@@ -2455,7 +2456,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void appendBinaryDataFlush() {
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions().setFlush(true);
@@ -2617,7 +2618,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     // "No overwrite interrupted" tests were not ported over for datalake. This is because the access condition check
     // occurs on the create method, so simple access conditions tests suffice.
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Test uploads large amount of data
+    @LiveOnly // Test uploads large amount of data
     @ParameterizedTest
     @MethodSource("uploadFromFileSupplier")
     public void uploadFromFile(int fileSize, Long blockSize) throws IOException {
@@ -2741,7 +2742,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("uploadFromFileWithProgressSupplier")
     public void uploadFromFileReporter(int size, long blockSize, int bufferCount) {
@@ -2774,7 +2775,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("uploadFromFileWithProgressSupplier")
     public void uploadFromFileListener(int size, long blockSize, int bufferCount) {
@@ -2862,7 +2863,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void asyncBufferedUploadEmpty() {
         DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -2871,7 +2872,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("asyncBufferedUploadEmptyBuffersSupplier")
     public void asyncBufferedUploadEmptyBuffers(ByteBuffer buffer1, ByteBuffer buffer2, ByteBuffer buffer3,
@@ -2902,7 +2903,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Test uploads large amount of data
+    @LiveOnly // Test uploads large amount of data
     @ParameterizedTest
     @MethodSource("asyncBufferedUploadSupplier")
     public void asyncBufferedUpload(int dataSize, long bufferSize, int numBuffs) {
@@ -2990,7 +2991,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("bufferedUploadWithProgressSupplier")
     public void bufferedUploadWithReporter(int size, long blockSize, int bufferCount) {
@@ -3024,7 +3025,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("bufferedUploadWithProgressSupplier")
     public void bufferedUploadWithListener(int size, long blockSize, int bufferCount) {
@@ -3047,7 +3048,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Test uploads large amount of data
+    @LiveOnly // Test uploads large amount of data
     @ParameterizedTest
     @MethodSource("bufferedUploadChunkedSourceSupplier")
     public void bufferedUploadChunkedSource(List<Integer> dataSizeList, long bufferSize, int numBuffers) {
@@ -3086,7 +3087,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     // These two tests are to test optimizations in buffered upload for small files.
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("bufferedUploadHandlePathingSupplier")
     public void bufferedUploadHandlePathing(List<Integer> dataSizeList) {
@@ -3102,7 +3103,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("bufferedUploadHandlePathingSupplier")
     public void bufferedUploadHandlePathingHotFlux(List<Integer> dataSizeList) {
@@ -3123,7 +3124,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             Arrays.asList(4 * Constants.MB, 4 * Constants.MB), Collections.singletonList(4 * Constants.MB));
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("bufferedUploadHandlePathingHotFluxWithTransientFailureSupplier")
     public void bufferedUploadHandlePathingHotFluxWithTransientFailure(List<Integer> dataSizeList) {
@@ -3148,7 +3149,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @ValueSource(ints = {11110, 2 * Constants.MB + 11})
     public void bufferedUploadAsyncHandlePathingWithTransientFailure(int dataSize) {
@@ -3176,7 +3177,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(NullPointerException.class);
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("bufferedUploadHeadersSupplier")
     public void bufferedUploadHeaders(int dataSize, String cacheControl, String contentDisposition,
@@ -3214,7 +3215,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
     public void bufferedUploadMetadata(String key1, String value1, String key2, String value2) {
@@ -3241,7 +3242,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("uploadNumberOfAppendsSupplier")
     public void bufferedUploadOptions(int dataSize, Long singleUploadSize, Long blockSize, int numAppends) {
@@ -3285,7 +3286,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void bufferedUploadAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -3308,7 +3309,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void bufferedUploadACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -3333,7 +3334,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @CsvSource({"7,2", "5,2"})
     public void uploadBufferPoolLockThreeOrMoreBuffers(long blockSize, int numBuffers) {
@@ -3351,7 +3352,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void bufferedUploadDefaultNoOverwrite() {
         DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -3361,7 +3362,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(IllegalArgumentException.class);
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void bufferedUploadOverwrite() {
         DataLakeFileAsyncClient fac = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -3452,7 +3453,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-04-10")
     @Test
     public void uploadEncryptionContext() {
         String encryptionContext = "encryptionContext";
@@ -3510,7 +3511,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         fc.flush(b.length(), true).block();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @ValueSource(ints = {
         1, // 32 bytes
@@ -3547,7 +3548,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("queryCsvSerializationSeparatorSupplier")
     public void queryCsvSerializationSeparator(char recordSeparator, char columnSeparator, boolean headersPresentIn,
@@ -3611,7 +3612,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryCsvSerializationEscapeAndFieldQuote() {
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3637,7 +3638,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("queryInputJsonSupplier")
     public void queryInputJson(int numCopies, char recordSeparator) {
@@ -3673,7 +3674,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryInputCsvOutputJson() {
         liveTestScenarioWithRetry(() -> {
@@ -3699,7 +3700,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryInputJsonOutputCsv() {
         liveTestScenarioWithRetry(() -> {
@@ -3727,7 +3728,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("resource")
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryInputCsvOutputArrow() {
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3750,7 +3751,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryNonFatalError() {
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3772,7 +3773,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryFatalError() {
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3793,7 +3794,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryProgressReceiver() {
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3824,8 +3825,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Large amount of data.
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
+    @LiveOnly // Large amount of data.
     @Test
     public void queryMultipleRecordsWithProgressReceiver() {
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3852,7 +3853,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @CsvSource(value = {"true,false", "false,true"})
     public void queryInputOutputIA(boolean input, boolean output) {
@@ -3871,7 +3872,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryArrowInputIA() {
         FileQueryArrowSerialization inSer = new FileQueryArrowSerialization();
@@ -3885,7 +3886,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-10-02")
     @Test
     public void queryParquetOutputIA() {
         FileQueryParquetSerialization outSer = new FileQueryParquetSerialization();
@@ -3899,7 +3900,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("resource")
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void queryError() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -3910,7 +3911,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void queryAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -3947,7 +3948,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         }
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void queryACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -3966,7 +3967,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("scheduleDeletionSupplier")
     public void scheduleDeletion(FileScheduleDeletionOptions fileScheduleDeletionOptions, boolean hasExpiry) {
@@ -3988,7 +3989,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @Test
     public void scheduleDeletionTime() {
         OffsetDateTime now = testResourceNamer.now();
@@ -4055,7 +4056,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") /* Flaky in playback. */
+    @LiveOnly /* Flaky in playback. */
     @Test
     public void uploadInputStreamLargeData() {
         ByteArrayInputStream input = new ByteArrayInputStream(getRandomByteArray(20 * Constants.MB));
@@ -4067,7 +4068,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") /* Flaky in playback. */
+    @LiveOnly /* Flaky in playback. */
     @ParameterizedTest
     @MethodSource("uploadNumberOfAppendsSupplier")
     public void uploadNumAppends(int dataSize, Long singleUploadSize, Long blockSize, int numAppends) {

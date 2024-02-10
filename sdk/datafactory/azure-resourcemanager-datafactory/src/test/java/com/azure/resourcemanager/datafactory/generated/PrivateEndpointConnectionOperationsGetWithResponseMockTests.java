@@ -31,7 +31,7 @@ public final class PrivateEndpointConnectionOperationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"qxhtc\",\"privateEndpoint\":{\"id\":\"hwxvvomcjpj\"},\"privateLinkServiceConnectionState\":{\"status\":\"sggaub\",\"description\":\"rfvlqwijeoenpih\",\"actionsRequired\":\"igaeeqgpvi\"}},\"name\":\"zlfccpgeqix\",\"type\":\"gltqld\",\"etag\":\"hqptpldamac\",\"id\":\"hnnbpsn\"}";
+            = "{\"properties\":{\"provisioningState\":\"lehvmraoxnii\",\"privateEndpoint\":{\"id\":\"lygjtibhzjhqfuq\"},\"privateLinkServiceConnectionState\":{\"status\":\"hhigywgqewc\",\"description\":\"jjhn\",\"actionsRequired\":\"rsgrt\"}},\"name\":\"depaun\",\"type\":\"knucsrqfmcrye\",\"etag\":\"lx\",\"id\":\"hntsqsphieqgoioe\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,15 +48,12 @@ public final class PrivateEndpointConnectionOperationsGetWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateEndpointConnectionResource response
-            = manager.privateEndpointConnectionOperations().getWithResponse("ubggjdluwbmwu", "bekzcmfibboz",
-                "ptwvamymswfwc", "ucsop", com.azure.core.util.Context.NONE).getValue();
+        PrivateEndpointConnectionResource response = manager.privateEndpointConnectionOperations()
+            .getWithResponse("ckzdwietfxpdz", "livk", "xwfk", "n", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("hnnbpsn", response.id());
-        Assertions.assertEquals("sggaub", response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("rfvlqwijeoenpih",
-            response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("igaeeqgpvi",
-            response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("hntsqsphieqgoioe", response.id());
+        Assertions.assertEquals("hhigywgqewc", response.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("jjhn", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("rsgrt", response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

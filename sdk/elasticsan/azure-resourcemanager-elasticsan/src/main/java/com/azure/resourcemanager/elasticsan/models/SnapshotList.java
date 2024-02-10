@@ -9,7 +9,9 @@ import com.azure.resourcemanager.elasticsan.fluent.models.SnapshotInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Snapshots. */
+/**
+ * List of Snapshots.
+ */
 @Fluent
 public final class SnapshotList {
     /*
@@ -24,13 +26,15 @@ public final class SnapshotList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SnapshotList class. */
+    /**
+     * Creates an instance of SnapshotList class.
+     */
     public SnapshotList() {
     }
 
     /**
      * Get the value property: An array of Snapshot objects.
-     *
+     * 
      * @return the value value.
      */
     public List<SnapshotInner> value() {
@@ -39,7 +43,7 @@ public final class SnapshotList {
 
     /**
      * Set the value property: An array of Snapshot objects.
-     *
+     * 
      * @param value the value value to set.
      * @return the SnapshotList object itself.
      */
@@ -50,7 +54,7 @@ public final class SnapshotList {
 
     /**
      * Get the nextLink property: URI to fetch the next section of the paginated response.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SnapshotList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

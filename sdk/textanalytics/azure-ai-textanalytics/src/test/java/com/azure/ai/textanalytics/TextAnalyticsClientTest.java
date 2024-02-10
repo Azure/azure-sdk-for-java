@@ -2277,6 +2277,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
+    @Disabled("Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check."
+            + " '111000025' used to be redacted PII value but now it is not redacted.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,

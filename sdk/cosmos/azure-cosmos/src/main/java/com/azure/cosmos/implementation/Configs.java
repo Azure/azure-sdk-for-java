@@ -50,6 +50,19 @@ public class Configs {
     private static final String MAX_HTTP_HEADER_SIZE_IN_BYTES = "COSMOS.MAX_HTTP_HEADER_SIZE_IN_BYTES";
     private static final String MAX_DIRECT_HTTPS_POOL_SIZE = "COSMOS.MAX_DIRECT_HTTP_CONNECTION_LIMIT";
     private static final String HTTP_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.HTTP_RESPONSE_TIMEOUT_IN_SECONDS";
+
+    public static final int DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE = 1000;
+    public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE = "COSMOS.DEFAULT_HTTP_CONNECTION_POOL_SIZE";
+    public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_DEFAULT_HTTP_CONNECTION_POOL_SIZE";
+
+    public static final boolean DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT = false;
+    public static final String DEFAULT_E2E_FOR_NON_POINT_DISABLED = "COSMOS.E2E_FOR_NON_POINT_DISABLED";
+    public static final String DEFAULT_E2E_FOR_NON_POINT_DISABLED_VARIABLE = "COSMOS_E2E_FOR_NON_POINT_DISABLED";
+
+    public static final int DEFAULT_HTTP_MAX_REQUEST_TIMEOUT = 60;
+    public static final String HTTP_MAX_REQUEST_TIMEOUT = "COSMOS.HTTP_MAX_REQUEST_TIMEOUT";
+    public static final String HTTP_MAX_REQUEST_TIMEOUT_VARIABLE = "COSMOS_HTTP_MAX_REQUEST_TIMEOUT";
+
     private static final String QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
 
@@ -93,7 +106,6 @@ public class Configs {
     //  Reactor Netty Constants
     private static final Duration MAX_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(45);
-    private static final int REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE = 1000;
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
@@ -159,6 +171,8 @@ public class Configs {
 
     public static final String IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED = "COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED";
     private static final boolean DEFAULT_IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED = false;
+
+    public static final String TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS = "COSMOS.TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS";
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -270,10 +284,6 @@ public class Configs {
         return CONNECTION_ACQUIRE_TIMEOUT;
     }
 
-    public int getReactorNettyMaxConnectionPoolSize() {
-        return REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE;
-    }
-
     public static int getHttpResponseTimeoutInSeconds() {
         return getJVMConfigAsInt(HTTP_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS);
     }
@@ -297,6 +307,48 @@ public class Configs {
         }
 
         return System.getenv(NON_IDEMPOTENT_WRITE_RETRY_POLICY_VARIABLE);
+    }
+
+    public static int getDefaultHttpPoolSize() {
+        String valueFromSystemProperty = System.getProperty(HTTP_DEFAULT_CONNECTION_POOL_SIZE);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.valueOf(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(HTTP_DEFAULT_CONNECTION_POOL_SIZE_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.valueOf(valueFromEnvVariable);
+        }
+
+        return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
+    }
+
+    public static boolean isDefaultE2ETimeoutDisabledForNonPointOperations() {
+        String valueFromSystemProperty = System.getProperty(DEFAULT_E2E_FOR_NON_POINT_DISABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.valueOf(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(DEFAULT_E2E_FOR_NON_POINT_DISABLED_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Boolean.valueOf(valueFromEnvVariable);
+        }
+
+        return DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT;
+    }
+
+    public static int getMaxHttpRequestTimeout() {
+        String valueFromSystemProperty = System.getProperty(HTTP_MAX_REQUEST_TIMEOUT);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.valueOf(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(HTTP_MAX_REQUEST_TIMEOUT_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.valueOf(valueFromEnvVariable);
+        }
+
+        return DEFAULT_HTTP_MAX_REQUEST_TIMEOUT;
     }
 
     public static String getEnvironmentName() {
@@ -435,6 +487,15 @@ public class Configs {
                     System.getProperty(MAX_TRACE_MESSAGE_LENGTH),
                     DEFAULT_MAX_TRACE_MESSAGE_LENGTH),
                 MIN_MAX_TRACE_MESSAGE_LENGTH);
+    }
+
+    public static Duration getTcpConnectionAcquisitionTimeout(int defaultValueInMs) {
+        return Duration.ofMillis(
+            getIntValue(
+                System.getProperty(TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS),
+                defaultValueInMs
+            )
+        );
     }
 
     public static boolean isRegionScopedSessionTokenCapturingEnabled() {

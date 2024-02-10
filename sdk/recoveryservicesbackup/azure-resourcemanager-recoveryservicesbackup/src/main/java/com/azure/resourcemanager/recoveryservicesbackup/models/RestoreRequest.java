@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for restore request. Workload-specific restore requests are derived from this class. */
+/**
+ * Base class for restore request. Workload-specific restore requests are derived from this class.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureFileShareRestoreRequest", value = AzureFileShareRestoreRequest.class),
     @JsonSubTypes.Type(name = "AzureWorkloadRestoreRequest", value = AzureWorkloadRestoreRequest.class),
-    @JsonSubTypes.Type(name = "IaasVMRestoreRequest", value = IaasVMRestoreRequest.class)
-})
+    @JsonSubTypes.Type(name = "IaasVMRestoreRequest", value = IaasVMRestoreRequest.class) })
 @Immutable
 public class RestoreRequest {
-    /** Creates an instance of RestoreRequest class. */
+    /**
+     * Creates an instance of RestoreRequest class.
+     */
     public RestoreRequest() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

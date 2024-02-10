@@ -11,8 +11,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The SeriesResult model.
@@ -229,8 +229,8 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("series", this.series);
-        jsonWriter.writeArrayField("timestampList", this.timestampList,
-            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField("timestampList", this.timestampList, (writer, element) -> writer
+            .writeString(element == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(element)));
         jsonWriter.writeArrayField("valueList", this.valueList, (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeArrayField("isAnomalyList", this.isAnomalyList,
             (writer, element) -> writer.writeBoolean(element));

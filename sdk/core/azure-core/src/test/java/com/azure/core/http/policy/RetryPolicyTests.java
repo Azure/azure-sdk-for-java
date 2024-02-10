@@ -806,4 +806,56 @@ public class RetryPolicyTests {
             assertEquals(503, response.getStatusCode());
         }
     }
+
+    @Test
+    public void retryOptionsCanConfigureHttpResponseRetryLogic() {
+        // Fixed delay retry options which only retries on 429 responses
+        RetryOptions retryOptions = new RetryOptions(new FixedDelayOptions(1, Duration.ofMillis(1)))
+            .setShouldRetryCondition(retryInfo -> retryInfo.getResponse() != null
+                && retryInfo.getResponse().getStatusCode() == 429);
+
+        AtomicInteger attemptCount = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(retryOptions))
+            .httpClient(request -> {
+                int count = attemptCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.just(new MockHttpResponse(request, 503));
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+            .assertNext(response -> assertEquals(503, response.getStatusCode()))
+            .verifyComplete();
+
+        assertEquals(1, attemptCount.get());
+    }
+
+    @Test
+    public void retryOptionsCanConfigureThrowableRetryLogic() {
+        // Fixed delay retry options which only retries IOException-based exceptions.
+        RetryOptions retryOptions = new RetryOptions(new FixedDelayOptions(1, Duration.ofMillis(1)))
+            .setShouldRetryCondition(retryInfo -> retryInfo.getThrowable() instanceof IOException);
+
+        AtomicInteger attemptCount = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(retryOptions))
+            .httpClient(request -> {
+                int count = attemptCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.error(new TimeoutException());
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+            .verifyError(TimeoutException.class);
+
+        assertEquals(1, attemptCount.get());
+    }
 }

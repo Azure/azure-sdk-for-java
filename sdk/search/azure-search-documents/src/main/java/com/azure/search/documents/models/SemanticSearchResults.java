@@ -38,18 +38,18 @@ public final class SemanticSearchResults {
     }
 
     /**
-     * The reason for a partial result returned by Azure Cognitive Search.
+     * The reason for a partial result returned by Azure AI Search.
      *
-     * @return The reason for a partial result returned by Azure Cognitive Search.
+     * @return The reason for a partial result returned by Azure AI Search.
      */
     public SemanticErrorReason getErrorReason() {
         return this.errorReason;
     }
 
     /**
-     * The type of the partial result returned by Azure Cognitive Search.
+     * The type of the partial result returned by Azure AI Search.
      *
-     * @return The type of the partial result returned by Azure Cognitive Search.
+     * @return The type of the partial result returned by Azure AI Search.
      */
     public SemanticSearchResultsType getResultsType() {
         return this.resultsType;

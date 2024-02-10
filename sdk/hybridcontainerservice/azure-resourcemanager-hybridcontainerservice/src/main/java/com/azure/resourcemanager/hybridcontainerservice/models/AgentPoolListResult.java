@@ -4,31 +4,82 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
-import com.azure.resourcemanager.hybridcontainerservice.fluent.models.AgentPoolListResultInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.AgentPoolInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * An immutable client-side representation of AgentPoolListResult.
+ * List of all agent pool resources associated with the provisioned cluster.
  */
-public interface AgentPoolListResult {
+@Fluent
+public final class AgentPoolListResult {
+    /*
+     * The value property.
+     */
+    @JsonProperty(value = "value")
+    private List<AgentPoolInner> value;
+
+    /*
+     * The nextLink property.
+     */
+    @JsonProperty(value = "nextLink")
+    private String nextLink;
+
     /**
-     * Gets the value property: The value property.
+     * Creates an instance of AgentPoolListResult class.
+     */
+    public AgentPoolListResult() {
+    }
+
+    /**
+     * Get the value property: The value property.
      * 
      * @return the value value.
      */
-    List<AgentPool> value();
+    public List<AgentPoolInner> value() {
+        return this.value;
+    }
 
     /**
-     * Gets the nextLink property: The nextLink property.
+     * Set the value property: The value property.
+     * 
+     * @param value the value value to set.
+     * @return the AgentPoolListResult object itself.
+     */
+    public AgentPoolListResult withValue(List<AgentPoolInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: The nextLink property.
      * 
      * @return the nextLink value.
      */
-    String nextLink();
+    public String nextLink() {
+        return this.nextLink;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.hybridcontainerservice.fluent.models.AgentPoolListResultInner object.
+     * Set the nextLink property: The nextLink property.
      * 
-     * @return the inner object.
+     * @param nextLink the nextLink value to set.
+     * @return the AgentPoolListResult object itself.
      */
-    AgentPoolListResultInner innerModel();
+    public AgentPoolListResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
+    }
 }

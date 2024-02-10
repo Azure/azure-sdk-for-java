@@ -13,50 +13,66 @@ import com.azure.resourcemanager.monitor.models.StreamDeclaration;
 import java.util.List;
 import java.util.Map;
 
-/** Resource properties. */
+/**
+ * Resource properties.
+ */
 @Fluent
 public final class DataCollectionRuleResourceProperties extends DataCollectionRule {
-    /** Creates an instance of DataCollectionRuleResourceProperties class. */
+    /**
+     * Creates an instance of DataCollectionRuleResourceProperties class.
+     */
     public DataCollectionRuleResourceProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionRuleResourceProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionRuleResourceProperties withDataCollectionEndpointId(String dataCollectionEndpointId) {
         super.withDataCollectionEndpointId(dataCollectionEndpointId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DataCollectionRuleResourceProperties withStreamDeclarations(
-        Map<String, StreamDeclaration> streamDeclarations) {
+    public DataCollectionRuleResourceProperties
+        withStreamDeclarations(Map<String, StreamDeclaration> streamDeclarations) {
         super.withStreamDeclarations(streamDeclarations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionRuleResourceProperties withDataSources(DataCollectionRuleDataSources dataSources) {
         super.withDataSources(dataSources);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionRuleResourceProperties withDestinations(DataCollectionRuleDestinations destinations) {
         super.withDestinations(destinations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionRuleResourceProperties withDataFlows(List<DataFlow> dataFlows) {
         super.withDataFlows(dataFlows);
@@ -65,7 +81,7 @@ public final class DataCollectionRuleResourceProperties extends DataCollectionRu
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

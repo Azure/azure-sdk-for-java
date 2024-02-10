@@ -97,11 +97,11 @@ final class ObjectMapperFactory {
                     } catch (PrivilegedActionException ex) {
                         final Throwable cause = ex.getCause();
                         if (cause instanceof Error) {
-                            throw (Error) cause;
+                            throw LOGGER.logThrowableAsError((Error) cause);
                         } else if (cause instanceof RuntimeException) {
-                            throw (RuntimeException) cause;
+                            throw LOGGER.logExceptionAsError((RuntimeException) cause);
                         } else {
-                            throw new RuntimeException(ex);
+                            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
                         }
                     }
                 } else {

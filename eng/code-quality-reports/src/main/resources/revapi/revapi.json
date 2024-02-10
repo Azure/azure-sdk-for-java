@@ -283,6 +283,48 @@
           "justification": "Previous constant value had a typo and was never functional."
         },
         {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_CREATED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_CREATED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_DELETED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_DELETED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_CREATED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_CREATED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_DELETED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_DELETED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_UPDATED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_UPDATED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_UPDATED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_UPDATED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
           "regex": true,
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.(containers\\.containerregistry|search\\.documents(\\.indexes)?|security\\.keyvault\\.(administration|certificates|keys|keys\\.cryptography)|ai\\.textanalytics|ai\\.formrecognizer(\\.(documentanalysis(\\.administration)?|training))?)\\.models.*",
@@ -294,6 +336,12 @@
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.ai\\.metricsadvisor\\.(administration\\.)?models.*",
           "justification": "Removing Jackson annotations from Metrics Advisor in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.messaging\\.eventgrid\\.systemevents.*",
+          "justification": "Removing Jackson annotations from EventGrid in transition to stream-style."
         },
         {
           "code": "java.field.removed",

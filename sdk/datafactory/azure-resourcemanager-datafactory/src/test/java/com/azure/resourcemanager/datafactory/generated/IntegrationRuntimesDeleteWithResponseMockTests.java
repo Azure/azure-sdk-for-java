@@ -45,7 +45,7 @@ public final class IntegrationRuntimesDeleteWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.integrationRuntimes().deleteWithResponse("bdhrkhfyaxiwcnzs", "mb", "vrks",
+        manager.integrationRuntimes().deleteWithResponse("rqcga", "kyofy", "mnfvbfjkvspxxbfq",
             com.azure.core.util.Context.NONE);
 
     }

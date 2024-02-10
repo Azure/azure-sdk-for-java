@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a trigger in the Azure Cosmos DB database service.
@@ -26,10 +27,10 @@ public class Trigger extends Resource {
     /**
      * Constructor.
      *
-     * @param jsonString the json string that represents the trigger.
+     * @param jsonNode the json node that represents the trigger.
      */
-    public Trigger(String jsonString) {
-        super(jsonString);
+    public Trigger(ObjectNode jsonNode) {
+        super(jsonNode);
     }
 
     /**

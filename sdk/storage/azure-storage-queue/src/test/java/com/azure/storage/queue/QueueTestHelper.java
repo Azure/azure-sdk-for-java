@@ -3,7 +3,6 @@
 
 package com.azure.storage.queue;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.queue.models.QueueAnalyticsLogging;
@@ -20,7 +19,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -140,9 +138,5 @@ public class QueueTestHelper {
             assertEquals(expected.getAccessPolicy().getStartsOn(), actual.getAccessPolicy().getStartsOn());
             assertEquals(expected.getAccessPolicy().getExpiresOn(), actual.getAccessPolicy().getExpiresOn());
         }
-    }
-
-    static <T> List<T> pagedResponseToList(PagedIterable<T> response) {
-        return response.stream().collect(Collectors.toList());
     }
 }

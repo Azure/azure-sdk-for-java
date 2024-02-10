@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Identity for the managed cluster. */
+/**
+ * Identity for the managed cluster.
+ */
 @Fluent
 public final class ManagedClusterIdentity {
     /*
@@ -26,7 +28,7 @@ public final class ManagedClusterIdentity {
 
     /*
      * The type of identity used for the managed cluster.
-     *
+     * 
      * For more information see [use managed identities in
      * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
      */
@@ -43,20 +45,23 @@ public final class ManagedClusterIdentity {
 
     /*
      * The keys must be ARM resource IDs in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ManagedServiceIdentityUserAssignedIdentitiesValue> userAssignedIdentities;
 
-    /** Creates an instance of ManagedClusterIdentity class. */
+    /**
+     * Creates an instance of ManagedClusterIdentity class.
+     */
     public ManagedClusterIdentity() {
     }
 
     /**
      * Get the principalId property: The principal id of the system assigned identity which is used by master
      * components.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -65,7 +70,7 @@ public final class ManagedClusterIdentity {
 
     /**
      * Get the tenantId property: The tenant id of the system assigned identity which is used by master components.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -74,10 +79,10 @@ public final class ManagedClusterIdentity {
 
     /**
      * Get the type property: The type of identity used for the managed cluster.
-     *
-     * <p>For more information see [use managed identities in
+     * 
+     * For more information see [use managed identities in
      * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
-     *
+     * 
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -86,10 +91,10 @@ public final class ManagedClusterIdentity {
 
     /**
      * Set the type property: The type of identity used for the managed cluster.
-     *
-     * <p>For more information see [use managed identities in
+     * 
+     * For more information see [use managed identities in
      * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
-     *
+     * 
      * @param type the type value to set.
      * @return the ManagedClusterIdentity object itself.
      */
@@ -102,7 +107,7 @@ public final class ManagedClusterIdentity {
      * Get the delegatedResources property: The delegated identity resources assigned to this managed cluster. This can
      * only be set by another Azure Resource Provider, and managed cluster only accept one delegated identity resource.
      * Internal use only.
-     *
+     * 
      * @return the delegatedResources value.
      */
     public Map<String, DelegatedResource> delegatedResources() {
@@ -113,7 +118,7 @@ public final class ManagedClusterIdentity {
      * Set the delegatedResources property: The delegated identity resources assigned to this managed cluster. This can
      * only be set by another Azure Resource Provider, and managed cluster only accept one delegated identity resource.
      * Internal use only.
-     *
+     * 
      * @param delegatedResources the delegatedResources value to set.
      * @return the ManagedClusterIdentity object itself.
      */
@@ -125,7 +130,7 @@ public final class ManagedClusterIdentity {
     /**
      * Get the userAssignedIdentities property: The keys must be ARM resource IDs in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, ManagedServiceIdentityUserAssignedIdentitiesValue> userAssignedIdentities() {
@@ -135,7 +140,7 @@ public final class ManagedClusterIdentity {
     /**
      * Set the userAssignedIdentities property: The keys must be ARM resource IDs in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedClusterIdentity object itself.
      */
@@ -147,29 +152,23 @@ public final class ManagedClusterIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (delegatedResources() != null) {
-            delegatedResources()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            delegatedResources().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

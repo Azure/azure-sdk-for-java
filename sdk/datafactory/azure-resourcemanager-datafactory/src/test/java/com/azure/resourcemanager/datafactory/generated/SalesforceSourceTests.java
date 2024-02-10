@@ -11,16 +11,16 @@ public final class SalesforceSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceSource model = BinaryData.fromString(
-            "{\"type\":\"SalesforceSource\",\"query\":\"datapccfwq\",\"readBehavior\":\"dataouqyzxzjehdklvqt\",\"queryTimeout\":\"dataoc\",\"additionalColumns\":\"dataetctjh\",\"sourceRetryCount\":\"datamoazsjsuevfvnn\",\"sourceRetryWait\":\"dataccvxqbxgq\",\"maxConcurrentConnections\":\"datawnriwxe\",\"disableMetricsCollection\":\"databv\",\"\":{\"mxsvz\":\"datadi\"}}")
+            "{\"type\":\"SalesforceSource\",\"query\":\"dataplqnilozf\",\"readBehavior\":\"datavsf\",\"queryTimeout\":\"datacarfdmlie\",\"additionalColumns\":\"datawocufcshqfc\",\"sourceRetryCount\":\"datanxfof\",\"sourceRetryWait\":\"datadroqktegi\",\"maxConcurrentConnections\":\"datakzctqbvntlzvgjme\",\"disableMetricsCollection\":\"dataoydyislepd\",\"\":{\"b\":\"dataklntspfnumpyy\",\"f\":\"databmjbmtxbi\"}}")
             .toObject(SalesforceSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceSource model = new SalesforceSource().withSourceRetryCount("datamoazsjsuevfvnn")
-            .withSourceRetryWait("dataccvxqbxgq").withMaxConcurrentConnections("datawnriwxe")
-            .withDisableMetricsCollection("databv").withQueryTimeout("dataoc").withAdditionalColumns("dataetctjh")
-            .withQuery("datapccfwq").withReadBehavior("dataouqyzxzjehdklvqt");
+        SalesforceSource model = new SalesforceSource().withSourceRetryCount("datanxfof")
+            .withSourceRetryWait("datadroqktegi").withMaxConcurrentConnections("datakzctqbvntlzvgjme")
+            .withDisableMetricsCollection("dataoydyislepd").withQueryTimeout("datacarfdmlie")
+            .withAdditionalColumns("datawocufcshqfc").withQuery("dataplqnilozf").withReadBehavior("datavsf");
         model = BinaryData.fromObject(model).toObject(SalesforceSource.class);
     }
 }

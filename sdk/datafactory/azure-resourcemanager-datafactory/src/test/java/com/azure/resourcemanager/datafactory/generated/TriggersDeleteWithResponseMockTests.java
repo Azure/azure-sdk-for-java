@@ -45,8 +45,7 @@ public final class TriggersDeleteWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.triggers().deleteWithResponse("jkysolmzrfhlynk", "usb", "ysbjtsqfhnqxqte",
-            com.azure.core.util.Context.NONE);
+        manager.triggers().deleteWithResponse("rhhxlibdn", "eamslvpxsywn", "fvwrdy", com.azure.core.util.Context.NONE);
 
     }
 }

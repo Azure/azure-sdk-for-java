@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Kubernetes patch version profile. */
+/**
+ * Kubernetes patch version profile.
+ */
 @Fluent
 public final class KubernetesPatchVersion {
     /*
@@ -17,13 +19,15 @@ public final class KubernetesPatchVersion {
     @JsonProperty(value = "upgrades")
     private List<String> upgrades;
 
-    /** Creates an instance of KubernetesPatchVersion class. */
+    /**
+     * Creates an instance of KubernetesPatchVersion class.
+     */
     public KubernetesPatchVersion() {
     }
 
     /**
      * Get the upgrades property: Possible upgrade path for given patch version.
-     *
+     * 
      * @return the upgrades value.
      */
     public List<String> upgrades() {
@@ -32,7 +36,7 @@ public final class KubernetesPatchVersion {
 
     /**
      * Set the upgrades property: Possible upgrade path for given patch version.
-     *
+     * 
      * @param upgrades the upgrades value to set.
      * @return the KubernetesPatchVersion object itself.
      */
@@ -43,7 +47,7 @@ public final class KubernetesPatchVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

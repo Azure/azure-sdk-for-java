@@ -10,7 +10,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The WebhookHookInfoPatch model.
@@ -87,7 +86,7 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("hookType", Objects.toString(HookType.WEBHOOK, null));
+        jsonWriter.writeStringField("hookType", HookType.WEBHOOK == null ? null : HookType.WEBHOOK.toString());
         jsonWriter.writeStringField("hookName", getHookName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("externalLink", getExternalLink());

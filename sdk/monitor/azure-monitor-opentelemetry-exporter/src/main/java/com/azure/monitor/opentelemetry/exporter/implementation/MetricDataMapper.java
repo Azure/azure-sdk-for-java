@@ -32,6 +32,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.AiSemanticAttributes.IS_SYNTHETIC;
+import static com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper.getStableOrOldAttribute;
 import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.MappingType.METRIC;
 import static io.opentelemetry.api.internal.Utils.checkArgument;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_GAUGE;
@@ -56,10 +57,12 @@ public class MetricDataMapper {
         EXCLUDED_METRIC_NAMES.add("http.server.response.size");
         EXCLUDED_METRIC_NAMES.add("http.client.response.size");
 
-        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.duration"); // Servlet
-        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.client.duration"); // HttpClient
-        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.client.duration"); // gRPC
-        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.server.duration"); // gRPC
+        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.request.duration");
+        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.client.request.duration");
+        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.duration"); // pre-stable HTTP semconv
+        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.client.duration"); // pre-stable HTTP semconv
+        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.client.duration");
+        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.server.duration");
     }
 
     public MetricDataMapper(
@@ -140,14 +143,25 @@ public class MetricDataMapper {
                     pointBuilder.setCount((int) histogramCount);
                 }
                 HistogramPointData histogramPointData = (HistogramPointData) pointData;
+                double min = histogramPointData.getMin();
+                double max = histogramPointData.getMax();
+                if (shouldConvertToMilliseconds(metricData.getName(), isPreAggregatedStandardMetric)) {
+                    min = min * 1000;
+                    max = max * 1000;
+                }
                 pointDataValue = histogramPointData.getSum();
-                pointBuilder.setMin(histogramPointData.getMin());
-                pointBuilder.setMax(histogramPointData.getMax());
+                pointBuilder.setMin(min);
+                pointBuilder.setMax(max);
                 break;
             case SUMMARY: // not supported yet in OpenTelemetry SDK
             case EXPONENTIAL_HISTOGRAM: // not supported yet in OpenTelemetry SDK
             default:
                 throw new IllegalArgumentException("metric data type '" + type + "' is not supported yet");
+        }
+
+        // new http semconv metrics use seconds, but we want to send milliseconds to Breeze
+        if (shouldConvertToMilliseconds(metricData.getName(), isPreAggregatedStandardMetric)) {
+            pointDataValue = pointDataValue * 1000;
         }
 
         pointBuilder.setValue(pointDataValue);
@@ -166,7 +180,7 @@ public class MetricDataMapper {
 
         Attributes attributes = pointData.getAttributes();
         if (isPreAggregatedStandardMetric) {
-            Long statusCode = attributes.get(SemanticAttributes.HTTP_STATUS_CODE);
+            Long statusCode = getStableOrOldAttribute(attributes, SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, SemanticAttributes.HTTP_STATUS_CODE);
             boolean success = isSuccess(statusCode, captureHttpServer4xxAsError);
             Boolean isSynthetic = attributes.get(IS_SYNTHETIC);
 
@@ -182,7 +196,7 @@ public class MetricDataMapper {
                 int defaultPort;
                 if (metricData.getName().startsWith("http")) {
                     dependencyType = "Http";
-                    defaultPort = getDefaultPortForHttpScheme(attributes.get(SemanticAttributes.HTTP_SCHEME));
+                    defaultPort = getDefaultPortForHttpScheme(getStableOrOldAttribute(attributes, SemanticAttributes.URL_SCHEME, SemanticAttributes.HTTP_SCHEME));
                 } else {
                     dependencyType = attributes.get(SemanticAttributes.RPC_SYSTEM);
                     if (dependencyType == null) {
@@ -201,7 +215,11 @@ public class MetricDataMapper {
         }
     }
 
-    static boolean applyConnectionStringAndRoleNameOverrides(
+    private static boolean shouldConvertToMilliseconds(String metricName, boolean isPreAggregatedStandardMetric) {
+        return isPreAggregatedStandardMetric && (metricName.equals("http.server.request.duration") || metricName.equals("http.client.request.duration"));
+    }
+
+    private static boolean applyConnectionStringAndRoleNameOverrides(
         AbstractTelemetryBuilder telemetryBuilder, Object value, String key) {
         if (key.equals(AiSemanticAttributes.INTERNAL_CONNECTION_STRING.getKey())
             && value instanceof String) {

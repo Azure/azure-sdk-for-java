@@ -9,13 +9,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The request body which contain contact detail metadata. */
+/**
+ * The request body which contain contact detail metadata.
+ */
 @Fluent
 public final class NotificationRequestBody {
     /*
      * The value of the supported alert type. Supported alert type values are: servicehealth, metricstaticthreshold,
      * metricsdynamicthreshold, logalertv2, smartalert, webtestalert, logalertv1numresult, logalertv1metricmeasurement,
-     * resourcehealth, activitylog, budget
+     * resourcehealth, activitylog, actualcostbudget, forecastedbudget
      */
     @JsonProperty(value = "alertType", required = true)
     private String alertType;
@@ -87,15 +89,18 @@ public final class NotificationRequestBody {
     @JsonProperty(value = "eventHubReceivers")
     private List<EventHubReceiver> eventHubReceivers;
 
-    /** Creates an instance of NotificationRequestBody class. */
+    /**
+     * Creates an instance of NotificationRequestBody class.
+     */
     public NotificationRequestBody() {
     }
 
     /**
      * Get the alertType property: The value of the supported alert type. Supported alert type values are:
      * servicehealth, metricstaticthreshold, metricsdynamicthreshold, logalertv2, smartalert, webtestalert,
-     * logalertv1numresult, logalertv1metricmeasurement, resourcehealth, activitylog, budget.
-     *
+     * logalertv1numresult, logalertv1metricmeasurement, resourcehealth, activitylog, actualcostbudget,
+     * forecastedbudget.
+     * 
      * @return the alertType value.
      */
     public String alertType() {
@@ -105,8 +110,9 @@ public final class NotificationRequestBody {
     /**
      * Set the alertType property: The value of the supported alert type. Supported alert type values are:
      * servicehealth, metricstaticthreshold, metricsdynamicthreshold, logalertv2, smartalert, webtestalert,
-     * logalertv1numresult, logalertv1metricmeasurement, resourcehealth, activitylog, budget.
-     *
+     * logalertv1numresult, logalertv1metricmeasurement, resourcehealth, activitylog, actualcostbudget,
+     * forecastedbudget.
+     * 
      * @param alertType the alertType value to set.
      * @return the NotificationRequestBody object itself.
      */
@@ -117,7 +123,7 @@ public final class NotificationRequestBody {
 
     /**
      * Get the emailReceivers property: The list of email receivers that are part of this action group.
-     *
+     * 
      * @return the emailReceivers value.
      */
     public List<EmailReceiver> emailReceivers() {
@@ -126,7 +132,7 @@ public final class NotificationRequestBody {
 
     /**
      * Set the emailReceivers property: The list of email receivers that are part of this action group.
-     *
+     * 
      * @param emailReceivers the emailReceivers value to set.
      * @return the NotificationRequestBody object itself.
      */
@@ -137,7 +143,7 @@ public final class NotificationRequestBody {
 
     /**
      * Get the smsReceivers property: The list of SMS receivers that are part of this action group.
-     *
+     * 
      * @return the smsReceivers value.
      */
     public List<SmsReceiver> smsReceivers() {
@@ -146,7 +152,7 @@ public final class NotificationRequestBody {
 
     /**
      * Set the smsReceivers property: The list of SMS receivers that are part of this action group.
-     *
+     * 
      * @param smsReceivers the smsReceivers value to set.
      * @return the NotificationRequestBody object itself.
      */
@@ -157,7 +163,7 @@ public final class NotificationRequestBody {
 
     /**
      * Get the webhookReceivers property: The list of webhook receivers that are part of this action group.
-     *
+     * 
      * @return the webhookReceivers value.
      */
     public List<WebhookReceiver> webhookReceivers() {
@@ -166,7 +172,7 @@ public final class NotificationRequestBody {
 
     /**
      * Set the webhookReceivers property: The list of webhook receivers that are part of this action group.
-     *
+     * 
      * @param webhookReceivers the webhookReceivers value to set.
      * @return the NotificationRequestBody object itself.
      */
@@ -177,7 +183,7 @@ public final class NotificationRequestBody {
 
     /**
      * Get the itsmReceivers property: The list of ITSM receivers that are part of this action group.
-     *
+     * 
      * @return the itsmReceivers value.
      */
     public List<ItsmReceiver> itsmReceivers() {
@@ -186,7 +192,7 @@ public final class NotificationRequestBody {
 
     /**
      * Set the itsmReceivers property: The list of ITSM receivers that are part of this action group.
-     *
+     * 
      * @param itsmReceivers the itsmReceivers value to set.
      * @return the NotificationRequestBody object itself.
      */
@@ -197,7 +203,7 @@ public final class NotificationRequestBody {
 
     /**
      * Get the azureAppPushReceivers property: The list of AzureAppPush receivers that are part of this action group.
-     *
+     * 
      * @return the azureAppPushReceivers value.
      */
     public List<AzureAppPushReceiver> azureAppPushReceivers() {
@@ -206,7 +212,7 @@ public final class NotificationRequestBody {
 
     /**
      * Set the azureAppPushReceivers property: The list of AzureAppPush receivers that are part of this action group.
-     *
+     * 
      * @param azureAppPushReceivers the azureAppPushReceivers value to set.
      * @return the NotificationRequestBody object itself.
      */
@@ -216,9 +222,9 @@ public final class NotificationRequestBody {
     }
 
     /**
-     * Get the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
-     * group.
-     *
+     * Get the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this
+     * action group.
+     * 
      * @return the automationRunbookReceivers value.
      */
     public List<AutomationRunbookReceiver> automationRunbookReceivers() {
@@ -226,21 +232,21 @@ public final class NotificationRequestBody {
     }
 
     /**
-     * Set the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
-     * group.
-     *
+     * Set the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this
+     * action group.
+     * 
      * @param automationRunbookReceivers the automationRunbookReceivers value to set.
      * @return the NotificationRequestBody object itself.
      */
-    public NotificationRequestBody withAutomationRunbookReceivers(
-        List<AutomationRunbookReceiver> automationRunbookReceivers) {
+    public NotificationRequestBody
+        withAutomationRunbookReceivers(List<AutomationRunbookReceiver> automationRunbookReceivers) {
         this.automationRunbookReceivers = automationRunbookReceivers;
         return this;
     }
 
     /**
      * Get the voiceReceivers property: The list of voice receivers that are part of this action group.
-     *
+     * 
      * @return the voiceReceivers value.
      */
     public List<VoiceReceiver> voiceReceivers() {
@@ -249,7 +255,7 @@ public final class NotificationRequestBody {
 
     /**
      * Set the voiceReceivers property: The list of voice receivers that are part of this action group.
-     *
+     * 
      * @param voiceReceivers the voiceReceivers value to set.
      * @return the NotificationRequestBody object itself.
      */
@@ -260,7 +266,7 @@ public final class NotificationRequestBody {
 
     /**
      * Get the logicAppReceivers property: The list of logic app receivers that are part of this action group.
-     *
+     * 
      * @return the logicAppReceivers value.
      */
     public List<LogicAppReceiver> logicAppReceivers() {
@@ -269,7 +275,7 @@ public final class NotificationRequestBody {
 
     /**
      * Set the logicAppReceivers property: The list of logic app receivers that are part of this action group.
-     *
+     * 
      * @param logicAppReceivers the logicAppReceivers value to set.
      * @return the NotificationRequestBody object itself.
      */
@@ -279,8 +285,9 @@ public final class NotificationRequestBody {
     }
 
     /**
-     * Get the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
-     *
+     * Get the azureFunctionReceivers property: The list of azure function receivers that are part of this action
+     * group.
+     * 
      * @return the azureFunctionReceivers value.
      */
     public List<AzureFunctionReceiver> azureFunctionReceivers() {
@@ -288,8 +295,9 @@ public final class NotificationRequestBody {
     }
 
     /**
-     * Set the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
-     *
+     * Set the azureFunctionReceivers property: The list of azure function receivers that are part of this action
+     * group.
+     * 
      * @param azureFunctionReceivers the azureFunctionReceivers value to set.
      * @return the NotificationRequestBody object itself.
      */
@@ -301,7 +309,7 @@ public final class NotificationRequestBody {
     /**
      * Get the armRoleReceivers property: The list of ARM role receivers that are part of this action group. Roles are
      * Azure RBAC roles and only built-in roles are supported.
-     *
+     * 
      * @return the armRoleReceivers value.
      */
     public List<ArmRoleReceiver> armRoleReceivers() {
@@ -311,7 +319,7 @@ public final class NotificationRequestBody {
     /**
      * Set the armRoleReceivers property: The list of ARM role receivers that are part of this action group. Roles are
      * Azure RBAC roles and only built-in roles are supported.
-     *
+     * 
      * @param armRoleReceivers the armRoleReceivers value to set.
      * @return the NotificationRequestBody object itself.
      */
@@ -322,7 +330,7 @@ public final class NotificationRequestBody {
 
     /**
      * Get the eventHubReceivers property: The list of event hub receivers that are part of this action group.
-     *
+     * 
      * @return the eventHubReceivers value.
      */
     public List<EventHubReceiver> eventHubReceivers() {
@@ -331,7 +339,7 @@ public final class NotificationRequestBody {
 
     /**
      * Set the eventHubReceivers property: The list of event hub receivers that are part of this action group.
-     *
+     * 
      * @param eventHubReceivers the eventHubReceivers value to set.
      * @return the NotificationRequestBody object itself.
      */
@@ -342,15 +350,13 @@ public final class NotificationRequestBody {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (alertType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alertType in model NotificationRequestBody"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property alertType in model NotificationRequestBody"));
         }
         if (emailReceivers() != null) {
             emailReceivers().forEach(e -> e.validate());

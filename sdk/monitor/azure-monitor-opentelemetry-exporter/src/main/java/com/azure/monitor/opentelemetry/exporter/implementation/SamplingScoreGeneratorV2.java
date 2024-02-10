@@ -3,7 +3,6 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import reactor.util.annotation.Nullable;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -20,9 +19,6 @@ public class SamplingScoreGeneratorV2 {
      *
      * @return [0.0, 1.0)
      */
-    @SuppressFBWarnings(
-        value = "SECPR", // Predictable pseudorandom number generator
-        justification = "Predictable random is ok for sampling score")
     public static double getSamplingScore(@Nullable String operationId) {
         if (operationId != null && !operationId.isEmpty()) {
             return 100 * ((double) getSamplingHashCode(operationId) / Integer.MAX_VALUE);

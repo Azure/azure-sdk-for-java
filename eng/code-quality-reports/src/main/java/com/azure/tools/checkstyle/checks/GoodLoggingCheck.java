@@ -35,13 +35,13 @@ public class GoodLoggingCheck extends AbstractCheck {
     private static final int[] REQUIRED_TOKENS = new int[]{
         TokenTypes.IMPORT,
         TokenTypes.INTERFACE_DEF,
+        TokenTypes.ENUM_DEF,
         TokenTypes.CLASS_DEF,
         TokenTypes.LITERAL_NEW,
         TokenTypes.VARIABLE_DEF,
         TokenTypes.METHOD_CALL
     };
 
-    static final String STATIC_LOGGER_ERROR = "Use a static ClientLogger instance in a static method.";
     static final String LOGGER_NAME_ERROR = "ClientLogger instance naming: use \"%s\" instead of \"%s\" for consistency.";
     static final String NOT_CLIENT_LOGGER_ERROR = "Do not use %s class. Use \"%s\" as a logging mechanism instead of \"%s\".";
     static final String LOGGER_NAME_MISMATCH_ERROR = "Not newing a ClientLogger with matching class name. Use \"%s.class\" "
@@ -78,7 +78,9 @@ public class GoodLoggingCheck extends AbstractCheck {
 
     @Override
     public void leaveToken(DetailAST ast) {
-        if (ast.getType() == TokenTypes.CLASS_DEF) {
+        if (ast.getType() == TokenTypes.CLASS_DEF
+            || ast.getType() == TokenTypes.INTERFACE_DEF
+            || ast.getType() == TokenTypes.ENUM_DEF) {
             classNameDeque.poll();
         }
     }
@@ -98,6 +100,7 @@ public class GoodLoggingCheck extends AbstractCheck {
                 break;
             case TokenTypes.CLASS_DEF:
             case TokenTypes.INTERFACE_DEF:
+            case TokenTypes.ENUM_DEF:
                 classNameDeque.offer(ast.findFirstToken(TokenTypes.IDENT).getText());
                 break;
             case TokenTypes.LITERAL_NEW:

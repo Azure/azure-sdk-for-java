@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Restore file specs like file path, type and target folder path info. */
+/**
+ * Restore file specs like file path, type and target folder path info.
+ */
 @Fluent
 public final class RestoreFileSpecs {
     /*
@@ -28,13 +30,15 @@ public final class RestoreFileSpecs {
     @JsonProperty(value = "targetFolderPath")
     private String targetFolderPath;
 
-    /** Creates an instance of RestoreFileSpecs class. */
+    /**
+     * Creates an instance of RestoreFileSpecs class.
+     */
     public RestoreFileSpecs() {
     }
 
     /**
      * Get the path property: Source File/Folder path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -43,7 +47,7 @@ public final class RestoreFileSpecs {
 
     /**
      * Set the path property: Source File/Folder path.
-     *
+     * 
      * @param path the path value to set.
      * @return the RestoreFileSpecs object itself.
      */
@@ -54,7 +58,7 @@ public final class RestoreFileSpecs {
 
     /**
      * Get the fileSpecType property: Indicates what the Path variable stands for.
-     *
+     * 
      * @return the fileSpecType value.
      */
     public String fileSpecType() {
@@ -63,7 +67,7 @@ public final class RestoreFileSpecs {
 
     /**
      * Set the fileSpecType property: Indicates what the Path variable stands for.
-     *
+     * 
      * @param fileSpecType the fileSpecType value to set.
      * @return the RestoreFileSpecs object itself.
      */
@@ -74,7 +78,7 @@ public final class RestoreFileSpecs {
 
     /**
      * Get the targetFolderPath property: Destination folder path in target FileShare.
-     *
+     * 
      * @return the targetFolderPath value.
      */
     public String targetFolderPath() {
@@ -83,7 +87,7 @@ public final class RestoreFileSpecs {
 
     /**
      * Set the targetFolderPath property: Destination folder path in target FileShare.
-     *
+     * 
      * @param targetFolderPath the targetFolderPath value to set.
      * @return the RestoreFileSpecs object itself.
      */
@@ -94,7 +98,7 @@ public final class RestoreFileSpecs {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

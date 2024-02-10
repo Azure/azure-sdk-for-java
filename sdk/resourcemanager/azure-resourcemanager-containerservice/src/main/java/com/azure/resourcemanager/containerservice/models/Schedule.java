@@ -37,13 +37,15 @@ public final class Schedule {
     @JsonProperty(value = "relativeMonthly")
     private RelativeMonthlySchedule relativeMonthly;
 
-    /** Creates an instance of Schedule class. */
+    /**
+     * Creates an instance of Schedule class.
+     */
     public Schedule() {
     }
 
     /**
      * Get the daily property: For schedules like: 'recur every day' or 'recur every 3 days'.
-     *
+     * 
      * @return the daily value.
      */
     public DailySchedule daily() {
@@ -52,7 +54,7 @@ public final class Schedule {
 
     /**
      * Set the daily property: For schedules like: 'recur every day' or 'recur every 3 days'.
-     *
+     * 
      * @param daily the daily value to set.
      * @return the Schedule object itself.
      */
@@ -63,7 +65,7 @@ public final class Schedule {
 
     /**
      * Get the weekly property: For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'.
-     *
+     * 
      * @return the weekly value.
      */
     public WeeklySchedule weekly() {
@@ -72,7 +74,7 @@ public final class Schedule {
 
     /**
      * Set the weekly property: For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'.
-     *
+     * 
      * @param weekly the weekly value to set.
      * @return the Schedule object itself.
      */
@@ -82,9 +84,9 @@ public final class Schedule {
     }
 
     /**
-     * Get the absoluteMonthly property: For schedules like: 'recur every month on the 15th' or 'recur every 3 months on
-     * the 20th'.
-     *
+     * Get the absoluteMonthly property: For schedules like: 'recur every month on the 15th' or 'recur every 3 months
+     * on the 20th'.
+     * 
      * @return the absoluteMonthly value.
      */
     public AbsoluteMonthlySchedule absoluteMonthly() {
@@ -92,9 +94,9 @@ public final class Schedule {
     }
 
     /**
-     * Set the absoluteMonthly property: For schedules like: 'recur every month on the 15th' or 'recur every 3 months on
-     * the 20th'.
-     *
+     * Set the absoluteMonthly property: For schedules like: 'recur every month on the 15th' or 'recur every 3 months
+     * on the 20th'.
+     * 
      * @param absoluteMonthly the absoluteMonthly value to set.
      * @return the Schedule object itself.
      */
@@ -106,7 +108,7 @@ public final class Schedule {
     /**
      * Get the relativeMonthly property: For schedules like: 'recur every month on the first Monday' or 'recur every 3
      * months on last Friday'.
-     *
+     * 
      * @return the relativeMonthly value.
      */
     public RelativeMonthlySchedule relativeMonthly() {
@@ -116,7 +118,7 @@ public final class Schedule {
     /**
      * Set the relativeMonthly property: For schedules like: 'recur every month on the first Monday' or 'recur every 3
      * months on last Friday'.
-     *
+     * 
      * @param relativeMonthly the relativeMonthly value to set.
      * @return the Schedule object itself.
      */
@@ -127,7 +129,7 @@ public final class Schedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
