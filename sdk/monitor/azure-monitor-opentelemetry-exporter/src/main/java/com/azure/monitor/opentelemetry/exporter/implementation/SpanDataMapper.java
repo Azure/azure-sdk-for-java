@@ -834,9 +834,7 @@ public final class SpanDataMapper {
     }
 
     private static void setItemCount(AbstractTelemetryBuilder telemetryBuilder, long itemCount) {
-        if (itemCount != 1) {
-            telemetryBuilder.setSampleRate(100.0f / itemCount);
-        }
+        telemetryBuilder.setSampleRate(100.0f / itemCount);
     }
 
     private static long getItemCount(SpanData span) {
