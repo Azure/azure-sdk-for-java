@@ -379,18 +379,18 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void getManifestListManifest(HttpClient httpClient) {
+    public void getOciListManifest(HttpClient httpClient) {
         // TODO (limolkova) enable other modes after https://github.com/Azure/azure-sdk-tools/issues/6194 is released
         assumeTrue(super.getTestMode() == TestMode.LIVE);
         client = getContentClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
-        ManifestMediaType dockerListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
+        ManifestMediaType ociListType = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
         Response<GetManifestResult> manifestResult = client.getManifestWithResponse("latest", Context.NONE);
         assertNotNull(manifestResult.getValue());
-        assertEquals(dockerListType, manifestResult.getValue().getManifestMediaType());
+        assertEquals(ociListType, manifestResult.getValue().getManifestMediaType());
 
         ManifestList list = manifestResult.getValue().getManifest().toObject(ManifestList.class);
         assertEquals(2, list.getSchemaVersion());
-        assertEquals(dockerListType.toString(), list.getMediaType());
+        assertEquals(ociListType.toString(), list.getMediaType());
         assertEquals(11, list.getManifests().size());
     }
 
@@ -408,34 +408,35 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void getManifestDifferentType(HttpClient httpClient) {
+    public void getDockerManifestListType(HttpClient httpClient) {
+        // import old version of hello-world that used application/vnd.docker.distribution.manifest.list.v2+json type
+        String helloWorldDockerListVersion = "sha256:3155e04f30ad5e4629fac67d6789f8809d74fea22d4e9a82f757d28cee79e0c5";
+        importImage(TestUtils.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Collections.singletonList(helloWorldDockerListVersion));
+
         // TODO (limolkova) enable other modes after https://github.com/Azure/azure-sdk-tools/issues/6194 is released
         assumeTrue(super.getTestMode() == TestMode.LIVE);
         client = getContentClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
 
-        // the original content there is docker v2 manifest list
-        GetManifestResult manifestResult = client.getManifest("latest");
-
-        // but service does the best effort to return what it supports
-        assertEquals("application/vnd.docker.distribution.manifest.list.v2+json", manifestResult.getManifestMediaType().toString());
+        GetManifestResult manifestResult = client.getManifest(helloWorldDockerListVersion);
+        assertEquals("application/vnd.docker.distribution.manifest.list.v2+json type", manifestResult.getManifestMediaType().toString());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void getManifestListManifestAsync(HttpClient httpClient) {
+    public void getOciListManifestAsync(HttpClient httpClient) {
         // TODO (limolkova) enable other modes after https://github.com/Azure/azure-sdk-tools/issues/6194 is released
         assumeTrue(super.getTestMode() == TestMode.LIVE);
         asyncClient = getBlobAsyncClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
-        ManifestMediaType dockerListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
+        ManifestMediaType ociListType = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
 
         StepVerifier.create(asyncClient.getManifestWithResponse("latest"))
             .assertNext(manifestResult -> {
                 assertNotNull(manifestResult.getValue());
-                assertEquals(dockerListType, manifestResult.getValue().getManifestMediaType());
+                assertEquals(ociListType, manifestResult.getValue().getManifestMediaType());
                 // does not throw
                 ManifestList list = manifestResult.getValue().getManifest().toObject(ManifestList.class);
                 assertEquals(2, list.getSchemaVersion());
-                assertEquals(dockerListType.toString(), list.getMediaType());
+                assertEquals(ociListType.toString(), list.getMediaType());
                 assertEquals(11, list.getManifests().size());
             })
             .expectComplete()
