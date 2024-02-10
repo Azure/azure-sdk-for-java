@@ -366,6 +366,7 @@ public class CosmosSourceConfig extends CosmosConfig {
                 + "topic and Cosmos container separated by '#'. For example: topic1#con1,topic2#con2.";
 
         @Override
+        @SuppressWarnings("unchecked")
         public void ensureValid(String name, Object o) {
             List<String> containerTopicMapList = (List<String>) o;
 
@@ -395,6 +396,7 @@ public class CosmosSourceConfig extends CosmosConfig {
 
     public static class ChangeFeedModeValidator implements ConfigDef.Validator {
         @Override
+        @SuppressWarnings("unchecked")
         public void ensureValid(String name, Object o) {
             String changeFeedModeString = (String) o;
             if (StringUtils.isEmpty(changeFeedModeString)) {
@@ -415,6 +417,7 @@ public class CosmosSourceConfig extends CosmosConfig {
 
     public static class ChangeFeedStartFromValidator implements ConfigDef.Validator {
         @Override
+        @SuppressWarnings("unchecked")
         public void ensureValid(String name, Object o) {
             String changeFeedStartFromString = (String) o;
             if (StringUtils.isEmpty(changeFeedStartFromString)) {
@@ -443,6 +446,7 @@ public class CosmosSourceConfig extends CosmosConfig {
 
     public static class PositiveValueValidator implements ConfigDef.Validator {
         @Override
+        @SuppressWarnings("unchecked")
         public void ensureValid(String name, Object o) {
             long value = (long) o;
 

@@ -116,4 +116,16 @@ public class FeedRangeTaskUnit implements ITaskUnit {
             return new FeedRangeTaskUnit(databaseName, containerName, containerRid, feedRange, continuationState, topic);
         }
     }
+
+    @Override
+    public String toString() {
+        return "FeedRangeTaskUnit{" +
+            "databaseName='" + databaseName + '\'' +
+            ", containerName='" + containerName + '\'' +
+            ", containerRid='" + containerRid + '\'' +
+            ", feedRange=" + feedRange +
+            ", continuationState='" + continuationState + '\'' +
+            ", topic='" + topic + '\'' +
+            '}';
+    }
 }

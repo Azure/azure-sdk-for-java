@@ -23,4 +23,20 @@ public class CosmosExceptionsHelper {
 
         return false;
     }
+
+    public static boolean isFeedRangeGoneException(Throwable throwable) {
+        if (throwable instanceof CosmosException) {
+            return isFeedRangeGoneException(
+                ((CosmosException) throwable).getStatusCode(),
+                ((CosmosException) throwable).getSubStatusCode());
+        }
+
+        return false;
+    }
+
+    public static boolean isFeedRangeGoneException(int statusCode, int substatusCode) {
+        return statusCode == HttpConstants.StatusCodes.GONE &&
+            (substatusCode == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
+                substatusCode == HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE);
+    }
 }

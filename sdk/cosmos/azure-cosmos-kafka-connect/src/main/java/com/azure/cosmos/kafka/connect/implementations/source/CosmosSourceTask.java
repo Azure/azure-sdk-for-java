@@ -3,9 +3,14 @@
 
 package com.azure.cosmos.kafka.connect.implementations.source;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.kafka.connect.implementations.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementations.CosmosConstants;
@@ -13,6 +18,7 @@ import com.azure.cosmos.kafka.connect.implementations.CosmosExceptionsHelper;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
@@ -22,12 +28,14 @@ import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 public class CosmosSourceTask extends SourceTask {
     private static final Logger logger = LoggerFactory.getLogger(CosmosSourceTask.class);
@@ -61,9 +69,9 @@ public class CosmosSourceTask extends SourceTask {
     public List<SourceRecord> poll() {
         // do not poll it from the queue yet
         // we need to make sure not losing tasks for failure cases
-        logger.debug("polling task");
+        logger.info("polling task");
+        ITaskUnit taskUnit = this.taskUnitsQueue.poll();
         try {
-            ITaskUnit taskUnit = this.taskUnitsQueue.peek();
             if (taskUnit == null) {
                 // there is no task to do
                 return new ArrayList<>();
@@ -72,19 +80,24 @@ public class CosmosSourceTask extends SourceTask {
             List<SourceRecord> results = new ArrayList<>();
             if (taskUnit instanceof MetadataTaskUnit) {
                 results.addAll(executeMetadataTask((MetadataTaskUnit) taskUnit));
-                // for metadata task, after successfully adding it, we are going to remove it from the queue
-                this.taskUnitsQueue.poll();
-
             } else {
-                results.addAll(executeFeedRangeTask((FeedRangeTaskUnit) taskUnit));
-                // for feed range task, we will put the task to the end of the queue
-                this.taskUnitsQueue.poll();
-                this.taskUnitsQueue.add(taskUnit);
+                logger.trace("Polling for task {}", taskUnit);
+                Pair<List<SourceRecord>, Boolean> feedRangeTaskResults = executeFeedRangeTask((FeedRangeTaskUnit) taskUnit);
+                results.addAll(feedRangeTaskResults.getLeft());
+
+                // for split, new feedRangeTaskUnit will be created, so we do not need to add the original taskUnit back to the queue
+                if (!feedRangeTaskResults.getRight()) {
+                    logger.trace("Adding task {} back to queue", taskUnit);
+                    this.taskUnitsQueue.add(taskUnit);
+                }
             }
 
-            logger.debug("Return {} records", results.size());
+            logger.info("Return {} records", results.size());
             return results;
         } catch (Exception e) {
+            // for error cases, we should always the task back to the queue
+            this.taskUnitsQueue.add(taskUnit);
+
             // TODO: add checking for max retries checking
             if (CosmosExceptionsHelper.isTransientFailure(e)) {
                 throw new RetriableException("PollTask failed with transient failure.", e);
@@ -131,22 +144,42 @@ public class CosmosSourceTask extends SourceTask {
         return sourceRecords;
     }
 
-    private List<SourceRecord> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {
-        List<SourceRecord> sourceRecords = new ArrayList<>();
-
+    private Pair<List<SourceRecord>, Boolean> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {
         // each time we will only pull one page
         CosmosChangeFeedRequestOptions changeFeedRequestOptions =
             this.getChangeFeedRequestOptions(feedRangeTaskUnit);
+
+        // split/merge will be handled in source task
+        ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(changeFeedRequestOptions);
+
         CosmosAsyncContainer container =
             this.cosmosClient
                 .getDatabase(feedRangeTaskUnit.getDatabaseName())
                 .getContainer(feedRangeTaskUnit.getContainerName());
-       FeedResponse<JsonNode> feedResponse = container
-            .queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
+
+        return container.queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
             .byPage()
             .next()
-            .block();
+            .map(feedResponse -> {
+                List<SourceRecord> records = handleSuccessfulResponse(feedResponse, feedRangeTaskUnit);
+                return Pair.of(records, false);
+            })
+            .onErrorResume(throwable -> {
+                if (CosmosExceptionsHelper.isFeedRangeGoneException(throwable)) {
+                    return this.handleFeedRangeGone(feedRangeTaskUnit)
+                        .map(shouldRemoveOriginalTaskUnit -> Pair.of(new ArrayList<>(), shouldRemoveOriginalTaskUnit));
+                }
 
+                return Mono.error(throwable);
+            })
+            .block();
+    }
+
+    private List<SourceRecord> handleSuccessfulResponse(
+        FeedResponse<JsonNode> feedResponse,
+        FeedRangeTaskUnit feedRangeTaskUnit) {
+
+        List<SourceRecord> sourceRecords = new ArrayList<>();
         for (JsonNode item : feedResponse.getResults()) {
             FeedRangeContinuationTopicPartition feedRangeContinuationTopicPartition =
                 new FeedRangeContinuationTopicPartition(
@@ -178,6 +211,65 @@ public class CosmosSourceTask extends SourceTask {
         // Important: track the continuationToken
         feedRangeTaskUnit.setContinuationState(feedResponse.getContinuationToken());
         return sourceRecords;
+    }
+
+    private Mono<Boolean> handleFeedRangeGone(FeedRangeTaskUnit feedRangeTaskUnit) {
+        // need to find out whether it is split or merge
+        AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(this.cosmosClient);
+        CosmosAsyncContainer container =
+            this.cosmosClient
+                .getDatabase(feedRangeTaskUnit.getDatabaseName())
+                .getContainer(feedRangeTaskUnit.getContainerName());
+        return asyncDocumentClient
+            .getCollectionCache()
+            .resolveByNameAsync(null, BridgeInternal.extractContainerSelfLink(container), null)
+            .flatMap(collection -> {
+                return asyncDocumentClient.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(
+                    null,
+                    collection.getResourceId(),
+                    feedRangeTaskUnit.getFeedRange(),
+                    true,
+                    null);
+            })
+            .flatMap(pkRangesValueHolder -> {
+                if (pkRangesValueHolder == null || pkRangesValueHolder.v == null) {
+                    return Mono.error(new IllegalStateException("There are no overlapping ranges for the range"));
+                }
+
+                List<PartitionKeyRange> partitionKeyRanges = pkRangesValueHolder.v;
+                if (partitionKeyRanges.size() == 1) {
+                    // merge happens
+                    logger.info(
+                        "FeedRange {} is merged into {}, but we will continue polling data from feedRange {}",
+                        feedRangeTaskUnit.getFeedRange(),
+                        partitionKeyRanges.get(0).toRange(),
+                        feedRangeTaskUnit.getFeedRange());
+
+                    // Continue using polling data from the current task unit feedRange
+                    return Mono.just(false);
+                } else {
+                    logger.info(
+                        "FeedRange {} is split into {}. Will create new task units. ",
+                        feedRangeTaskUnit.getFeedRange(),
+                        partitionKeyRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList())
+                    );
+
+                    for (PartitionKeyRange pkRange : partitionKeyRanges) {
+                        FeedRangeTaskUnit childTaskUnit =
+                            new FeedRangeTaskUnit(
+                                feedRangeTaskUnit.getDatabaseName(),
+                                feedRangeTaskUnit.getContainerName(),
+                                feedRangeTaskUnit.getContainerRid(),
+                                pkRange.toRange(),
+                                feedRangeTaskUnit.getContinuationState(),
+                                feedRangeTaskUnit.getTopic());
+                        this.taskUnitsQueue.add(childTaskUnit);
+                    }
+
+                    // remove the current task unit from the queue
+                    return Mono.just(true);
+                }
+            });
     }
 
     private String getItemLsn(JsonNode item) {

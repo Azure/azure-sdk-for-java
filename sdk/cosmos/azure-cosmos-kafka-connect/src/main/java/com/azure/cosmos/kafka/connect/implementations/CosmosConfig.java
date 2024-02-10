@@ -196,12 +196,9 @@ public class CosmosConfig extends AbstractConfig {
         return accountConfig;
     }
 
-    public CosmosDiagnosticsConfig getDiagnosticsConfig() {
-        return diagnosticsConfig;
-    }
-
     public static class AccountEndpointValidator implements ConfigDef.Validator {
         @Override
+        @SuppressWarnings("unchecked")
         public void ensureValid(String name, Object o) {
             String accountEndpointUriString = (String) o;
             if (StringUtils.isEmpty(accountEndpointUriString)) {
