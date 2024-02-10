@@ -62,17 +62,16 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
 
             if (paramCount >= 3 && paramCount <= 4) {
                 try {
-                    if (paramCount == 3) {
-                        MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
-                        return new ResponseConstructor(3, LambdaMetafactory.metafactory(LOOKUP, "apply",
-                                ResponseFunc3.METHOD_TYPE, ResponseFunc3.SIGNATURE, ctrMethodHandle, ctrMethodHandle.type())
-                            .getTarget());
-                    } else {
-                        MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
+                    MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
 
+                    if (paramCount == 3) {
+                        return new ResponseConstructor(3, LambdaMetafactory.metafactory(LOOKUP, "apply",
+                            ResponseFunc3.METHOD_TYPE, ResponseFunc3.SIGNATURE, ctrMethodHandle,
+                            ctrMethodHandle.type()).getTarget());
+                    } else {
                         return new ResponseConstructor(4, LambdaMetafactory.metafactory(LOOKUP, "apply",
-                                ResponseFunc4.METHOD_TYPE, ResponseFunc4.SIGNATURE, ctrMethodHandle, ctrMethodHandle.type())
-                            .getTarget());
+                            ResponseFunc4.METHOD_TYPE, ResponseFunc4.SIGNATURE, ctrMethodHandle,
+                            ctrMethodHandle.type()).getTarget());
                     }
                 } catch (Throwable t) {
                     throw logger.logThrowableAsError(new RuntimeException(t));
@@ -111,7 +110,7 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
          * @return an instance of a {@link Response} implementation
          */
         Response<?> invoke(final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
-            final HttpResponse httpResponse = decodedResponse.getSourceResponse();
+            final HttpResponse<?> httpResponse = decodedResponse.getSourceResponse();
             final HttpRequest httpRequest = httpResponse.getRequest();
             final int responseStatusCode = httpResponse.getStatusCode();
             final Headers responseHeaders = httpResponse.getHeaders();

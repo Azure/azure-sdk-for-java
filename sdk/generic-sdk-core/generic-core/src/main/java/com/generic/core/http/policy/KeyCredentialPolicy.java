@@ -17,8 +17,8 @@ import java.util.Objects;
 /**
  * Pipeline policy that uses an {@link KeyCredential} to set the authorization key for a request.
  *
- * <p>Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
- * an exception will be thrown to prevent leaking the key.</p>
+ * <p>Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using
+ * {@code HTTPS} an exception will be thrown to prevent leaking the key.</p>
  */
 public class KeyCredentialPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(KeyCredentialPolicy.class);
@@ -60,7 +60,7 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         if ("http".equals(httpRequest.getUrl().getProtocol())) {
             throw LOGGER.logThrowableAsError(
                 new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));

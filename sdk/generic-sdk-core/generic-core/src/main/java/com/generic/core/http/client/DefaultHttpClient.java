@@ -60,7 +60,7 @@ class DefaultHttpClient implements HttpClient {
      * @return The HttpResponse object
      */
     @Override
-    public HttpResponse send(HttpRequest httpRequest) {
+    public HttpResponse<?> send(HttpRequest httpRequest) {
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
             return sendPatchViaSocket(httpRequest);
         }
@@ -79,7 +79,7 @@ class DefaultHttpClient implements HttpClient {
      *
      * @return The HttpResponse object
      */
-    private HttpResponse sendPatchViaSocket(HttpRequest httpRequest) {
+    private HttpResponse<?> sendPatchViaSocket(HttpRequest httpRequest) {
         try {
             return SocketClient.sendPatchRequest(httpRequest);
         } catch (IOException e) {
@@ -195,7 +195,7 @@ class DefaultHttpClient implements HttpClient {
      *
      * @return A HttpResponse object
      */
-    private HttpResponse receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
+    private HttpResponse<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
         try {
             int responseCode = connection.getResponseCode();
 
@@ -282,7 +282,8 @@ class DefaultHttpClient implements HttpClient {
             }
 
             try (
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+                BufferedReader in =
+                    new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream())) {
 
                 buildAndSend(httpRequest, out);

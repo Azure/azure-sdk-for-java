@@ -29,8 +29,8 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
-public class ResponseConstructorsCacheBenchMark {
-    private ResponseConstructorsCacheBenchMarkTestData testData;
+public class ResponseConstructorsCacheBenchmark {
+    private ResponseConstructorsCacheBenchmarkTestData testData;
     // Cache Types
     private ResponseConstructorsCache defaultCache;
     private ResponseConstructorsCacheLambdaMetaFactory lambdaMetaCache;
@@ -38,7 +38,7 @@ public class ResponseConstructorsCacheBenchMark {
 
     @Setup
     public void setup() {
-        testData = new ResponseConstructorsCacheBenchMarkTestData();
+        testData = new ResponseConstructorsCacheBenchmarkTestData();
         defaultCache = new ResponseConstructorsCache();
         lambdaMetaCache = new ResponseConstructorsCacheLambdaMetaFactory();
         reflectionNoCache = new ResponseConstructorsNoCacheReflection();
@@ -47,7 +47,7 @@ public class ResponseConstructorsCacheBenchMark {
     @Benchmark
     @SuppressWarnings("unchecked")
     public void reflectionCache(Blackhole blackhole) {
-        ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
+        ResponseConstructorsCacheBenchmarkTestData.Input[] inputs = testData.inputs();
 
         for (int i = 0; i < inputs.length; i++) {
             Class<? extends Response<?>> responseClass =
@@ -65,7 +65,7 @@ public class ResponseConstructorsCacheBenchMark {
     @Benchmark
     @SuppressWarnings("unchecked")
     public void lambdaMetaFactoryCache(Blackhole blackhole) {
-        ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
+        ResponseConstructorsCacheBenchmarkTestData.Input[] inputs = testData.inputs();
 
         for (int i = 0; i < inputs.length; i++) {
             Class<? extends Response<?>> responseClass =
@@ -88,7 +88,7 @@ public class ResponseConstructorsCacheBenchMark {
     @Benchmark
     @SuppressWarnings("unchecked")
     public void reflectionNoCache(Blackhole blackhole) {
-        ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
+        ResponseConstructorsCacheBenchmarkTestData.Input[] inputs = testData.inputs();
 
         for (int i = 0; i < inputs.length; i++) {
             Class<? extends Response<?>> responseClass =

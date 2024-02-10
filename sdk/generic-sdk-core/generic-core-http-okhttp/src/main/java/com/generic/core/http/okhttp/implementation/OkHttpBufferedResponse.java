@@ -10,7 +10,7 @@ import okhttp3.Response;
 /**
  * An OkHttp response where the response body has been buffered into memory.
  */
-public final class OkHttpBufferedResponse extends OkHttpResponseBase {
+public final class OkHttpBufferedResponse extends OkHttpResponseBase<byte[]> {
     private final byte[] value;
 
     public OkHttpBufferedResponse(Response response, HttpRequest request, byte[] value,

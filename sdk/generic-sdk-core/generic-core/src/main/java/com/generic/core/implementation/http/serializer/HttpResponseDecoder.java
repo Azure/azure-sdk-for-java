@@ -33,7 +33,7 @@ public final class HttpResponseDecoder {
      *
      * @return The decoded HttpResponse.
      */
-    public HttpDecodedResponse decode(HttpResponse response, HttpResponseDecodeData decodeData) {
+    public HttpDecodedResponse decode(HttpResponse<?> response, HttpResponseDecodeData decodeData) {
         return new HttpDecodedResponse(response, this.serializer, decodeData);
     }
 
@@ -44,7 +44,7 @@ public final class HttpResponseDecoder {
      * to header kickoff header decoding and emission of decoded object.
      */
     public static class HttpDecodedResponse implements Closeable {
-        private final HttpResponse response;
+        private final HttpResponse<?> response;
         private final ObjectSerializer serializer;
         private final HttpResponseDecodeData decodeData;
         private Object bodyCached;
@@ -57,7 +57,7 @@ public final class HttpResponseDecoder {
          * @param serializer the decoder
          * @param decodeData the necessary data required to decode a Http response
          */
-        HttpDecodedResponse(final HttpResponse response, ObjectSerializer serializer,
+        HttpDecodedResponse(final HttpResponse<?> response, ObjectSerializer serializer,
                             HttpResponseDecodeData decodeData) {
             this.response = response;
             this.serializer = serializer;
@@ -67,7 +67,7 @@ public final class HttpResponseDecoder {
         /**
          * @return get the raw response that this decoded response based on
          */
-        public HttpResponse getSourceResponse() {
+        public HttpResponse<?> getSourceResponse() {
             return this.response;
         }
 

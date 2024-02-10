@@ -35,7 +35,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUrls for each individual request.
         try {
             return attemptRedirect(httpRequest, next, 1, new HashSet<>());
@@ -48,10 +48,10 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
      * new redirect URL.
      */
-    private HttpResponse attemptRedirect(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
+    private HttpResponse<?> attemptRedirect(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
                                             final int redirectAttempt, Set<String> attemptedRedirectUrls) throws IOException {
         // Make sure the context is not modified during retry, except for the URL
-        HttpResponse httpResponse = next.clone().process();
+        HttpResponse<?> httpResponse = next.clone().process();
 
         if (redirectStrategy.shouldAttemptRedirect(httpRequest, httpResponse, redirectAttempt,
             attemptedRedirectUrls)) {
@@ -64,7 +64,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private HttpRequest createRedirectRequest(HttpResponse redirectResponse) throws IOException {
+    private HttpRequest createRedirectRequest(HttpResponse<?> redirectResponse) throws IOException {
         // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
         // causing it to leak your authorization token to.
         redirectResponse.getRequest().getHeaders().remove(HeaderName.AUTHORIZATION);

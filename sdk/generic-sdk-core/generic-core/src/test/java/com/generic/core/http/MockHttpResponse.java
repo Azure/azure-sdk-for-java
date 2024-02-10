@@ -15,7 +15,7 @@ import java.io.ByteArrayOutputStream;
 
 import static com.generic.core.util.TestUtils.cloneByteArray;
 
-public class MockHttpResponse extends HttpResponse {
+public class MockHttpResponse extends HttpResponse<byte[]> {
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
 
     private final int statusCode;

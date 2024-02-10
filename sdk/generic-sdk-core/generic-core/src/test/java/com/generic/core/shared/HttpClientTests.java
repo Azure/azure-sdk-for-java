@@ -262,7 +262,7 @@ public abstract class HttpClientTests {
     public void canAccessResponseBody() {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
-        Supplier<HttpResponse> responseSupplier = () -> createHttpClient().send(request);
+        Supplier<HttpResponse<?>> responseSupplier = () -> createHttpClient().send(request);
 
         assertEquals(requestBody.toString(), responseSupplier.get().getBody().toString());
         assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBody().toBytes());
@@ -279,7 +279,7 @@ public abstract class HttpClientTests {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
         request.getMetadata().setEagerlyReadResponse(true);
 
-        try (HttpResponse response = createHttpClient().send(request)) {
+        try (HttpResponse<?> response = createHttpClient().send(request)) {
             // Read response twice using all accessors.
             assertEquals(requestBody.toString(), response.getBody().toString());
             assertEquals(requestBody.toString(), response.getBody().toString());
@@ -304,7 +304,7 @@ public abstract class HttpClientTests {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
         request.getMetadata().setEagerlyConvertHeaders(true);
 
-        try (HttpResponse response = createHttpClient().send(request)) {
+        try (HttpResponse<?> response = createHttpClient().send(request)) {
             // Validate getHeaders type is Headers (not instanceof)
             assertEquals(Headers.class, response.getHeaders().getClass());
         }
@@ -321,7 +321,7 @@ public abstract class HttpClientTests {
     public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) throws IOException {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
 
-        try (HttpResponse response = createHttpClient().send(request)) {
+        try (HttpResponse<?> response = createHttpClient().send(request)) {
             assertArrayEquals(expectedResponseBody, response.getBody().toBytes());
         }
     }
@@ -347,7 +347,7 @@ public abstract class HttpClientTests {
                 ProgressReporter.withProgressListener(progress::set))
             .getContext();
 
-        HttpResponse httpResponse = createHttpClient()
+        HttpResponse<?> httpResponse = createHttpClient()
             .send(request);
 
         byte[] responseBytes = httpResponse
@@ -415,7 +415,7 @@ public abstract class HttpClientTests {
     }
 
     private BinaryData sendRequest(String requestPath) {
-        HttpResponse httpResponse = createHttpClient()
+        HttpResponse<?> httpResponse = createHttpClient()
             .send(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)));
 
         return httpResponse.getBody();

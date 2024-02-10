@@ -12,7 +12,7 @@ import okhttp3.Response;
 /**
  * Base response class for OkHttp with implementations for response metadata.
  */
-abstract class OkHttpResponseBase extends HttpResponse {
+abstract class OkHttpResponseBase<T> extends HttpResponse<T> {
     private final int statusCode;
     private final com.generic.core.models.Headers headers;
 
@@ -55,7 +55,8 @@ abstract class OkHttpResponseBase extends HttpResponse {
          * case-insensitive per their definition RFC but this could cause issues when/if the headers are used in
          * serialization or deserialization as casing may matter.
          */
-        com.generic.core.models.Headers httpHeaders = new com.generic.core.models.Headers((int) (okHttpHeaders.size() / 0.75F));
+        com.generic.core.models.Headers httpHeaders =
+            new com.generic.core.models.Headers((int) (okHttpHeaders.size() / 0.75F));
 
         // Use OkHttp's Headers forEach instead of the previous names and values approach.
         // forEach allows for a single iteration over the internal array of header values whereas names and values

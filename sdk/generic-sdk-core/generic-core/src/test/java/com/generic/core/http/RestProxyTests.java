@@ -247,7 +247,7 @@ public class RestProxyTests {
         private volatile boolean closeCalledOnResponse;
 
         @Override
-        public HttpResponse send(HttpRequest request) {
+        public HttpResponse<?> send(HttpRequest request) {
             lastHttpRequest = request;
             boolean success = request.getUrl().getPath().equals("/my/url/path");
 
@@ -326,7 +326,10 @@ public class RestProxyTests {
     @Test
     public void doesNotChangeEncodedPath() {
         String nextLinkUrl =
-            "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
+            "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/"
+                + "virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzM"
+                + "tM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLT"
+                + "UzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient((request) -> {
                 assertEquals(nextLinkUrl, request.getUrl().toString());

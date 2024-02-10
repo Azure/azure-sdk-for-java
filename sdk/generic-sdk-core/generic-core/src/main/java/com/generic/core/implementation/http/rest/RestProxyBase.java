@@ -97,7 +97,7 @@ public abstract class RestProxyBase {
     public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
                                    Object bodyAsObject) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
-        final HttpResponse httpResponse = response.getSourceResponse();
+        final HttpResponse<?> httpResponse = response.getSourceResponse();
         final HttpRequest request = httpResponse.getRequest();
         final int statusCode = httpResponse.getStatusCode();
         final Headers headers = httpResponse.getHeaders();
@@ -247,7 +247,7 @@ public abstract class RestProxyBase {
      * @return The {@link HttpResponseException} created from the provided details.
      */
     public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
-                                                                       HttpResponse httpResponse,
+                                                                       HttpResponse<?> httpResponse,
                                                                        byte[] responseContent,
                                                                        Object responseDecodedContent) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")

@@ -11,7 +11,7 @@ import okhttp3.ResponseBody;
 /**
  * Default HTTP response for OkHttp.
  */
-public final class OkHttpResponse extends OkHttpResponseBase {
+public final class OkHttpResponse extends OkHttpResponseBase<byte[]> {
     // Previously, this was 4096, but it is being changed to 8192 as that more closely aligns to what Netty uses as a
     // default and will reduce the number of small allocations we'll need to make.
     private static final int BYTE_BUFFER_CHUNK_SIZE = 8192;

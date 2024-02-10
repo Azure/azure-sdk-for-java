@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Optional;
 
-class ResponseConstructorsCacheBenchMarkTestData {
+class ResponseConstructorsCacheBenchmarkTestData {
     // Model type for Http content
     static final class Foo {
         private String name;
@@ -72,7 +72,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
     }
 
     // Mock Http Response
-    static final class MockResponse extends HttpResponse {
+    static final class MockResponse extends HttpResponse<byte[]> {
         private final int statusCode;
         private final Headers headers;
         private final byte[] bodyBytes;
@@ -120,19 +120,19 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);
     private static final byte[] STREAM_BYTE_ARRAY = new byte[1];
     // MOCK RESPONSES
-    private static final HttpResponse VOID_RESPONSE = new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final HttpResponse<?> VOID_RESPONSE = new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, null);
-    private static final HttpResponse FOO_RESPONSE = new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final HttpResponse<?> FOO_RESPONSE = new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, FOO_BYTE_ARRAY);
-    private static final HttpResponse STREAM_RESPONSE = new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final HttpResponse<?> STREAM_RESPONSE = new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, STREAM_BYTE_ARRAY);
-    private static final HttpResponse FOO_CUSTOM_HEADER_RESPONSE = new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
-        RESPONSE_CUSTOM_HEADERS, FOO_BYTE_ARRAY);
+    private static final HttpResponse<?> FOO_CUSTOM_HEADER_RESPONSE =
+        new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_CUSTOM_HEADERS, FOO_BYTE_ARRAY);
 
     // ARRAY HOLDING TEST DATA
     private final Input[] inputs;
 
-    ResponseConstructorsCacheBenchMarkTestData() {
+    ResponseConstructorsCacheBenchmarkTestData() {
         this.inputs = new Input[4];
         this.inputs[0] = new Input(RESPONSE_DECODER, FooService.class, "getVoidResponse", VOID_RESPONSE, null);
         this.inputs[1] = new Input(RESPONSE_DECODER, FooService.class, "getFooSimpleResponse", FOO_RESPONSE, FOO);
@@ -166,7 +166,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         private final HttpResponseDecoder.HttpDecodedResponse decodedResponse;
         private final Object bodyAsObject;
 
-        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, HttpResponse httpResponse,
+        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, HttpResponse<?> httpResponse,
               Object bodyAsObject) {
 
             this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();

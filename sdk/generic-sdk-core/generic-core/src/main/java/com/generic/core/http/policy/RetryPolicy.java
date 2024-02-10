@@ -110,7 +110,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         try {
             return attempt(httpRequest, next, 0, null);
         } catch (IOException e) {
@@ -118,11 +118,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private HttpResponse attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
-                                 final int tryCount, final List<Throwable> suppressed) throws IOException {
+    private HttpResponse<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
+                                    final int tryCount, final List<Throwable> suppressed) throws IOException {
         httpRequest.getMetadata().setRetryCount(tryCount + 1);
 
-        HttpResponse httpResponse;
+        HttpResponse<?> httpResponse;
 
         try {
             httpResponse = next.clone().process();
@@ -177,7 +177,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse response, int tryCount) {
+    private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse<?> response, int tryCount) {
         return tryCount < retryStrategy.getMaxRetries() && retryStrategy.shouldRetry(response);
     }
 
@@ -216,8 +216,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
             .log("Retry attempts have been exhausted.");
     }
 
-    private static void logRetryWithError(ClientLogger.LoggingEventBuilder loggingEventBuilder, int tryCount, String format,
-                                          Throwable throwable) {
+    private static void logRetryWithError(ClientLogger.LoggingEventBuilder loggingEventBuilder, int tryCount,
+                                          String format, Throwable throwable) {
         loggingEventBuilder
             .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
             .log(format, throwable);
@@ -226,7 +226,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying.
      */
-    static Duration determineDelayDuration(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
+    static Duration determineDelayDuration(HttpResponse<?> response, int tryCount, RetryStrategy retryStrategy,
                                            HeaderName retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (retryAfterHeader == null) {
@@ -351,8 +351,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     /**
      * The configuration for exponential backoff that has a delay duration that exponentially
-     * increases with each retry attempt until an upper bound is reached after which every retry attempt is delayed by the
-     * provided max delay duration.
+     * increases with each retry attempt until an upper bound is reached after which every retry attempt is delayed by
+     * the provided max delay duration.
      */
     public static class ExponentialBackoffOptions {
         private static final ClientLogger LOGGER = new ClientLogger(ExponentialBackoffOptions.class);
@@ -446,8 +446,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
             }
 
             if (baseDelay != null && maxDelay != null && baseDelay.compareTo(maxDelay) > 0) {
-                throw LOGGER
-                    .logThrowableAsError(new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
+                throw LOGGER.logThrowableAsError(
+                    new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
             }
         }
     }

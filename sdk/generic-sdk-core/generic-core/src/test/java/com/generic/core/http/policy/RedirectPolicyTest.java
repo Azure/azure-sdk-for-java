@@ -39,9 +39,11 @@ public class RedirectPolicyTest {
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public HttpResponse send(HttpRequest request) {
+                public HttpResponse<?> send(HttpRequest request) {
                     if (request.getUrl().toString().equals("http://localhost/")) {
-                        Headers httpHeader = new Headers().set(HeaderName.fromString("Location"), "http://redirecthost/");
+                        Headers httpHeader =
+                            new Headers().set(HeaderName.fromString("Location"), "http://redirecthost/");
+
                         return new MockHttpResponse(request, 308, httpHeader);
                     } else {
                         return new MockHttpResponse(request, 200);
@@ -50,7 +52,7 @@ public class RedirectPolicyTest {
             })
             .build();
 
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (HttpResponse<?> response = sendRequest(pipeline, HttpMethod.GET)) {
             assertEquals(308, response.getStatusCode());
         }
     }
@@ -75,7 +77,7 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (HttpResponse<?> response = sendRequest(pipeline, HttpMethod.GET)) {
             assertEquals(200, response.getStatusCode());
             assertNull(response.getHeaders().getValue(HeaderName.AUTHORIZATION));
         }
@@ -94,10 +96,11 @@ public class RedirectPolicyTest {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, HeaderName.LOCATION.toString(), EnumSet.of(HttpMethod.GET))))
+            .policies(new RedirectPolicy(
+                new DefaultRedirectStrategy(5, HeaderName.LOCATION.toString(), EnumSet.of(HttpMethod.GET))))
             .build();
 
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (HttpResponse<?> response = sendRequest(pipeline, HttpMethod.GET)) {
             assertEquals(5, httpClient.getCount());
             assertEquals(308, response.getStatusCode());
         }
@@ -117,10 +120,12 @@ public class RedirectPolicyTest {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, HeaderName.LOCATION.toString(), EnumSet.of(HttpMethod.GET, HttpMethod.HEAD))))
+            .policies(new RedirectPolicy(
+                new DefaultRedirectStrategy(5, HeaderName.LOCATION.toString(),
+                    EnumSet.of(HttpMethod.GET, HttpMethod.HEAD))))
             .build();
 
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.POST)) {
+        try (HttpResponse<?> response = sendRequest(pipeline, HttpMethod.POST)) {
             // not redirected to 200
             assertEquals(1, httpClient.getCount());
             assertEquals(308, response.getStatusCode());
@@ -144,7 +149,7 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (HttpResponse<?> response = sendRequest(pipeline, HttpMethod.GET)) {
             assertEquals(2, httpClient.getCount());
             assertEquals(200, response.getStatusCode());
         }
@@ -171,7 +176,7 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (HttpResponse<?> response = sendRequest(pipeline, HttpMethod.GET)) {
             assertEquals(2, httpClient.getCount());
             assertEquals(308, response.getStatusCode());
         }
@@ -181,7 +186,8 @@ public class RedirectPolicyTest {
     public void redirectForProvidedHeader() throws Exception {
         final int[] requestCount = {1};
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
-            Headers httpHeader = new Headers().set(HeaderName.fromString("Location1"), "http://redirecthost/" + requestCount[0]);
+            Headers httpHeader =
+                new Headers().set(HeaderName.fromString("Location1"), "http://redirecthost/" + requestCount[0]);
 
             requestCount[0]++;
 
@@ -193,7 +199,7 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, "Location1", null)))
             .build();
 
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (HttpResponse<?> response = sendRequest(pipeline, HttpMethod.GET)) {
             assertEquals(5, httpClient.getCount());
             assertEquals(308, response.getStatusCode());
         }
@@ -230,7 +236,7 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, null, allowedMethods)))
             .build();
 
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (HttpResponse<?> response = sendRequest(pipeline, HttpMethod.GET)) {
             assertEquals(2, httpClient.getCount());
             assertEquals(200, response.getStatusCode());
         }
@@ -251,7 +257,7 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (HttpResponse<?> response = sendRequest(pipeline, HttpMethod.GET)) {
             assertEquals(1, httpClient.getCount());
             assertEquals(308, response.getStatusCode());
         }
@@ -274,8 +280,8 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (HttpResponse response1 = sendRequest(pipeline, HttpMethod.GET)) {
-            try (HttpResponse response2 = sendRequest(pipeline, HttpMethod.GET)) {
+        try (HttpResponse<?> response1 = sendRequest(pipeline, HttpMethod.GET)) {
+            try (HttpResponse<?> response2 = sendRequest(pipeline, HttpMethod.GET)) {
                 assertEquals(4, httpClient.getCount());
                 // Both requests successfully redirected for same request redirect location
                 assertEquals(200, response1.getStatusCode());
@@ -290,7 +296,7 @@ public class RedirectPolicyTest {
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public HttpResponse send(HttpRequest request) {
+                public HttpResponse<?> send(HttpRequest request) {
                     if (request.getUrl().toString().equals("http://localhost/")) {
                         return new MockHttpResponse(request, 401);
                     } else {
@@ -301,7 +307,7 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (HttpResponse<?> response = sendRequest(pipeline, HttpMethod.GET)) {
             assertEquals(401, response.getStatusCode());
         }
     }
@@ -325,26 +331,26 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (HttpResponse<?> response = sendRequest(pipeline, HttpMethod.GET)) {
             assertEquals(200, response.getStatusCode());
             assertNull(response.getRequest().getHeaders().getValue(HeaderName.AUTHORIZATION));
         }
     }
 
-    private HttpResponse sendRequest(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
+    private HttpResponse<?> sendRequest(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
         return pipeline.send(new HttpRequest(httpMethod, createUrl("http://localhost/")));
     }
 
     static class RecordingHttpClient implements HttpClient {
         private final AtomicInteger count = new AtomicInteger();
-        private final Function<HttpRequest, HttpResponse> handler;
+        private final Function<HttpRequest, HttpResponse<?>> handler;
 
-        RecordingHttpClient(Function<HttpRequest, HttpResponse> handler) {
+        RecordingHttpClient(Function<HttpRequest, HttpResponse<?>> handler) {
             this.handler = handler;
         }
 
         @Override
-        public HttpResponse send(HttpRequest httpRequest) {
+        public HttpResponse<?> send(HttpRequest httpRequest) {
             count.getAndIncrement();
 
             return handler.apply(httpRequest);

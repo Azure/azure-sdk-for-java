@@ -18,7 +18,7 @@ public final class HttpResponseException extends RuntimeException {
     /**
      * Information about the associated HTTP response.
      */
-    private final HttpResponse response;
+    private final HttpResponse<?> response;
 
     /**
      * The type of the exception.
@@ -33,7 +33,7 @@ public final class HttpResponseException extends RuntimeException {
      * @param type The {@link HttpExceptionType type} of the exception.
      * @param value The deserialized response value.
      */
-    public HttpResponseException(final String message, final HttpResponse response, final HttpExceptionType type,
+    public HttpResponseException(final String message, final HttpResponse<?> response, final HttpExceptionType type,
                                  final Object value) {
         super(message);
 
@@ -50,7 +50,7 @@ public final class HttpResponseException extends RuntimeException {
      * @param type The {@link HttpExceptionType type} of the exception.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
-    public HttpResponseException(final String message, final HttpResponse response, final HttpExceptionType type,
+    public HttpResponseException(final String message, final HttpResponse<?> response, final HttpExceptionType type,
                                  final Throwable cause) {
         super(message, cause);
 
@@ -70,7 +70,7 @@ public final class HttpResponseException extends RuntimeException {
      * @param enableSuppression Whether suppression is enabled or disabled.
      * @param writableStackTrace Whether the exception stack trace will be filled in.
      */
-    public HttpResponseException(final String message, final HttpResponse response, final HttpExceptionType type,
+    public HttpResponseException(final String message, final HttpResponse<?> response, final HttpExceptionType type,
                                  final Object value, final Throwable cause, final boolean enableSuppression,
                                  final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
@@ -85,7 +85,7 @@ public final class HttpResponseException extends RuntimeException {
      *
      * @return The {@link HttpResponse} received that is associated to the exception.
      */
-    public HttpResponse getResponse() {
+    public HttpResponse<?> getResponse() {
         return response;
     }
 

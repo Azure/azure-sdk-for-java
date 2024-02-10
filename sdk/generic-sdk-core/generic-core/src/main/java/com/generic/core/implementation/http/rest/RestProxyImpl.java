@@ -48,7 +48,7 @@ public class RestProxyImpl extends RestProxyBase {
      *
      * @return A {@link HttpResponse} that emits HttpResponse asynchronously.
      */
-    HttpResponse send(HttpRequest request) {
+    HttpResponse<?> send(HttpRequest request) {
         return httpPipeline.send(request);
     }
 
@@ -68,7 +68,7 @@ public class RestProxyImpl extends RestProxyBase {
             request.setBody(RestProxyUtils.validateLength(request));
         }
 
-        final HttpResponse response = send(request);
+        final HttpResponse<?> response = send(request);
         decodedResponse = this.decoder.decode(response, methodParser);
 
         int statusCode = decodedResponse.getSourceResponse().getStatusCode();

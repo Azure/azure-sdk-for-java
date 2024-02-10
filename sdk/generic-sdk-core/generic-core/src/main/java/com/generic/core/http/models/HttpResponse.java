@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * The response of an {@link HttpRequest}.
  */
-public abstract class HttpResponse implements Closeable, Response<byte[]> {
+public abstract class HttpResponse<T> implements Closeable, Response<T> {
     private final HttpRequest request;
     private BinaryData binaryData = null;
     private final byte[] bodyBytes;

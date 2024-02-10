@@ -17,7 +17,7 @@ public interface HttpClient {
      *
      * @return The response.
      */
-    HttpResponse send(HttpRequest request);
+    HttpResponse<?> send(HttpRequest request);
 
     /**
      * Creates a new {@link HttpClient} instance.

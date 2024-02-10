@@ -9,7 +9,7 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 
-class DefaultHttpClientResponse extends HttpResponse {
+class DefaultHttpClientResponse extends HttpResponse<BinaryData> {
     private final int statusCode;
     private final Headers headers;
     private final BinaryData body;
@@ -37,8 +37,8 @@ class DefaultHttpClientResponse extends HttpResponse {
     }
 
     @Override
-    public byte[] getValue() {
-        return this.body.toBytes();
+    public BinaryData getValue() {
+        return this.body;
     }
 
     @Override
@@ -46,7 +46,7 @@ class DefaultHttpClientResponse extends HttpResponse {
         return this.body;
     }
 
-    public HttpResponse buffer() {
+    public HttpResponse<?> buffer() {
         return this;
     }
 }
