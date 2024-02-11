@@ -183,7 +183,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         Utils.ValueHolder<PartitionKeyDefinition> partitionKeyDefinition = Utils.ValueHolder.initialize(null);
 
         if (this.firstPreferredWritableRegionCached.get().equals(StringUtils.EMPTY)) {
-            this.firstPreferredWritableRegionCached.set(extractFirstEffectivePreferredWritableRegion(this.globalEndpointManager));
+            this.firstPreferredWritableRegionCached.set(extractFirstEffectivePreferredReadableRegion(this.globalEndpointManager));
         }
 
         if (shouldUseBloomFilter(
@@ -329,7 +329,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         PartitionKeyDefinition partitionKeyDefinition) {
 
         if (Strings.isNullOrEmpty(this.firstPreferredWritableRegionCached.get())) {
-            this.firstPreferredWritableRegionCached.set(extractFirstEffectivePreferredWritableRegion(this.globalEndpointManager));
+            this.firstPreferredWritableRegionCached.set(extractFirstEffectivePreferredReadableRegion(this.globalEndpointManager));
         }
 
         this.partitionKeyBasedBloomFilter.tryRecordPartitionKey(
@@ -495,7 +495,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
     }
 
     // TODO (abhmohanty): cache if possible
-    private static String extractFirstEffectivePreferredWritableRegion(GlobalEndpointManager globalEndpointManager) {
+    private static String extractFirstEffectivePreferredReadableRegion(GlobalEndpointManager globalEndpointManager) {
 
         if (globalEndpointManager == null) {
             return StringUtils.EMPTY;
@@ -514,7 +514,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
         if (databaseAccount != null) {
-            Iterator<DatabaseAccountLocation> databaseAccountLocationIterator = databaseAccount.getWritableLocations().iterator();
+            Iterator<DatabaseAccountLocation> databaseAccountLocationIterator = databaseAccount.getReadableLocations().iterator();
 
             if (databaseAccountLocationIterator.hasNext()) {
                 DatabaseAccountLocation databaseAccountLocation = databaseAccountLocationIterator.next();

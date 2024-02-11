@@ -323,14 +323,6 @@ public final class CosmosDiagnostics {
         return this;
     }
 
-    Map<String, String> getSessionTokenToRegionMappings() {
-        return this.clientSideRequestStatistics.getSessionTokenToRegionMappings();
-    }
-
-    void setSessionTokenToRegionMappings(Map<String, String> sessionTokenToRegionMapping) {
-        this.clientSideRequestStatistics.setSessionTokenToRegionMappings(sessionTokenToRegionMapping);
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -472,22 +464,6 @@ public final class CosmosDiagnostics {
                     }
 
                     cosmosDiagnostics.setDiagnosticsContext(ctx);
-                }
-
-                @Override
-                public Map<String, String> getSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics) {
-                    if (cosmosDiagnostics != null) {
-                        return cosmosDiagnostics.getSessionTokenToRegionMappings();
-                    }
-
-                    return null;
-                }
-
-                @Override
-                public void setSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics, Map<String, String> sessionTokenToRegionMappings) {
-                    if (cosmosDiagnostics != null) {
-                        cosmosDiagnostics.setSessionTokenToRegionMappings(sessionTokenToRegionMappings);
-                    }
                 }
             });
     }

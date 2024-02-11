@@ -167,4 +167,10 @@ public class RegionNameToRegionIdMap {
     public static String getRegionName(int regionId) {
         return regionIdToNormalizedRegionNameMappings.getOrDefault(regionId, StringUtils.EMPTY);
     }
+
+    public static int getRegionId(String regionName) {
+        return regionNameToRegionIdMappings.getOrDefault(regionName, -1);
+    }
+
+
 }

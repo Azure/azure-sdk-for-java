@@ -757,10 +757,6 @@ public class ImplementationBridgeHelpers {
             boolean isNotEmpty(CosmosDiagnostics cosmosDiagnostics);
 
             void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx);
-
-            Map<String, String> getSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics);
-
-            void setSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics, Map<String, String> sessionTokenToRegionMappings);
         }
     }
 

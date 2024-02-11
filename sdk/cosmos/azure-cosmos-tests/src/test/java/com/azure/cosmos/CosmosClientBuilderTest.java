@@ -3,13 +3,14 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ApiType;
+import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.testng.SkipException;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
@@ -19,6 +20,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosClientBuilderTest {
     String hostName = "https://sample-account.documents.azure.com:443/";
+
+    @DataProvider(name = "regionScopedSessionContainerConfigs")
+    public Object[] regionScopedSessionContainerConfigs() {
+        return new Object[] {false, true};
+    }
 
     @Test(groups = "unit")
     public void validateBadPreferredRegions1() {
@@ -192,8 +198,13 @@ public class CosmosClientBuilderTest {
         assertThat(ReflectionUtils.getApiType(documentClient)).isEqualTo(apiType);
     }
 
-    @Test(groups = "emulator")
-    public void validateSessionTokenCapturingForAccountDefaultConsistency() {
+    @Test(groups = "emulator", dataProvider = "regionScopedSessionContainerConfigs")
+    public void validateSessionTokenCapturingForAccountDefaultConsistency(boolean shouldRegionScopedSessionContainerEnabled) {
+
+        if (shouldRegionScopedSessionContainerEnabled) {
+            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
+        }
+
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -207,7 +218,9 @@ public class CosmosClientBuilderTest {
             throw new SkipException("This test is only applicable when default account-level consistency is Session.");
         }
 
-        SessionContainer sessionContainer = (SessionContainer)documentClient.getSession();
+        ISessionContainer sessionContainer = documentClient.getSession();
         assertThat(sessionContainer.getDisableSessionCapturing()).isEqualTo(false);
+
+        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
     }
 }

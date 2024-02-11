@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -560,6 +561,11 @@ public class LocationCache {
             nextLocationInfo.readEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableReadEndpointByLocation, nextLocationInfo.availableReadLocations, OperationType.Read, nextLocationInfo.writeEndpoints.get(0));
             this.lastCacheUpdateTimestamp = Instant.now();
 
+            if (!this.locationInfo.hasWritableLocationsChangedSinceClientInit) {
+                nextLocationInfo.hasWritableLocationsChangedSinceClientInit = this.evaluateWriteLocationsChange(this.locationInfo.availableWriteEndpointByLocation.keySet(), nextLocationInfo.availableWriteEndpointByLocation.keySet());
+
+            }
+
             logger.debug("updating location cache finished, new readLocations [{}], new writeLocations [{}]",
                     nextLocationInfo.readEndpoints, nextLocationInfo.writeEndpoints);
             this.locationInfo = nextLocationInfo;
@@ -615,6 +621,10 @@ public class LocationCache {
         }
 
         return new UnmodifiableList<URI>(endpoints);
+    }
+
+    private boolean evaluateWriteLocationsChange(Set<String> writeLocationsAfterDbAccountRefresh, Set<String> writeLocationsOnClientInit) {
+        return writeLocationsOnClientInit.equals(writeLocationsAfterDbAccountRefresh);
     }
 
     private UnmodifiableMap<String, URI> getEndpointByLocation(Iterable<DatabaseAccountLocation> locations,
@@ -729,6 +739,7 @@ public class LocationCache {
         private UnmodifiableMap<URI, String> regionNameByReadEndpoint;
         private UnmodifiableList<URI> writeEndpoints;
         private UnmodifiableList<URI> readEndpoints;
+        private boolean hasWritableLocationsChangedSinceClientInit;
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             URI defaultEndpoint) {
@@ -745,6 +756,7 @@ public class LocationCache {
             this.availableWriteLocations = new UnmodifiableList<>(Collections.emptyList());
             this.readEndpoints = new UnmodifiableList<>(Collections.singletonList(defaultEndpoint));
             this.writeEndpoints = new UnmodifiableList<>(Collections.singletonList(defaultEndpoint));
+            this.hasWritableLocationsChangedSinceClientInit = false;
         }
 
         public DatabaseAccountLocationsInfo(DatabaseAccountLocationsInfo other) {
@@ -757,6 +769,7 @@ public class LocationCache {
             this.availableReadEndpointByLocation = other.availableReadEndpointByLocation;
             this.writeEndpoints = other.writeEndpoints;
             this.readEndpoints = other.readEndpoints;
+            this.hasWritableLocationsChangedSinceClientInit = other.hasWritableLocationsChangedSinceClientInit;
         }
     }
 }
