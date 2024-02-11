@@ -158,7 +158,7 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
 
         // fetches all epk-based leases for a given lease prefix
         return this.epkRangeVersionLeaseStoreManager
-            .getAllLeases()
+            .getAllLeases(1)
             // pick one lease corresponding to a lease prefix (lease prefix denotes a unique feed)
             .next()
             // composing flatMap with an operator publishing an empty sequence causes it to hang

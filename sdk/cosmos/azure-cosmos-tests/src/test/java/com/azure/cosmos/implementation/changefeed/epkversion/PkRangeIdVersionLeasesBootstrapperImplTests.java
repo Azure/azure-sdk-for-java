@@ -3,10 +3,7 @@
 
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
-import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
-import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
@@ -21,16 +18,13 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Base64;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 
-public class PkRangeIdVersionLeasesBootstrapperImplTests extends TestSuiteBase {
+public class PkRangeIdVersionLeasesBootstrapperImplTests {
 
     private static final String baseContinuationStringForFullRange = "{\"V\":1," +
         "\"Rid\":\"%s\"," +
@@ -92,7 +86,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests extends TestSuiteBase {
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.getAllLeases()).thenReturn(Flux.empty());
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.deleteAll(anyList())).thenReturn(Mono.empty());
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.releaseInitializationLock()).thenReturn(Mono.empty());
-        Mockito.when(epkRangeVersionLeaseStoreManagerMock.getAllLeases()).thenReturn(Flux.empty());
+        Mockito.when(epkRangeVersionLeaseStoreManagerMock.getAllLeases(Mockito.eq(1))).thenReturn(Flux.empty());
         Bootstrapper bootstrapper = new PkRangeIdVersionLeaseStoreBootstrapperImpl(
             partitionSynchronizerMock,
             leaseStoreMock,
@@ -106,7 +100,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests extends TestSuiteBase {
 
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(2)).isInitialized();
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).getAllLeases();
-        Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getAllLeases();
+        Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getAllLeases(Mockito.eq(1));
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases(anyList());
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).deleteAll(anyList());
         Mockito.verify(leaseStoreMock, times(2)).isInitialized();
@@ -137,6 +131,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests extends TestSuiteBase {
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.acquireInitializationLock(lockTime)).thenReturn(Mono.just(true));
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.markInitialized()).thenReturn(Mono.empty());
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.releaseInitializationLock()).thenReturn(Mono.just(true));
+        Mockito.when(epkRangeVersionLeaseStoreManagerMock.getAllLeases(Mockito.eq(1))).thenReturn(Flux.empty());
         Bootstrapper bootstrapper = new PkRangeIdVersionLeaseStoreBootstrapperImpl(
             partitionSynchronizerMock,
             leaseStoreMock,
@@ -149,6 +144,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests extends TestSuiteBase {
         bootstrapper.initialize().block();
         Mockito.verify(partitionSynchronizerMock, times(0)).createMissingLeases(anyList());
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases();
+        Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getAllLeases(Mockito.eq(1));
         Mockito.verify(leaseStoreMock, times(2)).isInitialized();
         // when the pkRangeId version lease store is not initialized, then we need to acquire the lock of it as well
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).releaseInitializationLock();
@@ -177,7 +173,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests extends TestSuiteBase {
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.getAllLeases()).thenReturn(Flux.empty());
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.deleteAll(anyList())).thenReturn(Mono.empty());
         Mockito.when(pkRangeIdVersionLeaseStoreManagerMock.releaseInitializationLock()).thenReturn(Mono.empty());
-        Mockito.when(epkRangeVersionLeaseStoreManagerMock.getAllLeases()).thenReturn(Flux.just(lease));
+        Mockito.when(epkRangeVersionLeaseStoreManagerMock.getAllLeases(Mockito.eq(1))).thenReturn(Flux.just(lease));
         Bootstrapper bootstrapper = new PkRangeIdVersionLeaseStoreBootstrapperImpl(
             partitionSynchronizerMock,
             leaseStoreMock,
@@ -195,7 +191,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests extends TestSuiteBase {
 
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(2)).isInitialized();
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).getAllLeases();
-        Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getAllLeases();
+        Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getAllLeases(Mockito.eq(1));
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases(anyList());
         Mockito.verify(pkRangeIdVersionLeaseStoreManagerMock, times(1)).deleteAll(anyList());
         Mockito.verify(leaseStoreMock, times(2)).isInitialized();

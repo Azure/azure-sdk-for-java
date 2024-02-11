@@ -39,6 +39,8 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
      */
     Flux<Lease> getAllLeases();
 
+    Flux<Lease> getAllLeases(int top);
+
     /**
      * @return all leases owned by the current host.
      */
