@@ -3,16 +3,18 @@
 
 package com.generic.core.http.models;
 
+import java.time.Duration;
+
 /**
  * Represents the SSE response from the server on event stream interpretation
  * <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream">here</a>.
  */
-public class ServerSentEvent {
+public final class ServerSentEvent {
     private Long id;
     private String event;
     private String data;
     private String comment;
-    private Long retryAfter;
+    private Duration retryAfter;
 
     /**
      * Get event identifier.
@@ -60,7 +62,7 @@ public class ServerSentEvent {
     }
 
     /**
-     * Get new connection retry time in milliseconds the event receiver should wait before attempting to reconnect after a
+     * Get new connection retry time duration the event receiver should wait before attempting to reconnect after a
      * connection to the SSE event source is lost.
      * <p>
      * Contains value of SSE {@code "retry"} field. This field is optional and method may return 0 if no
@@ -68,7 +70,7 @@ public class ServerSentEvent {
      *
      * @return reconnection delay in milliseconds or 0 if no value has been set.
      */
-    public Long getRetryAfter() {
+    public Duration getRetryAfter() {
         return this.retryAfter;
     }
 
@@ -113,20 +115,13 @@ public class ServerSentEvent {
     }
 
     /**
-     * Set the new connection retry time in milliseconds the event receiver should wait before attempting to reconnect
+     * Set the new connection retry time duration the event receiver should wait before attempting to reconnect
      * after a connection error.
      * @param retryAfter the new connection retry time in milliseconds
      * @return the {@link ServerSentEvent} object
      */
-    public ServerSentEvent setRetryAfter(Long retryAfter) {
+    public ServerSentEvent setRetryAfter(Duration retryAfter) {
         this.retryAfter = retryAfter;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return new StringBuilder(getClass().getSimpleName()).append("{id=").append(id).
-            append("; event=\"").append(event).append("\"; data=\"").append(data).
-            append("\"}").toString();
     }
 }

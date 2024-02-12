@@ -3,15 +3,14 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.util.ClientLogger;
-
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * Interface to implement event stream listeners for handling {@link ServerSentEvent}.
  */
+@FunctionalInterface
 public interface ServerSentEventListener {
-    ClientLogger LOGGER = new ClientLogger(ServerSentEventListener.class);
 
     /**
      * Gets called every time an event or data is received.
@@ -26,8 +25,7 @@ public interface ServerSentEventListener {
      * @param throwable Error that occurred
      */
     default void onError(Throwable throwable) {
-        LOGGER.atWarning().log("Unexpected failure in handling server sent event: {}", throwable.getMessage(),
-            throwable);
+        // Do nothing
     }
 
     /**
@@ -41,10 +39,10 @@ public interface ServerSentEventListener {
      * </p>
      *
      * @param throwable the instance of the error that caused the failure
-     * @param retryAfter new retry time in milliseconds
+     * @param retryAfter new retry time duration
      * @param lastEventId ID of last event that was received
      */
-    default boolean shouldRetry(Throwable throwable, long retryAfter, long lastEventId) {
+    default boolean shouldRetry(Throwable throwable, Duration retryAfter, long lastEventId) {
         // do not auto-retry.
         return false;
     }
@@ -53,6 +51,6 @@ public interface ServerSentEventListener {
      * Notify that the connection was closed.
      */
     default void onClose() {
-        LOGGER.atInfo().log("Connection closed");
+        // Do nothing
     }
 }

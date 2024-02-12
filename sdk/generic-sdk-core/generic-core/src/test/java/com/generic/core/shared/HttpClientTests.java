@@ -1810,7 +1810,7 @@ public abstract class HttpClientTests {
                 }
 
                 @Override
-                public boolean shouldRetry(Throwable throwable, long retryAfter, long lastEventId) {
+                public boolean shouldRetry(Throwable throwable, Duration retryAfter, long lastEventId) {
                     return true;
                 }
             });

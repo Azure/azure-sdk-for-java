@@ -47,10 +47,10 @@ import java.util.regex.Pattern;
  */
 class DefaultHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClient.class);
-    public static final String LAST_EVENT_ID = "Last-Event-Id";
     private final long connectionTimeout;
     private final long readTimeout;
     private final ProxyOptions proxyOptions;
+    private static final String LAST_EVENT_ID = "Last-Event-Id";
     private static final String DEFAULT_EVENT = "message";
     private final Pattern DIGITS_ONLY = Pattern.compile("^[\\d]*$");
 
@@ -148,7 +148,7 @@ class DefaultHttpClient implements HttpClient {
 
             return connection;
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -182,7 +182,7 @@ class DefaultHttpClient implements HttpClient {
                     body.writeTo(os);
                     os.flush();
                 } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(e));
+                    throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
                 }
                 return;
 
@@ -202,19 +202,14 @@ class DefaultHttpClient implements HttpClient {
         try {
             int responseCode = connection.getResponseCode();
             Headers responseHeaders = getResponseHeaders(connection);
+
             ServerSentEventListener listener = httpRequest.getServerSentEventListener();
-            RetrySSEResult retrySSEResult;
-            if (connection.getErrorStream() == null) {
-                if (isTextEventStream(responseHeaders) && listener != null) {
-                    try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                        retrySSEResult = processBuffer(reader, listener);
-                        if (retrySSEResult != null) {
-                            retryExceptionForSSE(retrySSEResult, listener, httpRequest);
-                        }
-                    } catch (IOException e) {
-                        throw LOGGER.logThrowableAsError(new RuntimeException(e));
-                    }
+            if (connection.getErrorStream() == null && isTextEventStream(responseHeaders)) {
+                if (listener != null) {
+                    processTextEventStream(httpRequest, connection, listener);
+                } else {
+                    LOGGER.log(ClientLogger.LogLevel.INFORMATIONAL, () -> "No listener attached to the server sent event" +
+                            " http request. Treating response as regular response.");
                 }
                 return new DefaultHttpClientResponse(httpRequest, responseCode, responseHeaders);
             } else {
@@ -223,27 +218,151 @@ class DefaultHttpClient implements HttpClient {
                     BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
             }
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         } finally {
             connection.disconnect();
         }
     }
 
+    private void processTextEventStream(HttpRequest httpRequest, HttpURLConnection connection, ServerSentEventListener listener) {
+        RetrySSEResult retrySSEResult;
+        try (BufferedReader reader
+                 = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            retrySSEResult = processBuffer(reader, listener);
+            if (retrySSEResult != null) {
+                retryExceptionForSSE(retrySSEResult, listener, httpRequest);
+            }
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        }
+    }
+
+    private boolean isTextEventStream(Headers responseHeaders) {
+        return responseHeaders.get(HeaderName.CONTENT_TYPE) != null &&
+        responseHeaders.get(HeaderName.CONTENT_TYPE).getValue().equals(ContentType.TEXT_EVENT_STREAM);
+    }
+
+    /**
+     * Processes the sse buffer and dispatches the event
+     *
+     * @param reader   The BufferedReader object
+     * @param listener The listener object attached with the httpRequest
+     */
+    private RetrySSEResult processBuffer(BufferedReader reader, ServerSentEventListener listener) {
+        StringBuilder collectedData = new StringBuilder();
+        ServerSentEvent event = null;
+        try {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                collectedData.append(line).append("\n");
+                if (isEndOfBlock(collectedData)) {
+                    event = processLines(collectedData.toString().split("\n"));
+                    if (!Objects.equals(event.getEvent(), DEFAULT_EVENT) || event.getData() != null) {
+                        listener.onEvent(event);
+                    }
+                    collectedData.setLength(0); // clear the collected data
+                }
+            }
+            listener.onClose();
+        } catch (IOException e) {
+            return new RetrySSEResult(e, event != null ? event.getId() : -1, event != null ? event.getRetryAfter() : null);
+        }
+        return null;
+    }
+
+    private boolean isEndOfBlock(StringBuilder sb) {
+        // blocks of data are separated by double newlines
+        // add more end of blocks here if needed
+        return sb.indexOf("\n\n") >= 0;
+    }
+
+    private ServerSentEvent processLines(String[] lines) {
+        StringBuilder eventData = new StringBuilder();
+        ServerSentEvent event = new ServerSentEvent();
+
+        for (String line : lines) {
+            int idx = line.indexOf(':');
+            if (idx <= 0) {
+                if (idx == 0) {
+                    event.setComment(line.substring(1).trim());
+                }
+                continue;
+            }
+
+            String field = line.substring(0, idx).trim().toLowerCase();
+            String value = line.substring(idx + 1).trim();
+
+            switch (field) {
+                case "event":
+                    event.setEvent(value);
+                    break;
+                case "data":
+                    if (eventData.length() > 0) {
+                        eventData.append("\n");
+                    }
+                    eventData.append(value);
+                    break;
+                case "id":
+                    if (!value.isEmpty()) {
+                        event.setId(Long.parseLong(value));
+                    }
+                    break;
+                case "retry":
+                    if (!value.isEmpty() && DIGITS_ONLY.matcher(value).matches()) {
+                        event.setRetryAfter(Duration.ofMillis(Long.parseLong(value)));
+                    }
+                    break;
+            }
+        }
+
+        event.setEvent(event.getEvent() == null ? DEFAULT_EVENT : event.getEvent());
+        if (eventData.length() != 0) {
+            event.setData(eventData.toString());
+        }
+
+        return event;
+    }
+
+    /**
+     * Retries the request if the listener allows it
+     *
+     * @param retrySSEResult  the result of the retry
+     * @param listener The listener object attached with the httpRequest
+     * @param httpRequest the HTTP Request being sent
+     */
+    private void retryExceptionForSSE(RetrySSEResult retrySSEResult, ServerSentEventListener listener, HttpRequest httpRequest) {
+        if (Thread.currentThread().isInterrupted() || !listener.shouldRetry(retrySSEResult.getException(), retrySSEResult.getRetryAfter(), retrySSEResult.getLastEventId())) {
+            listener.onError(retrySSEResult.getException());
+            return;
+        }
+
+        if (retrySSEResult.getLastEventId() != -1) {
+            httpRequest.getHeaders().add(HeaderName.fromString(LAST_EVENT_ID), String.valueOf(retrySSEResult.getLastEventId()));
+        }
+
+        try {
+            if (retrySSEResult.getRetryAfter() != null) {
+                Thread.sleep(retrySSEResult.getRetryAfter().toMillis());
+            }
+        } catch (InterruptedException ignored) {
+            return;
+        }
+
+        if (!Thread.currentThread().isInterrupted()) {
+            this.send(httpRequest);
+        }
+    }
+
     private Headers getResponseHeaders(HttpURLConnection connection) {
         Map<String, List<String>> hucHeaders = connection.getHeaderFields();
-        Headers responseHeaders = new Headers((int) (hucHeaders.size() / 0.75F));
-        for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
+        Headers responseHeaders = new Headers(hucHeaders.size());
+        for (Map.Entry<String, List<String>> entry : hucHeaders.entrySet()) {
             if (entry.getKey() != null) {
                 responseHeaders.add(HeaderName.fromString(entry.getKey()), entry.getValue());
             }
         }
         return responseHeaders;
     }
-
-    private boolean isTextEventStream(Headers responseHeaders) {
-        return responseHeaders.get(HeaderName.CONTENT_TYPE).getValue().equals(ContentType.TEXT_EVENT_STREAM);
-    }
-
     private static AccessibleByteArrayOutputStream getAccessibleByteArrayOutputStream(HttpURLConnection connection) throws IOException {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
 
@@ -258,137 +377,16 @@ class DefaultHttpClient implements HttpClient {
         return outputStream;
     }
 
-    /**
-     * Processes the sse buffer and dispatches the event
-     *
-     * @param reader   The BufferedReader object
-     * @param listener The listener object attached with the httpRequest
-     */
-    private RetrySSEResult processBuffer(BufferedReader reader, ServerSentEventListener listener) {
-        StringBuilder collectedData = new StringBuilder();
-        ServerSentEvent event = null;
-        try {
-            int dataRead = reader.read();
-            while (dataRead != -1) {
-                collectedData.append((char) dataRead);
-                dataRead = reader.read();
-                int index = isEndOfBlock(collectedData);
-                if (index >= 0) {
-                    String[] lines = collectedData.substring(0, index).split("\n"); // split the block into lines
-                    collectedData.delete(0, index + 2); // clear first block including "\n\n"
-                    event = processLines(lines);
-                    if (event != null
-                        && (!Objects.equals(event.getEvent(), DEFAULT_EVENT) || event.getData() != null)) {
-                        // dispatch the event if there is data or event
-                        listener.onEvent(event);
-                    }
-                }
-            }
-            listener.onClose();
-        } catch (IOException e) {
-            return new RetrySSEResult(e, event.getId(), event.getRetryAfter());
-        }
-        return null;
-    }
-
-    private int isEndOfBlock(StringBuilder sb) {
-        // blocks of data are separated by double newlines
-        return sb.indexOf("\n\n");
-        // confirm the ways to check for end of block
-    }
-
-    private ServerSentEvent processLines(String[] lines) {
-        StringBuilder eventData = new StringBuilder();
-        ServerSentEvent event = new ServerSentEvent();
-
-        //start parsing line by line
-        for (String line : lines) {
-            int idx = line.indexOf(':');
-            if (idx < 0) {
-                continue; // ignore invalid data
-            } else if (idx == 0) {
-                // capture comment line
-                event.setComment(line.substring(1).trim());
-                continue;
-            }
-            String field = line.substring(0, idx);
-            String value = line.substring(idx + 1).trim();
-            switch (field.trim().toLowerCase()) {
-                case "event":
-                    event.setEvent(value);
-                    continue;
-
-                case "data":
-                    if (eventData.length() > 0) {
-                        eventData.append("\n");
-                    }
-                    eventData.append(value);
-                    continue;
-
-                case "id":
-                    if (!value.isEmpty()) {
-                        event.setId(Long.parseLong(value));
-                    }
-                    continue;
-
-                case "retry":
-                    if (!value.isEmpty() && DIGITS_ONLY.matcher(value).matches()) {
-                        event.setRetryAfter(Long.parseLong(value));
-                    }
-                    continue;
-
-                default:
-                    continue;
-            }
-        }
-        if (event.getEvent() == null) {
-            event.setEvent(DEFAULT_EVENT);
-        }
-        if (eventData.length() != 0) {
-            event = event.setData(eventData.toString());
-        }
-        return event;
-    }
-
-    /**
-     * Retries the request if the listener allows it
-     *
-     * @param retrySSEResult  the result of the retry
-     * @param listener The listener object attached with the httpRequest
-     * @param httpRequest the HTTP Request being sent
-     */
-    private void retryExceptionForSSE(RetrySSEResult retrySSEResult, ServerSentEventListener listener, HttpRequest httpRequest) {
-        long lastEventId = retrySSEResult.getLastEventId();
-        long retryAfter = retrySSEResult.getRetryAfter();
-        if (!Thread.currentThread().isInterrupted() && listener.shouldRetry(retrySSEResult.getException(), retryAfter, lastEventId)) {
-            if (lastEventId != -1) {
-                httpRequest.getHeaders().add(HeaderName.fromString(LAST_EVENT_ID),
-                    String.valueOf(lastEventId));
-            }
-            try {
-                if (retryAfter > 0) {
-                    Thread.sleep(retryAfter);
-                }
-            } catch (InterruptedException ignored) {
-                return;
-            }
-            if (!Thread.currentThread().isInterrupted()) {
-                this.send(httpRequest);
-            }
-        } else {
-            listener.onError(retrySSEResult.getException());
-        }
-    }
 
     /**
      * Inner class to hold the result for a retry of an SSE request
      */
     private static class RetrySSEResult {
         private final long lastEventId;
-        private final long retryAfter;
+        private final Duration retryAfter;
         private final IOException ioException;
 
-        public RetrySSEResult(IOException e, long lastEventId, long retryAfter) {
+        public RetrySSEResult(IOException e, long lastEventId, Duration retryAfter) {
             this.ioException = e;
             this.lastEventId = lastEventId;
             this.retryAfter = retryAfter;
@@ -398,7 +396,7 @@ class DefaultHttpClient implements HttpClient {
             return lastEventId;
         }
 
-        public long getRetryAfter() {
+        public Duration getRetryAfter() {
             return retryAfter;
         }
 
@@ -413,8 +411,7 @@ class DefaultHttpClient implements HttpClient {
         private static final SSLSocketFactory SSL_SOCKET_FACTORY = (SSLSocketFactory) SSLSocketFactory.getDefault();
 
         /**
-         * Opens a socket connection, then writes the PATCH request across the
-         * connection and reads the response
+         * Opens a socket connection, then writes the PATCH request across the connection and reads the response
          *
          * @param httpRequest The HTTP Request being sent
          * @return an instance of HttpUrlConnectionResponse
@@ -445,24 +442,24 @@ class DefaultHttpClient implements HttpClient {
         }
 
         /**
-         * Calls buildAndSend to send a String representation of the request across the output
-         * stream, then calls buildResponse to get an instance of HttpUrlConnectionResponse
-         * from the input stream
+         * Calls buildAndSend to send a String representation of the request across the output stream, then calls
+         * buildResponse to get an instance of HttpUrlConnectionResponse from the input stream
          *
          * @param httpRequest The HTTP Request being sent
          * @param socket An instance of the SocketClient
          * @return an instance of HttpUrlConnectionResponse
          */
         @SuppressWarnings("deprecation")
-        private static DefaultHttpClientResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
+        private static DefaultHttpClientResponse doInputOutput(HttpRequest httpRequest, Socket socket)
+            throws IOException {
             httpRequest.setHeader(HeaderName.HOST, httpRequest.getUrl().getHost());
             if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HeaderName.CONNECTION))) {
                 httpRequest.setHeader(HeaderName.CONNECTION, "close");
             }
 
-            try (
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream())) {
+            try (BufferedReader in = new BufferedReader(
+                new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream())) {
 
                 buildAndSend(httpRequest, out);
                 DefaultHttpClientResponse response = buildResponse(httpRequest, in);
@@ -483,8 +480,7 @@ class DefaultHttpClient implements HttpClient {
         }
 
         /**
-         * Converts an instance of HttpRequest to a String representation for sending
-         * over the output stream
+         * Converts an instance of HttpRequest to a String representation for sending over the output stream
          *
          * @param httpRequest The HTTP Request being sent
          * @param out output stream for writing the request
@@ -493,23 +489,16 @@ class DefaultHttpClient implements HttpClient {
         private static void buildAndSend(HttpRequest httpRequest, OutputStreamWriter out) throws IOException {
             final StringBuilder request = new StringBuilder();
 
-            request.append("PATCH ")
-                .append(httpRequest.getUrl().getPath())
-                .append(HTTP_VERSION)
-                .append("\r\n");
+            request.append("PATCH ").append(httpRequest.getUrl().getPath()).append(HTTP_VERSION).append("\r\n");
 
             if (httpRequest.getHeaders().getSize() > 0) {
                 for (Header header : httpRequest.getHeaders()) {
-                    header.getValuesList().forEach(value -> request.append(header.getName())
-                        .append(": ")
-                        .append(value)
-                        .append("\r\n"));
+                    header.getValuesList()
+                        .forEach(value -> request.append(header.getName()).append(':').append(value).append("\r\n"));
                 }
             }
             if (httpRequest.getBody() != null) {
-                request.append("\r\n")
-                    .append(httpRequest.getBody().toString())
-                    .append("\r\n");
+                request.append("\r\n").append(httpRequest.getBody().toString()).append("\r\n");
             }
 
             out.write(request.toString());
@@ -517,8 +506,8 @@ class DefaultHttpClient implements HttpClient {
         }
 
         /**
-         * Reads the response from the input stream and extracts the information
-         * needed to construct an instance of HttpUrlConnectionResponse
+         * Reads the response from the input stream and extracts the information needed to construct an instance of
+         * HttpUrlConnectionResponse
          *
          * @param httpRequest The HTTP Request being sent
          * @param reader the input stream from the socket
@@ -534,10 +523,13 @@ class DefaultHttpClient implements HttpClient {
             Headers headers = new Headers();
             String line;
             while ((line = reader.readLine()) != null && !line.isEmpty()) {
-                String[] kv = line.split(": ", 2);
-                String k = kv[0];
-                String v = kv[1];
-                headers.add(HeaderName.fromString(k), v);
+                // Headers may have optional leading and trailing whitespace around the header value.
+                // https://tools.ietf.org/html/rfc7230#section-3.2
+                // Process this accordingly.
+                int split = line.indexOf(':'); // Find ':' to split the header name and value.
+                String key = line.substring(0, split); // Get the header name.
+                String value = line.substring(split + 1).trim(); // Get the header value and trim whitespace.
+                headers.add(HeaderName.fromString(key), value);
             }
 
             StringBuilder bodyString = new StringBuilder();
