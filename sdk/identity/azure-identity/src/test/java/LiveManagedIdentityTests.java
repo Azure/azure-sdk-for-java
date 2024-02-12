@@ -6,6 +6,8 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
@@ -33,10 +35,12 @@ public class LiveManagedIdentityTests extends TestBase {
     public void testManagedIdentityWebAppDeployment() {
         HttpClient client = HttpClient.createDefault();
         String functionUrl = "https://" + System.getenv("IDENTITY_WEBAPP_NAME") + ".azurewebsites.net/mitest";
+        ClientLogger logger = new ClientLogger(LiveManagedIdentityTests.class);
+        logger.log(LogLevel.INFORMATIONAL, () -> "webappURL: " + functionUrl);
         HttpRequest request = new HttpRequest(HttpMethod.GET, functionUrl);
         try (HttpResponse httpResponse = client.send(request).block()) {
             if (httpResponse.getStatusCode() != 200) {
-                fail("Failed to get response from function app");
+                fail("Failed to get response from web app");
             }
         }
     }
