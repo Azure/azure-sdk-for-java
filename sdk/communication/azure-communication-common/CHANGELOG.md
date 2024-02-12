@@ -8,7 +8,7 @@
 ### Breaking Changes
 - Introduction of `MicrosoftTeamsAppIdentifier` is a breaking change. It will impact any code that previously depended on the use of UnknownIdentifier with rawIDs starting with `28:orgid:`, `28:dod:`, or `28:gcch:`.
 
-# 1.2.14 (2023-11-20)
+## 1.2.14 (2023-11-20)
 
 ### Other Changes
 
