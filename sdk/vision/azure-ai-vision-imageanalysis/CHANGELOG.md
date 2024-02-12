@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- In the previous version, you would call the `analyze` method on the `ImageAnalysisClient` or `ImageAnalysisAsyncClient` to analyze an image from a publicly accessible URL, or from a memory buffer. To better align with other Azure client libraires, this was changed in this release. Call the new dedicated `analyzeFromUrl` method to analyze an image from URL (and note that you now proive the URL as a `String` instead of `java.net.URL`). Keep calling the `analyze` method to analyze an image from a memory buffer.
+- In the previous version, you would call the `analyze` method on the `ImageAnalysisClient` or `ImageAnalysisAsyncClient` to analyze an image from a publicly accessible URL, or from a memory buffer. To better align with other Azure client libraires, this was changed in this release. Call the new dedicated `analyzeFromUrl` method to analyze an image from URL (and note that you now provide the URL as a `String` instead of `java.net.URL`). Keep calling the `analyze` method to analyze an image from a memory buffer.
 - The class constructor `ImageAnalysisOptions(String language, Boolean genderNeutralCaption, List<Double> smartCropsAspectRatios, String modelVersion)` was removed, since it is redundant. Instead use the empty constructor and override default values by calling the individual `set` method. For example: `ImageAnalysisOptions options = new ImageAnalysisOptions().setGenderNeutralCaption(true)`
 
 ### Features Added

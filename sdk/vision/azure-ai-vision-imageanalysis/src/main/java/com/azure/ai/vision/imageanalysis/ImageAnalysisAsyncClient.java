@@ -568,50 +568,6 @@ public final class ImageAnalysisAsyncClient {
     }
 
     /**
-     * Apply the Image Analysis Options as query parameters on a given RequestOptions object.
-     * Return an updated RequestOptions object.
-     *
-     * @param inputRequestOptions The input request options (can be null).
-     * @param imageAnalysisOptions The Image Analysis Options to apply to the request to be sent (can be null).
-     *
-     * @return An updated RequestOptions with addition query parameters set based on the Image Analysis Options. Can be
-     * null.
-     */
-    static RequestOptions updateRequestOptions(RequestOptions inputRequestOptions,
-        ImageAnalysisOptions imageAnalysisOptions) {
-        RequestOptions outputRequestOptions = inputRequestOptions;
-        if (imageAnalysisOptions != null) {
-            String language = imageAnalysisOptions.getLanguage();
-            Boolean isGenderNeutralCaption = imageAnalysisOptions.isGenderNeutralCaption();
-            List<Double> smartCropsAspectRatios = imageAnalysisOptions.getSmartCropsAspectRatios();
-            String modelVersion = imageAnalysisOptions.getModelVersion();
-            if (language != null || isGenderNeutralCaption != null || smartCropsAspectRatios != null
-                || modelVersion != null) {
-                if (outputRequestOptions == null) {
-                    outputRequestOptions = new RequestOptions();
-                }
-                if (language != null) {
-                    outputRequestOptions.addQueryParam("language", language, false);
-                }
-                if (isGenderNeutralCaption != null) {
-                    outputRequestOptions.addQueryParam("gender-neutral-caption", String.valueOf(isGenderNeutralCaption),
-                        false);
-                }
-                if (smartCropsAspectRatios != null) {
-                    outputRequestOptions.addQueryParam("smartcrops-aspect-ratios",
-                        JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
-                            CollectionFormat.CSV),
-                        false);
-                }
-                if (modelVersion != null) {
-                    outputRequestOptions.addQueryParam("model-version", modelVersion, false);
-                }
-            }
-        }
-        return outputRequestOptions;
-    }
-
-    /**
      * Performs a single Image Analysis operation on a give image URL.
      *
      * @param imageUrl The publicly accessible URL of the image to analyze.
@@ -744,7 +700,7 @@ public final class ImageAnalysisAsyncClient {
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
         Mono<Response<BinaryData>> monoResponse = analyzeFromUrlWithResponse(visualFeaturesAsStrings,
-            BinaryData.fromObject(new ImageUrl(imageUrl)), updateRequestOptions(requestOptions, imageAnalysisOptions));
+            BinaryData.fromObject(new ImageUrl(imageUrl)), ImageAnalysisClient.updateRequestOptions(requestOptions, imageAnalysisOptions));
         return monoResponse.map(response -> {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 response.getValue().toObject(ImageAnalysisResult.class));
@@ -778,7 +734,7 @@ public final class ImageAnalysisAsyncClient {
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
         Mono<Response<BinaryData>> monoResponse = analyzeFromImageDataWithResponse(visualFeaturesAsStrings, imageData,
-            updateRequestOptions(requestOptions, imageAnalysisOptions));
+            ImageAnalysisClient.updateRequestOptions(requestOptions, imageAnalysisOptions));
         return monoResponse.map(response -> {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 response.getValue().toObject(ImageAnalysisResult.class));
