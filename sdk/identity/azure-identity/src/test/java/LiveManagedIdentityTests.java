@@ -28,4 +28,17 @@ public class LiveManagedIdentityTests extends TestBase {
         }
     }
 
+    @Test
+    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
+    public void testManagedIdentityWebAppDeployment() {
+        HttpClient client = HttpClient.createDefault();
+        String functionUrl = "https://" + System.getenv("IDENTITY_WEBAPP_NAME") + ".azurewebsites.net/mitest";
+        HttpRequest request = new HttpRequest(HttpMethod.GET, functionUrl);
+        try (HttpResponse httpResponse = client.send(request).block()) {
+            if (httpResponse.getStatusCode() != 200) {
+                fail("Failed to get response from function app");
+            }
+        }
+    }
+
 }

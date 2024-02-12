@@ -16,8 +16,8 @@ function getVariable {
 }
 
 
-# $webappRoot = "$PSScriptRoot/identity-mi-server/" | Resolve-Path
-# $webappRootPom = "webappRoot/pom.xml" | Resolve-Path
+$webappRoot = "$PSScriptRoot/identity-mi-server" | Resolve-Path
+$webappRootPom = "$webappRoot/pom.xml" | Resolve-Path
 # $workingFolder = $webappRoot;
 
 $funcAppRoot = "$PSScriptRoot/live-test-apps/identity-test-function" | Resolve-Path
@@ -28,8 +28,9 @@ $funcAppPom = "$funcAppRoot/pom.xml" | Resolve-Path
 # }
 az login --service-principal -u $(getVariable('IDENTITY_CLIENT_ID')) -p $(getVariable('IDENTITY_CLIENT_SECRET')) --tenant $(getVariable('IDENTITY_TENANT_ID'))
 az account set --subscription $(getVariable('IDENTITY_SUBSCRIPTION_ID'))
-# mvn clean package $webappRootPom
-# az webapp deploy --resource-group getVariable('IDENTITY_RESOURCE_GROUP') --name getVariable('IDENTITY_WEBAPP_NAME') --src-path "$workingFolder/target/dentity-mi-server-0.0.1-SNAPSHOT.jar"
+
+mvn clean package $webappRootPom
+az webapp deploy --resource-group getVariable('IDENTITY_RESOURCE_GROUP') --name getVariable('IDENTITY_WEBAPP_NAME') --src-path "$webappRoot/target/dentity-mi-server-0.0.1-SNAPSHOT.jar" --type jar
 # Remove-Item -Force -Recurse "$workingFolder/target"
 # if ($null -eq $Env:AGENT_WORKFOLDER) {
 #     Remove-Item -Force -Recurse "$webappRoot/%AGENT_WORKFOLDER%"

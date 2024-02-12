@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ManagedIdentityTestController {
-    @GetMapping("/webapp")
+    @GetMapping("/mitest")
     public String webapp() {
 
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
