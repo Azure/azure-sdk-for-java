@@ -7,7 +7,7 @@ package com.azure.communication.phonenumbers.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PhoneNumberOffering model. */
+/** Represents a phone number capability offering. */
 @Immutable
 public final class PhoneNumberOffering {
     /*

@@ -7,7 +7,7 @@ package com.azure.communication.phonenumbers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PhoneNumberCapabilities model. */
+/** Capabilities of a phone number. */
 @Fluent
 public final class PhoneNumberCapabilities {
     /*

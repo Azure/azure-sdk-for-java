@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The PurchasedPhoneNumber model. */
+/** Represents a purchased phone number. */
 @Immutable
 public final class PurchasedPhoneNumber {
     /*

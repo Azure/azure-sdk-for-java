@@ -4,15 +4,13 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PhoneNumberCountries model. */
+/** Represents a wrapper around a list of countries. */
 @Immutable
-@Generated
 public final class PhoneNumberCountries {
     /*
      * Represents the underlying list of countries.

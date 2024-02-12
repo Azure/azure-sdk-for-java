@@ -4,13 +4,13 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The PhoneNumberSearchResult model. */
-@Immutable
+/** The result of a phone number search operation. */
+@Fluent
 public final class PhoneNumberSearchResult {
     /*
      * The search id.
@@ -56,6 +56,18 @@ public final class PhoneNumberSearchResult {
      */
     @JsonProperty(value = "searchExpiresBy", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime searchExpiresBy;
+
+    /*
+     * The error code of the search.
+     */
+    @JsonProperty(value = "errorCode")
+    private Integer errorCode;
+
+    /*
+     * Mapping Error Messages to Codes
+     */
+    @JsonProperty(value = "error")
+    private PhoneNumberSearchResultError error;
 
     /**
      * Get the searchId property: The search id.
@@ -120,5 +132,45 @@ public final class PhoneNumberSearchResult {
      */
     public OffsetDateTime getSearchExpiresBy() {
         return this.searchExpiresBy;
+    }
+
+    /**
+     * Get the errorCode property: The error code of the search.
+     *
+     * @return the errorCode value.
+     */
+    public Integer getErrorCode() {
+        return this.errorCode;
+    }
+
+    /**
+     * Set the errorCode property: The error code of the search.
+     *
+     * @param errorCode the errorCode value to set.
+     * @return the PhoneNumberSearchResult object itself.
+     */
+    public PhoneNumberSearchResult setErrorCode(Integer errorCode) {
+        this.errorCode = errorCode;
+        return this;
+    }
+
+    /**
+     * Get the error property: Mapping Error Messages to Codes.
+     *
+     * @return the error value.
+     */
+    public PhoneNumberSearchResultError getError() {
+        return this.error;
+    }
+
+    /**
+     * Set the error property: Mapping Error Messages to Codes.
+     *
+     * @param error the error value to set.
+     * @return the PhoneNumberSearchResult object itself.
+     */
+    public PhoneNumberSearchResult setError(PhoneNumberSearchResultError error) {
+        this.error = error;
+        return this;
     }
 }
