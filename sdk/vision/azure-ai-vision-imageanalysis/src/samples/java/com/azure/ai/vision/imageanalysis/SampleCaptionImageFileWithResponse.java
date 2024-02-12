@@ -1,19 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-//
-// DESCRIPTION:
-//     This sample demonstrates how to generate a human-readable sentence that describes the content
-//     of the image file sample.jpg, using a synchronous client.
-//
-//     This sample is similar to the `SampleCaptionImageFile.java` sample, but it uses the 
-//     `analyzeWithResponse` method instead of `analyze` method. This allows customization of the 
-//     HTTP request, and access to HTTP request and response details. This is not commonly required, but can
-//     be useful for service customization or troubleshooting issues.
-//
-//     Set these two environment variables before running the sample:
-//     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
-//                          where `your-resource-name` is your unique Azure Computer Vision resource name.
-//     2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
@@ -29,6 +15,20 @@ import com.azure.core.util.BinaryData;
 import java.io.File;
 import java.util.Arrays;
 
+/**
+ *  This sample demonstrates how to generate a human-readable sentence that describes the content
+ *  of the image file sample.jpg, using a synchronous client.
+ *
+ *  This sample is similar to the `SampleCaptionImageFile.java` sample, but it uses the 
+ *  `analyzeWithResponse` method instead of `analyze` method. This allows customization of the 
+ *  HTTP request, and access to HTTP request and response details. This is not commonly required, but can
+ *  be useful for service customization or troubleshooting issues.
+ *
+ *  Set these two environment variables before running the sample:
+ *  1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
+ *                       where `your-resource-name` is your unique Azure Computer Vision resource name.
+ *  2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
+ */
 public class SampleCaptionImageFileWithResponse {
 
     public static void main(String[] args) {
