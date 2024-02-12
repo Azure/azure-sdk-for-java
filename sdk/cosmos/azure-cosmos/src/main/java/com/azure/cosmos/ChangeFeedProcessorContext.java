@@ -25,4 +25,13 @@ public interface ChangeFeedProcessorContext {
      * */
     @Beta(value = Beta.SinceVersion.V4_51_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     String getLeaseToken();
+
+    @Beta()
+    double getRequestCharge();
+
+    @Beta()
+    String getSessionToken();
+
+    @Beta()
+    CosmosDiagnostics getDiagnostics();
 }

@@ -4,7 +4,10 @@
 package com.azure.cosmos.implementation.changefeed.common;
 
 import com.azure.cosmos.ChangeFeedProcessorContext;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
+import com.azure.cosmos.models.FeedResponse;
 
 public final class ChangeFeedProcessorContextImpl<T> implements ChangeFeedProcessorContext {
 
@@ -22,5 +25,50 @@ public final class ChangeFeedProcessorContextImpl<T> implements ChangeFeedProces
         }
 
         return changeFeedObserverContext.getLeaseToken();
+    }
+
+    public double getRequestCharge() {
+
+        if (this.changeFeedObserverContext == null) {
+            throw new IllegalStateException("changeFeedObserverContext cannot be null!");
+        }
+
+        FeedResponse<T> feedResponse = changeFeedObserverContext.getFeedResponse();
+
+        if (feedResponse == null) {
+            return 0;
+        }
+
+        return changeFeedObserverContext.getFeedResponse().getRequestCharge();
+    }
+
+    public String getSessionToken() {
+
+        if (this.changeFeedObserverContext == null) {
+            throw new IllegalStateException("changeFeedObserverContext cannot be null!");
+        }
+
+        FeedResponse<T> feedResponse = changeFeedObserverContext.getFeedResponse();
+
+        if (feedResponse == null) {
+            return StringUtils.EMPTY;
+        }
+
+        return feedResponse.getSessionToken();
+    }
+
+    public CosmosDiagnostics getDiagnostics() {
+
+        if (this.changeFeedObserverContext == null) {
+            throw new IllegalStateException("changeFeedObserverContext cannot be null!");
+        }
+
+        FeedResponse<T> feedResponse = changeFeedObserverContext.getFeedResponse();
+
+        if (feedResponse == null) {
+            return null;
+        }
+
+        return feedResponse.getCosmosDiagnostics();
     }
 }
