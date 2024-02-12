@@ -6,11 +6,6 @@
 - Added expires_on parsing support to `AzureCliCredential`.([#38406](https://github.com/Azure/azure-sdk-for-java/pull/38406))
 - Added caching support for working credential in `DefaultAzureCredential`. ([#38404](https://github.com/Azure/azure-sdk-for-java/pull/38404))
 
-### Other Changes
-
-- Upgraded `azure-core` from `1.45.1` to version `1.46.0`
-- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`
-
 ## 1.11.2 (2024-02-05)
 
 ### Bugs Fixed
