@@ -13,17 +13,17 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.kafka.connect.implementations.CosmosClientStore;
-import com.azure.cosmos.kafka.connect.implementations.CosmosConstants;
-import com.azure.cosmos.kafka.connect.implementations.source.CosmosSourceOffsetStorageReader;
-import com.azure.cosmos.kafka.connect.implementations.source.CosmosSourceTask;
-import com.azure.cosmos.kafka.connect.implementations.source.FeedRangeContinuationTopicOffset;
-import com.azure.cosmos.kafka.connect.implementations.source.FeedRangeTaskUnit;
-import com.azure.cosmos.kafka.connect.implementations.source.FeedRangesMetadataTopicOffset;
-import com.azure.cosmos.kafka.connect.implementations.source.MetadataMonitorThread;
-import com.azure.cosmos.kafka.connect.implementations.source.MetadataTaskUnit;
-import com.azure.cosmos.kafka.connect.implementations.source.CosmosSourceConfig;
-import com.azure.cosmos.kafka.connect.implementations.source.CosmosSourceTaskConfig;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
+import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicOffset;
+import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeTaskUnit;
+import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTopicOffset;
+import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThread;
+import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -80,7 +81,13 @@ public class CosmosDBSourceConnector extends SourceConnector {
     public void stop() {
         logger.info("Stopping Kafka CosmosDB source connector");
         if (this.cosmosClient != null) {
+            logger.debug("Closing cosmos client");
             this.cosmosClient.close();
+        }
+
+        if (this.monitorThread != null) {
+            logger.debug("Closing monitoring thread");
+            this.monitorThread.close();
         }
     }
 
@@ -93,6 +100,43 @@ public class CosmosDBSourceConnector extends SourceConnector {
     public String version() {
         return CosmosConstants.currentVersion;
     } // TODO: how this is being used
+
+    private List<Map<String, String>> getTaskConfigs(int maxTasks) {
+        Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> taskUnits = this.getAllTaskUnits();
+
+        // The metadataTaskUnit is a one time only task when the connector starts/restarts,
+        // so there is no need to assign a dedicated task thread for it
+        // we are just going to assign it to one of the tasks which processing feedRanges tasks
+        List<List<FeedRangeTaskUnit>> partitionedTaskUnits = new ArrayList<>();
+        if (taskUnits.getRight().size() <= maxTasks) {
+            partitionedTaskUnits.addAll(
+                taskUnits.getRight().stream().map(taskUnit -> Arrays.asList(taskUnit)).collect(Collectors.toList()));
+        } else {
+            // using round-robin fashion to assign tasks to each buckets
+            for (int i = 0; i < maxTasks; i++) {
+                partitionedTaskUnits.add(new ArrayList<>());
+            }
+
+            for (int i = 0; i < taskUnits.getRight().size(); i++) {
+                partitionedTaskUnits.get(i % maxTasks).add(taskUnits.getRight().get(i));
+            }
+        }
+
+        List<Map<String, String>> allSourceTaskConfigs = new ArrayList<>();
+        partitionedTaskUnits.forEach(feedRangeTaskUnits -> {
+            Map<String, String> taskConfigs = this.config.originalsStrings();
+            taskConfigs.putAll(
+                CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(feedRangeTaskUnits));
+            allSourceTaskConfigs.add(taskConfigs);
+        });
+
+        // assign the metadata task to the last of the task config as it has least number of feedRange task units
+        allSourceTaskConfigs
+            .get(allSourceTaskConfigs.size() - 1)
+            .putAll(CosmosSourceTaskConfig.getMetadataTaskUnitConfigMap(taskUnits.getLeft()));
+
+        return allSourceTaskConfigs;
+    }
 
     private Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> getAllTaskUnits() {
         // TODO: add transient errors handling
@@ -159,7 +203,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
         }
 
         // there is existing offsets, need to find out effective feedRanges based on the offset
-        Map<Range<String>, String> effectiveFeedRangesContinuationMap = new HashMap<>();
+        Map<Range<String>, String> effectiveFeedRangesContinuationMap = new LinkedHashMap<>();
         for (Range<String> containerFeedRange : containerFeedRanges) {
             effectiveFeedRangesContinuationMap.putAll(
                 this.getEffectiveContinuationMapForSingleFeedRange(
@@ -183,7 +227,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
         FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
             this.offsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, containerFeedRange);
 
-        Map<Range<String>, String> effectiveContinuationMap = new HashMap<>();
+        Map<Range<String>, String> effectiveContinuationMap = new LinkedHashMap<>();
         if (feedRangeContinuationTopicOffset != null) {
             // we can find the continuation offset based on exact feedRange matching
             effectiveContinuationMap.put(
@@ -290,43 +334,6 @@ public class CosmosDBSourceConnector extends SourceConnector {
         });
         
         return effectiveContainersTopicMap;
-    }
-
-    private List<Map<String, String>> getTaskConfigs(int maxTasks) {
-        Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> taskUnits = this.getAllTaskUnits();
-
-        // The metadataTaskUnit is a one time only task when the connector starts/restarts,
-        // so there is no need to assign a dedicated task thread for it
-        // we are just going to assign it to one of the tasks which processing feedRanges tasks
-        List<List<FeedRangeTaskUnit>> partitionedTaskUnits = new ArrayList<>();
-        if (taskUnits.getRight().size() <= maxTasks) {
-            partitionedTaskUnits.addAll(
-                taskUnits.getRight().stream().map(taskUnit -> Arrays.asList(taskUnit)).collect(Collectors.toList()));
-        } else {
-            // using round-robin fashion to assign tasks to each buckets
-            for (int i = 0; i < maxTasks; i++) {
-                partitionedTaskUnits.add(new ArrayList<>());
-            }
-
-            for (int i = 0; i < taskUnits.getRight().size(); i++) {
-                partitionedTaskUnits.get(i % maxTasks).add(taskUnits.getRight().get(i));
-            }
-        }
-
-        List<Map<String, String>> allSourceTaskConfigs = new ArrayList<>();
-        partitionedTaskUnits.forEach(feedRangeTaskUnits -> {
-            Map<String, String> taskConfigs = this.config.originalsStrings();
-            taskConfigs.putAll(
-                CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(feedRangeTaskUnits));
-            allSourceTaskConfigs.add(taskConfigs);
-        });
-
-        // assign the metadata task to the last of the task config as it has least number of feedRange task units
-        allSourceTaskConfigs
-            .get(allSourceTaskConfigs.size() - 1)
-            .putAll(CosmosSourceTaskConfig.getMetadataTaskUnitConfigMap(taskUnits.getLeft()));
-
-        return allSourceTaskConfigs;
     }
 
     @Override

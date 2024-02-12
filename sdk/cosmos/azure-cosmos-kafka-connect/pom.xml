@@ -48,10 +48,10 @@ Licensed under the MIT License.
     <javaModulesSurefireArgLine>
       --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect=ALL-UNNAMED
       --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.implementation=ALL-UNNAMED
-      --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.models=ALL-UNNAMED
-      --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.source=com.fasterxml.jackson.databind
+      --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.implementation.source=com.fasterxml.jackson.databind,ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.apachecommons.lang=ALL-UNNAMED
+
     </javaModulesSurefireArgLine>
   </properties>
 
