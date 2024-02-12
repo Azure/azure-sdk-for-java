@@ -2,10 +2,13 @@ package com.azure.communication.messages;
 
 import com.azure.communication.messages.models.MessageTemplateItem;
 import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateItem;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -64,5 +67,22 @@ public class MessageTemplateAsyncClientTest extends CommunicationMessagesTestBas
             () -> messageTemplateClient.listTemplates("INVALID_CHANNEL_ID")
                 .toStream()
                 .collect(Collectors.toList()));
+    }
+
+    private MessageTemplateAsyncClient buildMessageTemplateAsyncClient(HttpClient httpClient) {
+        return getMessageTemplateClientBuilder(httpClient, null).buildAsyncClient();
+    }
+
+    private MessageTemplateAsyncClient buildMessageTemplateAsyncClientWithTokenCredential(HttpClient httpClient) {
+        TokenCredential tokenCredential;
+        if (interceptorManager.isPlaybackMode()) {
+            tokenCredential = new MockTokenCredential();
+        } else {
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
+        }
+
+        return  getMessageTemplateClientBuilder(httpClient, tokenCredential)
+            .addPolicy((context, next) -> logHeaders(next))
+            .buildAsyncClient();
     }
 }

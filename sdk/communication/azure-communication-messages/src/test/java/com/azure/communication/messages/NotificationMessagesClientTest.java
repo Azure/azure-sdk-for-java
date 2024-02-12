@@ -5,7 +5,10 @@ import com.azure.communication.messages.models.channels.WhatsAppMessageButtonSub
 import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindings;
 import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsButton;
 import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsComponent;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -228,5 +231,19 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
+    }
+
+    private NotificationMessagesClient buildNotificationMessagesClient(HttpClient httpClient) {
+        return getNotificationMessagesClientBuilder(httpClient, null).buildClient();
+    }
+
+    private NotificationMessagesClient buildNotificationMessagesClientWithTokenCredential(HttpClient httpClient) {
+        TokenCredential tokenCredential;
+        if (interceptorManager.isPlaybackMode()) {
+            tokenCredential = new MockTokenCredential();
+        } else {
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
+        }
+        return getNotificationMessagesClientBuilder(httpClient, tokenCredential).buildClient();
     }
 }

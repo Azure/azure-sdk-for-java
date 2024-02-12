@@ -4,9 +4,73 @@
 
 package com.azure.communication.messages;
 
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.communication.messages.readme
         // END: com.azure.communication.messages.readme
+    }
+
+    private void createNotificationMessageClientWithConnectionString() {
+        // BEGIN: readme-sample-createNotificationMessageClientWithConnectionString
+        NotificationMessagesClient notificationClient = new NotificationMessagesClientBuilder()
+            .connectionString("<CONNECTION_STRING>")
+            .buildClient();
+        // END: readme-sample-createNotificationMessageClientWithConnectionString
+    }
+
+    public void  createClientWithTokenCredential() {
+        // BEGIN: readme-sample-createNotificationMessageClientWithAAD
+        String endpoint = "https://<resource-name>.communication.azure.com";
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        NotificationMessagesClient notificationClient =  new NotificationMessagesClientBuilder()
+            .endpoint(endpoint)
+            .credential(credential)
+            .buildClient();
+        // END: readme-sample-createNotificationMessageClientWithAAD
+    }
+
+    public void  createClientWithAzureKeyCredential() {
+        // BEGIN: readme-sample-createNotificationMessageClientWithAzureKeyCredential
+        String endpoint = "https://<resource-name>.communication.azure.com";
+        AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
+        NotificationMessagesClient notificationClient = new NotificationMessagesClientBuilder()
+            .endpoint(endpoint)
+            .credential(azureKeyCredential)
+            .buildClient();
+        // END: readme-sample-createNotificationMessageClientWithAzureKeyCredential
+    }
+
+    private void createMessageTemplateClientWithConnectionString() {
+        // BEGIN: readme-sample-createMessageTemplateClientWithConnectionString
+        MessageTemplateClient messageTemplateClient = new MessageTemplateClientBuilder()
+            .connectionString("<CONNECTION_STRING>")
+            .buildClient();
+        // END: readme-sample-createMessageTemplateClientWithConnectionString
+    }
+
+    public void createMessageTemplateClientWithTokenCredential() {
+        // BEGIN: readme-sample-createMessageTemplateClientWithAAD
+        String endpoint = "https://<resource-name>.communication.azure.com";
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        MessageTemplateClient messageTemplateClient = new MessageTemplateClientBuilder()
+            .endpoint(endpoint)
+            .credential(credential)
+            .buildClient();
+        // END: readme-sample-createMessageTemplateClientWithAAD
+    }
+
+    public void createMessageTemplateClientWithAzureKeyCredential() {
+        // BEGIN: readme-sample-createMessageTemplateClientWithAzureKeyCredential
+        String endpoint = "https://<resource-name>.communication.azure.com";
+        AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
+        MessageTemplateClient messageTemplateClient = new MessageTemplateClientBuilder()
+            .endpoint(endpoint)
+            .credential(azureKeyCredential)
+            .buildClient();
+        // END: readme-sample-createMessageTemplateClientWithAzureKeyCredential
     }
 }

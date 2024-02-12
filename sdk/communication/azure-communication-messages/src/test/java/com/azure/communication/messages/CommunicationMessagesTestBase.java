@@ -49,7 +49,8 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))
+                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64",
+                    "repeatability-first-sent", "repeatability-request-id"))
                 .setComparingBodies(false)));
         }
 
@@ -97,75 +98,14 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
         return templateClientBuilder;
     }
 
-    protected NotificationMessagesClient buildNotificationMessagesClient(HttpClient httpClient) {
-        return getNotificationMessagesClientBuilder(httpClient, null).buildClient();
-    }
-
-    protected NotificationMessagesClient buildNotificationMessagesClientWithTokenCredential(HttpClient httpClient) {
-        TokenCredential tokenCredential;
-        if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = new MockTokenCredential();
-        } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
-        }
-        return getNotificationMessagesClientBuilder(httpClient, tokenCredential).buildClient();
-    }
-
-    protected NotificationMessagesAsyncClient buildNotificationMessagesAsyncClient(HttpClient httpClient) {
-        return getNotificationMessagesClientBuilder(httpClient, null).buildAsyncClient();
-    }
-
-    protected NotificationMessagesAsyncClient buildNotificationMessagesAsyncClientWithTokenCredential(HttpClient httpClient) {
-        TokenCredential tokenCredential;
-        if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = new MockTokenCredential();
-        } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
-        }
-        return getNotificationMessagesClientBuilder(httpClient, tokenCredential).buildAsyncClient();
-    }
-
-    protected MessageTemplateClient buildMessageTemplateClient(HttpClient httpClient) {
-        return getMessageTemplateClientBuilder(httpClient, null).buildClient();
-    }
-
-    protected MessageTemplateAsyncClient buildMessageTemplateAsyncClient(HttpClient httpClient) {
-        return getMessageTemplateClientBuilder(httpClient, null).buildAsyncClient();
-    }
-
-    protected MessageTemplateClient buildMessageTemplateClientWithTokenCredential(HttpClient httpClient) {
-        TokenCredential tokenCredential;
-        if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = new MockTokenCredential();
-        } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
-        }
-        return  getMessageTemplateClientBuilder(httpClient, tokenCredential)
-            .addPolicy((context, next) -> logHeaders(next))
-            .buildClient();
-    }
-
-    protected MessageTemplateAsyncClient buildMessageTemplateAsyncClientWithTokenCredential(HttpClient httpClient) {
-        TokenCredential tokenCredential;
-        if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = new MockTokenCredential();
-        } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
-        }
-
-        return  getMessageTemplateClientBuilder(httpClient, tokenCredential)
-            .addPolicy((context, next) -> logHeaders(next))
-            .buildAsyncClient();
-    }
-
-    private Mono<HttpResponse> logHeaders(HttpPipelineNextPolicy next) {
+    public Mono<HttpResponse> logHeaders(HttpPipelineNextPolicy next) {
         return next.process()
             .flatMap(httpResponse -> {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
 
                 // Should sanitize printed reponse url
-                System.out.println(" request : "
-                    + bufferedResponse.getRequest().toString());
+                System.out.println("MS-CV header for request "
+                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                 return Mono.just(bufferedResponse);
             });
     }
