@@ -18,7 +18,7 @@ public final class PageableListAccessHelper {
 
     public static <T> PageableList <T> create(List<T> data, String firstId, String lastId, boolean hasMore) {
         if(accessor == null) {
-            new PageableList<>(null, null, null, false);
+            new PageableList<>();
         }
         assert accessor != null;
         return accessor.create(data, firstId, lastId, hasMore);

@@ -59,11 +59,17 @@ public final class PageableList<T>  {
      * @param lastId the lastId value to set.
      * @param hasMore the hasMore value to set.
      */
-    public PageableList(List<T> data, String firstId, String lastId, boolean hasMore) {
+    private PageableList(List<T> data, String firstId, String lastId, boolean hasMore) {
         this.data = data;
         this.firstId = firstId;
         this.lastId = lastId;
         this.hasMore = hasMore;
+    }
+
+    /**
+     * Creates an instance of PageableList class.
+     */
+    public PageableList() {
     }
 
     /**

@@ -581,14 +581,11 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<AssistantFile> listAssistantFiles(String assistantId) {
         RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfAssistantFile assistantFileList =  listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfAssistantFile.class);
-        return PageableListAccessHelper.create(
-            assistantFileList.getData(),
-            assistantFileList.getFirstId(),
-            assistantFileList.getLastId(),
-            assistantFileList.isHasMore()
-        );
+        OpenAIPageableListOfAssistantFile assistantFileList
+            = listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
+                .toObject(OpenAIPageableListOfAssistantFile.class);
+        return PageableListAccessHelper.create(assistantFileList.getData(), assistantFileList.getFirstId(),
+            assistantFileList.getLastId(), assistantFileList.isHasMore());
     }
 
     /**
