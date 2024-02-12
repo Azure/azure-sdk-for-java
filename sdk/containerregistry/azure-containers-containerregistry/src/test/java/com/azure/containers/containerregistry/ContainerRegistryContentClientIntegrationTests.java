@@ -3,6 +3,7 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.models.ManifestList;
+import com.azure.containers.containerregistry.implementation.models.ManifestListAttributes;
 import com.azure.containers.containerregistry.implementation.models.V2Manifest;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.GetManifestResult;
@@ -47,11 +48,13 @@ import java.util.concurrent.atomic.AtomicLong;
 import static com.azure.containers.containerregistry.TestUtils.CONFIG_DATA;
 import static com.azure.containers.containerregistry.TestUtils.CONFIG_DIGEST;
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.containers.containerregistry.TestUtils.DOCKER_MANIFEST_LIST_TYPE;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.LAYER_DATA;
 import static com.azure.containers.containerregistry.TestUtils.LAYER_DIGEST;
 import static com.azure.containers.containerregistry.TestUtils.MANIFEST;
 import static com.azure.containers.containerregistry.TestUtils.MANIFEST_DIGEST;
+import static com.azure.containers.containerregistry.TestUtils.OCI_INDEX_MEDIA_TYPE;
 import static com.azure.containers.containerregistry.TestUtils.importImage;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
@@ -59,6 +62,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
@@ -379,19 +383,20 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void getManifestListManifest(HttpClient httpClient) {
+    public void getOciListManifest(HttpClient httpClient) {
         // TODO (limolkova) enable other modes after https://github.com/Azure/azure-sdk-tools/issues/6194 is released
         assumeTrue(super.getTestMode() == TestMode.LIVE);
         client = getContentClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
-        ManifestMediaType dockerListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
+
         Response<GetManifestResult> manifestResult = client.getManifestWithResponse("latest", Context.NONE);
         assertNotNull(manifestResult.getValue());
-        assertEquals(dockerListType, manifestResult.getValue().getManifestMediaType());
+        assertEquals(OCI_INDEX_MEDIA_TYPE, manifestResult.getValue().getManifestMediaType());
 
         ManifestList list = manifestResult.getValue().getManifest().toObject(ManifestList.class);
         assertEquals(2, list.getSchemaVersion());
-        assertEquals(dockerListType.toString(), list.getMediaType());
-        assertEquals(11, list.getManifests().size());
+        assertEquals(OCI_INDEX_MEDIA_TYPE.toString(), list.getMediaType());
+        // number of manifests is dynamic, so we just check that it's not empty
+        assertTrue(list.getManifests().size() > 0, "List of manifests is empty");
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -408,35 +413,38 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void getManifestDifferentType(HttpClient httpClient) {
+    public void getDockerManifestListType(HttpClient httpClient) {
         // TODO (limolkova) enable other modes after https://github.com/Azure/azure-sdk-tools/issues/6194 is released
         assumeTrue(super.getTestMode() == TestMode.LIVE);
-        client = getContentClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
 
-        // the original content there is docker v2 manifest list
-        GetManifestResult manifestResult = client.getManifest("latest");
+        client = getContentClient("docker-manifest-list-artifact", httpClient);
+        setManifestPrerequisites();
+        BinaryData manifestList = BinaryData.fromObject(createDockerV2ListManifest());
 
-        // but service does the best effort to return what it supports
-        assertEquals("application/vnd.docker.distribution.manifest.list.v2+json", manifestResult.getManifestMediaType().toString());
+        SetManifestResult result = client.setManifestWithResponse(new SetManifestOptions(manifestList, DOCKER_MANIFEST_LIST_TYPE), Context.NONE)
+            .getValue();
+
+        GetManifestResult manifestResult = client.getManifest(result.getDigest());
+        assertEquals(DOCKER_MANIFEST_LIST_TYPE, manifestResult.getManifestMediaType());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void getManifestListManifestAsync(HttpClient httpClient) {
+    public void getOciListManifestAsync(HttpClient httpClient) {
         // TODO (limolkova) enable other modes after https://github.com/Azure/azure-sdk-tools/issues/6194 is released
         assumeTrue(super.getTestMode() == TestMode.LIVE);
         asyncClient = getBlobAsyncClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
-        ManifestMediaType dockerListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
 
         StepVerifier.create(asyncClient.getManifestWithResponse("latest"))
             .assertNext(manifestResult -> {
                 assertNotNull(manifestResult.getValue());
-                assertEquals(dockerListType, manifestResult.getValue().getManifestMediaType());
+                assertEquals(OCI_INDEX_MEDIA_TYPE, manifestResult.getValue().getManifestMediaType());
                 // does not throw
                 ManifestList list = manifestResult.getValue().getManifest().toObject(ManifestList.class);
                 assertEquals(2, list.getSchemaVersion());
-                assertEquals(dockerListType.toString(), list.getMediaType());
-                assertEquals(11, list.getManifests().size());
+                assertEquals(OCI_INDEX_MEDIA_TYPE.toString(), list.getMediaType());
+                // number of manifests is dynamic, so we just check that it's not empty
+                assertTrue(list.getManifests().size() > 0, "List of manifests is empty");
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -493,6 +501,20 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
             .setDigest(LAYER_DIGEST));
 
         manifest.setLayers(layers);
+        return manifest;
+    }
+
+    private ManifestList createDockerV2ListManifest() {
+        ManifestList manifest = new ManifestList()
+            .setMediaType(DOCKER_MANIFEST_LIST_TYPE.toString())
+            .setSchemaVersion(2);
+
+        ManifestListAttributes layer = new ManifestListAttributes()
+            .setMediaType("application/vnd.docker.image.rootfs.diff.tar.gzip")
+            .setDigest(LAYER_DIGEST)
+            .setSize(28L);
+
+        manifest.setManifests(Collections.singletonList(layer));
         return manifest;
     }
 
