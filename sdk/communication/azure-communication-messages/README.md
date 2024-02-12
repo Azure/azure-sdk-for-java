@@ -75,40 +75,35 @@ You can get a key and/or connection string from your Communication Services reso
 
 ### Using `a connection string`
 
-``` readme-sample-createNotificationMessageClientWithConnectionString
-
+```java readme-sample-createNotificationMessageClientWithConnectionString
 NotificationMessagesClient notificationClient = new NotificationMessagesClientBuilder()
     .connectionString("<CONNECTION_STRING>")
     .buildClient();
-
 ```
 
-``` readme-sample-createMessageTemplateClientWithConnectionString
-  MessageTemplateClient templateClient = new MessageTemplateClientBuilder()
-            .connectionString("<CONNECTION_STRING>")
-            .buildClient();
-
+```java readme-sample-createMessageTemplateClientWithConnectionString
+MessageTemplateClient messageTemplateClient = new MessageTemplateClientBuilder()
+    .connectionString("<CONNECTION_STRING>")
+    .buildClient();
 ```
 ### Using `AzureKeyCredential`
 
-``` readme-sample-createNotificationMessageClientWithAzureKeyCredential
+```java readme-sample-createNotificationMessageClientWithAzureKeyCredential
 String endpoint = "https://<resource-name>.communication.azure.com";
 AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
 NotificationMessagesClient notificationClient = new NotificationMessagesClientBuilder()
     .endpoint(endpoint)
     .credential(azureKeyCredential)
     .buildClient();
-
 ```
 
-``` readme-sample-createMessageTemplateClientWithAzureKeyCredential
-  String endpoint = "https://<resource-name>.communication.azure.com";
-  AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
-  MessageTemplateClient messageTemplateClient = new MessageTemplateClientBuilder()
-            .endpoint(endpoint)
-            .credential(azureKeyCredential)
-            .buildClient();
-
+```java readme-sample-createMessageTemplateClientWithAzureKeyCredential
+String endpoint = "https://<resource-name>.communication.azure.com";
+AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
+MessageTemplateClient messageTemplateClient = new MessageTemplateClientBuilder()
+    .endpoint(endpoint)
+    .credential(azureKeyCredential)
+    .buildClient();
 ```
 
 ### Using `Azure Active Directory` managed identity
@@ -117,28 +112,27 @@ Client API key authentication is used in most of the examples, but you can also 
 
 The `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID`, and `AZURE_TENANT_ID` environment variables are needed to create a `DefaultAzureCredential` object.
 
-``` java readme-sample-createNotificationMessageClientWithAAD
-    String endpoint = "https://<resource-name>.communication.azure.com";
-    TokenCredential credential = new DefaultAzureCredentialBuilder().build();
-    NotificationMessagesClient notificationClient =  new NotificationMessagesClientBuilder()
-        .endpoint(endpoint)
-        .credential(credential)
-        .buildClient();
+```java readme-sample-createNotificationMessageClientWithAAD
+String endpoint = "https://<resource-name>.communication.azure.com";
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+NotificationMessagesClient notificationClient =  new NotificationMessagesClientBuilder()
+    .endpoint(endpoint)
+    .credential(credential)
+    .buildClient();
 ```
 
-``` readme-sample-createMessageTemplateClientWithAAD
-    String endpoint = "https://<resource-name>.communication.azure.com";
-    TokenCredential credential = new DefaultAzureCredentialBuilder().build();
-    MessageTemplateClient messageTemplateClient = new MessageTemplateClientBuilder()
-        .endpoint(endpoint)
-        .credential(credential)
-        .buildClient();
+```java readme-sample-createMessageTemplateClientWithAAD
+String endpoint = "https://<resource-name>.communication.azure.com";
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+MessageTemplateClient messageTemplateClient = new MessageTemplateClientBuilder()
+    .endpoint(endpoint)
+    .credential(credential)
+    .buildClient();
 ```
 
 ## Examples
 
-```Send Template Message Sample
-
+```java readme-sample-sendTemplateMessage
 /*
 * This sample shows how to send template message with below details
 * Name: sample_shipping_confirmation, Language: en_US
@@ -153,7 +147,7 @@ The `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID`, and `AZURE_TENANT_ID` environment 
       }
     ]
 * */
-private static void sendTemplateMessage() {
+private void sendTemplateMessage() {
 
     //Update Template Name and language according your template associate to your channel.
     MessageTemplate template = new MessageTemplate("sample_shipping_confirmation", "en_US");
@@ -170,54 +164,63 @@ private static void sendTemplateMessage() {
         .setBody(components);
     template.setBindings(bindings);
 
-    NotificationMessagesClient client = createClientWithTokenCredential();
+    NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
+    List<String> recipients = new ArrayList<>();
+    recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
     SendMessageResult result = client.send(
-        new TemplateNotificationContent(CHANNEL_ID, recipients, template));
+        new TemplateNotificationContent("CHANNEL_ID", recipients, template));
 
     result.getReceipts().forEach(r -> System.out.println("Message sent to:"+r.getTo() + " and message id:"+ r.getMessageId()));
 }
-
 ```
 
-```Send Text Message
+```java readme-sample-sendTextMessage
 /*
-* This sample shows how to send simple text message with below details
-* Note: Business cannot initiate conversation with text message.
-* */
-private static void sendTextMessage() {
-    NotificationMessagesClient client = createClientWithAzureKeyCredential();
+ * This sample shows how to send simple text message with below details
+ * Note: Business cannot initiate conversation with text message.
+ * */
+private void sendTextMessage() {
+    NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
+    List<String> recipients = new ArrayList<>();
+    recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
     SendMessageResult result = client.send(
-        new TextNotificationContent(CHANNEL_ID, recipients, "Hello from ACS messaging"));
+        new TextNotificationContent("<CHANNEL_ID>", recipients, "Hello from ACS messaging"));
 
     result.getReceipts().forEach(r -> System.out.println("Message sent to:"+r.getTo() + " and message id:"+ r.getMessageId()));
 }
-
 ```
 
-```Send Media Message
+```java readme-sample-sendMediaMessage
 /*
  * This sample shows how to send simple media (image, video, document) message with below details
  * Note: Business cannot initiate conversation with media message.
  * */
-public static void sendMediaMessage() {
+public void sendMediaMessage() {
     //Update the Media URL
     String mediaUrl = "https://wallpapercave.com/wp/wp2163723.jpg";
-
-    NotificationMessagesClient client = createClientWithConnectionString();
+    List<String> recipients = new ArrayList<>();
+    recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+    NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
     SendMessageResult result = client.send(
-        new MediaNotificationContent(CHANNEL_ID, recipients, mediaUrl));
+        new MediaNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
 
     result.getReceipts().forEach(r -> System.out.println("Message sent to:"+r.getTo() + " and message id:"+ r.getMessageId()));
 }
-
 ```
 ### Get Template List for given channel example:
-```List Tempalte Sample
-MessageTemplateClient templateClient = new MessageTemplateClientBuilder()
-                .connectionString("<CONNECTION_STRING>")
-                .buildClient();
+```java readme-sample-ListTemplates
+MessageTemplateClient templateClient =
+    new MessageTemplateClientBuilder()
+        .connectionString("<Connection_String>")
+        .buildClient();
 
-PagedIterable<MessageTemplateItem> response = templateClient.listTemplates("<Channel_Registration_Id>");
+PagedIterable<MessageTemplateItem> response = templateClient.listTemplates("<CHANNEL_ID>");
 
 response.stream().forEach(t -> {
     WhatsAppMessageTemplateItem template = (WhatsAppMessageTemplateItem) t ;
@@ -228,7 +231,6 @@ response.stream().forEach(t -> {
     System.out.println("Template Content :: "+template.getContent());
     System.out.println("===============================");
 });
-
 ```
 
 ## Troubleshooting
