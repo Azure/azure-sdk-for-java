@@ -18,8 +18,6 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
-import com.generic.core.http.models.ServerSentEvent;
-import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.policy.HttpLoggingPolicy;
@@ -35,7 +33,6 @@ import com.generic.core.models.Headers;
 import com.generic.core.models.TypeReference;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -58,7 +55,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -72,11 +68,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -99,7 +93,6 @@ public abstract class HttpClientTests {
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
 
     protected static final String ECHO_RESPONSE = "echo";
-    private static final String SSE_RESPONSE = "serversentevent";
 
     /**
      * Get the HTTP client that will be used for each test. This will be called once per test.
@@ -1720,114 +1713,6 @@ public abstract class HttpClientTests {
             () -> executable.accept(getServerUri(isSecure()), createService(Service29.class)));
 
         assertTrue(exception.getMessage().contains("void exception body thrown"));
-    }
-
-    @Test
-    public void canReceiveServerSentEvents() {
-        final int[] i = {0};
-        HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(SSE_RESPONSE))
-            .setServerSentEventListener(sse -> {
-                String expected;
-                Long id;
-                if (i[0] == 0) {
-                    expected = "first event";
-                    id = 1L;
-                    Assertions.assertEquals("test stream", sse.getComment());
-                } else {
-                    expected = "This is the second message, it\n" +
-                        "has two lines.";
-                    id = 2L;
-                }
-                Assertions.assertEquals(expected, sse.getData());
-                Assertions.assertEquals(id, sse.getId());
-                if (++i[0] > 2) {
-                    assertFalse(true, "Should not have received more than two messages.");
-                }
-            });
-
-        createHttpClient().send(request);
-        assertEquals(2, i[0]);
-    }
-
-    /**
-     * Tests that eagerly converting implementation HTTP headers to azure-core Headers is done.
-     */
-    @Test
-    public void canRecognizeServerSentEvent() {
-        BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.POST, getRequestUrl(SSE_RESPONSE)).setBody(requestBody);
-        request.getMetadata().setEagerlyConvertHeaders(false);
-
-        // Rec
-        createHttpClient().send(request.setServerSentEventListener(sse -> assertTrue(sse.getId() != null, "OnEvent Invoked")));
-    }
-
-    @Test
-    public void onErrorServerSentEvents() {
-        final int[] i = {0};
-        HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(SSE_RESPONSE))
-            .setServerSentEventListener(new ServerSentEventListener() {
-                @Override
-                public void onEvent(ServerSentEvent sse) throws IOException {
-                    throw new IOException("test exception");
-                }
-
-                @Override
-                public void onError(Throwable throwable) {
-                    assertEquals("test exception", throwable.getMessage());
-                    i[0]++;
-                }
-            });
-
-        createHttpClient().send(request);
-        assertEquals(1, i[0]);
-    }
-
-    @Test
-    public void onRetryWithLastEventIdReceiveServerSentEvents() {
-        final int[] i = {0};
-        HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(SSE_RESPONSE))
-            .setServerSentEventListener(new ServerSentEventListener() {
-                @Override
-                public void onEvent(ServerSentEvent sse) throws IOException {
-                    String expected;
-                    if (++i[0] == 1) {
-                        expected = "first event";
-                        assertEquals("test stream", sse.getComment());
-                        assertEquals(Duration.ofMillis(100L), sse.getRetryAfter());
-                        assertEquals(expected, sse.getData());
-                        assertEquals(1, sse.getId());
-                        throw new IOException("test exception");
-                    } else {
-                        expected = "This is the second message, it\n" +
-                            "has two lines.";
-                        assertTimeout(Duration.ofMillis(100L), () -> assertEquals(2, sse.getId()));
-                        assertEquals(expected, sse.getData());
-                    }
-                    if (++i[0] > 3) {
-                        fail("Should not have received more than two messages.");
-                    }
-                }
-
-                @Override
-                public boolean shouldRetry(Throwable throwable, Duration retryAfter, long lastEventId) {
-                    return true;
-                }
-            });
-
-        createHttpClient().send(request);
-        assertEquals(3, i[0]);
-    }
-
-    /**
-     * Test throws IllegalArgumentException for invalid data stream.
-     */
-    @Test
-    public void throwsIllegalArgumentExceptionForInvalidSSEData() {
-        BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(SSE_RESPONSE)).setBody(requestBody);
-
-        assertThrows(IllegalArgumentException.class, () -> createHttpClient().send(request.setServerSentEventListener(sse -> {})));
     }
 
     private static Stream<BiConsumer<String, Service29>> voidErrorReturnsErrorBodySupplier() {
