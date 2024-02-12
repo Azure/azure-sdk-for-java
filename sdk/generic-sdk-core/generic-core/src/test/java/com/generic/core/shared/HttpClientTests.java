@@ -1794,7 +1794,7 @@ public abstract class HttpClientTests {
                     if (++i[0] == 1) {
                         expected = "first event";
                         assertEquals("test stream", sse.getComment());
-                        assertEquals(100L, sse.getRetryAfter());
+                        assertEquals(Duration.ofMillis(100L), sse.getRetryAfter());
                         assertEquals(expected, sse.getData());
                         assertEquals(1, sse.getId());
                         throw new IOException("test exception");

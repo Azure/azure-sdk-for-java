@@ -64,8 +64,6 @@
       --add-opens com.generic.core/com.generic.core.util.serializer=ALL-UNNAMED
 
       --add-reads com.generic.core=ALL-UNNAMED
-
-      --add-exports com.generic.core/com.generic.core.shared=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
