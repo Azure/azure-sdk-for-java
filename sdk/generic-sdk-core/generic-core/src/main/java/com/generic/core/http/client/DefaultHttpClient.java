@@ -282,11 +282,11 @@ class DefaultHttpClient implements HttpClient {
 
         for (String line : lines) {
             int idx = line.indexOf(':');
-            if (idx <= 0) {
-                if (idx == 0) {
-                    event.setComment(line.substring(1).trim());
-                }
+            if (idx == 0) {
+                event.setComment(line.substring(1).trim());
                 continue;
+            } else if (idx < 0) {
+                throw new IllegalArgumentException("Invalid data received from server");
             }
 
             String field = line.substring(0, idx).trim().toLowerCase();
@@ -312,6 +312,8 @@ class DefaultHttpClient implements HttpClient {
                         event.setRetryAfter(Duration.ofMillis(Long.parseLong(value)));
                     }
                     break;
+                default:
+                    throw new IllegalArgumentException("Invalid data received from server");
             }
         }
 

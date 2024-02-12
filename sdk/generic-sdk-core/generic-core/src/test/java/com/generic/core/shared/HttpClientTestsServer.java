@@ -122,6 +122,11 @@ public class HttpClientTestsServer {
                 } else {
                     sendSSEResponse(resp);
                 }
+            } else if (put && SSE_RESPONSE.equals(path)) {
+                resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
+                resp.setStatus(200);
+                resp.getOutputStream().write(("msg hello world \n\n").getBytes());
+                resp.flushBuffer();
             } else {
                 throw new ServletException("Unexpected method: " + req.getMethod());
             }

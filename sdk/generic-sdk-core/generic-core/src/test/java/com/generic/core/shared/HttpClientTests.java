@@ -1819,6 +1819,16 @@ public abstract class HttpClientTests {
         assertEquals(3, i[0]);
     }
 
+    /**
+     * Test throws IllegalArgumentException for invalid data stream.
+     */
+    @Test
+    public void throwsIllegalArgumentExceptionForInvalidSSEData() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(SSE_RESPONSE)).setBody(requestBody);
+
+        assertThrows(IllegalArgumentException.class, () -> createHttpClient().send(request.setServerSentEventListener(sse -> {})));
+    }
 
     private static Stream<BiConsumer<String, Service29>> voidErrorReturnsErrorBodySupplier() {
         return Stream.of(
