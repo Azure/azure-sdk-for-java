@@ -5,16 +5,14 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A representation of image file content in a thread message.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("image_file")
 @Immutable
 public final class MessageImageFileContent extends MessageContent {
 
@@ -22,8 +20,7 @@ public final class MessageImageFileContent extends MessageContent {
      * The image file for this thread message content item.
      */
     @Generated
-    @JsonProperty(value = "image_file")
-    private MessageImageFileDetails imageFile;
+    private final MessageImageFileDetails imageFile;
 
     /**
      * Creates an instance of MessageImageFileContent class.
@@ -31,8 +28,7 @@ public final class MessageImageFileContent extends MessageContent {
      * @param imageFile the imageFile value to set.
      */
     @Generated
-    @JsonCreator
-    private MessageImageFileContent(@JsonProperty(value = "image_file") MessageImageFileDetails imageFile) {
+    private MessageImageFileContent(MessageImageFileDetails imageFile) {
         this.imageFile = imageFile;
     }
 
@@ -44,5 +40,46 @@ public final class MessageImageFileContent extends MessageContent {
     @Generated
     public MessageImageFileDetails getImageFile() {
         return this.imageFile;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", "image_file");
+        jsonWriter.writeJsonField("image_file", this.imageFile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageImageFileContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageImageFileContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the MessageImageFileContent.
+     */
+    public static MessageImageFileContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MessageImageFileDetails imageFile = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    String type = reader.getString();
+                    if (!"image_file".equals(type)) {
+                        throw new IllegalStateException(
+                            "'type' was expected to be non-null and equal to 'image_file'. The found 'type' was '"
+                                + type + "'.");
+                    }
+                } else if ("image_file".equals(fieldName)) {
+                    imageFile = MessageImageFileDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new MessageImageFileContent(imageFile);
+        });
     }
 }

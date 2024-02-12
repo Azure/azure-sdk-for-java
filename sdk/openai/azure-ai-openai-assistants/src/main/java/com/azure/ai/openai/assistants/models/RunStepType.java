@@ -5,7 +5,6 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class RunStepType extends ExpandableStringEnum<RunStepType> {
      * @return the corresponding RunStepType.
      */
     @Generated
-    @JsonCreator
     public static RunStepType fromString(String name) {
         return fromString(name, RunStepType.class);
     }

@@ -5,16 +5,14 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A representation of a log output emitted by a code interpreter tool in response to a tool call by the model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("logs")
 @Immutable
 public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterpreterToolCallOutput {
 
@@ -22,8 +20,7 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
      * The serialized log output emitted by the code interpreter.
      */
     @Generated
-    @JsonProperty(value = "logs")
-    private String logs;
+    private final String logs;
 
     /**
      * Creates an instance of RunStepCodeInterpreterLogOutput class.
@@ -31,8 +28,7 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
      * @param logs the logs value to set.
      */
     @Generated
-    @JsonCreator
-    private RunStepCodeInterpreterLogOutput(@JsonProperty(value = "logs") String logs) {
+    private RunStepCodeInterpreterLogOutput(String logs) {
         this.logs = logs;
     }
 
@@ -44,5 +40,46 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
     @Generated
     public String getLogs() {
         return this.logs;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", "logs");
+        jsonWriter.writeStringField("logs", this.logs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunStepCodeInterpreterLogOutput from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepCodeInterpreterLogOutput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the RunStepCodeInterpreterLogOutput.
+     */
+    public static RunStepCodeInterpreterLogOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String logs = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    String type = reader.getString();
+                    if (!"logs".equals(type)) {
+                        throw new IllegalStateException(
+                            "'type' was expected to be non-null and equal to 'logs'. The found 'type' was '" + type
+                                + "'.");
+                    }
+                } else if ("logs".equals(fieldName)) {
+                    logs = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new RunStepCodeInterpreterLogOutput(logs);
+        });
     }
 }

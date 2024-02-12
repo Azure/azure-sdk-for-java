@@ -5,16 +5,14 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The detailed information associated with a message creation run step.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("message_creation")
 @Immutable
 public final class RunStepMessageCreationDetails extends RunStepDetails {
 
@@ -22,8 +20,7 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
      * Information about the message creation associated with this run step.
      */
     @Generated
-    @JsonProperty(value = "message_creation")
-    private RunStepMessageCreationReference messageCreation;
+    private final RunStepMessageCreationReference messageCreation;
 
     /**
      * Creates an instance of RunStepMessageCreationDetails class.
@@ -31,9 +28,7 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
      * @param messageCreation the messageCreation value to set.
      */
     @Generated
-    @JsonCreator
-    private RunStepMessageCreationDetails(
-        @JsonProperty(value = "message_creation") RunStepMessageCreationReference messageCreation) {
+    private RunStepMessageCreationDetails(RunStepMessageCreationReference messageCreation) {
         this.messageCreation = messageCreation;
     }
 
@@ -45,5 +40,46 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
     @Generated
     public RunStepMessageCreationReference getMessageCreation() {
         return this.messageCreation;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", "message_creation");
+        jsonWriter.writeJsonField("message_creation", this.messageCreation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunStepMessageCreationDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepMessageCreationDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the RunStepMessageCreationDetails.
+     */
+    public static RunStepMessageCreationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunStepMessageCreationReference messageCreation = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    String type = reader.getString();
+                    if (!"message_creation".equals(type)) {
+                        throw new IllegalStateException(
+                            "'type' was expected to be non-null and equal to 'message_creation'. The found 'type' was '"
+                                + type + "'.");
+                    }
+                } else if ("message_creation".equals(fieldName)) {
+                    messageCreation = RunStepMessageCreationReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new RunStepMessageCreationDetails(messageCreation);
+        });
     }
 }
