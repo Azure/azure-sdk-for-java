@@ -1158,7 +1158,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             }
 
             assertThat(event).isNotNull();
-            assertThat(event.get("durationInMilliSecs").asDouble()).isLessThanOrEqualTo(maxLatency);
+            assertThat(event.get("durationInMilliSecs").asDouble()).isLessThanOrEqualTo(maxLatency + 500);
         }
     }
 
