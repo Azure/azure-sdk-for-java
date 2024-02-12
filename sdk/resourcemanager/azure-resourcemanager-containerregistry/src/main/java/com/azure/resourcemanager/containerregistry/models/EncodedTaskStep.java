@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The properties of a encoded task step. */
+/**
+ * The properties of a encoded task step.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("EncodedTask")
 @Fluent
@@ -34,13 +36,15 @@ public final class EncodedTaskStep extends TaskStepProperties {
     @JsonProperty(value = "values")
     private List<SetValue> values;
 
-    /** Creates an instance of EncodedTaskStep class. */
+    /**
+     * Creates an instance of EncodedTaskStep class.
+     */
     public EncodedTaskStep() {
     }
 
     /**
      * Get the encodedTaskContent property: Base64 encoded value of the template/definition file content.
-     *
+     * 
      * @return the encodedTaskContent value.
      */
     public String encodedTaskContent() {
@@ -49,7 +53,7 @@ public final class EncodedTaskStep extends TaskStepProperties {
 
     /**
      * Set the encodedTaskContent property: Base64 encoded value of the template/definition file content.
-     *
+     * 
      * @param encodedTaskContent the encodedTaskContent value to set.
      * @return the EncodedTaskStep object itself.
      */
@@ -60,7 +64,7 @@ public final class EncodedTaskStep extends TaskStepProperties {
 
     /**
      * Get the encodedValuesContent property: Base64 encoded value of the parameters/values file content.
-     *
+     * 
      * @return the encodedValuesContent value.
      */
     public String encodedValuesContent() {
@@ -69,7 +73,7 @@ public final class EncodedTaskStep extends TaskStepProperties {
 
     /**
      * Set the encodedValuesContent property: Base64 encoded value of the parameters/values file content.
-     *
+     * 
      * @param encodedValuesContent the encodedValuesContent value to set.
      * @return the EncodedTaskStep object itself.
      */
@@ -80,7 +84,7 @@ public final class EncodedTaskStep extends TaskStepProperties {
 
     /**
      * Get the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @return the values value.
      */
     public List<SetValue> values() {
@@ -89,7 +93,7 @@ public final class EncodedTaskStep extends TaskStepProperties {
 
     /**
      * Set the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @param values the values value to set.
      * @return the EncodedTaskStep object itself.
      */
@@ -98,14 +102,18 @@ public final class EncodedTaskStep extends TaskStepProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncodedTaskStep withContextPath(String contextPath) {
         super.withContextPath(contextPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncodedTaskStep withContextAccessToken(String contextAccessToken) {
         super.withContextAccessToken(contextAccessToken);
@@ -114,17 +122,15 @@ public final class EncodedTaskStep extends TaskStepProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (encodedTaskContent() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property encodedTaskContent in model EncodedTaskStep"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property encodedTaskContent in model EncodedTaskStep"));
         }
         if (values() != null) {
             values().forEach(e -> e.validate());

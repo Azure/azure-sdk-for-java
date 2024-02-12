@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Activity Log Alert rule object for the body of patch operations. */
+/**
+ * An Activity Log Alert rule object for the body of patch operations.
+ */
 @Fluent
 public final class AlertRulePatchObject {
     /*
@@ -26,13 +28,15 @@ public final class AlertRulePatchObject {
     @JsonProperty(value = "properties")
     private AlertRulePatchProperties innerProperties;
 
-    /** Creates an instance of AlertRulePatchObject class. */
+    /**
+     * Creates an instance of AlertRulePatchObject class.
+     */
     public AlertRulePatchObject() {
     }
 
     /**
      * Get the tags property: The resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class AlertRulePatchObject {
 
     /**
      * Set the tags property: The resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AlertRulePatchObject object itself.
      */
@@ -52,7 +56,7 @@ public final class AlertRulePatchObject {
 
     /**
      * Get the innerProperties property: The activity log alert settings for an update operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AlertRulePatchProperties innerProperties() {
@@ -62,7 +66,7 @@ public final class AlertRulePatchObject {
     /**
      * Get the enabled property: Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert
      * rule is not enabled, then none of its actions will be activated.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -72,7 +76,7 @@ public final class AlertRulePatchObject {
     /**
      * Set the enabled property: Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert
      * rule is not enabled, then none of its actions will be activated.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AlertRulePatchObject object itself.
      */
@@ -86,7 +90,7 @@ public final class AlertRulePatchObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

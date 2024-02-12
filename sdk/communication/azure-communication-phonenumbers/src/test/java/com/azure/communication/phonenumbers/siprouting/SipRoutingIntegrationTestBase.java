@@ -6,8 +6,11 @@ import com.azure.communication.common.implementation.CommunicationConnectionStri
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.implementation.TestingHelpers;
@@ -30,6 +33,9 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
         .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
     private static final String AZURE_TEST_DOMAIN = Configuration.getGlobalConfiguration()
         .get("AZURE_TEST_DOMAIN", "testdomain.com");
+    protected static final String MS_USERAGENT_OVERRIDE = Configuration.getGlobalConfiguration()
+        .get("AZURE_USERAGENT_OVERRIDE", "");
+    private static final String MS_USERAGENT_HEADER_NAME = "x-ms-useragent";
 
     protected static final String SET_TRUNK_ROUTE_NAME = "route99";
     protected static final String SET_TRUNK_ROUTE_NUMBER_PATTERN = "99.*";
@@ -100,7 +106,34 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
         SipRoutingClientBuilder builder = new SipRoutingClientBuilder();
         builder
             .httpClient(getHttpClient(httpClient))
-            .connectionString(CONNECTION_STRING);
+            .connectionString(CONNECTION_STRING)
+            .addPolicy(addMSUserAgentPolicy());
+
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        if (interceptorManager.isPlaybackMode()) {
+            addTestProxyMatchers();
+        }
+        if (!interceptorManager.isLiveMode()) {
+            addTestProxySanitizers();
+        }
+
+        return builder;
+    }
+
+    protected SipRoutingClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
+        SipRoutingClientBuilder builder = new SipRoutingClientBuilder();
+        builder
+            .httpClient(getHttpClient(httpClient))
+            .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
+            .addPolicy(addMSUserAgentPolicy());
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new MockTokenCredential());
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
 
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -128,36 +161,17 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
                 TestProxySanitizerType.BODY_KEY)));
     }
 
-    protected SipRoutingClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
-        SipRoutingClientBuilder builder = new SipRoutingClientBuilder();
-        builder
-            .httpClient(getHttpClient(httpClient))
-            .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint());
-
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new MockTokenCredential());
-        } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-
-        if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-        if (interceptorManager.isPlaybackMode()) {
-            addTestProxyMatchers();
-        }
-        if (!interceptorManager.isLiveMode()) {
-            addTestProxySanitizers();
-        }
-
-        return builder;
+    protected SipRoutingClientBuilder addLoggingPolicy(SipRoutingClientBuilder builder, String testName) {
+        return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 
-    private HttpClient getHttpClient(HttpClient httpClient) {
-        if (getTestMode() == TestMode.PLAYBACK) {
-            return interceptorManager.getPlaybackClient();
+    private HttpPipelinePolicy addMSUserAgentPolicy() {
+        HttpHeaders headers = new HttpHeaders();
+        if (!MS_USERAGENT_OVERRIDE.isEmpty()) {
+            headers.add(MS_USERAGENT_HEADER_NAME, MS_USERAGENT_OVERRIDE);
         }
-        return httpClient;
+
+        return new AddHeadersPolicy(headers);
     }
 
     private void addTestProxyMatchers() {
@@ -165,9 +179,11 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
             new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64", "x-ms-content-sha256"))));
     }
 
-
-    protected SipRoutingClientBuilder addLoggingPolicy(SipRoutingClientBuilder builder, String testName) {
-        return builder.addPolicy((context, next) -> logHeaders(testName, next));
+    private HttpClient getHttpClient(HttpClient httpClient) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            return interceptorManager.getPlaybackClient();
+        }
+        return httpClient;
     }
 
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {

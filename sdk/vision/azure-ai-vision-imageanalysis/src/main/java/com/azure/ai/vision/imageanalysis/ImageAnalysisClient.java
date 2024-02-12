@@ -21,7 +21,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -576,7 +575,7 @@ public final class ImageAnalysisClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
      * @return represents the outcome of an Image Analysis operation.
-     * 
+     *
      * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-analysis-from-url -->
      * <pre>
      * &#47;&#47;
@@ -590,8 +589,8 @@ public final class ImageAnalysisClient {
      *     .setSmartCropsAspectRatios&#40;Arrays.asList&#40;0.9, 1.33&#41;&#41;
      *     .setModelVersion&#40;&quot;latest&quot;&#41;;
      *
-     * ImageAnalysisResult result = client.analyze&#40;
-     *     new URL&#40;&quot;https:&#47;&#47;aka.ms&#47;azsdk&#47;image-analysis&#47;sample.jpg&quot;&#41;,
+     * ImageAnalysisResult result = client.analyzeFromUrl&#40;
+     *     &quot;https:&#47;&#47;aka.ms&#47;azsdk&#47;image-analysis&#47;sample.jpg&quot;,
      *     Arrays.asList&#40;
      *         VisualFeatures.SMART_CROPS,
      *         VisualFeatures.CAPTION,
@@ -605,12 +604,12 @@ public final class ImageAnalysisClient {
      * <!-- end com.azure.ai.vision.imageanalysis.sync-analysis-from-url -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageAnalysisResult analyze(URL imageUrl, List<VisualFeatures> visualFeatures,
+    public ImageAnalysisResult analyzeFromUrl(String imageUrl, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
-            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), null, null, null, null);
+            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl), null, null, null, null);
         } else {
-            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), options.getLanguage(),
+            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl), options.getLanguage(),
                 options.isGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
@@ -632,7 +631,7 @@ public final class ImageAnalysisClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
      * @return represents the outcome of an Image Analysis operation.
-     * 
+     *
      * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-analysis-from-file -->
      * <pre>
      * &#47;&#47;

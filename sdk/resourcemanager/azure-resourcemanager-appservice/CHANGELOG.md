@@ -10,6 +10,18 @@
 
 ### Other Changes
 
+## 2.35.2 (2024-02-05)
+
+### Bugs Fixed
+
+- Fixed a bug that Function App in Azure Container Apps environment doesn't support creating from private container registry image.
+
+## 2.35.1 (2024-01-31)
+
+### Bugs Fixed
+
+- Mitigated backend error when creating Function App in Azure Container Apps environment.
+
 ## 2.35.0 (2024-01-26)
 
 ### Other Changes

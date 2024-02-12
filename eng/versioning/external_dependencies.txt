@@ -23,7 +23,7 @@ com.github.spotbugs:spotbugs;4.8.3
 com.github.spotbugs:spotbugs-annotations;4.8.3
 com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
 com.google.code.gson:gson;2.10
-com.google.guava:guava;32.0.1-jre
+com.google.guava:guava;33.0.0-jre
 com.h2database:h2;2.2.220
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.microsoft.azure:applicationinsights-core;3.4.1
@@ -67,8 +67,8 @@ io.netty:netty-tcnative-boringssl-static;2.0.62.Final
 io.netty:netty-transport-native-epoll;4.1.101.Final
 io.netty:netty-transport-native-unix-common;4.1.101.Final
 io.netty:netty-transport-native-kqueue;4.1.101.Final
-io.projectreactor.netty:reactor-netty;1.0.39
-io.projectreactor.netty:reactor-netty-http;1.0.39
+io.projectreactor.netty:reactor-netty;1.0.40
+io.projectreactor.netty:reactor-netty-http;1.0.40
 io.projectreactor:reactor-core;3.4.34
 io.vertx:vertx-codegen;4.5.0
 io.vertx:vertx-core;4.5.0
@@ -348,7 +348,7 @@ test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
 cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.5
-cosmos_com.google.guava:guava;32.0.1-jre
+cosmos_com.google.guava:guava;33.0.0-jre
 cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
 cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview
 cosmos_io.dropwizard.metrics:metrics-core;4.1.0

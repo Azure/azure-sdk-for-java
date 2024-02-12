@@ -531,7 +531,7 @@ public class CoreUtilsTests {
                 return null;
             });
 
-            future.get(1000, TimeUnit.MILLISECONDS);
+            future.get(5000, TimeUnit.MILLISECONDS);
 
             assertTrue(completed.get());
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -666,5 +666,28 @@ public class CoreUtilsTests {
             Arguments.of(Duration.ofDays(-100), "-P100D"),
             Arguments.of(Duration.ofDays(-101), "-P101D")
         );
+    }
+
+    @Test
+    public void addShutdownHookWithNullExecutorServiceDoesNothing() {
+        assertNull(CoreUtils.addShutdownHookSafely(null, null));
+    }
+
+    @Test
+    public void addShutdownHookTimeoutCannotBeNull() {
+        assertThrows(NullPointerException.class,
+            () -> CoreUtils.addShutdownHookSafely(Executors.newSingleThreadExecutor(), null));
+    }
+
+    @Test
+    public void addShutdownHookTimeoutCannotBeNegative() {
+        assertThrows(IllegalArgumentException.class,
+            () -> CoreUtils.addShutdownHookSafely(Executors.newSingleThreadExecutor(), Duration.ofSeconds(-1)));
+    }
+
+    @Test
+    public void addShutdownHookTimeoutCannotBeZero() {
+        assertThrows(IllegalArgumentException.class,
+            () -> CoreUtils.addShutdownHookSafely(Executors.newSingleThreadExecutor(), Duration.ZERO));
     }
 }

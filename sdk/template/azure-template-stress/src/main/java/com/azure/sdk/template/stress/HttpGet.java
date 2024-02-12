@@ -3,6 +3,7 @@
 
 package com.azure.sdk.template.stress;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -20,7 +21,9 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Performance test for simple HTTP GET against test server.
@@ -31,6 +34,9 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(HttpGet.class);
     private final HttpPipeline pipeline;
     private final URL url;
+
+    // This is almost-unique-id generator. We could use UUID, but it's a bit more expensive to use.
+    private final AtomicLong clientRequestId = new AtomicLong(Instant.now().getEpochSecond());
 
     /**
      * Creates an instance of performance test.
@@ -52,10 +58,9 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     }
 
     private void runInternal() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
-        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
-            response.buffer().close();
+        try (HttpResponse response = pipeline.sendSync(createRequest(), Context.NONE)) {
+            response.getBodyAsBinaryData().toBytes();
         }
     }
 
@@ -65,11 +70,17 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     }
 
     private Mono<Void> runInternalAsync() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
-        return Mono.usingWhen(pipeline.send(request),
+        return Mono.usingWhen(pipeline.send(createRequest()),
                 response -> response.getBody().then(),
                 response -> Mono.fromRunnable(response::close));
+    }
+
+    private HttpRequest createRequest() {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-stress");
+        request.getHeaders().set(HttpHeaderName.X_MS_CLIENT_REQUEST_ID, String.valueOf(clientRequestId.incrementAndGet()));
+        return request;
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {

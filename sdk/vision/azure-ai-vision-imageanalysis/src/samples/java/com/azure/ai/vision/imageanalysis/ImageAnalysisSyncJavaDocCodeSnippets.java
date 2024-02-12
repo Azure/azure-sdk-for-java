@@ -17,7 +17,6 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 
 public class ImageAnalysisSyncJavaDocCodeSnippets {
@@ -99,8 +98,8 @@ public class ImageAnalysisSyncJavaDocCodeSnippets {
             .setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33))
             .setModelVersion("latest");
 
-        ImageAnalysisResult result = client.analyze(
-            new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"),
+        ImageAnalysisResult result = client.analyzeFromUrl(
+            "https://aka.ms/azsdk/image-analysis/sample.jpg",
             Arrays.asList(
                 VisualFeatures.SMART_CROPS,
                 VisualFeatures.CAPTION,

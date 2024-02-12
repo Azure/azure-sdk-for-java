@@ -1,6 +1,6 @@
 # Release History
 
-## 1.14.0-beta.2 (Unreleased)
+## 1.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.14.0 (2024-02-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
+- Upgraded `reactor-netty-http` from `1.0.39` to `1.0.40`.
 
 ## 1.13.10 (2023-11-03)
 

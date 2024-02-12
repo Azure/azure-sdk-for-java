@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of custom data column. */
+/**
+ * Definition of custom data column.
+ */
 @Fluent
 public final class ColumnDefinition {
     /*
@@ -22,13 +24,15 @@ public final class ColumnDefinition {
     @JsonProperty(value = "type")
     private KnownColumnDefinitionType type;
 
-    /** Creates an instance of ColumnDefinition class. */
+    /**
+     * Creates an instance of ColumnDefinition class.
+     */
     public ColumnDefinition() {
     }
 
     /**
      * Get the name property: The name of the column.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class ColumnDefinition {
 
     /**
      * Set the name property: The name of the column.
-     *
+     * 
      * @param name the name value to set.
      * @return the ColumnDefinition object itself.
      */
@@ -48,7 +52,7 @@ public final class ColumnDefinition {
 
     /**
      * Get the type property: The type of the column data.
-     *
+     * 
      * @return the type value.
      */
     public KnownColumnDefinitionType type() {
@@ -57,7 +61,7 @@ public final class ColumnDefinition {
 
     /**
      * Set the type property: The type of the column data.
-     *
+     * 
      * @param type the type value to set.
      * @return the ColumnDefinition object itself.
      */
@@ -68,7 +72,7 @@ public final class ColumnDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

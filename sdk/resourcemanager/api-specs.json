@@ -58,7 +58,7 @@
     "dir": "azure-resourcemanager-containerregistry",
     "source": "specification/containerregistry/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerregistry",
-    "args": "--tag=package-2023-07"
+    "args": "--tag=package-2023-07 --modelerfour.lenient-model-deduplication=true"
   },
   "containerregistry-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerregistry",
@@ -162,7 +162,8 @@
     "dir": "azure-resourcemanager-monitor",
     "source": "specification/monitor/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.monitor",
-    "args": "--tag=package-composite-v1 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString,DiagnosticSettingsCategoryResourceCollection --rename-model=MetricUnit:Unit"
+    "args": "--tag=package-composite-v1 --modelerfour.lenient-model-deduplication=true --add-inner=AutoscaleProfile,ScaleRule,LocalizableString,DiagnosticSettingsCategoryResourceCollection --rename-model=MetricUnit:Unit",
+    "note": "Use commit c0f92082a788895368a738a9200e24971157d7ca, and remove Swagger from Microsoft.Monitor"
   },
   "monitor-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-monitor",

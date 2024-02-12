@@ -37,7 +37,26 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 /**
- * HttpClient implementation for OkHttp.
+ * This class provides a OkHttp-based implementation for the {@link HttpClient} interface. Creating an instance of this
+ * class can be achieved by using the {@link OkHttpAsyncHttpClientBuilder} class, which offers OkHttp-specific API for
+ * features such as {@link OkHttpAsyncHttpClientBuilder#proxy(ProxyOptions) setProxy configuration}, and much more.
+ *
+ * <p><strong>Sample: Construct OkHttpAsyncHttpClient with Default Configuration</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a OkHttp HttpClient that uses port 80 and has no proxy.</p>
+ *
+ * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+ *         .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
+ *
+ * <p>For more ways to instantiate OkHttpAsyncHttpClient, refer to {@link OkHttpAsyncHttpClientBuilder}.</p>
+ *
+ * @see com.azure.core.http.okhttp
+ * @see OkHttpAsyncHttpClientBuilder
+ * @see HttpClient
  */
 class OkHttpAsyncHttpClient implements HttpClient {
 
