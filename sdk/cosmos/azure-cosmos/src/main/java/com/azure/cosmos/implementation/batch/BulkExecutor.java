@@ -10,7 +10,6 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -47,12 +46,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -112,10 +110,9 @@ public final class BulkExecutor<TContext> implements Disposable {
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
     private final Sinks.Many<CosmosItemOperation> mainSink;
     private final List<FluxSink<CosmosItemOperation>> groupSinks;
-    private final ScheduledThreadPoolExecutor executorService;
     private final CosmosAsyncClient cosmosClient;
     private final String bulkSpanName;
-    private ScheduledFuture<?> scheduledFutureForFlush;
+    private final AtomicReference<Disposable> scheduledFutureForFlush;
     private final String identifier = "BulkExecutor-" + instanceCount.incrementAndGet();
 
     private final BulkExecutorDiagnosticsTracker diagnosticsTracker;
@@ -170,22 +167,13 @@ public final class BulkExecutor<TContext> implements Disposable {
         mainSink =  Sinks.many().unicast().onBackpressureBuffer();
         groupSinks = new CopyOnWriteArrayList<>();
 
-        // The evaluation whether a micro batch should be flushed to the backend happens whenever
-        // a new ItemOperation arrives. If the batch size is exceeded or the oldest buffered ItemOperation
-        // exceeds the MicroBatchInterval or the total serialized length exceeds, the micro batch gets flushed to the backend.
-        // To make sure we flush the buffers at least every maxMicroBatchIntervalInMs we start a timer
-        // that will trigger artificial ItemOperations that are only used to flush the buffers (and will be
-        // filtered out before sending requests to the backend)
-        this.executorService = new ScheduledThreadPoolExecutor(
-            1,
-            new CosmosDaemonThreadFactory(identifier));
-        this.executorService.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
-        this.executorService.setRemoveOnCancelPolicy(true);
-        this.scheduledFutureForFlush = this.executorService.scheduleWithFixedDelay(
-            this::onFlush,
-            this.maxMicroBatchIntervalInMs,
-            this.maxMicroBatchIntervalInMs,
-            TimeUnit.MILLISECONDS);
+        this.scheduledFutureForFlush = new AtomicReference(CosmosSchedulers
+            .BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC
+            .schedulePeriodically(
+                this::onFlush,
+                this.maxMicroBatchIntervalInMs,
+                this.maxMicroBatchIntervalInMs,
+                TimeUnit.MILLISECONDS));
 
         logger.debug("Instantiated BulkExecutor, Context: {}",
             this.operationContextText);
@@ -208,12 +196,27 @@ public final class BulkExecutor<TContext> implements Disposable {
         return this.isDisposed.get();
     }
 
-    private void cancelFlushTask() {
-        ScheduledFuture<?> scheduledFutureSnapshot = this.scheduledFutureForFlush;
+    private void cancelFlushTask(boolean initializeAggressiveFlush) {
+        long flushIntervalAfterDrainingIncomingFlux = Math.min(
+            this.maxMicroBatchIntervalInMs,
+            BatchRequestResponseConstants
+                .DEFAULT_MAX_MICRO_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS);
+
+        Disposable newFlushTask = initializeAggressiveFlush
+            ? CosmosSchedulers
+                .BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC
+                .schedulePeriodically(
+                    this::onFlush,
+                    flushIntervalAfterDrainingIncomingFlux,
+                    flushIntervalAfterDrainingIncomingFlux,
+                    TimeUnit.MILLISECONDS)
+            : null;
+
+        Disposable scheduledFutureSnapshot = this.scheduledFutureForFlush.getAndSet(newFlushTask);
 
         if (scheduledFutureSnapshot != null) {
             try {
-                scheduledFutureSnapshot.cancel(true);
+                scheduledFutureSnapshot.dispose();
                 logger.debug("Cancelled all future scheduled tasks {}, Context: {}", getThreadInfo(), this.operationContextText);
             } catch (Exception e) {
                 logger.warn("Failed to cancel scheduled tasks{}, Context: {}", getThreadInfo(), this.operationContextText, e);
@@ -228,15 +231,7 @@ public final class BulkExecutor<TContext> implements Disposable {
             groupSinks.forEach(FluxSink::complete);
             logger.debug("All group sinks completed, Context: {}", this.operationContextText);
 
-            this.cancelFlushTask();
-
-            try {
-                logger.debug("Shutting down the executor service, Context: {}", this.operationContextText);
-                this.executorService.shutdownNow();
-                logger.debug("Successfully shut down the executor service, Context: {}", this.operationContextText);
-            } catch (Exception e) {
-                logger.warn("Failed to shut down the executor service, Context: {}", this.operationContextText, e);
-            }
+            this.cancelFlushTask(false);
         }
     }
 
@@ -348,20 +343,8 @@ public final class BulkExecutor<TContext> implements Disposable {
 
                             completeAllSinks();
                         } else {
-                            this.cancelFlushTask();
-
+                            this.cancelFlushTask(true);
                             this.onFlush();
-
-                            long flushIntervalAfterDrainingIncomingFlux = Math.min(
-                                this.maxMicroBatchIntervalInMs,
-                                BatchRequestResponseConstants
-                                    .DEFAULT_MAX_MICRO_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS);
-
-                            this.scheduledFutureForFlush = this.executorService.scheduleWithFixedDelay(
-                                this::onFlush,
-                                flushIntervalAfterDrainingIncomingFlux,
-                                flushIntervalAfterDrainingIncomingFlux,
-                                TimeUnit.MILLISECONDS);
 
                             logger.debug("Scheduled new flush operation {}, Context: {}", getThreadInfo(), this.operationContextText);
                         }
