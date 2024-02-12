@@ -179,4 +179,14 @@ public class Utility {
                 new SnapshotUpdateParameters().setStatus(status), ifMatch, null)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
+
+    public static String parseNextLink(String nextLink) {
+        // actual value of next link: </kv?api-version=2023-10-01&$Select=&after=a2V5MTg4Cg%3D%3D>; rel="next"
+        if (nextLink == null) {
+            return null;
+        }
+        String[] parts = nextLink.split(";");
+        return parts[0].substring(1, parts[0].length() - 1);
+    }
+
 }

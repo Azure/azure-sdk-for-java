@@ -12,6 +12,8 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -48,6 +50,7 @@ import static com.azure.data.appconfiguration.implementation.ConfigurationSettin
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
+import static com.azure.data.appconfiguration.implementation.Utility.parseNextLink;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotAsync;
@@ -1037,27 +1040,81 @@ public final class ConfigurationAsyncClient {
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
+        final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
+        AtomicInteger pageETagIndex = new AtomicInteger(1);
         return new PagedFlux<>(
-            () -> withContext(
-                context -> serviceClient.getKeyValuesSinglePageAsync(
-                    keyFilter,
-                    labelFilter,
-                    null,
-                    acceptDateTime,
-                    settingFields,
-                    null,
-                    null,
-                    null,
-                    addTracingNamespace(context))
-                               .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
-            nextLink -> withContext(
-                context -> serviceClient.getKeyValuesNextSinglePageAsync(
-                    nextLink,
-                    acceptDateTime,
-                    null,
-                    null,
-                    addTracingNamespace(context))
-                               .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
+                () -> withContext(context -> {
+                    String firstPageETag = (matchConditionsList == null || matchConditionsList.isEmpty())
+                            ? null
+                            : matchConditionsList.get(0).getIfNoneMatch();
+                    return serviceClient.getKeyValuesSinglePageAsync(
+                            keyFilter,
+                            labelFilter,
+                            null,
+                            acceptDateTime,
+                            settingFields,
+                            null,
+                            null,
+                            firstPageETag,
+                            addTracingNamespace(context))
+                            .onErrorResume(
+                                HttpResponseException.class,
+                                (Function<Throwable, Mono<PagedResponse<KeyValue>>>) throwable -> {
+                                    HttpResponseException e = (HttpResponseException) throwable;
+                                    HttpResponse httpResponse = e.getResponse();
+                                    String continuationToken = parseNextLink(httpResponse.getHeaderValue("link"));
+
+                                    if (httpResponse.getStatusCode() == 304) {
+                                        return Mono.just(
+                                                new PagedResponseBase<>(
+                                                        httpResponse.getRequest(),
+                                                        httpResponse.getStatusCode(),
+                                                        httpResponse.getHeaders(),
+                                                        null,
+                                                        continuationToken,
+                                                        null));
+                                    }
+                                    return Mono.error(throwable);
+                                })
+                            .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse));
+                }),
+                nextLink -> withContext(context -> {
+                    int pageETagListSize = (matchConditionsList == null || matchConditionsList.isEmpty())
+                            ? 0
+                            : matchConditionsList.size();
+                    String nextPageETag = null;
+                    int pageETagIndexValue = pageETagIndex.get();
+                    if (pageETagIndexValue < pageETagListSize) {
+                        nextPageETag = matchConditionsList.get(pageETagIndexValue).getIfNoneMatch();
+                        pageETagIndex.set(pageETagIndexValue + 1);
+                    }
+                    return serviceClient
+                            .getKeyValuesNextSinglePageAsync(
+                                    nextLink,
+                                    acceptDateTime,
+                                    null,
+                                    nextPageETag,
+                                    addTracingNamespace(context))
+                            .onErrorResume(
+                                    HttpResponseException.class,
+                                    (Function<Throwable, Mono<PagedResponse<KeyValue>>>) throwable -> {
+                                        HttpResponseException e = (HttpResponseException) throwable;
+                                        HttpResponse httpResponse = e.getResponse();
+                                        String continuationToken = parseNextLink(httpResponse.getHeaderValue("link"));
+                                        if (httpResponse.getStatusCode() == 304) {
+                                            return Mono.just(
+                                                    new PagedResponseBase<>(
+                                                            httpResponse.getRequest(),
+                                                            httpResponse.getStatusCode(),
+                                                            httpResponse.getHeaders(),
+                                                            null,
+                                                            continuationToken,
+                                                            null));
+                                        }
+                                        return Mono.error(throwable);
+                                    })
+                            .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse));
+                })
         );
     }
 
