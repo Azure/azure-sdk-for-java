@@ -291,7 +291,7 @@ private static RedisClient createLettuceRedisClient(String hostName, int port, S
 public static class AzureRedisCredentials implements RedisCredentials {
     // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
     private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-        .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+        .addScopes("https://redis.azure.com/.default");
     private TokenCredential tokenCredential;
     private final String username;
 
@@ -346,7 +346,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
 // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
-TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
 // Host Name, Port, Username, and Microsoft Entra token are required here.
@@ -510,7 +510,7 @@ private static RedisClient createLettuceRedisClient(String hostName, int port, R
  */
 public static class AzureRedisCredentials implements RedisCredentials {
     private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-        .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+        .addScopes("https://redis.azure.com/.default");
     private TokenCredential tokenCredential;
     private TokenRefreshCache refreshCache;
     private final String username;
@@ -653,7 +653,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
 // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
-TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 
 // Instantiate the Token Refresh Cache, this cache will proactively refresh the access token 2 minutes before expiry.
 TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);

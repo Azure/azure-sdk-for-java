@@ -51,7 +51,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
 String token = defaultAzureCredential
     .getToken(new TokenRequestContext()
-        .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default")).block().getToken();
+        .addScopes("https://redis.azure.com/.default")).block().getToken();
 
 // Create Client Configuration
 Config config = new Config();
@@ -99,7 +99,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
 // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
-TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
 // Create Redisson Client
@@ -171,7 +171,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
 // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
-TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 
 // Instantiate the Token Refresh Cache, this cache will proactively refresh the access token 2 - 5 minutes before expiry.
 TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
