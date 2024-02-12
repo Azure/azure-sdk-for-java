@@ -7,9 +7,11 @@ import static com.azure.ai.openai.assistants.implementation.OpenAIUtils.addAzure
 
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
+import com.azure.ai.openai.assistants.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.assistants.implementation.models.CreateAssistantFileRequest;
 import com.azure.ai.openai.assistants.implementation.models.CreateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistantFile;
 import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
@@ -578,11 +580,15 @@ public final class AssistantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<AssistantFile> listAssistantFiles(String assistantId) {
-        // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
-            .toObject(new TypeReference<PageableList<AssistantFile>>() {
-            });
+        OpenAIPageableListOfAssistantFile assistantFileList =  listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfAssistantFile.class);
+        return PageableListAccessHelper.create(
+            assistantFileList.getData(),
+            assistantFileList.getFirstId(),
+            assistantFileList.getLastId(),
+            assistantFileList.isHasMore()
+        );
     }
 
     /**
