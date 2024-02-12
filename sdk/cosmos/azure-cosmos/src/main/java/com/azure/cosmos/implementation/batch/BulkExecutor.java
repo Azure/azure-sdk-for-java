@@ -167,7 +167,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         mainSink =  Sinks.many().unicast().onBackpressureBuffer();
         groupSinks = new CopyOnWriteArrayList<>();
 
-        this.scheduledFutureForFlush = new AtomicReference(CosmosSchedulers
+        this.scheduledFutureForFlush = new AtomicReference<>(CosmosSchedulers
             .BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC
             .schedulePeriodically(
                 this::onFlush,
