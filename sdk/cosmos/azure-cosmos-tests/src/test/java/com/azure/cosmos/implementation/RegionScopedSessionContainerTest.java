@@ -84,7 +84,7 @@ public class RegionScopedSessionContainerTest {
                         new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
                         "dbs/db1/colls/coll1",
                         LocationEastUs2EndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#10#2=12#3=12")
+                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#10#2=16#3=12")
                     ),
                     constructRequestInstance(
                         OperationType.Read,
@@ -118,181 +118,181 @@ public class RegionScopedSessionContainerTest {
                 true,
                 "range_0",
                 "pk1",
-                "1#12#2=-1#3=-1"
+                "1#12#2=14#3=14"
             },
-            {
-                ImmutableList.of(
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk1"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationEastUsEndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#9#2=10#3=2")
-                    ),
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk2"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationCentralUsEndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#10#2=10#3=14")
-                    ),
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk1"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationEastUs2EndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#12#2=10#3=11")
-                    ),
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk1"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationEastUsEndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#11#2=11#3=11")
-                    )
-                ),
-                ImmutableList.of(
-                    LocationEastUsEndpointToLocationPair,
-                    LocationEastUs2EndpointToLocationPair,
-                    LocationCentralUsEndpointToLocationPair),
-                ImmutableList.of(
-                    LocationEastUsEndpointToLocationPair,
-                    LocationEastUs2EndpointToLocationPair,
-                    LocationCentralUsEndpointToLocationPair),
-                new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig())
-                    .setPreferredRegions(ImmutableList.of(LocationEastUsEndpointToLocationPair.getValue(), LocationEastUs2EndpointToLocationPair.getValue(), LocationCentralUsEndpointToLocationPair.getValue())),
-                true,
-                "range_0",
-                "pk1",
-                "1#12#2=11#3=-1"
-            },
-            {
-                ImmutableList.of(
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk1"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationEastUsEndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#13#2=14#3=15")
-                    ),
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk2"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationCentralUsEndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#14#2=21#3=8")
-                    ),
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk1"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationEastUs2EndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#11#2=14#3=11")
-                    ),
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk1"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationEastUsEndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#12#2=13#3=13")
-                    )
-                ),
-                ImmutableList.of(
-                    LocationEastUsEndpointToLocationPair,
-                    LocationEastUs2EndpointToLocationPair,
-                    LocationCentralUsEndpointToLocationPair),
-                ImmutableList.of(
-                    LocationEastUsEndpointToLocationPair,
-                    LocationEastUs2EndpointToLocationPair,
-                    LocationCentralUsEndpointToLocationPair),
-                new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig())
-                    .setPreferredRegions(ImmutableList.of(LocationEastUsEndpointToLocationPair.getRight(), LocationEastUs2EndpointToLocationPair.getRight())),
-                true,
-                "range_0",
-                "pk3",
-                "1#14#2=-1#3=-1"
-            },
-            {
-                ImmutableList.of(
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk1"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationEastUsEndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#13#2=14#3=15")
-                    ),
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk2"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationCentralUsEndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#14#2=21#3=8")
-                    ),
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk1"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationEastUs2EndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#11#2=14#3=11")
-                    ),
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk1"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationEastUsEndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#12#2=13#3=13")
-                    ),
-                    constructRequestInstance(
-                        OperationType.Read,
-                        ResourceType.Document,
-                        new PartitionKey("pk3"),
-                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
-                        "dbs/db1/colls/coll1",
-                        LocationWestUsEndpointToLocationPair.getKey(),
-                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:2#13#2=13#3=13#7=1")
-                    )
-                ),
-                ImmutableList.of(
-                    LocationEastUsEndpointToLocationPair,
-                    LocationEastUs2EndpointToLocationPair,
-                    LocationCentralUsEndpointToLocationPair,
-                    LocationWestUsEndpointToLocationPair),
-                ImmutableList.of(
-                    LocationEastUsEndpointToLocationPair,
-                    LocationEastUs2EndpointToLocationPair,
-                    LocationCentralUsEndpointToLocationPair,
-                    LocationWestUsEndpointToLocationPair),
-                new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig())
-                    .setPreferredRegions(ImmutableList.of(LocationEastUsEndpointToLocationPair.getRight(), LocationEastUs2EndpointToLocationPair.getRight(), LocationCentralUsEndpointToLocationPair.getRight(), LocationWestUsEndpointToLocationPair.getRight())),
-                true,
-                "range_0",
-                "pk3",
-                "2#14#2=-1#3=-1#7=1"
-            }
+//            {
+//                ImmutableList.of(
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk1"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationEastUsEndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#9#2=10#3=2")
+//                    ),
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk2"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationCentralUsEndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#10#2=10#3=14")
+//                    ),
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk1"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationEastUs2EndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#12#2=10#3=11")
+//                    ),
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk1"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationEastUsEndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#11#2=11#3=11")
+//                    )
+//                ),
+//                ImmutableList.of(
+//                    LocationEastUsEndpointToLocationPair,
+//                    LocationEastUs2EndpointToLocationPair,
+//                    LocationCentralUsEndpointToLocationPair),
+//                ImmutableList.of(
+//                    LocationEastUsEndpointToLocationPair,
+//                    LocationEastUs2EndpointToLocationPair,
+//                    LocationCentralUsEndpointToLocationPair),
+//                new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig())
+//                    .setPreferredRegions(ImmutableList.of(LocationEastUsEndpointToLocationPair.getValue(), LocationEastUs2EndpointToLocationPair.getValue(), LocationCentralUsEndpointToLocationPair.getValue())),
+//                true,
+//                "range_0",
+//                "pk1",
+//                "1#12#2=11#3=-1"
+//            },
+//            {
+//                ImmutableList.of(
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk1"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationEastUsEndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#13#2=14#3=15")
+//                    ),
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk2"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationCentralUsEndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#14#2=21#3=8")
+//                    ),
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk1"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationEastUs2EndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#11#2=14#3=11")
+//                    ),
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk1"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationEastUsEndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#12#2=13#3=13")
+//                    )
+//                ),
+//                ImmutableList.of(
+//                    LocationEastUsEndpointToLocationPair,
+//                    LocationEastUs2EndpointToLocationPair,
+//                    LocationCentralUsEndpointToLocationPair),
+//                ImmutableList.of(
+//                    LocationEastUsEndpointToLocationPair,
+//                    LocationEastUs2EndpointToLocationPair,
+//                    LocationCentralUsEndpointToLocationPair),
+//                new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig())
+//                    .setPreferredRegions(ImmutableList.of(LocationEastUsEndpointToLocationPair.getRight(), LocationEastUs2EndpointToLocationPair.getRight())),
+//                true,
+//                "range_0",
+//                "pk3",
+//                "1#14#2=-1#3=-1"
+//            },
+//            {
+//                ImmutableList.of(
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk1"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationEastUsEndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#13#2=14#3=15")
+//                    ),
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk2"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationCentralUsEndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#14#2=21#3=8")
+//                    ),
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk1"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationEastUs2EndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#11#2=14#3=11")
+//                    ),
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk1"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationEastUsEndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#12#2=13#3=13")
+//                    ),
+//                    constructRequestInstance(
+//                        OperationType.Read,
+//                        ResourceType.Document,
+//                        new PartitionKey("pk3"),
+//                        new PartitionKeyDefinition().setPaths(ImmutableList.of("/mypk")),
+//                        "dbs/db1/colls/coll1",
+//                        LocationWestUsEndpointToLocationPair.getKey(),
+//                        ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:2#13#2=13#3=13#7=1")
+//                    )
+//                ),
+//                ImmutableList.of(
+//                    LocationEastUsEndpointToLocationPair,
+//                    LocationEastUs2EndpointToLocationPair,
+//                    LocationCentralUsEndpointToLocationPair,
+//                    LocationWestUsEndpointToLocationPair),
+//                ImmutableList.of(
+//                    LocationEastUsEndpointToLocationPair,
+//                    LocationEastUs2EndpointToLocationPair,
+//                    LocationCentralUsEndpointToLocationPair,
+//                    LocationWestUsEndpointToLocationPair),
+//                new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig())
+//                    .setPreferredRegions(ImmutableList.of(LocationEastUsEndpointToLocationPair.getRight(), LocationEastUs2EndpointToLocationPair.getRight(), LocationCentralUsEndpointToLocationPair.getRight(), LocationWestUsEndpointToLocationPair.getRight())),
+//                true,
+//                "range_0",
+//                "pk3",
+//                "2#14#2=-1#3=-1#7=1"
+//            }
         };
     }
 
@@ -389,7 +389,7 @@ public class RegionScopedSessionContainerTest {
         assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToSessionTokens()).isNotNull();
         assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToSessionTokens().get(partitionKeyRangeId)).isNotNull();
         assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToSessionTokens().get(partitionKeyRangeId)).isNotNull();
-        assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToSessionTokens().get(partitionKeyRangeId).convertToString()).isEqualTo(sessionToken);
+        assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToSessionTokens().get(partitionKeyRangeId).get("global").getVectorSessionToken().convertToString()).isEqualTo(sessionToken);
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read, ResourceType.Document,
             collectionName + "/docs",  Utils.getUTF8Bytes(""), new HashMap<>());

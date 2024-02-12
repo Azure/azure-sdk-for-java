@@ -151,6 +151,7 @@ public class SessionTokenHelper {
                                                            PartitionKeyDefinition partitionKeyDefinition,
                                                            Long collectionRid,
                                                            String partitionKeyRangeId,
+                                                           String firstEffectivePreferredReadableRegion,
                                                            boolean canUseBloomFilter) {
 
         if (partitionKeyRangeIdToSessionTokens != null) {
@@ -166,13 +167,13 @@ public class SessionTokenHelper {
 
                     return partitionKeyRangeIdToSessionTokens
                         .tryResolveSessionToken(partitionKeyPossibleRegions,
-                            partitionKeyRangeId, true);
+                            partitionKeyRangeId, firstEffectivePreferredReadableRegion, true);
 
                 }
 
                 return partitionKeyRangeIdToSessionTokens
                     .tryResolveSessionToken(partitionKeyPossibleRegions,
-                        partitionKeyRangeId, false);
+                        partitionKeyRangeId, firstEffectivePreferredReadableRegion, false);
 
             } else {
                 if (canUseBloomFilter) {
@@ -195,7 +196,7 @@ public class SessionTokenHelper {
 
                             resolvedSessionTokenForParentPkRangeId = partitionKeyRangeIdToSessionTokens
                                 .tryResolveSessionToken(partitionKeyPossibleRegions,
-                                    parentId, canUseBloomFilter);
+                                    parentId, firstEffectivePreferredReadableRegion, canUseBloomFilter);
 
 
                             if (resolvedSessionTokenForParentPkRangeId != null) {

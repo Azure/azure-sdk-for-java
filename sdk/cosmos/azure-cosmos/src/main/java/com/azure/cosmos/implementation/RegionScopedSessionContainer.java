@@ -194,13 +194,13 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
             return SessionTokenHelper.resolvePartitionLocalSessionToken(request, this.partitionKeyBasedBloomFilter,
                 partitionKeyRangeIdToSessionTokens, partitionKeyInternal.v, partitionKeyDefinition.v,
-                collectionRid, partitionKeyRangeId, true);
+                collectionRid, partitionKeyRangeId, this.firstPreferredWritableRegionCached.get(), true);
 
         }
 
         return SessionTokenHelper.resolvePartitionLocalSessionToken(request, this.partitionKeyBasedBloomFilter,
             partitionKeyRangeIdToSessionTokens, partitionKeyInternal.v, partitionKeyDefinition.v,
-            collectionRid, partitionKeyRangeId, false);
+            collectionRid, partitionKeyRangeId, this.firstPreferredWritableRegionCached.get(), false);
     }
 
     @Override
@@ -346,7 +346,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         String partitionKeyRangeId,
         String regionRoutedTo) {
 
-        partitionKeyRangeIdToSessionTokens.tryRecordSessionToken(parsedSessionToken, partitionKeyRangeId, regionRoutedTo);
+        partitionKeyRangeIdToSessionTokens.tryRecordSessionToken(parsedSessionToken, partitionKeyRangeId, this.firstPreferredWritableRegionCached.get(), regionRoutedTo);
     }
 
     private void addSessionToken(RxDocumentServiceRequest request, ResourceId resourceId, String partitionKeyRangeId, ISessionToken parsedSessionToken) {
@@ -355,6 +355,10 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
         PartitionKeyRangeIdToSessionTokens partitionKeyRangeIdToSessionTokens
             = this.collectionResourceIdToRegionScopedSessionTokens.get(collectionResourceId);
+
+        if (this.firstPreferredWritableRegionCached.get().equals(StringUtils.EMPTY)) {
+            this.firstPreferredWritableRegionCached.set(extractFirstEffectivePreferredReadableRegion(this.globalEndpointManager));
+        }
 
         String regionRoutedTo = null;
 
@@ -421,14 +425,18 @@ public class RegionScopedSessionContainer implements ISessionContainer {
     }
 
     private static String getCombinedSessionToken(PartitionKeyRangeIdToSessionTokens partitionKeyRangeIdToSessionTokens) {
-        ConcurrentHashMap<String, ISessionToken> tokens
+        ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress>> tokens
             = partitionKeyRangeIdToSessionTokens.getPartitionKeyRangeIdToSessionTokens();
 
         StringBuilder result = new StringBuilder();
         if (tokens != null) {
-            for (Iterator<Map.Entry<String, ISessionToken>> iterator = tokens.entrySet().iterator(); iterator.hasNext(); ) {
-                Map.Entry<String, ISessionToken> entry = iterator.next();
-                result = result.append(entry.getKey()).append(":").append(entry.getValue().convertToString());
+            for (Iterator<Map.Entry<String, ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress>>> iterator = tokens.entrySet().iterator(); iterator.hasNext(); ) {
+                Map.Entry<String,  ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress>> entry = iterator.next();
+
+                String partitionKeyRangeId = entry.getKey();
+                String sessionTokenAsString = entry.getValue().get("global").getVectorSessionToken().convertToString();
+
+                result = result.append(partitionKeyRangeId).append(":").append(sessionTokenAsString);
                 if (iterator.hasNext()) {
                     result = result.append(",");
                 }

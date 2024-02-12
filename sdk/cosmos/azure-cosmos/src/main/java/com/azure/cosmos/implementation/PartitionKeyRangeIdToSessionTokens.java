@@ -19,13 +19,13 @@ public class PartitionKeyRangeIdToSessionTokens {
 
     private static final Logger logger = LoggerFactory.getLogger(PartitionKeyRangeIdToSessionTokens.class);
 
-    private final ConcurrentHashMap<String, ConcurrentHashMap<String, RegionLevelLsnProgress>> partitionKeyRangeIdToSessionTokens;
+    private final ConcurrentHashMap<String, ConcurrentHashMap<String, RegionLevelProgress>> partitionKeyRangeIdToSessionTokens;
 
     public PartitionKeyRangeIdToSessionTokens() {
         this.partitionKeyRangeIdToSessionTokens = new ConcurrentHashMap<>();
     }
 
-    public ConcurrentHashMap<String, ISessionToken> getPartitionKeyRangeIdToSessionTokens() {
+    public ConcurrentHashMap<String, ConcurrentHashMap<String, RegionLevelProgress>> getPartitionKeyRangeIdToSessionTokens() {
         return this.partitionKeyRangeIdToSessionTokens;
     }
 
@@ -46,7 +46,7 @@ public class PartitionKeyRangeIdToSessionTokens {
         return Objects.hash(partitionKeyRangeIdToSessionTokens);
     }
 
-    public void tryRecordSessionToken(ISessionToken parsedSessionToken, String partitionKeyRangeId, String regionRoutedTo) {
+    public void tryRecordSessionToken(ISessionToken parsedSessionToken, String partitionKeyRangeId, String firstEffectivePreferredReadableRegion, String regionRoutedTo) {
 
         this.partitionKeyRangeIdToSessionTokens.compute(partitionKeyRangeId, (partitionKeyRangeIdAsKey, regionToSessionTokenAsVal) -> {
 
@@ -62,12 +62,13 @@ public class PartitionKeyRangeIdToSessionTokens {
                     regionToSessionTokenAsVal = new ConcurrentHashMap<>();
                 }
 
-                regionToSessionTokenAsVal.merge("global", new RegionLevelLsnProgress(Long.MIN_VALUE, Long.MIN_VALUE, vectorSessionToken), (regionLevelProgressExisting, regionLevelPrgressNew) -> {
+                // store the global representation of the session token
+                regionToSessionTokenAsVal.merge("global", new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, vectorSessionToken), (regionLevelProgressExisting, regionLevelPrgressNew) -> {
 
                     VectorSessionToken existingVectorSessionToken = regionLevelProgressExisting.vectorSessionToken;
                     VectorSessionToken newVectorSessionToken = regionLevelPrgressNew.vectorSessionToken;
 
-                    return new RegionLevelLsnProgress(Long.MIN_VALUE, Long.MIN_VALUE, (VectorSessionToken) existingVectorSessionToken.merge(newVectorSessionToken));
+                    return new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, (VectorSessionToken) existingVectorSessionToken.merge(newVectorSessionToken));
                 });
 
                  if (regionId != -1) {
@@ -75,12 +76,16 @@ public class PartitionKeyRangeIdToSessionTokens {
 
                     // regionId maps to a satellite region
                     if (localLsn != Long.MIN_VALUE) {
-                        regionToSessionTokenAsVal.put(regionRoutedTo, new RegionLevelLsnProgress(parsedSessionToken.getLSN(), localLsn, null));
-
+                        regionToSessionTokenAsVal.put(regionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, null));
                     }
                     // regionId maps to a hub region
                     else {
-                        regionToSessionTokenAsVal.put(regionRoutedTo, new RegionLevelLsnProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, null));
+                        regionToSessionTokenAsVal.put(regionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, null));
+                    }
+
+                    // store the session token in parsed form if obtained from the firstEffectivePreferredReadableRegion
+                    if (regionRoutedTo.equals(firstEffectivePreferredReadableRegion)) {
+                        regionToSessionTokenAsVal.put(regionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, vectorSessionToken));
                     }
                 }
 
@@ -94,12 +99,20 @@ public class PartitionKeyRangeIdToSessionTokens {
     public ISessionToken tryResolveSessionToken(
         Set<String> lesserPreferredRegionsPkProbablyRequestedFrom,
         String partitionKeyRangeId,
+        String firstEffectivePreferredReadableRegion,
         boolean canUseRegionScopedSessionTokens) {
 
-        RegionLevelLsnProgress globalLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, "global");
+        RegionLevelProgress globalLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, "global");
         VectorSessionToken globalSessionToken = globalLevelProgress.vectorSessionToken;
 
         if (!canUseRegionScopedSessionTokens) {
+            return globalSessionToken;
+        }
+
+        RegionLevelProgress baseLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, firstEffectivePreferredReadableRegion);
+        VectorSessionToken baseSessionToken = baseLevelProgress.vectorSessionToken;
+
+        if (baseSessionToken == null) {
             return globalSessionToken;
         }
 
@@ -123,7 +136,7 @@ public class PartitionKeyRangeIdToSessionTokens {
             }
 
             if (lesserPreferredRegionsPkProbablyRequestedFrom.contains(normalizedRegionName)) {
-                RegionLevelLsnProgress satelliteRegionProgress = this.resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, normalizedRegionName);
+                RegionLevelProgress satelliteRegionProgress = this.resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, normalizedRegionName);
                 globalLsn = Math.max(globalLsn, satelliteRegionProgress.maxGlobalLsnSeen);
                 sbPartTwo.append("#");
                 sbPartTwo.append(regionId);
@@ -135,40 +148,51 @@ public class PartitionKeyRangeIdToSessionTokens {
                 sbPartTwo.append("=");
                 sbPartTwo.append(-1);
             }
-
-            sbPartOne.append(version);
-            sbPartOne.append("#");
-            sbPartOne.append(globalLsn);
         }
+
+        sbPartOne.append(version);
+        sbPartOne.append("#");
+        sbPartOne.append(globalLsn);
 
         Utils.ValueHolder<ISessionToken> resolvedSessionToken = new Utils.ValueHolder<>(null);
 
         // TODO: one additional step of merging base session token / first preferred read region
         if (VectorSessionToken.tryCreate(sbPartOne.append(sbPartTwo).toString(), resolvedSessionToken)) {
-            return resolvedSessionToken.v;
+            return baseSessionToken.merge(resolvedSessionToken.v);
         }
 
-        return null;
+        return globalSessionToken;
     }
 
     public boolean isPartitionKeyRangeIdPresent(String partitionKeyRangeId) {
         return this.partitionKeyRangeIdToSessionTokens.containsKey(partitionKeyRangeId);
     }
 
-    private RegionLevelLsnProgress resolvePartitionKeyRangeIdBasedProgress(String partitionKeyRangeId, String progressScope) {
+    private RegionLevelProgress resolvePartitionKeyRangeIdBasedProgress(String partitionKeyRangeId, String progressScope) {
         return this.partitionKeyRangeIdToSessionTokens.get(partitionKeyRangeId).get(progressScope);
     }
 
-    static class RegionLevelLsnProgress {
+    static class RegionLevelProgress {
         private final long maxGlobalLsnSeen;
         private final long maxLocalLsnSeen;
         private final VectorSessionToken vectorSessionToken;
 
-        public RegionLevelLsnProgress(long maxGlobalLsnSeen, long maxLocalLsnSeen, VectorSessionToken vectorSessionToken) {
+        public RegionLevelProgress(long maxGlobalLsnSeen, long maxLocalLsnSeen, VectorSessionToken vectorSessionToken) {
             this.maxGlobalLsnSeen = maxGlobalLsnSeen;
             this.maxLocalLsnSeen = maxLocalLsnSeen;
             this.vectorSessionToken = vectorSessionToken;
         }
 
+        public long getMaxGlobalLsnSeen() {
+            return maxGlobalLsnSeen;
+        }
+
+        public long getMaxLocalLsnSeen() {
+            return maxLocalLsnSeen;
+        }
+
+        public VectorSessionToken getVectorSessionToken() {
+            return vectorSessionToken;
+        }
     }
 }
