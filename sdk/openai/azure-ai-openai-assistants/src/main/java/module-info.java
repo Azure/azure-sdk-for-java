@@ -9,5 +9,5 @@ module com.azure.ai.openai.assistants {
     exports com.azure.ai.openai.assistants.models;
     opens com.azure.ai.openai.assistants.models to com.azure.core;
     opens com.azure.ai.openai.assistants.implementation.models to com.azure.core;
-    opens com.azure.ai.openai.assistants.implementation to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.ai.openai.assistants.implementation to com.azure.core;
 }
