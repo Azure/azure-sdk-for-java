@@ -5,7 +5,7 @@
 
 [Radiology Insights][radiology_insights_docs] is a model that aims to provide quality checks as feedback on errors and inconsistencies (mismatches) and ensures critical findings are identified and communicated using the full context of the report. Follow-up recommendations and clinical findings with measurements (sizes) documented by the radiologist are also identified.
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][radiologyinsights_api_documentation] | [Product Documentation][product_documentation] | [Samples][samples_location]
+[Source code][source_code] | [Package (Maven)][package] | API reference documentation | [Product Documentation][product_documentation] | [Samples][samples_location]
 
 ## Getting started
 
@@ -286,7 +286,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_portal]: https://portal.azure.com
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/
 [package]: https://central.sonatype.com/artifact/com.azure/azure-health-insights-radiologyinsights
-[radiologyinsights_api_documentation]: https://learn.microsoft.com/rest/api/cognitiveservices/healthinsights/radiologyinsights
 [samples_location]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples
 
 ![Impressions]: https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fhealthinsights%2Fazure-health-insights-radiologyinsights%2FREADME.png
