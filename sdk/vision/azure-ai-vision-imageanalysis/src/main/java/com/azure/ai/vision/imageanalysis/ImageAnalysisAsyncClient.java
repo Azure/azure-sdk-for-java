@@ -691,7 +691,8 @@ public final class ImageAnalysisAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
-     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>,
+     * @return represents the outcome of an Image Analysis operation along with
+     * <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>,
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -699,8 +700,9 @@ public final class ImageAnalysisAsyncClient {
         List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
-        Mono<Response<BinaryData>> monoResponse = analyzeFromUrlWithResponse(visualFeaturesAsStrings,
-            BinaryData.fromObject(new ImageUrl(imageUrl)), ImageAnalysisClient.updateRequestOptions(requestOptions, imageAnalysisOptions));
+        Mono<Response<BinaryData>> monoResponse
+            = analyzeFromUrlWithResponse(visualFeaturesAsStrings, BinaryData.fromObject(new ImageUrl(imageUrl)),
+                ImageAnalysisClient.updateRequestOptions(requestOptions, imageAnalysisOptions));
         return monoResponse.map(response -> {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 response.getValue().toObject(ImageAnalysisResult.class));
@@ -725,7 +727,8 @@ public final class ImageAnalysisAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
-     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>,
+     * @return represents the outcome of an Image Analysis operation along with
+     * <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>,
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

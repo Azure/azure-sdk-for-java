@@ -723,7 +723,8 @@ public final class ImageAnalysisClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
-     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>.
+     * @return represents the outcome of an Image Analysis operation along with
+     * <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageAnalysisResult> analyzeFromUrlWithResponse(String imageUrl,
@@ -754,7 +755,8 @@ public final class ImageAnalysisClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      *
-     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>.
+     * @return represents the outcome of an Image Analysis operation along with
+     * <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageAnalysisResult> analyzeWithResponse(BinaryData imageData, List<VisualFeatures> visualFeatures,
