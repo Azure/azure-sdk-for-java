@@ -34,7 +34,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
 
     final Boolean printResults = false; // Set to true to print results to console window
 
-    // We a single image (the same one) for all error-free tests, one hosted on the web and one local
+    // We use a single image (the same one) for all error-free tests, one hosted on the web and one local
     final String imageUrl = "https://aka.ms/azsdk/image-analysis/sample.jpg";
     final String imageFile = "./src/test/java/com/azure/ai/vision/imageanalysis/sample.jpg";
 
