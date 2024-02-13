@@ -13,6 +13,6 @@ public class RadiologyInsightsClientTest extends RadiologyInsightsClientTestBase
 
     @Test
     public void test() {
-    	assertTrue(true);
+        assertTrue(true);
     }
 }
