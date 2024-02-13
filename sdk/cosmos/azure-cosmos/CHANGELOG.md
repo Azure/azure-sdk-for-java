@@ -1,12 +1,6 @@
 ## Release History
 
-### 4.56.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.55.1 (2024-02-13)
 
 #### Other Changes
 * Limited max. number of threads possible to be used by BulkExecutor instances . - See [PR 38745](https://github.com/Azure/azure-sdk-for-java/pull/38745)
