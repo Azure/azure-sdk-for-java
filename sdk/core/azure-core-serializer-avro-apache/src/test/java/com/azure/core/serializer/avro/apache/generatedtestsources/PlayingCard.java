@@ -23,10 +23,10 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
   private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<PlayingCard> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<LongLinkedList>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<PlayingCard> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<LongLinkedList>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -50,7 +50,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<PlayingCard> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<LongLinkedList>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
