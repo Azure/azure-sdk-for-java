@@ -45,7 +45,7 @@ import java.util.List;
 /**
  * The SampleCriticalResultInferenceSync class processes a sample radiology document 
  * with the Radiology Insights service. It will initialize a synchronous 
- * RadiologyInsightsClient, build a Radiology Insights request with the sample document, submit it to the client 
+ * RadiologyInsightsClient, build a Radiology Insights job request with the sample document, submit it to the client 
  * and display the Critical Results extracted by the Radiology Insights service.  
  * 
  */
@@ -97,7 +97,7 @@ public class SampleCriticalResultInferenceSync {
     }
 
     /**
-     * Display the critical results of the Radiology Insights request.
+     * Display the critical results of the Radiology Insights job request.
      *
      * @param radiologyInsightsResult The response for the Radiology Insights
      *                                request.
@@ -117,10 +117,10 @@ public class SampleCriticalResultInferenceSync {
     }
 
     /**
-     * Creates a RadiologyInsightsData object to use in the Radiology Insights
+     * Creates a RadiologyInsightsJob object to use in the Radiology Insights job
      * request.
      *
-     * @return A RadiologyInsightsData object with the created patient records and
+     * @return A RadiologyInsightsJob object with the created patient records and
      *         model configuration.
      */
     private static RadiologyInsightsJob createRadiologyInsightsJob() {
@@ -129,6 +129,7 @@ public class SampleCriticalResultInferenceSync {
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
         radiologyInsightsData.setConfiguration(modelConfiguration);
         RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
+        radiologyInsightsJob.setJobData(radiologyInsightsData);
         return radiologyInsightsJob;
     }
 

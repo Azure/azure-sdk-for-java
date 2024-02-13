@@ -49,7 +49,7 @@ import java.util.function.Predicate;
 /**
  * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
  * with the Radiology Insights service. It will initialize an asynchronous 
- * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the 
+ * RadiologyInsightsAsyncClient, build a Radiology Insights job request with the sample document, poll the 
  * results and display the Critical Results extracted by the Radiology Insights service.  
  * 
  */
@@ -114,7 +114,7 @@ public class SampleCriticalResultInferenceAsync {
     }
 
     /**
-     * Display the critical results of the Radiology Insights request.
+     * Display the critical results of the Radiology Insights job request.
      *
      * @param radiologyInsightsResult The response for the Radiology Insights
      *                                request.
@@ -136,10 +136,10 @@ public class SampleCriticalResultInferenceAsync {
     }
 
     /**
-     * Creates a RadiologyInsightsData object to use in the Radiology Insights
+     * Creates a RadiologyInsightsJob object to use in the Radiology Insights job
      * request.
      *
-     * @return A RadiologyInsightsData object with the created patient records and
+     * @return A RadiologyInsightsJob object with the created patient records and
      *         model configuration.
      */
     // BEGIN: com.azure.health.insights.radiologyinsights.createrequest
@@ -149,6 +149,7 @@ public class SampleCriticalResultInferenceAsync {
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
         radiologyInsightsData.setConfiguration(modelConfiguration);
         RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
+        radiologyInsightsJob.setJobData(radiologyInsightsData);
         return radiologyInsightsJob;
     }
 

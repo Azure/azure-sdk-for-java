@@ -99,6 +99,7 @@ private static RadiologyInsightsJob createRadiologyInsightsJob() {
     RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
     radiologyInsightsData.setConfiguration(modelConfiguration);
     RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
+    radiologyInsightsJob.setJobData(radiologyInsightsData);
     return radiologyInsightsJob;
 }
 

@@ -77,6 +77,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
         radiologyInsightsData.setConfiguration(modelConfiguration);
         RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
+        radiologyInsightsJob.setJobData(radiologyInsightsData);
         return radiologyInsightsJob;
     }
     
