@@ -12,6 +12,7 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.IncludedPath;
@@ -21,10 +22,14 @@ import com.azure.cosmos.models.ThroughputProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.ITest;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
 
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +37,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Listeners({KafkaCosmosTestNGLogListener.class})
-public class KafkaCosmosTestSuiteBase extends KafkaCosmosAsyncClientTest {
+public class KafkaCosmosTestSuiteBase implements ITest {
     protected static Logger logger = LoggerFactory.getLogger(KafkaCosmosTestSuiteBase.class.getSimpleName());
     protected static final int TIMEOUT = 60000;
 
@@ -44,6 +49,7 @@ public class KafkaCosmosTestSuiteBase extends KafkaCosmosAsyncClientTest {
     protected static String multiPartitionContainerWithIdAsPartitionKeyName;
     protected static String multiPartitionContainerName;
     protected static String singlePartitionContainerName;
+    private String testName;
 
     protected static CosmosAsyncDatabase getDatabase(CosmosAsyncClient client) {
         return client.getDatabase(databaseName);
@@ -205,5 +211,22 @@ public class KafkaCosmosTestSuiteBase extends KafkaCosmosAsyncClientTest {
                 logger.error("Failed to delete database {}", database, e);
             }
         }
+    }
+
+    @BeforeMethod(alwaysRun = true)
+    public final void setTestName(Method method, Object[] row) {
+        this.testName = Strings.lenientFormat("%s::%s",
+            method.getDeclaringClass().getSimpleName(),
+            method.getName());
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public final void unsetTestName() {
+        this.testName = null;
+    }
+
+    @Override
+    public String getTestName() {
+        return this.testName;
     }
 }

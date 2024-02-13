@@ -82,69 +82,72 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = "{ fast }", timeOut = TIMEOUT)
     public void getTaskConfigsWithoutPersistedOffset() throws JsonProcessingException {
         CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
+        try {
+            Map<String, Object> sourceConfigMap = new HashMap<>();
+            sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
+            sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+            sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
+            List<String> containersIncludedList = Arrays.asList(
+                singlePartitionContainerName,
+                multiPartitionContainerName
+            );
+            sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
 
-        Map<String, Object> sourceConfigMap = new HashMap<>();
-        sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
-        sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
-        List<String> containersIncludedList = Arrays.asList(
-            singlePartitionContainerName,
-            multiPartitionContainerName
-        );
-        sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
+            String singlePartitionContainerTopicName = singlePartitionContainerName + "topic";
+            List<String> containerTopicMapList = Arrays.asList(singlePartitionContainerTopicName + "#" + singlePartitionContainerName);
+            sourceConfigMap.put("kafka.connect.cosmos.source.containers.topicMap", containerTopicMapList.toString());
 
-        String singlePartitionContainerTopicName = singlePartitionContainerName + "topic";
-        List<String> containerTopicMapList = Arrays.asList(singlePartitionContainerTopicName + "#" + singlePartitionContainerName);
-        sourceConfigMap.put("kafka.connect.cosmos.source.containers.topicMap", containerTopicMapList.toString());
+            // setup the internal state
+            this.setupDefaultConnectorInternalStates(sourceConnector, sourceConfigMap);
+            CosmosAsyncClient cosmosAsyncClient = KafkaCosmosReflectionUtils.getCosmosClient(sourceConnector);
 
-        // setup the internal state
-        this.setupDefaultConnectorInternalStates(sourceConnector, sourceConfigMap);
-        CosmosAsyncClient cosmosAsyncClient = KafkaCosmosReflectionUtils.getCosmosClient(sourceConnector);
+            int maxTask = 2;
+            List<Map<String, String>> taskConfigs = sourceConnector.taskConfigs(maxTask);
+            assertThat(taskConfigs.size()).isEqualTo(maxTask);
 
-        int maxTask = 2;
-        List<Map<String, String>> taskConfigs = sourceConnector.taskConfigs(maxTask);
-        assertThat(taskConfigs.size()).isEqualTo(maxTask);
+            // construct expected feed range task units
+            CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(cosmosAsyncClient);
+            List<FeedRangeTaskUnit> singlePartitionContainerFeedRangeTasks =
+                getFeedRangeTaskUnits(
+                    cosmosAsyncClient,
+                    databaseName,
+                    singlePartitionContainer,
+                    null,
+                    singlePartitionContainerTopicName);
+            assertThat(singlePartitionContainerFeedRangeTasks.size()).isEqualTo(1);
 
-        // construct expected feed range task units
-        CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(cosmosAsyncClient);
-        List<FeedRangeTaskUnit> singlePartitionContainerFeedRangeTasks =
-            getFeedRangeTaskUnits(
-                cosmosAsyncClient,
-                databaseName,
-                singlePartitionContainer,
-                null,
-                singlePartitionContainerTopicName);
-        assertThat(singlePartitionContainerFeedRangeTasks.size()).isEqualTo(1);
+            CosmosContainerProperties multiPartitionContainer = getMultiPartitionContainer(cosmosAsyncClient);
+            List<FeedRangeTaskUnit> multiPartitionContainerFeedRangeTasks =
+                getFeedRangeTaskUnits(
+                    cosmosAsyncClient,
+                    databaseName,
+                    multiPartitionContainer,
+                    null,
+                    multiPartitionContainer.getId());
+            assertThat(multiPartitionContainerFeedRangeTasks.size()).isGreaterThan(1);
 
-        CosmosContainerProperties multiPartitionContainer = getMultiPartitionContainer(cosmosAsyncClient);
-        List<FeedRangeTaskUnit> multiPartitionContainerFeedRangeTasks =
-            getFeedRangeTaskUnits(
-                cosmosAsyncClient,
-                databaseName,
-                multiPartitionContainer,
-                null,
-                multiPartitionContainer.getId());
-        assertThat(multiPartitionContainerFeedRangeTasks.size()).isGreaterThan(1);
+            List<List<FeedRangeTaskUnit>> expectedTaskUnits = new ArrayList<>();
+            for (int i = 0; i < maxTask; i++) {
+                expectedTaskUnits.add(new ArrayList<>());
+            }
 
-        List<List<FeedRangeTaskUnit>> expectedTaskUnits = new ArrayList<>();
-        for (int i = 0; i < maxTask; i++) {
-            expectedTaskUnits.add(new ArrayList<>());
+            expectedTaskUnits.get(0).add(singlePartitionContainerFeedRangeTasks.get(0));
+            for (int i = 0; i < multiPartitionContainerFeedRangeTasks.size(); i++) {
+                int index = ( i + 1) % 2;
+                expectedTaskUnits.get(index).add(multiPartitionContainerFeedRangeTasks.get(i));
+            }
+
+            validateFeedRangeTasks(expectedTaskUnits, taskConfigs);
+
+            MetadataTaskUnit expectedMetadataTaskUnit =
+                getMetadataTaskUnit(
+                    cosmosAsyncClient,
+                    databaseName,
+                    Arrays.asList(singlePartitionContainer, multiPartitionContainer));
+            validateMetadataTask(expectedMetadataTaskUnit, taskConfigs.get(1));
+        } finally {
+            sourceConnector.stop();
         }
-
-        expectedTaskUnits.get(0).add(singlePartitionContainerFeedRangeTasks.get(0));
-        for (int i = 0; i < multiPartitionContainerFeedRangeTasks.size(); i++) {
-            int index = ( i + 1) % 2;
-            expectedTaskUnits.get(index).add(multiPartitionContainerFeedRangeTasks.get(i));
-        }
-
-        validateFeedRangeTasks(expectedTaskUnits, taskConfigs);
-
-        MetadataTaskUnit expectedMetadataTaskUnit =
-            getMetadataTaskUnit(
-                cosmosAsyncClient,
-                databaseName,
-                Arrays.asList(singlePartitionContainer, multiPartitionContainer));
-        validateMetadataTask(expectedMetadataTaskUnit, taskConfigs.get(1));
     }
 
     @Test(groups = "{ fast }", timeOut = TIMEOUT)
@@ -152,90 +155,94 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         // This test is to simulate after a split happen, the task resume with persisted offset
         CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
 
-        Map<String, Object> sourceConfigMap = new HashMap<>();
-        sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
-        sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
-        List<String> containersIncludedList = Arrays.asList(multiPartitionContainerName);
-        sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
+        try {
+            Map<String, Object> sourceConfigMap = new HashMap<>();
+            sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
+            sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+            sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
+            List<String> containersIncludedList = Arrays.asList(multiPartitionContainerName);
+            sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
 
-        // setup the internal state
-        this.setupDefaultConnectorInternalStates(sourceConnector, sourceConfigMap);
+            // setup the internal state
+            this.setupDefaultConnectorInternalStates(sourceConnector, sourceConfigMap);
 
-        // override the storage reader with initial offset
-        CosmosAsyncClient cosmosAsyncClient = KafkaCosmosReflectionUtils.getCosmosClient(sourceConnector);
-        CosmosSourceOffsetStorageReader sourceOffsetStorageReader = KafkaCosmosReflectionUtils.getSourceOffsetStorageReader(sourceConnector);
-        InMemoryStorageReader inMemoryStorageReader =
-            (InMemoryStorageReader) KafkaCosmosReflectionUtils.getOffsetStorageReader(sourceOffsetStorageReader);
+            // override the storage reader with initial offset
+            CosmosAsyncClient cosmosAsyncClient = KafkaCosmosReflectionUtils.getCosmosClient(sourceConnector);
+            CosmosSourceOffsetStorageReader sourceOffsetStorageReader = KafkaCosmosReflectionUtils.getSourceOffsetStorageReader(sourceConnector);
+            InMemoryStorageReader inMemoryStorageReader =
+                (InMemoryStorageReader) KafkaCosmosReflectionUtils.getOffsetStorageReader(sourceOffsetStorageReader);
 
-        CosmosContainerProperties multiPartitionContainer = getMultiPartitionContainer(cosmosAsyncClient);
+            CosmosContainerProperties multiPartitionContainer = getMultiPartitionContainer(cosmosAsyncClient);
 
-        // constructing feed range continuation offset
-        FeedRangeContinuationTopicPartition feedRangeContinuationTopicPartition =
-            new FeedRangeContinuationTopicPartition(
-                databaseName,
-                multiPartitionContainer.getResourceId(),
-                FeedRangeEpkImpl.forFullRange().getRange());
+            // constructing feed range continuation offset
+            FeedRangeContinuationTopicPartition feedRangeContinuationTopicPartition =
+                new FeedRangeContinuationTopicPartition(
+                    databaseName,
+                    multiPartitionContainer.getResourceId(),
+                    FeedRangeEpkImpl.forFullRange().getRange());
 
-        String initialContinuationState = new ChangeFeedStateV1(
-            multiPartitionContainer.getResourceId(),
-            FeedRangeEpkImpl.forFullRange(),
-            ChangeFeedMode.INCREMENTAL,
-            ChangeFeedStartFromInternal.createFromBeginning(),
-            FeedRangeContinuation.create(
+            String initialContinuationState = new ChangeFeedStateV1(
                 multiPartitionContainer.getResourceId(),
                 FeedRangeEpkImpl.forFullRange(),
-                Arrays.asList(new CompositeContinuationToken("1", FeedRangeEpkImpl.forFullRange().getRange())))).toString();
+                ChangeFeedMode.INCREMENTAL,
+                ChangeFeedStartFromInternal.createFromBeginning(),
+                FeedRangeContinuation.create(
+                    multiPartitionContainer.getResourceId(),
+                    FeedRangeEpkImpl.forFullRange(),
+                    Arrays.asList(new CompositeContinuationToken("1", FeedRangeEpkImpl.forFullRange().getRange())))).toString();
 
-        FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
-            new FeedRangeContinuationTopicOffset(initialContinuationState, "1"); // using the same itemLsn as in the continuationToken
-        Map<Map<String, Object>, Map<String, Object>> initialOffsetMap = new HashMap<>();
-        initialOffsetMap.put(
-            FeedRangeContinuationTopicPartition.toMap(feedRangeContinuationTopicPartition),
-            FeedRangeContinuationTopicOffset.toMap(feedRangeContinuationTopicOffset));
+            FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
+                new FeedRangeContinuationTopicOffset(initialContinuationState, "1"); // using the same itemLsn as in the continuationToken
+            Map<Map<String, Object>, Map<String, Object>> initialOffsetMap = new HashMap<>();
+            initialOffsetMap.put(
+                FeedRangeContinuationTopicPartition.toMap(feedRangeContinuationTopicPartition),
+                FeedRangeContinuationTopicOffset.toMap(feedRangeContinuationTopicOffset));
 
-        // constructing feedRange metadata offset
-        FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
-            new FeedRangesMetadataTopicPartition(databaseName, multiPartitionContainer.getResourceId());
-        FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
-            new FeedRangesMetadataTopicOffset(Arrays.asList(FeedRangeEpkImpl.forFullRange().getRange()));
-        initialOffsetMap.put(
-            FeedRangesMetadataTopicPartition.toMap(feedRangesMetadataTopicPartition),
-            FeedRangesMetadataTopicOffset.toMap(feedRangesMetadataTopicOffset));
+            // constructing feedRange metadata offset
+            FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
+                new FeedRangesMetadataTopicPartition(databaseName, multiPartitionContainer.getResourceId());
+            FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
+                new FeedRangesMetadataTopicOffset(Arrays.asList(FeedRangeEpkImpl.forFullRange().getRange()));
+            initialOffsetMap.put(
+                FeedRangesMetadataTopicPartition.toMap(feedRangesMetadataTopicPartition),
+                FeedRangesMetadataTopicOffset.toMap(feedRangesMetadataTopicOffset));
 
-        inMemoryStorageReader.populateOffset(initialOffsetMap);
+            inMemoryStorageReader.populateOffset(initialOffsetMap);
 
-        int maxTask = 2;
-        List<Map<String, String>> taskConfigs = sourceConnector.taskConfigs(maxTask);
-        assertThat(taskConfigs.size()).isEqualTo(maxTask);
+            int maxTask = 2;
+            List<Map<String, String>> taskConfigs = sourceConnector.taskConfigs(maxTask);
+            assertThat(taskConfigs.size()).isEqualTo(maxTask);
 
-        // construct expected feed range task units
-        List<FeedRangeTaskUnit> multiPartitionContainerFeedRangeTasks =
-            getFeedRangeTaskUnits(
-                cosmosAsyncClient,
-                databaseName,
-                multiPartitionContainer,
-                initialContinuationState,
-                multiPartitionContainer.getId());
-        assertThat(multiPartitionContainerFeedRangeTasks.size()).isGreaterThan(1);
+            // construct expected feed range task units
+            List<FeedRangeTaskUnit> multiPartitionContainerFeedRangeTasks =
+                getFeedRangeTaskUnits(
+                    cosmosAsyncClient,
+                    databaseName,
+                    multiPartitionContainer,
+                    initialContinuationState,
+                    multiPartitionContainer.getId());
+            assertThat(multiPartitionContainerFeedRangeTasks.size()).isGreaterThan(1);
 
-        List<List<FeedRangeTaskUnit>> expectedTaskUnits = new ArrayList<>();
-        for (int i = 0; i < maxTask; i++) {
-            expectedTaskUnits.add(new ArrayList<>());
+            List<List<FeedRangeTaskUnit>> expectedTaskUnits = new ArrayList<>();
+            for (int i = 0; i < maxTask; i++) {
+                expectedTaskUnits.add(new ArrayList<>());
+            }
+
+            for (int i = 0; i < multiPartitionContainerFeedRangeTasks.size(); i++) {
+                expectedTaskUnits.get( i % 2).add(multiPartitionContainerFeedRangeTasks.get(i));
+            }
+
+            validateFeedRangeTasks(expectedTaskUnits, taskConfigs);
+
+            MetadataTaskUnit expectedMetadataTaskUnit =
+                getMetadataTaskUnit(
+                    cosmosAsyncClient,
+                    databaseName,
+                    Arrays.asList(multiPartitionContainer));
+            validateMetadataTask(expectedMetadataTaskUnit, taskConfigs.get(1));
+        } finally {
+            sourceConnector.stop();
         }
-
-        for (int i = 0; i < multiPartitionContainerFeedRangeTasks.size(); i++) {
-            expectedTaskUnits.get( i % 2).add(multiPartitionContainerFeedRangeTasks.get(i));
-        }
-
-        validateFeedRangeTasks(expectedTaskUnits, taskConfigs);
-
-        MetadataTaskUnit expectedMetadataTaskUnit =
-            getMetadataTaskUnit(
-                cosmosAsyncClient,
-                databaseName,
-                Arrays.asList(multiPartitionContainer));
-        validateMetadataTask(expectedMetadataTaskUnit, taskConfigs.get(1));
     }
 
     @Test(groups = "{ fast }", timeOut = TIMEOUT)
@@ -243,119 +250,124 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         // This test is to simulate after a merge happen, the task resume with previous feedRanges
         CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
 
-        Map<String, Object> sourceConfigMap = new HashMap<>();
-        sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
-        sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
-        List<String> containersIncludedList = Arrays.asList(singlePartitionContainerName);
-        sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
+        try {
 
-        // setup the internal state
-        this.setupDefaultConnectorInternalStates(sourceConnector, sourceConfigMap);
+            Map<String, Object> sourceConfigMap = new HashMap<>();
+            sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
+            sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+            sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
+            List<String> containersIncludedList = Arrays.asList(singlePartitionContainerName);
+            sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
 
-        // override the storage reader with initial offset
-        CosmosAsyncClient cosmosAsyncClient = KafkaCosmosReflectionUtils.getCosmosClient(sourceConnector);
-        CosmosSourceOffsetStorageReader sourceOffsetStorageReader = KafkaCosmosReflectionUtils.getSourceOffsetStorageReader(sourceConnector);
-        InMemoryStorageReader inMemoryStorageReader =
-            (InMemoryStorageReader) KafkaCosmosReflectionUtils.getOffsetStorageReader(sourceOffsetStorageReader);
+            // setup the internal state
+            this.setupDefaultConnectorInternalStates(sourceConnector, sourceConfigMap);
 
-        CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(cosmosAsyncClient);
+            // override the storage reader with initial offset
+            CosmosAsyncClient cosmosAsyncClient = KafkaCosmosReflectionUtils.getCosmosClient(sourceConnector);
+            CosmosSourceOffsetStorageReader sourceOffsetStorageReader = KafkaCosmosReflectionUtils.getSourceOffsetStorageReader(sourceConnector);
+            InMemoryStorageReader inMemoryStorageReader =
+                (InMemoryStorageReader) KafkaCosmosReflectionUtils.getOffsetStorageReader(sourceOffsetStorageReader);
 
-        // constructing feed range continuation offset
-        List<FeedRangeEpkImpl> childRanges =
-            ImplementationBridgeHelpers
-                .CosmosAsyncContainerHelper
-                .getCosmosAsyncContainerAccessor()
-                .trySplitFeedRange(
-                    cosmosAsyncClient.getDatabase(databaseName).getContainer(singlePartitionContainer.getId()),
-                    FeedRange.forFullRange(),
-                    2)
-                .block();
+            CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(cosmosAsyncClient);
 
-        Map<Map<String, Object>, Map<String, Object>> initialOffsetMap = new HashMap<>();
-        List<FeedRangeTaskUnit> singlePartitionFeedRangeTaskUnits = new ArrayList<>();
+            // constructing feed range continuation offset
+            List<FeedRangeEpkImpl> childRanges =
+                ImplementationBridgeHelpers
+                    .CosmosAsyncContainerHelper
+                    .getCosmosAsyncContainerAccessor()
+                    .trySplitFeedRange(
+                        cosmosAsyncClient.getDatabase(databaseName).getContainer(singlePartitionContainer.getId()),
+                        FeedRange.forFullRange(),
+                        2)
+                    .block();
 
-        for (FeedRangeEpkImpl childRange : childRanges) {
-            FeedRangeContinuationTopicPartition feedRangeContinuationTopicPartition =
-                new FeedRangeContinuationTopicPartition(
-                    databaseName,
-                    singlePartitionContainer.getResourceId(),
-                    childRange.getRange());
+            Map<Map<String, Object>, Map<String, Object>> initialOffsetMap = new HashMap<>();
+            List<FeedRangeTaskUnit> singlePartitionFeedRangeTaskUnits = new ArrayList<>();
 
-            String childRangeContinuationState = new ChangeFeedStateV1(
-                singlePartitionContainer.getResourceId(),
-                childRange,
-                ChangeFeedMode.INCREMENTAL,
-                ChangeFeedStartFromInternal.createFromBeginning(),
-                FeedRangeContinuation.create(
+            for (FeedRangeEpkImpl childRange : childRanges) {
+                FeedRangeContinuationTopicPartition feedRangeContinuationTopicPartition =
+                    new FeedRangeContinuationTopicPartition(
+                        databaseName,
+                        singlePartitionContainer.getResourceId(),
+                        childRange.getRange());
+
+                String childRangeContinuationState = new ChangeFeedStateV1(
                     singlePartitionContainer.getResourceId(),
                     childRange,
-                    Arrays.asList(new CompositeContinuationToken("1", childRange.getRange())))).toString();
+                    ChangeFeedMode.INCREMENTAL,
+                    ChangeFeedStartFromInternal.createFromBeginning(),
+                    FeedRangeContinuation.create(
+                        singlePartitionContainer.getResourceId(),
+                        childRange,
+                        Arrays.asList(new CompositeContinuationToken("1", childRange.getRange())))).toString();
 
-            FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
-                new FeedRangeContinuationTopicOffset(childRangeContinuationState, "1");
+                FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
+                    new FeedRangeContinuationTopicOffset(childRangeContinuationState, "1");
+
+                initialOffsetMap.put(
+                    FeedRangeContinuationTopicPartition.toMap(feedRangeContinuationTopicPartition),
+                    FeedRangeContinuationTopicOffset.toMap(feedRangeContinuationTopicOffset));
+
+                singlePartitionFeedRangeTaskUnits.add(
+                    new FeedRangeTaskUnit(
+                        databaseName,
+                        singlePartitionContainer.getId(),
+                        singlePartitionContainer.getResourceId(),
+                        childRange.getRange(),
+                        childRangeContinuationState,
+                        singlePartitionContainer.getId()));
+            }
+
+            // constructing feedRange metadata offset
+            FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
+                new FeedRangesMetadataTopicPartition(databaseName, singlePartitionContainer.getResourceId());
+            FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
+                new FeedRangesMetadataTopicOffset(
+                    childRanges
+                        .stream()
+                        .map(childRange -> childRange.getRange())
+                        .collect(Collectors.toList()));
 
             initialOffsetMap.put(
-                FeedRangeContinuationTopicPartition.toMap(feedRangeContinuationTopicPartition),
-                FeedRangeContinuationTopicOffset.toMap(feedRangeContinuationTopicOffset));
+                FeedRangesMetadataTopicPartition.toMap(feedRangesMetadataTopicPartition),
+                FeedRangesMetadataTopicOffset.toMap(feedRangesMetadataTopicOffset));
 
-            singlePartitionFeedRangeTaskUnits.add(
-                new FeedRangeTaskUnit(
+            inMemoryStorageReader.populateOffset(initialOffsetMap);
+
+            int maxTask = 2;
+            List<Map<String, String>> taskConfigs = sourceConnector.taskConfigs(maxTask);
+            assertThat(taskConfigs.size()).isEqualTo(maxTask);
+
+            // construct expected feed range task units
+            assertThat(singlePartitionFeedRangeTaskUnits.size()).isEqualTo(2);
+
+            List<List<FeedRangeTaskUnit>> expectedTaskUnits = new ArrayList<>();
+            for (int i = 0; i < maxTask; i++) {
+                expectedTaskUnits.add(new ArrayList<>());
+            }
+
+            for (int i = 0; i < singlePartitionFeedRangeTaskUnits.size(); i++) {
+                expectedTaskUnits.get( i % 2).add(singlePartitionFeedRangeTaskUnits.get(i));
+            }
+
+            validateFeedRangeTasks(expectedTaskUnits, taskConfigs);
+
+            Map<String, List<Range<String>>> containersEffectiveRangesMap = new HashMap<>();
+            containersEffectiveRangesMap.put(
+                singlePartitionContainer.getResourceId(),
+                childRanges.stream().map(FeedRangeEpkImpl::getRange).collect(Collectors.toList()));
+
+            MetadataTaskUnit expectedMetadataTaskUnit =
+                new MetadataTaskUnit(
                     databaseName,
-                    singlePartitionContainer.getId(),
-                    singlePartitionContainer.getResourceId(),
-                    childRange.getRange(),
-                    childRangeContinuationState,
-                    singlePartitionContainer.getId()));
+                    Arrays.asList(singlePartitionContainer.getResourceId()),
+                    containersEffectiveRangesMap,
+                    "_cosmos.metadata.topic"
+                );
+            validateMetadataTask(expectedMetadataTaskUnit, taskConfigs.get(1));
+        } finally {
+            sourceConnector.stop();
         }
-
-        // constructing feedRange metadata offset
-        FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
-            new FeedRangesMetadataTopicPartition(databaseName, singlePartitionContainer.getResourceId());
-        FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
-            new FeedRangesMetadataTopicOffset(
-                childRanges
-                    .stream()
-                    .map(childRange -> childRange.getRange())
-                    .collect(Collectors.toList()));
-
-        initialOffsetMap.put(
-            FeedRangesMetadataTopicPartition.toMap(feedRangesMetadataTopicPartition),
-            FeedRangesMetadataTopicOffset.toMap(feedRangesMetadataTopicOffset));
-
-        inMemoryStorageReader.populateOffset(initialOffsetMap);
-
-        int maxTask = 2;
-        List<Map<String, String>> taskConfigs = sourceConnector.taskConfigs(maxTask);
-        assertThat(taskConfigs.size()).isEqualTo(maxTask);
-
-        // construct expected feed range task units
-        assertThat(singlePartitionFeedRangeTaskUnits.size()).isEqualTo(2);
-
-        List<List<FeedRangeTaskUnit>> expectedTaskUnits = new ArrayList<>();
-        for (int i = 0; i < maxTask; i++) {
-            expectedTaskUnits.add(new ArrayList<>());
-        }
-
-        for (int i = 0; i < singlePartitionFeedRangeTaskUnits.size(); i++) {
-            expectedTaskUnits.get( i % 2).add(singlePartitionFeedRangeTaskUnits.get(i));
-        }
-
-        validateFeedRangeTasks(expectedTaskUnits, taskConfigs);
-
-        Map<String, List<Range<String>>> containersEffectiveRangesMap = new HashMap<>();
-        containersEffectiveRangesMap.put(
-            singlePartitionContainer.getResourceId(),
-            childRanges.stream().map(FeedRangeEpkImpl::getRange).collect(Collectors.toList()));
-
-        MetadataTaskUnit expectedMetadataTaskUnit =
-            new MetadataTaskUnit(
-                databaseName,
-                Arrays.asList(singlePartitionContainer.getResourceId()),
-                containersEffectiveRangesMap,
-                "_cosmos.metadata.topic"
-            );
-        validateMetadataTask(expectedMetadataTaskUnit, taskConfigs.get(1));
     }
 
     @Test(groups = "unit")

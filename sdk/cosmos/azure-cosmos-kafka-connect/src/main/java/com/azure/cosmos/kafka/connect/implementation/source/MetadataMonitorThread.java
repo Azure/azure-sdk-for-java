@@ -80,7 +80,11 @@ public class MetadataMonitorThread extends Thread {
                     }
                     return Mono.empty();
                 })
-                .doOnNext(shouldRequestReconfiguration -> this.connectorContext.requestTaskReconfiguration())
+                .doOnNext(shouldRequestReconfiguration -> {
+                    if (shouldRequestReconfiguration) {
+                        this.connectorContext.requestTaskReconfiguration();
+                    }
+                })
                 .onErrorResume(throwable -> {
                     logger.warn("Containers metadata checking failed. Will retry in next polling cycle", throwable);
                     // TODO: only allow continue for transient errors, for others raiseError
@@ -161,7 +165,7 @@ public class MetadataMonitorThread extends Thread {
                 containerIndex.incrementAndGet();
             })
             .repeat(() -> !shouldRequestTaskReconfiguration.get() && containerIndex.get() < allContainers.size())
-            .then(Mono.just(shouldRequestTaskReconfiguration.get()));
+            .then(Mono.defer(() -> Mono.just(shouldRequestTaskReconfiguration.get())));
     }
 
     private Mono<Boolean> shouldRequestTaskReconfigurationOnFeedRanges(CosmosContainerProperties containerProperties) {
@@ -236,11 +240,11 @@ public class MetadataMonitorThread extends Thread {
         return Mono.just(changes.get(feedRangeIndex.get()))
             .flatMap(feedRangeChanged -> shouldRequestTaskReconfigurationOnFeedRangeChange(containerProperties, feedRangeChanged))
             .doOnNext(shouldReconfig -> {
-                shouldRequestTaskReconfiguration.set(shouldReconfig);
+                shouldRequestTaskReconfiguration.compareAndSet(false, shouldReconfig);
                 feedRangeIndex.incrementAndGet();
             })
-            .repeat(() -> !shouldRequestTaskReconfiguration.get() && feedRangeIndex.get() < changes.size())
-            .then(Mono.just(shouldRequestTaskReconfiguration.get()));
+            .repeat(() -> (!shouldRequestTaskReconfiguration.get()) && feedRangeIndex.get() < changes.size())
+            .then(Mono.defer(() -> Mono.just(shouldRequestTaskReconfiguration.get())));
     }
 
     private Mono<Boolean> shouldRequestTaskReconfigurationOnFeedRangeChange(
