@@ -14,7 +14,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The alert rule resource. */
+/**
+ * The alert rule resource.
+ */
 @Fluent
 public final class AlertRuleResourceInner extends Resource {
     /*
@@ -23,27 +25,33 @@ public final class AlertRuleResourceInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private AlertRule innerProperties = new AlertRule();
 
-    /** Creates an instance of AlertRuleResourceInner class. */
+    /**
+     * Creates an instance of AlertRuleResourceInner class.
+     */
     public AlertRuleResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The alert rule properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AlertRule innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AlertRuleResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AlertRuleResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -52,7 +60,7 @@ public final class AlertRuleResourceInner extends Resource {
 
     /**
      * Get the name property: the name of the alert rule.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -61,7 +69,7 @@ public final class AlertRuleResourceInner extends Resource {
 
     /**
      * Set the name property: the name of the alert rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the AlertRuleResourceInner object itself.
      */
@@ -75,7 +83,7 @@ public final class AlertRuleResourceInner extends Resource {
 
     /**
      * Get the description property: the description of the alert rule that will be included in the alert email.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -84,7 +92,7 @@ public final class AlertRuleResourceInner extends Resource {
 
     /**
      * Set the description property: the description of the alert rule that will be included in the alert email.
-     *
+     * 
      * @param description the description value to set.
      * @return the AlertRuleResourceInner object itself.
      */
@@ -98,7 +106,7 @@ public final class AlertRuleResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -107,7 +115,7 @@ public final class AlertRuleResourceInner extends Resource {
 
     /**
      * Set the provisioningState property: the provisioning state.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the AlertRuleResourceInner object itself.
      */
@@ -121,7 +129,7 @@ public final class AlertRuleResourceInner extends Resource {
 
     /**
      * Get the isEnabled property: the flag that indicates whether the alert rule is enabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -130,7 +138,7 @@ public final class AlertRuleResourceInner extends Resource {
 
     /**
      * Set the isEnabled property: the flag that indicates whether the alert rule is enabled.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the AlertRuleResourceInner object itself.
      */
@@ -144,7 +152,7 @@ public final class AlertRuleResourceInner extends Resource {
 
     /**
      * Get the condition property: the condition that results in the alert rule being activated.
-     *
+     * 
      * @return the condition value.
      */
     public RuleCondition condition() {
@@ -153,7 +161,7 @@ public final class AlertRuleResourceInner extends Resource {
 
     /**
      * Set the condition property: the condition that results in the alert rule being activated.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the AlertRuleResourceInner object itself.
      */
@@ -166,9 +174,9 @@ public final class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the action property: action that is performed when the alert rule becomes active, and when an alert condition
-     * is resolved.
-     *
+     * Get the action property: action that is performed when the alert rule becomes active, and when an alert
+     * condition is resolved.
+     * 
      * @return the action value.
      */
     public RuleAction action() {
@@ -176,9 +184,9 @@ public final class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the action property: action that is performed when the alert rule becomes active, and when an alert condition
-     * is resolved.
-     *
+     * Set the action property: action that is performed when the alert rule becomes active, and when an alert
+     * condition is resolved.
+     * 
      * @param action the action value to set.
      * @return the AlertRuleResourceInner object itself.
      */
@@ -191,9 +199,9 @@ public final class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
-     *
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
+     * 
      * @return the actions value.
      */
     public List<RuleAction> actions() {
@@ -201,9 +209,9 @@ public final class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
-     *
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
+     * 
      * @param actions the actions value to set.
      * @return the AlertRuleResourceInner object itself.
      */
@@ -217,7 +225,7 @@ public final class AlertRuleResourceInner extends Resource {
 
     /**
      * Get the lastUpdatedTime property: Last time the rule was updated in ISO8601 format.
-     *
+     * 
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {
@@ -226,15 +234,13 @@ public final class AlertRuleResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AlertRuleResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model AlertRuleResourceInner"));
         } else {
             innerProperties().validate();
         }

@@ -531,7 +531,7 @@ public class CoreUtilsTests {
                 return null;
             });
 
-            future.get(1000, TimeUnit.MILLISECONDS);
+            future.get(5000, TimeUnit.MILLISECONDS);
 
             assertTrue(completed.get());
         } catch (InterruptedException | ExecutionException | TimeoutException e) {

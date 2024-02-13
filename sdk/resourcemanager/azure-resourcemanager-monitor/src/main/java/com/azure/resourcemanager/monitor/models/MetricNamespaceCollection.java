@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.fluent.models.MetricNamespaceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents collection of metric namespaces. */
+/**
+ * Represents collection of metric namespaces.
+ */
 @Fluent
 public final class MetricNamespaceCollection {
     /*
@@ -19,13 +21,15 @@ public final class MetricNamespaceCollection {
     @JsonProperty(value = "value", required = true)
     private List<MetricNamespaceInner> value;
 
-    /** Creates an instance of MetricNamespaceCollection class. */
+    /**
+     * Creates an instance of MetricNamespaceCollection class.
+     */
     public MetricNamespaceCollection() {
     }
 
     /**
      * Get the value property: The values for the metric namespaces.
-     *
+     * 
      * @return the value value.
      */
     public List<MetricNamespaceInner> value() {
@@ -34,7 +38,7 @@ public final class MetricNamespaceCollection {
 
     /**
      * Set the value property: The values for the metric namespaces.
-     *
+     * 
      * @param value the value value to set.
      * @return the MetricNamespaceCollection object itself.
      */
@@ -45,14 +49,13 @@ public final class MetricNamespaceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model MetricNamespaceCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model MetricNamespaceCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

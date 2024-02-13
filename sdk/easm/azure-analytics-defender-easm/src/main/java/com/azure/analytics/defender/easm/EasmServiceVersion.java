@@ -4,10 +4,12 @@
 
 package com.azure.analytics.defender.easm;
 
+import com.azure.core.util.ServiceVersion;
+
 /**
  * Service version of EasmClient.
  */
-public enum EasmServiceVersion implements com.azure.core.util.ServiceVersion {
+public enum EasmServiceVersion implements ServiceVersion {
     /**
      * Enum value 2023-03-01-preview.
      */

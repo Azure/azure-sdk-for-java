@@ -21,5 +21,6 @@ module com.azure.communication.common {
         com.azure.communication.callingserver,
         com.azure.communication.callautomation,
         com.azure.communication.networktraversal,
-        com.azure.communication.jobrouter;
+        com.azure.communication.jobrouter,
+        com.azure.communication.messages;
 }

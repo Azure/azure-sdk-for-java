@@ -3,16 +3,16 @@
 
 package com.azure.ai.vision.imageanalysis.tests;
 
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.AbstractMap.SimpleEntry;
-import java.net.MalformedURLException;
-
-import org.junit.jupiter.api.Test;
 import com.azure.ai.vision.imageanalysis.*;
 import com.azure.ai.vision.imageanalysis.models.*;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.RequestOptions;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map.Entry;
+import org.junit.jupiter.api.Test;
 
 class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
 
@@ -25,12 +25,13 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
      ***********************************************************************************/
 
     @Test
-    public void testAnalyzeSyncAllFeaturesFromUrl() throws MalformedURLException {
+    public void testAnalyzeSyncAllFeaturesFromUrl() {
 
         createClientForStandardAnalysis(sync);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageUrl;
+
         List<VisualFeatures> visualFeatures =  Arrays.asList(
                 VisualFeatures.SMART_CROPS,
                 VisualFeatures.CAPTION,
@@ -39,20 +40,19 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
                 VisualFeatures.PEOPLE,
                 VisualFeatures.READ,
                 VisualFeatures.TAGS);
-        Boolean genderNeutralCaption = true;
-        String language = "en";
-        List<Double> aspectRatios = Arrays.asList(0.9, 1.33);
-        String modelVersion = "latest";
-        ImageAnalysisOptions options = new ImageAnalysisOptions(
-            language, genderNeutralCaption, aspectRatios, modelVersion);
-        doAnalysis(methodName, sync, imageSource, visualFeatures, options);
+
+        ImageAnalysisOptions options = new ImageAnalysisOptions()
+            .setLanguage("en")
+            .setGenderNeutralCaption(true)
+            .setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33))
+            .setModelVersion("latest");
+
+        doAnalysis(methodName, sync, false, imageSource, visualFeatures, options, null);
     }
 
     @Test
-    public void testAnalyzeSyncSingleFeatureFromFile() throws MalformedURLException {
+    public void testAnalyzeSyncSingleFeatureFromFile() {
 
-        // Note: The test is missing automatic validation that the connection URL includes "&key1=value1&key2=value2". Need
-        // to do this manually.
         List<Entry<String, String>> queryParams = new ArrayList<>();
         queryParams.add(new SimpleEntry<>("key1", "value1"));
         queryParams.add(new SimpleEntry<>("key2", "value2"));
@@ -63,13 +63,56 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
         ImageAnalysisOptions options = null;
 
         List<VisualFeatures> visualFeatures =  Arrays.asList(VisualFeatures.CAPTION);
-        doAnalysis(methodName + ":Caption", sync, imageSource, visualFeatures, options);
+        doAnalysis(methodName + ":Caption", sync, false, imageSource, visualFeatures, options, null);
 
         visualFeatures =  Arrays.asList(VisualFeatures.READ);
-        doAnalysis(methodName + ":Read", sync, imageSource, visualFeatures, options);
+        doAnalysis(methodName + ":Read", sync, false, imageSource, visualFeatures, options, null);
 
         visualFeatures =  Arrays.asList(VisualFeatures.TAGS);
-        doAnalysis(methodName + ":Tags", sync, imageSource, visualFeatures, options);
+        doAnalysis(methodName + ":Tags", sync, false, imageSource, visualFeatures, options, null);
+    }
+
+    @Test
+    public void testAnalyzeSyncAllFeaturesFromFileWithResponse() {
+
+        createClientForStandardAnalysis(sync);
+
+        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String imageSource = imageFile;
+
+        List<VisualFeatures> visualFeatures =  Arrays.asList(
+                VisualFeatures.SMART_CROPS,
+                VisualFeatures.CAPTION,
+                VisualFeatures.DENSE_CAPTIONS,
+                VisualFeatures.OBJECTS,
+                VisualFeatures.PEOPLE,
+                VisualFeatures.READ,
+                VisualFeatures.TAGS);
+
+        ImageAnalysisOptions options = new ImageAnalysisOptions()
+            .setLanguage("en")
+            .setGenderNeutralCaption(true)
+            .setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33))
+            .setModelVersion("latest");
+
+        RequestOptions requestOptions = new RequestOptions()
+            .addHeader(HttpHeaderName.fromString("YourHeaderName"), "YourHeaderValue")
+            .addQueryParam("key1", "value1")
+            .addQueryParam("key2", "value2");
+
+        doAnalysis(methodName, sync, true, imageSource, visualFeatures, options, requestOptions);
+    }
+
+    @Test
+    public void testAnalyzeSyncSingleFeatureFromUrlWithResponse() {
+
+        createClientForStandardAnalysis(sync);
+
+        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String imageSource = imageUrl;
+        List<VisualFeatures> visualFeatures =  Arrays.asList(VisualFeatures.TAGS);
+
+        doAnalysis(methodName, sync, true, imageSource, visualFeatures, null, null);
     }
 
     /***********************************************************************************
@@ -79,7 +122,7 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
      ***********************************************************************************/
 
     @Test
-    public void testAnalyzeSyncImageUrlDoesNotExist() throws MalformedURLException {
+    public void testAnalyzeSyncImageUrlDoesNotExist() {
 
         createClientForStandardAnalysis(sync);
 
@@ -87,6 +130,7 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
         String imageSource = "https://www.this.is.a.bad.url.com/for/sure.jpg";
         List<VisualFeatures> visualFeatures =  Arrays.asList(VisualFeatures.CAPTION);
         ImageAnalysisOptions options = null;
+
         doAnalysisWithError(methodName, sync, imageSource, visualFeatures, options, 400, "image url is not accessible");
     }
 }

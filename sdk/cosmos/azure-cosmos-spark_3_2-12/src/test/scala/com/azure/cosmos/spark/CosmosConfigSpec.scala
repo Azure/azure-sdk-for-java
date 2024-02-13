@@ -67,7 +67,7 @@ class CosmosConfigSpec extends UnitSpec {
           endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
           aadAuthConfig.clientId shouldEqual testServicePrincipalClientId
           aadAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
-          endpointConfig.azureEnvironment shouldEqual AzureEnvironment.AZURE
+          new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE.getActiveDirectoryEndpoint
           endpointConfig.accountName shouldEqual "boson-test"
       }
   }
@@ -95,7 +95,7 @@ class CosmosConfigSpec extends UnitSpec {
           endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
           aadAuthConfig.clientId shouldEqual testServicePrincipalClientId
           aadAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
-          endpointConfig.azureEnvironment shouldEqual AzureEnvironment.AZURE_US_GOVERNMENT
+          new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint
           endpointConfig.accountName shouldEqual "boson-test"
       }
   }
