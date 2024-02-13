@@ -91,7 +91,7 @@ public class BootstrapperImplTests {
             ChangeFeedMode.FULL_FIDELITY);
 
         if (expectIllegalStateException) {
-            Assert.expectThrows(IllegalStateException.class, () -> bootstrapper.initialize().block());
+            Assert.assertThrows(IllegalStateException.class, () -> bootstrapper.initialize().block());
         } else {
             bootstrapper.initialize().block();
         }
