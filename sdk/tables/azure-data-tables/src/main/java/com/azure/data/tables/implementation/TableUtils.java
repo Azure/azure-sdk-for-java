@@ -4,6 +4,7 @@ package com.azure.data.tables.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -593,7 +594,7 @@ public final class TableUtils {
             TableTransactionFailedException failedException = (TableTransactionFailedException) cause;
             return failedException;
         } else {
-            return (RuntimeException) mapThrowableToTableServiceException(exception);
+            return (Exception) mapThrowableToTableServiceException(exception);
         }
     }
 
@@ -612,16 +613,68 @@ public final class TableUtils {
         return keys;
     }
 
-    public static <T> T callWithOptionalTimeout(Supplier<T> callable, ExecutorService threadPool, Duration timeout,
-        ClientLogger logger) {
+    public static Context skip409Logging(Context context) {
+        return context.addData("skip409logging", true);
+    }
+
+    public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) {
+        try {
+            return callHandler(callable, threadPool, timeout, logger);
+        } catch (Throwable thrown) {
+            Throwable exception = mapThrowableToTableServiceException(thrown);
+            throw logger.logExceptionAsError((RuntimeException) exception);
+        }
+
+    }
+
+    public static <T> Response<T> callWithOptionalTimeoutAndContext(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger, Context context) {
+        try {
+            return callHandler(callable, threadPool, timeout, logger);
+        } catch (Throwable thrown) {
+            Throwable exception = mapThrowableToTableServiceException(thrown);
+            context = setContext(context);
+
+            if (exception instanceof TableServiceException) {
+                if (shouldSkip409Logging((TableServiceException) exception, context)) {
+                    // return empty response
+                    HttpResponse resp = ((TableServiceException) exception).getResponse();
+                    return new SimpleResponse<>(resp.getRequest(), resp.getStatusCode(), resp.getHeaders(), null);
+                }
+            }
+
+            throw logger.logExceptionAsError((RuntimeException) exception);
+        }
+    }
+
+    public static <T> PagedIterable<T> callIterableWithOptionalTimeout(Supplier<PagedIterable<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) {
+        try {
+            return callHandler(callable, threadPool, timeout, logger);
+        } catch (Throwable thrown) {
+            Throwable exception = mapThrowableToTableServiceException(thrown);
+            throw logger.logExceptionAsError((RuntimeException) exception);
+        }
+    }
+
+    private static <T> T callHandler(Supplier<T> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) throws Throwable {
         try {
             return hasTimeout(timeout)
                 ? getResultWithTimeout(threadPool.submit(callable::get), timeout)
                 : callable.get();
-        } catch (InterruptedException | ExecutionException | TimeoutException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
-        } catch (RuntimeException ex) {
-            throw logger.logExceptionAsError((RuntimeException) mapThrowableToTableServiceException(ex));
+        } catch (ExecutionException | InterruptedException | TimeoutException ex) {
+
+            if (ex instanceof ExecutionException) {
+                Throwable cause = ex.getCause();
+                throw mapThrowableToTableServiceException(cause);
+            } else {
+                throw logger.logExceptionAsError(new RuntimeException(ex));
+            }
         }
+    }
+
+    private static boolean shouldSkip409Logging(TableServiceException e, Context context) {
+        if (context.getData("skip409logging").isPresent() && context.getData("skip409logging").get().equals(true)) {
+            return e.getResponse() != null && e.getResponse().getStatusCode() == 409;
+        }
+        return false;
     }
 }
