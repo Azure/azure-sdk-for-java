@@ -80,25 +80,26 @@ Radiology Insights currently supports one document from one patient. Please take
 Infer radiology insights from a patient's radiology report using a **synchronous** client.
 
 ```java com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
-RadiologyInsightsInferenceResult riResults = radiologyInsightsClient.beginInferRadiologyInsights(createRadiologyInsightsRequest()).getFinalResult();
+RadiologyInsightsJob riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights("job1",createRadiologyInsightsJob()).getFinalResult();
 ```
 
 Infer radiology insights from a patient's radiology report using an **asynchronous** client.
 
 ```java com.azure.health.insights.radiologyinsights.inferradiologyinsights
-PollerFlux<PollOperationDetails, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
-        .beginInferRadiologyInsights(createRadiologyInsightsRequest());
+PollerFlux<RadiologyInsightsJob, RadiologyInsightsJob> asyncPoller = radiologyInsightsAsyncClient
+        .beginInferRadiologyInsights("job1",createRadiologyInsightsJob());
 ```
 
 Create the request.
 
 ```java com.azure.health.insights.radiologyinsights.createrequest
-private static RadiologyInsightsData createRadiologyInsightsRequest() {
+private static RadiologyInsightsJob createRadiologyInsightsJob() {
     List<PatientRecord> patientRecords = createPatientRecords();
     RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
     RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
     radiologyInsightsData.setConfiguration(modelConfiguration);
-    return radiologyInsightsData;
+    RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
+    return radiologyInsightsJob;
 }
 
 /**
@@ -117,9 +118,9 @@ private static List<PatientRecord> createPatientRecords() {
     // Use LocalDate to set Date
     patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
     
-    patientRecord.setInfo(patientDetails);
+    patientRecord.setDetails(patientDetails);
 
-    Encounter encounter = new Encounter("encounterid1");
+    PatientEncounter encounter = new PatientEncounter("encounterid1");
 
     TimePeriod period = new TimePeriod();
 
@@ -167,7 +168,7 @@ private static List<PatientRecord> createPatientRecords() {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
     OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter);
-    patientDocument.setCreatedDateTime(createdDateTime);
+    patientDocument.setCreatedAt(createdDateTime);
 
     patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
     patientRecords.add(patientRecord);
@@ -235,12 +236,12 @@ Display critical result inferences from the example request results.
 ```java com.azure.health.insights.radiologyinsights.displayresults
 List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
 for (RadiologyInsightsPatientResult patientResult : patientResults) {
-    List<FhirR4Extendible1> inferences = patientResult.getInferences();
-    for (FhirR4Extendible1 inference : inferences) {
+    List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+    for (RadiologyInsightsInference inference : inferences) {
         if (inference instanceof CriticalResultInference) {
             CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
             String description = criticalResultInference.getResult().getDescription();
-            System.out.println("Critical Result Inference found: " + description);
+            System.out.println("Critical Result Inference found: " + description);                    
         }
     }
 }

@@ -13,22 +13,23 @@ import com.azure.health.insights.radiologyinsights.models.DocumentAuthor;
 import com.azure.health.insights.radiologyinsights.models.DocumentContent;
 import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
 import com.azure.health.insights.radiologyinsights.models.DocumentType;
-import com.azure.health.insights.radiologyinsights.models.Encounter;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible1;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
+import com.azure.health.insights.radiologyinsights.models.PatientEncounter;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientSex;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
@@ -89,10 +90,10 @@ public class SampleCriticalResultInferenceSync {
         // END: com.azure.health.insights.radiologyinsights.buildsyncclient
         
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
-        RadiologyInsightsInferenceResult riResults = radiologyInsightsClient.beginInferRadiologyInsights(createRadiologyInsightsRequest()).getFinalResult();
+        RadiologyInsightsJob riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights("job1",createRadiologyInsightsJob()).getFinalResult();
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
 
-        displayCriticalResults(riResults);
+        displayCriticalResults(riJobResponse.getResult());
     }
 
     /**
@@ -104,8 +105,8 @@ public class SampleCriticalResultInferenceSync {
     private static void displayCriticalResults(RadiologyInsightsInferenceResult radiologyInsightsResult) {
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
-            List<FhirR4Extendible1> inferences = patientResult.getInferences();
-            for (FhirR4Extendible1 inference : inferences) {
+            List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+            for (RadiologyInsightsInference inference : inferences) {
                 if (inference instanceof CriticalResultInference) {
                     CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
                     String description = criticalResultInference.getResult().getDescription();
@@ -122,12 +123,13 @@ public class SampleCriticalResultInferenceSync {
      * @return A RadiologyInsightsData object with the created patient records and
      *         model configuration.
      */
-    private static RadiologyInsightsData createRadiologyInsightsRequest() {
+    private static RadiologyInsightsJob createRadiologyInsightsJob() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
         radiologyInsightsData.setConfiguration(modelConfiguration);
-        return radiologyInsightsData;
+        RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
+        return radiologyInsightsJob;
     }
 
     /**
@@ -146,9 +148,9 @@ public class SampleCriticalResultInferenceSync {
         // Use LocalDate to set Date
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
         
-        patientRecord.setInfo(patientDetails);
+        patientRecord.setDetails(patientDetails);
 
-        Encounter encounter = new Encounter("encounterid1");
+        PatientEncounter encounter = new PatientEncounter("encounterid1");
 
         TimePeriod period = new TimePeriod();
 
@@ -196,7 +198,7 @@ public class SampleCriticalResultInferenceSync {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
         OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter);
-        patientDocument.setCreatedDateTime(createdDateTime);
+        patientDocument.setCreatedAt(createdDateTime);
 
         patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
         patientRecords.add(patientRecord);
