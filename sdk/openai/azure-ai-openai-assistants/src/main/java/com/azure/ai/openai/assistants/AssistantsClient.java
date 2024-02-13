@@ -11,7 +11,12 @@ import com.azure.ai.openai.assistants.implementation.accesshelpers.PageableListA
 import com.azure.ai.openai.assistants.implementation.models.CreateAssistantFileRequest;
 import com.azure.ai.openai.assistants.implementation.models.CreateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistant;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistantFile;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfMessageFile;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadRun;
 import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
@@ -51,7 +56,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -439,7 +443,6 @@ public final class AssistantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<Assistant> listAssistants(Integer limit, ListSortOrder order, String after, String before) {
-        // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -453,9 +456,11 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listAssistantsWithResponse(requestOptions).getValue()
-            .toObject(new TypeReference<PageableList<Assistant>>() {
-            });
+        OpenAIPageableListOfAssistant assistantList = listAssistantsWithResponse(requestOptions).getValue()
+            .toObject(OpenAIPageableListOfAssistant.class);
+
+        return PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+            assistantList.getLastId(), assistantList.isHasMore());
     }
 
     /**
@@ -470,11 +475,11 @@ public final class AssistantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<Assistant> listAssistants() {
-        // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listAssistantsWithResponse(requestOptions).getValue()
-            .toObject(new TypeReference<PageableList<Assistant>>() {
-            });
+        OpenAIPageableListOfAssistant assistantList = listAssistantsWithResponse(requestOptions).getValue()
+            .toObject(OpenAIPageableListOfAssistant.class);
+        return PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+            assistantList.getLastId(), assistantList.isHasMore());
     }
 
     /**
@@ -547,7 +552,6 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<AssistantFile> listAssistantFiles(String assistantId, Integer limit, ListSortOrder order,
         String after, String before) {
-        // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -561,9 +565,11 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
-            .toObject(new TypeReference<PageableList<AssistantFile>>() {
-            });
+        OpenAIPageableListOfAssistantFile assistantFileList =  listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfAssistantFile.class);
+
+        return PageableListAccessHelper.create(assistantFileList.getData(), assistantFileList.getFirstId(),
+            assistantFileList.getLastId(), assistantFileList.isHasMore());
     }
 
     /**
@@ -1960,7 +1966,6 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<ThreadMessage> listMessages(String threadId, Integer limit, ListSortOrder order, String after,
         String before) {
-        // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -1974,9 +1979,10 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listMessagesWithResponse(threadId, requestOptions).getValue()
-            .toObject(new TypeReference<PageableList<ThreadMessage>>() {
-            });
+        OpenAIPageableListOfThreadMessage threadMessageList = listMessagesWithResponse(threadId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfThreadMessage.class);
+
+        return PageableListAccessHelper.create(threadMessageList.getData(), threadMessageList.getFirstId(), threadMessageList.getLastId(), threadMessageList.isHasMore());
     }
 
     /**
@@ -1993,11 +1999,12 @@ public final class AssistantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<ThreadMessage> listMessages(String threadId) {
-        // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listMessagesWithResponse(threadId, requestOptions).getValue()
-            .toObject(new TypeReference<PageableList<ThreadMessage>>() {
-            });
+        OpenAIPageableListOfThreadMessage threadMessageList = listMessagesWithResponse(threadId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfThreadMessage.class);
+
+        return PageableListAccessHelper.create(threadMessageList.getData(), threadMessageList.getFirstId(),
+            threadMessageList.getLastId(), threadMessageList.isHasMore());
     }
 
     /**
@@ -2047,7 +2054,6 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<MessageFile> listMessageFiles(String threadId, String messageId, Integer limit,
         ListSortOrder order, String after, String before) {
-        // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2061,9 +2067,11 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
-            .toObject(new TypeReference<PageableList<MessageFile>>() {
-            });
+        OpenAIPageableListOfMessageFile messageFileList = listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfMessageFile.class);
+
+        return PageableListAccessHelper.create(messageFileList.getData(), messageFileList.getFirstId(),
+            messageFileList.getLastId(), messageFileList.isHasMore());
     }
 
     /**
@@ -2081,11 +2089,11 @@ public final class AssistantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<MessageFile> listMessageFiles(String threadId, String messageId) {
-        // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
-            .toObject(new TypeReference<PageableList<MessageFile>>() {
-            });
+        OpenAIPageableListOfMessageFile messageFileList = listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfMessageFile.class);
+        return PageableListAccessHelper.create(messageFileList.getData(), messageFileList.getFirstId(),
+            messageFileList.getLastId(), messageFileList.isHasMore());
     }
 
     /**
@@ -2136,7 +2144,6 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<ThreadRun> listRuns(String threadId, Integer limit, ListSortOrder order, String after,
         String before) {
-        // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2150,9 +2157,10 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listRunsWithResponse(threadId, requestOptions).getValue()
-            .toObject(new TypeReference<PageableList<ThreadRun>>() {
-            });
+        OpenAIPageableListOfThreadRun threadRunList = listRunsWithResponse(threadId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfThreadRun.class);
+        return PageableListAccessHelper.create(threadRunList.getData(), threadRunList.getFirstId(),
+            threadRunList.getLastId(), threadRunList.isHasMore());
     }
 
     /**
@@ -2169,11 +2177,11 @@ public final class AssistantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<ThreadRun> listRuns(String threadId) {
-        // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listRunsWithResponse(threadId, requestOptions).getValue()
-            .toObject(new TypeReference<PageableList<ThreadRun>>() {
-            });
+        OpenAIPageableListOfThreadRun threadRunList = listRunsWithResponse(threadId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfThreadRun.class);
+        return PageableListAccessHelper.create(threadRunList.getData(), threadRunList.getFirstId(),
+            threadRunList.getLastId(), threadRunList.isHasMore());
     }
 
     /**
@@ -2313,7 +2321,6 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<RunStep> listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order,
         String after, String before) {
-        // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2327,9 +2334,10 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listRunStepsWithResponse(threadId, runId, requestOptions).getValue()
-            .toObject(new TypeReference<PageableList<RunStep>>() {
-            });
+        OpenAIPageableListOfRunStep runStepList = listRunStepsWithResponse(threadId, runId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfRunStep.class);
+        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(),
+            runStepList.getLastId(), runStepList.isHasMore());
     }
 
     /**
@@ -2347,11 +2355,11 @@ public final class AssistantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<RunStep> listRunSteps(String threadId, String runId) {
-        // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listRunStepsWithResponse(threadId, runId, requestOptions).getValue()
-            .toObject(new TypeReference<PageableList<RunStep>>() {
-            });
+        OpenAIPageableListOfRunStep runStepList = listRunStepsWithResponse(threadId, runId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfRunStep.class);
+        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(),
+            runStepList.getLastId(), runStepList.isHasMore());
     }
 
     /**

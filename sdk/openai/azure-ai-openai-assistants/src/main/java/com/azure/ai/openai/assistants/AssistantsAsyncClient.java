@@ -7,9 +7,16 @@ import static com.azure.ai.openai.assistants.implementation.OpenAIUtils.addAzure
 
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
+import com.azure.ai.openai.assistants.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.assistants.implementation.models.CreateAssistantFileRequest;
 import com.azure.ai.openai.assistants.implementation.models.CreateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistant;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistantFile;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfMessageFile;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadRun;
 import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
@@ -50,7 +57,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -445,7 +451,6 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<Assistant>> listAssistants(Integer limit, ListSortOrder order, String after,
         String before) {
-        // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -460,8 +465,10 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<Assistant>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistant.class))
+            .map(assistantList ->
+                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                    assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -476,11 +483,12 @@ public final class AssistantsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<Assistant>> listAssistants() {
-        // Generated convenience method for listAssistantsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<Assistant>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistant.class))
+            .map(assistantList ->
+                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                    assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -555,7 +563,6 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<AssistantFile>> listAssistantFiles(String assistantId, Integer limit, ListSortOrder order,
         String after, String before) {
-        // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -570,8 +577,10 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<AssistantFile>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistantFile.class))
+            .map(assistantList ->
+                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                    assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -589,11 +598,12 @@ public final class AssistantsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<AssistantFile>> listAssistantFiles(String assistantId) {
-        // Generated convenience method for listAssistantFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<AssistantFile>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistantFile.class))
+            .map(assistantList ->
+                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                    assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -1993,7 +2003,6 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<ThreadMessage>> listMessages(String threadId, Integer limit, ListSortOrder order,
         String after, String before) {
-        // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2008,8 +2017,10 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listMessagesWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<ThreadMessage>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadMessage.class))
+            .map(assistantList ->
+                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                    assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2026,11 +2037,12 @@ public final class AssistantsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<ThreadMessage>> listMessages(String threadId) {
-        // Generated convenience method for listMessagesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listMessagesWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<ThreadMessage>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadMessage.class))
+            .map(assistantList ->
+                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                    assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2082,7 +2094,6 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<MessageFile>> listMessageFiles(String threadId, String messageId, Integer limit,
         ListSortOrder order, String after, String before) {
-        // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2097,8 +2108,10 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listMessageFilesWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<MessageFile>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfMessageFile.class))
+            .map(assistantList ->
+                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                    assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2117,11 +2130,12 @@ public final class AssistantsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<MessageFile>> listMessageFiles(String threadId, String messageId) {
-        // Generated convenience method for listMessageFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listMessageFilesWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<MessageFile>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfMessageFile.class))
+            .map(assistantList ->
+                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                    assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2173,7 +2187,6 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<ThreadRun>> listRuns(String threadId, Integer limit, ListSortOrder order, String after,
         String before) {
-        // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2188,8 +2201,10 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listRunsWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<ThreadRun>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadRun.class))
+            .map(assistantList ->
+                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                    assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2206,11 +2221,12 @@ public final class AssistantsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<ThreadRun>> listRuns(String threadId) {
-        // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listRunsWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<ThreadRun>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadRun.class))
+            .map(assistantList ->
+                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                    assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2356,7 +2372,6 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<RunStep>> listRunSteps(String threadId, String runId, Integer limit, ListSortOrder order,
         String after, String before) {
-        // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -2371,8 +2386,10 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<RunStep>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class))
+            .map(assistantList ->
+                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                    assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2390,11 +2407,12 @@ public final class AssistantsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<RunStep>> listRunSteps(String threadId, String runId) {
-        // Generated convenience method for listRunStepsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(new TypeReference<PageableList<RunStep>>() {
-            }));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class))
+            .map(assistantList ->
+                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                    assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
