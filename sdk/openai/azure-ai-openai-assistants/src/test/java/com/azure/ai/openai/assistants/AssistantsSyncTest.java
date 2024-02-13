@@ -8,13 +8,13 @@ import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
 import com.azure.ai.openai.assistants.models.AssistantFile;
 import com.azure.ai.openai.assistants.models.AssistantFileDeletionStatus;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistant;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfAssistantFile;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -130,13 +130,13 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             String assistantId1 = createAssistant(client, assistantCreationOptions.setName("assistant1"));
             String assistantId2 = createAssistant(client, assistantCreationOptions.setName("assistant2"));
 
-            OpenAIPageableListOfAssistant assistantsAscending = client.listAssistants();
+            PageableList<Assistant> assistantsAscending = client.listAssistants();
             List<Assistant> dataAscending = assistantsAscending.getData();
             assertTrue(dataAscending.size() >= 2);
 
             Response<BinaryData> response = client.listAssistantsWithResponse(new RequestOptions());
-            OpenAIPageableListOfAssistant assistantsAscendingResponse = assertAndGetValueFromResponse(response,
-                    OpenAIPageableListOfAssistant.class, 200);
+            PageableList<Assistant> assistantsAscendingResponse = assertAndGetValueFromResponse(response,
+                new TypeReference<PageableList<Assistant>>() {}, 200);
             List<Assistant> dataAscendingResponse = assistantsAscendingResponse.getData();
             assertTrue(dataAscendingResponse.size() >= 2);
 
@@ -158,7 +158,7 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             String assistantId4 = createAssistant(client, assistantCreationOptions.setName("assistant4"));
 
             // List only the middle two assistants; sort by name ascending
-            OpenAIPageableListOfAssistant assistantsAscending = client.listAssistants(100,
+            PageableList<Assistant> assistantsAscending = client.listAssistants(100,
                     ListSortOrder.ASCENDING, assistantId1, assistantId4);
             List<Assistant> dataAscending = assistantsAscending.getData();
             assertEquals(2, dataAscending.size());
@@ -166,7 +166,7 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             assertEquals(assistantId3, dataAscending.get(1).getId());
 
             // List only the middle two assistants; sort by name descending
-            OpenAIPageableListOfAssistant assistantsDescending = client.listAssistants(100,
+            PageableList<Assistant> assistantsDescending = client.listAssistants(100,
                     ListSortOrder.DESCENDING, assistantId4, assistantId1);
             List<Assistant> dataDescending = assistantsDescending.getData();
             assertEquals(2, dataDescending.size());
@@ -266,7 +266,7 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             assertEquals("assistant.file", assistantFile.getObject());
             assertEquals(fileId, assistantFile.getId());
 
-            OpenAIPageableListOfAssistantFile assistantFiles = client.listAssistantFiles(assistantId);
+            PageableList<AssistantFile> assistantFiles = client.listAssistantFiles(assistantId);
 
             List<AssistantFile> assistantFilesData = assistantFiles.getData();
             assertEquals(1, assistantFilesData.size());
@@ -293,7 +293,7 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             assertEquals(assistantFile1.getId(), assistantFile2.getId());
 
             // Listing will only return one file
-            OpenAIPageableListOfAssistantFile assistantFilesAscending = client.listAssistantFiles(assistantId, 100,
+            PageableList<AssistantFile> assistantFilesAscending = client.listAssistantFiles(assistantId, 100,
                     ListSortOrder.ASCENDING, null, null);
             List<AssistantFile> dataAscending = assistantFilesAscending.getData();
             assertEquals(1, dataAscending.size());
@@ -320,8 +320,8 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             Response<BinaryData> response = client.listAssistantFilesWithResponse(assistantId,
                     new RequestOptions());
 
-            OpenAIPageableListOfAssistantFile assistantFileList = assertAndGetValueFromResponse(response,
-                    OpenAIPageableListOfAssistantFile.class, 200);
+            PageableList<AssistantFile> assistantFileList = assertAndGetValueFromResponse(response,
+                new TypeReference<PageableList<AssistantFile>>() {}, 200);
             List<AssistantFile> assistantFilesData = assistantFileList.getData();
             assertEquals(1, assistantFilesData.size());
             AssistantFile assistantFileOnly = assistantFilesData.get(0);
@@ -354,7 +354,7 @@ public class AssistantsSyncTest extends AssistantsClientTestBase {
             assertEquals(assistantId, assistantFile3.getAssistantId());
             assertEquals(assistantId, assistantFile4.getAssistantId());
             // List only the middle two assistants; sort by name ascending
-            OpenAIPageableListOfAssistantFile assistantFilesAscending = client.listAssistantFiles(assistantId, 100,
+            PageableList<AssistantFile> assistantFilesAscending = client.listAssistantFiles(assistantId, 100,
                     ListSortOrder.ASCENDING, assistantFile1.getId(), assistantFile4.getId());
             List<AssistantFile> dataAscending = assistantFilesAscending.getData();
             assertEquals(2, dataAscending.size());

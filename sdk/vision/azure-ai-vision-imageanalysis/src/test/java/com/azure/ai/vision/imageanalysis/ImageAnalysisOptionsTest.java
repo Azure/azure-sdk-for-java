@@ -23,23 +23,6 @@ class ImageAnalysisOptionsTest {
     }
 
     @Test
-    public void testAllOptionsAssignedAtOnce() {
-
-        Boolean genderNeutralCaption = true;
-        String language = "de";
-        List<Double> aspectRatios = Arrays.asList(0.9, 1.33);
-        String modelVersion = "latest";
-
-        ImageAnalysisOptions options = new ImageAnalysisOptions(
-            language, genderNeutralCaption, aspectRatios, modelVersion);
-
-        assert options.getSmartCropsAspectRatios() == aspectRatios;
-        assert options.getLanguage() == language;
-        assert options.isGenderNeutralCaption() == genderNeutralCaption;
-        assert options.getModelVersion() == modelVersion;
-    }
-
-    @Test
     public void testAllOptionsUsingBuilderPattern() {
 
         Boolean genderNeutralCaption = true;

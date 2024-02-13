@@ -75,8 +75,7 @@ class EventHubAsyncClient implements Closeable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     Mono<EventHubProperties> getProperties() {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode())
+        return connectionProcessor.getManagementNodeWithRetries()
             .flatMap(EventHubManagementNode::getEventHubProperties);
     }
 
@@ -97,8 +96,7 @@ class EventHubAsyncClient implements Closeable {
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      */
     Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode())
+        return connectionProcessor.getManagementNodeWithRetries()
             .flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
