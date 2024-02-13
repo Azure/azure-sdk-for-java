@@ -37,9 +37,19 @@ public interface ChangeFeedProcessorContext {
     @Beta(value = Beta.SinceVersion.V4_56_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     double getRequestCharge();
 
+    /**
+     * Gets the session token associated with the change feed batch.
+     *
+     * @return the session token
+     * */
     @Beta(value = Beta.SinceVersion.V4_56_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     String getSessionToken();
 
+    /**
+     * Gets the diagnostics associated with the change feed batch.
+     *
+     * @return the diagnostics
+     * */
     @Beta(value = Beta.SinceVersion.V4_56_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     CosmosDiagnostics getDiagnostics();
 }
