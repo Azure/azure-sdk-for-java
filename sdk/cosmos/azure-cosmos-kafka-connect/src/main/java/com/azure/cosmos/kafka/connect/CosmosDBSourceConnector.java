@@ -15,17 +15,16 @@ import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeTaskUnit;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThread;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.source.SourceConnector;
@@ -334,14 +333,5 @@ public class CosmosDBSourceConnector extends SourceConnector {
         });
         
         return effectiveContainersTopicMap;
-    }
-
-    @Override
-    public Config validate(Map<String, String> connectorConfigs) {
-        Config config = super.validate(connectorConfigs);
-        if (config.configValues().stream().anyMatch(cv -> !cv.errorMessages().isEmpty())) {
-            return config;
-        }
-        return config;
     }
 }

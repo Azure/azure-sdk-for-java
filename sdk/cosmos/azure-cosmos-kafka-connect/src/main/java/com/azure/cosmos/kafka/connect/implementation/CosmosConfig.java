@@ -49,24 +49,11 @@ public class CosmosConfig extends AbstractConfig {
     private static final String APPLICATION_NAME_DOC = "Application name. Will be added as the userAgent suffix.";
     private static final String APPLICATION_NAME_DISPLAY = "Application name.";
 
-    // Client Telemetry
-    private static final String CLIENT_TELEMETRY_ENABLED = CONFIG_PREFIX + "clientTelemetry.enabled";
-    private static final String CLIENT_TELEMETRY_ENABLED_DOC = "Enables Client Telemetry - NOTE: This is a preview feature - and only works with public endpoints right now.";
-    private static final String CLIENT_TELEMETRY_ENABLED_DISPLAY = "Enable client telemetry.";
-    private static final boolean DEFAULT_CLIENT_TELEMETRY_ENABLED = false;
-
-    private static final String CLIENT_TELEMETRY_ENDPOINT = CONFIG_PREFIX + "clientTelemetry.endpoint";
-    private static final String CLIENT_TELEMETRY_ENDPOINT_DOC = "Enables Client Telemetry to be sent to the service endpoint provided - " +
-        "NOTE: This is a preview feature - and only works with public endpoints right now";
-    private static final String CLIENT_TELEMETRY_ENDPOINT_DISPLAY = "Client telemetry public endpoint.";
-
     private final CosmosAccountConfig accountConfig;
-    private final CosmosDiagnosticsConfig diagnosticsConfig;
 
     public CosmosConfig(ConfigDef config, Map<String, ?> parsedConfig) {
         super(config, parsedConfig);
         this.accountConfig = this.parseAccountConfig();
-        this.diagnosticsConfig = this.parseDiagnosticsConfig();
     }
 
     private CosmosAccountConfig parseAccountConfig() {
@@ -88,18 +75,10 @@ public class CosmosConfig extends AbstractConfig {
         return convertToList(this.getString(PREFERRED_REGIONS_LIST));
     }
 
-    private CosmosDiagnosticsConfig parseDiagnosticsConfig() {
-        Boolean clientTelemetryEnabled = this.getBoolean(CLIENT_TELEMETRY_ENABLED);
-        String clientTelemetryEndpoint = this.getString(CLIENT_TELEMETRY_ENDPOINT);
-
-        return new CosmosDiagnosticsConfig(clientTelemetryEnabled, clientTelemetryEndpoint);
-    }
-
     public static ConfigDef getConfigDef() {
         ConfigDef configDef = new ConfigDef();
 
         defineAccountConfig(configDef);
-        defineDiagnosticsConfig(configDef);
 
         return configDef;
     }
@@ -165,35 +144,6 @@ public class CosmosConfig extends AbstractConfig {
                 accountGroupOrder++,
                 ConfigDef.Width.LONG,
                 PREFERRED_REGIONS_LIST_DISPLAY
-            );
-    }
-
-    private static void defineDiagnosticsConfig(ConfigDef result) {
-        final String diagnosticsGroupName = "diagnostics";
-        int diagnosticsGroupOrder = 0;
-
-        result
-            .define(
-                CLIENT_TELEMETRY_ENABLED,
-                ConfigDef.Type.BOOLEAN,
-                DEFAULT_CLIENT_TELEMETRY_ENABLED,
-                ConfigDef.Importance.LOW,
-                CLIENT_TELEMETRY_ENABLED_DOC,
-                diagnosticsGroupName,
-                diagnosticsGroupOrder++,
-                ConfigDef.Width.MEDIUM,
-                CLIENT_TELEMETRY_ENABLED_DISPLAY
-            )
-            .define(
-                CLIENT_TELEMETRY_ENDPOINT,
-                ConfigDef.Type.STRING,
-                Strings.Emtpy,
-                ConfigDef.Importance.LOW,
-                CLIENT_TELEMETRY_ENDPOINT_DOC,
-                diagnosticsGroupName,
-                diagnosticsGroupOrder++,
-                ConfigDef.Width.LONG,
-                CLIENT_TELEMETRY_ENDPOINT_DISPLAY
             );
     }
 

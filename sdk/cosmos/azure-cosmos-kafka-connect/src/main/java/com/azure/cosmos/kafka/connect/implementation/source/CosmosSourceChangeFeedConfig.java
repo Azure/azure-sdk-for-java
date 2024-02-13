@@ -9,17 +9,17 @@ public class CosmosSourceChangeFeedConfig {
     private final CosmosChangeFeedModes changeFeedModes;
     private final CosmosChangeFeedStartFromModes changeFeedStartFromModes;
     private final Instant startFrom;
-    private final int maxItemCount;
+    private final int maxItemCountHint;
 
     public CosmosSourceChangeFeedConfig(
         CosmosChangeFeedModes changeFeedModes,
         CosmosChangeFeedStartFromModes changeFeedStartFromModes,
         Instant startFrom,
-        int maxItemCount) {
+        int maxItemCountHint) {
         this.changeFeedModes = changeFeedModes;
         this.changeFeedStartFromModes = changeFeedStartFromModes;
         this.startFrom = startFrom;
-        this.maxItemCount = maxItemCount;
+        this.maxItemCountHint = maxItemCountHint;
     }
 
     public CosmosChangeFeedModes getChangeFeedModes() {
@@ -34,7 +34,7 @@ public class CosmosSourceChangeFeedConfig {
         return startFrom;
     }
 
-    public int getMaxItemCount() {
-        return maxItemCount;
+    public int getMaxItemCountHint() {
+        return maxItemCountHint;
     }
 }

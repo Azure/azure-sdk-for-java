@@ -34,7 +34,9 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
+import org.apache.kafka.common.config.ConfigValue;
 import org.apache.kafka.connect.source.SourceConnectorContext;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -46,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.kafka.connect.CosmosDBSourceConnectorTest.SourceConfigs.ALL_VALID_CONFIGS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.testng.Assert.assertEquals;
 
@@ -62,7 +65,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
         ConfigDef configDef = sourceConnector.config();
         Map<String, ConfigDef.ConfigKey> configs = configDef.configKeys();
-        List<SourceConfigEntry<?>> allValidConfigs = SourceConfigs.ALL_VALID_CONFIGS;
+        List<SourceConfigEntry<?>> allValidConfigs = ALL_VALID_CONFIGS;
 
         for (SourceConfigEntry<?> sourceConfigEntry : allValidConfigs) {
             assertThat(configs.containsKey(sourceConfigEntry.getName())).isTrue();
@@ -353,6 +356,77 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 "_cosmos.metadata.topic"
             );
         validateMetadataTask(expectedMetadataTaskUnit, taskConfigs.get(1));
+    }
+
+    @Test(groups = "unit")
+    public void missingRequiredConfig() {
+
+        List<SourceConfigEntry<?>> requiredConfigs =
+            ALL_VALID_CONFIGS
+                .stream()
+                .filter(sourceConfigEntry -> !sourceConfigEntry.isOptional)
+                .collect(Collectors.toList());
+
+        assertThat(requiredConfigs.size()).isGreaterThan(1);
+        CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
+        for (SourceConfigEntry configEntry : requiredConfigs) {
+
+            Map<String, String> sourceConfigMap = this.getValidSourceConfig();
+            sourceConfigMap.remove(configEntry.getName());
+            Config validatedConfig = sourceConnector.validate(sourceConfigMap);
+            ConfigValue configValue =
+                validatedConfig
+                    .configValues()
+                    .stream()
+                    .filter(config -> config.name().equalsIgnoreCase(configEntry.name))
+                    .findFirst()
+                    .get();
+
+            assertThat(configValue.errorMessages()).isNotNull();
+            assertThat(configValue.errorMessages().size()).isGreaterThanOrEqualTo(1);
+        }
+    }
+
+    @Test(groups = "unit")
+    public void misFormattedConfig() {
+        CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
+        Map<String, String> sourceConfigMap = this.getValidSourceConfig();
+
+        String topicMapConfigName = "kafka.connect.cosmos.source.containers.topicMap";
+        sourceConfigMap.put(topicMapConfigName, singlePartitionContainerName.toString());
+
+        Config validatedConfig = sourceConnector.validate(sourceConfigMap);
+        ConfigValue configValue =
+            validatedConfig
+                .configValues()
+                .stream()
+                .filter(config -> config.name().equalsIgnoreCase(topicMapConfigName))
+                .findFirst()
+                .get();
+
+        assertThat(configValue.errorMessages()).isNotNull();
+        assertThat(
+            configValue
+                .errorMessages()
+                .get(0)
+                .contains(
+                    "The topic-container map should be a comma-delimited list of Kafka topic to Cosmos containers." +
+                        " Each mapping should be a pair of Kafka topic and Cosmos container separated by '#'." +
+                        " For example: topic1#con1,topic2#con2."))
+            .isTrue();
+
+        // TODO: add other config validations
+    }
+
+    private Map<String, String> getValidSourceConfig() {
+        Map<String, String> sourceConfigMap = new HashMap<>();
+        sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
+        sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
+        List<String> containersIncludedList = Arrays.asList(singlePartitionContainerName);
+        sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
+
+        return sourceConfigMap;
     }
 
     private void setupDefaultConnectorInternalStates(CosmosDBSourceConnector sourceConnector, Map<String, Object> sourceConfigMap) {

@@ -58,10 +58,12 @@ public class CosmosSourceConfig extends CosmosConfig {
     private static final String CHANGE_FEED_MODE_CONFIG_DISPLAY = "ChangeFeed mode (LatestVersion or AllVersionsAndDeletes)";
     private static final String DEFAULT_CHANGE_FEED_MODE = CosmosChangeFeedModes.LATEST_VERSION.getName();
 
-    private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG = SOURCE_CONFIG_PREFIX + "changeFeed.maxItemCount";
+    private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG = SOURCE_CONFIG_PREFIX + "changeFeed.maxItemCountHint";
     private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DOC =
-        "The maximum number of documents returned in a single change feed request. The default is 1000.";
-    private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DISPLAY = "The maximum number of documents returned in a single request.";
+        "The maximum number of documents returned in a single change feed request." +
+            " But the number of items received might be higher than the specified value if multiple items are changed by the same transaction." +
+            " The default is 1000.";
+    private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DISPLAY = "The maximum number hint of documents returned in a single request. ";
     private static final int DEFAULT_CHANGE_FEED_MAX_ITEM_COUNT = 1000;
 
     // Metadata config
@@ -306,13 +308,13 @@ public class CosmosSourceConfig extends CosmosConfig {
         CosmosChangeFeedModes changeFeedModes = this.parseChangeFeedMode();
         CosmosChangeFeedStartFromModes changeFeedStartFromMode = this.parseChangeFeedStartFromMode();
         Instant changeFeedStartFrom = this.parseChangeFeedStartFrom(changeFeedStartFromMode);
-        Integer changeFeedMaxItemCount = this.getInt(CHANGE_FEED_MAX_ITEM_COUNT_CONFIG);
+        Integer changeFeedMaxItemCountHint = this.getInt(CHANGE_FEED_MAX_ITEM_COUNT_CONFIG);
 
         return new CosmosSourceChangeFeedConfig(
             changeFeedModes,
             changeFeedStartFromMode,
             changeFeedStartFrom,
-            changeFeedMaxItemCount);
+            changeFeedMaxItemCountHint);
     }
 
     private CosmosSourceMessageKeyConfig parseMessageKeyConfig() {

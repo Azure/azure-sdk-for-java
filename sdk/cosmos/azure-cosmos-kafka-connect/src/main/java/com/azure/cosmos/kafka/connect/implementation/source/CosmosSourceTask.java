@@ -158,7 +158,7 @@ public class CosmosSourceTask extends SourceTask {
                 .getContainer(feedRangeTaskUnit.getContainerName());
 
         return container.queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
-            .byPage(this.taskConfig.getChangeFeedConfig().getMaxItemCount())
+            .byPage(this.taskConfig.getChangeFeedConfig().getMaxItemCountHint())
             .next()
             .map(feedResponse -> {
                 List<SourceRecord> records = handleSuccessfulResponse(feedResponse, feedRangeTaskUnit);

@@ -13,7 +13,6 @@ public class ContainersMetadataTopicPartition {
 
     public ContainersMetadataTopicPartition(String databaseName) {
         this.databaseName = databaseName;
-
     }
 
     public String getDatabaseName() {
