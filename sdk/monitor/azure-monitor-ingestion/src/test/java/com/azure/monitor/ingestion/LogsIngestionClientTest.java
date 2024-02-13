@@ -30,7 +30,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
     public void testUploadLogs() {
         List<Object> logs = getObjects(10);
         DataValidationPolicy dataValidationPolicy = new DataValidationPolicy(logs);
-        LogsIngestionClient client = clientBuilder.addPolicy(dataValidationPolicy).buildClient();
+        LogsIngestionClient client = getClientBuilder().addPolicy(dataValidationPolicy).buildClient();
         client.upload(dataCollectionRuleId, streamName, logs);
     }
 
@@ -40,7 +40,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
 
         AtomicInteger count = new AtomicInteger();
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
-        LogsIngestionClient client = clientBuilder
+        LogsIngestionClient client = getClientBuilder()
             .addPolicy(new BatchCountPolicy(count))
             .addPolicy(logsCountPolicy)
             .buildClient();
@@ -55,7 +55,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
 
         AtomicInteger count = new AtomicInteger();
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
-        LogsIngestionClient client = clientBuilder
+        LogsIngestionClient client = getClientBuilder()
             .addPolicy(new BatchCountPolicy(count))
             .addPolicy(logsCountPolicy)
             .buildClient();
@@ -70,7 +70,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
         AtomicInteger count = new AtomicInteger();
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
-        LogsIngestionClient client = clientBuilder
+        LogsIngestionClient client = getClientBuilder()
             .addPolicy(new PartialFailurePolicy(count))
             .addPolicy(logsCountPolicy)
             .buildClient();
@@ -93,7 +93,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
             .setLogsUploadErrorConsumer(error -> failedLogsCount.addAndGet(error.getFailedLogs().size()));
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
-        LogsIngestionClient client = clientBuilder
+        LogsIngestionClient client = getClientBuilder()
             .addPolicy(new PartialFailurePolicy(count))
             .addPolicy(logsCountPolicy)
             .buildClient();
@@ -116,7 +116,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
             });
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
-        LogsIngestionClient client = clientBuilder
+        LogsIngestionClient client = getClientBuilder()
             .addPolicy(new PartialFailurePolicy(count))
             .addPolicy(logsCountPolicy)
             .buildClient();
@@ -132,7 +132,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
     @Test
     public void testUploadLogsProtocolMethod() {
         List<Object> logs = getObjects(10);
-        LogsIngestionClient client = clientBuilder.buildClient();
+        LogsIngestionClient client = getClientBuilder().buildClient();
         Response<Void> response = client.uploadWithResponse(dataCollectionRuleId, streamName,
             BinaryData.fromObject(logs), new RequestOptions());
         assertEquals(204, response.getStatusCode());
@@ -143,7 +143,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "Test proxy network connection is timing out for this test in playback mode.")
     public void testUploadLargeLogsProtocolMethod() {
         List<Object> logs = getObjects(375000);
-        LogsIngestionClient client = clientBuilder.buildClient();
+        LogsIngestionClient client = getClientBuilder().buildClient();
 
         HttpResponseException responseException = assertThrows(HttpResponseException.class,
             () -> client.uploadWithResponse(dataCollectionRuleId, streamName, BinaryData.fromObject(logs), new RequestOptions()));
