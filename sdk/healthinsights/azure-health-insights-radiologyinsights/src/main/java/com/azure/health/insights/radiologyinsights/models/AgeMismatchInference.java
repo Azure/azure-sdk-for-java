@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("ageMismatch")
 @Immutable
-public final class AgeMismatchInference extends FhirR4Extendible1 {
+public final class AgeMismatchInference extends RadiologyInsightsInference {
 
     /**
      * Creates an instance of AgeMismatchInference class.

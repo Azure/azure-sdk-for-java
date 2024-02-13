@@ -18,7 +18,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("radiologyProcedure")
 @Immutable
-public final class RadiologyProcedureInference extends FhirR4Extendible1 {
+public final class RadiologyProcedureInference extends RadiologyInsightsInference {
 
     /*
      * LOINC codes for the procedure.

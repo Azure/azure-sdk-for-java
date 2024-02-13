@@ -11,9 +11,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum RadiologyInsightsServiceVersion implements ServiceVersion {
     /**
-     * Enum value 2023-09-01-preview.
+     * Enum value 2024-04-01.
      */
-    V2023_09_01_PREVIEW("2023-09-01-preview");
+    V2024_04_01("2024-04-01");
 
     private final String version;
 
@@ -35,6 +35,6 @@ public enum RadiologyInsightsServiceVersion implements ServiceVersion {
      * @return The latest {@link RadiologyInsightsServiceVersion}.
      */
     public static RadiologyInsightsServiceVersion getLatest() {
-        return V2023_09_01_PREVIEW;
+        return V2024_04_01;
     }
 }
