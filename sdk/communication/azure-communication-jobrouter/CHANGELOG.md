@@ -2,12 +2,6 @@
 
 ## 1.2.0 (2024-02-13)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 Upgrade azure-communication-common to 1.3.0
 
