@@ -6,7 +6,6 @@ package com.azure.health.insights.radiologyinsights;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 
@@ -31,7 +30,7 @@ public class RadiologyInsightsClientTest extends RadiologyInsightsClientTestBase
             testRadiologyInsightsgWithResponse(request -> {
 
                 RadiologyInsightsJob riJobResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights("job1",request)).getFinalResult();
+                        getClient().beginInferRadiologyInsights("job1", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riJobResponse.getResult().getPatientResults();
                 assertEquals(1, patients.size());
