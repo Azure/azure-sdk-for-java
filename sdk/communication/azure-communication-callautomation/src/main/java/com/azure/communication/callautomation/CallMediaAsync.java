@@ -256,6 +256,7 @@ public final class CallMediaAsync {
         try {
             PlayOptions playOptions = new PlayOptions(options.getPlaySources(), Collections.emptyList());
             playOptions.setLoop(options.isLoop());
+            playOptions.setInterruptCallMediaOperation(options.isInterruptCallMediaOperation());
             playOptions.setOperationContext(options.getOperationContext());
             playOptions.setOperationCallbackUrl(options.getOperationCallbackUrl());
 
@@ -292,7 +293,8 @@ public final class CallMediaAsync {
                         .map(CommunicationIdentifierConverter::convert)
                         .collect(Collectors.toList()));
 
-            request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
+            request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop())
+                                                            .setInterruptCallMediaOperation(options.isInterruptCallMediaOperation()));
             request.setOperationContext(options.getOperationContext());
             request.setOperationCallbackUri(options.getOperationCallbackUrl());
 

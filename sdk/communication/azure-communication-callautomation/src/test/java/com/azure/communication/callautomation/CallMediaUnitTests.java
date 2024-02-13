@@ -59,6 +59,16 @@ public class CallMediaUnitTests {
     }
 
     @Test
+    public void playFileWithBargeInWithResponseTest() {
+        playOptions = new PlayOptions(playFileSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
+            .setLoop(false)
+            .setInterruptCallMediaOperation(true)
+            .setOperationContext("operationContext");
+        Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
     public void playFileToAllWithResponseTest() {
         playToAllOptions = new PlayToAllOptions(playFileSource)
             .setLoop(false)
@@ -68,9 +78,30 @@ public class CallMediaUnitTests {
     }
 
     @Test
+    public void playFileToAllWithBargeInWithResponseTest() {
+        playToAllOptions = new PlayToAllOptions(playFileSource)
+            .setLoop(false)
+            .setInterruptCallMediaOperation(true)
+            .setOperationContext("operationContext");
+        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+
+    @Test
     public void playTextWithResponseTest() {
         playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
+            .setOperationContext("operationContext");
+        Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void playTextWithBargeInWithResponseTest() {
+        playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
+            .setLoop(false)
+            .setInterruptCallMediaOperation(true)
             .setOperationContext("operationContext");
         Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
@@ -84,7 +115,15 @@ public class CallMediaUnitTests {
         Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
-
+    @Test
+    public void playTextToAllWithBargeInWithResponseTest() {
+        playToAllOptions = new PlayToAllOptions(playTextSource)
+            .setLoop(false)
+            .setInterruptCallMediaOperation(true)
+            .setOperationContext("operationContext");
+        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
     @Test
     public void cancelAllOperationsWithResponse() {
         Response<Void> response = callMedia.cancelAllMediaOperationsWithResponse(Context.NONE);

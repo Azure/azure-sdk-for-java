@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
+
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
@@ -38,6 +39,11 @@ public final class PlayOptions {
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
     private String operationCallbackUrl;
+  
+    /*
+     * If set play can barge into other existing queued-up/currently-processing requests.
+    */
+    private boolean interruptCallMediaOperation;
 
     /**
      * Constructor
@@ -136,6 +142,28 @@ public final class PlayOptions {
      */
     public PlayOptions setOperationCallbackUrl(String operationCallbackUrl) {
         this.operationCallbackUrl = operationCallbackUrl;
+        return this;
+    }
+
+     /**
+     * Get the interruptCallMediaOperation property: If set play can barge into other existing
+     * queued-up/currently-processing requests.
+     *
+     * @return the interruptCallMediaOperation value.
+     */
+    public Boolean isInterruptCallMediaOperation() {
+        return this.interruptCallMediaOperation;
+    }
+
+    /**
+     * Set the interruptCallMediaOperation property: If set play can barge into other existing
+     * queued-up/currently-processing requests.
+     *
+     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
+     * @return the PlayOptionsInternal object itself.
+     */
+    public PlayOptions setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
+        this.interruptCallMediaOperation = interruptCallMediaOperation;
         return this;
     }
 }
