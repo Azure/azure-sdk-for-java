@@ -27,6 +27,7 @@ import com.azure.communication.callautomation.models.events.RemoveParticipantFai
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
+import com.azure.communication.callautomation.models.events.TeamsComplianceRecordingStateChanged;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -105,6 +106,8 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, ParticipantsUpdated.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecordingStateChanged")) {
                 ret = mapper.convertValue(eventData, RecordingStateChanged.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TeamsComplianceRecordingStateChanged")) {
+                ret = mapper.convertValue(eventData, TeamsComplianceRecordingStateChanged.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompleted")) {
                 ret = mapper.convertValue(eventData, PlayCompleted.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailed")) {

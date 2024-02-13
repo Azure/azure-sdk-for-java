@@ -11,15 +11,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AddParticipantRequestInternal {
     /*
-     * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
+     * The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
      * Required only when inviting a PSTN participant.
      */
     @JsonProperty(value = "sourceCallerIdNumber")
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
 
     /*
-     * (Optional) The display name of the source that is associated with this invite operation when
-     * adding a PSTN participant or teams user.  Note: Will not update the display name in the roster.
+     * (Optional) The display name of the source that is associated with this
+     * invite operation when
+     * adding a PSTN participant or teams user.  Note: Will not update the
+     * display name in the roster.
      */
     @JsonProperty(value = "sourceDisplayName")
     private String sourceDisplayName;
@@ -38,15 +41,17 @@ public final class AddParticipantRequestInternal {
     private Integer invitationTimeoutInSeconds;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     * Used by customers when calling mid-call actions to correlate the request
+     * to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
+     * Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
@@ -56,9 +61,6 @@ public final class AddParticipantRequestInternal {
      */
     @JsonProperty(value = "customCallingContext")
     private CustomCallingContext customCallingContext;
-
-    /** Creates an instance of AddParticipantRequestInternal class. */
-    public AddParticipantRequestInternal() {}
 
     /**
      * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant

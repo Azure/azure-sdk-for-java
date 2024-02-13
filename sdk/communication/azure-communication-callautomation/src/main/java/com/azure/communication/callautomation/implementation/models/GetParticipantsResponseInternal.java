@@ -23,9 +23,6 @@ public final class GetParticipantsResponseInternal {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of GetParticipantsResponseInternal class. */
-    public GetParticipantsResponseInternal() {}
-
     /**
      * Get the value property: List of the current participants in the call.
      *

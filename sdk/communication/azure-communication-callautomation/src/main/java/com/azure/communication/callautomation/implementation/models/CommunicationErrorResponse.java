@@ -16,9 +16,6 @@ public final class CommunicationErrorResponse {
     @JsonProperty(value = "error", required = true)
     private CommunicationError error;
 
-    /** Creates an instance of CommunicationErrorResponse class. */
-    public CommunicationErrorResponse() {}
-
     /**
      * Get the error property: The Communication Services error.
      *

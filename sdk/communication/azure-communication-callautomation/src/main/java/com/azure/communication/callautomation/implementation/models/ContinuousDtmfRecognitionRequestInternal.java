@@ -23,15 +23,13 @@ public final class ContinuousDtmfRecognitionRequestInternal {
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
+     * Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
-
-    /** Creates an instance of ContinuousDtmfRecognitionRequestInternal class. */
-    public ContinuousDtmfRecognitionRequestInternal() {}
 
     /**
      * Get the targetParticipant property: Defines options for recognition.

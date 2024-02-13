@@ -17,14 +17,6 @@ public final class RecordingStateInternal extends ExpandableStringEnum<Recording
     public static final RecordingStateInternal INACTIVE = fromString("inactive");
 
     /**
-     * Creates a new instance of RecordingStateInternal value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public RecordingStateInternal() {}
-
-    /**
      * Creates or finds a RecordingStateInternal from its string representation.
      *
      * @param name a name to look for.
@@ -35,11 +27,7 @@ public final class RecordingStateInternal extends ExpandableStringEnum<Recording
         return fromString(name, RecordingStateInternal.class);
     }
 
-    /**
-     * Gets known RecordingStateInternal values.
-     *
-     * @return known RecordingStateInternal values.
-     */
+    /** @return known RecordingStateInternal values. */
     public static Collection<RecordingStateInternal> values() {
         return values(RecordingStateInternal.class);
     }
