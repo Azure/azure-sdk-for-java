@@ -3,6 +3,8 @@
 ## 4.21.0-beta.1 (Unreleased)
 
 ### Features Added
+- new System Events for Azure VMWare Solution, Storage.
+- Add `metadata` property to `AcsChatThreadCreatedEventData`.
 
 ### Breaking Changes
 

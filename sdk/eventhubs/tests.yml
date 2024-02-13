@@ -17,7 +17,7 @@ stages:
       TimeoutInMinutes: 120
       SupportedClouds: 'Public,UsGov,China'
       EnvVars:
-        AZURE_LOG_LEVEL: 2
+        AZURE_LOG_LEVEL: 1
       AdditionalMatrixConfigs:
         - Name: version_overrides_tests
           Path: sdk/eventhubs/version-overrides-matrix.json

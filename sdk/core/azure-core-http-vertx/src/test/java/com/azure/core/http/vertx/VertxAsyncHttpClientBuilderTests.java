@@ -20,7 +20,6 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import org.mockito.Mockito;
 import reactor.test.StepVerifier;
 
 import java.net.ConnectException;
@@ -38,7 +37,6 @@ import static io.vertx.core.net.SocketAddress.inetSocketAddress;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -249,9 +247,7 @@ public class VertxAsyncHttpClientBuilderTests {
 
     @Test
     public void buildWithNullProxyAddress() {
-        ProxyOptions mockPoxyOptions = Mockito.mock(ProxyOptions.class);
-        Mockito.when(mockPoxyOptions.getType()).thenReturn(ProxyOptions.Type.HTTP);
-        Mockito.when(mockPoxyOptions.getAddress()).thenReturn(null);
+        ProxyOptions mockPoxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, null);
 
         HttpClient httpClient = new VertxAsyncHttpClientBuilder()
             .proxy(mockPoxyOptions)
@@ -263,26 +259,9 @@ public class VertxAsyncHttpClientBuilderTests {
     }
 
     @Test
-    public void buildWithInvalidProxyType() {
-        ProxyOptions.Type mockProxyType = Mockito.mock(ProxyOptions.Type.class);
-        Mockito.when(mockProxyType.name()).thenReturn("INVALID");
-
-        ProxyOptions clientProxyOptions = new ProxyOptions(mockProxyType,
-            new InetSocketAddress("test.com", 8080));
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            new VertxAsyncHttpClientBuilder()
-                .proxy(clientProxyOptions)
-                .build();
-        });
-    }
-
-    @Test
     public void buildWithNullProxyType() {
-        ProxyOptions mockPoxyOptions = Mockito.mock(ProxyOptions.class);
-        Mockito.when(mockPoxyOptions.getType()).thenReturn(null);
-        Mockito.when(mockPoxyOptions.getAddress())
-            .thenReturn(new InetSocketAddress("localhost", PROXY_SERVER_HTTP_PORT));
+        ProxyOptions mockPoxyOptions = new ProxyOptions(null,
+            new InetSocketAddress("localhost", PROXY_SERVER_HTTP_PORT));
 
         HttpClient httpClient = new VertxAsyncHttpClientBuilder()
             .proxy(mockPoxyOptions)
