@@ -175,20 +175,7 @@ public class VertxAsyncHttpClientBuilder {
         if (configuredVertx == null) {
             ServiceLoader<VertxProvider> vertxProviders = ServiceLoader.load(VertxProvider.class,
                 VertxProvider.class.getClassLoader());
-            Iterator<VertxProvider> iterator = vertxProviders.iterator();
-            if (iterator.hasNext()) {
-                VertxProvider provider = iterator.next();
-                configuredVertx = provider.createVertx();
-                LOGGER.verbose("Using {} as the VertxProvider.", provider.getClass().getName());
-
-                while (iterator.hasNext()) {
-                    VertxProvider ignoredProvider = iterator.next();
-                    LOGGER.warning("Multiple VertxProviders were found on the classpath, ignoring {}.",
-                        ignoredProvider.getClass().getName());
-                }
-            } else {
-                configuredVertx = DefaultVertx.DEFAULT_VERTX.getVertx();
-            }
+            configuredVertx = getVertx(vertxProviders.iterator());
         }
 
         if (this.httpClientOptions == null) {
@@ -262,6 +249,25 @@ public class VertxAsyncHttpClientBuilder {
 
         io.vertx.core.http.HttpClient client = configuredVertx.createHttpClient(this.httpClientOptions);
         return new VertxAsyncHttpClient(client, configuredVertx);
+    }
+
+    static Vertx getVertx(Iterator<VertxProvider> iterator) {
+        Vertx configuredVertx;
+        if (iterator.hasNext()) {
+            VertxProvider provider = iterator.next();
+            configuredVertx = provider.createVertx();
+            LOGGER.verbose("Using {} as the VertxProvider.", provider.getClass().getName());
+
+            while (iterator.hasNext()) {
+                VertxProvider ignoredProvider = iterator.next();
+                LOGGER.warning("Multiple VertxProviders were found on the classpath, ignoring {}.",
+                    ignoredProvider.getClass().getName());
+            }
+        } else {
+            configuredVertx = DefaultVertx.DEFAULT_VERTX.getVertx();
+        }
+
+        return configuredVertx;
     }
 
     /**
