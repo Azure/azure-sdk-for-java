@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             TestConfigurations.MASTER_KEY,
             "requestTaskReconfigurationTest",
             false,
-            Collections.EMPTY_LIST);
+            new ArrayList<String>());
         this.client = CosmosClientStore.getCosmosClient(accountConfig);
     }
 
@@ -54,8 +55,8 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             new CosmosSourceContainersConfig(
                 databaseName,
                 true,
-                Collections.EMPTY_LIST,
-                Collections.EMPTY_LIST);
+                new ArrayList<String>(),
+                new ArrayList<String>());
         CosmosMetadataConfig metadataConfig =
             new CosmosMetadataConfig(500, "_cosmos.metadata.topic");
         SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);
@@ -104,7 +105,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                 databaseName,
                 false,
                 Arrays.asList(multiPartitionContainerName),
-                Collections.EMPTY_LIST);
+                new ArrayList<String>());
         CosmosMetadataConfig metadataConfig =
             new CosmosMetadataConfig(500, "_cosmos.metadata.topic");
         SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);
@@ -175,7 +176,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                 databaseName,
                 false,
                 Arrays.asList(singlePartitionContainerName),
-                Collections.EMPTY_LIST);
+                new ArrayList<String>());
         CosmosMetadataConfig metadataConfig =
             new CosmosMetadataConfig(500, "_cosmos.metadata.topic");
         SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);

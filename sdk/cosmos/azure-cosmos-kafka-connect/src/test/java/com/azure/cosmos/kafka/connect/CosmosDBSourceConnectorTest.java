@@ -381,7 +381,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
         assertThat(requiredConfigs.size()).isGreaterThan(1);
         CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
-        for (SourceConfigEntry configEntry : requiredConfigs) {
+        for (SourceConfigEntry<?> configEntry : requiredConfigs) {
 
             Map<String, String> sourceConfigMap = this.getValidSourceConfig();
             sourceConfigMap.remove(configEntry.getName());
