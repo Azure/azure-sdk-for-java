@@ -13,8 +13,7 @@ public final class ResourceTestStatusImpl implements ResourceTestStatus {
 
     private final com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager;
 
-    ResourceTestStatusImpl(
-        ResourceTestStatusInner innerObject,
+    ResourceTestStatusImpl(ResourceTestStatusInner innerObject,
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

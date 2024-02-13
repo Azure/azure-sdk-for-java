@@ -19,11 +19,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualEndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualEndpointsClient.
+ */
 public interface VirtualEndpointsClient {
     /**
      * Creates a new virtual endpoint for PostgreSQL flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -31,19 +33,16 @@ public interface VirtualEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a virtual endpoint for a server along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
-        VirtualEndpointResourceInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointResourceInner parameters);
 
     /**
      * Creates a new virtual endpoint for PostgreSQL flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -55,14 +54,12 @@ public interface VirtualEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginCreateAsync(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
+        String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceInner parameters);
 
     /**
      * Creates a new virtual endpoint for PostgreSQL flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -74,14 +71,12 @@ public interface VirtualEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginCreate(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
+        String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceInner parameters);
 
     /**
      * Creates a new virtual endpoint for PostgreSQL flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -94,15 +89,12 @@ public interface VirtualEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginCreate(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
-        VirtualEndpointResourceInner parameters,
-        Context context);
+        String resourceGroupName, String serverName, String virtualEndpointName,
+        VirtualEndpointResourceInner parameters, Context context);
 
     /**
      * Creates a new virtual endpoint for PostgreSQL flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -113,15 +105,12 @@ public interface VirtualEndpointsClient {
      * @return represents a virtual endpoint for a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualEndpointResourceInner> createAsync(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
-        VirtualEndpointResourceInner parameters);
+    Mono<VirtualEndpointResourceInner> createAsync(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointResourceInner parameters);
 
     /**
      * Creates a new virtual endpoint for PostgreSQL flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -132,15 +121,12 @@ public interface VirtualEndpointsClient {
      * @return represents a virtual endpoint for a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualEndpointResourceInner create(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
+    VirtualEndpointResourceInner create(String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceInner parameters);
 
     /**
      * Creates a new virtual endpoint for PostgreSQL flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -152,17 +138,13 @@ public interface VirtualEndpointsClient {
      * @return represents a virtual endpoint for a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualEndpointResourceInner create(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
-        VirtualEndpointResourceInner parameters,
-        Context context);
+    VirtualEndpointResourceInner create(String resourceGroupName, String serverName, String virtualEndpointName,
+        VirtualEndpointResourceInner parameters, Context context);
 
     /**
      * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
      * normal virtual endpoint definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -170,20 +152,17 @@ public interface VirtualEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a virtual endpoint for a server along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a virtual endpoint for a server along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
-        VirtualEndpointResourceForPatch parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointResourceForPatch parameters);
 
     /**
      * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
      * normal virtual endpoint definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -195,15 +174,13 @@ public interface VirtualEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
+        String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceForPatch parameters);
 
     /**
      * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
      * normal virtual endpoint definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -215,15 +192,13 @@ public interface VirtualEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
+        String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceForPatch parameters);
 
     /**
      * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
      * normal virtual endpoint definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -236,16 +211,13 @@ public interface VirtualEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualEndpointResourceInner>, VirtualEndpointResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
-        VirtualEndpointResourceForPatch parameters,
-        Context context);
+        String resourceGroupName, String serverName, String virtualEndpointName,
+        VirtualEndpointResourceForPatch parameters, Context context);
 
     /**
      * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
      * normal virtual endpoint definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -256,16 +228,13 @@ public interface VirtualEndpointsClient {
      * @return represents a virtual endpoint for a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualEndpointResourceInner> updateAsync(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
-        VirtualEndpointResourceForPatch parameters);
+    Mono<VirtualEndpointResourceInner> updateAsync(String resourceGroupName, String serverName,
+        String virtualEndpointName, VirtualEndpointResourceForPatch parameters);
 
     /**
      * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
      * normal virtual endpoint definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -276,16 +245,13 @@ public interface VirtualEndpointsClient {
      * @return represents a virtual endpoint for a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualEndpointResourceInner update(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
+    VirtualEndpointResourceInner update(String resourceGroupName, String serverName, String virtualEndpointName,
         VirtualEndpointResourceForPatch parameters);
 
     /**
      * Updates an existing virtual endpoint. The request body can contain one to many of the properties present in the
      * normal virtual endpoint definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -297,16 +263,12 @@ public interface VirtualEndpointsClient {
      * @return represents a virtual endpoint for a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualEndpointResourceInner update(
-        String resourceGroupName,
-        String serverName,
-        String virtualEndpointName,
-        VirtualEndpointResourceForPatch parameters,
-        Context context);
+    VirtualEndpointResourceInner update(String resourceGroupName, String serverName, String virtualEndpointName,
+        VirtualEndpointResourceForPatch parameters, Context context);
 
     /**
      * Deletes a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -316,12 +278,12 @@ public interface VirtualEndpointsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String virtualEndpointName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String virtualEndpointName);
 
     /**
      * Deletes a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -331,12 +293,12 @@ public interface VirtualEndpointsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String virtualEndpointName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String virtualEndpointName);
 
     /**
      * Deletes a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -346,12 +308,12 @@ public interface VirtualEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String virtualEndpointName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String virtualEndpointName);
 
     /**
      * Deletes a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -362,12 +324,12 @@ public interface VirtualEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String virtualEndpointName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String virtualEndpointName, Context context);
 
     /**
      * Deletes a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -381,7 +343,7 @@ public interface VirtualEndpointsClient {
 
     /**
      * Deletes a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -394,7 +356,7 @@ public interface VirtualEndpointsClient {
 
     /**
      * Deletes a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -408,23 +370,23 @@ public interface VirtualEndpointsClient {
 
     /**
      * Gets information about a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual endpoint along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about a virtual endpoint along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualEndpointResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String virtualEndpointName);
+    Mono<Response<VirtualEndpointResourceInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String virtualEndpointName);
 
     /**
      * Gets information about a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -434,12 +396,12 @@ public interface VirtualEndpointsClient {
      * @return information about a virtual endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualEndpointResourceInner> getAsync(
-        String resourceGroupName, String serverName, String virtualEndpointName);
+    Mono<VirtualEndpointResourceInner> getAsync(String resourceGroupName, String serverName,
+        String virtualEndpointName);
 
     /**
      * Gets information about a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -450,12 +412,12 @@ public interface VirtualEndpointsClient {
      * @return information about a virtual endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualEndpointResourceInner> getWithResponse(
-        String resourceGroupName, String serverName, String virtualEndpointName, Context context);
+    Response<VirtualEndpointResourceInner> getWithResponse(String resourceGroupName, String serverName,
+        String virtualEndpointName, Context context);
 
     /**
      * Gets information about a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -469,7 +431,7 @@ public interface VirtualEndpointsClient {
 
     /**
      * List all the servers in a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -482,7 +444,7 @@ public interface VirtualEndpointsClient {
 
     /**
      * List all the servers in a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -495,7 +457,7 @@ public interface VirtualEndpointsClient {
 
     /**
      * List all the servers in a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -505,6 +467,6 @@ public interface VirtualEndpointsClient {
      * @return a list of virtual endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualEndpointResourceInner> listByServer(
-        String resourceGroupName, String serverName, Context context);
+    PagedIterable<VirtualEndpointResourceInner> listByServer(String resourceGroupName, String serverName,
+        Context context);
 }

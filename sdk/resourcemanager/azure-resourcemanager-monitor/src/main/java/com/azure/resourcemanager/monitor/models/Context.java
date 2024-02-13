@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The context info. */
+/**
+ * The context info.
+ */
 @Fluent
 public final class Context {
     /*
@@ -22,13 +24,15 @@ public final class Context {
     @JsonProperty(value = "contextType")
     private String contextType;
 
-    /** Creates an instance of Context class. */
+    /**
+     * Creates an instance of Context class.
+     */
     public Context() {
     }
 
     /**
      * Get the notificationSource property: The source of the notification request.
-     *
+     * 
      * @return the notificationSource value.
      */
     public String notificationSource() {
@@ -37,7 +41,7 @@ public final class Context {
 
     /**
      * Set the notificationSource property: The source of the notification request.
-     *
+     * 
      * @param notificationSource the notificationSource value to set.
      * @return the Context object itself.
      */
@@ -48,7 +52,7 @@ public final class Context {
 
     /**
      * Get the contextType property: The context id type.
-     *
+     * 
      * @return the contextType value.
      */
     public String contextType() {
@@ -57,7 +61,7 @@ public final class Context {
 
     /**
      * Set the contextType property: The context id type.
-     *
+     * 
      * @param contextType the contextType value to set.
      * @return the Context object itself.
      */
@@ -68,7 +72,7 @@ public final class Context {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties associated with a Stream Analytics cluster. */
+/**
+ * The properties associated with a Stream Analytics cluster.
+ */
 @Fluent
 public final class ClusterInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInfo.class);
-
     /*
      * The resource id of cluster.
      */
@@ -21,8 +19,14 @@ public final class ClusterInfo {
     private String id;
 
     /**
+     * Creates an instance of ClusterInfo class.
+     */
+    public ClusterInfo() {
+    }
+
+    /**
      * Get the id property: The resource id of cluster.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class ClusterInfo {
 
     /**
      * Set the id property: The resource id of cluster.
-     *
+     * 
      * @param id the id value to set.
      * @return the ClusterInfo object itself.
      */
@@ -42,7 +46,7 @@ public final class ClusterInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

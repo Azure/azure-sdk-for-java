@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the localized display information for this particular operation / action. */
+/**
+ * Contains the localized display information for this particular operation / action.
+ */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * The localized friendly form of the resource provider name.
      */
@@ -21,8 +19,7 @@ public final class OperationDisplay {
     private String provider;
 
     /*
-     * The localized friendly form of the resource type related to this
-     * action/operation.
+     * The localized friendly form of the resource type related to this action/operation.
      */
     @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
@@ -40,8 +37,14 @@ public final class OperationDisplay {
     private String description;
 
     /**
+     * Creates an instance of OperationDisplay class.
+     */
+    public OperationDisplay() {
+    }
+
+    /**
      * Get the provider property: The localized friendly form of the resource provider name.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -50,7 +53,7 @@ public final class OperationDisplay {
 
     /**
      * Get the resource property: The localized friendly form of the resource type related to this action/operation.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -59,7 +62,7 @@ public final class OperationDisplay {
 
     /**
      * Get the operation property: The localized friendly name for the operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -68,7 +71,7 @@ public final class OperationDisplay {
 
     /**
      * Get the description property: The localized friendly description for the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -77,7 +80,7 @@ public final class OperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

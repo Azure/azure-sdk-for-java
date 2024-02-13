@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Managed identity properties retrieved from ARM request headers. */
+/**
+ * Managed identity properties retrieved from ARM request headers.
+ */
 @Fluent
 public final class ManagedIdentityProperties {
     /*
@@ -38,8 +40,14 @@ public final class ManagedIdentityProperties {
     private Map<String, UserAssignedManagedIdentity> userAssignedIdentities;
 
     /**
+     * Creates an instance of ManagedIdentityProperties class.
+     */
+    public ManagedIdentityProperties() {
+    }
+
+    /**
      * Get the type property: Type of the managed identity.
-     *
+     * 
      * @return the type value.
      */
     public ManagedIdentityType type() {
@@ -48,7 +56,7 @@ public final class ManagedIdentityProperties {
 
     /**
      * Set the type property: Type of the managed identity.
-     *
+     * 
      * @param type the type value to set.
      * @return the ManagedIdentityProperties object itself.
      */
@@ -59,7 +67,7 @@ public final class ManagedIdentityProperties {
 
     /**
      * Get the principalId property: Principal Id of system-assigned managed identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -68,7 +76,7 @@ public final class ManagedIdentityProperties {
 
     /**
      * Set the principalId property: Principal Id of system-assigned managed identity.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the ManagedIdentityProperties object itself.
      */
@@ -79,7 +87,7 @@ public final class ManagedIdentityProperties {
 
     /**
      * Get the tenantId property: Tenant Id of system-assigned managed identity.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -88,7 +96,7 @@ public final class ManagedIdentityProperties {
 
     /**
      * Set the tenantId property: Tenant Id of system-assigned managed identity.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ManagedIdentityProperties object itself.
      */
@@ -99,7 +107,7 @@ public final class ManagedIdentityProperties {
 
     /**
      * Get the userAssignedIdentities property: Properties of user-assigned managed identities.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserAssignedManagedIdentity> userAssignedIdentities() {
@@ -108,31 +116,28 @@ public final class ManagedIdentityProperties {
 
     /**
      * Set the userAssignedIdentities property: Properties of user-assigned managed identities.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedIdentityProperties object itself.
      */
-    public ManagedIdentityProperties withUserAssignedIdentities(
-        Map<String, UserAssignedManagedIdentity> userAssignedIdentities) {
+    public ManagedIdentityProperties
+        withUserAssignedIdentities(Map<String, UserAssignedManagedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

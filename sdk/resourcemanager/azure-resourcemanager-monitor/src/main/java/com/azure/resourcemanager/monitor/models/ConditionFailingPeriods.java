@@ -27,15 +27,17 @@ public final class ConditionFailingPeriods {
     @JsonProperty(value = "minFailingPeriodsToAlert")
     private Long minFailingPeriodsToAlert;
 
-    /** Creates an instance of ConditionFailingPeriods class. */
+    /**
+     * Creates an instance of ConditionFailingPeriods class.
+     */
     public ConditionFailingPeriods() {
     }
 
     /**
-     * Get the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window is
-     * calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
+     * Get the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window
+     * is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
      * Default value is 1.
-     *
+     * 
      * @return the numberOfEvaluationPeriods value.
      */
     public Long numberOfEvaluationPeriods() {
@@ -43,10 +45,10 @@ public final class ConditionFailingPeriods {
     }
 
     /**
-     * Set the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window is
-     * calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
+     * Set the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window
+     * is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
      * Default value is 1.
-     *
+     * 
      * @param numberOfEvaluationPeriods the numberOfEvaluationPeriods value to set.
      * @return the ConditionFailingPeriods object itself.
      */
@@ -58,7 +60,7 @@ public final class ConditionFailingPeriods {
     /**
      * Get the minFailingPeriodsToAlert property: The number of violations to trigger an alert. Should be smaller or
      * equal to numberOfEvaluationPeriods. Default value is 1.
-     *
+     * 
      * @return the minFailingPeriodsToAlert value.
      */
     public Long minFailingPeriodsToAlert() {
@@ -68,7 +70,7 @@ public final class ConditionFailingPeriods {
     /**
      * Set the minFailingPeriodsToAlert property: The number of violations to trigger an alert. Should be smaller or
      * equal to numberOfEvaluationPeriods. Default value is 1.
-     *
+     * 
      * @param minFailingPeriodsToAlert the minFailingPeriodsToAlert value to set.
      * @return the ConditionFailingPeriods object itself.
      */
@@ -79,7 +81,7 @@ public final class ConditionFailingPeriods {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

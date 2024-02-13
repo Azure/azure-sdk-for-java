@@ -9,7 +9,9 @@ import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.Dedicated
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of dedicated HSMs. */
+/**
+ * List of dedicated HSMs.
+ */
 @Fluent
 public final class DedicatedHsmListResult {
     /*
@@ -25,8 +27,14 @@ public final class DedicatedHsmListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of DedicatedHsmListResult class.
+     */
+    public DedicatedHsmListResult() {
+    }
+
+    /**
      * Get the value property: The list of dedicated HSMs.
-     *
+     * 
      * @return the value value.
      */
     public List<DedicatedHsmInner> value() {
@@ -35,7 +43,7 @@ public final class DedicatedHsmListResult {
 
     /**
      * Set the value property: The list of dedicated HSMs.
-     *
+     * 
      * @param value the value value to set.
      * @return the DedicatedHsmListResult object itself.
      */
@@ -46,7 +54,7 @@ public final class DedicatedHsmListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of dedicated hsms.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +63,7 @@ public final class DedicatedHsmListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of dedicated hsms.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DedicatedHsmListResult object itself.
      */
@@ -66,7 +74,7 @@ public final class DedicatedHsmListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

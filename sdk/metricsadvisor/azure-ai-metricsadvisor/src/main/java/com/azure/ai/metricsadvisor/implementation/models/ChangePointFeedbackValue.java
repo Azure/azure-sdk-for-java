@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The ChangePointFeedbackValue model.
@@ -52,7 +51,8 @@ public final class ChangePointFeedbackValue implements JsonSerializable<ChangePo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("changePointValue", Objects.toString(this.changePointValue, null));
+        jsonWriter.writeStringField("changePointValue",
+            this.changePointValue == null ? null : this.changePointValue.toString());
         return jsonWriter.writeEndObject();
     }
 

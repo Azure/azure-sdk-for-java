@@ -31,7 +31,7 @@ public final class ManagedVirtualNetworksGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"vNetId\":\"xvndqh\",\"alias\":\"wxqaggb\",\"\":{\"lmdhuu\":\"datajhaicyu\",\"tjqjtoeaug\":\"datatiecnpka\"}},\"name\":\"srywpfcqleniaf\",\"type\":\"zdecgiomdcolwq\",\"etag\":\"rrjudgnph\",\"id\":\"dqt\"}";
+            = "{\"properties\":{\"vNetId\":\"pnuththz\",\"alias\":\"kuszqqae\",\"\":{\"rv\":\"datazrgmc\"}},\"name\":\"amxg\",\"type\":\"bypxxe\",\"etag\":\"uoykomm\",\"id\":\"gmitguvxvdugn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,9 +49,8 @@ public final class ManagedVirtualNetworksGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedVirtualNetworkResource response = manager.managedVirtualNetworks()
-            .getWithResponse("trivif", "jjmtkwgdgfjvit", "payoesx", "mvslhncaspwvg", com.azure.core.util.Context.NONE)
-            .getValue();
+            .getWithResponse("vqtruyzb", "kzsaxm", "nsepdwxflmk", "mfid", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("dqt", response.id());
+        Assertions.assertEquals("gmitguvxvdugn", response.id());
     }
 }

@@ -15,18 +15,18 @@ public final class AzureMLWebServiceFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMLWebServiceFile model = BinaryData.fromString(
-            "{\"filePath\":\"datarbsgwoykcvwqyfix\",\"linkedServiceName\":{\"referenceName\":\"gqmxmiwfzrhilyp\",\"parameters\":{\"quxut\":\"datan\",\"qwkaevbgjhmy\":\"datawbsttmvaijnzq\"}}}")
+            "{\"filePath\":\"datafiwbtfki\",\"linkedServiceName\":{\"referenceName\":\"lmfh\",\"parameters\":{\"ukaaw\":\"dataxjrafhdf\",\"vf\":\"datanqijphh\"}}}")
             .toObject(AzureMLWebServiceFile.class);
-        Assertions.assertEquals("gqmxmiwfzrhilyp", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("lmfh", model.linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMLWebServiceFile model = new AzureMLWebServiceFile().withFilePath("datarbsgwoykcvwqyfix")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("gqmxmiwfzrhilyp")
-                .withParameters(mapOf("quxut", "datan", "qwkaevbgjhmy", "datawbsttmvaijnzq")));
+        AzureMLWebServiceFile model = new AzureMLWebServiceFile().withFilePath("datafiwbtfki")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("lmfh")
+                .withParameters(mapOf("ukaaw", "dataxjrafhdf", "vf", "datanqijphh")));
         model = BinaryData.fromObject(model).toObject(AzureMLWebServiceFile.class);
-        Assertions.assertEquals("gqmxmiwfzrhilyp", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("lmfh", model.linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

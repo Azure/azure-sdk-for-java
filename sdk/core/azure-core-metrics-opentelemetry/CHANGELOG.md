@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0-beta.16 (Unreleased)
+## 1.0.0-beta.17 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.16 (2024-02-02)
 
 ### Features Added
 
@@ -12,9 +22,11 @@
     - `net.peer.name` -> `server.address`
     - `otel.status_code` -> `error.type`
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
 
 ## 1.0.0-beta.15 (2023-11-03)
 

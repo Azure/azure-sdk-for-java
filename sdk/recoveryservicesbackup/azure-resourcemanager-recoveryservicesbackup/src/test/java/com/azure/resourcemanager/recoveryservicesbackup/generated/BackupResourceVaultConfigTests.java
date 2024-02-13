@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupResourceVaultConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupResourceVaultConfig model =
-            BinaryData
-                .fromString(
-                    "{\"storageModelType\":\"Invalid\",\"storageType\":\"ReadAccessGeoZoneRedundant\",\"storageTypeState\":\"Invalid\",\"enhancedSecurityState\":\"Invalid\",\"softDeleteFeatureState\":\"Enabled\",\"softDeleteRetentionPeriodInDays\":102046613,\"resourceGuardOperationRequests\":[\"khixuigdtopbo\"],\"isSoftDeleteFeatureStateEditable\":false}")
-                .toObject(BackupResourceVaultConfig.class);
+        BackupResourceVaultConfig model = BinaryData.fromString(
+            "{\"storageModelType\":\"Invalid\",\"storageType\":\"ReadAccessGeoZoneRedundant\",\"storageTypeState\":\"Invalid\",\"enhancedSecurityState\":\"Invalid\",\"softDeleteFeatureState\":\"Enabled\",\"softDeleteRetentionPeriodInDays\":102046613,\"resourceGuardOperationRequests\":[\"khixuigdtopbo\"],\"isSoftDeleteFeatureStateEditable\":false}")
+            .toObject(BackupResourceVaultConfig.class);
         Assertions.assertEquals(StorageType.INVALID, model.storageModelType());
         Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, model.storageType());
         Assertions.assertEquals(StorageTypeState.INVALID, model.storageTypeState());
@@ -33,16 +31,12 @@ public final class BackupResourceVaultConfigTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupResourceVaultConfig model =
-            new BackupResourceVaultConfig()
-                .withStorageModelType(StorageType.INVALID)
-                .withStorageType(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT)
-                .withStorageTypeState(StorageTypeState.INVALID)
-                .withEnhancedSecurityState(EnhancedSecurityState.INVALID)
-                .withSoftDeleteFeatureState(SoftDeleteFeatureState.ENABLED)
-                .withSoftDeleteRetentionPeriodInDays(102046613)
-                .withResourceGuardOperationRequests(Arrays.asList("khixuigdtopbo"))
-                .withIsSoftDeleteFeatureStateEditable(false);
+        BackupResourceVaultConfig model = new BackupResourceVaultConfig().withStorageModelType(StorageType.INVALID)
+            .withStorageType(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT).withStorageTypeState(StorageTypeState.INVALID)
+            .withEnhancedSecurityState(EnhancedSecurityState.INVALID)
+            .withSoftDeleteFeatureState(SoftDeleteFeatureState.ENABLED).withSoftDeleteRetentionPeriodInDays(102046613)
+            .withResourceGuardOperationRequests(Arrays.asList("khixuigdtopbo"))
+            .withIsSoftDeleteFeatureStateEditable(false);
         model = BinaryData.fromObject(model).toObject(BackupResourceVaultConfig.class);
         Assertions.assertEquals(StorageType.INVALID, model.storageModelType());
         Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, model.storageType());

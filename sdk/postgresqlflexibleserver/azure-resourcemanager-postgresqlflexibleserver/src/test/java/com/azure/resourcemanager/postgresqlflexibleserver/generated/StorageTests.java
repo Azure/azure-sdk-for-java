@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Storage model =
-            BinaryData
-                .fromString(
-                    "{\"storageSizeGB\":378740699,\"autoGrow\":\"Enabled\",\"tier\":\"P30\",\"iops\":838222488,\"throughput\":1787960878,\"type\":\"PremiumV2_LRS\"}")
-                .toObject(Storage.class);
+        Storage model = BinaryData.fromString(
+            "{\"storageSizeGB\":378740699,\"autoGrow\":\"Enabled\",\"tier\":\"P30\",\"iops\":838222488,\"throughput\":1787960878,\"type\":\"PremiumV2_LRS\"}")
+            .toObject(Storage.class);
         Assertions.assertEquals(378740699, model.storageSizeGB());
         Assertions.assertEquals(StorageAutoGrow.ENABLED, model.autoGrow());
         Assertions.assertEquals(AzureManagedDiskPerformanceTiers.P30, model.tier());
@@ -29,14 +27,9 @@ public final class StorageTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Storage model =
-            new Storage()
-                .withStorageSizeGB(378740699)
-                .withAutoGrow(StorageAutoGrow.ENABLED)
-                .withTier(AzureManagedDiskPerformanceTiers.P30)
-                .withIops(838222488)
-                .withThroughput(1787960878)
-                .withType(StorageType.PREMIUM_V2_LRS);
+        Storage model = new Storage().withStorageSizeGB(378740699).withAutoGrow(StorageAutoGrow.ENABLED)
+            .withTier(AzureManagedDiskPerformanceTiers.P30).withIops(838222488).withThroughput(1787960878)
+            .withType(StorageType.PREMIUM_V2_LRS);
         model = BinaryData.fromObject(model).toObject(Storage.class);
         Assertions.assertEquals(378740699, model.storageSizeGB());
         Assertions.assertEquals(StorageAutoGrow.ENABLED, model.autoGrow());

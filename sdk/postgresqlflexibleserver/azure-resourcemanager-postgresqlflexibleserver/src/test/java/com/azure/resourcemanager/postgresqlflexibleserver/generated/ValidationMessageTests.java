@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidationMessageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidationMessage model =
-            BinaryData.fromString("{\"state\":\"Succeeded\",\"message\":\"rvtp\"}").toObject(ValidationMessage.class);
+        ValidationMessage model
+            = BinaryData.fromString("{\"state\":\"Succeeded\",\"message\":\"rvtp\"}").toObject(ValidationMessage.class);
         Assertions.assertEquals(ValidationState.SUCCEEDED, model.state());
         Assertions.assertEquals("rvtp", model.message());
     }

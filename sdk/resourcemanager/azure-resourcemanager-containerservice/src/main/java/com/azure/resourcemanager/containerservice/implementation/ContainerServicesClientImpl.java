@@ -41,7 +41,7 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
 
     /**
      * Initializes an instance of ContainerServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ContainerServicesClientImpl(ContainerServiceManagementClientImpl client) {
@@ -69,10 +69,10 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     *
+     * 
      * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
      * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     *
+     * 
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,10 +105,10 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     *
+     * 
      * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
      * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     *
+     * 
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned.
      * @param context The context to associate with this operation.
@@ -141,10 +141,10 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     *
+     * 
      * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
      * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     *
+     * 
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -160,10 +160,10 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     *
+     * 
      * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
      * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     *
+     * 
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned.
      * @param context The context to associate with this operation.
@@ -180,10 +180,10 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     *
+     * 
      * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
      * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     *
+     * 
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

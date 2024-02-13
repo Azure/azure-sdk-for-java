@@ -14,29 +14,29 @@ public interface KubernetesVersions {
     /**
      * Lists the supported kubernetes versions
      * 
-     * Lists the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of kubernetes version resources as paginated response with {@link PagedIterable}.
+     * @return list of supported kubernetes versions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<KubernetesVersionProfile> list(String customLocationResourceUri);
 
     /**
      * Lists the supported kubernetes versions
      * 
-     * Lists the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of kubernetes version resources as paginated response with {@link PagedIterable}.
+     * @return list of supported kubernetes versions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<KubernetesVersionProfile> list(String customLocationResourceUri, Context context);
 }

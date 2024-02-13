@@ -8,27 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CertificateResourceProvisioningState. */
+/**
+ * Provisioning state of the Certificate.
+ */
 public final class CertificateResourceProvisioningState
     extends ExpandableStringEnum<CertificateResourceProvisioningState> {
-    /** Static value Creating for CertificateResourceProvisioningState. */
+    /**
+     * Static value Creating for CertificateResourceProvisioningState.
+     */
     public static final CertificateResourceProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for CertificateResourceProvisioningState. */
+    /**
+     * Static value Updating for CertificateResourceProvisioningState.
+     */
     public static final CertificateResourceProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Succeeded for CertificateResourceProvisioningState. */
+    /**
+     * Static value Succeeded for CertificateResourceProvisioningState.
+     */
     public static final CertificateResourceProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for CertificateResourceProvisioningState. */
+    /**
+     * Static value Failed for CertificateResourceProvisioningState.
+     */
     public static final CertificateResourceProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Deleting for CertificateResourceProvisioningState. */
+    /**
+     * Static value Deleting for CertificateResourceProvisioningState.
+     */
     public static final CertificateResourceProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of CertificateResourceProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificateResourceProvisioningState() {
+    }
+
+    /**
      * Creates or finds a CertificateResourceProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CertificateResourceProvisioningState.
      */
@@ -39,7 +60,7 @@ public final class CertificateResourceProvisioningState
 
     /**
      * Gets known CertificateResourceProvisioningState values.
-     *
+     * 
      * @return known CertificateResourceProvisioningState values.
      */
     public static Collection<CertificateResourceProvisioningState> values() {

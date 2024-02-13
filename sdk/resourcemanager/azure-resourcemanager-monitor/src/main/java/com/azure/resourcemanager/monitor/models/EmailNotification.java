@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Email notification of an autoscale event. */
+/**
+ * Email notification of an autoscale event.
+ */
 @Fluent
 public final class EmailNotification {
     /*
@@ -29,14 +31,16 @@ public final class EmailNotification {
     @JsonProperty(value = "customEmails")
     private List<String> customEmails;
 
-    /** Creates an instance of EmailNotification class. */
+    /**
+     * Creates an instance of EmailNotification class.
+     */
     public EmailNotification() {
     }
 
     /**
      * Get the sendToSubscriptionAdministrator property: a value indicating whether to send email to subscription
      * administrator.
-     *
+     * 
      * @return the sendToSubscriptionAdministrator value.
      */
     public Boolean sendToSubscriptionAdministrator() {
@@ -46,7 +50,7 @@ public final class EmailNotification {
     /**
      * Set the sendToSubscriptionAdministrator property: a value indicating whether to send email to subscription
      * administrator.
-     *
+     * 
      * @param sendToSubscriptionAdministrator the sendToSubscriptionAdministrator value to set.
      * @return the EmailNotification object itself.
      */
@@ -58,7 +62,7 @@ public final class EmailNotification {
     /**
      * Get the sendToSubscriptionCoAdministrators property: a value indicating whether to send email to subscription
      * co-administrators.
-     *
+     * 
      * @return the sendToSubscriptionCoAdministrators value.
      */
     public Boolean sendToSubscriptionCoAdministrators() {
@@ -68,7 +72,7 @@ public final class EmailNotification {
     /**
      * Set the sendToSubscriptionCoAdministrators property: a value indicating whether to send email to subscription
      * co-administrators.
-     *
+     * 
      * @param sendToSubscriptionCoAdministrators the sendToSubscriptionCoAdministrators value to set.
      * @return the EmailNotification object itself.
      */
@@ -80,7 +84,7 @@ public final class EmailNotification {
     /**
      * Get the customEmails property: the custom e-mails list. This value can be null or empty, in which case this
      * attribute will be ignored.
-     *
+     * 
      * @return the customEmails value.
      */
     public List<String> customEmails() {
@@ -90,7 +94,7 @@ public final class EmailNotification {
     /**
      * Set the customEmails property: the custom e-mails list. This value can be null or empty, in which case this
      * attribute will be ignored.
-     *
+     * 
      * @param customEmails the customEmails value to set.
      * @return the EmailNotification object itself.
      */
@@ -101,7 +105,7 @@ public final class EmailNotification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

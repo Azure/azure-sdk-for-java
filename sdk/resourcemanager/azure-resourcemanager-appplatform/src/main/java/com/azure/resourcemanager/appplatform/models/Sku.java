@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sku of Azure Spring Apps. */
+/**
+ * Sku of Azure Spring Apps.
+ */
 @Fluent
 public final class Sku {
     /*
@@ -29,8 +31,14 @@ public final class Sku {
     private Integer capacity;
 
     /**
+     * Creates an instance of Sku class.
+     */
+    public Sku() {
+    }
+
+    /**
      * Get the name property: Name of the Sku.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +47,7 @@ public final class Sku {
 
     /**
      * Set the name property: Name of the Sku.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -50,7 +58,7 @@ public final class Sku {
 
     /**
      * Get the tier property: Tier of the Sku.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -59,7 +67,7 @@ public final class Sku {
 
     /**
      * Set the tier property: Tier of the Sku.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -70,7 +78,7 @@ public final class Sku {
 
     /**
      * Get the capacity property: Current capacity of the target resource.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -79,7 +87,7 @@ public final class Sku {
 
     /**
      * Set the capacity property: Current capacity of the target resource.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
@@ -90,7 +98,7 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

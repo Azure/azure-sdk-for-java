@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedByInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedByInfo model =
-            BinaryData.fromString("{\"resourceId\":\"xywnytnrsynlqidy\"}").toObject(ManagedByInfo.class);
+        ManagedByInfo model
+            = BinaryData.fromString("{\"resourceId\":\"xywnytnrsynlqidy\"}").toObject(ManagedByInfo.class);
         Assertions.assertEquals("xywnytnrsynlqidy", model.resourceId());
     }
 

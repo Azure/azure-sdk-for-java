@@ -5,49 +5,30 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties that are associated with an Azure Storage account with MSI. */
+/**
+ * The properties that are associated with an Azure Storage account with MSI.
+ */
 @Fluent
 public final class JobStorageAccount extends StorageAccount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStorageAccount.class);
-
-    /*
-     * Authentication Mode.
-     */
-    @JsonProperty(value = "authenticationMode")
-    private AuthenticationMode authenticationMode;
-
     /**
-     * Get the authenticationMode property: Authentication Mode.
-     *
-     * @return the authenticationMode value.
+     * Creates an instance of JobStorageAccount class.
      */
-    public AuthenticationMode authenticationMode() {
-        return this.authenticationMode;
+    public JobStorageAccount() {
     }
 
     /**
-     * Set the authenticationMode property: Authentication Mode.
-     *
-     * @param authenticationMode the authenticationMode value to set.
-     * @return the JobStorageAccount object itself.
+     * {@inheritDoc}
      */
-    public JobStorageAccount withAuthenticationMode(AuthenticationMode authenticationMode) {
-        this.authenticationMode = authenticationMode;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public JobStorageAccount withAccountName(String accountName) {
         super.withAccountName(accountName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobStorageAccount withAccountKey(String accountKey) {
         super.withAccountKey(accountKey);
@@ -55,8 +36,17 @@ public final class JobStorageAccount extends StorageAccount {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JobStorageAccount withAuthenticationMode(AuthenticationMode authenticationMode) {
+        super.withAuthenticationMode(authenticationMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -7,7 +7,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
@@ -16,8 +15,6 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.impl.HttpClientImpl;
 import io.vertx.core.net.SocketAddress;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -26,7 +23,6 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mockito;
 import reactor.test.StepVerifier;
 
-import javax.servlet.ServletException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -35,6 +31,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 import static com.azure.core.http.vertx.VertxAsyncClientTestHelper.getVertxInternalProxyFilter;
+import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.PROXY_PASSWORD;
+import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.PROXY_USERNAME;
+import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.SERVICE_ENDPOINT;
 import static io.vertx.core.net.SocketAddress.inetSocketAddress;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -47,33 +46,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @Execution(ExecutionMode.SAME_THREAD)
 public class VertxAsyncHttpClientBuilderTests {
-    private static final String PROXY_USERNAME = "foo";
-    private static final String PROXY_PASSWORD = "bar";
     private static final String PROXY_USER_INFO = PROXY_USERNAME + ":" + PROXY_PASSWORD + "@";
-    private static final String SERVICE_ENDPOINT = "/default";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
-    private static LocalTestServer server;
-
-    @BeforeAll
-    public static void startTestServer() {
-        server = new LocalTestServer((req, resp, requestBody) -> {
-            if ("GET".equalsIgnoreCase(req.getMethod()) && SERVICE_ENDPOINT.equals(req.getServletPath())) {
-                resp.setStatus(200);
-            } else {
-                throw new ServletException("Unexpected request: " + req.getMethod() + " " + req.getServletPath());
-            }
-        });
-
-        server.start();
-    }
-
-    @AfterAll
-    public static void stopTestServer() {
-        if (server != null) {
-            server.stop();
-        }
-    }
+    private static final String SERVER_HTTP_URI = VertxHttpClientLocalTestServer.getServer().getHttpUri();
+    private static final int PROXY_SERVER_HTTP_PORT = VertxHttpClientLocalTestServer.getProxyServer().getHttpPort();
 
     @Test
     public void buildWithConfigurationNone() {
@@ -81,7 +58,7 @@ public class VertxAsyncHttpClientBuilderTests {
             .configuration(Configuration.NONE)
             .build();
 
-        String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
+        String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
@@ -96,7 +73,7 @@ public class VertxAsyncHttpClientBuilderTests {
         io.vertx.core.http.HttpClient client = ((VertxAsyncHttpClient) httpClient).client;
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) client).options();
 
-        String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
+        String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
@@ -119,7 +96,7 @@ public class VertxAsyncHttpClientBuilderTests {
 
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 
-        String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
+        String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
@@ -171,80 +148,52 @@ public class VertxAsyncHttpClientBuilderTests {
 
     @Test
     public void buildWithHttpProxy() {
-        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD, SERVICE_ENDPOINT);
+        ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
+            new InetSocketAddress("localhost", PROXY_SERVER_HTTP_PORT))
+            .setCredentials(PROXY_USERNAME, PROXY_PASSWORD);
 
-        try {
-            SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
+        HttpClient httpClient = new VertxAsyncHttpClientBuilder()
+            .proxy(clientProxyOptions)
+            .build();
 
-            ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
-                new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()))
-                .setCredentials(PROXY_USERNAME, PROXY_PASSWORD);
-
-            HttpClient httpClient = new VertxAsyncHttpClientBuilder()
-                .proxy(clientProxyOptions)
-                .build();
-
-            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
-                .expectNextCount(1)
-                .verifyComplete();
-        } finally {
-            proxyServer.shutdown();
-        }
+        final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
     @Test
     public void buildWithHttpProxyFromEnvConfiguration() {
-        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD, SERVICE_ENDPOINT);
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://" + PROXY_USER_INFO + "localhost:" + PROXY_SERVER_HTTP_PORT)
+            .put("java.net.useSystemProxies", "true"))
+            .build();
 
-        try {
-            SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
+        HttpClient httpClient = new VertxAsyncHttpClientBuilder()
+            .configuration(configuration)
+            .build();
 
-            Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                new TestConfigurationSource()
-                    .put(Configuration.PROPERTY_HTTP_PROXY, "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
-                    .put("java.net.useSystemProxies", "true"))
-                .build();
-
-            HttpClient httpClient = new VertxAsyncHttpClientBuilder()
-                .configuration(configuration)
-                .build();
-
-            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
-                .expectNextCount(1)
-                .verifyComplete();
-        } finally {
-            proxyServer.shutdown();
-        }
+        final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
     @Test
     public void buildWithHttpProxyFromExplicitConfiguration() {
-        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD, SERVICE_ENDPOINT);
+        Configuration configuration = new ConfigurationBuilder()
+            .putProperty("http.proxy.hostname", "localhost")
+            .putProperty("http.proxy.port", String.valueOf(PROXY_SERVER_HTTP_PORT))
+            .build();
 
-        try {
-            SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
+        HttpClient httpClient = new VertxAsyncHttpClientBuilder()
+            .configuration(configuration)
+            .build();
 
-            Configuration configuration = new ConfigurationBuilder()
-                .putProperty("http.proxy.hostname", proxyEndpoint.getHost())
-                .putProperty("http.proxy.port", String.valueOf(proxyEndpoint.getPort()))
-                .build();
-
-            HttpClient httpClient = new VertxAsyncHttpClientBuilder()
-                .configuration(configuration)
-                .build();
-
-            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
-                .expectNextCount(1)
-                .verifyComplete();
-        } finally {
-            proxyServer.shutdown();
-        }
+        final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
     @Test
@@ -256,7 +205,7 @@ public class VertxAsyncHttpClientBuilderTests {
             .vertx(vertx)
             .build();
 
-        String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
+        String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
         try {
             StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
                 .assertNext(response -> assertEquals(200, response.getStatusCode()))
@@ -291,7 +240,7 @@ public class VertxAsyncHttpClientBuilderTests {
         assertEquals(60, options.getReadIdleTimeout());
         assertEquals(70, options.getWriteIdleTimeout());
 
-        String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
+        String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
@@ -300,26 +249,17 @@ public class VertxAsyncHttpClientBuilderTests {
 
     @Test
     public void buildWithNullProxyAddress() {
-        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD, SERVICE_ENDPOINT);
+        ProxyOptions mockPoxyOptions = Mockito.mock(ProxyOptions.class);
+        Mockito.when(mockPoxyOptions.getType()).thenReturn(ProxyOptions.Type.HTTP);
+        Mockito.when(mockPoxyOptions.getAddress()).thenReturn(null);
 
-        try {
-            proxyServer.start();
+        HttpClient httpClient = new VertxAsyncHttpClientBuilder()
+            .proxy(mockPoxyOptions)
+            .build();
 
-            ProxyOptions mockPoxyOptions = Mockito.mock(ProxyOptions.class);
-            Mockito.when(mockPoxyOptions.getType()).thenReturn(ProxyOptions.Type.HTTP);
-            Mockito.when(mockPoxyOptions.getAddress()).thenReturn(null);
-
-            HttpClient httpClient = new VertxAsyncHttpClientBuilder()
-                .proxy(mockPoxyOptions)
-                .build();
-
-            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
-                .verifyError(ConnectException.class);
-        } finally {
-            proxyServer.shutdown();
-        }
+        final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .verifyError(ConnectException.class);
     }
 
     @Test
@@ -339,50 +279,33 @@ public class VertxAsyncHttpClientBuilderTests {
 
     @Test
     public void buildWithNullProxyType() {
-        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD, SERVICE_ENDPOINT);
+        ProxyOptions mockPoxyOptions = Mockito.mock(ProxyOptions.class);
+        Mockito.when(mockPoxyOptions.getType()).thenReturn(null);
+        Mockito.when(mockPoxyOptions.getAddress())
+            .thenReturn(new InetSocketAddress("localhost", PROXY_SERVER_HTTP_PORT));
 
-        try {
-            SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
+        HttpClient httpClient = new VertxAsyncHttpClientBuilder()
+            .proxy(mockPoxyOptions)
+            .build();
 
-            ProxyOptions mockPoxyOptions = Mockito.mock(ProxyOptions.class);
-            Mockito.when(mockPoxyOptions.getType()).thenReturn(null);
-            Mockito.when(mockPoxyOptions.getAddress()).thenReturn(new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
-
-            HttpClient httpClient = new VertxAsyncHttpClientBuilder()
-                .proxy(mockPoxyOptions)
-                .build();
-
-            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
-                .expectNextCount(1)
-                .verifyComplete();
-        } finally {
-            proxyServer.shutdown();
-        }
+        final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
     @Test
     public void buildWithoutProxyAuthentication() {
-        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD, SERVICE_ENDPOINT);
+        ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
+            new InetSocketAddress("localhost", PROXY_SERVER_HTTP_PORT));
 
-        try {
-            SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
+        HttpClient httpClient = new VertxAsyncHttpClientBuilder()
+            .proxy(clientProxyOptions)
+            .build();
 
-            ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
-                new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
-
-            HttpClient httpClient = new VertxAsyncHttpClientBuilder()
-                .proxy(clientProxyOptions)
-                .build();
-
-            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
-                .expectNextCount(1)
-                .verifyComplete();
-        } finally {
-            proxyServer.shutdown();
-        }
+        final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .expectNextCount(1)
+            .verifyComplete();
     }
 }

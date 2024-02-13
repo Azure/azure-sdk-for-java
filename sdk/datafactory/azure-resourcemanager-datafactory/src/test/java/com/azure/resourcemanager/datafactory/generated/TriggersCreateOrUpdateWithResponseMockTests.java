@@ -35,7 +35,7 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"vskdvqyfubwxca\",\"runtimeState\":\"Stopped\",\"annotations\":[\"datapfojhvqmdoqyohzh\",\"datandfkp\"],\"\":{\"usuw\":\"datavjd\",\"pgarhf\":\"dataht\",\"cxvqpmwqsd\":\"dataadedivad\"}},\"name\":\"lexkfsgrhea\",\"type\":\"lcukmnuivpb\",\"etag\":\"lihfzriig\",\"id\":\"qyptmjqjoamzdsa\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"twstqgc\",\"runtimeState\":\"Stopped\",\"annotations\":[\"datarzoafxoyddus\",\"datavyjh\",\"dataynlmxzdwpdw\"],\"\":{\"yznyeghm\":\"datau\",\"xdnckgdcszz\":\"datam\",\"ldeq\":\"dataedfdzleaz\",\"q\":\"datafzyhikhnwseftlj\"}},\"name\":\"fkdy\",\"type\":\"zaxithppjxtobe\",\"etag\":\"zcadoqijfll\",\"id\":\"uzeolcgqjtvp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -52,13 +52,14 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TriggerResource response = manager.triggers().define("ogfxbv").withExistingFactory("mv", "qismvo")
-            .withProperties(new Trigger().withDescription("cf").withAnnotations(Arrays.asList("datace", "dataqnh"))
-                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Disabled")))
-            .withIfMatch("bkzchc").create();
+        TriggerResource response = manager.triggers().define("a").withExistingFactory("rklxnbbk", "jnnzqz")
+            .withProperties(new Trigger().withDescription("fxvlac")
+                .withAnnotations(Arrays.asList("dataksguccotgqge", "dataielyhow"))
+                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Stopped")))
+            .withIfMatch("lpiccx").create();
 
-        Assertions.assertEquals("qyptmjqjoamzdsa", response.id());
-        Assertions.assertEquals("vskdvqyfubwxca", response.properties().description());
+        Assertions.assertEquals("uzeolcgqjtvp", response.id());
+        Assertions.assertEquals("twstqgc", response.properties().description());
     }
 
     // Use "Map.of" if available

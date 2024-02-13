@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure VM workload specific job task details. */
+/**
+ * Azure VM workload specific job task details.
+ */
 @Fluent
 public final class AzureWorkloadJobTaskDetails {
     /*
@@ -22,13 +24,15 @@ public final class AzureWorkloadJobTaskDetails {
     @JsonProperty(value = "status")
     private String status;
 
-    /** Creates an instance of AzureWorkloadJobTaskDetails class. */
+    /**
+     * Creates an instance of AzureWorkloadJobTaskDetails class.
+     */
     public AzureWorkloadJobTaskDetails() {
     }
 
     /**
      * Get the taskId property: The task display name.
-     *
+     * 
      * @return the taskId value.
      */
     public String taskId() {
@@ -37,7 +41,7 @@ public final class AzureWorkloadJobTaskDetails {
 
     /**
      * Set the taskId property: The task display name.
-     *
+     * 
      * @param taskId the taskId value to set.
      * @return the AzureWorkloadJobTaskDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class AzureWorkloadJobTaskDetails {
 
     /**
      * Get the status property: The status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -57,7 +61,7 @@ public final class AzureWorkloadJobTaskDetails {
 
     /**
      * Set the status property: The status.
-     *
+     * 
      * @param status the status value to set.
      * @return the AzureWorkloadJobTaskDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class AzureWorkloadJobTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

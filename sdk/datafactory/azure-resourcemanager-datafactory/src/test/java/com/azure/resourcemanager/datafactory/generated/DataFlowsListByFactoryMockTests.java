@@ -32,7 +32,7 @@ public final class DataFlowsListByFactoryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"DataFlow\",\"description\":\"ktlofgpnswvcsekw\",\"annotations\":[\"datafpoqbekkqsaby\"],\"folder\":{\"name\":\"rwprbzfbdsncy\"}},\"name\":\"gtqrowtazqexwkk\",\"type\":\"cj\",\"etag\":\"nkeai\",\"id\":\"hzj\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"DataFlow\",\"description\":\"yfkrcmxtbwolzu\",\"annotations\":[\"dataqlszlymy\",\"datapwjbuwqm\",\"datacu\"],\"folder\":{\"name\":\"zmhcvrfqqmbuvt\"}},\"name\":\"rmcymwr\",\"type\":\"kaztuldg\",\"etag\":\"edvxhqhptn\",\"id\":\"pafurttshr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,10 +50,10 @@ public final class DataFlowsListByFactoryMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DataFlowResource> response
-            = manager.dataFlows().listByFactory("xrfr", "x", com.azure.core.util.Context.NONE);
+            = manager.dataFlows().listByFactory("cydmkyooj", "fsbygmbn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hzj", response.iterator().next().id());
-        Assertions.assertEquals("ktlofgpnswvcsekw", response.iterator().next().properties().description());
-        Assertions.assertEquals("rwprbzfbdsncy", response.iterator().next().properties().folder().name());
+        Assertions.assertEquals("pafurttshr", response.iterator().next().id());
+        Assertions.assertEquals("yfkrcmxtbwolzu", response.iterator().next().properties().description());
+        Assertions.assertEquals("zmhcvrfqqmbuvt", response.iterator().next().properties().folder().name());
     }
 }

@@ -30,14 +30,16 @@ public final class ManagedVirtualNetworksImpl implements ManagedVirtualNetworks 
     public PagedIterable<ManagedVirtualNetworkResource> listByFactory(String resourceGroupName, String factoryName) {
         PagedIterable<ManagedVirtualNetworkResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName);
-        return Utils.mapPage(inner, inner1 -> new ManagedVirtualNetworkResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ManagedVirtualNetworkResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ManagedVirtualNetworkResource> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
         PagedIterable<ManagedVirtualNetworkResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
-        return Utils.mapPage(inner, inner1 -> new ManagedVirtualNetworkResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ManagedVirtualNetworkResourceImpl(inner1, this.manager()));
     }
 
     public Response<ManagedVirtualNetworkResource> getWithResponse(String resourceGroupName, String factoryName,
@@ -64,17 +66,17 @@ public final class ManagedVirtualNetworksImpl implements ManagedVirtualNetworks 
     }
 
     public ManagedVirtualNetworkResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String managedVirtualNetworkName = Utils.getValueFromIdByName(id, "managedVirtualNetworks");
+        String managedVirtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedVirtualNetworks");
         if (managedVirtualNetworkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.", id)));
@@ -86,17 +88,17 @@ public final class ManagedVirtualNetworksImpl implements ManagedVirtualNetworks 
     }
 
     public Response<ManagedVirtualNetworkResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String managedVirtualNetworkName = Utils.getValueFromIdByName(id, "managedVirtualNetworks");
+        String managedVirtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedVirtualNetworks");
         if (managedVirtualNetworkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.", id)));

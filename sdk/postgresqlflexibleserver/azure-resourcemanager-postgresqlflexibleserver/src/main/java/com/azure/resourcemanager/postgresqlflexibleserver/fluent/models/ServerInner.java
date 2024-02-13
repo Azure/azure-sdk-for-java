@@ -26,7 +26,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Represents a server. */
+/**
+ * Represents a server.
+ */
 @Fluent
 public final class ServerInner extends Resource {
     /*
@@ -53,13 +55,15 @@ public final class ServerInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ServerInner class. */
+    /**
+     * Creates an instance of ServerInner class.
+     */
     public ServerInner() {
     }
 
     /**
      * Get the sku property: The SKU (pricing tier) of the server.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -68,7 +72,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the sku property: The SKU (pricing tier) of the server.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ServerInner object itself.
      */
@@ -79,7 +83,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the identity property: Describes the identity of the application.
-     *
+     * 
      * @return the identity value.
      */
     public UserAssignedIdentity identity() {
@@ -88,7 +92,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the identity property: Describes the identity of the application.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ServerInner object itself.
      */
@@ -99,7 +103,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the server.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerProperties innerProperties() {
@@ -108,21 +112,25 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -132,7 +140,7 @@ public final class ServerInner extends Resource {
     /**
      * Get the administratorLogin property: The administrator's login name of a server. Can only be specified when the
      * server is being created (and is required for creation).
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -142,7 +150,7 @@ public final class ServerInner extends Resource {
     /**
      * Set the administratorLogin property: The administrator's login name of a server. Can only be specified when the
      * server is being created (and is required for creation).
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ServerInner object itself.
      */
@@ -156,7 +164,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the administratorLoginPassword property: The administrator login password (required for server creation).
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -165,7 +173,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the administratorLoginPassword property: The administrator login password (required for server creation).
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ServerInner object itself.
      */
@@ -179,7 +187,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the version property: PostgreSQL Server version.
-     *
+     * 
      * @return the version value.
      */
     public ServerVersion version() {
@@ -188,7 +196,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the version property: PostgreSQL Server version.
-     *
+     * 
      * @param version the version value to set.
      * @return the ServerInner object itself.
      */
@@ -202,7 +210,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the minorVersion property: The minor version of the server.
-     *
+     * 
      * @return the minorVersion value.
      */
     public String minorVersion() {
@@ -211,7 +219,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the state property: A state of a server that is visible to user.
-     *
+     * 
      * @return the state value.
      */
     public ServerState state() {
@@ -220,7 +228,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of a server.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -229,7 +237,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the storage property: Storage properties of a server.
-     *
+     * 
      * @return the storage value.
      */
     public Storage storage() {
@@ -238,7 +246,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the storage property: Storage properties of a server.
-     *
+     * 
      * @param storage the storage value to set.
      * @return the ServerInner object itself.
      */
@@ -252,7 +260,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the authConfig property: AuthConfig properties of a server.
-     *
+     * 
      * @return the authConfig value.
      */
     public AuthConfig authConfig() {
@@ -261,7 +269,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the authConfig property: AuthConfig properties of a server.
-     *
+     * 
      * @param authConfig the authConfig value to set.
      * @return the ServerInner object itself.
      */
@@ -275,7 +283,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the dataEncryption property: Data encryption properties of a server.
-     *
+     * 
      * @return the dataEncryption value.
      */
     public DataEncryption dataEncryption() {
@@ -284,7 +292,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the dataEncryption property: Data encryption properties of a server.
-     *
+     * 
      * @param dataEncryption the dataEncryption value to set.
      * @return the ServerInner object itself.
      */
@@ -298,7 +306,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the backup property: Backup properties of a server.
-     *
+     * 
      * @return the backup value.
      */
     public Backup backup() {
@@ -307,7 +315,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the backup property: Backup properties of a server.
-     *
+     * 
      * @param backup the backup value to set.
      * @return the ServerInner object itself.
      */
@@ -322,7 +330,7 @@ public final class ServerInner extends Resource {
     /**
      * Get the network property: Network properties of a server. This Network property is required to be passed only in
      * case you want the server to be Private access server.
-     *
+     * 
      * @return the network value.
      */
     public Network network() {
@@ -332,7 +340,7 @@ public final class ServerInner extends Resource {
     /**
      * Set the network property: Network properties of a server. This Network property is required to be passed only in
      * case you want the server to be Private access server.
-     *
+     * 
      * @param network the network value to set.
      * @return the ServerInner object itself.
      */
@@ -346,7 +354,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the highAvailability property: High availability properties of a server.
-     *
+     * 
      * @return the highAvailability value.
      */
     public HighAvailability highAvailability() {
@@ -355,7 +363,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the highAvailability property: High availability properties of a server.
-     *
+     * 
      * @param highAvailability the highAvailability value to set.
      * @return the ServerInner object itself.
      */
@@ -369,7 +377,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the maintenanceWindow property: Maintenance window properties of a server.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public MaintenanceWindow maintenanceWindow() {
@@ -378,7 +386,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the maintenanceWindow property: Maintenance window properties of a server.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the ServerInner object itself.
      */
@@ -394,7 +402,7 @@ public final class ServerInner extends Resource {
      * Get the sourceServerResourceId property: The source server resource ID to restore from. It's required when
      * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
      * only for Replica server.
-     *
+     * 
      * @return the sourceServerResourceId value.
      */
     public String sourceServerResourceId() {
@@ -405,7 +413,7 @@ public final class ServerInner extends Resource {
      * Set the sourceServerResourceId property: The source server resource ID to restore from. It's required when
      * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
      * only for Replica server.
-     *
+     * 
      * @param sourceServerResourceId the sourceServerResourceId value to set.
      * @return the ServerInner object itself.
      */
@@ -420,7 +428,7 @@ public final class ServerInner extends Resource {
     /**
      * Get the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
      * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
-     *
+     * 
      * @return the pointInTimeUtc value.
      */
     public OffsetDateTime pointInTimeUtc() {
@@ -430,7 +438,7 @@ public final class ServerInner extends Resource {
     /**
      * Set the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
      * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
-     *
+     * 
      * @param pointInTimeUtc the pointInTimeUtc value to set.
      * @return the ServerInner object itself.
      */
@@ -444,7 +452,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the availabilityZone property: availability zone information of the server.
-     *
+     * 
      * @return the availabilityZone value.
      */
     public String availabilityZone() {
@@ -453,7 +461,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the availabilityZone property: availability zone information of the server.
-     *
+     * 
      * @param availabilityZone the availabilityZone value to set.
      * @return the ServerInner object itself.
      */
@@ -467,7 +475,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the replicationRole property: Replication role of the server.
-     *
+     * 
      * @return the replicationRole value.
      */
     public ReplicationRole replicationRole() {
@@ -476,7 +484,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the replicationRole property: Replication role of the server.
-     *
+     * 
      * @param replicationRole the replicationRole value to set.
      * @return the ServerInner object itself.
      */
@@ -490,7 +498,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the replicaCapacity property: Replicas allowed for a server.
-     *
+     * 
      * @return the replicaCapacity value.
      */
     public Integer replicaCapacity() {
@@ -498,9 +506,9 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed only
-     * in case you want to Promote a server.
-     *
+     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed
+     * only in case you want to Promote a server.
+     * 
      * @return the replica value.
      */
     public Replica replica() {
@@ -508,9 +516,9 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed only
-     * in case you want to Promote a server.
-     *
+     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed
+     * only in case you want to Promote a server.
+     * 
      * @param replica the replica value to set.
      * @return the ServerInner object itself.
      */
@@ -524,7 +532,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the createMode property: The mode to create a new PostgreSQL server.
-     *
+     * 
      * @return the createMode value.
      */
     public CreateMode createMode() {
@@ -533,7 +541,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the createMode property: The mode to create a new PostgreSQL server.
-     *
+     * 
      * @param createMode the createMode value to set.
      * @return the ServerInner object itself.
      */
@@ -548,7 +556,7 @@ public final class ServerInner extends Resource {
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the specified
      * resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -557,7 +565,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

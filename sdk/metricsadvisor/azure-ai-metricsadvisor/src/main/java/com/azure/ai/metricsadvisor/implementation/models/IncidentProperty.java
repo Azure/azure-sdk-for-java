@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The IncidentProperty model.
@@ -97,7 +96,7 @@ public final class IncidentProperty implements JsonSerializable<IncidentProperty
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("maxSeverity", Objects.toString(this.maxSeverity, null));
+        jsonWriter.writeStringField("maxSeverity", this.maxSeverity == null ? null : this.maxSeverity.toString());
         return jsonWriter.writeEndObject();
     }
 

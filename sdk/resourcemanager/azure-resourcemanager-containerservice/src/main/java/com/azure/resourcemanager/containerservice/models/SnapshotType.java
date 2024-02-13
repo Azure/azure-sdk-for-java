@@ -19,7 +19,7 @@ public final class SnapshotType extends ExpandableStringEnum<SnapshotType> {
 
     /**
      * Creates a new instance of SnapshotType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,7 +28,7 @@ public final class SnapshotType extends ExpandableStringEnum<SnapshotType> {
 
     /**
      * Creates or finds a SnapshotType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SnapshotType.
      */
@@ -39,7 +39,7 @@ public final class SnapshotType extends ExpandableStringEnum<SnapshotType> {
 
     /**
      * Gets known SnapshotType values.
-     *
+     * 
      * @return known SnapshotType values.
      */
     public static Collection<SnapshotType> values() {

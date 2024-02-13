@@ -21,22 +21,18 @@ public final class FeatureSupportsImpl implements FeatureSupports {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public FeatureSupportsImpl(
-        FeatureSupportsClient innerClient,
+    public FeatureSupportsImpl(FeatureSupportsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<AzureVMResourceFeatureSupportResponse> validateWithResponse(
-        String azureRegion, FeatureSupportRequest parameters, Context context) {
-        Response<AzureVMResourceFeatureSupportResponseInner> inner =
-            this.serviceClient().validateWithResponse(azureRegion, parameters, context);
+    public Response<AzureVMResourceFeatureSupportResponse> validateWithResponse(String azureRegion,
+        FeatureSupportRequest parameters, Context context) {
+        Response<AzureVMResourceFeatureSupportResponseInner> inner
+            = this.serviceClient().validateWithResponse(azureRegion, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AzureVMResourceFeatureSupportResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

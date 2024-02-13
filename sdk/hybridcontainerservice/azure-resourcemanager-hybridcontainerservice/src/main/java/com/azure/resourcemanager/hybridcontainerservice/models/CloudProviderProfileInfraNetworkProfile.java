@@ -9,12 +9,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * InfraNetworkProfile - List of infra network profiles for the provisioned cluster.
+ * The profile for the infrastructure networks used by the provisioned cluster.
  */
 @Fluent
 public final class CloudProviderProfileInfraNetworkProfile {
     /*
-     * Array of references to azure resource corresponding to the Network object e.g.
+     * List of ARM resource Ids (maximum 1) for the infrastructure network object e.g.
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/
      * logicalNetworks/{logicalNetworkName}
      */
@@ -28,7 +28,7 @@ public final class CloudProviderProfileInfraNetworkProfile {
     }
 
     /**
-     * Get the vnetSubnetIds property: Array of references to azure resource corresponding to the Network object e.g.
+     * Get the vnetSubnetIds property: List of ARM resource Ids (maximum 1) for the infrastructure network object e.g.
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}.
      * 
      * @return the vnetSubnetIds value.
@@ -38,7 +38,7 @@ public final class CloudProviderProfileInfraNetworkProfile {
     }
 
     /**
-     * Set the vnetSubnetIds property: Array of references to azure resource corresponding to the Network object e.g.
+     * Set the vnetSubnetIds property: List of ARM resource Ids (maximum 1) for the infrastructure network object e.g.
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}.
      * 
      * @param vnetSubnetIds the vnetSubnetIds value to set.

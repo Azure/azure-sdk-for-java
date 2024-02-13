@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.0-beta.8 (Unreleased)
+## 2.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,33 @@
 
 ### Bugs Fixed
 
-- Retry connection on timeout.
+### Other Changes
+
+## 2.9.1 (2024-02-02)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
+
+## 2.9.0 (2024-01-17)
+
+### Bugs Fixed
+
+- Retry connection on timeout ([38317](https://github.com/Azure/azure-sdk-for-java/pull/38317))
+
+### Features Added
+
+- The version 2.9.0 is the stable release for all the features introduced in the 2.9.0-beta.* versions.
+
+## 2.8.14 (2023-11-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.0` to `1.45.1`.
 
 ## 2.9.0-beta.7 (2023-11-22)
 
