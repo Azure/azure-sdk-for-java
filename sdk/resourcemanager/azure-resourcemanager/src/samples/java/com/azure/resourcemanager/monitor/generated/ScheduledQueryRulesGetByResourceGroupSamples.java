@@ -4,24 +4,21 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ScheduledQueryRules GetByResourceGroup. */
+/**
+ * Samples for ScheduledQueryRules GetByResourceGroup.
+ */
 public final class ScheduledQueryRulesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/getScheduledQueryRule.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/getScheduledQueryRule.json
      */
     /**
      * Sample code: Get a scheduled query rule for single resource.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAScheduledQueryRuleForSingleResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
-            .manager()
-            .serviceClient()
-            .getScheduledQueryRules()
-            .getByResourceGroupWithResponse("QueryResourceGroupName", "perf", Context.NONE);
+        azure.diagnosticSettings().manager().serviceClient().getScheduledQueryRules()
+            .getByResourceGroupWithResponse("QueryResourceGroupName", "perf", com.azure.core.util.Context.NONE);
     }
 }

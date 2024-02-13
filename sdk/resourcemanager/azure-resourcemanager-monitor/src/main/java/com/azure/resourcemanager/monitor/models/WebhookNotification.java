@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Webhook notification of an autoscale event. */
+/**
+ * Webhook notification of an autoscale event.
+ */
 @Fluent
 public final class WebhookNotification {
     /*
@@ -25,13 +27,15 @@ public final class WebhookNotification {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
-    /** Creates an instance of WebhookNotification class. */
+    /**
+     * Creates an instance of WebhookNotification class.
+     */
     public WebhookNotification() {
     }
 
     /**
      * Get the serviceUri property: the service address to receive the notification.
-     *
+     * 
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -40,7 +44,7 @@ public final class WebhookNotification {
 
     /**
      * Set the serviceUri property: the service address to receive the notification.
-     *
+     * 
      * @param serviceUri the serviceUri value to set.
      * @return the WebhookNotification object itself.
      */
@@ -51,7 +55,7 @@ public final class WebhookNotification {
 
     /**
      * Get the properties property: a property bag of settings. This value can be empty.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -60,7 +64,7 @@ public final class WebhookNotification {
 
     /**
      * Set the properties property: a property bag of settings. This value can be empty.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the WebhookNotification object itself.
      */
@@ -71,7 +75,7 @@ public final class WebhookNotification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

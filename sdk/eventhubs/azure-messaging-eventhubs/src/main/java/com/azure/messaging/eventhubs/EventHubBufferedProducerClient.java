@@ -155,7 +155,7 @@ public final class EventHubBufferedProducerClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventHubProperties getEventHubProperties() {
-        return client.getEventHubProperties().block(operationTimeout);
+        return client.getEventHubProperties().block();
     }
 
     /**
@@ -181,7 +181,7 @@ public final class EventHubBufferedProducerClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionProperties getPartitionProperties(String partitionId) {
-        return client.getPartitionProperties(partitionId).block(operationTimeout);
+        return client.getPartitionProperties(partitionId).block();
     }
 
     /**

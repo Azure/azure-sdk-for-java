@@ -11,7 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.Objects;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The AnomalyDimensionQuery model.
@@ -127,8 +127,10 @@ public final class AnomalyDimensionQuery implements JsonSerializable<AnomalyDime
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
-        jsonWriter.writeStringField("endTime", Objects.toString(this.endTime, null));
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
         jsonWriter.writeStringField("dimensionName", this.dimensionName);
         jsonWriter.writeJsonField("dimensionFilter", this.dimensionFilter);
         return jsonWriter.writeEndObject();

@@ -39,7 +39,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     private final String vaultUrl;
 
     /*
-     * Optional Azure Active Directory credentials used for accessing your Azure Key Vault. Not required if using
+     * Optional Microsoft Entra ID credentials used for accessing your Azure Key Vault. Not required if using
      * managed identity instead.
      */
     private AzureActiveDirectoryApplicationCredentials accessCredentials;
@@ -53,7 +53,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
 
     /**
      * Creates an instance of SearchResourceEncryptionKey class.
-     * 
+     *
      * @param keyName the keyName value to set.
      * @param keyVersion the keyVersion value to set.
      * @param vaultUrl the vaultUrl value to set.
@@ -66,7 +66,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
 
     /**
      * Get the keyName property: The name of your Azure Key Vault key to be used to encrypt your data at rest.
-     * 
+     *
      * @return the keyName value.
      */
     public String getKeyName() {
@@ -75,7 +75,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
 
     /**
      * Get the keyVersion property: The version of your Azure Key Vault key to be used to encrypt your data at rest.
-     * 
+     *
      * @return the keyVersion value.
      */
     public String getKeyVersion() {
@@ -85,7 +85,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     /**
      * Get the vaultUrl property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
      * to be used to encrypt your data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
-     * 
+     *
      * @return the vaultUrl value.
      */
     public String getVaultUrl() {
@@ -97,7 +97,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * access credentials property is null, the system-assigned managed identity is used. On update to the resource, if
      * the explicit identity is unspecified, it remains unchanged. If "none" is specified, the value of this property
      * is cleared.
-     * 
+     *
      * @return the identity value.
      */
     public SearchIndexerDataIdentity getIdentity() {
@@ -109,7 +109,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * access credentials property is null, the system-assigned managed identity is used. On update to the resource, if
      * the explicit identity is unspecified, it remains unchanged. If "none" is specified, the value of this property
      * is cleared.
-     * 
+     *
      * @param identity the identity value to set.
      * @return the SearchResourceEncryptionKey object itself.
      */
@@ -131,7 +131,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
 
     /**
      * Reads an instance of SearchResourceEncryptionKey from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchResourceEncryptionKey if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
@@ -197,7 +197,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * Get the applicationId property: An AAD Application ID that was granted the required access permissions to the
      * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused
      * with the Object ID for your AAD Application.
-     * 
+     *
      * @return the applicationId value.
      */
     public String getApplicationId() {
@@ -208,7 +208,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * Set the applicationId property: An AAD Application ID that was granted the required access permissions to the
      * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused
      * with the Object ID for your AAD Application.
-     * 
+     *
      * @param applicationId the applicationId value to set.
      * @return the SearchResourceEncryptionKey object itself.
      */
@@ -223,7 +223,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
 
     /**
      * Get the applicationSecret property: The authentication key of the specified AAD application.
-     * 
+     *
      * @return the applicationSecret value.
      */
     public String getApplicationSecret() {
@@ -232,7 +232,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
 
     /**
      * Set the applicationSecret property: The authentication key of the specified AAD application.
-     * 
+     *
      * @param applicationSecret the applicationSecret value to set.
      * @return the SearchResourceEncryptionKey object itself.
      */

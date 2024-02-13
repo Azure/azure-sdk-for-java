@@ -72,6 +72,7 @@ public class TestUtils {
     public static final String CONTAINERREGISTRY_CLIENT_SECRET = CONFIGURATION.get("CONTAINERREGISTRY_CLIENT_SECRET");
 
     public static final ManifestMediaType OCI_INDEX_MEDIA_TYPE = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
+    public static final ManifestMediaType DOCKER_MANIFEST_LIST_TYPE = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
 
     static class FakeCredentials implements TokenCredential {
         @Override

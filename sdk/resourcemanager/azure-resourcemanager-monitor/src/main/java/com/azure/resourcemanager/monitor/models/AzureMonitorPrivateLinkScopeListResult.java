@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.fluent.models.AzureMonitorPrivateLinkSc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the list of Azure Monitor PrivateLinkScope resources. */
+/**
+ * Describes the list of Azure Monitor PrivateLinkScope resources.
+ */
 @Fluent
 public final class AzureMonitorPrivateLinkScopeListResult {
     /*
@@ -26,13 +28,15 @@ public final class AzureMonitorPrivateLinkScopeListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AzureMonitorPrivateLinkScopeListResult class. */
+    /**
+     * Creates an instance of AzureMonitorPrivateLinkScopeListResult class.
+     */
     public AzureMonitorPrivateLinkScopeListResult() {
     }
 
     /**
      * Get the value property: List of Azure Monitor PrivateLinkScope definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<AzureMonitorPrivateLinkScopeInner> value() {
@@ -41,7 +45,7 @@ public final class AzureMonitorPrivateLinkScopeListResult {
 
     /**
      * Set the value property: List of Azure Monitor PrivateLinkScope definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the AzureMonitorPrivateLinkScopeListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class AzureMonitorPrivateLinkScopeListResult {
     /**
      * Get the nextLink property: The URI to get the next set of Azure Monitor PrivateLinkScope definitions if too many
      * PrivateLinkScopes where returned in the result set.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +67,7 @@ public final class AzureMonitorPrivateLinkScopeListResult {
     /**
      * Set the nextLink property: The URI to get the next set of Azure Monitor PrivateLinkScope definitions if too many
      * PrivateLinkScopes where returned in the result set.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AzureMonitorPrivateLinkScopeListResult object itself.
      */
@@ -74,15 +78,13 @@ public final class AzureMonitorPrivateLinkScopeListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model AzureMonitorPrivateLinkScopeListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model AzureMonitorPrivateLinkScopeListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

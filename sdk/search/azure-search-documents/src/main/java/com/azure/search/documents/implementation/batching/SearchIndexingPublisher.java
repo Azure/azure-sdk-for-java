@@ -32,7 +32,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -367,23 +366,6 @@ public final class SearchIndexingPublisher<T> {
     }
 
     private static ExecutorService getThreadPoolWithShutdownHook() {
-        ExecutorService threadPool = Executors.newCachedThreadPool();
-
-        long halfTimeout = TimeUnit.SECONDS.toNanos(5) / 2;
-        Thread hook = new Thread(() -> {
-            try {
-                threadPool.shutdown();
-                if (!threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS)) {
-                    threadPool.shutdownNow();
-                    threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS);
-                }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                threadPool.shutdown();
-            }
-        });
-        Runtime.getRuntime().addShutdownHook(hook);
-
-        return threadPool;
+        return CoreUtils.addShutdownHookSafely(Executors.newCachedThreadPool(), Duration.ofSeconds(5));
     }
 }
