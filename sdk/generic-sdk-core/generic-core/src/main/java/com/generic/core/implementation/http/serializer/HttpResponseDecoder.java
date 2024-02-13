@@ -4,9 +4,9 @@
 package com.generic.core.implementation.http.serializer;
 
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.models.Headers;
 import com.generic.core.util.serializer.ObjectSerializer;
 
-import java.io.Closeable;
 import java.io.IOException;
 
 /**
@@ -33,22 +33,18 @@ public final class HttpResponseDecoder {
      *
      * @return The decoded HttpResponse.
      */
-    public HttpDecodedResponse decode(HttpResponse<?> response, HttpResponseDecodeData decodeData) {
-        return new HttpDecodedResponse(response, this.serializer, decodeData);
+    public HttpDecodedResponse<?> decode(HttpResponse<?> response, HttpResponseDecodeData decodeData) {
+        return new HttpDecodedResponse<>(response, this.serializer, decodeData);
     }
 
     /**
-     * A decorated HTTP response which has subscribable body and headers that supports lazy decoding.
-     *
-     * <p>Subscribing to body kickoff http content reading, it's decoding then emission of decoded object. Subscribing
-     * to header kickoff header decoding and emission of decoded object.
+     * A decorated HTTP response that supports lazy decoding.
      */
-    public static class HttpDecodedResponse implements Closeable {
-        private final HttpResponse<?> response;
+    public static class HttpDecodedResponse<T> extends HttpResponse<T> {
+        private final HttpResponse<T> response;
         private final ObjectSerializer serializer;
         private final HttpResponseDecodeData decodeData;
-        private Object bodyCached;
-        private Object headersCached;
+        private Object cachedBody;
 
         /**
          * Creates HttpDecodedResponse. Package private Ctr.
@@ -57,8 +53,10 @@ public final class HttpResponseDecoder {
          * @param serializer the decoder
          * @param decodeData the necessary data required to decode a Http response
          */
-        HttpDecodedResponse(final HttpResponse<?> response, ObjectSerializer serializer,
+        HttpDecodedResponse(final HttpResponse<T> response, ObjectSerializer serializer,
                             HttpResponseDecodeData decodeData) {
+            super(response.getRequest(), response.getBody().toBytes());
+
             this.response = response;
             this.serializer = serializer;
             this.decodeData = decodeData;
@@ -67,8 +65,8 @@ public final class HttpResponseDecoder {
         /**
          * @return get the raw response that this decoded response based on
          */
-        public HttpResponse<?> getSourceResponse() {
-            return this.response;
+        public HttpResponse<T> getSourceResponse() {
+            return response;
         }
 
         /**
@@ -79,11 +77,26 @@ public final class HttpResponseDecoder {
          * @return The decoded body.
          */
         public Object getDecodedBody(byte[] body) {
-            if (this.bodyCached == null) {
-                this.bodyCached = HttpResponseBodyDecoder.decodeByteArray(body, response, serializer, decodeData);
+            if (cachedBody == null) {
+                cachedBody = HttpResponseBodyDecoder.decodeByteArray(body, response, serializer, decodeData);
             }
 
-            return this.bodyCached;
+            return cachedBody;
+        }
+
+        @Override
+        public int getStatusCode() {
+            return response.getStatusCode();
+        }
+
+        @Override
+        public Headers getHeaders() {
+            return response.getHeaders();
+        }
+
+        @Override
+        public T getValue() {
+            return response.getValue(); // getBody().toStream()? -> RestProxyImpl:173
         }
 
         @Override

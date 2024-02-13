@@ -96,4 +96,8 @@ public abstract class HttpResponse<T> implements Closeable, Response<T> {
     @Override
     public void close() throws IOException {
     }
+
+    protected byte[] getBodyBytes(){
+        return bodyBytes;
+    }
 }

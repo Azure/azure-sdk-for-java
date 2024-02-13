@@ -94,13 +94,9 @@ public abstract class RestProxyBase {
                                        ObjectSerializer objectSerializer) throws IOException;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
+    public Response createResponse(HttpResponseDecoder.HttpDecodedResponse<?> response, Type entityType,
                                    Object bodyAsObject) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
-        final HttpResponse<?> httpResponse = response.getSourceResponse();
-        final HttpRequest request = httpResponse.getRequest();
-        final int statusCode = httpResponse.getStatusCode();
-        final Headers headers = httpResponse.getHeaders();
 
         // Inspection of the response type needs to be performed to determine which course of action should be taken to
         // instantiate the Response<?> from the HttpResponse.
@@ -108,8 +104,8 @@ public abstract class RestProxyBase {
         // If the type is either the Response or PagedResponse interface from azure-core a new instance of either
         // ResponseBase or PagedResponseBase can be returned.
         if (cls.equals(Response.class)) {
-            // For Response return a new instance of SimpleResponse cast to the class.
-            return cls.cast(new SimpleResponse<>(request, statusCode, headers, bodyAsObject));
+            // For Response return the received HttpDecodedResponse cast to the class.
+            return cls.cast(response);
         }
 
         // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response subtype.

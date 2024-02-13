@@ -163,7 +163,7 @@ class ResponseConstructorsCacheBenchmarkTestData {
 
     static class Input {
         private final Type returnType;
-        private final HttpResponseDecoder.HttpDecodedResponse decodedResponse;
+        private final HttpResponseDecoder.HttpDecodedResponse<?> decodedResponse;
         private final Object bodyAsObject;
 
         Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, HttpResponse<?> httpResponse,
@@ -193,7 +193,7 @@ class ResponseConstructorsCacheBenchmarkTestData {
             return this.returnType;
         }
 
-        HttpResponseDecoder.HttpDecodedResponse decodedResponse() {
+        HttpResponseDecoder.HttpDecodedResponse<?> decodedResponse() {
             return this.decodedResponse;
         }
 
