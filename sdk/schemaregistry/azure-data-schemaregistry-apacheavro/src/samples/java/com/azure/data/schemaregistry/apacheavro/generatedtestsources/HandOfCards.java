@@ -23,10 +23,10 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
   private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<HandOfCards> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<HandOfCards>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<HandOfCards> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<HandOfCards>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -50,7 +50,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<HandOfCards> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<HandOfCards>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
