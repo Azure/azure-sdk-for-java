@@ -51,7 +51,7 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
             .defineInternal(
                 SOURCE_FEED_RANGE_TASK_UNITS,
                 ConfigDef.Type.STRING,
-                Collections.EMPTY_LIST,
+                ConfigDef.NO_DEFAULT_VALUE,
                 ConfigDef.Importance.HIGH
             )
             .defineInternal(

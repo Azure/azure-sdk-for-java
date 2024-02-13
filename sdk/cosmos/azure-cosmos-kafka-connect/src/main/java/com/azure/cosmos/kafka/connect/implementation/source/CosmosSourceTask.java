@@ -158,7 +158,7 @@ public class CosmosSourceTask extends SourceTask {
                 .getContainer(feedRangeTaskUnit.getContainerName());
 
         return container.queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
-            .byPage()
+            .byPage(this.taskConfig.getChangeFeedConfig().getMaxItemCount())
             .next()
             .map(feedResponse -> {
                 List<SourceRecord> records = handleSuccessfulResponse(feedResponse, feedRangeTaskUnit);
@@ -312,7 +312,6 @@ public class CosmosSourceTask extends SourceTask {
                     throw new IllegalArgumentException(feedRangeTaskUnit.getContinuationState() + " is not supported");
             }
 
-            changeFeedRequestOptions.setMaxItemCount(this.taskConfig.getChangeFeedConfig().getMaxItemCount());
             if (this.taskConfig.getChangeFeedConfig().getChangeFeedModes() == CosmosChangeFeedModes.ALL_VERSION_AND_DELETES) {
                 changeFeedRequestOptions.allVersionsAndDeletes();
             }
