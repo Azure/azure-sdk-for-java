@@ -6,16 +6,18 @@ package com.azure.ai.vision.imageanalysis.tests;
 import java.io.File;
 import java.util.List;
 import java.util.Map.Entry;
-import java.net.MalformedURLException;
 
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestMode;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.BinaryData;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 
 // See https://junit.org/junit5/docs/5.0.1/api/org/junit/jupiter/api/Assertions.html
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -95,33 +97,55 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
     }
 
     protected void doAnalysis(
-        String testName,
-        Boolean sync,
-        String imageSource,
+        String testName, // Any label the uniquely defines the test. Used in console printout.
+        Boolean sync, // 'true' to use synchronous client. 'false' to use asynchronous client.
+        Boolean analyzeWithResponse, // 'true' to use analze()/analyzeFromUrl(). 'false' to use analyzeWithResponse()/analyzeFromUrlWithResponse().
+        String imageSource, // Image URL or image file path
         List<VisualFeatures> visualFeatures,
-        ImageAnalysisOptions options) throws MalformedURLException {
+        ImageAnalysisOptions imageAnalysisOptions, // can be null
+        RequestOptions requestOptions) { // can be null
 
         Boolean fromUrl = imageSource.startsWith("http");
         Boolean genderNeutralCaption = null;
         List<Double> aspectRatios = null;
 
-        if (options != null) {
-            genderNeutralCaption = options.isGenderNeutralCaption();
-            aspectRatios = options.getSmartCropsAspectRatios();
+        if (imageAnalysisOptions != null) {
+            genderNeutralCaption = imageAnalysisOptions.isGenderNeutralCaption();
+            aspectRatios = imageAnalysisOptions.getSmartCropsAspectRatios();
         }
 
         if (sync) {
             ImageAnalysisResult result = null;
             if (fromUrl) {
-                result = client.analyzeFromUrl(
-                    imageSource,
-                    visualFeatures,
-                    options);
+                if (!analyzeWithResponse) {
+                    result = client.analyzeFromUrl(
+                        imageSource,
+                        visualFeatures,
+                        imageAnalysisOptions);
+                } else {
+                    Response<ImageAnalysisResult> response = client.analyzeFromUrlWithResponse(
+                        imageSource,
+                        visualFeatures,
+                        imageAnalysisOptions,
+                        requestOptions);
+                    printHttpRequestAndResponse(response);
+                    result = response.getValue();
+                }
             } else {
-                result = client.analyze(
-                    BinaryData.fromFile(new File(imageSource).toPath()),
-                    visualFeatures,
-                    options);
+                if (!analyzeWithResponse) {
+                    result = client.analyze(
+                        BinaryData.fromFile(new File(imageSource).toPath()),
+                        visualFeatures,
+                        imageAnalysisOptions);
+                } else {
+                    Response<ImageAnalysisResult> response = client.analyzeWithResponse(
+                        BinaryData.fromFile(new File(imageSource).toPath()),
+                        visualFeatures,
+                        imageAnalysisOptions,
+                        requestOptions);
+                    printHttpRequestAndResponse(response);
+                    result = response.getValue();
+                }
             }
 
             // Optional: console printout of all results
@@ -135,15 +159,35 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         } else { // sync = false
             ImageAnalysisResult result = null;
             if (fromUrl) {
-                result = asyncClient.analyzeFromUrl(
-                    imageSource,
-                    visualFeatures,
-                    options).block();
+                if (!analyzeWithResponse) {
+                    result = asyncClient.analyzeFromUrl(
+                        imageSource,
+                        visualFeatures,
+                        imageAnalysisOptions).block();
+                } else {
+                    Response<ImageAnalysisResult> response = asyncClient.analyzeFromUrlWithResponse(
+                        imageSource,
+                        visualFeatures,
+                        imageAnalysisOptions,
+                        requestOptions).block();
+                    printHttpRequestAndResponse(response);
+                    result = response.getValue();
+                }
             } else {
-                result = asyncClient.analyze(
-                    BinaryData.fromFile(new File(imageSource).toPath()),
-                    visualFeatures,
-                    options).block();
+                if (!analyzeWithResponse) {
+                    result = asyncClient.analyze(
+                        BinaryData.fromFile(new File(imageSource).toPath()),
+                        visualFeatures,
+                        imageAnalysisOptions).block();
+                } else {
+                    Response<ImageAnalysisResult> response = asyncClient.analyzeWithResponse(
+                        BinaryData.fromFile(new File(imageSource).toPath()),
+                        visualFeatures,
+                        imageAnalysisOptions,
+                        requestOptions).block();
+                    printHttpRequestAndResponse(response);
+                    result = response.getValue();
+                }
             }
 
             // Optional: console printout of all results
@@ -163,7 +207,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options,
         int expectedStatusCode,
-        String expectedMessageContains) throws MalformedURLException {
+        String expectedMessageContains) {
 
         Boolean fromUrl = imageSource.startsWith("http");
         ImageAnalysisResult result = null;
@@ -525,6 +569,27 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
             assertTrue(polygon.get(i).getX() > 0);
             assertTrue(polygon.get(i).getY() > 0);
         }
+    }
+
+    private static void printHttpRequestAndResponse(Response<ImageAnalysisResult> response) {
+        // Print HTTP request details to console
+        HttpRequest request = response.getRequest();
+        System.out.println(" HTTP request method: " + request.getHttpMethod());
+        System.out.println(" HTTP request URL: " + request.getUrl());
+        System.out.println(" HTTP request headers: ");
+        request.getHeaders().forEach(header -> {
+            System.out.println("   " + header.getName() + ": " + header.getValue());
+        });
+        if (request.getHeaders().getValue("content-type").contains("application/json")) {
+            System.out.println(" HTTP request body: " + request.getBodyAsBinaryData().toString());
+        }
+
+        // Print HTTP response details to console
+        System.out.println(" HTTP response status code: " + response.getStatusCode());
+        System.out.println(" HTTP response headers: ");
+        response.getHeaders().forEach(header -> {
+            System.out.println("   " + header.getName() + ": " + header.getValue());
+        });
     }
 
     private static void printAnalysisResults(String testName, ImageAnalysisResult result) {

@@ -8,6 +8,10 @@ import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -15,26 +19,17 @@ import java.util.concurrent.TimeUnit;
  *  This sample demonstrates how to extract printed or hand-written text from a publicly accessible
  *  image URL, using an asynchronous client.
  *
- *  The asynchronous `analyzeFromUrl` method call returns an `ImageAnalysisResult` object.
- *  A call to `getRead()` on the result will return a `ReadResult` object. It includes a list of 
- *  `DetectedTextBlock` objects. Currently, the list will always contain one block, as the service does 
- *  not yet support grouping text lines into separate blocks. The `DetectedTextBlock` object contains a 
- *  list of `DetectedTextLine` object. Each one includes: 
- *  - The text content of the line.
- *  - A polygon coordinates in pixels, for a polygon surrounding the line of text in the image.
- *  - A list of `DetectedTextWord` objects.
- *  Each `DetectedTextWord` object contains:
- *  - The text content of the word.
- *  - A polygon coordinates in pixels, for a polygon surrounding the word in the image.
- *  - A confidence score in the range [0, 1], with higher values indicating greater confidences in
- *    the recognition of the word. 
+ *  This sample is similar to the `SampleOcrImageUrlAsync.java` sample, but it uses the 
+ *  `analyzeWithResponseAsync` method instead of `analyzeAsync` method. This allows customization of the 
+ *  HTTP request, and access to HTTP request and response details. This is not commonly required, but can
+ *  be useful for service customization or troubleshooting issues.
  *
  *  Set these two environment variables before running the sample:
  *  1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
  *                       where `your-resource-name` is your unique Azure Computer Vision resource name.
  *  2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
  */
-public class SampleOcrImageUrlAsync {
+public class SampleOcrImageUrlWithResponseAsync {
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -53,19 +48,48 @@ public class SampleOcrImageUrlAsync {
             .credential(new KeyCredential(key))
             .buildAsyncClient();
 
+        // Examples of modifying the HTTP request. Not commonly used. Set to null if not used.
+        RequestOptions requestOptions = new RequestOptions()
+            .setHeader(HttpHeaderName.fromString("YourHeaderName"), "YourHeaderValue")
+            .addQueryParam("YourQueryParameterName", "YourQueryParameterValue");
+
         // Extract text from an input image URL. This is an asynchronous (non-blocking) call.
-        client.analyzeFromUrl(
+        client.analyzeFromUrlWithResponse(
             "https://aka.ms/azsdk/image-analysis/sample.jpg", // imageUrl: the URL of the image to analyze
             Arrays.asList(VisualFeatures.READ), // visualFeatures
-            null) // options
+            null, // imageAnalysisOptions: There are no options for READ visual feature
+            requestOptions) // requestOptions: Additional HTTP request options
             .subscribe(
-                result -> printAnalysisResults(result),
+                response -> { 
+                    printHttpRequestAndResponse(response);
+                    printAnalysisResults(response.getValue());
+                },
                 error -> System.err.println("Image analysis terminated with error message: " + error));
 
         // The .subscribe() is not a blocking call. For the purpose of this sample, we sleep
         // the thread so the program does not end before the analyze operation is complete.
         // Using .block() instead of .subscribe() will turn this into a synchronous call.
         TimeUnit.SECONDS.sleep(5);
+    }
+
+    // Print HTTP request and response to the console
+    public static void printHttpRequestAndResponse(Response<ImageAnalysisResult> response) {
+
+        HttpRequest request = response.getRequest();
+        System.out.println(" HTTP request method: " + request.getHttpMethod());
+        System.out.println(" HTTP request URL: " + request.getUrl());
+        System.out.println(" HTTP request headers: ");
+        request.getHeaders().forEach(header -> {
+            System.out.println("   " + header.getName() + ": " + header.getValue());
+        });
+        if (request.getHeaders().getValue("content-type").contains("application/json")) {
+            System.out.println(" HTTP request body: " + request.getBodyAsBinaryData().toString());
+        }
+        System.out.println(" HTTP response status code: " + response.getStatusCode());
+        System.out.println(" HTTP response headers: ");
+        response.getHeaders().forEach(header -> {
+            System.out.println("   " + header.getName() + ": " + header.getValue());
+        });
     }
 
     // Print analysis results to the console

@@ -16,7 +16,6 @@ import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.Arrays;
 
 public class ImageAnalysisSyncJavaDocCodeSnippets {
@@ -24,7 +23,7 @@ public class ImageAnalysisSyncJavaDocCodeSnippets {
     private static String endpoint;
     private static String key;
 
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[] args) {
 
         endpoint = System.getenv("VISION_ENDPOINT");
         key = System.getenv("VISION_KEY");
@@ -79,7 +78,7 @@ public class ImageAnalysisSyncJavaDocCodeSnippets {
         printAnalysisResults(result);
     }
 
-    private static void analysisFromUrl() throws MalformedURLException {
+    private static void analysisFromUrl() {
 
         ImageAnalysisClient client = new ImageAnalysisClientBuilder()
             .endpoint(endpoint)
