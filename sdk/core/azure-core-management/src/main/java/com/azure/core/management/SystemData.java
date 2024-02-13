@@ -119,13 +119,13 @@ public final class SystemData implements JsonSerializable<SystemData> {
                 } else if ("createdByType".equals(fieldName)) {
                     systemData.createdByType = ResourceAuthorIdentityType.fromString(reader.getString());
                 } else if ("createdAt".equals(fieldName)) {
-                    systemData.createdAt = CoreUtils.parseBestOffesetDateTime(reader.getString());
+                    systemData.createdAt = CoreUtils.parseBestOffsetDateTime(reader.getString());
                 } else if ("lastModifiedBy".equals(fieldName)) {
                     systemData.lastModifiedBy = reader.getString();
                 } else if ("lastModifiedByType".equals(fieldName)) {
                     systemData.lastModifiedByType = ResourceAuthorIdentityType.fromString(reader.getString());
                 } else if ("lastModifiedAt".equals(fieldName)) {
-                    systemData.lastModifiedAt = CoreUtils.parseBestOffesetDateTime(reader.getString());
+                    systemData.lastModifiedAt = CoreUtils.parseBestOffsetDateTime(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

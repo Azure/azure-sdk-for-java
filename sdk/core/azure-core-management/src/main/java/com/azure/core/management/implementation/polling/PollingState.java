@@ -599,6 +599,7 @@ public final class PollingState implements JsonSerializable<PollingState> {
      * @return The {@link PollingState} that the JSON stream represented, may return null.
      * @throws IOException If a {@link PollingState} fails to be read from the {@code jsonReader}.
      */
+    @SuppressWarnings("deprecation")
     public static PollingState fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PollingState pollingState = new PollingState();

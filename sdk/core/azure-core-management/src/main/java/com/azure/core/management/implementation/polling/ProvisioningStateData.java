@@ -127,6 +127,7 @@ final class ProvisioningStateData implements JsonSerializable<ProvisioningStateD
      * @return The {@link ProvisioningStateData} that the JSON stream represented, may return null.
      * @throws IOException If a {@link ProvisioningStateData} fails to be read from the {@code jsonReader}.
      */
+    @SuppressWarnings("deprecation")
     public static ProvisioningStateData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProvisioningStateData provisioningStateData = new ProvisioningStateData();

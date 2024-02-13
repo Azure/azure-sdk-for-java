@@ -123,6 +123,7 @@ final class LocationData implements JsonSerializable<LocationData> {
      * @return The {@link LocationData} that the JSON stream represented, may return null.
      * @throws IOException If an {@link LocationData} fails to be read from the {@code jsonReader}.
      */
+    @SuppressWarnings("deprecation")
     public static LocationData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LocationData locationData = new LocationData();

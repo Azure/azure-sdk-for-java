@@ -74,6 +74,7 @@ final class FinalResult implements JsonSerializable<FinalResult> {
      * @return The {@link FinalResult} that the JSON stream represented, may return null.
      * @throws IOException If a {@link FinalResult} fails to be read from the {@code jsonReader}.
      */
+    @SuppressWarnings("deprecation")
     public static FinalResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FinalResult finalResult = new FinalResult();

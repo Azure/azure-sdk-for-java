@@ -111,6 +111,7 @@ final class AzureAsyncOperationData implements JsonSerializable<AzureAsyncOperat
      * @return The {@link AzureAsyncOperationData} that the JSON stream represented, may return null.
      * @throws IOException If an {@link AzureAsyncOperationData} fails to be read from the {@code jsonReader}.
      */
+    @SuppressWarnings("deprecation")
     public static AzureAsyncOperationData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureAsyncOperationData azureAsyncOperationData = new AzureAsyncOperationData();
