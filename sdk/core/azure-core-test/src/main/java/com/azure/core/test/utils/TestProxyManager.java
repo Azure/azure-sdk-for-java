@@ -31,9 +31,7 @@ public final class TestProxyManager {
 
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(TestProxyManager::stopProxy));
-        if (runningLocally()) {
-            TestProxyDownloader.installTestProxy(WORKING_DIRECTORY);
-        }
+        TestProxyDownloader.installTestProxy(WORKING_DIRECTORY);
     }
 
     @Deprecated
