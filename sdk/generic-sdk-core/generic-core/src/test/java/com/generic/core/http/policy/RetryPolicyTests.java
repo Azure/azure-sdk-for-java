@@ -283,7 +283,8 @@ public class RetryPolicyTests {
                 }
             })
             .build();
-        try (HttpResponse<?> response = sendRequest(pipeline)) {
+        try {
+            sendRequest(pipeline);
             fail("Should throw");
         } catch (Exception e) {
             boolean hasAttempt1 = false;
