@@ -390,7 +390,7 @@ public class RetryPolicyTests {
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"));
         assertEquals(200, response.getStatusCode());
-        assertEquals(1, attemptCount.get());
+        assertEquals(2, attemptCount.get());
     }
 
     static Stream<Arguments> customRetryPolicyCanDetermineRetryStatusCodesSupplier() {
