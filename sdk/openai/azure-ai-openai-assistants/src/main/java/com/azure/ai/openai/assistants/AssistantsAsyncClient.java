@@ -466,9 +466,8 @@ public final class AssistantsAsyncClient {
         }
         return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistant.class))
-            .map(assistantList ->
-                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                    assistantList.getLastId(), assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -486,9 +485,8 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistant.class))
-            .map(assistantList ->
-                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                    assistantList.getLastId(), assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -578,9 +576,8 @@ public final class AssistantsAsyncClient {
         }
         return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistantFile.class))
-            .map(assistantList ->
-                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                    assistantList.getLastId(), assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -601,9 +598,8 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return listAssistantFilesWithResponse(assistantId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfAssistantFile.class))
-            .map(assistantList ->
-                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                    assistantList.getLastId(), assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2018,9 +2014,8 @@ public final class AssistantsAsyncClient {
         }
         return listMessagesWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadMessage.class))
-            .map(assistantList ->
-                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                    assistantList.getLastId(), assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2040,9 +2035,8 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return listMessagesWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadMessage.class))
-            .map(assistantList ->
-                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                    assistantList.getLastId(), assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2109,9 +2103,8 @@ public final class AssistantsAsyncClient {
         }
         return listMessageFilesWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfMessageFile.class))
-            .map(assistantList ->
-                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                    assistantList.getLastId(), assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2133,9 +2126,8 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return listMessageFilesWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfMessageFile.class))
-            .map(assistantList ->
-                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                    assistantList.getLastId(), assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2202,9 +2194,8 @@ public final class AssistantsAsyncClient {
         }
         return listRunsWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadRun.class))
-            .map(assistantList ->
-                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                    assistantList.getLastId(), assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2224,9 +2215,8 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return listRunsWithResponse(threadId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfThreadRun.class))
-            .map(assistantList ->
-                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                    assistantList.getLastId(), assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2387,9 +2377,8 @@ public final class AssistantsAsyncClient {
         }
         return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class))
-            .map(assistantList ->
-                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                    assistantList.getLastId(), assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2410,9 +2399,8 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class))
-            .map(assistantList ->
-                PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
-                    assistantList.getLastId(), assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**

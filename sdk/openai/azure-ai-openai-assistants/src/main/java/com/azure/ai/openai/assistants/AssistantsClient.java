@@ -456,9 +456,8 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        OpenAIPageableListOfAssistant assistantList = listAssistantsWithResponse(requestOptions).getValue()
-            .toObject(OpenAIPageableListOfAssistant.class);
-
+        OpenAIPageableListOfAssistant assistantList
+            = listAssistantsWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfAssistant.class);
         return PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
             assistantList.getLastId(), assistantList.isHasMore());
     }
@@ -476,8 +475,8 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<Assistant> listAssistants() {
         RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfAssistant assistantList = listAssistantsWithResponse(requestOptions).getValue()
-            .toObject(OpenAIPageableListOfAssistant.class);
+        OpenAIPageableListOfAssistant assistantList
+            = listAssistantsWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfAssistant.class);
         return PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
             assistantList.getLastId(), assistantList.isHasMore());
     }
@@ -565,9 +564,9 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        OpenAIPageableListOfAssistantFile assistantFileList =  listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfAssistantFile.class);
-
+        OpenAIPageableListOfAssistantFile assistantFileList
+            = listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
+                .toObject(OpenAIPageableListOfAssistantFile.class);
         return PageableListAccessHelper.create(assistantFileList.getData(), assistantFileList.getFirstId(),
             assistantFileList.getLastId(), assistantFileList.isHasMore());
     }
@@ -1979,10 +1978,10 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        OpenAIPageableListOfThreadMessage threadMessageList = listMessagesWithResponse(threadId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfThreadMessage.class);
-
-        return PageableListAccessHelper.create(threadMessageList.getData(), threadMessageList.getFirstId(), threadMessageList.getLastId(), threadMessageList.isHasMore());
+        OpenAIPageableListOfThreadMessage threadMessageList = listMessagesWithResponse(threadId, requestOptions)
+            .getValue().toObject(OpenAIPageableListOfThreadMessage.class);
+        return PageableListAccessHelper.create(threadMessageList.getData(), threadMessageList.getFirstId(),
+            threadMessageList.getLastId(), threadMessageList.isHasMore());
     }
 
     /**
@@ -2000,9 +1999,8 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<ThreadMessage> listMessages(String threadId) {
         RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfThreadMessage threadMessageList = listMessagesWithResponse(threadId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfThreadMessage.class);
-
+        OpenAIPageableListOfThreadMessage threadMessageList = listMessagesWithResponse(threadId, requestOptions)
+            .getValue().toObject(OpenAIPageableListOfThreadMessage.class);
         return PageableListAccessHelper.create(threadMessageList.getData(), threadMessageList.getFirstId(),
             threadMessageList.getLastId(), threadMessageList.isHasMore());
     }
@@ -2067,9 +2065,9 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        OpenAIPageableListOfMessageFile messageFileList = listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfMessageFile.class);
-
+        OpenAIPageableListOfMessageFile messageFileList
+            = listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
+                .toObject(OpenAIPageableListOfMessageFile.class);
         return PageableListAccessHelper.create(messageFileList.getData(), messageFileList.getFirstId(),
             messageFileList.getLastId(), messageFileList.isHasMore());
     }
@@ -2090,8 +2088,9 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<MessageFile> listMessageFiles(String threadId, String messageId) {
         RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfMessageFile messageFileList = listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfMessageFile.class);
+        OpenAIPageableListOfMessageFile messageFileList
+            = listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
+                .toObject(OpenAIPageableListOfMessageFile.class);
         return PageableListAccessHelper.create(messageFileList.getData(), messageFileList.getFirstId(),
             messageFileList.getLastId(), messageFileList.isHasMore());
     }
@@ -2157,8 +2156,8 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        OpenAIPageableListOfThreadRun threadRunList = listRunsWithResponse(threadId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfThreadRun.class);
+        OpenAIPageableListOfThreadRun threadRunList
+            = listRunsWithResponse(threadId, requestOptions).getValue().toObject(OpenAIPageableListOfThreadRun.class);
         return PageableListAccessHelper.create(threadRunList.getData(), threadRunList.getFirstId(),
             threadRunList.getLastId(), threadRunList.isHasMore());
     }
@@ -2178,8 +2177,8 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<ThreadRun> listRuns(String threadId) {
         RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfThreadRun threadRunList = listRunsWithResponse(threadId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfThreadRun.class);
+        OpenAIPageableListOfThreadRun threadRunList
+            = listRunsWithResponse(threadId, requestOptions).getValue().toObject(OpenAIPageableListOfThreadRun.class);
         return PageableListAccessHelper.create(threadRunList.getData(), threadRunList.getFirstId(),
             threadRunList.getLastId(), threadRunList.isHasMore());
     }
@@ -2336,8 +2335,8 @@ public final class AssistantsClient {
         }
         OpenAIPageableListOfRunStep runStepList = listRunStepsWithResponse(threadId, runId, requestOptions).getValue()
             .toObject(OpenAIPageableListOfRunStep.class);
-        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(),
-            runStepList.getLastId(), runStepList.isHasMore());
+        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(), runStepList.getLastId(),
+            runStepList.isHasMore());
     }
 
     /**
@@ -2358,8 +2357,8 @@ public final class AssistantsClient {
         RequestOptions requestOptions = new RequestOptions();
         OpenAIPageableListOfRunStep runStepList = listRunStepsWithResponse(threadId, runId, requestOptions).getValue()
             .toObject(OpenAIPageableListOfRunStep.class);
-        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(),
-            runStepList.getLastId(), runStepList.isHasMore());
+        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(), runStepList.getLastId(),
+            runStepList.isHasMore());
     }
 
     /**
