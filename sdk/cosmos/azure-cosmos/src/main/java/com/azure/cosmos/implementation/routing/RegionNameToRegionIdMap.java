@@ -164,7 +164,7 @@ public class RegionNameToRegionIdMap {
         }
     };
 
-    private static final Map<String, Integer> normalizedRegionNameToRegionIdMappings = new HashMap<>() {
+    private static final Map<String, Integer> normalizedRegionNameToRegionIdMappings = new HashMap<String, Integer>() {
         {
             put("southafricanorth", 48);
             put("westus2", 8);
