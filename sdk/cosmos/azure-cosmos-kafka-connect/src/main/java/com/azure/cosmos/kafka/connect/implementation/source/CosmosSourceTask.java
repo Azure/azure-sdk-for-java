@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
@@ -67,7 +68,6 @@ public class CosmosSourceTask extends SourceTask {
     public List<SourceRecord> poll() {
         // do not poll it from the queue yet
         // we need to make sure not losing tasks for failure cases
-        logger.info("polling task");
         ITaskUnit taskUnit = this.taskUnitsQueue.poll();
         try {
             if (taskUnit == null) {
@@ -78,7 +78,12 @@ public class CosmosSourceTask extends SourceTask {
             List<SourceRecord> results = new ArrayList<>();
             if (taskUnit instanceof MetadataTaskUnit) {
                 results.addAll(executeMetadataTask((MetadataTaskUnit) taskUnit));
+                logger.info(
+                    "Return {} metadata records, databaseName {}", results.size(), ((MetadataTaskUnit) taskUnit).getDatabaseName());
+
             } else {
+                Stopwatch stopwatch = Stopwatch.createStarted();
+
                 logger.trace("Polling for task {}", taskUnit);
                 Pair<List<SourceRecord>, Boolean> feedRangeTaskResults = executeFeedRangeTask((FeedRangeTaskUnit) taskUnit);
                 results.addAll(feedRangeTaskResults.getLeft());
@@ -88,9 +93,16 @@ public class CosmosSourceTask extends SourceTask {
                     logger.trace("Adding task {} back to queue", taskUnit);
                     this.taskUnitsQueue.add(taskUnit);
                 }
-            }
 
-            logger.info("Return {} records", results.size());
+                stopwatch.stop();
+                logger.info(
+                    "Return {} records, databaseName {}, containerName {}, containerRid {}, durationInMs {}",
+                    results.size(),
+                    ((FeedRangeTaskUnit) taskUnit).getDatabaseName(),
+                    ((FeedRangeTaskUnit) taskUnit).getContainerName(),
+                    ((FeedRangeTaskUnit) taskUnit).getContainerRid(),
+                    stopwatch.elapsed().toMillis());
+            }
             return results;
         } catch (Exception e) {
             // for error cases, we should always the task back to the queue

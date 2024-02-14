@@ -15,12 +15,12 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
 import org.apache.kafka.connect.source.SourceConnectorContext;
 import org.mockito.Mockito;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +41,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
         this.client = CosmosClientStore.getCosmosClient(accountConfig);
     }
 
-    @BeforeClass(groups = {"fast"}, alwaysRun = true, timeOut = TIMEOUT)
+    @AfterClass(groups = {"fast"}, timeOut = TIMEOUT)
     public void after_MetadataMonitorThreadTest() {
         if (this.client != null) {
             this.client.close();

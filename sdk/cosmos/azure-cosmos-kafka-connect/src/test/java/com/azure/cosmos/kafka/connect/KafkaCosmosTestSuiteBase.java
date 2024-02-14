@@ -120,7 +120,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         }
     }
 
-    @AfterSuite(groups = { "fast" }, alwaysRun = true, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = { "fast" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");
