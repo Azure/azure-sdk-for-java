@@ -247,6 +247,8 @@ directive:
 - remove-model: DialogStarted
 - remove-model: DialogTransfer
 - remove-model: DialogFailed
+- remove-model: TeamsComplianceRecordingStateChanged
+- remove-model: TeamsRecordingStateChanged
 - remove-model: TranscriptionStarted
 - remove-model: TranscriptionResumed
 - remove-model: TranscriptionStopped
