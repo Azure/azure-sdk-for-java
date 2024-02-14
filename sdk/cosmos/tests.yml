@@ -64,3 +64,31 @@ stages:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
       TestGoals: 'clean verify'
       TestOptions: '$(ProfileFlag)'
+
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      CloudConfig:
+        Cosmos_Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-cosmos-azure-cloud-test-resources)
+      Clouds: 'Cosmos_Kafka_Public_Integration'
+      MatrixConfigs:
+        - Name: Cosmos_kafka_test
+          Path: sdk/cosmos/live-platform-matrix.json
+          Selection: all
+          GenerateVMJobs: true
+      MatrixReplace:
+        - .*Version=1.21/1.17
+      ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos-kafka-connect
+          groupId: com.azure.cosmos.kafka
+          safeName: azurecosmoskafkaconnect
+      TimeoutInMinutes: 120
+      MaxParallel: 10
+      PreSteps:
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+      TestGoals: 'verify'
+      TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
+      TestResultsFiles: '**/junitreports/TEST-*.xml'

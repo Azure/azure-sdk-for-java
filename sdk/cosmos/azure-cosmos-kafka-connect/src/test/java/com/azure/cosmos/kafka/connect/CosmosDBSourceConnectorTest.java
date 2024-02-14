@@ -80,7 +80,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ fast }", timeOut = TIMEOUT)
+    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
     public void getTaskConfigsWithoutPersistedOffset() throws JsonProcessingException {
         CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
         try {
@@ -151,7 +151,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ fast }", timeOut = TIMEOUT)
+    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
     public void getTaskConfigsAfterSplit() throws JsonProcessingException {
         // This test is to simulate after a split happen, the task resume with persisted offset
         CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
@@ -246,7 +246,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "{ fast }", timeOut = TIMEOUT)
+    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
     public void getTaskConfigsAfterMerge() throws JsonProcessingException {
         // This test is to simulate after a merge happen, the task resume with previous feedRanges
         CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();

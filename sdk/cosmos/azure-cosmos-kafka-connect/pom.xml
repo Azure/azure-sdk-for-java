@@ -37,8 +37,6 @@ Licensed under the MIT License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.02</jacoco.min.branchcoverage>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
     <shadingPrefix>azure_cosmos_kafka_connect</shadingPrefix>
 
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
@@ -51,7 +49,6 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.implementation.source=com.fasterxml.jackson.databind,ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.apachecommons.lang=ALL-UNNAMED
-
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -102,6 +99,12 @@ Licensed under the MIT License.
       <artifactId>connect-runtime</artifactId>
       <version>3.6.0</version> <!-- {x-version-update;cosmos_org.apache.kafka:connect-runtime;external_dependency} -->
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jackson-jaxrs-json-provider</artifactId>
+          <groupId>com.fasterxml.jackson.jaxrs</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -170,6 +173,7 @@ Licensed under the MIT License.
       <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
+
   </dependencies>
 
   <build>

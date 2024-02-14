@@ -84,8 +84,12 @@ public class MetadataTaskUnit implements ITaskUnit {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         MetadataTaskUnit that = (MetadataTaskUnit) o;
         return databaseName.equals(that.databaseName)
             && containerRids.equals(that.containerRids)
@@ -133,7 +137,7 @@ public class MetadataTaskUnit implements ITaskUnit {
     }
 
     static class MetadataTaskUnitDeserializer extends StdDeserializer<MetadataTaskUnit> {
-        public MetadataTaskUnitDeserializer() {
+        MetadataTaskUnitDeserializer() {
             super(MetadataTaskUnit.class);
         }
 
@@ -143,14 +147,14 @@ public class MetadataTaskUnit implements ITaskUnit {
             DeserializationContext deserializationContext) throws IOException {
 
             final JsonNode rootNode = jsonParser.getCodec().readTree(jsonParser);
-            final ObjectMapper mapper = (ObjectMapper)jsonParser.getCodec();
+            final ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
 
             String databaseName = rootNode.get("databaseName").asText();
             List<String> containerRids = mapper.readValue(rootNode.get("containerRids").asText(), new TypeReference<List<String>>() {});
             ArrayNode arrayNode = (ArrayNode) rootNode.get("containersEffectiveRangesMap");
 
             Map<String, List<Range<String>>> containersEffectiveRangesMap = new HashMap<>();
-            for(JsonNode jsonNode : arrayNode) {
+            for (JsonNode jsonNode : arrayNode) {
                 String containerRid = jsonNode.get("containerRid").asText();
                 List<Range<String>> effectiveRanges =
                     mapper

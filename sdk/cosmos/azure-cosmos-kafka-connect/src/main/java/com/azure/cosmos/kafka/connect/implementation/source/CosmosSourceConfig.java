@@ -441,8 +441,8 @@ public class CosmosSourceConfig extends CosmosConfig {
                     throw new ConfigException(
                         name,
                         o,
-                        "Invalid changeFeedStartFrom." +
-                            " only allow Now, Beginning or a certain point in time (UTC) for example 2020-02-10T14:15:03 ");
+                        "Invalid changeFeedStartFrom."
+                            + " only allow Now, Beginning or a certain point in time (UTC) for example 2020-02-10T14:15:03 ");
                 }
             }
         }

@@ -30,7 +30,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
     private CosmosAsyncClient client;
-    @BeforeClass(groups = {"fast"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"kafka"}, timeOut = TIMEOUT)
     public void before_MetadataMonitorThreadTest() {
         CosmosAccountConfig accountConfig = new CosmosAccountConfig(
             TestConfigurations.HOST,
@@ -41,14 +41,14 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
         this.client = CosmosClientStore.getCosmosClient(accountConfig);
     }
 
-    @AfterClass(groups = {"fast"}, timeOut = TIMEOUT)
+    @AfterClass(groups = {"kafka"}, timeOut = TIMEOUT)
     public void after_MetadataMonitorThreadTest() {
         if (this.client != null) {
             this.client.close();
         }
     }
 
-    @Test(groups = "{ fast }", timeOut = TIMEOUT)
+    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
     public void requestTaskReconfigurationOnContainersChange() throws InterruptedException {
 
         CosmosSourceContainersConfig cosmosSourceContainersConfig =
@@ -97,7 +97,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
         Mockito.verify(sourceConnectorContext, Mockito.atLeastOnce()).requestTaskReconfiguration();
     }
 
-    @Test(groups = "{ fast }", timeOut = TIMEOUT)
+    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
     public void requestTaskReconfigurationOnSplit() throws InterruptedException {
 
         CosmosSourceContainersConfig cosmosSourceContainersConfig =
@@ -168,7 +168,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
         Mockito.verify(sourceConnectorContext, Mockito.atLeastOnce()).requestTaskReconfiguration();
     }
 
-    @Test(groups = "{ fast }", timeOut = TIMEOUT)
+    @Test(groups = "{ kafka }", timeOut = TIMEOUT)
     public void requestTaskReconfigurationOnMerge() throws InterruptedException {
 
         CosmosSourceContainersConfig cosmosSourceContainersConfig =

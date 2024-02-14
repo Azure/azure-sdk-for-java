@@ -97,8 +97,12 @@ public class FeedRangeTaskUnit implements ITaskUnit {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         FeedRangeTaskUnit that = (FeedRangeTaskUnit) o;
         return databaseName.equals(that.databaseName)
             && containerName.equals(that.containerName)
@@ -138,7 +142,7 @@ public class FeedRangeTaskUnit implements ITaskUnit {
     }
 
     static class FeedRangeTaskUnitDeserializer extends StdDeserializer<FeedRangeTaskUnit> {
-        public FeedRangeTaskUnitDeserializer() {
+        FeedRangeTaskUnitDeserializer() {
             super(FeedRangeTaskUnit.class);
         }
 
