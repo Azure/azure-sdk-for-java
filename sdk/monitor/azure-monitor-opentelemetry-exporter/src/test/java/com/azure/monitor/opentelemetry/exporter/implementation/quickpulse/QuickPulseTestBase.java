@@ -41,7 +41,7 @@ public class QuickPulseTestBase extends TestProxyTestBase {
         "https://monitor.azure.com//.default";
 
     HttpPipeline getHttpPipelineWithAuthentication() {
-        if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
+        if (!interceptorManager.isLiveMode()) {
             TokenCredential credential =
                 new DefaultAzureCredentialBuilder().managedIdentityClientId("AZURE_CLIENT_ID").build();
             return getHttpPipeline(
@@ -53,15 +53,15 @@ public class QuickPulseTestBase extends TestProxyTestBase {
     }
 
     HttpPipeline getHttpPipeline(HttpPipelinePolicy... policies) {
-        HttpClient httpClient;
+        HttpClient httpClient = interceptorManager.isPlaybackMode()
+            ? interceptorManager.getPlaybackClient() : HttpClient.createDefault();
+
         List<HttpPipelinePolicy> allPolicies = new ArrayList<>(Arrays.asList(policies));
-        httpClient = HttpClient.createDefault();
         if (getTestMode() == TestMode.RECORD) {
             allPolicies.add(interceptorManager.getRecordPolicy());
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {
-            httpClient = interceptorManager.getPlaybackClient();
             interceptorManager.addMatchers(
                 Arrays.asList(new BodilessMatcher(), new CustomMatcher()
                     .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-qps-transmission-time"))));

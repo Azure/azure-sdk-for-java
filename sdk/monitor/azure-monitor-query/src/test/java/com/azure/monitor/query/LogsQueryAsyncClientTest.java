@@ -3,15 +3,13 @@
 
 package com.azure.monitor.query;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -22,10 +20,8 @@ import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.QueryTimeInterval;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -36,8 +32,10 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static com.azure.monitor.query.MonitorQueryTestUtils.*;
+import static com.azure.monitor.query.LogsQueryClientTest.NO_RETRIES_RETRY_POLICY;
+import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogResourceId;
+import static com.azure.monitor.query.MonitorQueryTestUtils.getLogWorkspaceId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -54,47 +52,41 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     private String resourceId;
 
-    @BeforeEach
-    public void setup() {
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
         workspaceId = getLogWorkspaceId(interceptorManager.isPlaybackMode());
         resourceId = getLogResourceId(interceptorManager.isPlaybackMode());
         LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
-                .retryPolicy(new RetryPolicy(new RetryStrategy() {
-                    @Override
-                    public int getMaxRetries() {
-                        return 0;
-                    }
+            .credential(getCredential())
+            .httpClient(getHttpClient(interceptorManager))
+            .retryPolicy(NO_RETRIES_RETRY_POLICY);
 
-                    @Override
-                    public Duration calculateRetryDelay(int i) {
-                        return null;
-                    }
-                }));
-        if (getTestMode() == TestMode.PLAYBACK) {
+        if (interceptorManager.isRecordMode()) {
             clientBuilder
-                    .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
-                    .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
-        } else if (getTestMode() == TestMode.RECORD) {
-            clientBuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(getCredential());
-        } else if (getTestMode() == TestMode.LIVE) {
-            clientBuilder.credential(getCredential());
+                .addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isLiveMode()) {
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
-        this.client = clientBuilder
-                .buildAsyncClient();
+        this.client = clientBuilder.buildAsyncClient();
     }
 
-    private HttpClient getAssertingHttpClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-                .assertAsync()
-                .skipRequest((request, context) -> false)
-                .build();
+    private static HttpClient getHttpClient(InterceptorManager interceptorManager) {
+        HttpClient httpClient = interceptorManager.isPlaybackMode()
+            ? interceptorManager.getPlaybackClient() : HttpClient.createDefault();
+
+        httpClient = new AssertingHttpClientBuilder(httpClient)
+            .assertAsync()
+            .build();
+        return httpClient;
     }
 
     private TokenCredential getCredential() {
-        return new DefaultAzureCredentialBuilder().build();
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
+        } else {
+            return new DefaultAzureCredentialBuilder().build();
+        }
     }
 
     @Test

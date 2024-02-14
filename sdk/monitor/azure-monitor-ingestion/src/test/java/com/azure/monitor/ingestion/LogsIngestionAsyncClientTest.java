@@ -30,7 +30,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
         List<Object> logs = getObjects(10);
         DataValidationPolicy dataValidationPolicy = new DataValidationPolicy(logs);
 
-        LogsIngestionAsyncClient client = clientBuilder.addPolicy(dataValidationPolicy).buildAsyncClient();
+        LogsIngestionAsyncClient client = getClientBuilder().addPolicy(dataValidationPolicy).buildAsyncClient();
         StepVerifier.create(client.upload(dataCollectionRuleId, streamName, logs))
             .verifyComplete();
     }
@@ -42,7 +42,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
         AtomicInteger count = new AtomicInteger();
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
-        LogsIngestionAsyncClient client = clientBuilder
+        LogsIngestionAsyncClient client = getClientBuilder()
             .addPolicy(logsCountPolicy)
             .addPolicy(new BatchCountPolicy(count))
             .buildAsyncClient();
@@ -60,7 +60,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
 
         AtomicInteger count = new AtomicInteger();
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
-        LogsIngestionAsyncClient client = clientBuilder
+        LogsIngestionAsyncClient client = getClientBuilder()
             .addPolicy(new BatchCountPolicy(count))
             .addPolicy(logsCountPolicy)
             .buildAsyncClient();
@@ -76,7 +76,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
         AtomicInteger count = new AtomicInteger();
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
-        LogsIngestionAsyncClient client = clientBuilder
+        LogsIngestionAsyncClient client = getClientBuilder()
             .addPolicy(logsCountPolicy)
             .addPolicy(new PartialFailurePolicy(count))
             .buildAsyncClient();
@@ -102,7 +102,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
             .setLogsUploadErrorConsumer(error -> failedLogsCount.addAndGet(error.getFailedLogs().size()));
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
-        LogsIngestionAsyncClient client = clientBuilder
+        LogsIngestionAsyncClient client = getClientBuilder()
             .addPolicy(logsCountPolicy)
             .addPolicy(new PartialFailurePolicy(count))
             .buildAsyncClient();
@@ -125,7 +125,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
             });
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
-        LogsIngestionAsyncClient client = clientBuilder
+        LogsIngestionAsyncClient client = getClientBuilder()
             .addPolicy(logsCountPolicy)
             .addPolicy(new PartialFailurePolicy(count))
             .buildAsyncClient();
@@ -140,7 +140,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
     @Test
     public void testUploadLogsProtocolMethod() {
         List<Object> logs = getObjects(10);
-        LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();
+        LogsIngestionAsyncClient client = getClientBuilder().buildAsyncClient();
         StepVerifier.create(client.uploadWithResponse(dataCollectionRuleId, streamName,
                 BinaryData.fromObject(logs), new RequestOptions()))
             .assertNext(response -> assertEquals(204, response.getStatusCode()))
@@ -152,7 +152,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "Test proxy network connection is timing out for this test in playback mode.")
     public void testUploadLargeLogsProtocolMethod() {
         List<Object> logs = getObjects(375000);
-        LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();
+        LogsIngestionAsyncClient client = getClientBuilder().buildAsyncClient();
         StepVerifier.create(client.uploadWithResponse(dataCollectionRuleId, streamName,
                 BinaryData.fromObject(logs), new RequestOptions()))
             .verifyErrorMatches(responseException -> (responseException instanceof HttpResponseException)

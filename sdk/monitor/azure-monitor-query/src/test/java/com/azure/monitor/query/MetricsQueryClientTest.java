@@ -3,14 +3,15 @@
 
 package com.azure.monitor.query;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
@@ -22,15 +23,12 @@ import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
@@ -84,37 +82,39 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
         ).stream();
     }
 
-    @BeforeEach
-    public void setup() {
+    @Override
+    protected void beforeTest() {
         resourceUri = getMetricResourceUri(interceptorManager.isPlaybackMode());
-        MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder();
-        if (getTestMode() == TestMode.PLAYBACK) {
+        MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder()
+            .httpClient(getHttpClient(interceptorManager))
+            .credential(getCredential());
+
+        if (getTestMode() == TestMode.RECORD) {
             clientBuilder
-                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
-                .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
-        } else if (getTestMode() == TestMode.RECORD) {
-            clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(getCredential());
+                .addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
-            clientBuilder.credential(getCredential());
             clientBuilder.endpoint(MonitorQueryTestUtils.getMetricEndpoint());
         }
-        this.client = clientBuilder
-                .buildClient();
+        this.client = clientBuilder.buildClient();
     }
 
-    private HttpClient getAssertingHttpClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
+    private static HttpClient getHttpClient(InterceptorManager interceptorManager) {
+        HttpClient httpClient = interceptorManager.isPlaybackMode()
+            ? interceptorManager.getPlaybackClient() : HttpClient.createDefault();
+
+        httpClient = new AssertingHttpClientBuilder(httpClient)
             .assertSync()
-            .skipRequest((request, context) -> false)
             .build();
+        return httpClient;
     }
 
     private TokenCredential getCredential() {
-        return new DefaultAzureCredentialBuilder().build();
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
+        } else {
+            return new DefaultAzureCredentialBuilder().build();
+        }
     }
-
     @Test
     public void testMetricsQuery() {
         Response<MetricsQueryResult> metricsResponse = client

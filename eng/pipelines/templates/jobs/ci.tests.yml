@@ -75,9 +75,9 @@ jobs:
           CheckoutRecordings: true
           SDKType: ${{ parameters.SDKType }}
 
-      - template: /eng/common/testproxy/test-proxy-tool.yml
-        parameters:
-          runProxy: true
+#      - template: /eng/common/testproxy/test-proxy-tool.yml
+#        parameters:
+#          runProxy: true
 
       - pwsh: |
           $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log

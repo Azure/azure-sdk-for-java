@@ -53,7 +53,9 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
         dataCollectionEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCE", "https://dce.monitor.azure.com");
         dataCollectionRuleId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCR_ID", "dcr-a64851bc17714f0483d1e96b5d84953b");
         streamName = "Custom-MyTableRawData";
+    }
 
+    protected LogsIngestionClientBuilder getClientBuilder() {
         LogsIngestionClientBuilder clientBuilder = new LogsIngestionClientBuilder()
             .retryPolicy(new RetryPolicy(new RetryStrategy() {
                 @Override
@@ -78,7 +80,7 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        this.clientBuilder = clientBuilder
+        return clientBuilder
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .endpoint(dataCollectionEndpoint);
     }
