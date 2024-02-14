@@ -56,7 +56,7 @@ public class RestProxyImpl extends RestProxyBase {
     @Override
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
                          Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request) {
-        HttpResponseDecoder.HttpDecodedResponse<?> decodedResponse;
+        HttpResponseDecoder.HttpDecodedResponse decodedResponse;
 
         // If there is 'RequestOptions' apply its request callback operations before validating the body.
         // This is because the callbacks may mutate the request body.
@@ -94,10 +94,10 @@ public class RestProxyImpl extends RestProxyBase {
      *
      * @return The decodedResponse.
      */
-    private HttpResponseDecoder.HttpDecodedResponse<?> ensureExpectedStatus(HttpResponseDecoder.HttpDecodedResponse<?> decodedResponse,
-                                                                            SwaggerMethodParser methodParser,
-                                                                            RequestOptions options,
-                                                                            EnumSet<ErrorOptions> errorOptions) {
+    private HttpResponseDecoder.HttpDecodedResponse ensureExpectedStatus(HttpResponseDecoder.HttpDecodedResponse decodedResponse,
+                                                                         SwaggerMethodParser methodParser,
+                                                                         RequestOptions options,
+                                                                         EnumSet<ErrorOptions> errorOptions) {
         int responseStatusCode = decodedResponse.getStatusCode();
 
         // If the response was success or configured to not return an error status when the request fails, return the
@@ -117,20 +117,20 @@ public class RestProxyImpl extends RestProxyBase {
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse, null, null);
         } else {
-            Object decodedBody = decodedResponse.getDecodedBody(responseBytes);
+            Object decodedBody = decodedResponse.getDecodedBody();
             // Create exception with un-decodable content string and without exception body object.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                decodedResponse.getSourceResponse(), responseBytes, decodedBody);
+                decodedResponse, responseBytes, decodedBody);
         }
     }
 
-    private Object handleRestResponseReturnType(HttpResponseDecoder.HttpDecodedResponse<?> response,
+    private Object handleRestResponseReturnType(HttpResponseDecoder.HttpDecodedResponse response,
                                                 SwaggerMethodParser methodParser, Type entityType) throws IOException {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                response.getSourceResponse().close();
+                response.close();
 
                 return createResponse(response, entityType, null);
             } else {
@@ -149,25 +149,28 @@ public class RestProxyImpl extends RestProxyBase {
         }
     }
 
-    private Object handleBodyReturnType(HttpResponseDecoder.HttpDecodedResponse<?> response,
+    private Object handleBodyReturnType(HttpResponseDecoder.HttpDecodedResponse response,
                                         SwaggerMethodParser methodParser, Type entityType) {
         final int responseStatusCode = response.getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();
 
         final Object result;
+
         if (httpMethod == HttpMethod.HEAD
             && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
                 || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
             result = (responseStatusCode / 100) == 2;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // byte[]
-            BinaryData binaryData = response.getSourceResponse().getBody();
+            BinaryData binaryData = response.getBody();
             byte[] responseBodyBytes = binaryData != null ? binaryData.toBytes() : null;
+
             if (returnValueWireType == Base64Url.class) {
                 // Base64Url
                 responseBodyBytes = new Base64Url(responseBodyBytes).decodedBytes();
             }
+
             result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
             result = response.getBody().toStream();
@@ -178,10 +181,10 @@ public class RestProxyImpl extends RestProxyBase {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            result = response.getSourceResponse().getBody();
+            result = response.getBody();
         } else {
             // Object or Page<T>
-            result = response.getDecodedBody((byte[]) null);
+            result = response.getDecodedBody();
         }
 
         return result;
@@ -196,10 +199,10 @@ public class RestProxyImpl extends RestProxyBase {
      *
      * @return The deserialized result.
      */
-    private Object handleRestReturnType(HttpResponseDecoder.HttpDecodedResponse<?> httpDecodedResponse,
+    private Object handleRestReturnType(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse,
                                         SwaggerMethodParser methodParser, Type returnType,
                                         RequestOptions options, EnumSet<ErrorOptions> errorOptions) throws IOException {
-        final HttpResponseDecoder.HttpDecodedResponse<?> expectedResponse =
+        final HttpResponseDecoder.HttpDecodedResponse expectedResponse =
             ensureExpectedStatus(httpDecodedResponse, methodParser, options, errorOptions);
         final Object result;
 

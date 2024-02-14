@@ -33,15 +33,15 @@ public final class HttpResponseDecoder {
      *
      * @return The decoded HttpResponse.
      */
-    public HttpDecodedResponse<?> decode(HttpResponse<?> response, HttpResponseDecodeData decodeData) {
-        return new HttpDecodedResponse<>(response, this.serializer, decodeData);
+    public HttpDecodedResponse decode(HttpResponse<?> response, HttpResponseDecodeData decodeData) {
+        return new HttpDecodedResponse(response, this.serializer, decodeData);
     }
 
     /**
      * A decorated HTTP response that supports lazy decoding.
      */
-    public static class HttpDecodedResponse<T> extends HttpResponse<T> {
-        private final HttpResponse<T> response;
+    public static class HttpDecodedResponse extends HttpResponse<Object> {
+        private final HttpResponse<?> response;
         private final ObjectSerializer serializer;
         private final HttpResponseDecodeData decodeData;
         private Object cachedBody;
@@ -53,7 +53,7 @@ public final class HttpResponseDecoder {
          * @param serializer the decoder
          * @param decodeData the necessary data required to decode a Http response
          */
-        HttpDecodedResponse(final HttpResponse<T> response, ObjectSerializer serializer,
+        HttpDecodedResponse(final HttpResponse<?> response, ObjectSerializer serializer,
                             HttpResponseDecodeData decodeData) {
             super(response.getRequest(), response.getBody().toBytes());
 
@@ -63,25 +63,35 @@ public final class HttpResponseDecoder {
         }
 
         /**
-         * @return get the raw response that this decoded response based on
-         */
-        public HttpResponse<T> getSourceResponse() {
-            return response;
-        }
-
-        /**
-         * Decodes either the retrieved {@code body} or the bytes returned by the {@link HttpResponse}.
-         *
-         * @param body The retrieve body.
+         * Decodes the body in this response.
          *
          * @return The decoded body.
          */
-        public Object getDecodedBody(byte[] body) {
+        public Object getDecodedBody() {
             if (cachedBody == null) {
-                cachedBody = HttpResponseBodyDecoder.decodeByteArray(body, response, serializer, decodeData);
+                cachedBody =
+                    HttpResponseBodyDecoder.decodeByteArray(getBody().toBytes(), response, serializer, decodeData);
             }
 
             return cachedBody;
+        }
+
+        /**
+         * Returns the cached decoded body in this response.
+         *
+         * @return The cached decoded body.
+         */
+        public Object getCachedBody() {
+            return cachedBody;
+        }
+
+        /**
+         * Set a decoded body to cache in this response.
+         *
+         * @param bodyToCache The decoded body to cache.
+         */
+        public void setCachedBody(Object bodyToCache) {
+            cachedBody = bodyToCache;
         }
 
         @Override
@@ -95,13 +105,13 @@ public final class HttpResponseDecoder {
         }
 
         @Override
-        public T getValue() {
-            return response.getValue(); // getBody().toStream()? -> RestProxyImpl:173
+        public Object getValue() {
+            return getDecodedBody(); // getBody().toStream()? -> RestProxyImpl:173
         }
 
         @Override
         public void close() throws IOException {
-            this.response.close();
+            response.close();
         }
     }
 }

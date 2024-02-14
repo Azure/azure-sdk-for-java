@@ -101,7 +101,7 @@ public final class ResponseConstructorsCache {
      * @return An instance of the {@link Response} implementation.
      */
     public Response<?> invoke(ReflectiveInvoker reflectiveInvoker,
-                              HttpResponseDecoder.HttpDecodedResponse<?> decodedResponse, Object bodyAsObject) {
+                              HttpResponseDecoder.HttpDecodedResponse decodedResponse, Object bodyAsObject) {
         final HttpResponse<?> httpResponse = null;
         final HttpRequest httpRequest = httpResponse.getRequest();
         final int responseStatusCode = httpResponse.getStatusCode();

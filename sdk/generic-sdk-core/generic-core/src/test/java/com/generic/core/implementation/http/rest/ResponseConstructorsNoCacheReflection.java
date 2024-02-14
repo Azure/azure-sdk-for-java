@@ -45,11 +45,10 @@ class ResponseConstructorsNoCacheReflection {
     }
 
     Response<?> invoke(final Constructor<? extends Response<?>> constructor,
-                       final HttpResponseDecoder.HttpDecodedResponse<?> decodedResponse, final Object bodyAsObject) {
-        final HttpResponse<?> httpResponse = decodedResponse.getSourceResponse();
-        final HttpRequest httpRequest = httpResponse.getRequest();
-        final int responseStatusCode = httpResponse.getStatusCode();
-        final Headers responseHeaders = httpResponse.getHeaders();
+                       final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
+        final HttpRequest httpRequest = decodedResponse.getRequest();
+        final int responseStatusCode = decodedResponse.getStatusCode();
+        final Headers responseHeaders = decodedResponse.getHeaders();
         final int paramCount = constructor.getParameterCount();
 
         try {

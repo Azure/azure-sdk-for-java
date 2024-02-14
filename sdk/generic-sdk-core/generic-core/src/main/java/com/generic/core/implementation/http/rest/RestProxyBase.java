@@ -14,7 +14,6 @@ import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.ContentType;
-import com.generic.core.implementation.http.SimpleResponse;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.http.serializer.MalformedValueException;
@@ -93,9 +92,9 @@ public abstract class RestProxyBase {
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
                                        ObjectSerializer objectSerializer) throws IOException;
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public Response createResponse(HttpResponseDecoder.HttpDecodedResponse<?> response, Type entityType,
-                                   Object bodyAsObject) {
+    @SuppressWarnings({"unchecked"})
+    public Response<?> createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
+                                      Object bodyAsObject) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
         // Inspection of the response type needs to be performed to determine which course of action should be taken to
@@ -105,6 +104,10 @@ public abstract class RestProxyBase {
         // ResponseBase or PagedResponseBase can be returned.
         if (cls.equals(Response.class)) {
             // For Response return the received HttpDecodedResponse cast to the class.
+            if (response.getCachedBody() == null) {
+                response.setCachedBody(bodyAsObject);
+            }
+
             return cls.cast(response);
         }
 
