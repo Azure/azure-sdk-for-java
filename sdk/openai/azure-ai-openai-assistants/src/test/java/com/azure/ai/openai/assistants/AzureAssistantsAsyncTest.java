@@ -12,7 +12,6 @@ import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -164,8 +163,8 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
             // List all the assistants with response; sort by name ascending
             StepVerifier.create(client.listAssistantsWithResponse(new RequestOptions()))
                     .assertNext(response -> {
-                        PageableList<Assistant> assistantsAscending = assertAndGetValueFromResponse(response,
-                            new TypeReference<PageableList<Assistant>>() {}, 200);
+                        PageableList<Assistant> assistantsAscending = asserAndGetPageableListFromResponse(response, 200,
+                            reader -> reader.readArray(Assistant::fromJson));
                         List<Assistant> dataAscending = assistantsAscending.getData();
                         assertTrue(dataAscending.size() >= 2);
                     })
@@ -337,8 +336,8 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
             StepVerifier.create(client.listAssistantFilesWithResponse(assistantId,
                             new RequestOptions()))
                     .assertNext(response -> {
-                        PageableList<AssistantFile> assistantFileList = assertAndGetValueFromResponse(response,
-                            new TypeReference<PageableList<AssistantFile>>() {}, 200);
+                        PageableList<AssistantFile> assistantFileList = asserAndGetPageableListFromResponse(response, 200,
+                            reader -> reader.readArray(AssistantFile::fromJson));
                         List<AssistantFile> assistantFilesData = assistantFileList.getData();
                         assertEquals(1, assistantFilesData.size());
                         AssistantFile assistantFileOnly = assistantFilesData.get(0);

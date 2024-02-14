@@ -258,18 +258,6 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return object;
     }
 
-    static <T> T assertAndGetValueFromResponse(Response<BinaryData> actualResponse, TypeReference<T> typeReference, int expectedCode) {
-        assertNotNull(actualResponse);
-        assertEquals(expectedCode, actualResponse.getStatusCode());
-        assertInstanceOf(Response.class, actualResponse);
-        BinaryData binaryData = actualResponse.getValue();
-        assertNotNull(binaryData);
-        T object = binaryData.toObject(typeReference);
-        assertNotNull(object);
-        assertInstanceOf(typeReference.getJavaClass(), object);
-        return object;
-    }
-
     static <T> PageableList<T> asserAndGetPageableListFromResponse(Response<BinaryData> actualResponse, int expectedCode,
                                                      CheckedFunction<JsonReader, List<T>> readListFunction) {
         assertNotNull(actualResponse);
