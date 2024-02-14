@@ -18,6 +18,7 @@ import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -319,8 +320,14 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
             Response<BinaryData> response = client.listAssistantFilesWithResponse(assistantId,
                     new RequestOptions());
 
-            PageableList<AssistantFile> assistantFileList = assertAndGetValueFromResponse(response,
-                new TypeReference<PageableList<AssistantFile>>() {}, 200);
+            PageableList<AssistantFile> assistantFileList = asserAndGetPageableListFromResponse(response, 200,
+                    jsonReader -> {
+                        try {
+                            return jsonReader.readArray(AssistantFile::fromJson);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
             List<AssistantFile> assistantFilesData = assistantFileList.getData();
             assertEquals(1, assistantFilesData.size());
             AssistantFile assistantFileOnly = assistantFilesData.get(0);

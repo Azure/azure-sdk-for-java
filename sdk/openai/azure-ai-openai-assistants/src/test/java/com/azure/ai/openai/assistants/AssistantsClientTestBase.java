@@ -4,6 +4,7 @@
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.implementation.FunctionsToolCallHelper;
+import com.azure.ai.openai.assistants.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
@@ -39,8 +40,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonReader;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -48,6 +51,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -263,6 +267,24 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         T object = binaryData.toObject(typeReference);
         assertNotNull(object);
         assertInstanceOf(typeReference.getJavaClass(), object);
+        return object;
+    }
+
+    static <T> PageableList<T> asserAndGetPageableListFromResponse(Response<BinaryData> actualResponse, int expectedCode,
+                                                     Function<JsonReader, List<T>> readListFunction) {
+        assertNotNull(actualResponse);
+        assertEquals(expectedCode, actualResponse.getStatusCode());
+        assertInstanceOf(Response.class, actualResponse);
+        BinaryData binaryData = actualResponse.getValue();
+        assertNotNull(binaryData);
+        PageableList<T> object = null;
+        try {
+            object = PageableListAccessHelper.create(binaryData, readListFunction);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        assertNotNull(object);
+//        assertInstanceOf(typeReference.getJavaClass(), object);
         return object;
     }
 
