@@ -357,6 +357,7 @@ public class LogDataMapper {
     }
 
     private static Set<String> getExcludedLoggerNames() {
+        // it might be a good idea to exclude prefix "org.apache.catalina.core.ContainerBase."? Logger name will come in as "org.apache.catalina.core.ContainerBase.[Catalina]"
         return Collections.singleton("org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet]");
     }
 }
