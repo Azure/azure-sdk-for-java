@@ -201,10 +201,10 @@ public final class RadiologyInsightsClientImpl {
      * </tr>
      * <tr>
      * <td>expand</td>
-     * <td>String</td>
+     * <td>List&lt;String&gt;</td>
      * <td>No</td>
-     * <td>A comma separated list of related properties to be included in line with the job. Allowed values:
-     * "jobData".</td>
+     * <td>Expand the indicated resources into the response. Call {@link RequestOptions#addQueryParam} to add string to
+     * array.</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -710,10 +710,10 @@ public final class RadiologyInsightsClientImpl {
      * </tr>
      * <tr>
      * <td>expand</td>
-     * <td>String</td>
+     * <td>List&lt;String&gt;</td>
      * <td>No</td>
-     * <td>A comma separated list of related properties to be included in line with the job. Allowed values:
-     * "jobData".</td>
+     * <td>Expand the indicated resources into the response. Call {@link RequestOptions#addQueryParam} to add string to
+     * array.</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1218,10 +1218,10 @@ public final class RadiologyInsightsClientImpl {
      * </tr>
      * <tr>
      * <td>expand</td>
-     * <td>String</td>
+     * <td>List&lt;String&gt;</td>
      * <td>No</td>
-     * <td>A comma separated list of related properties to be included in line with the job. Allowed values:
-     * "jobData".</td>
+     * <td>Expand the indicated resources into the response. Call {@link RequestOptions#addQueryParam} to add string to
+     * array.</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1731,10 +1731,10 @@ public final class RadiologyInsightsClientImpl {
      * </tr>
      * <tr>
      * <td>expand</td>
-     * <td>String</td>
+     * <td>List&lt;String&gt;</td>
      * <td>No</td>
-     * <td>A comma separated list of related properties to be included in line with the job. Allowed values:
-     * "jobData".</td>
+     * <td>Expand the indicated resources into the response. Call {@link RequestOptions#addQueryParam} to add string to
+     * array.</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2244,10 +2244,10 @@ public final class RadiologyInsightsClientImpl {
      * </tr>
      * <tr>
      * <td>expand</td>
-     * <td>String</td>
+     * <td>List&lt;String&gt;</td>
      * <td>No</td>
-     * <td>A comma separated list of related properties to be included in line with the job. Allowed values:
-     * "jobData".</td>
+     * <td>Expand the indicated resources into the response. Call {@link RequestOptions#addQueryParam} to add string to
+     * array.</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2758,10 +2758,10 @@ public final class RadiologyInsightsClientImpl {
      * </tr>
      * <tr>
      * <td>expand</td>
-     * <td>String</td>
+     * <td>List&lt;String&gt;</td>
      * <td>No</td>
-     * <td>A comma separated list of related properties to be included in line with the job. Allowed values:
-     * "jobData".</td>
+     * <td>Expand the indicated resources into the response. Call {@link RequestOptions#addQueryParam} to add string to
+     * array.</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}

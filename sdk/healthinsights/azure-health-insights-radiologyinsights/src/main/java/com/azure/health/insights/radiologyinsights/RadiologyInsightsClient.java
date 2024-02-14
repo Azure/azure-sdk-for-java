@@ -15,8 +15,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.health.insights.radiologyinsights.implementation.RadiologyInsightsClientImpl;
-import com.azure.health.insights.radiologyinsights.models.ExpandQueryParamsType;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
+import java.util.List;
 
 /**
  * Initializes a new instance of the synchronous RadiologyInsightsClient type.
@@ -54,10 +54,10 @@ public final class RadiologyInsightsClient {
      * </tr>
      * <tr>
      * <td>expand</td>
-     * <td>String</td>
+     * <td>List&lt;String&gt;</td>
      * <td>No</td>
-     * <td>A comma separated list of related properties to be included in line with the job. Allowed values:
-     * "jobData".</td>
+     * <td>Expand the indicated resources into the response. Call {@link RequestOptions#addQueryParam} to add string to
+     * array.</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -551,34 +551,6 @@ public final class RadiologyInsightsClient {
      *
      * @param id The unique ID of the job.
      * @param resource The resource instance.
-     * @param expand A comma separated list of related properties to be included in line with the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for the Radiology Insights request.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RadiologyInsightsJob, RadiologyInsightsJob> beginInferRadiologyInsights(String id,
-        RadiologyInsightsJob resource, ExpandQueryParamsType expand) {
-        // Generated convenience method for beginInferRadiologyInsightsWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        if (expand != null) {
-            requestOptions.addQueryParam("expand", expand.toString(), false);
-        }
-        return serviceClient.beginInferRadiologyInsightsWithModel(id, BinaryData.fromObject(resource), requestOptions);
-    }
-
-    /**
-     * Create Radiology Insights job
-     *
-     * Creates a Radiology Insights job with the given request body.
-     *
-     * @param id The unique ID of the job.
-     * @param resource The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -593,6 +565,38 @@ public final class RadiologyInsightsClient {
         RadiologyInsightsJob resource) {
         // Generated convenience method for beginInferRadiologyInsightsWithModel
         RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginInferRadiologyInsightsWithModel(id, BinaryData.fromObject(resource), requestOptions);
+    }
+
+    /**
+     * Create Radiology Insights job
+     *
+     * Creates a Radiology Insights job with the given request body.
+     *
+     * @param id The unique ID of the job.
+     * @param resource The resource instance.
+     * @param expand Expand the indicated resources into the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for the Radiology Insights request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<RadiologyInsightsJob, RadiologyInsightsJob> beginInferRadiologyInsights(String id,
+        RadiologyInsightsJob resource, List<String> expand) {
+        // Generated convenience method for beginInferRadiologyInsightsWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        if (expand != null) {
+            for (String paramItemValue : expand) {
+                if (paramItemValue != null) {
+                    requestOptions.addQueryParam("expand", paramItemValue, false);
+                }
+            }
+        }
         return serviceClient.beginInferRadiologyInsightsWithModel(id, BinaryData.fromObject(resource), requestOptions);
     }
 }
