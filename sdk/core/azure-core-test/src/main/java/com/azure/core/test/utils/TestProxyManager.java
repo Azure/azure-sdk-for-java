@@ -45,7 +45,7 @@ public final class TestProxyManager {
     public static synchronized void startProxy() {
         try {
             // if we're not running in CI we will check to see if someone has started the proxy, and start one if not.
-            if (runningLocally() && !checkAlive(1, Duration.ofSeconds(1), null)) {
+            if (!checkAlive(1, Duration.ofSeconds(1), null)) {
                 String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
                     TestProxyUtils.getProxyProcessName()).toString();
 
