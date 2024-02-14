@@ -17,6 +17,9 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 @JsonSerialize(using = FeedRangeTaskUnit.FeedRangeTaskUnitSerializer.class)
 @JsonDeserialize(using = FeedRangeTaskUnit.FeedRangeTaskUnitDeserializer.class)
 public class FeedRangeTaskUnit implements ITaskUnit {
@@ -36,6 +39,12 @@ public class FeedRangeTaskUnit implements ITaskUnit {
         Range<String> feedRange,
         String continuationState,
         String topic) {
+
+        checkArgument(StringUtils.isNotEmpty(databaseName), "Argument 'databaseName' should not be null");
+        checkArgument(StringUtils.isNotEmpty(containerName), "Argument 'containerName' should not be null");
+        checkArgument(StringUtils.isNotEmpty(containerRid), "Argument 'containerRid' should not be null");
+        checkNotNull(feedRange, "Argument 'feedRange' can not be null");
+        checkArgument(StringUtils.isNotEmpty(topic), "Argument 'topic' should not be null");
 
         this.databaseName = databaseName;
         this.containerName = containerName;

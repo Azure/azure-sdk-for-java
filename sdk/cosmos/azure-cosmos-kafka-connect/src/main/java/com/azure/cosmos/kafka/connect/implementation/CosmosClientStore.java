@@ -13,10 +13,13 @@ import java.time.Duration;
 
 public class CosmosClientStore {
     public static CosmosAsyncClient getCosmosClient(CosmosAccountConfig accountConfig) {
+        if (accountConfig == null) {
+            return null;
+        }
+
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(accountConfig.getEndpoint())
             .key(accountConfig.getAccountKey())
-            .userAgentSuffix(accountConfig.getApplicationName())
             .preferredRegions(accountConfig.getPreferredRegionsList())
             .throttlingRetryOptions(
                 new ThrottlingRetryOptions()

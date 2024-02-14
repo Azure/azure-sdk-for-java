@@ -3,8 +3,12 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 public class FeedRangeContinuationTopicOffset {
     private static final String ITEM_LSN_KEY = "cosmos.source.feedRange.item.lsn";
@@ -16,6 +20,9 @@ public class FeedRangeContinuationTopicOffset {
     public FeedRangeContinuationTopicOffset(
         String continuationState,
         String itemLsn) {
+        checkArgument(StringUtils.isNotEmpty(continuationState), "Argument 'continuationState' should not be null");
+        checkArgument(StringUtils.isNotEmpty(itemLsn), "Argument 'itemLsn' should not be null");
+
         this.itemLsn = itemLsn;
         this.continuationState = continuationState;
     }

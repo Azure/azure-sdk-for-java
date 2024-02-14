@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public class FeedRangesMetadataTopicOffset {
     public static final String CONTAINER_FEED_RANGES_KEY = "cosmos.source.metadata.container.feedRanges";
     public static final ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
@@ -21,6 +23,8 @@ public class FeedRangesMetadataTopicOffset {
     private final List<Range<String>> feedRanges;
 
     public FeedRangesMetadataTopicOffset(List<Range<String>> feedRanges) {
+        checkNotNull(feedRanges, "Argument 'feedRanges' can not be null");
+
         this.feedRanges = feedRanges;
     }
 

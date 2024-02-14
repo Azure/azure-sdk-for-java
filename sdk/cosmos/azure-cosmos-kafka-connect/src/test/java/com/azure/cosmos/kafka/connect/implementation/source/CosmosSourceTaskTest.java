@@ -12,6 +12,7 @@ import com.azure.cosmos.kafka.connect.KafkaCosmosTestSuiteBase;
 import com.azure.cosmos.kafka.connect.TestItem;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -125,6 +126,71 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         } finally {
             if (client != null) {
                 client.getDatabase(databaseName).getContainer(testContainerName).delete().block();
+                client.close();
+            }
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void pollWithSpecificFeedRange() {
+        // Test only items belong to the feedRange defined in the feedRangeTaskUnit will be returned
+        Map<String, String> sourceConfigMap = new HashMap<>();
+        sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
+        sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
+        List<String> containersIncludedList = Arrays.asList(multiPartitionContainerName);
+        sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
+
+        try {
+            Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
+
+            // define metadata task
+            List<FeedRange> feedRanges =
+                client.getDatabase(databaseName).getContainer(multiPartitionContainerName).getFeedRanges().block();
+            CosmosContainerProperties multiPartitionContainer = getMultiPartitionContainer(client);
+            assertThat(feedRanges.size()).isGreaterThan(1);
+
+            // define feedRanges task
+            FeedRangeTaskUnit feedRangeTaskUnit = new FeedRangeTaskUnit(
+                databaseName,
+                multiPartitionContainer.getId(),
+                multiPartitionContainer.getResourceId(),
+                ((FeedRangeEpkImpl)feedRanges.get(0)).getRange(),
+                null,
+                multiPartitionContainer.getId());
+            taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
+
+            CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.start(taskConfigMap);
+
+            // first creating few items in the container
+            this.createItems(client, databaseName, multiPartitionContainer.getId(), 10);
+
+            List<SourceRecord> sourceRecords = new ArrayList<>();
+            for (int i = 0; i < 3; i++) { // poll few times
+                sourceRecords.addAll(sourceTask.poll());
+            }
+
+            // get all items belong to feed range 0
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+            queryRequestOptions.setFeedRange(feedRanges.get(0));
+            List<TestItem> expectedItems = client
+                .getDatabase(databaseName)
+                .getContainer(multiPartitionContainer.getId())
+                .queryItems("select * from c", queryRequestOptions, TestItem.class)
+                .byPage()
+                .flatMapIterable(feedResponse -> feedResponse.getResults())
+                .collectList()
+                .block();
+
+            validateFeedRangeRecords(sourceRecords, expectedItems);
+        } finally {
+            if (client != null) {
+                // clean up containers
+                cleanUpContainer(client, databaseName, multiPartitionContainerName);
                 client.close();
             }
         }

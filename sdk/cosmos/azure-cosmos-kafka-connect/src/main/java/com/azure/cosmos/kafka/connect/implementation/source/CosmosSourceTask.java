@@ -22,8 +22,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
-import org.apache.kafka.connect.errors.ConnectException;
-import org.apache.kafka.connect.errors.RetriableException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
 import org.slf4j.Logger;
@@ -98,12 +96,8 @@ public class CosmosSourceTask extends SourceTask {
             // for error cases, we should always the task back to the queue
             this.taskUnitsQueue.add(taskUnit);
 
-            // TODO: add checking for max retries checking
-            if (CosmosExceptionsHelper.isTransientFailure(e)) {
-                throw new RetriableException("PollTask failed with transient failure.", e);
-            }
-
-            throw new ConnectException("PollTask failed with non-transient failure. ", e);
+            // TODO[Public Preview]: add checking for max retries checking
+            throw CosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
         }
     }
 

@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -27,6 +28,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class MetadataMonitorThread extends Thread {
     private static final Logger logger = LoggerFactory.getLogger(MetadataMonitorThread.class);
@@ -55,6 +58,12 @@ public class MetadataMonitorThread extends Thread {
         SourceConnectorContext connectorContext,
         CosmosSourceOffsetStorageReader offsetStorageReader,
         CosmosAsyncClient cosmosClient) {
+
+        checkNotNull(containersConfig, "Argument 'containersConfig' can not be null");
+        checkNotNull(metadataConfig, "Argument 'metadataConfig' can not be null");
+        checkNotNull(connectorContext, "Argument 'connectorContext' can not be null");
+        checkNotNull(offsetStorageReader, "Argument 'offsetStorageReader' can not be null");
+        checkNotNull(cosmosClient, "Argument 'cosmosClient' can not be null");
 
         this.sourceContainersConfig = containersConfig;
         this.metadataConfig = metadataConfig;
@@ -124,13 +133,13 @@ public class MetadataMonitorThread extends Thread {
     }
 
     public Mono<List<CosmosContainerProperties>> getAllContainers() {
-        // TODO: add retry policy
         return this.cosmosClient
             .getDatabase(this.sourceContainersConfig.getDatabaseName())
             .queryContainers(this.containersQuerySpec)
             .byPage()
             .flatMapIterable(response -> response.getResults())
-            .collectList();
+            .collectList()
+            .onErrorMap(throwable -> CosmosExceptionsHelper.convertToConnectException(throwable, "getAllContainers failed."));
     }
 
     public List<String> getContainerRidsFromOffset() {

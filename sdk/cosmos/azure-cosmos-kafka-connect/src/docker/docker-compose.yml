@@ -3,7 +3,7 @@ version: '2.1'
 
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:6.0.0
+    image: confluentinc/cp-zookeeper:7.5.0
     restart: unless-stopped
     hostname: zookeeper
     container_name: zookeeper
@@ -14,7 +14,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   broker:
-    image: confluentinc/cp-server:6.0.0
+    image: confluentinc/cp-server:7.5.0
     hostname: broker
     container_name: broker
     ports:
@@ -43,7 +43,7 @@ services:
       - zookeeper
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:6.0.0
+    image: confluentinc/cp-schema-registry:7.5.0
     hostname: schema-registry
     container_name: schema-registry
     ports:
@@ -68,7 +68,7 @@ services:
       - schema-registry
 
   rest-proxy:
-    image: confluentinc/cp-kafka-rest:6.0.0
+    image: confluentinc/cp-kafka-rest:7.5.0
     ports:
       - "8082:8082"
     hostname: rest-proxy
@@ -136,7 +136,7 @@ services:
       - rest-proxy
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:6.0.0
+    image: confluentinc/cp-enterprise-control-center:7.5.0
     hostname: control-center
     container_name: control-center
     ports:
@@ -156,7 +156,7 @@ services:
       - connect
 
   ksqldb-server:
-    image: confluentinc/cp-ksqldb-server:6.0.0
+    image: confluentinc/cp-ksqldb-server:7.5.0
     hostname: ksqldb-server
     container_name: ksqldb-server
     ports:

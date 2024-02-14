@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
+import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
@@ -41,6 +42,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+/***
+ * The CosmosDb source connector.
+ */
 public class CosmosDBSourceConnector extends SourceConnector {
     private static final Logger logger = LoggerFactory.getLogger(CosmosDBSourceConnector.class);
     private CosmosSourceConfig config;
@@ -99,7 +103,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
     @Override
     public String version() {
         return CosmosConstants.currentVersion;
-    } // TODO: how this is being used
+    } // TODO[public preview]: how this is being used
 
     private List<Map<String, String>> getTaskConfigs(int maxTasks) {
         Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> taskUnits = this.getAllTaskUnits();
@@ -139,7 +143,6 @@ public class CosmosDBSourceConnector extends SourceConnector {
     }
 
     private Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> getAllTaskUnits() {
-        // TODO: add transient errors handling
         List<CosmosContainerProperties> allContainers = this.monitorThread.getAllContainers().block();
         Map<String, String> containerTopicMap = this.getContainersTopicMap(allContainers);
         List<FeedRangeTaskUnit> allFeedRangeTaskUnits = new ArrayList<>();
@@ -306,11 +309,14 @@ public class CosmosDBSourceConnector extends SourceConnector {
     }
 
     private List<Range<String>> getFeedRanges(CosmosContainerProperties containerProperties) {
-        // TODO: add retry policy
         return this.cosmosClient
             .getDatabase(this.config.getContainersConfig().getDatabaseName())
             .getContainer(containerProperties.getId())
             .getFeedRanges()
+            .onErrorMap(throwable ->
+                CosmosExceptionsHelper.convertToConnectException(
+                    throwable,
+                    "GetFeedRanges failed for container " + containerProperties.getId()))
             .block()
             .stream()
             .map(feedRange -> FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl)feedRange).getRange()))

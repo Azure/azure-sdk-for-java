@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -23,6 +24,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 @JsonSerialize(using = MetadataTaskUnit.MetadataTaskUnitSerializer.class)
 @JsonDeserialize(using = MetadataTaskUnit.MetadataTaskUnitDeserializer.class)
 public class MetadataTaskUnit implements ITaskUnit {
@@ -36,6 +40,12 @@ public class MetadataTaskUnit implements ITaskUnit {
         List<String> containerRids,
         Map<String, List<Range<String>>> containersEffectiveRangesMap,
         String topic) {
+
+        checkArgument(StringUtils.isNotEmpty(databaseName), "Argument 'databaseName' should not be null");
+        checkNotNull(containerRids, "Argument 'containerRids' can not be null");
+        checkNotNull(containersEffectiveRangesMap, "Argument 'containersEffectiveRangesMap' can not be null");
+        checkArgument(StringUtils.isNotEmpty(topic), "Argument 'topic' should not be null");
+
         this.databaseName = databaseName;
         this.containerRids = containerRids;
         this.containersEffectiveRangesMap = containersEffectiveRangesMap;

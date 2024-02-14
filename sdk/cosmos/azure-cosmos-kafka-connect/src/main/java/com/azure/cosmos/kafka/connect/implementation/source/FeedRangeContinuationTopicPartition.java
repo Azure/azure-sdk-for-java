@@ -3,10 +3,14 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.Range;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class FeedRangeContinuationTopicPartition {
     private static final String DATABASE_NAME_KEY = "cosmos.source.database.name";
@@ -21,6 +25,9 @@ public class FeedRangeContinuationTopicPartition {
         String databaseName,
         String containerRid,
         Range<String> feedRange) {
+        checkArgument(StringUtils.isNotEmpty(databaseName), "Argument 'databaseName' should not be null");
+        checkArgument(StringUtils.isNotEmpty(containerRid), "Argument 'containerRid' should not be null");
+        checkNotNull(feedRange, "Argument 'feedRange' can not be null");
 
         this.databaseName = databaseName;
         this.containerRid = containerRid;

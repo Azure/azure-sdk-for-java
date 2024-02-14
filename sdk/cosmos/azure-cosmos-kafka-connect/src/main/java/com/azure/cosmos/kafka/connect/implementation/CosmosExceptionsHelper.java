@@ -5,6 +5,8 @@ package com.azure.cosmos.kafka.connect.implementation;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
+import org.apache.kafka.connect.errors.ConnectException;
+import org.apache.kafka.connect.errors.RetriableException;
 
 public class CosmosExceptionsHelper {
     public static boolean isTransientFailure(int statusCode, int substatusCode) {
@@ -16,7 +18,7 @@ public class CosmosExceptionsHelper {
 
     }
 
-    public static boolean isTransientFailure(Exception e) {
+    public static boolean isTransientFailure(Throwable e) {
         if (e instanceof CosmosException) {
             return isTransientFailure(((CosmosException) e).getStatusCode(), ((CosmosException) e).getSubStatusCode());
         }
@@ -38,5 +40,13 @@ public class CosmosExceptionsHelper {
         return statusCode == HttpConstants.StatusCodes.GONE &&
             (substatusCode == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
                 substatusCode == HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE);
+    }
+
+    public static ConnectException convertToConnectException(Throwable throwable, String message) {
+        if (CosmosExceptionsHelper.isTransientFailure(throwable)) {
+            return new RetriableException(message, throwable);
+        }
+
+        return new ConnectException(message, throwable);
     }
 }

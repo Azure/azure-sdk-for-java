@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Containers metadata topic offset.
  */
@@ -21,6 +23,7 @@ public class ContainersMetadataTopicOffset {
 
     private final List<String> containerRids;
     public ContainersMetadataTopicOffset(List<String> containerRids) {
+        checkNotNull(containerRids, "Argument 'containerRids' can not be null");
         this.containerRids = containerRids;
     }
 

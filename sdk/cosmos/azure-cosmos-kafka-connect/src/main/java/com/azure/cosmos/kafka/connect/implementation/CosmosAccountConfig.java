@@ -3,7 +3,11 @@
 
 package com.azure.cosmos.kafka.connect.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+
 import java.util.List;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 public class CosmosAccountConfig {
     private final String endpoint;
@@ -18,6 +22,10 @@ public class CosmosAccountConfig {
         String applicationName,
         boolean useGatewayMode,
         List<String> preferredRegionsList) {
+
+        checkArgument(StringUtils.isNotEmpty(endpoint), "Argument 'endpoint' should not be null");
+        checkArgument(StringUtils.isNotEmpty(accountKey), "Argument 'accountKey' should not be null");
+
         this.endpoint = endpoint;
         this.accountKey = accountKey;
         this.applicationName = applicationName;

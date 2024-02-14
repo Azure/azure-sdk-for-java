@@ -6,6 +6,7 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -15,10 +16,12 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,7 +120,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         }
     }
 
-    @AfterSuite(groups = {"fast"}, alwaysRun = true, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = { "fast" }, alwaysRun = true, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -185,6 +188,21 @@ public class KafkaCosmosTestSuiteBase implements ITest {
 
     static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey() {
         return getCollectionDefinitionWithRangeRangeIndex(Collections.singletonList("/id"));
+    }
+
+    public static void cleanUpContainer(CosmosAsyncClient client, String databaseName, String containerName) {
+        CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(containerName);
+        List<JsonNode> allItems =
+            container.queryItems("select * from c", JsonNode.class)
+                .byPage()
+                .flatMapIterable(feedResponse -> feedResponse.getResults())
+                .collectList()
+                .block();
+
+        // do a batch delete
+        for (JsonNode item : allItems) {
+            container.deleteItem(item, new CosmosItemRequestOptions()).block();
+        }
     }
 
     static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndex(List<String> partitionKeyPath) {

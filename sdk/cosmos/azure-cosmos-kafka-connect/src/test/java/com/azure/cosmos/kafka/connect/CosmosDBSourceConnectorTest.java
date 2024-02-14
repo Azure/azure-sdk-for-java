@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.kafka.connect.CosmosDBSourceConnectorTest.SourceConfigs.ALL_VALID_CONFIGS;
@@ -405,7 +406,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         Map<String, String> sourceConfigMap = this.getValidSourceConfig();
 
         String topicMapConfigName = "kafka.connect.cosmos.source.containers.topicMap";
-        sourceConfigMap.put(topicMapConfigName, singlePartitionContainerName.toString());
+        sourceConfigMap.put(topicMapConfigName, UUID.randomUUID().toString());
 
         Config validatedConfig = sourceConnector.validate(sourceConfigMap);
         ConfigValue configValue =
@@ -427,7 +428,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                         " For example: topic1#con1,topic2#con2."))
             .isTrue();
 
-        // TODO: add other config validations
+        // TODO[Public Preview]: add other config validations
     }
 
     private Map<String, String> getValidSourceConfig() {

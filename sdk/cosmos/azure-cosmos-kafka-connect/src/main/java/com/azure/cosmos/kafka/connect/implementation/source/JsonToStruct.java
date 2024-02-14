@@ -93,6 +93,7 @@ public class JsonToStruct {
                 return structBuilder.build();
             case STRING:
                 return Schema.STRING_SCHEMA;
+                // TODO[GA]: do we need to support binary/pojo?
             case BINARY:
             case MISSING:
             case POJO:
