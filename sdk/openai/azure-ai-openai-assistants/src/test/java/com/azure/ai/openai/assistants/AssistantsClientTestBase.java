@@ -39,7 +39,6 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.TypeReference;
 import com.azure.json.JsonReader;
 import reactor.test.StepVerifier;
 
