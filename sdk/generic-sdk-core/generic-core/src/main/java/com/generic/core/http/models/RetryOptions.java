@@ -8,21 +8,21 @@ import com.generic.core.models.HeaderName;
 import com.generic.core.util.ClientLogger;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
  * Options to configure the retry policy's behavior.
  */
-public class RetryOptions {
+public final class RetryOptions {
     private static final ClientLogger LOGGER = new ClientLogger(RetryOptions.class);
-    private int maxRetries;
+    private final int maxRetries;
     private final Duration baseDelay;
     private final Duration maxDelay;
     private final Duration fixedDelay;
     private Predicate<RequestRetryCondition> shouldRetryCondition;
-    private HashMap<HeaderName, Duration> retryHeaders = new HashMap<>();
+    private Function<HeaderName, Duration> retryHeaders;
 
     /**
      * Creates an instance of {@link RetryOptions} with values for {@code baseDelay} and {@code maxDelay}. Use this
@@ -36,10 +36,13 @@ public class RetryOptions {
         Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
         if (maxRetries < 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
+            LOGGER.log(ClientLogger.LogLevel.VERBOSE, () -> "Max retries cannot be less than 0. " +
+                "Using 3 retries as the maximum.");
+            maxRetries = 3;
         }
         this.baseDelay = baseDelay;
         this.maxDelay = maxDelay;
+        this.maxRetries = maxRetries;
         this.fixedDelay = null;
     }
 
@@ -53,7 +56,9 @@ public class RetryOptions {
     public RetryOptions(int maxRetries, Duration fixedDelay) {
         Objects.requireNonNull(fixedDelay, "'fixedDelay' cannot be null.");
         if (maxRetries < 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
+            LOGGER.log(ClientLogger.LogLevel.VERBOSE, () -> "Max retries cannot be less than 0. " +
+                "Using 3 retries as the maximum.");
+            maxRetries = 3;
         }
         this.maxRetries = maxRetries;
         this.fixedDelay = fixedDelay;
@@ -120,12 +125,11 @@ public class RetryOptions {
         return this;
     }
 
-
     /**
      * Gets the headers that will be added to a retry request.
      * @return The headers that will be added to a retry request.
      */
-    public HashMap<HeaderName, Duration> getRetryHeaders() {
+    public Function<HeaderName, Duration> getRetryHeaders() {
         return retryHeaders;
     }
 
@@ -134,7 +138,7 @@ public class RetryOptions {
      * @param retryHeaders the map of headers to add to a retry request.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions setRetryHeaders(HashMap<HeaderName, Duration> retryHeaders) {
+    public RetryOptions setRetryHeaders(Function<HeaderName, Duration> retryHeaders) {
         this.retryHeaders = retryHeaders;
         return this;
     }

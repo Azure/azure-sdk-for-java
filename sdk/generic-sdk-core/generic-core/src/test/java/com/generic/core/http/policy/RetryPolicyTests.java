@@ -369,6 +369,30 @@ public class RetryPolicyTests {
         }
     }
 
+    @Test
+    public void retryOptionsCanConfigureRetryHeaders() {
+        RetryOptions retryOptions = new RetryOptions(1, Duration.ofMillis(1))
+            .setRetryHeaders(headerName -> headerName.equals(HeaderName.RETRY_AFTER) ? Duration.ofMillis(100) : null);
+        Headers headers = new Headers().set(HeaderName.RETRY_AFTER, "10");
+
+        AtomicInteger attemptCount = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(retryOptions))
+            .httpClient(request -> {
+                int count = attemptCount.getAndIncrement();
+                if (count == 0) {
+                    return new MockHttpResponse(request, 503, headers);
+                } else {
+                    return new MockHttpResponse(request, 200);
+                }
+            })
+            .build();
+
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+        assertEquals(200, response.getStatusCode());
+        assertEquals(1, attemptCount.get());
+    }
+
     static Stream<Arguments> customRetryPolicyCanDetermineRetryStatusCodesSupplier() {
         RetryPolicy.RetryStrategy onlyRetries429And503 = createStatusCodeRetryStrategy(429, 503);
         RetryPolicy.RetryStrategy onlyRetries409And412 = createStatusCodeRetryStrategy(409, 412);
