@@ -117,7 +117,8 @@ public class DefaultHttpClientTest {
             resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
             resp.getOutputStream().write(("data: YHOO\n" +
                             "data: +2\n" +
-                            "data: 10").getBytes());
+                            "data: 10\n"+
+                            "\n").getBytes());
             resp.flushBuffer();
         }
 
@@ -295,8 +296,7 @@ public class DefaultHttpClientTest {
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, SSE_RESPONSE)).setBody(requestBody);
         request.getMetadata().setEagerlyConvertHeaders(false);
 
-        // Rec
-        createHttpClient().send(request.setServerSentEventListener(sse -> assertEquals("YHOO\\n+2\\n10", sse.getData())));
+        createHttpClient().send(request.setServerSentEventListener(sse -> assertEquals("YHOO\n+2\n10", sse.getData())));
     }
 
     @Test
