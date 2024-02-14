@@ -10,22 +10,18 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CosmosSourceTaskConfig extends CosmosSourceConfig {
-    private static final Logger logger = LoggerFactory.getLogger(CosmosSourceTaskConfig.class);
-    private static final ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private static final String SOURCE_TASK_CONFIG_PREFIX = "kafka.connect.cosmos.source.task.";
 
-    public static final String SOURCE_METADATA_TASK_UNIT= SOURCE_TASK_CONFIG_PREFIX + "metadataTaskUnit";
+    public static final String SOURCE_METADATA_TASK_UNIT = SOURCE_TASK_CONFIG_PREFIX + "metadataTaskUnit";
     public static final String SOURCE_FEED_RANGE_TASK_UNITS = SOURCE_TASK_CONFIG_PREFIX + "feedRangeTaskUnits";
 
     private final List<FeedRangeTaskUnit> feedRangeTaskUnits;
@@ -66,12 +62,12 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
         try {
             String feedRangesTaskUnitsConfig = this.getString(SOURCE_FEED_RANGE_TASK_UNITS);
             if (!StringUtils.isEmpty(feedRangesTaskUnitsConfig)) {
-                return objectMapper
+                return OBJECT_MAPPER
                     .readValue(feedRangesTaskUnitsConfig, new TypeReference<List<String>>() {})
                     .stream()
                     .map(taskUnitConfigJson -> {
                         try {
-                            return objectMapper.readValue(taskUnitConfigJson, FeedRangeTaskUnit.class);
+                            return OBJECT_MAPPER.readValue(taskUnitConfigJson, FeedRangeTaskUnit.class);
                         } catch (JsonProcessingException e) {
                             throw new IllegalArgumentException("Failed to parseFeedRangeTaskUnit", e);
                         }
@@ -90,7 +86,7 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
         String metadataTaskUnitConfig = this.getString(SOURCE_METADATA_TASK_UNIT);
         if (!StringUtils.isEmpty(metadataTaskUnitConfig)) {
             try {
-                return objectMapper.readValue(metadataTaskUnitConfig, MetadataTaskUnit.class);
+                return OBJECT_MAPPER.readValue(metadataTaskUnitConfig, MetadataTaskUnit.class);
             } catch (JsonProcessingException e) {
                 throw new IllegalArgumentException("Failed to parseMetadataTaskUnit", e);
             }
@@ -104,12 +100,12 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
             Map<String, String> taskConfigMap = new HashMap<>();
             taskConfigMap.put(
                 SOURCE_FEED_RANGE_TASK_UNITS,
-                objectMapper.writeValueAsString(
+                OBJECT_MAPPER.writeValueAsString(
                     feedRangeTaskUnits
                         .stream()
                         .map(taskUnit -> {
                             try {
-                                return objectMapper.writeValueAsString(taskUnit);
+                                return OBJECT_MAPPER.writeValueAsString(taskUnit);
                             } catch (JsonProcessingException e) {
                                 throw new RuntimeException(e);
                             }
@@ -126,7 +122,7 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
         try {
             Map<String, String> taskConfigMap = new HashMap<>();
             if (metadataTaskUnit != null) {
-                taskConfigMap.put(SOURCE_METADATA_TASK_UNIT, objectMapper.writeValueAsString(metadataTaskUnit));
+                taskConfigMap.put(SOURCE_METADATA_TASK_UNIT, OBJECT_MAPPER.writeValueAsString(metadataTaskUnit));
             }
             return taskConfigMap;
         } catch (JsonProcessingException e) {

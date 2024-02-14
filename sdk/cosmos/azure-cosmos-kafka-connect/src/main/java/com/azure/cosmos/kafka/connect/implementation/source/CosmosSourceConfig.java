@@ -41,15 +41,15 @@ public class CosmosSourceConfig extends CosmosConfig {
 
     private static final String CONTAINERS_TOPIC_MAP_CONFIG = SOURCE_CONFIG_PREFIX + "containers.topicMap";
     private static final String CONTAINERS_TOPIC_MAP_CONFIG_DOC =
-        "A comma delimited list of Kafka topics mapped to Cosmos containers. For example: topic1#con1,topic2#con2. " +
-            "By default, container name is used as the name of the kafka topic to publish data to, " +
-            "can use this property to override the default config ";
+        "A comma delimited list of Kafka topics mapped to Cosmos containers. For example: topic1#con1,topic2#con2. "
+            + "By default, container name is used as the name of the kafka topic to publish data to, "
+            + "can use this property to override the default config ";
     private static final String CONTAINERS_TOPIC_MAP_CONFIG_DISPLAY = "Cosmos container topic map.";
 
     // changeFeed config
     private static final String CHANGE_FEED_START_FROM_CONFIG = SOURCE_CONFIG_PREFIX + "changeFeed.startFrom";
-    private static final String CHANGE_FEED_START_FROM_CONFIG_DOC = "ChangeFeed Start from settings (Now, Beginning " +
-        "or a certain point in time (UTC) for example 2020-02-10T14:15:03) - the default value is 'Beginning'. ";
+    private static final String CHANGE_FEED_START_FROM_CONFIG_DOC = "ChangeFeed Start from settings (Now, Beginning "
+        + "or a certain point in time (UTC) for example 2020-02-10T14:15:03) - the default value is 'Beginning'. ";
     private static final String CHANGE_FEED_START_FROM_CONFIG_DISPLAY = "Change feed start from.";
     private static final String DEFAULT_CHANGE_FEED_START_FROM = CosmosChangeFeedStartFromModes.BEGINNING.getName();
 
@@ -60,23 +60,23 @@ public class CosmosSourceConfig extends CosmosConfig {
 
     private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG = SOURCE_CONFIG_PREFIX + "changeFeed.maxItemCountHint";
     private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DOC =
-        "The maximum number of documents returned in a single change feed request." +
-            " But the number of items received might be higher than the specified value if multiple items are changed by the same transaction." +
-            " The default is 1000.";
+        "The maximum number of documents returned in a single change feed request."
+            + " But the number of items received might be higher than the specified value if multiple items are changed by the same transaction."
+            + " The default is 1000.";
     private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DISPLAY = "The maximum number hint of documents returned in a single request. ";
     private static final int DEFAULT_CHANGE_FEED_MAX_ITEM_COUNT = 1000;
 
     // Metadata config
     private static final String METADATA_POLL_DELAY_MS_CONFIG = SOURCE_CONFIG_PREFIX + "metadata.poll.delay.ms";
     private static final String METADATA_POLL_DELAY_MS_CONFIG_DOC =
-        "Indicates how often to check the metadata changes (including container split/merge, adding/removing/recreated containers). " +
-            "When changes are detected, it will reconfigure the tasks. Default is 5 minutes.";
+        "Indicates how often to check the metadata changes (including container split/merge, adding/removing/recreated containers). "
+            + "When changes are detected, it will reconfigure the tasks. Default is 5 minutes.";
     private static final String METADATA_POLL_DELAY_MS_CONFIG_DISPLAY = "Metadata polling delay in ms.";
     private static final int DEFAULT_METADATA_POLL_DELAY_MS = 5 * 60 * 1000; // default is every 5 minutes
 
     private static final String METADATA_STORAGE_TOPIC_CONFIG = SOURCE_CONFIG_PREFIX + "metadata.storage.topic";
-    private static final String METADATA_STORAGE_TOPIC_CONFIG_DOC = "The name of the topic where the metadata are stored. " +
-        "The metadata topic will be created if it does not already exist, else it will use the pre-created topic.";
+    private static final String METADATA_STORAGE_TOPIC_CONFIG_DOC = "The name of the topic where the metadata are stored. "
+        + "The metadata topic will be created if it does not already exist, else it will use the pre-created topic.";
     private static final String METADATA_STORAGE_TOPIC_CONFIG_DISPLAY = "Metadata storage topic.";
     private static final String DEFAULT_METADATA_STORAGE_TOPIC = "_cosmos.metadata.topic";
 
@@ -87,7 +87,7 @@ public class CosmosSourceConfig extends CosmosConfig {
     private static final boolean DEFAULT_MESSAGE_KEY_ENABLED = true;
 
     private static final String MESSAGE_KEY_FIELD_CONFIG = SOURCE_CONFIG_PREFIX + "messageKey.field";
-    private static final String MESSAGE_KEY_FIELD_CONFIG_DOC = "The document field to use as the message key.";
+    private static final String MESSAGE_KEY_FIELD_CONFIG_DOC = "The field to use as the message key.";
     private static final String MESSAGE_KEY_FIELD_CONFIG_DISPLAY = "Kafka message key field.";
     private static final String DEFAULT_MESSAGE_KEY_FIELD = "id"; // TODO: should we use pk instead?
 

@@ -19,7 +19,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class ContainersMetadataTopicOffset {
     public static final String CONTAINERS_RESOURCE_IDS_NAME_KEY = "cosmos.source.metadata.containerRids";
-    public static final ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
+    public static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     private final List<String> containerRids;
     public ContainersMetadataTopicOffset(List<String> containerRids) {
@@ -36,7 +36,7 @@ public class ContainersMetadataTopicOffset {
         try {
             map.put(
                 CONTAINERS_RESOURCE_IDS_NAME_KEY,
-                objectMapper.writeValueAsString(offset.getContainerRids()));
+                OBJECT_MAPPER.writeValueAsString(offset.getContainerRids()));
             return map;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -51,7 +51,7 @@ public class ContainersMetadataTopicOffset {
 
         try {
             List<String> containerRids =
-                objectMapper
+                OBJECT_MAPPER
                     .readValue(offsetMap.get(CONTAINERS_RESOURCE_IDS_NAME_KEY).toString(), new TypeReference<List<String>>() {});
             return new ContainersMetadataTopicOffset(containerRids);
         } catch (JsonProcessingException e) {

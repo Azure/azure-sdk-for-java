@@ -36,9 +36,9 @@ public class CosmosClientStore {
 
     private static String getUserAgentSuffix(CosmosAccountConfig accountConfig) {
         if (StringUtils.isNotEmpty(accountConfig.getApplicationName())) {
-            return CosmosConstants.userAgentSuffix + "|" + accountConfig.getApplicationName();
+            return CosmosConstants.USER_AGENT_SUFFIX + "|" + accountConfig.getApplicationName();
         }
 
-        return CosmosConstants.userAgentSuffix;
+        return CosmosConstants.USER_AGENT_SUFFIX;
     }
 }

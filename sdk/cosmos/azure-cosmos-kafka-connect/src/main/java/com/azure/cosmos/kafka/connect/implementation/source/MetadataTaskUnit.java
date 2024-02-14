@@ -70,23 +70,27 @@ public class MetadataTaskUnit implements ITaskUnit {
 
     @Override
     public String toString() {
-        return "MetadataTaskUnit{" +
-            "databaseName='" + databaseName + '\'' +
-            ", containerRids=" + containerRids +
-            ", containersEffectiveRangesMap=" + containersEffectiveRangesMap +
-            ", topic='" + topic + '\'' +
-            '}';
+        return "MetadataTaskUnit{"
+            + "databaseName='"
+            + databaseName
+            + '\''
+            + ", containerRids="
+            + containerRids
+            + ", containersEffectiveRangesMap="
+            + containersEffectiveRangesMap
+            + ", topic='" + topic + '\''
+            + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
         MetadataTaskUnit that = (MetadataTaskUnit) o;
-        return databaseName.equals(that.databaseName) &&
-            containerRids.equals(that.containerRids) &&
-            Objects.equals(containersEffectiveRangesMap, that.containersEffectiveRangesMap) &&
-            topic.equals(that.topic);
+        return databaseName.equals(that.databaseName)
+            && containerRids.equals(that.containerRids)
+            && Objects.equals(containersEffectiveRangesMap, that.containersEffectiveRangesMap)
+            && topic.equals(that.topic);
     }
 
     @Override

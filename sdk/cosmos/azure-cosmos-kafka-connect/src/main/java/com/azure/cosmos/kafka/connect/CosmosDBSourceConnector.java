@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
  * The CosmosDb source connector.
  */
 public class CosmosDBSourceConnector extends SourceConnector {
-    private static final Logger logger = LoggerFactory.getLogger(CosmosDBSourceConnector.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDBSourceConnector.class);
     private CosmosSourceConfig config;
     private CosmosAsyncClient cosmosClient;
     private MetadataMonitorThread monitorThread;
@@ -54,7 +54,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
 
     @Override
     public void start(Map<String, String> props) {
-        logger.info("Starting the kafka cosmos source connector");
+        LOGGER.info("Starting the kafka cosmos source connector");
         this.config = new CosmosSourceConfig(props);
         this.cosmosClient = CosmosClientStore.getCosmosClient(this.config.getAccountConfig());
         this.offsetStorageReader = new CosmosSourceOffsetStorageReader(this.context().offsetStorageReader());
@@ -83,14 +83,14 @@ public class CosmosDBSourceConnector extends SourceConnector {
 
     @Override
     public void stop() {
-        logger.info("Stopping Kafka CosmosDB source connector");
+        LOGGER.info("Stopping Kafka CosmosDB source connector");
         if (this.cosmosClient != null) {
-            logger.debug("Closing cosmos client");
+            LOGGER.debug("Closing cosmos client");
             this.cosmosClient.close();
         }
 
         if (this.monitorThread != null) {
-            logger.debug("Closing monitoring thread");
+            LOGGER.debug("Closing monitoring thread");
             this.monitorThread.close();
         }
     }
@@ -102,7 +102,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
 
     @Override
     public String version() {
-        return CosmosConstants.currentVersion;
+        return CosmosConstants.CURRENT_VERSION;
     } // TODO[public preview]: how this is being used
 
     private List<Map<String, String>> getTaskConfigs(int maxTasks) {
@@ -286,7 +286,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
         }
 
         // Can not find overlapped ranges from offset, this should never happen, fail
-        logger.error("Can not find overlapped ranges for feedRange {}", containerFeedRange);
+        LOGGER.error("Can not find overlapped ranges for feedRange {}", containerFeedRange);
         throw new IllegalStateException("Can not find overlapped ranges for feedRange " + containerFeedRange);
     }
 
@@ -319,7 +319,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
                     "GetFeedRanges failed for container " + containerProperties.getId()))
             .block()
             .stream()
-            .map(feedRange -> FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl)feedRange).getRange()))
+            .map(feedRange -> FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl) feedRange).getRange()))
             .collect(Collectors.toList());
     }
 

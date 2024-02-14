@@ -39,10 +39,10 @@ public class CosmosConfig extends AbstractConfig {
     private static final boolean DEFAULT_USE_GATEWAY_MODE = false;
 
     private static final String PREFERRED_REGIONS_LIST = CONFIG_PREFIX + "preferredRegionsList";
-    private static final String PREFERRED_REGIONS_LIST_DOC = "Preferred regions list to be used for a multi region Cosmos DB account. " +
-        "This is a comma separated value (e.g., `[East US, West US]` or `East US, West US`) provided preferred regions will be used as hint. " +
-        "You should use a collocated kafka cluster with your Cosmos DB account and pass the kafka cluster region as preferred region. " +
-        "See list of azure regions [here](https://docs.microsoft.com/dotnet/api/microsoft.azure.documents.locationnames?view=azure-dotnet&preserve-view=true).";
+    private static final String PREFERRED_REGIONS_LIST_DOC = "Preferred regions list to be used for a multi region Cosmos DB account. "
+        + "This is a comma separated value (e.g., `[East US, West US]` or `East US, West US`) provided preferred regions will be used as hint. "
+        + "You should use a collocated kafka cluster with your Cosmos DB account and pass the kafka cluster region as preferred region. "
+        + "See list of azure regions [here](https://docs.microsoft.com/dotnet/api/microsoft.azure.documents.locationnames?view=azure-dotnet&preserve-view=true).";
     private static final String PREFERRED_REGIONS_LIST_DISPLAY = "Preferred regions list.";
 
     private static final String APPLICATION_NAME = CONFIG_PREFIX + "applicationName";

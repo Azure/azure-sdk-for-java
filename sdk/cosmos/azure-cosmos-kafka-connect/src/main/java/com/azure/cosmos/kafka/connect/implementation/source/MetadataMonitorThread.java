@@ -32,10 +32,10 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class MetadataMonitorThread extends Thread {
-    private static final Logger logger = LoggerFactory.getLogger(MetadataMonitorThread.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MetadataMonitorThread.class);
 
-    // TODO: using a threadPool with less threads or single thread
-    public final static Scheduler CONTAINERS_MONITORING_SCHEDULER = Schedulers.newBoundedElastic(
+    // TODO[Public Preview]: using a threadPool with less threads or single thread
+    public static final Scheduler CONTAINERS_MONITORING_SCHEDULER = Schedulers.newBoundedElastic(
         Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
         "cosmos-source-metadata-monitoring-bounded-elastic",
@@ -76,7 +76,7 @@ public class MetadataMonitorThread extends Thread {
 
     @Override
     public void run() {
-        logger.info("Start containers monitoring task");
+        LOGGER.info("Start containers monitoring task");
 
         int containersPollDelayInMs = this.metadataConfig.getMetadataPollDelayInMs();
         if (containersPollDelayInMs >= 0) {
@@ -84,7 +84,7 @@ public class MetadataMonitorThread extends Thread {
                 .delay(Duration.ofMillis(containersPollDelayInMs))
                 .flatMap(t -> {
                     if (this.isRunning.get()) {
-                        logger.trace("ValidateContainersMetadataChange...");
+                        LOGGER.trace("ValidateContainersMetadataChange...");
                         return shouldRequestTaskReconfiguration();
                     }
                     return Mono.empty();
@@ -95,7 +95,7 @@ public class MetadataMonitorThread extends Thread {
                     }
                 })
                 .onErrorResume(throwable -> {
-                    logger.warn("Containers metadata checking failed. Will retry in next polling cycle", throwable);
+                    LOGGER.warn("Containers metadata checking failed. Will retry in next polling cycle", throwable);
                     // TODO: only allow continue for transient errors, for others raiseError
                     return Mono.empty();
                 })
@@ -104,7 +104,7 @@ public class MetadataMonitorThread extends Thread {
                 .subscribe();
         }
 
-        logger.info("Containers monitoring task not started due to negative containers poll delay");
+        LOGGER.info("Containers monitoring task not started due to negative containers poll delay");
     }
 
     private Mono<Boolean> shouldRequestTaskReconfiguration() {
@@ -158,8 +158,8 @@ public class MetadataMonitorThread extends Thread {
                 .map(CosmosContainerProperties::getResourceId)
                 .collect(Collectors.toList());
 
-        return !(containerRidsFromOffset.size() == containersRidToBeCopied.size() &&
-            containerRidsFromOffset.containsAll(containersRidToBeCopied));
+        return !(containerRidsFromOffset.size() == containersRidToBeCopied.size()
+            && containerRidsFromOffset.containsAll(containersRidToBeCopied));
     }
 
     private Mono<Boolean> shouldRequestTaskReconfigurationOnFeedRanges(List<CosmosContainerProperties> allContainers) {
@@ -189,7 +189,7 @@ public class MetadataMonitorThread extends Thread {
                 .map(feedRanges -> {
                     return feedRanges
                         .stream()
-                        .map(feedRange -> FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl)feedRange).getRange()))
+                        .map(feedRange -> FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl) feedRange).getRange()))
                         .collect(Collectors.toList());
                 })
                 .flatMap(range -> {
@@ -279,7 +279,7 @@ public class MetadataMonitorThread extends Thread {
                     (pkRangesValueHolder == null || pkRangesValueHolder.v == null) ? new ArrayList<>() : pkRangesValueHolder.v;
 
                 if (matchedPkRanges.size() == 0) {
-                    logger.warn(
+                    LOGGER.warn(
                         "FeedRang {} on container {} is gone but we failed to find at least one matching pkRange",
                         feedRangeChanged,
                         containerProperties.getResourceId());
@@ -287,8 +287,8 @@ public class MetadataMonitorThread extends Thread {
                     return true;
                 }
 
-                if(matchedPkRanges.size() == 1) {
-                    logger.info(
+                if (matchedPkRanges.size() == 1) {
+                    LOGGER.info(
                         "FeedRange {} is merged into {} on container {}",
                         feedRangeChanged,
                         matchedPkRanges.get(0).toRange(),
@@ -296,7 +296,7 @@ public class MetadataMonitorThread extends Thread {
                     return false;
                 }
 
-                logger.info(
+                LOGGER.info(
                     "FeedRange {} is split into [{}] on container {}",
                     feedRangeChanged,
                     matchedPkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList()),

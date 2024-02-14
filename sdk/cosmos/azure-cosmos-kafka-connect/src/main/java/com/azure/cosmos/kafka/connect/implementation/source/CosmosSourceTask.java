@@ -37,7 +37,7 @@ import java.util.Queue;
 import java.util.stream.Collectors;
 
 public class CosmosSourceTask extends SourceTask {
-    private static final Logger logger = LoggerFactory.getLogger(CosmosSourceTask.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceTask.class);
     private static final String LSN_ATTRIBUTE_NAME = "_lsn";
 
     private CosmosSourceTaskConfig taskConfig;
@@ -46,12 +46,12 @@ public class CosmosSourceTask extends SourceTask {
 
     @Override
     public String version() {
-        return CosmosConstants.currentVersion;
+        return CosmosConstants.CURRENT_VERSION;
     }
 
     @Override
     public void start(Map<String, String> map) {
-        logger.info("Starting the kafka cosmos source task...");
+        LOGGER.info("Starting the kafka cosmos source task...");
 
         this.taskConfig = new CosmosSourceTaskConfig(map);
         if (this.taskConfig.getMetadataTaskUnit() != null) {
@@ -60,7 +60,7 @@ public class CosmosSourceTask extends SourceTask {
         }
 
         this.taskUnitsQueue.addAll(this.taskConfig.getFeedRangeTaskUnits());
-        logger.info("Creating the cosmos client");
+        LOGGER.info("Creating the cosmos client");
         this.cosmosClient = CosmosClientStore.getCosmosClient(this.taskConfig.getAccountConfig());
     }
 
@@ -78,24 +78,24 @@ public class CosmosSourceTask extends SourceTask {
             List<SourceRecord> results = new ArrayList<>();
             if (taskUnit instanceof MetadataTaskUnit) {
                 results.addAll(executeMetadataTask((MetadataTaskUnit) taskUnit));
-                logger.info(
+                LOGGER.info(
                     "Return {} metadata records, databaseName {}", results.size(), ((MetadataTaskUnit) taskUnit).getDatabaseName());
 
             } else {
                 Stopwatch stopwatch = Stopwatch.createStarted();
 
-                logger.trace("Polling for task {}", taskUnit);
+                LOGGER.trace("Polling for task {}", taskUnit);
                 Pair<List<SourceRecord>, Boolean> feedRangeTaskResults = executeFeedRangeTask((FeedRangeTaskUnit) taskUnit);
                 results.addAll(feedRangeTaskResults.getLeft());
 
                 // for split, new feedRangeTaskUnit will be created, so we do not need to add the original taskUnit back to the queue
                 if (!feedRangeTaskResults.getRight()) {
-                    logger.trace("Adding task {} back to queue", taskUnit);
+                    LOGGER.trace("Adding task {} back to queue", taskUnit);
                     this.taskUnitsQueue.add(taskUnit);
                 }
 
                 stopwatch.stop();
-                logger.info(
+                LOGGER.info(
                     "Return {} records, databaseName {}, containerName {}, containerRid {}, durationInMs {}",
                     results.size(),
                     ((FeedRangeTaskUnit) taskUnit).getDatabaseName(),
@@ -146,7 +146,7 @@ public class CosmosSourceTask extends SourceTask {
                     SchemaAndValue.NULL.value()));
         }
 
-        logger.info("There are {} metadata records being created/updated", sourceRecords.size());
+        LOGGER.info("There are {} metadata records being created/updated", sourceRecords.size());
         return sourceRecords;
     }
 
@@ -197,6 +197,8 @@ public class CosmosSourceTask extends SourceTask {
                     feedResponse.getContinuationToken(),
                     getItemLsn(item));
 
+            System.out.println("getItemLsn:" + getItemLsn(item));
+
             // Set the Kafka message key if option is enabled and field is configured in document
             String messageKey = this.getMessageKey(item);
 
@@ -245,7 +247,7 @@ public class CosmosSourceTask extends SourceTask {
                 List<PartitionKeyRange> partitionKeyRanges = pkRangesValueHolder.v;
                 if (partitionKeyRanges.size() == 1) {
                     // merge happens
-                    logger.info(
+                    LOGGER.info(
                         "FeedRange {} is merged into {}, but we will continue polling data from feedRange {}",
                         feedRangeTaskUnit.getFeedRange(),
                         partitionKeyRanges.get(0).toRange(),
@@ -254,7 +256,7 @@ public class CosmosSourceTask extends SourceTask {
                     // Continue using polling data from the current task unit feedRange
                     return Mono.just(false);
                 } else {
-                    logger.info(
+                    LOGGER.info(
                         "FeedRange {} is split into {}. Will create new task units. ",
                         feedRangeTaskUnit.getFeedRange(),
                         partitionKeyRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList())

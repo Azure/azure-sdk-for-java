@@ -26,7 +26,7 @@ import static org.apache.kafka.connect.data.Values.convertToLong;
 import static org.apache.kafka.connect.data.Values.convertToShort;
 
 public class JsonToStruct {
-    private static final Logger logger = LoggerFactory.getLogger(JsonToStruct.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonToStruct.class);
     private static final String SCHEMA_NAME_TEMPLATE = "inferred_name_%s";
 
     public static SchemaAndValue recordToSchemaAndValue(final JsonNode node) {
@@ -45,7 +45,7 @@ public class JsonToStruct {
                     if (optionalField || defaultValue != null) {
                         struct.put(field, defaultValue);
                     } else {
-                        logger.error("Missing value for field {}", field.name());
+                        LOGGER.error("Missing value for field {}", field.name());
                     }
                 }
             });
@@ -140,7 +140,7 @@ public class JsonToStruct {
                 schemaAndValue = recordToSchemaAndValue(node);
                 break;
             default:
-                logger.error("Unsupported Schema type: {}", schema.type());
+                LOGGER.error("Unsupported Schema type: {}", schema.type());
         }
         return schemaAndValue;
     }
@@ -157,7 +157,7 @@ public class JsonToStruct {
 
     private static SchemaAndValue arrayToSchemaAndValue(final Schema schema, final JsonNode nodeValue) {
         if (!nodeValue.isArray()) {
-            logger.error("Unexpected array value for schema {}", schema);
+            LOGGER.error("Unexpected array value for schema {}", schema);
         }
         List<Object> values = new ArrayList<>();
         nodeValue.forEach(v ->
@@ -177,7 +177,7 @@ public class JsonToStruct {
                 value = nodeValue.longValue();
             }
         } else {
-            logger.error("Unexpected value for schema {}", schema);
+            LOGGER.error("Unexpected value for schema {}", schema);
         }
 
         switch (schema.type()) {
@@ -200,7 +200,7 @@ public class JsonToStruct {
                 value = convertToDouble(schema, value);
                 break;
             default:
-                logger.error("Unsupported Schema type: {}", schema.type());
+                LOGGER.error("Unsupported Schema type: {}", schema.type());
         }
         return new SchemaAndValue(schema, value);
     }

@@ -18,7 +18,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class FeedRangesMetadataTopicOffset {
     public static final String CONTAINER_FEED_RANGES_KEY = "cosmos.source.metadata.container.feedRanges";
-    public static final ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
+    public static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     private final List<Range<String>> feedRanges;
 
@@ -39,7 +39,7 @@ public class FeedRangesMetadataTopicOffset {
             // offset can only contain primitive types
             map.put(
                 CONTAINER_FEED_RANGES_KEY,
-                objectMapper
+                OBJECT_MAPPER
                     .writeValueAsString(
                         offset.getFeedRanges().stream().map(range -> range.toJson()).collect(Collectors.toList())));
 
@@ -57,7 +57,7 @@ public class FeedRangesMetadataTopicOffset {
         String feedRangesValue = offsetMap.get(CONTAINER_FEED_RANGES_KEY).toString();
         try {
             List<Range<String>> feedRanges =
-                objectMapper
+                OBJECT_MAPPER
                     .readValue(feedRangesValue, new TypeReference<List<String>>() {})
                     .stream()
                     .map(rangeJson -> new Range<String>(rangeJson))

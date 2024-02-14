@@ -37,9 +37,9 @@ public class CosmosExceptionsHelper {
     }
 
     public static boolean isFeedRangeGoneException(int statusCode, int substatusCode) {
-        return statusCode == HttpConstants.StatusCodes.GONE &&
-            (substatusCode == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
-                substatusCode == HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE);
+        return statusCode == HttpConstants.StatusCodes.GONE
+            && (substatusCode == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
+            || substatusCode == HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE);
     }
 
     public static ConnectException convertToConnectException(Throwable throwable, String message) {
