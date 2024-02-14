@@ -713,11 +713,12 @@
       "words": [
         "Pfast",
         "Pdirect",
-	      "Pmulti",
+	    "Pmulti",
         "Psplit",
         "Pquery",
         "Pcfp",
-        "Pflaky"
+        "Pflaky",
+        "Pkafka"
       ]
     },
     {
