@@ -323,7 +323,7 @@ public class ReactorConnection implements AmqpConnection {
 
                         sink.success(sessionSubscription);
                     });
-                } catch (IOException e) {
+                } catch (IOException | RejectedExecutionException e) {
                     sink.error(e);
                 }
             });
@@ -331,21 +331,21 @@ public class ReactorConnection implements AmqpConnection {
             final Mono<AmqpEndpointState> activeSession = sessionSubscription.getSession().getEndpointStates()
                 .filter(state -> state == AmqpEndpointState.ACTIVE)
                 .next()
-                .timeout(retryPolicy.getRetryOptions().getTryTimeout(), Mono.error(() -> new AmqpException(true,
-                    TIMEOUT_ERROR, String.format(
-                        "connectionId[%s] sessionName[%s] Timeout waiting for session to be active.", connectionId,
-                    sessionName), handler.getErrorContext())))
+                .timeout(retryPolicy.getRetryOptions().getTryTimeout(),
+                    Mono.error(() -> {
+                        final String message = String.format(
+                            "connectionId[%s] sessionName[%s] Timeout waiting for session to be active.",
+                            connectionId, sessionName);
+                        return new AmqpException(true, TIMEOUT_ERROR, message, handler.getErrorContext());
+                    }))
                 .doOnError(error -> {
-                    // Clean up the subscription if there was an error waiting for the session to become active.
-
                     if (!(error instanceof AmqpException)) {
                         return;
                     }
-
+                    // Clean up the subscription if there was an error while waiting for session to active.
                     final AmqpException amqpException = (AmqpException) error;
                     if (amqpException.getErrorCondition() == TIMEOUT_ERROR) {
-                        final SessionSubscription removed = sessionMap.remove(sessionName);
-                        removed.dispose();
+                        removeSession(sessionName);
                     }
                 });
 
@@ -553,17 +553,15 @@ public class ReactorConnection implements AmqpConnection {
                 if (isDisposed.get()) {
                     return;
                 }
-
                 logger.atInfo()
                     .addKeyValue(SESSION_NAME_KEY, sessionName)
-                    .log("Error occurred. Removing and disposing session", error);
+                    .log("Removing session terminated with error.", error);
                 removeSession(sessionName);
             }, () -> {
                 // If we were already disposing of the connection, the session would be removed.
                 if (isDisposed.get()) {
                     return;
                 }
-
                 removeSession(sessionName);
             });
 
