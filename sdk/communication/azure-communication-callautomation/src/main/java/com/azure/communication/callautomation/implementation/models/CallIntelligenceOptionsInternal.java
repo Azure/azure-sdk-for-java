@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AI options for the call. */
+/**
+ * AI options for the call.
+ */
 @Fluent
 public final class CallIntelligenceOptionsInternal {
     /*
@@ -17,9 +19,15 @@ public final class CallIntelligenceOptionsInternal {
     private String cognitiveServicesEndpoint;
 
     /**
+     * Creates an instance of CallIntelligenceOptionsInternal class.
+     */
+    public CallIntelligenceOptionsInternal() {
+    }
+
+    /**
      * Get the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to this
      * call.
-     *
+     * 
      * @return the cognitiveServicesEndpoint value.
      */
     public String getCognitiveServicesEndpoint() {
@@ -29,7 +37,7 @@ public final class CallIntelligenceOptionsInternal {
     /**
      * Set the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to this
      * call.
-     *
+     * 
      * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
      * @return the CallIntelligenceOptionsInternal object itself.
      */

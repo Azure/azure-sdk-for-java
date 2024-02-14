@@ -7,22 +7,21 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for adding participant to the call. */
+/**
+ * The request payload for adding participant to the call.
+ */
 @Fluent
 public final class AddParticipantRequestInternal {
     /*
-     * The source caller Id, a phone number, that's shown to the PSTN
-     * participant being invited.
+     * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
      * Required only when inviting a PSTN participant.
      */
     @JsonProperty(value = "sourceCallerIdNumber")
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
 
     /*
-     * (Optional) The display name of the source that is associated with this
-     * invite operation when
-     * adding a PSTN participant or teams user.  Note: Will not update the
-     * display name in the roster.
+     * (Optional) The display name of the source that is associated with this invite operation when
+     * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
      */
     @JsonProperty(value = "sourceDisplayName")
     private String sourceDisplayName;
@@ -41,17 +40,15 @@ public final class AddParticipantRequestInternal {
     private Integer invitationTimeoutInSeconds;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
@@ -63,9 +60,16 @@ public final class AddParticipantRequestInternal {
     private CustomCallingContext customCallingContext;
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited. Required only when inviting a PSTN participant.
-     *
+     * Creates an instance of AddParticipantRequestInternal class.
+     */
+    public AddParticipantRequestInternal() {
+    }
+
+    /**
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
+     * Required only when inviting a PSTN participant.
+     * 
      * @return the sourceCallerIdNumber value.
      */
     public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
@@ -73,9 +77,10 @@ public final class AddParticipantRequestInternal {
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited. Required only when inviting a PSTN participant.
-     *
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
+     * Required only when inviting a PSTN participant.
+     * 
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
@@ -85,9 +90,10 @@ public final class AddParticipantRequestInternal {
     }
 
     /**
-     * Get the sourceDisplayName property: (Optional) The display name of the source that is associated with this invite
-     * operation when adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
-     *
+     * Get the sourceDisplayName property: (Optional) The display name of the source that is associated with this
+     * invite operation when
+     * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
+     * 
      * @return the sourceDisplayName value.
      */
     public String getSourceDisplayName() {
@@ -95,9 +101,10 @@ public final class AddParticipantRequestInternal {
     }
 
     /**
-     * Set the sourceDisplayName property: (Optional) The display name of the source that is associated with this invite
-     * operation when adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
-     *
+     * Set the sourceDisplayName property: (Optional) The display name of the source that is associated with this
+     * invite operation when
+     * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
+     * 
      * @param sourceDisplayName the sourceDisplayName value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
@@ -108,7 +115,7 @@ public final class AddParticipantRequestInternal {
 
     /**
      * Get the participantToAdd property: The participant to invite.
-     *
+     * 
      * @return the participantToAdd value.
      */
     public CommunicationIdentifierModel getParticipantToAdd() {
@@ -117,7 +124,7 @@ public final class AddParticipantRequestInternal {
 
     /**
      * Set the participantToAdd property: The participant to invite.
-     *
+     * 
      * @param participantToAdd the participantToAdd value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
@@ -128,8 +135,9 @@ public final class AddParticipantRequestInternal {
 
     /**
      * Get the invitationTimeoutInSeconds property: Gets or sets the timeout to wait for the invited participant to
-     * pickup. The maximum value of this is 180 seconds.
-     *
+     * pickup.
+     * The maximum value of this is 180 seconds.
+     * 
      * @return the invitationTimeoutInSeconds value.
      */
     public Integer getInvitationTimeoutInSeconds() {
@@ -138,8 +146,9 @@ public final class AddParticipantRequestInternal {
 
     /**
      * Set the invitationTimeoutInSeconds property: Gets or sets the timeout to wait for the invited participant to
-     * pickup. The maximum value of this is 180 seconds.
-     *
+     * pickup.
+     * The maximum value of this is 180 seconds.
+     * 
      * @param invitationTimeoutInSeconds the invitationTimeoutInSeconds value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
@@ -151,7 +160,7 @@ public final class AddParticipantRequestInternal {
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -161,7 +170,7 @@ public final class AddParticipantRequestInternal {
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
@@ -172,9 +181,10 @@ public final class AddParticipantRequestInternal {
 
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
      * @return the operationCallbackUri value.
      */
     public String getOperationCallbackUri() {
@@ -183,9 +193,10 @@ public final class AddParticipantRequestInternal {
 
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
@@ -196,7 +207,7 @@ public final class AddParticipantRequestInternal {
 
     /**
      * Get the customCallingContext property: Used by customer to send custom calling context to targets.
-     *
+     * 
      * @return the customCallingContext value.
      */
     public CustomCallingContext getCustomCallingContext() {
@@ -205,7 +216,7 @@ public final class AddParticipantRequestInternal {
 
     /**
      * Set the customCallingContext property: Used by customer to send custom calling context to targets.
-     *
+     * 
      * @param customCallingContext the customCallingContext value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
