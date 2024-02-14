@@ -609,8 +609,6 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             new SourceConfigEntry<Boolean>("kafka.connect.cosmos.useGatewayMode", false, true),
             new SourceConfigEntry<String>("kafka.connect.cosmos.preferredRegionsList", Strings.Emtpy, true),
             new SourceConfigEntry<String>("kafka.connect.cosmos.applicationName", Strings.Emtpy, true),
-            new SourceConfigEntry<Boolean>("kafka.connect.cosmos.clientTelemetry.enabled", false, true),
-            new SourceConfigEntry<String>("kafka.connect.cosmos.clientTelemetry.endpoint", Strings.Emtpy, true),
             new SourceConfigEntry<String>("kafka.connect.cosmos.source.database.name", null, false),
             new SourceConfigEntry<Boolean>("kafka.connect.cosmos.source.containers.includeAll", false, true),
             new SourceConfigEntry<String>("kafka.connect.cosmos.source.containers.includedList", Strings.Emtpy, true),
@@ -623,7 +621,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 "kafka.connect.cosmos.source.changeFeed.mode",
                 CosmosChangeFeedModes.LATEST_VERSION.getName(),
                 true),
-            new SourceConfigEntry<Integer>("kafka.connect.cosmos.source.changeFeed.maxItemCount", 1000, true),
+            new SourceConfigEntry<Integer>("kafka.connect.cosmos.source.changeFeed.maxItemCountHint", 1000, true),
             new SourceConfigEntry<Integer>("kafka.connect.cosmos.source.metadata.poll.delay.ms", 5 * 60 * 1000, true),
             new SourceConfigEntry<String>(
                 "kafka.connect.cosmos.source.metadata.storage.topic",

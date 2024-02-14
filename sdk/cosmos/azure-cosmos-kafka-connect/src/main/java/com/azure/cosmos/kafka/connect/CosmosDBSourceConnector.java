@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -193,24 +194,32 @@ public class CosmosDBSourceConnector extends SourceConnector {
         // otherwise use the current feedRange, but constructing the continuationState based on the previous feedRange
 
         List<Range<String>> containerFeedRanges = this.getFeedRanges(containerProperties);
+        containerFeedRanges.sort(new Comparator<Range<String>>() {
+            @Override
+            public int compare(Range<String> o1, Range<String> o2) {
+                return o1.getMin().compareTo(o2.getMin());
+            }
+        });
+
         FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
             this.offsetStorageReader.getFeedRangesMetadataOffset(databaseName, containerProperties.getResourceId());
 
-        if (feedRangesMetadataTopicOffset == null) {
-            // there is no existing offset, return the current container feedRanges with continuationState null (start from refresh)
-            return containerFeedRanges.stream().collect(Collectors.toMap(range -> range, range -> Strings.Emtpy));
-        }
-
-        // there is existing offsets, need to find out effective feedRanges based on the offset
         Map<Range<String>, String> effectiveFeedRangesContinuationMap = new LinkedHashMap<>();
+
         for (Range<String> containerFeedRange : containerFeedRanges) {
-            effectiveFeedRangesContinuationMap.putAll(
-                this.getEffectiveContinuationMapForSingleFeedRange(
-                    databaseName,
-                    containerProperties.getResourceId(),
-                    containerFeedRange,
-                    feedRangesMetadataTopicOffset.getFeedRanges())
-            );
+            if (feedRangesMetadataTopicOffset == null) {
+                // there is no existing offset, return the current container feedRanges with continuationState null (start from refresh)
+                effectiveFeedRangesContinuationMap.put(containerFeedRange, Strings.Emtpy);
+            } else {
+                // there is existing offsets, need to find out effective feedRanges based on the offset
+                effectiveFeedRangesContinuationMap.putAll(
+                    this.getEffectiveContinuationMapForSingleFeedRange(
+                        databaseName,
+                        containerProperties.getResourceId(),
+                        containerFeedRange,
+                        feedRangesMetadataTopicOffset.getFeedRanges())
+                );
+            }
         }
 
         return effectiveFeedRangesContinuationMap;

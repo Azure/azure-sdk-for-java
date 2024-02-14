@@ -100,7 +100,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>connect-runtime</artifactId>
-      <version>3.6.0</version>
+      <version>3.6.0</version> <!-- {x-version-update;org.apache.kafka:connect-runtime;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

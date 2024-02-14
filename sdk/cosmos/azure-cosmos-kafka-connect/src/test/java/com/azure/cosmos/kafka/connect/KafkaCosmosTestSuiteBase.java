@@ -206,7 +206,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
     private static void safeDeleteDatabase(CosmosAsyncClient client, String database) {
         if (StringUtils.isNotEmpty(database)) {
             try {
-                client.getDatabase(database).delete();
+                client.getDatabase(database).delete().block();
             } catch (Exception e) {
                 logger.error("Failed to delete database {}", database, e);
             }

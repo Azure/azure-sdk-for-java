@@ -390,6 +390,7 @@ cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 # Cosmos Kafka connector runtime dependencies
 cosmos_org.apache.kafka:connect-api;3.6.0
 # Cosmos Kafka connector tests only
+cosmos_org.apache.kafka:connect-runtime;3.6.0
 # Maven Tools for Cosmos Kafka connector only
 cosmos_io.confluent:kafka-connect-maven-plugin;0.12.0
 
