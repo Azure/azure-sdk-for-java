@@ -48,8 +48,8 @@ public final class PatientDocument {
      * The date and time when the document was created.
      */
     @Generated
-    @JsonProperty(value = "createdDateTime")
-    private OffsetDateTime createdDateTime;
+    @JsonProperty(value = "createdAt")
+    private OffsetDateTime createdAt;
 
     /*
      * Document author(s)
@@ -162,24 +162,24 @@ public final class PatientDocument {
     }
 
     /**
-     * Get the createdDateTime property: The date and time when the document was created.
+     * Get the createdAt property: The date and time when the document was created.
      *
-     * @return the createdDateTime value.
+     * @return the createdAt value.
      */
     @Generated
-    public OffsetDateTime getCreatedDateTime() {
-        return this.createdDateTime;
+    public OffsetDateTime getCreatedAt() {
+        return this.createdAt;
     }
 
     /**
-     * Set the createdDateTime property: The date and time when the document was created.
+     * Set the createdAt property: The date and time when the document was created.
      *
-     * @param createdDateTime the createdDateTime value to set.
+     * @param createdAt the createdAt value to set.
      * @return the PatientDocument object itself.
      */
     @Generated
-    public PatientDocument setCreatedDateTime(OffsetDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
+    public PatientDocument setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
         return this;
     }
 

@@ -18,7 +18,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("completeOrderDiscrepancy")
 @Immutable
-public final class CompleteOrderDiscrepancyInference extends FhirR4Extendible1 {
+public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsInference {
 
     /*
      * Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.

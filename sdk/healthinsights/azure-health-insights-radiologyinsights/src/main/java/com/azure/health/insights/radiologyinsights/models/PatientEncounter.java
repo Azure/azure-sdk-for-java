@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * visit/encounter information.
  */
 @Fluent
-public final class Encounter {
+public final class PatientEncounter {
 
     /*
      * The id of the visit.
@@ -38,13 +38,13 @@ public final class Encounter {
     private EncounterClass classProperty;
 
     /**
-     * Creates an instance of Encounter class.
+     * Creates an instance of PatientEncounter class.
      *
      * @param id the id value to set.
      */
     @Generated
     @JsonCreator
-    public Encounter(@JsonProperty(value = "id") String id) {
+    public PatientEncounter(@JsonProperty(value = "id") String id) {
         this.id = id;
     }
 
@@ -76,10 +76,10 @@ public final class Encounter {
      * discharge time.
      *
      * @param period the period value to set.
-     * @return the Encounter object itself.
+     * @return the PatientEncounter object itself.
      */
     @Generated
-    public Encounter setPeriod(TimePeriod period) {
+    public PatientEncounter setPeriod(TimePeriod period) {
         this.period = period;
         return this;
     }
@@ -98,10 +98,10 @@ public final class Encounter {
      * Set the classProperty property: The class of the encounter.
      *
      * @param classProperty the classProperty value to set.
-     * @return the Encounter object itself.
+     * @return the PatientEncounter object itself.
      */
     @Generated
-    public Encounter setClassProperty(EncounterClass classProperty) {
+    public PatientEncounter setClassProperty(EncounterClass classProperty) {
         this.classProperty = classProperty;
         return this;
     }

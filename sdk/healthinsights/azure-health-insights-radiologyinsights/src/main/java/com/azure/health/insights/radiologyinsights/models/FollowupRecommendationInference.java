@@ -18,14 +18,14 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("followupRecommendation")
 @Immutable
-public final class FollowupRecommendationInference extends FhirR4Extendible1 {
+public final class FollowupRecommendationInference extends RadiologyInsightsInference {
 
     /*
      * Date and time are displayed when the procedure is recommended to be done at a specific point in time.
      */
     @Generated
-    @JsonProperty(value = "effectiveDateTime")
-    private String effectiveDateTime;
+    @JsonProperty(value = "effectiveAt")
+    private String effectiveAt;
 
     /*
      * The period is shown if a specific period is mentioned, with a start and end date-time.
@@ -39,7 +39,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "findings")
-    private List<FhirR4Extendible2> findings;
+    private List<RecommendationFinding> findings;
 
     /*
      * The conditional value indicates whether or not the sentence containing the recommendation includes a conditional
@@ -103,14 +103,14 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at
-     * a specific point in time.
+     * Get the effectiveAt property: Date and time are displayed when the procedure is recommended to be done at a
+     * specific point in time.
      *
-     * @return the effectiveDateTime value.
+     * @return the effectiveAt value.
      */
     @Generated
-    public String getEffectiveDateTime() {
-        return this.effectiveDateTime;
+    public String getEffectiveAt() {
+        return this.effectiveAt;
     }
 
     /**
@@ -130,7 +130,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      * @return the findings value.
      */
     @Generated
-    public List<FhirR4Extendible2> getFindings() {
+    public List<RecommendationFinding> getFindings() {
         return this.findings;
     }
 

@@ -13,14 +13,7 @@ import java.util.List;
  * Finding reference for recommendation.
  */
 @Immutable
-public final class FhirR4Extendible2 {
-
-    /*
-     * Additional Content defined by implementations
-     */
-    @Generated
-    @JsonProperty(value = "extension")
-    private List<FhirR4Extension> extension;
+public final class RecommendationFinding {
 
     /*
      * Finding linked to a recommendation.
@@ -43,26 +36,23 @@ public final class FhirR4Extendible2 {
     @JsonProperty(value = "recommendationFindingStatus")
     private RecommendationFindingStatusType recommendationFindingStatus;
 
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    @JsonProperty(value = "extension")
+    private List<FhirR4Extension> extension;
+
     /**
-     * Creates an instance of FhirR4Extendible2 class.
+     * Creates an instance of RecommendationFinding class.
      *
      * @param recommendationFindingStatus the recommendationFindingStatus value to set.
      */
     @Generated
     @JsonCreator
-    private FhirR4Extendible2(@JsonProperty(
+    private RecommendationFinding(@JsonProperty(
         value = "recommendationFindingStatus") RecommendationFindingStatusType recommendationFindingStatus) {
         this.recommendationFindingStatus = recommendationFindingStatus;
-    }
-
-    /**
-     * Get the extension property: Additional Content defined by implementations.
-     *
-     * @return the extension value.
-     */
-    @Generated
-    public List<FhirR4Extension> getExtension() {
-        return this.extension;
     }
 
     /**
@@ -93,5 +83,15 @@ public final class FhirR4Extendible2 {
     @Generated
     public RecommendationFindingStatusType getRecommendationFindingStatus() {
         return this.recommendationFindingStatus;
+    }
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
     }
 }

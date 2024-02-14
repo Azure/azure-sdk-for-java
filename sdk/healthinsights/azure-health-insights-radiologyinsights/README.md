@@ -4,7 +4,8 @@
 [Health Insights][health_insights] is an Azure Applied AI Service built with the Azure Cognitive Services Framework, that leverages multiple Cognitive Services, Healthcare API services and other Azure resources.
 
 [Radiology Insights][radiology_insights_docs] is a model that aims to provide quality checks as feedback on errors and inconsistencies (mismatches) and ensures critical findings are identified and communicated using the full context of the report. Follow-up recommendations and clinical findings with measurements (sizes) documented by the radiologist are also identified.
-[Product Documentation][product_documentation]
+
+[Source code][source_code] | [Package (Maven)][package] | API reference documentation | [Product Documentation][product_documentation] | [Samples][samples_location]
 
 ## Getting started
 
@@ -16,9 +17,10 @@
 
 For more information about creating the resource or how to get the location and sku information see [here][cognitive_resource_cli].
 
-### Adding the package to your product
+### Include the Package
 
 [//]: # ({x-version-update-start;com.azure:azure-health-insights-radiologyinsights;current})
+
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -26,11 +28,12 @@ For more information about creating the resource or how to get the location and 
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
+
 [//]: # ({x-version-update-end})
 
 ### Authenticate the client
 
-In order to interact with the Health Insights Radiology Insights service, you'll need to create an instance of the RadiologyInsightsClient class.  You will need an **endpoint** and an **API key** to instantiate a client object.
+In order to interact with the Health Insights Radiology Insights service, you'll need to create an instance of the [`RadiologyInsightsClient`][radiology_insights_client_class] class.  You will need an **endpoint** and an **API key** to instantiate a client object.
 
 #### Get API Key
 
@@ -78,27 +81,31 @@ Radiology Insights currently supports one document from one patient. Please take
 ### Create a RadiologyInsights request and retrieve the result
 
 Infer radiology insights from a patient's radiology report using a **synchronous** client.
+- [SampleCriticalResultInferenceSync.java][ri_sync_sample]
 
 ```java com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
-RadiologyInsightsInferenceResult riResults = radiologyInsightsClient.beginInferRadiologyInsights(createRadiologyInsightsRequest()).getFinalResult();
+RadiologyInsightsJob riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights("job1",createRadiologyInsightsJob()).getFinalResult();
 ```
 
 Infer radiology insights from a patient's radiology report using an **asynchronous** client.
+- [SampleCriticalResultInferenceAsync.java][ri_async_sample]
 
 ```java com.azure.health.insights.radiologyinsights.inferradiologyinsights
-PollerFlux<PollOperationDetails, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
-        .beginInferRadiologyInsights(createRadiologyInsightsRequest());
+PollerFlux<RadiologyInsightsJob, RadiologyInsightsJob> asyncPoller = radiologyInsightsAsyncClient
+        .beginInferRadiologyInsights("job1",createRadiologyInsightsJob());
 ```
 
-Create the request.
+Create the job request.
 
 ```java com.azure.health.insights.radiologyinsights.createrequest
-private static RadiologyInsightsData createRadiologyInsightsRequest() {
+private static RadiologyInsightsJob createRadiologyInsightsJob() {
     List<PatientRecord> patientRecords = createPatientRecords();
     RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
     RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
     radiologyInsightsData.setConfiguration(modelConfiguration);
-    return radiologyInsightsData;
+    RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
+    radiologyInsightsJob.setJobData(radiologyInsightsData);
+    return radiologyInsightsJob;
 }
 
 /**
@@ -117,9 +124,9 @@ private static List<PatientRecord> createPatientRecords() {
     // Use LocalDate to set Date
     patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
     
-    patientRecord.setInfo(patientDetails);
+    patientRecord.setDetails(patientDetails);
 
-    Encounter encounter = new Encounter("encounterid1");
+    PatientEncounter encounter = new PatientEncounter("encounterid1");
 
     TimePeriod period = new TimePeriod();
 
@@ -167,7 +174,7 @@ private static List<PatientRecord> createPatientRecords() {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
     OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter);
-    patientDocument.setCreatedDateTime(createdDateTime);
+    patientDocument.setCreatedAt(createdDateTime);
 
     patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
     patientRecords.add(patientRecord);
@@ -230,17 +237,17 @@ private static RadiologyInsightsInferenceOptions getRadiologyInsightsInferenceOp
 
 ### Get Critical Result Inference information
 
-Display critical result inferences from the example request results.
+Display critical result inferences from the example job request results.
 
 ```java com.azure.health.insights.radiologyinsights.displayresults
 List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
 for (RadiologyInsightsPatientResult patientResult : patientResults) {
-    List<FhirR4Extendible1> inferences = patientResult.getInferences();
-    for (FhirR4Extendible1 inference : inferences) {
+    List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+    for (RadiologyInsightsInference inference : inferences) {
         if (inference instanceof CriticalResultInference) {
             CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
             String description = criticalResultInference.getResult().getDescription();
-            System.out.println("Critical Result Inference found: " + description);
+            System.out.println("Critical Result Inference found: " + description);                    
         }
     }
 }
@@ -249,6 +256,7 @@ for (RadiologyInsightsPatientResult patientResult : patientResults) {
 ## Troubleshooting
 
 ## Next steps
+Explore the complete set of [sample source code files][samples_location].
 
 ## Additional documentation
 For more extensive documentation on Azure Health Insights Radiology Insights, see the [Radiology Insights documentation][radiology_insights_docs] on learn.microsoft.com.
@@ -270,10 +278,14 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_subscription]: https://azure.microsoft.com/free/
 [cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
 [azure_cli]: https://docs.microsoft.com/cli/azure
+[radiology_insights_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/main/java/com/azure/health/insights/radiologyinsights/RadiologyInsightsClient.java
+[ri_sync_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleCriticalResultInferenceSync.java
+[ri_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleCriticalResultInferenceAsync.java
 [product_documentation]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/
 [radiology_insights_inferences]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/inferences
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_portal]: https://portal.azure.com
-
-![Impressions]: https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fhealthinsights%2Fazure-health-insights-radiologyinsights%2FREADME.png
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/
+[package]: https://central.sonatype.com/artifact/com.azure/azure-health-insights-radiologyinsights
+[samples_location]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples

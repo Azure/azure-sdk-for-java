@@ -5,9 +5,11 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * The procedure recommendation can be a generic procedure or an imaging procedure.
@@ -24,10 +26,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Immutable
 public class ProcedureRecommendation {
 
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    @JsonProperty(value = "extension")
+    private List<FhirR4Extension> extension;
+
     /**
      * Creates an instance of ProcedureRecommendation class.
      */
     @Generated
     protected ProcedureRecommendation() {
+    }
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
     }
 }

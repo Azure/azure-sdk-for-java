@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("criticalResult")
 @Immutable
-public final class CriticalResultInference extends FhirR4Extendible1 {
+public final class CriticalResultInference extends RadiologyInsightsInference {
 
     /*
      * The complete Critical Result, as outlined below, will be reused for the recommendation.
