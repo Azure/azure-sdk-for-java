@@ -1,0 +1,181 @@
+## Azure OpenAI Java client library usage samples
+
+---
+### Image generation sample
+
+```java
+// Create a synchronous image client
+ImageClient imageClient = new ImageClientBuilder()
+    .endpoint("<endpoint>")
+    .model("dall-e-3")
+    .credential(new KeyCredential("api-key"))
+    .buildClient();
+
+// In this sample, we want to build an app to help interior designers prototype new ideas based on the latest design trends.
+// As part of the creative process, an interior designer can use this app to generate artistic concepts for inspiration simply
+// by describing the scene in their head as a prompt. As expected, high-quality, strikingly dramatic images with finer details
+// deliver the best results for this use case.
+String prompt = "The concept for a living room that pulls from mid-century design elements while bringing in softer, current shapes for a"
+    + " stylish juxtaposition. It's a unique, personalized space with a touch of nostalgia. Using autumnal hues, including colors like copper,"
+    + " burnt orange, terracotta, and amber, that bring a sense of humility. Featuring expressive marble with deep veining in a variety of"
+    + " colors to add character and depth. Stone and rock in light and dark variations adding texture, bringing a touch of nature to a space."
+    + " They can serve as bold wall accents, drawing attention to specific elements.";
+
+GenerateImagesOptions options = new GenerateImagesOptions()
+    .setQuality(ImageGenerationQuality.HD)
+    .setSize(ImageSize.SIZE1792X1024)
+    .setStyle(ImageGenerationStyle.VIVID);
+
+GenerateImageResultCollection generateImageResultCollection = imageClient.generateImages(prompt, options);
+GenerateImageResult generateImageResult = generateImageResultCollection.getResults().get(0);
+BinaryData imageBytes = generateImageResult.getImageBytes();
+
+// Save the image to a file
+Files.copy(imageBytes.toStream(), new File("output.png").toPath(), StandardCopyOption.REPLACE_EXISTING);
+```
+
+---
+### Chat completion sample
+
+
+#### Hello world case
+The simplest "hello world" case -- given a single message, get a straightforward single completion
+```java
+ChatClient chatClient = new ChatClientBuilder()
+    .endpoint("<endpoint>")
+    .model("gpt-3.5-turbo")
+    .credential(new KeyCredential("api-key"))
+    .buildClient();
+
+ChatCompletion chatCompletion = chatClient.completeChat("Why is the sky blue?");
+System.out.println(chatCompletion.getChatRole() + ": " + chatCompletion.getContent());
+```
+
+#### Single completion with multiple messages
+```java
+ChatClient chatClient = new ChatClientBuilder()
+    .endpoint("<endpoint>")
+    .model("gpt-3.5-turbo")
+    .credential(new KeyCredential("api-key"))
+    .buildClient();
+
+List<ChatRequestMessage> messages = Arrays.asList(
+    new ChatRequestSystemMessage("You are a helpful assistant. You always talk like a pirate"),
+    new ChatRequestUserMessage(BinaryData.fromString("Ahoy, assistant! How can I train my parrot"))
+    );
+
+ChatCompletion chatCompletion = chatClient.completeChat(messages, new ChatCompletionOptions().setTemperature(0.7));
+System.out.println(chatCompletion.getChatRole() + ": " + chatCompletion.getContent());
+```
+
+#### Multiple choices on a single operation
+
+```java
+ChatClient chatClient = new ChatClientBuilder()
+    .endpoint("<endpoint>")
+    .model("gpt-3.5-turbo")
+    .credential(new KeyCredential("api-key"))
+    .buildClient();
+
+List<ChatRequestMessage> messages = Arrays.asList(
+    new ChatRequestSystemMessage("You are a helpful assistant. You always talk like a pirate"),
+    new ChatRequestUserMessage(BinaryData.fromString("Ahoy, assistant! How can I train my parrot"))
+    );
+
+ChatCompletionCollection chatCompletionCollection = chatClient.completeChat(messages, 3, new ChatCompletionOptions().setTemperature(0.7));
+chatCompletionCollection.getChatCompletions()
+        .forEach(chatCompletion -> System.out.println(chatCompletion.getChatRole() + ": " + chatCompletion.getContent()));
+```
+
+#### Chat completion with streaming response
+
+```java
+ChatClient chatClient = new ChatClientBuilder()
+    .endpoint("<endpoint>")
+    .model("gpt-3.5-turbo")
+    .credential(new KeyCredential("api-key"))
+    .buildClient();
+
+List<ChatRequestMessage> messages = Arrays.asList(
+    new ChatRequestSystemMessage("You are a helpful assistant. You always talk like a pirate"),
+    new ChatRequestUserMessage(BinaryData.fromString("Ahoy, assistant! How can I train my parrot"))
+);
+
+IterableStream<ChatUpdate> chatUpdates = chatClient.completeChatStream(messages, new ChatCompletionOptions().setTemperature(0.7));
+
+chatUpdates.forEach(chatUpdate -> {
+    if (chatUpdate.getRole() != null) {
+        System.out.print(chatUpdate.getRole() + ": ");
+    }
+    System.out.println(chatUpdate.getContentUpdate());
+});
+```
+
+
+---
+
+### Legacy completion sample
+
+```java
+LegacyCompletionClient legacyCompletionClient = new LegacyCompletionClientBuilder()
+    .endpoint("<endpoint>")
+    .model("gpt-3.5-turbo-instruct")
+    .credential(new KeyCredential("api-key"))
+    .buildClient();
+
+Object completionRequestBody = new Object() {
+    final String model = "gpt-3.5-turbo-instruct";
+    final String prompt = "write a haiku about bananas";
+    final int maxTokens = 256;
+};
+Response<BinaryData> binaryDataResponse = legacyCompletionClient.completeTextWithResponse(BinaryData.fromObject(completionRequestBody), new RequestOptions());
+TypeReference<Map<String, Object>> mapTypeReference = new TypeReference<Map<String, Object>>() { };
+Map<String, Object> objectMap = binaryDataResponse.getValue().toObject(mapTypeReference);
+
+System.out.println(objectMap.get("choices"));
+```
+
+---
+
+### Embeddings sample
+
+```java
+EmbeddingClient embeddingClient = new EmbeddingClientBuilder()
+    .endpoint("<endpoint>")
+    .model("text-embedding-ada-002")
+    .credential(new KeyCredential("api-key"))
+    .buildClient();
+
+Embedding embedding = embeddingClient.generateEmbedding("this is my awesome text I want indexed somewhere");
+List<Double> embeddingValue = embedding.getEmbedding();
+// use the represented array for a search index, etc.
+```
+
+---
+
+
+### Audio sample
+
+```java
+AudioClient audioClient = new AudioClientBuilder()
+    .endpoint("<endpoint>")
+    .model("whisper-1")
+    .credential(new KeyCredential("api-key"))
+    .buildClient();
+
+// transcribe an audio file
+AudioTranscription audioTranscription = audioClient.transcribeAudio(BinaryData.fromFile(new File("audio.wav").toPath()));
+// write the transcribed text to console
+System.out.println(audioTranscription.getText());
+
+// translate an audio file
+AudioTranslationOptions audioTranslationOptions = new AudioTranslationOptions()
+    .setTranslationFormat(AudioTranslationFormat.TEXT);
+
+Response<AudioTranslation> audioTranslationResponse = audioClient
+    .translateAudioWithResponse(BinaryData.fromFile(new File("audio.wav").toPath()),
+    audioTranslationOptions, new RequestOptions());
+
+// write the translated text to console
+System.out.println(audioTranslationResponse.getValue().getText());
+```
