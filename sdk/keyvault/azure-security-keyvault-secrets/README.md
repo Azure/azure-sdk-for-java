@@ -106,7 +106,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [retrieve_secret_sample]:https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.secrets.secretclient?view=azure-java-stable#get-a-secret
 [update_secret_sample]:https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.secrets.secretclient?view=azure-java-stable#com-azure-security-keyvault-secrets-secretclient-updatesecretproperties(com-azure-security-keyvault-secrets-models-secretproperties)
 [delete_secret_sample]:https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.secrets.secretclient?view=azure-java-stable#delete-a-secret
-[list_secret_sample]:https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.secrets.secretclient?view=azure-java-stable#com-azure-security-keyvault-secrets-secretclient-listpropertiesofsecrets()
+[list_secrets_sample]:https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.secrets.secretclient?view=azure-java-stable#com-azure-security-keyvault-secrets-secretclient-listpropertiesofsecrets()
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-secrets%2FREADME.png)
