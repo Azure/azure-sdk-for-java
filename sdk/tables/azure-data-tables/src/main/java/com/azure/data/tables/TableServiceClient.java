@@ -50,7 +50,6 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callIterableWithOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callWithOptionalTimeout;
-import static com.azure.data.tables.implementation.TableUtils.callWithOptionalTimeoutAndContext;
 import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
 
 /**
@@ -412,7 +411,7 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableWithResponse(String tableName, Duration timeout, Context context) {
         Supplier<Response<TableClient>> callable = () -> createTableWithResponse(tableName, context);
-        return callWithOptionalTimeoutAndContext(callable, THREAD_POOL, timeout, logger, context);
+        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
     }
 
     Response<TableClient> createTableWithResponse(String tableName, Context context) {
@@ -478,11 +477,10 @@ public final class TableServiceClient {
     public Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Duration timeout,
                                                                     Context context) {
         Supplier<Response<TableClient>> callable = () -> createTableIfNotExistsWithResponse(tableName, context);
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger, true);
     }
 
     Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Context context) {
-        context = TableUtils.skip409Logging(TableUtils.setContext(context, true));
         return createTableWithResponse(tableName, null, context);
     }
 

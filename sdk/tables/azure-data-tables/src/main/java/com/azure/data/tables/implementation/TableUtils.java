@@ -618,24 +618,17 @@ public final class TableUtils {
     }
 
     public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) {
-        try {
-            return callHandler(callable, threadPool, timeout, logger);
-        } catch (Throwable thrown) {
-            Throwable exception = mapThrowableToTableServiceException(thrown);
-            throw logger.logExceptionAsError((RuntimeException) exception);
-        }
-
+        return callWithOptionalTimeout(callable, threadPool, timeout, logger, false);
     }
 
-    public static <T> Response<T> callWithOptionalTimeoutAndContext(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger, Context context) {
+    public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger, boolean skip409Logging) {
         try {
             return callHandler(callable, threadPool, timeout, logger);
         } catch (Throwable thrown) {
             Throwable exception = mapThrowableToTableServiceException(thrown);
-            context = setContext(context);
-
             if (exception instanceof TableServiceException) {
-                if (shouldSkip409Logging((TableServiceException) exception, context)) {
+                TableServiceException e = (TableServiceException) exception;
+                if (skip409Logging && e.getResponse() != null && e.getResponse().getStatusCode() == 409) {
                     // return empty response
                     HttpResponse resp = ((TableServiceException) exception).getResponse();
                     return new SimpleResponse<>(resp.getRequest(), resp.getStatusCode(), resp.getHeaders(), null);
@@ -649,13 +642,13 @@ public final class TableUtils {
     public static <T> PagedIterable<T> callIterableWithOptionalTimeout(Supplier<PagedIterable<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) {
         try {
             return callHandler(callable, threadPool, timeout, logger);
-        } catch (Throwable thrown) {
+        } catch (Exception thrown) {
             Throwable exception = mapThrowableToTableServiceException(thrown);
             throw logger.logExceptionAsError((RuntimeException) exception);
         }
     }
 
-    private static <T> T callHandler(Supplier<T> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) throws Throwable {
+    private static <T> T callHandler(Supplier<T> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) throws Exception {
         try {
             return hasTimeout(timeout)
                 ? getResultWithTimeout(threadPool.submit(callable::get), timeout)
@@ -664,17 +657,10 @@ public final class TableUtils {
 
             if (ex instanceof ExecutionException) {
                 Throwable cause = ex.getCause();
-                throw mapThrowableToTableServiceException(cause);
+                throw (Exception) mapThrowableToTableServiceException(cause);
             } else {
                 throw logger.logExceptionAsError(new RuntimeException(ex));
             }
         }
-    }
-
-    private static boolean shouldSkip409Logging(TableServiceException e, Context context) {
-        if (context.getData("skip409logging").isPresent() && context.getData("skip409logging").get().equals(true)) {
-            return e.getResponse() != null && e.getResponse().getStatusCode() == 409;
-        }
-        return false;
     }
 }
