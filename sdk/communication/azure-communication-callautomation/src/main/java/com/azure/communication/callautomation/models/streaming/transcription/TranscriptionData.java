@@ -138,13 +138,13 @@ public final class TranscriptionData extends StreamingData {
         return offset;
     }
     /**
-         * Get the duration property.
-         *
-         * @return the duration value.
-         */
-        public Long getDuration() {
-            return duration;
-        }
+     * Get the duration property.
+     *
+     * @return the duration value.
+     */
+    public Long getDuration() {
+        return duration;
+    }
     /**
      * Get the words property.
      *
