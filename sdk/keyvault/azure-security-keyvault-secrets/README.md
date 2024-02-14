@@ -53,9 +53,13 @@ SecretClient secretClient = new SecretClientBuilder()
 
 > NOTE: For using an asynchronous client use `SecretAsyncClient` instead of `SecretClient` and call `buildAsyncClient()`.
 
-## Key concepts and Examples
+## Key concepts
 
-Key concepts, code examples, and usage instructions for this library are discussed in great detail in the [Keyvault Secrets ref docs][api_documentation]. Additionally, there are more comprehensive code samples available from the following links:
+Key concepts, code examples, and usage instructions for this library are discussed in great detail in the [Keyvault Secrets ref docs][api_documentation].
+
+## Examples 
+
+There are more comprehensive code samples available from the following links: 
 
 - [Create a secret][create_secret_sample]
 - [Retrieve a secret][retrieve_secret_sample]
