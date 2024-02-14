@@ -227,7 +227,7 @@ class DefaultHttpClient implements HttpClient {
     private void processTextEventStream(HttpRequest httpRequest, HttpURLConnection connection, ServerSentEventListener listener) {
         RetrySSEResult retrySSEResult;
         try (BufferedReader reader
-                 = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                 = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"))) {
             retrySSEResult = processBuffer(reader, listener);
             if (retrySSEResult != null) {
                 retryExceptionForSSE(retrySSEResult, listener, httpRequest);
@@ -260,7 +260,7 @@ class DefaultHttpClient implements HttpClient {
                     if (!Objects.equals(event.getEvent(), DEFAULT_EVENT) || event.getData() != null) {
                         listener.onEvent(event);
                     }
-                    collectedData.setLength(0); // clear the collected data
+                    collectedData = new StringBuilder(); // clear the collected data
                 }
             }
             listener.onClose();
@@ -285,12 +285,9 @@ class DefaultHttpClient implements HttpClient {
             if (idx == 0) {
                 event.setComment(line.substring(1).trim());
                 continue;
-            } else if (idx < 0) {
-                throw new IllegalArgumentException("Invalid data received from server");
             }
-
-            String field = line.substring(0, idx).trim().toLowerCase();
-            String value = line.substring(idx + 1).trim();
+            String field = line.substring(0, idx < 0 ? lines.length : idx).trim().toLowerCase();
+            String value = idx < 0 ? "" : line.substring(idx + 1).trim();
 
             switch (field) {
                 case "event":

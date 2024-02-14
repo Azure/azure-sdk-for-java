@@ -92,12 +92,14 @@ public class DefaultHttpClientTest {
                 resp.setContentLength(0);
             } else if (get && "/connectionClose".equals(path)) {
                 resp.getHttpChannel().getConnection().close();
-            }  else if (get || post && SSE_RESPONSE.equals(path)) {
+            }  else if (get && SSE_RESPONSE.equals(path)) {
                 if (req.getHeader("Last-Event-Id") != null) {
                     sendSSELastEventIdResponse(resp);
                 } else {
-                    sendSSEResponse(resp);
+                    sendSSEResponseWithRetry(resp);
                 }
+            }  else if (post && SSE_RESPONSE.equals(path)) {
+                sendSSEResponseWithDataOnly(resp);
             } else if (put && SSE_RESPONSE.equals(path)) {
                 resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
                 resp.setStatus(200);
@@ -111,7 +113,15 @@ public class DefaultHttpClientTest {
         server.start();
     }
 
-    private static String addServerSentEvent() {
+    private static void sendSSEResponseWithDataOnly(Response resp) throws IOException {
+            resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
+            resp.getOutputStream().write(("data: YHOO\n" +
+                            "data: +2\n" +
+                            "data: 10").getBytes());
+            resp.flushBuffer();
+        }
+
+    private static String addServerSentEventWithRetry() {
         return ": test stream\n" +
             "data: first event\n" +
             "id: 1\n" +
@@ -122,10 +132,10 @@ public class DefaultHttpClientTest {
             "data:  third event";
     }
 
-    private static void sendSSEResponse(Response resp)
+    private static void sendSSEResponseWithRetry(Response resp)
         throws IOException {
         resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
-        resp.getOutputStream().write(addServerSentEvent().getBytes());
+        resp.getOutputStream().write(addServerSentEventWithRetry().getBytes());
         resp.flushBuffer();
     }
 
@@ -286,7 +296,7 @@ public class DefaultHttpClientTest {
         request.getMetadata().setEagerlyConvertHeaders(false);
 
         // Rec
-        createHttpClient().send(request.setServerSentEventListener(sse -> assertTrue(sse.getId() != null, "OnEvent Invoked")));
+        createHttpClient().send(request.setServerSentEventListener(sse -> assertEquals("YHOO\\n+2\\n10", sse.getData())));
     }
 
     @Test
