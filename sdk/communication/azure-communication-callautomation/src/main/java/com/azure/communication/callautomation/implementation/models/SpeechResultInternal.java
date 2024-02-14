@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The speech status as a result.
- */
+/** The speech status as a result. */
 @Fluent
 public final class SpeechResultInternal {
     /*
@@ -19,14 +17,8 @@ public final class SpeechResultInternal {
     private String speech;
 
     /**
-     * Creates an instance of SpeechResultInternal class.
-     */
-    public SpeechResultInternal() {
-    }
-
-    /**
      * Get the speech property: The recognized speech in string.
-     * 
+     *
      * @return the speech value.
      */
     public String getSpeech() {
@@ -35,7 +27,7 @@ public final class SpeechResultInternal {
 
     /**
      * Set the speech property: The recognized speech in string.
-     * 
+     *
      * @param speech the speech value to set.
      * @return the SpeechResultInternal object itself.
      */
