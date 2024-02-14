@@ -5,7 +5,6 @@ package com.azure.communication.callautomation.models.streaming.media;
 
 import com.azure.communication.callautomation.models.streaming.StreamingData;
 import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.communication.common.CommunicationUserIdentifier;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -45,7 +44,7 @@ public final class AudioData extends StreamingData {
         this.data = data;
         this.timestamp = OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         if (participantRawID != null && !participantRawID.isEmpty()) {
-            this.participant = new CommunicationUserIdentifier(participantRawID);
+            this.participant = CommunicationIdentifier.fromRawId(participantRawID);
         } else {
             participant = null;
         }

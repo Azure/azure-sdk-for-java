@@ -37,6 +37,13 @@ public final class TranscriptionDataConverter {
     @JsonProperty(value = "offset")
     private long offset;
 
+     /*
+     * Duration in ticks. 1 tick = 100 nanoseconds.
+     */
+    @JsonProperty(value = "duration")
+    private long duration;
+
+
     /*
      * TThe result for each word of the phrase
      */
@@ -83,6 +90,14 @@ public final class TranscriptionDataConverter {
     }
 
     /**
+     * Get the duration property.
+     *
+     * @return the duration value.
+     */
+    public long getDuration() {
+        return duration;
+    }
+  /**
      * Get the offset property.
      *
      * @return the offset value.
@@ -90,7 +105,7 @@ public final class TranscriptionDataConverter {
     public long getOffset() {
         return offset;
     }
-
+    
     /**
      * Get the words property.
      *
