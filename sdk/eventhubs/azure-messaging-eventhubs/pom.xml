@@ -24,6 +24,7 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-reads com.azure.messaging.eventhubs=com.azure.core.tracing.opentelemetry
+      --add-reads com.azure.messaging.eventhubs=com.azure.core.experimental
     </javaModulesSurefireArgLine>
   </properties>
   <distributionManagement>
@@ -128,6 +129,13 @@
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
       <version>1.34.1</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-experimental</artifactId>
+      <version>1.0.0-beta.47</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

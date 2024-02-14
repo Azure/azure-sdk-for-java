@@ -33,6 +33,8 @@ import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.TeamsComplianceRecordingStateChanged;
+import com.azure.communication.callautomation.models.events.TeamsRecordingStateChanged;
 import com.azure.communication.callautomation.models.events.TranscriptionFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionResumed;
 import com.azure.communication.callautomation.models.events.TranscriptionStarted;
@@ -165,7 +167,11 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, DialogTransfer.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.DialogSensitivityUpdate")) {
                 ret = mapper.convertValue(eventData, DialogSensitivityUpdate.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TeamsComplianceRecordingStateChanged")) {
+                ret = mapper.convertValue(eventData, TeamsComplianceRecordingStateChanged.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TeamsRecordingStateChanged")) {
+                ret = mapper.convertValue(eventData, TeamsRecordingStateChanged.class);
+            }   else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
                 ret = mapper.convertValue(eventData, TranscriptionStarted.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionFailed")) {
                 ret = mapper.convertValue(eventData, TranscriptionFailed.class);

@@ -1,8 +1,16 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.3 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.2 (2024-02-13)
 
 ### Breaking Changes
 
@@ -24,11 +32,10 @@ client.listFilesWithResponse(requestOptions)
     .getData();
 ```
 
-### Bugs Fixed
-
 ### Other Changes
 
 - On `uploadFile` method in `AssistantsClient` and `AssistantsAsyncClient`, it is required to set the "filename" of the file, via `setFilename` method in `FileDetails` class. The double quote character `"`, the newline charactor `0x0A`, the return charactor `0x0D` in "filename" would be escaped by the client library.
+
 
 ## 1.0.0-beta.1 (2024-02-07)
 
