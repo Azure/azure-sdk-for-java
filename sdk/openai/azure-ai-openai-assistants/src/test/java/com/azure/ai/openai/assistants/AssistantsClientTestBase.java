@@ -271,7 +271,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     static <T> PageableList<T> asserAndGetPageableListFromResponse(Response<BinaryData> actualResponse, int expectedCode,
-                                                     Function<JsonReader, List<T>> readListFunction) {
+                                                     CheckedFunction<JsonReader, List<T>> readListFunction) {
         assertNotNull(actualResponse);
         assertEquals(expectedCode, actualResponse.getStatusCode());
         assertInstanceOf(Response.class, actualResponse);
@@ -284,8 +284,21 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
             throw new RuntimeException(e);
         }
         assertNotNull(object);
-//        assertInstanceOf(typeReference.getJavaClass(), object);
         return object;
+    }
+
+    protected interface CheckedFunction<T, R> extends Function<T, R> {
+
+        @Override
+        default R apply(T t) {
+            try {
+                return applyThrows(t);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        R applyThrows(T t) throws Exception;
     }
 
     protected static void assertFileEquals(OpenAIFile expected, OpenAIFile actual) {

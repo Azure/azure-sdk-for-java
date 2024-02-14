@@ -17,6 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -164,8 +165,8 @@ public class AssistantsAsyncTest extends AssistantsClientTestBase {
             // List all the assistants with response; sort by name ascending
             StepVerifier.create(client.listAssistantsWithResponse(new RequestOptions()))
                     .assertNext(response -> {
-                        PageableList<Assistant> assistantsAscending = assertAndGetValueFromResponse(response,
-                            new TypeReference<PageableList<Assistant>>() {}, 200);
+                        PageableList<Assistant> assistantsAscending = asserAndGetPageableListFromResponse(response, 200,
+                            reader -> reader.readArray(Assistant::fromJson));
                         List<Assistant> dataAscending = assistantsAscending.getData();
                         assertTrue(dataAscending.size() >= 2);
                     })

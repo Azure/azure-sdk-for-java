@@ -321,13 +321,7 @@ public class AzureAssistantsSyncTest extends AssistantsClientTestBase {
                     new RequestOptions());
 
             PageableList<AssistantFile> assistantFileList = asserAndGetPageableListFromResponse(response, 200,
-                    jsonReader -> {
-                        try {
-                            return jsonReader.readArray(AssistantFile::fromJson);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+                    jsonReader -> jsonReader.readArray(AssistantFile::fromJson));
             List<AssistantFile> assistantFilesData = assistantFileList.getData();
             assertEquals(1, assistantFilesData.size());
             AssistantFile assistantFileOnly = assistantFilesData.get(0);
