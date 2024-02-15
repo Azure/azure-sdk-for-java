@@ -932,7 +932,7 @@ public class CryptographyAsyncClient {
                             shouldAttemptToInitializeLocalClient = false;
 
                             LOGGER.verbose("Could not set up local cryptography. Defaulting to service-side "
-                                + "cryptography for all operations." ,e);
+                                + "cryptography for all operations.", e);
                         } else {
                             LOGGER.verbose("Could not set up local cryptography for this operation. Defaulting to "
                                 + "service-side cryptography.", e);
