@@ -41,7 +41,8 @@ public class WarningLogger {
         if (!firstFailure.getAndSet(true)) {
             // log the first time we see an exception as soon as it occurs, along with full stack trace
             String message = "{} (future warnings will be aggregated and logged once every {} minutes)";
-            if(exception instanceof java.util.concurrent.TimeoutException && exception.getMessage().equals("Channel response timed out after 60000 milliseconds.")) {
+            if(exception instanceof java.util.concurrent.TimeoutException 
+            && exception.getMessage().equals("Channel response timed out after 60000 milliseconds.")) {
                 logger.debug(
                     message,
                     this.message,
