@@ -14,29 +14,29 @@ public final class MonitoredResourceInnerTests {
         MonitoredResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"uvfqawrlyxwj\",\"sendingMetrics\":true,\"reasonForMetricsStatus\":\"bnwbxgjvtbvpyssz\",\"sendingLogs\":false,\"reasonForLogsStatus\":\"jq\"}")
+                    "{\"id\":\"whdsoifiyip\",\"sendingMetrics\":false,\"reasonForMetricsStatus\":\"wpgrjbzno\",\"sendingLogs\":true,\"reasonForLogsStatus\":\"vsnb\"}")
                 .toObject(MonitoredResourceInner.class);
-        Assertions.assertEquals("uvfqawrlyxwj", model.id());
-        Assertions.assertEquals(true, model.sendingMetrics());
-        Assertions.assertEquals("bnwbxgjvtbvpyssz", model.reasonForMetricsStatus());
-        Assertions.assertEquals(false, model.sendingLogs());
-        Assertions.assertEquals("jq", model.reasonForLogsStatus());
+        Assertions.assertEquals("whdsoifiyip", model.id());
+        Assertions.assertEquals(false, model.sendingMetrics());
+        Assertions.assertEquals("wpgrjbzno", model.reasonForMetricsStatus());
+        Assertions.assertEquals(true, model.sendingLogs());
+        Assertions.assertEquals("vsnb", model.reasonForLogsStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitoredResourceInner model =
             new MonitoredResourceInner()
-                .withId("uvfqawrlyxwj")
-                .withSendingMetrics(true)
-                .withReasonForMetricsStatus("bnwbxgjvtbvpyssz")
-                .withSendingLogs(false)
-                .withReasonForLogsStatus("jq");
+                .withId("whdsoifiyip")
+                .withSendingMetrics(false)
+                .withReasonForMetricsStatus("wpgrjbzno")
+                .withSendingLogs(true)
+                .withReasonForLogsStatus("vsnb");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceInner.class);
-        Assertions.assertEquals("uvfqawrlyxwj", model.id());
-        Assertions.assertEquals(true, model.sendingMetrics());
-        Assertions.assertEquals("bnwbxgjvtbvpyssz", model.reasonForMetricsStatus());
-        Assertions.assertEquals(false, model.sendingLogs());
-        Assertions.assertEquals("jq", model.reasonForLogsStatus());
+        Assertions.assertEquals("whdsoifiyip", model.id());
+        Assertions.assertEquals(false, model.sendingMetrics());
+        Assertions.assertEquals("wpgrjbzno", model.reasonForMetricsStatus());
+        Assertions.assertEquals(true, model.sendingLogs());
+        Assertions.assertEquals("vsnb", model.reasonForLogsStatus());
     }
 }

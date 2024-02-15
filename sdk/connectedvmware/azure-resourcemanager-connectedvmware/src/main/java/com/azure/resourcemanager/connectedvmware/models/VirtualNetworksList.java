@@ -25,6 +25,10 @@ public final class VirtualNetworksList {
     @JsonProperty(value = "value", required = true)
     private List<VirtualNetworkInner> value;
 
+    /** Creates an instance of VirtualNetworksList class. */
+    public VirtualNetworksList() {
+    }
+
     /**
      * Get the nextLink property: Url to follow for getting next page of VirtualNetworks.
      *

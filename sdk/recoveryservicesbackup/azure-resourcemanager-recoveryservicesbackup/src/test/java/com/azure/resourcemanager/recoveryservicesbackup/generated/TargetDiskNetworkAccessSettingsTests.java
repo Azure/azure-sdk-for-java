@@ -12,29 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class TargetDiskNetworkAccessSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetDiskNetworkAccessSettings model =
-            BinaryData
-                .fromString(
-                    "{\"targetDiskNetworkAccessOption\":\"EnablePrivateAccessForAllDisks\",\"targetDiskAccessId\":\"yospspshc\"}")
-                .toObject(TargetDiskNetworkAccessSettings.class);
-        Assertions
-            .assertEquals(
-                TargetDiskNetworkAccessOption.ENABLE_PRIVATE_ACCESS_FOR_ALL_DISKS,
-                model.targetDiskNetworkAccessOption());
-        Assertions.assertEquals("yospspshc", model.targetDiskAccessId());
+        TargetDiskNetworkAccessSettings model = BinaryData
+            .fromString("{\"targetDiskNetworkAccessOption\":\"SameAsOnSourceDisks\",\"targetDiskAccessId\":\"vthn\"}")
+            .toObject(TargetDiskNetworkAccessSettings.class);
+        Assertions.assertEquals(TargetDiskNetworkAccessOption.SAME_AS_ON_SOURCE_DISKS,
+            model.targetDiskNetworkAccessOption());
+        Assertions.assertEquals("vthn", model.targetDiskAccessId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetDiskNetworkAccessSettings model =
-            new TargetDiskNetworkAccessSettings()
-                .withTargetDiskNetworkAccessOption(TargetDiskNetworkAccessOption.ENABLE_PRIVATE_ACCESS_FOR_ALL_DISKS)
-                .withTargetDiskAccessId("yospspshc");
+        TargetDiskNetworkAccessSettings model = new TargetDiskNetworkAccessSettings()
+            .withTargetDiskNetworkAccessOption(TargetDiskNetworkAccessOption.SAME_AS_ON_SOURCE_DISKS)
+            .withTargetDiskAccessId("vthn");
         model = BinaryData.fromObject(model).toObject(TargetDiskNetworkAccessSettings.class);
-        Assertions
-            .assertEquals(
-                TargetDiskNetworkAccessOption.ENABLE_PRIVATE_ACCESS_FOR_ALL_DISKS,
-                model.targetDiskNetworkAccessOption());
-        Assertions.assertEquals("yospspshc", model.targetDiskAccessId());
+        Assertions.assertEquals(TargetDiskNetworkAccessOption.SAME_AS_ON_SOURCE_DISKS,
+            model.targetDiskNetworkAccessOption());
+        Assertions.assertEquals("vthn", model.targetDiskAccessId());
     }
 }

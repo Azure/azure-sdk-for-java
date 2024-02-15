@@ -8,18 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enable or Disable apply network policies on private end point in the subnet. */
+/**
+ * Enable or Disable apply network policies on private end point in the subnet.
+ */
 public final class VirtualNetworkPrivateEndpointNetworkPolicies
     extends ExpandableStringEnum<VirtualNetworkPrivateEndpointNetworkPolicies> {
-    /** Static value Enabled for VirtualNetworkPrivateEndpointNetworkPolicies. */
+    /**
+     * Static value Enabled for VirtualNetworkPrivateEndpointNetworkPolicies.
+     */
     public static final VirtualNetworkPrivateEndpointNetworkPolicies ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for VirtualNetworkPrivateEndpointNetworkPolicies. */
+    /**
+     * Static value Disabled for VirtualNetworkPrivateEndpointNetworkPolicies.
+     */
     public static final VirtualNetworkPrivateEndpointNetworkPolicies DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of VirtualNetworkPrivateEndpointNetworkPolicies value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,7 +34,7 @@ public final class VirtualNetworkPrivateEndpointNetworkPolicies
 
     /**
      * Creates or finds a VirtualNetworkPrivateEndpointNetworkPolicies from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VirtualNetworkPrivateEndpointNetworkPolicies.
      */
@@ -39,7 +45,7 @@ public final class VirtualNetworkPrivateEndpointNetworkPolicies
 
     /**
      * Gets known VirtualNetworkPrivateEndpointNetworkPolicies values.
-     *
+     * 
      * @return known VirtualNetworkPrivateEndpointNetworkPolicies values.
      */
     public static Collection<VirtualNetworkPrivateEndpointNetworkPolicies> values() {

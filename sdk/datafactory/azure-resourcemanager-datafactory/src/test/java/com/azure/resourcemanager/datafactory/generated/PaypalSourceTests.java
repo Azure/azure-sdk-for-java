@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.PaypalSource;
 public final class PaypalSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PaypalSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"PaypalSource\",\"query\":\"datamm\",\"queryTimeout\":\"datatzxsvwqiwgjwrhu\",\"additionalColumns\":\"dataaaaxigafa\",\"sourceRetryCount\":\"datatoo\",\"sourceRetryWait\":\"datazdoblpdtcyv\",\"maxConcurrentConnections\":\"datahboplavgfbvro\",\"disableMetricsCollection\":\"datauexqweyslwlppoh\",\"\":{\"gb\":\"datagalexyiygkadtwd\",\"vxcjdobsgv\":\"dataxt\"}}")
-                .toObject(PaypalSource.class);
+        PaypalSource model = BinaryData.fromString(
+            "{\"type\":\"PaypalSource\",\"query\":\"datacrejt\",\"queryTimeout\":\"dataqqoz\",\"additionalColumns\":\"datasbpqwnmfjktdvdh\",\"sourceRetryCount\":\"dataztaluuup\",\"sourceRetryWait\":\"dataaoatzvajwvxh\",\"maxConcurrentConnections\":\"datamotulhilmazgp\",\"disableMetricsCollection\":\"datarppsoeo\",\"\":{\"ln\":\"datawtye\",\"dxsgwd\":\"datagqeplyos\"}}")
+            .toObject(PaypalSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PaypalSource model =
-            new PaypalSource()
-                .withSourceRetryCount("datatoo")
-                .withSourceRetryWait("datazdoblpdtcyv")
-                .withMaxConcurrentConnections("datahboplavgfbvro")
-                .withDisableMetricsCollection("datauexqweyslwlppoh")
-                .withQueryTimeout("datatzxsvwqiwgjwrhu")
-                .withAdditionalColumns("dataaaaxigafa")
-                .withQuery("datamm");
+        PaypalSource model
+            = new PaypalSource().withSourceRetryCount("dataztaluuup").withSourceRetryWait("dataaoatzvajwvxh")
+                .withMaxConcurrentConnections("datamotulhilmazgp").withDisableMetricsCollection("datarppsoeo")
+                .withQueryTimeout("dataqqoz").withAdditionalColumns("datasbpqwnmfjktdvdh").withQuery("datacrejt");
         model = BinaryData.fromObject(model).toObject(PaypalSource.class);
     }
 }

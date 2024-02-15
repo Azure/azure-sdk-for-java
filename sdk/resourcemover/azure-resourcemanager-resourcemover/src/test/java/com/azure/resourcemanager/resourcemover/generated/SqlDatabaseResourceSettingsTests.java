@@ -7,6 +7,8 @@ package com.azure.resourcemanager.resourcemover.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcemover.models.SqlDatabaseResourceSettings;
 import com.azure.resourcemanager.resourcemover.models.ZoneRedundant;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class SqlDatabaseResourceSettingsTests {
@@ -15,18 +17,47 @@ public final class SqlDatabaseResourceSettingsTests {
         SqlDatabaseResourceSettings model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"Microsoft.Sql/servers/databases\",\"zoneRedundant\":\"Disable\",\"targetResourceName\":\"c\"}")
+                    "{\"resourceType\":\"Microsoft.Sql/servers/databases\",\"tags\":{\"ymjhxxjyngudivkr\":\"qjhhkxbpv\",\"szjfauvjfdxxivet\":\"swbxqz\",\"qaqtdoqmcbxvwvxy\":\"t\",\"obl\":\"lqbhsf\"},\"zoneRedundant\":\"Enable\",\"targetResourceName\":\"lmpewwwfbkr\",\"targetResourceGroupName\":\"nsvs\"}")
                 .toObject(SqlDatabaseResourceSettings.class);
-        Assertions.assertEquals("c", model.targetResourceName());
-        Assertions.assertEquals(ZoneRedundant.DISABLE, model.zoneRedundant());
+        Assertions.assertEquals("lmpewwwfbkr", model.targetResourceName());
+        Assertions.assertEquals("nsvs", model.targetResourceGroupName());
+        Assertions.assertEquals("qjhhkxbpv", model.tags().get("ymjhxxjyngudivkr"));
+        Assertions.assertEquals(ZoneRedundant.ENABLE, model.zoneRedundant());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlDatabaseResourceSettings model =
-            new SqlDatabaseResourceSettings().withTargetResourceName("c").withZoneRedundant(ZoneRedundant.DISABLE);
+            new SqlDatabaseResourceSettings()
+                .withTargetResourceName("lmpewwwfbkr")
+                .withTargetResourceGroupName("nsvs")
+                .withTags(
+                    mapOf(
+                        "ymjhxxjyngudivkr",
+                        "qjhhkxbpv",
+                        "szjfauvjfdxxivet",
+                        "swbxqz",
+                        "qaqtdoqmcbxvwvxy",
+                        "t",
+                        "obl",
+                        "lqbhsf"))
+                .withZoneRedundant(ZoneRedundant.ENABLE);
         model = BinaryData.fromObject(model).toObject(SqlDatabaseResourceSettings.class);
-        Assertions.assertEquals("c", model.targetResourceName());
-        Assertions.assertEquals(ZoneRedundant.DISABLE, model.zoneRedundant());
+        Assertions.assertEquals("lmpewwwfbkr", model.targetResourceName());
+        Assertions.assertEquals("nsvs", model.targetResourceGroupName());
+        Assertions.assertEquals("qjhhkxbpv", model.tags().get("ymjhxxjyngudivkr"));
+        Assertions.assertEquals(ZoneRedundant.ENABLE, model.zoneRedundant());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

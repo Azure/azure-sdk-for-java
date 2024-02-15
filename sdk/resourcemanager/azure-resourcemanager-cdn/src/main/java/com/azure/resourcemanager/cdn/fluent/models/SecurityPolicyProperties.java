@@ -24,6 +24,10 @@ public final class SecurityPolicyProperties extends AfdStateProperties {
     @JsonProperty(value = "parameters")
     private SecurityPolicyPropertiesParameters parameters;
 
+    /** Creates an instance of SecurityPolicyProperties class. */
+    public SecurityPolicyProperties() {
+    }
+
     /**
      * Get the profileName property: The name of the profile which holds the security policy.
      *

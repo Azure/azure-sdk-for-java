@@ -29,6 +29,12 @@ public class ProjectUpdateProperties {
     @JsonProperty(value = "maxDevBoxesPerUser")
     private Integer maxDevBoxesPerUser;
 
+    /*
+     * The display name of the project.
+     */
+    @JsonProperty(value = "displayName")
+    private String displayName;
+
     /** Creates an instance of ProjectUpdateProperties class. */
     public ProjectUpdateProperties() {
     }
@@ -92,6 +98,26 @@ public class ProjectUpdateProperties {
      */
     public ProjectUpdateProperties withMaxDevBoxesPerUser(Integer maxDevBoxesPerUser) {
         this.maxDevBoxesPerUser = maxDevBoxesPerUser;
+        return this;
+    }
+
+    /**
+     * Get the displayName property: The display name of the project.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: The display name of the project.
+     *
+     * @param displayName the displayName value to set.
+     * @return the ProjectUpdateProperties object itself.
+     */
+    public ProjectUpdateProperties withDisplayName(String displayName) {
+        this.displayName = displayName;
         return this;
     }
 

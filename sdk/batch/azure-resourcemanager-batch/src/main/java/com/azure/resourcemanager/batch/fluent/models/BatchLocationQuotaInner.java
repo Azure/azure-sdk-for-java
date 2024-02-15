@@ -7,7 +7,9 @@ package com.azure.resourcemanager.batch.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Quotas associated with a Batch region for a particular subscription. */
+/**
+ * Quotas associated with a Batch region for a particular subscription.
+ */
 @Immutable
 public final class BatchLocationQuotaInner {
     /*
@@ -16,14 +18,16 @@ public final class BatchLocationQuotaInner {
     @JsonProperty(value = "accountQuota", access = JsonProperty.Access.WRITE_ONLY)
     private Integer accountQuota;
 
-    /** Creates an instance of BatchLocationQuotaInner class. */
+    /**
+     * Creates an instance of BatchLocationQuotaInner class.
+     */
     public BatchLocationQuotaInner() {
     }
 
     /**
      * Get the accountQuota property: The number of Batch accounts that may be created under the subscription in the
      * specified region.
-     *
+     * 
      * @return the accountQuota value.
      */
     public Integer accountQuota() {
@@ -32,7 +36,7 @@ public final class BatchLocationQuotaInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

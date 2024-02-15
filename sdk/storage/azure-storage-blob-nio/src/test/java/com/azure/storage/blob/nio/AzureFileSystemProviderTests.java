@@ -21,8 +21,8 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -798,7 +798,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
             fs.getPath(generateBlobName()), option, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING));
     }
 
-    @EnabledIf("com.azure.storage.blob.nio.BlobNioTestBase#liveOnly")
+    @LiveOnly
     @ParameterizedTest
     @CsvSource(value = {"60,0", "150,3"})
     public void outputStreamFileSystemConfig(int dataSize, int blockCount) throws IOException {
@@ -1024,7 +1024,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
             fs.getPath(generateBlobName()), option, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING));
     }
 
-    @EnabledIf("com.azure.storage.blob.nio.BlobNioTestBase#liveOnly")
+    @LiveOnly
     @ParameterizedTest
     @CsvSource(value = {"60,0", "150,3"})
     public void byteChannelFileSystemConfig(int dataSize, int blockCount) throws IOException {

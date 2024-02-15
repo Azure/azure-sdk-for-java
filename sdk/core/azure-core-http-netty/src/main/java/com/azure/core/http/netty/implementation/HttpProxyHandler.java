@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -94,12 +93,18 @@ public final class HttpProxyHandler extends ProxyHandler {
     private final AuthorizationChallengeHandler challengeHandler;
     private final AtomicReference<ChallengeHolder> proxyChallengeHolderReference;
     private final HttpClientCodec codec;
-    private final AtomicBoolean hasHandledChallenge = new AtomicBoolean();
 
     private String authScheme = null;
     private HttpResponseStatus status;
     private HttpHeaders innerHeaders;
 
+    /**
+     * Creates an instance of HttpProxyHandler.
+     *
+     * @param proxyAddress The address of the proxy.
+     * @param challengeHandler The challenge handler to use when authenticating with the proxy.
+     * @param proxyChallengeHolderReference The reference to the proxy challenge holder.
+     */
     public HttpProxyHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
         AtomicReference<ChallengeHolder> proxyChallengeHolderReference) {
         super(proxyAddress);
@@ -190,7 +195,6 @@ public final class HttpProxyHandler extends ProxyHandler {
          * created from the same client.
          */
         if (proxyChallengeHolder != null) {
-            hasHandledChallenge.set(true);
             // Attempt to apply digest challenges, these are preferred over basic authorization.
             List<Map<String, String>> digestChallenges = proxyChallengeHolder.getDigestChallenges();
             if (!CoreUtils.isNullOrEmpty(digestChallenges)) {
@@ -238,19 +242,9 @@ public final class HttpProxyHandler extends ProxyHandler {
         }
 
         boolean responseComplete = o instanceof LastHttpContent;
-        if (responseComplete) {
-            if (status == null) {
-                throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
-                    "Never received response for CONNECT request.", innerHeaders);
-            } else if (status.code() != 200) {
-                // Return the error response on the first attempt as the proxy handler doesn't apply credentials on the
-                // first attempt.
-                if (hasHandledChallenge.get()) {
-                    // Later attempts throw an exception.
-                    throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
-                        "Failed to connect to proxy. Status: " + status, innerHeaders);
-                }
-            }
+        if (responseComplete && status == null) {
+            throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
+                "Never received response for CONNECT request.", innerHeaders);
         }
 
         return responseComplete;

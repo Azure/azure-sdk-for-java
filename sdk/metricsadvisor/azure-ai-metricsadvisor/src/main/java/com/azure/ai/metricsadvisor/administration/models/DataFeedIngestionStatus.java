@@ -28,6 +28,12 @@ public final class DataFeedIngestionStatus {
     private String message;
 
     /**
+     * Construct DataFeedIngestionStatus object.
+     */
+    public DataFeedIngestionStatus() {
+    }
+
+    /**
      * Get the timestamp property: data slice timestamp.
      *
      * @return the timestamp value.

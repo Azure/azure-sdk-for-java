@@ -51,6 +51,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: appconfiguration
+    JavadocSafeJavaBuildVersion: '1.21'
     EnableBatchRelease: true
     Artifacts:
       - name: azure-data-appconfiguration
@@ -61,3 +62,9 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerappconfiguration
         releaseInBatch: ${{ parameters.release_azureresourcemanagerappconfiguration }}
+    MatrixConfigs:
+      - Name: App_configuration_ci
+        Path: sdk/appconfiguration/platform-matrix-ci.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true

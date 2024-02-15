@@ -82,7 +82,7 @@ And finally, tear down the Dev Box when we're finished:
 // Tear down the Dev Box when we're finished:
 SyncPoller<BinaryData, Void> devBoxDeleteResponse =
                 devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
-devBoxDeleteResponse.waitForCompletion();        
+devBoxDeleteResponse.waitForCompletion();
 ```
 
 ## Environment samples
@@ -113,20 +113,25 @@ Environments clients are created in essentially the same manner:
 
 
 ```java com.azure.developer.devcenter.readme.createEnvironmentsClient
-EnvironmentsClient environmentsClient =
-                new EnvironmentsClientBuilder()
-                        .endpoint(endpoint)
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .buildClient();
+DeploymentEnvironmentsClient environmentsClient =
+                    new DeploymentEnvironmentsClientBuilder()
+                            .endpoint(endpoint)
+                            .credential(new DefaultAzureCredentialBuilder().build())
+                            .buildClient();
 ```
 
 ### Fetching resources
 
-Now we'll fetch available catalog item, and environment type resources.
-```java com.azure.developer.devcenter.readme.getCatalogItemsAndEnvironmentTypes
-// Fetch available catalog items and environment types
-PagedIterable<BinaryData> catalogItemListResponse = environmentsClient.listCatalogItems("myProject", null);
-for (BinaryData p: catalogItemListResponse) {
+Now we'll fetch available catalogs, environment definitions, and environment type resources.
+```java com.azure.developer.devcenter.readme.getEnvironmentDefinitionsAndTypes
+// Fetch available environment definitions and environment types
+PagedIterable<BinaryData> listCatalogsResponse = environmentsClient.listCatalogs("myProject", null);
+for (BinaryData p: listCatalogsResponse) {
+    System.out.println(p);
+}
+
+PagedIterable<BinaryData> environmentDefinitionsListResponse = environmentsClient.listEnvironmentDefinitionsByCatalog("myProject", "myCatalog", null);
+for (BinaryData p: environmentDefinitionsListResponse) {
     System.out.println(p);
 }
 
@@ -136,13 +141,13 @@ for (BinaryData p: environmentTypesListResponse) {
 }
 ```
 
-Once we've decided on which catalog item and environment type to use, we can create an environment.
+Once we've decided on which environment definition and environment type to use, we can create an environment.
 
 ```java com.azure.developer.devcenter.readme.createEnvironment
 // Create an environment
-BinaryData environmentBody = BinaryData.fromString("{\"catalogItemName\":\"MyCatalogItem\", \"environmentType\":\"MyEnvironmentType\"}");
+BinaryData environmentBody = BinaryData.fromString("{\"environmentDefinitionName\":\"myEnvironmentDefinition\", \"environmentType\":\"myEnvironmentType\", \"catalogName\":\"myCatalog\"}");
 SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-        environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
+                environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
 environmentCreateResponse.waitForCompletion();
 ```
 
@@ -197,20 +202,25 @@ System.out.println(remoteConnectionResponse.getValue());
 // Tear down the Dev Box when we're finished:
 SyncPoller<BinaryData, Void> devBoxDeleteResponse =
                 devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
-devBoxDeleteResponse.waitForCompletion();        
+devBoxDeleteResponse.waitForCompletion();
 ```
 
 ### Environments
 ```java com.azure.developer.devcenter.readme.environments
-EnvironmentsClient environmentsClient =
-                new EnvironmentsClientBuilder()
-                        .endpoint(endpoint)
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .buildClient();
+DeploymentEnvironmentsClient environmentsClient =
+                    new DeploymentEnvironmentsClientBuilder()
+                            .endpoint(endpoint)
+                            .credential(new DefaultAzureCredentialBuilder().build())
+                            .buildClient();
 
-// Fetch available catalog items and environment types
-PagedIterable<BinaryData> catalogItemListResponse = environmentsClient.listCatalogItems("myProject", null);
-for (BinaryData p: catalogItemListResponse) {
+// Fetch available environment definitions and environment types
+PagedIterable<BinaryData> listCatalogsResponse = environmentsClient.listCatalogs("myProject", null);
+for (BinaryData p: listCatalogsResponse) {
+    System.out.println(p);
+}
+
+PagedIterable<BinaryData> environmentDefinitionsListResponse = environmentsClient.listEnvironmentDefinitionsByCatalog("myProject", "myCatalog", null);
+for (BinaryData p: environmentDefinitionsListResponse) {
     System.out.println(p);
 }
 
@@ -220,9 +230,9 @@ for (BinaryData p: environmentTypesListResponse) {
 }
 
 // Create an environment
-BinaryData environmentBody = BinaryData.fromString("{\"catalogItemName\":\"MyCatalogItem\", \"environmentType\":\"MyEnvironmentType\"}");
+BinaryData environmentBody = BinaryData.fromString("{\"environmentDefinitionName\":\"myEnvironmentDefinition\", \"environmentType\":\"myEnvironmentType\", \"catalogName\":\"myCatalog\"}");
 SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-        environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
+                environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
 environmentCreateResponse.waitForCompletion();
 
 // Delete the environment when we're finished:

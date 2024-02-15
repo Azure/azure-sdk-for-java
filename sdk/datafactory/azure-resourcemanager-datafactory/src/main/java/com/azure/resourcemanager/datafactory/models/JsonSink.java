@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Json sink. */
+/**
+ * A copy activity Json sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("JsonSink")
 @Fluent
@@ -26,13 +28,15 @@ public final class JsonSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private JsonWriteSettings formatSettings;
 
-    /** Creates an instance of JsonSink class. */
+    /**
+     * Creates an instance of JsonSink class.
+     */
     public JsonSink() {
     }
 
     /**
      * Get the storeSettings property: Json store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreWriteSettings storeSettings() {
@@ -41,7 +45,7 @@ public final class JsonSink extends CopySink {
 
     /**
      * Set the storeSettings property: Json store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the JsonSink object itself.
      */
@@ -52,7 +56,7 @@ public final class JsonSink extends CopySink {
 
     /**
      * Get the formatSettings property: Json format settings.
-     *
+     * 
      * @return the formatSettings value.
      */
     public JsonWriteSettings formatSettings() {
@@ -61,7 +65,7 @@ public final class JsonSink extends CopySink {
 
     /**
      * Set the formatSettings property: Json format settings.
-     *
+     * 
      * @param formatSettings the formatSettings value to set.
      * @return the JsonSink object itself.
      */
@@ -70,42 +74,54 @@ public final class JsonSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -114,7 +130,7 @@ public final class JsonSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

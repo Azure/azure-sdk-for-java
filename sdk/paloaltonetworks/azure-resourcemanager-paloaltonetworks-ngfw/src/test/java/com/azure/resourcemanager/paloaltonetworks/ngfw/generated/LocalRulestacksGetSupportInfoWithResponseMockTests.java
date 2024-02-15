@@ -31,52 +31,39 @@ public final class LocalRulestacksGetSupportInfoWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"productSku\":\"hguynuchlgmltxdw\",\"productSerial\":\"ozusgz\",\"accountRegistered\":\"TRUE\",\"accountId\":\"n\",\"userDomainSupported\":\"FALSE\",\"userRegistered\":\"TRUE\",\"freeTrial\":\"FALSE\",\"freeTrialDaysLeft\":1707231140,\"freeTrialCreditLeft\":2068252791,\"helpURL\":\"wamxqzrag\",\"supportURL\":\"dphtv\",\"registerURL\":\"lajv\"}";
+        String responseStr
+            = "{\"productSku\":\"blnsntrpcaqk\",\"productSerial\":\"f\",\"accountRegistered\":\"FALSE\",\"accountId\":\"mhklbnl\",\"userDomainSupported\":\"TRUE\",\"userRegistered\":\"TRUE\",\"freeTrial\":\"TRUE\",\"freeTrialDaysLeft\":1033707853,\"freeTrialCreditLeft\":1377010436,\"helpURL\":\"wusqx\",\"supportURL\":\"rp\",\"registerURL\":\"r\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SupportInfo response =
-            manager
-                .localRulestacks()
-                .getSupportInfoWithResponse("smwr", "kcdxfzzzw", "jafi", com.azure.core.util.Context.NONE)
-                .getValue();
+        SupportInfo response = manager.localRulestacks()
+            .getSupportInfoWithResponse("qiubxdukecpxda", "v", "hctmmkosz", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("hguynuchlgmltxdw", response.productSku());
-        Assertions.assertEquals("ozusgz", response.productSerial());
-        Assertions.assertEquals(BooleanEnum.TRUE, response.accountRegistered());
-        Assertions.assertEquals("n", response.accountId());
-        Assertions.assertEquals(BooleanEnum.FALSE, response.userDomainSupported());
+        Assertions.assertEquals("blnsntrpcaqk", response.productSku());
+        Assertions.assertEquals("f", response.productSerial());
+        Assertions.assertEquals(BooleanEnum.FALSE, response.accountRegistered());
+        Assertions.assertEquals("mhklbnl", response.accountId());
+        Assertions.assertEquals(BooleanEnum.TRUE, response.userDomainSupported());
         Assertions.assertEquals(BooleanEnum.TRUE, response.userRegistered());
-        Assertions.assertEquals(BooleanEnum.FALSE, response.freeTrial());
-        Assertions.assertEquals(1707231140, response.freeTrialDaysLeft());
-        Assertions.assertEquals(2068252791, response.freeTrialCreditLeft());
-        Assertions.assertEquals("wamxqzrag", response.helpUrl());
-        Assertions.assertEquals("dphtv", response.supportUrl());
-        Assertions.assertEquals("lajv", response.registerUrl());
+        Assertions.assertEquals(BooleanEnum.TRUE, response.freeTrial());
+        Assertions.assertEquals(1033707853, response.freeTrialDaysLeft());
+        Assertions.assertEquals(1377010436, response.freeTrialCreditLeft());
+        Assertions.assertEquals("wusqx", response.helpUrl());
+        Assertions.assertEquals("rp", response.supportUrl());
+        Assertions.assertEquals("r", response.registerUrl());
     }
 }

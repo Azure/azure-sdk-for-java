@@ -11,30 +11,19 @@ import com.azure.resourcemanager.datafactory.models.NetezzaSource;
 public final class NetezzaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetezzaSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"NetezzaSource\",\"query\":\"datatu\",\"partitionOption\":\"datazvlhibr\",\"partitionSettings\":{\"partitionColumnName\":\"datagwuv\",\"partitionUpperBound\":\"dataymoqv\",\"partitionLowerBound\":\"datakrynziudmhed\"},\"queryTimeout\":\"dataygwagvuioxjwztr\",\"additionalColumns\":\"datatll\",\"sourceRetryCount\":\"datacv\",\"sourceRetryWait\":\"datanbccffsbz\",\"maxConcurrentConnections\":\"datatfxq\",\"disableMetricsCollection\":\"dataj\",\"\":{\"vbchpzvq\":\"datadjctt\"}}")
-                .toObject(NetezzaSource.class);
+        NetezzaSource model = BinaryData.fromString(
+            "{\"type\":\"NetezzaSource\",\"query\":\"dataanirlydsdmacydqa\",\"partitionOption\":\"datayvwxubgulyz\",\"partitionSettings\":{\"partitionColumnName\":\"datasxpprohuabduf\",\"partitionUpperBound\":\"dataso\",\"partitionLowerBound\":\"datapuaptpuwek\"},\"queryTimeout\":\"datal\",\"additionalColumns\":\"datamtcljopivtwxvcfc\",\"sourceRetryCount\":\"datakkcjjnq\",\"sourceRetryWait\":\"datajoayaj\",\"maxConcurrentConnections\":\"datahcxjmapgfbzbxeqz\",\"disableMetricsCollection\":\"datakfrhfafx\",\"\":{\"ulvue\":\"dataucmuax\",\"geqpa\":\"datasrxqscdbbwejrmk\",\"neteehndfpflf\":\"datallfscosfmeot\"}}")
+            .toObject(NetezzaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetezzaSource model =
-            new NetezzaSource()
-                .withSourceRetryCount("datacv")
-                .withSourceRetryWait("datanbccffsbz")
-                .withMaxConcurrentConnections("datatfxq")
-                .withDisableMetricsCollection("dataj")
-                .withQueryTimeout("dataygwagvuioxjwztr")
-                .withAdditionalColumns("datatll")
-                .withQuery("datatu")
-                .withPartitionOption("datazvlhibr")
-                .withPartitionSettings(
-                    new NetezzaPartitionSettings()
-                        .withPartitionColumnName("datagwuv")
-                        .withPartitionUpperBound("dataymoqv")
-                        .withPartitionLowerBound("datakrynziudmhed"));
+        NetezzaSource model = new NetezzaSource().withSourceRetryCount("datakkcjjnq").withSourceRetryWait("datajoayaj")
+            .withMaxConcurrentConnections("datahcxjmapgfbzbxeqz").withDisableMetricsCollection("datakfrhfafx")
+            .withQueryTimeout("datal").withAdditionalColumns("datamtcljopivtwxvcfc").withQuery("dataanirlydsdmacydqa")
+            .withPartitionOption("datayvwxubgulyz")
+            .withPartitionSettings(new NetezzaPartitionSettings().withPartitionColumnName("datasxpprohuabduf")
+                .withPartitionUpperBound("dataso").withPartitionLowerBound("datapuaptpuwek"));
         model = BinaryData.fromObject(model).toObject(NetezzaSource.class);
     }
 }

@@ -14,20 +14,20 @@ public final class CommunicationDetailsInnerTests {
         CommunicationDetailsInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"outbound\",\"sender\":\"ugidyjrr\",\"subject\":\"byao\",\"body\":\"v\",\"createdDate\":\"2021-04-28T17:45:05Z\"},\"id\":\"sonpclhocohs\",\"name\":\"kevle\",\"type\":\"gz\"}")
+                    "{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"outbound\",\"sender\":\"riuhprwm\",\"subject\":\"yvxqtayriwwroy\",\"body\":\"bexrmcq\",\"createdDate\":\"2021-02-16T05:25:07Z\"},\"id\":\"cnojvknmefqsg\",\"name\":\"vah\",\"type\":\"pjyzhpv\"}")
                 .toObject(CommunicationDetailsInner.class);
-        Assertions.assertEquals("ugidyjrr", model.sender());
-        Assertions.assertEquals("byao", model.subject());
-        Assertions.assertEquals("v", model.body());
+        Assertions.assertEquals("riuhprwm", model.sender());
+        Assertions.assertEquals("yvxqtayriwwroy", model.subject());
+        Assertions.assertEquals("bexrmcq", model.body());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommunicationDetailsInner model =
-            new CommunicationDetailsInner().withSender("ugidyjrr").withSubject("byao").withBody("v");
+            new CommunicationDetailsInner().withSender("riuhprwm").withSubject("yvxqtayriwwroy").withBody("bexrmcq");
         model = BinaryData.fromObject(model).toObject(CommunicationDetailsInner.class);
-        Assertions.assertEquals("ugidyjrr", model.sender());
-        Assertions.assertEquals("byao", model.subject());
-        Assertions.assertEquals("v", model.body());
+        Assertions.assertEquals("riuhprwm", model.sender());
+        Assertions.assertEquals("yvxqtayriwwroy", model.subject());
+        Assertions.assertEquals("bexrmcq", model.body());
     }
 }

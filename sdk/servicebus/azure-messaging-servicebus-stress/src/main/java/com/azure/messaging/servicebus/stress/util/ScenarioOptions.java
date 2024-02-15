@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.stress.util;
 
+import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -36,8 +37,20 @@ public class ScenarioOptions {
     @Value("${SERVICEBUS_SESSION_SUBSCRIPTION_NAME:#{null}}")
     private String serviceBusSessionSubscriptionName;
 
-    @Value("${METRIC_INTERVAL_SEC:60}")
-    private String metricIntervalSec;
+    @Value("${DURATION_MINUTES:15}")
+    private int durationInMinutes;
+
+    @Value("${TRY_TIMEOUT_SECONDS:60}")
+    private int tryTimeoutSeconds;
+
+    @Value("${ANNOTATION:#{null}}")
+    private String annotation;
+
+    @Value("${MESSAGE_SIZE_IN_BYTES:16}")
+    private int messageSize;
+
+    @Value("${START_DELAY_MINUTES:0}")
+    private int startDelayInMinutes;
 
     public String getTestClass() {
         return testClass;
@@ -67,11 +80,25 @@ public class ScenarioOptions {
         return serviceBusSubscriptionName;
     }
 
-    public String getServicBusSessionSubscriptionName() {
+    public String getServiceBusSessionSubscriptionName() {
         return serviceBusSessionSubscriptionName;
     }
 
-    public String getMetricIntervalSec() {
-        return metricIntervalSec;
+    public Duration getTestDuration() {
+        return Duration.ofMinutes(durationInMinutes);
+    }
+
+    public Duration getTryTimeout() {
+        return Duration.ofSeconds(tryTimeoutSeconds);
+    }
+    public String getAnnotation() {
+        return annotation;
+    }
+    public int getMessageSize() {
+        return messageSize;
+    }
+
+    public Duration getStartDelay() {
+        return Duration.ofMinutes(startDelayInMinutes);
     }
 }

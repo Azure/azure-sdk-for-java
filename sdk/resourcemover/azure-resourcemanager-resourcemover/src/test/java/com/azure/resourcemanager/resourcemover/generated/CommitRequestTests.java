@@ -16,10 +16,10 @@ public final class CommitRequestTests {
         CommitRequest model =
             BinaryData
                 .fromString(
-                    "{\"validateOnly\":false,\"moveResources\":[\"pjkjlxofpdv\",\"pfxxy\",\"ininmay\"],\"moveResourceInputType\":\"MoveResourceId\"}")
+                    "{\"validateOnly\":true,\"moveResources\":[\"nwui\"],\"moveResourceInputType\":\"MoveResourceId\"}")
                 .toObject(CommitRequest.class);
-        Assertions.assertEquals(false, model.validateOnly());
-        Assertions.assertEquals("pjkjlxofpdv", model.moveResources().get(0));
+        Assertions.assertEquals(true, model.validateOnly());
+        Assertions.assertEquals("nwui", model.moveResources().get(0));
         Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_ID, model.moveResourceInputType());
     }
 
@@ -27,12 +27,12 @@ public final class CommitRequestTests {
     public void testSerialize() throws Exception {
         CommitRequest model =
             new CommitRequest()
-                .withValidateOnly(false)
-                .withMoveResources(Arrays.asList("pjkjlxofpdv", "pfxxy", "ininmay"))
+                .withValidateOnly(true)
+                .withMoveResources(Arrays.asList("nwui"))
                 .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_ID);
         model = BinaryData.fromObject(model).toObject(CommitRequest.class);
-        Assertions.assertEquals(false, model.validateOnly());
-        Assertions.assertEquals("pjkjlxofpdv", model.moveResources().get(0));
+        Assertions.assertEquals(true, model.validateOnly());
+        Assertions.assertEquals("nwui", model.moveResources().get(0));
         Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_ID, model.moveResourceInputType());
     }
 }

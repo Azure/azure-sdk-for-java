@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.workflow.generated;
 
-import com.azure.analytics.purview.workflow.PurviewWorkflowClient;
-import com.azure.analytics.purview.workflow.PurviewWorkflowClientBuilder;
+import com.azure.analytics.purview.workflow.WorkflowRunsClient;
+import com.azure.analytics.purview.workflow.WorkflowRunsClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -14,18 +14,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class WorkflowRunsList {
     public static void main(String[] args) {
-        PurviewWorkflowClient purviewWorkflowClient =
-                new PurviewWorkflowClientBuilder()
+        WorkflowRunsClient workflowRunsClient =
+                new WorkflowRunsClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.listworkflowruns.workflowrunslist
+        // BEGIN:com.azure.analytics.purview.workflow.generated.workflowrunslist.workflowrunslist
         RequestOptions requestOptions =
                 new RequestOptions()
                         .addQueryParam("maxpagesize", "1000")
                         .addQueryParam("orderby", "startTime desc")
                         .addQueryParam("timeWindow", "30d");
-        PagedIterable<BinaryData> response = purviewWorkflowClient.listWorkflowRuns(requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.listworkflowruns.workflowrunslist
+        PagedIterable<BinaryData> response = workflowRunsClient.list(requestOptions);
+        // END:com.azure.analytics.purview.workflow.generated.workflowrunslist.workflowrunslist
     }
 }

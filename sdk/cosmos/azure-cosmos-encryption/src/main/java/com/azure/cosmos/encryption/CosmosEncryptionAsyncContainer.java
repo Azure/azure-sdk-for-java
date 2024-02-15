@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ItemDeserializer;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.ItemBulkOperation;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
@@ -67,7 +68,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
-import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -783,7 +783,7 @@ public final class CosmosEncryptionAsyncContainer {
     }
 
     private Mono<CosmosItemResponse<byte[]>> setByteArrayContent(CosmosItemResponse<byte[]> rsp,
-                                                                 Mono<byte[]> bytesMono) {
+                                                                 Mono<Pair<byte[], JsonNode>> bytesMono) {
         return bytesMono.flatMap(
             bytes -> {
                 cosmosItemResponseBuilderAccessor.setByteArrayContent(rsp, bytes);
@@ -1052,7 +1052,6 @@ public final class CosmosEncryptionAsyncContainer {
         CosmosPagedFluxOptions pagedFluxOptions) {
 
         CosmosQueryRequestOptions finalOptions = setRequestHeaders(queryRequestOptions);
-        setContinuationTokenAndMaxItemCount(pagedFluxOptions, finalOptions);
 
         return transformer.transform(
             cosmosAsyncContainerAccessor.queryItemsInternalFunc(
@@ -1087,7 +1086,6 @@ public final class CosmosEncryptionAsyncContainer {
         CosmosPagedFluxOptions pagedFluxOptions) {
 
         CosmosQueryRequestOptions finalOptions = setRequestHeaders(options);
-        setContinuationTokenAndMaxItemCount(pagedFluxOptions, finalOptions);
 
         return transformer.transform(
             cosmosAsyncContainerAccessor.queryItemsInternalFuncWithMonoSqlQuerySpec(

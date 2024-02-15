@@ -5,23 +5,31 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Metadata information for the properties JSON document. */
+/**
+ * Metadata information for the properties JSON document.
+ */
 @Fluent
-public final class DeviceTwinMetadata {
+public final class DeviceTwinMetadata implements JsonSerializable<DeviceTwinMetadata> {
     /*
      * The ISO8601 timestamp of the last time the properties were updated.
      */
-    @JsonProperty(value = "lastUpdated")
     private String lastUpdated;
 
-    /** Creates an instance of DeviceTwinMetadata class. */
-    public DeviceTwinMetadata() {}
+    /**
+     * Creates an instance of DeviceTwinMetadata class.
+     */
+    public DeviceTwinMetadata() {
+    }
 
     /**
      * Get the lastUpdated property: The ISO8601 timestamp of the last time the properties were updated.
-     *
+     * 
      * @return the lastUpdated value.
      */
     public String getLastUpdated() {
@@ -30,12 +38,45 @@ public final class DeviceTwinMetadata {
 
     /**
      * Set the lastUpdated property: The ISO8601 timestamp of the last time the properties were updated.
-     *
+     * 
      * @param lastUpdated the lastUpdated value to set.
      * @return the DeviceTwinMetadata object itself.
      */
     public DeviceTwinMetadata setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lastUpdated", this.lastUpdated);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceTwinMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceTwinMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceTwinMetadata.
+     */
+    public static DeviceTwinMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceTwinMetadata deserializedDeviceTwinMetadata = new DeviceTwinMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastUpdated".equals(fieldName)) {
+                    deserializedDeviceTwinMetadata.lastUpdated = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceTwinMetadata;
+        });
     }
 }

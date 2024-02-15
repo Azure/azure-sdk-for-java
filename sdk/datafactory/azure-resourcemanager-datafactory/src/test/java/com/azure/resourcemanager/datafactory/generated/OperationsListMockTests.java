@@ -31,87 +31,53 @@ public final class OperationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"mjlkknw\",\"origin\":\"avmrnrhsvkj\",\"display\":{\"description\":\"rmiivk\",\"provider\":\"cqynvfekjvclbkk\",\"resource\":\"frbdlsjftqahfvpm\",\"operation\":\"mu\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"wkyhn\",\"displayName\":\"tknpb\",\"blobDuration\":\"tkwstumjtg\"}],\"metricSpecifications\":[{\"name\":\"psnldjjg\",\"displayName\":\"bbon\",\"displayDescription\":\"m\",\"unit\":\"seykprgpqnesu\",\"aggregationType\":\"smtgzadpwhldx\",\"enableRegionalMdmAccount\":\"rytthzsgmugzssgz\",\"sourceMdmAccount\":\"vvqetvc\",\"sourceMdmNamespace\":\"bz\",\"availabilities\":[{},{}],\"dimensions\":[{}]},{\"name\":\"tmabrhiaomld\",\"displayName\":\"qoajpxtkraf\",\"displayDescription\":\"iquir\",\"unit\":\"qusdznnhhjdfy\",\"aggregationType\":\"iupdmbhaumpw\",\"enableRegionalMdmAccount\":\"ero\",\"sourceMdmAccount\":\"nvjouzjkjxbraqz\",\"sourceMdmNamespace\":\"vogfmpdlm\",\"availabilities\":[{},{},{},{}],\"dimensions\":[{},{},{},{}]}]}}}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"xilbsbhaqs\",\"origin\":\"wdcgdkwwulj\",\"display\":{\"description\":\"jgsxr\",\"provider\":\"bofmvauhn\",\"resource\":\"nswlfuukildlayt\",\"operation\":\"wvej\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"dpssklm\",\"displayName\":\"aeallsxfzant\",\"blobDuration\":\"bzmoqxjynh\"},{\"name\":\"kgx\",\"displayName\":\"rmdpwpz\",\"blobDuration\":\"o\"},{\"name\":\"xlkloqpwsaqcr\",\"displayName\":\"kgjdn\",\"blobDuration\":\"wpvrwec\"},{\"name\":\"kiaognmanrzjprlq\",\"displayName\":\"wpejtszjbvjcvw\",\"blobDuration\":\"cvnowzcli\"}],\"metricSpecifications\":[{\"name\":\"hxwwhusrodr\",\"displayName\":\"ozafwqmocwkwmqr\",\"displayDescription\":\"ldacxofaqassu\",\"unit\":\"s\",\"aggregationType\":\"zxznctxoczns\",\"enableRegionalMdmAccount\":\"jzsjfcaqpkpv\",\"sourceMdmAccount\":\"irvxahxys\",\"sourceMdmNamespace\":\"xokfomakmiychduf\",\"availabilities\":[{},{}],\"dimensions\":[{},{},{}]},{\"name\":\"tgzcbvxyqprch\",\"displayName\":\"firaoytkkq\",\"displayDescription\":\"a\",\"unit\":\"mnvndzf\",\"aggregationType\":\"dsrfpihvijs\",\"enableRegionalMdmAccount\":\"kpocqboyjjf\",\"sourceMdmAccount\":\"njduyotqb\",\"sourceMdmNamespace\":\"tx\",\"availabilities\":[{},{}],\"dimensions\":[{},{},{},{}]},{\"name\":\"grixolbzjl\",\"displayName\":\"p\",\"displayDescription\":\"pjstco\",\"unit\":\"i\",\"aggregationType\":\"fybafenwvvxca\",\"enableRegionalMdmAccount\":\"oemcajjazo\",\"sourceMdmAccount\":\"whgnjhxydxic\",\"sourceMdmNamespace\":\"ilgtbslagtmkii\",\"availabilities\":[{},{},{},{}],\"dimensions\":[{},{},{},{}]}]}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mjlkknw", response.iterator().next().name());
-        Assertions.assertEquals("avmrnrhsvkj", response.iterator().next().origin());
-        Assertions.assertEquals("rmiivk", response.iterator().next().display().description());
-        Assertions.assertEquals("cqynvfekjvclbkk", response.iterator().next().display().provider());
-        Assertions.assertEquals("frbdlsjftqahfvpm", response.iterator().next().display().resource());
-        Assertions.assertEquals("mu", response.iterator().next().display().operation());
-        Assertions
-            .assertEquals("wkyhn", response.iterator().next().serviceSpecification().logSpecifications().get(0).name());
-        Assertions
-            .assertEquals(
-                "tknpb", response.iterator().next().serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions
-            .assertEquals(
-                "tkwstumjtg",
-                response.iterator().next().serviceSpecification().logSpecifications().get(0).blobDuration());
-        Assertions
-            .assertEquals(
-                "psnldjjg", response.iterator().next().serviceSpecification().metricSpecifications().get(0).name());
-        Assertions
-            .assertEquals(
-                "bbon", response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayName());
-        Assertions
-            .assertEquals(
-                "m",
-                response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayDescription());
-        Assertions
-            .assertEquals(
-                "seykprgpqnesu",
-                response.iterator().next().serviceSpecification().metricSpecifications().get(0).unit());
-        Assertions
-            .assertEquals(
-                "smtgzadpwhldx",
-                response.iterator().next().serviceSpecification().metricSpecifications().get(0).aggregationType());
-        Assertions
-            .assertEquals(
-                "rytthzsgmugzssgz",
-                response
-                    .iterator()
-                    .next()
-                    .serviceSpecification()
-                    .metricSpecifications()
-                    .get(0)
-                    .enableRegionalMdmAccount());
-        Assertions
-            .assertEquals(
-                "vvqetvc",
-                response.iterator().next().serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
-        Assertions
-            .assertEquals(
-                "bz",
-                response.iterator().next().serviceSpecification().metricSpecifications().get(0).sourceMdmNamespace());
+        Assertions.assertEquals("xilbsbhaqs", response.iterator().next().name());
+        Assertions.assertEquals("wdcgdkwwulj", response.iterator().next().origin());
+        Assertions.assertEquals("jgsxr", response.iterator().next().display().description());
+        Assertions.assertEquals("bofmvauhn", response.iterator().next().display().provider());
+        Assertions.assertEquals("nswlfuukildlayt", response.iterator().next().display().resource());
+        Assertions.assertEquals("wvej", response.iterator().next().display().operation());
+        Assertions.assertEquals("dpssklm",
+            response.iterator().next().serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("aeallsxfzant",
+            response.iterator().next().serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions.assertEquals("bzmoqxjynh",
+            response.iterator().next().serviceSpecification().logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("hxwwhusrodr",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).name());
+        Assertions.assertEquals("ozafwqmocwkwmqr",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("ldacxofaqassu",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("s",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).unit());
+        Assertions.assertEquals("zxznctxoczns",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("jzsjfcaqpkpv",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
+        Assertions.assertEquals("irvxahxys",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
+        Assertions.assertEquals("xokfomakmiychduf",
+            response.iterator().next().serviceSpecification().metricSpecifications().get(0).sourceMdmNamespace());
     }
 }

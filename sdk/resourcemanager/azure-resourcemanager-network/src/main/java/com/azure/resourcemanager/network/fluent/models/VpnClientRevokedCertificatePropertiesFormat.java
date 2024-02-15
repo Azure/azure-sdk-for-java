@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the revoked VPN client certificate of virtual network gateway. */
+/**
+ * Properties of the revoked VPN client certificate of virtual network gateway.
+ */
 @Fluent
 public final class VpnClientRevokedCertificatePropertiesFormat {
     /*
@@ -23,13 +25,15 @@ public final class VpnClientRevokedCertificatePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VpnClientRevokedCertificatePropertiesFormat class. */
+    /**
+     * Creates an instance of VpnClientRevokedCertificatePropertiesFormat class.
+     */
     public VpnClientRevokedCertificatePropertiesFormat() {
     }
 
     /**
      * Get the thumbprint property: The revoked VPN client certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -38,7 +42,7 @@ public final class VpnClientRevokedCertificatePropertiesFormat {
 
     /**
      * Set the thumbprint property: The revoked VPN client certificate thumbprint.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the VpnClientRevokedCertificatePropertiesFormat object itself.
      */
@@ -49,7 +53,7 @@ public final class VpnClientRevokedCertificatePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN client revoked certificate resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,7 +62,7 @@ public final class VpnClientRevokedCertificatePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

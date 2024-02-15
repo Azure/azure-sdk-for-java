@@ -30,12 +30,17 @@ private class ChangeFeedBatch
   private val batchId = correlationActivityId.toString
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
   private val defaultParallelism = session.sparkContext.defaultParallelism
+  private val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
 
   override def planInputPartitions(): Array[InputPartition] = {
 
     log.logInfo(s"--> planInputPartitions $batchId")
     val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-    val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
+
+    val clientConfiguration = CosmosClientConfiguration.apply(
+      config,
+      readConfig.forceEventualConsistency,
+      sparkEnvironmentInfo)
     val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
     val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
@@ -51,7 +56,8 @@ private class ChangeFeedBatch
         ThroughputControlHelper.getThroughputControlClientCacheItem(
           config,
           calledFrom,
-          Some(cosmosClientStateHandles)))
+          Some(cosmosClientStateHandles),
+          sparkEnvironmentInfo))
     ).to(cacheItems => {
       val container =
         ThroughputControlHelper.getContainer(
@@ -185,6 +191,7 @@ private class ChangeFeedBatch
       schema,
       DiagnosticsContext(correlationActivityId, "Batch"),
       cosmosClientStateHandles,
-      diagnosticsConfig)
+      diagnosticsConfig,
+      sparkEnvironmentInfo)
   }
 }

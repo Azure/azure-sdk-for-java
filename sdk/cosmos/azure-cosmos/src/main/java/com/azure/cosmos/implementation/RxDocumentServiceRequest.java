@@ -232,7 +232,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                     this.resourceId = null;
                 }
             } else {
-                throw new IllegalArgumentException(RMResources.NotFound);
+                throw new IllegalArgumentException(RMResources.NotFound + ", - Path: " + path);
             }
         } else {
             this.isNameBased = false;
@@ -1056,6 +1056,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.requestContext = this.requestContext.clone();
         rxDocumentServiceRequest.feedRange = this.feedRange;
         rxDocumentServiceRequest.effectiveRange = this.effectiveRange;
+        rxDocumentServiceRequest.isFeed = this.isFeed;
         return rxDocumentServiceRequest;
     }
 

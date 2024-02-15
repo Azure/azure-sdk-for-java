@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Additional information on Azure Workload for SQL specific backup item. */
+/**
+ * Additional information on Azure Workload for SQL specific backup item.
+ */
 @Fluent
 public final class AzureVmWorkloadProtectedItemExtendedInfo {
     /*
@@ -53,13 +55,15 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
     @JsonProperty(value = "recoveryModel")
     private String recoveryModel;
 
-    /** Creates an instance of AzureVmWorkloadProtectedItemExtendedInfo class. */
+    /**
+     * Creates an instance of AzureVmWorkloadProtectedItemExtendedInfo class.
+     */
     public AzureVmWorkloadProtectedItemExtendedInfo() {
     }
 
     /**
      * Get the oldestRecoveryPoint property: The oldest backup copy available for this backup item across all tiers.
-     *
+     * 
      * @return the oldestRecoveryPoint value.
      */
     public OffsetDateTime oldestRecoveryPoint() {
@@ -68,7 +72,7 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
 
     /**
      * Set the oldestRecoveryPoint property: The oldest backup copy available for this backup item across all tiers.
-     *
+     * 
      * @param oldestRecoveryPoint the oldestRecoveryPoint value to set.
      * @return the AzureVmWorkloadProtectedItemExtendedInfo object itself.
      */
@@ -78,8 +82,9 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
     }
 
     /**
-     * Get the oldestRecoveryPointInVault property: The oldest backup copy available for this backup item in vault tier.
-     *
+     * Get the oldestRecoveryPointInVault property: The oldest backup copy available for this backup item in vault
+     * tier.
+     * 
      * @return the oldestRecoveryPointInVault value.
      */
     public OffsetDateTime oldestRecoveryPointInVault() {
@@ -87,13 +92,14 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
     }
 
     /**
-     * Set the oldestRecoveryPointInVault property: The oldest backup copy available for this backup item in vault tier.
-     *
+     * Set the oldestRecoveryPointInVault property: The oldest backup copy available for this backup item in vault
+     * tier.
+     * 
      * @param oldestRecoveryPointInVault the oldestRecoveryPointInVault value to set.
      * @return the AzureVmWorkloadProtectedItemExtendedInfo object itself.
      */
-    public AzureVmWorkloadProtectedItemExtendedInfo withOldestRecoveryPointInVault(
-        OffsetDateTime oldestRecoveryPointInVault) {
+    public AzureVmWorkloadProtectedItemExtendedInfo
+        withOldestRecoveryPointInVault(OffsetDateTime oldestRecoveryPointInVault) {
         this.oldestRecoveryPointInVault = oldestRecoveryPointInVault;
         return this;
     }
@@ -101,7 +107,7 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
     /**
      * Get the oldestRecoveryPointInArchive property: The oldest backup copy available for this backup item in archive
      * tier.
-     *
+     * 
      * @return the oldestRecoveryPointInArchive value.
      */
     public OffsetDateTime oldestRecoveryPointInArchive() {
@@ -111,12 +117,12 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
     /**
      * Set the oldestRecoveryPointInArchive property: The oldest backup copy available for this backup item in archive
      * tier.
-     *
+     * 
      * @param oldestRecoveryPointInArchive the oldestRecoveryPointInArchive value to set.
      * @return the AzureVmWorkloadProtectedItemExtendedInfo object itself.
      */
-    public AzureVmWorkloadProtectedItemExtendedInfo withOldestRecoveryPointInArchive(
-        OffsetDateTime oldestRecoveryPointInArchive) {
+    public AzureVmWorkloadProtectedItemExtendedInfo
+        withOldestRecoveryPointInArchive(OffsetDateTime oldestRecoveryPointInArchive) {
         this.oldestRecoveryPointInArchive = oldestRecoveryPointInArchive;
         return this;
     }
@@ -124,7 +130,7 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
     /**
      * Get the newestRecoveryPointInArchive property: The latest backup copy available for this backup item in archive
      * tier.
-     *
+     * 
      * @return the newestRecoveryPointInArchive value.
      */
     public OffsetDateTime newestRecoveryPointInArchive() {
@@ -134,19 +140,19 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
     /**
      * Set the newestRecoveryPointInArchive property: The latest backup copy available for this backup item in archive
      * tier.
-     *
+     * 
      * @param newestRecoveryPointInArchive the newestRecoveryPointInArchive value to set.
      * @return the AzureVmWorkloadProtectedItemExtendedInfo object itself.
      */
-    public AzureVmWorkloadProtectedItemExtendedInfo withNewestRecoveryPointInArchive(
-        OffsetDateTime newestRecoveryPointInArchive) {
+    public AzureVmWorkloadProtectedItemExtendedInfo
+        withNewestRecoveryPointInArchive(OffsetDateTime newestRecoveryPointInArchive) {
         this.newestRecoveryPointInArchive = newestRecoveryPointInArchive;
         return this;
     }
 
     /**
      * Get the recoveryPointCount property: Number of backup copies available for this backup item.
-     *
+     * 
      * @return the recoveryPointCount value.
      */
     public Integer recoveryPointCount() {
@@ -155,7 +161,7 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
 
     /**
      * Set the recoveryPointCount property: Number of backup copies available for this backup item.
-     *
+     * 
      * @param recoveryPointCount the recoveryPointCount value to set.
      * @return the AzureVmWorkloadProtectedItemExtendedInfo object itself.
      */
@@ -166,7 +172,7 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
 
     /**
      * Get the policyState property: Indicates consistency of policy object and policy applied to this backup item.
-     *
+     * 
      * @return the policyState value.
      */
     public String policyState() {
@@ -175,7 +181,7 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
 
     /**
      * Set the policyState property: Indicates consistency of policy object and policy applied to this backup item.
-     *
+     * 
      * @param policyState the policyState value to set.
      * @return the AzureVmWorkloadProtectedItemExtendedInfo object itself.
      */
@@ -186,7 +192,7 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
 
     /**
      * Get the recoveryModel property: Indicates consistency of policy object and policy applied to this backup item.
-     *
+     * 
      * @return the recoveryModel value.
      */
     public String recoveryModel() {
@@ -195,7 +201,7 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
 
     /**
      * Set the recoveryModel property: Indicates consistency of policy object and policy applied to this backup item.
-     *
+     * 
      * @param recoveryModel the recoveryModel value to set.
      * @return the AzureVmWorkloadProtectedItemExtendedInfo object itself.
      */
@@ -206,7 +212,7 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

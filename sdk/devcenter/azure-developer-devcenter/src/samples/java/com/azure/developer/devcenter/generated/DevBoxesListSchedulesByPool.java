@@ -19,9 +19,9 @@ public class DevBoxesListSchedulesByPool {
                         .endpoint(
                                 "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                         .buildClient();
-        // BEGIN:com.azure.developer.devcenter.generated.devboxeslistschedulesbypool.devboxeslistschedulesbypool
+        // BEGIN:com.azure.developer.devcenter.generated.devboxeslistschedules.devboxeslistschedulesbypool
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listSchedulesByPool("myProject", "DevPool", requestOptions);
-        // END:com.azure.developer.devcenter.generated.devboxeslistschedulesbypool.devboxeslistschedulesbypool
+        PagedIterable<BinaryData> response = devBoxesClient.listSchedules("myProject", "DevPool", requestOptions);
+        // END:com.azure.developer.devcenter.generated.devboxeslistschedules.devboxeslistschedulesbypool
     }
 }

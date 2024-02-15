@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SKU of a Managed Cluster. */
+/**
+ * The SKU of a Managed Cluster.
+ */
 @Fluent
 public final class ManagedClusterSku {
     /*
@@ -18,20 +20,22 @@ public final class ManagedClusterSku {
 
     /*
      * The tier of a managed cluster SKU.
-     *
+     * 
      * If not specified, the default is 'Free'. See [AKS Pricing
      * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
      */
     @JsonProperty(value = "tier")
     private ManagedClusterSkuTier tier;
 
-    /** Creates an instance of ManagedClusterSku class. */
+    /**
+     * Creates an instance of ManagedClusterSku class.
+     */
     public ManagedClusterSku() {
     }
 
     /**
      * Get the name property: The name of a managed cluster SKU.
-     *
+     * 
      * @return the name value.
      */
     public ManagedClusterSkuName name() {
@@ -40,7 +44,7 @@ public final class ManagedClusterSku {
 
     /**
      * Set the name property: The name of a managed cluster SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the ManagedClusterSku object itself.
      */
@@ -51,10 +55,10 @@ public final class ManagedClusterSku {
 
     /**
      * Get the tier property: The tier of a managed cluster SKU.
-     *
-     * <p>If not specified, the default is 'Free'. See [AKS Pricing
+     * 
+     * If not specified, the default is 'Free'. See [AKS Pricing
      * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
-     *
+     * 
      * @return the tier value.
      */
     public ManagedClusterSkuTier tier() {
@@ -63,10 +67,10 @@ public final class ManagedClusterSku {
 
     /**
      * Set the tier property: The tier of a managed cluster SKU.
-     *
-     * <p>If not specified, the default is 'Free'. See [AKS Pricing
+     * 
+     * If not specified, the default is 'Free'. See [AKS Pricing
      * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the ManagedClusterSku object itself.
      */
@@ -77,7 +81,7 @@ public final class ManagedClusterSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

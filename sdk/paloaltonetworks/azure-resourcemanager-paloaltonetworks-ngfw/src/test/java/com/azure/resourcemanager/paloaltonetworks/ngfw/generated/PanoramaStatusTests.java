@@ -10,9 +10,8 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.PanoramaStatus;
 public final class PanoramaStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PanoramaStatus model =
-            BinaryData
-                .fromString("{\"panoramaServerStatus\":\"DOWN\",\"panoramaServer2Status\":\"DOWN\"}")
+        PanoramaStatus model
+            = BinaryData.fromString("{\"panoramaServerStatus\":\"DOWN\",\"panoramaServer2Status\":\"DOWN\"}")
                 .toObject(PanoramaStatus.class);
     }
 

@@ -15,6 +15,7 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -41,6 +42,7 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosResponse;
@@ -200,7 +202,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "split", "query"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -216,7 +218,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @AfterSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "split", "query"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -233,6 +235,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} ...", cosmosContainerId);
         List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                .build()
+        );
         options.setMaxDegreeOfParallelism(-1);
         int maxItemCount = 100;
 
@@ -341,6 +347,24 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options, int throughput) {
         database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options).block();
+
+        // Creating a container is async - especially on multi-partition or multi-region accounts
+        CosmosAsyncClient client = ImplementationBridgeHelpers
+            .CosmosAsyncDatabaseHelper
+            .getCosmosAsyncDatabaseAccessor()
+            .getCosmosAsyncClient(database);
+        boolean isMultiRegional = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getPreferredRegions(client).size() > 1;
+        if (throughput > 6000 || isMultiRegional) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         return database.getContainer(cosmosContainerProperties.getId());
     }
 
@@ -474,16 +498,28 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static InternalObjectNode createDocument(CosmosAsyncContainer cosmosContainer, InternalObjectNode item) {
-        return BridgeInternal.getProperties(cosmosContainer.createItem(item).block());
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions()
+            .setCosmosEndToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                    .build()
+            );
+
+        return BridgeInternal.getProperties(cosmosContainer.createItem(item, options).block());
     }
 
     public <T> Flux<CosmosItemResponse<T>> bulkInsert(CosmosAsyncContainer cosmosContainer,
                                                       List<T> documentDefinitionList,
                                                       int concurrencyLevel) {
+
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions()
+            .setCosmosEndToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                    .build()
+            );
         List<Mono<CosmosItemResponse<T>>> result =
             new ArrayList<>(documentDefinitionList.size());
         for (T docDef : documentDefinitionList) {
-            result.add(cosmosContainer.createItem(docDef));
+            result.add(cosmosContainer.createItem(docDef, options));
         }
 
         return Flux.merge(Flux.fromIterable(result), concurrencyLevel);
@@ -620,7 +656,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public static void safeDeleteDocument(CosmosAsyncContainer cosmosContainer, String documentId, Object partitionKey) {
         if (cosmosContainer != null && documentId != null) {
             try {
-                cosmosContainer.deleteItem(documentId, new PartitionKey(partitionKey)).block();
+                CosmosItemRequestOptions options = new CosmosItemRequestOptions()
+                    .setCosmosEndToEndOperationLatencyPolicyConfig(
+                        new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                            .build()
+                    );
+                cosmosContainer.deleteItem(documentId, new PartitionKey(partitionKey), options).block();
             } catch (Exception e) {
                 CosmosException dce = Utils.as(e, CosmosException.class);
                 if (dce == null || dce.getStatusCode() != 404) {
@@ -631,7 +672,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static void deleteDocument(CosmosAsyncContainer cosmosContainer, String documentId) {
-        cosmosContainer.deleteItem(documentId, PartitionKey.NONE).block();
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions()
+            .setCosmosEndToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                    .build()
+            );
+        cosmosContainer.deleteItem(documentId, PartitionKey.NONE, options).block();
     }
 
     public static void deleteUserIfExists(CosmosAsyncClient client, String databaseId, String userId) {

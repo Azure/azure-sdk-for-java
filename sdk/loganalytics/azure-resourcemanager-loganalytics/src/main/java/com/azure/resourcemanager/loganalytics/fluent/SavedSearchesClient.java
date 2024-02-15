@@ -19,19 +19,6 @@ public interface SavedSearchesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String savedSearchId);
-
-    /**
-     * Deletes the specified saved search in a given workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param savedSearchId The id of the saved search.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,20 +30,17 @@ public interface SavedSearchesClient {
         String resourceGroupName, String workspaceName, String savedSearchId, Context context);
 
     /**
-     * Creates or updates a saved search for a given workspace.
+     * Deletes the specified saved search in a given workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
-     * @param parameters The parameters required to save a search.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return value object for saved search results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SavedSearchInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String savedSearchId, SavedSearchInner parameters);
+    void delete(String resourceGroupName, String workspaceName, String savedSearchId);
 
     /**
      * Creates or updates a saved search for a given workspace.
@@ -80,18 +64,20 @@ public interface SavedSearchesClient {
         Context context);
 
     /**
-     * Gets the specified saved search for a given workspace.
+     * Creates or updates a saved search for a given workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
+     * @param parameters The parameters required to save a search.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified saved search for a given workspace.
+     * @return value object for saved search results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SavedSearchInner get(String resourceGroupName, String workspaceName, String savedSearchId);
+    SavedSearchInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String savedSearchId, SavedSearchInner parameters);
 
     /**
      * Gets the specified saved search for a given workspace.
@@ -110,17 +96,18 @@ public interface SavedSearchesClient {
         String resourceGroupName, String workspaceName, String savedSearchId, Context context);
 
     /**
-     * Gets the saved searches for a given Log Analytics Workspace.
+     * Gets the specified saved search for a given workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
+     * @param savedSearchId The id of the saved search.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the saved searches for a given Log Analytics Workspace.
+     * @return the specified saved search for a given workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SavedSearchesListResultInner listByWorkspace(String resourceGroupName, String workspaceName);
+    SavedSearchInner get(String resourceGroupName, String workspaceName, String savedSearchId);
 
     /**
      * Gets the saved searches for a given Log Analytics Workspace.
@@ -136,4 +123,17 @@ public interface SavedSearchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SavedSearchesListResultInner> listByWorkspaceWithResponse(
         String resourceGroupName, String workspaceName, Context context);
+
+    /**
+     * Gets the saved searches for a given Log Analytics Workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the saved searches for a given Log Analytics Workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SavedSearchesListResultInner listByWorkspace(String resourceGroupName, String workspaceName);
 }

@@ -10,5 +10,6 @@
   <modules>
       <module>azure-health-insights-cancerprofiling</module>
       <module>azure-health-insights-clinicalmatching</module>
+      <module>azure-health-insights-radiologyinsights</module>
   </modules>
 </project>

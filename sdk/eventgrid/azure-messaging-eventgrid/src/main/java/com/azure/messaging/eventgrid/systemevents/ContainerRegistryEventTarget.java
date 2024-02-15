@@ -5,59 +5,61 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The target of the event. */
+/**
+ * The target of the event.
+ */
 @Fluent
-public final class ContainerRegistryEventTarget {
+public final class ContainerRegistryEventTarget implements JsonSerializable<ContainerRegistryEventTarget> {
     /*
      * The MIME type of the referenced object.
      */
-    @JsonProperty(value = "mediaType")
     private String mediaType;
 
     /*
      * The number of bytes of the content. Same as Length field.
      */
-    @JsonProperty(value = "size")
     private Long size;
 
     /*
      * The digest of the content, as defined by the Registry V2 HTTP API Specification.
      */
-    @JsonProperty(value = "digest")
     private String digest;
 
     /*
      * The number of bytes of the content. Same as Size field.
      */
-    @JsonProperty(value = "length")
     private Long length;
 
     /*
      * The repository name.
      */
-    @JsonProperty(value = "repository")
     private String repository;
 
     /*
      * The direct URL to the content.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The tag name.
      */
-    @JsonProperty(value = "tag")
     private String tag;
 
-    /** Creates an instance of ContainerRegistryEventTarget class. */
-    public ContainerRegistryEventTarget() {}
+    /**
+     * Creates an instance of ContainerRegistryEventTarget class.
+     */
+    public ContainerRegistryEventTarget() {
+    }
 
     /**
      * Get the mediaType property: The MIME type of the referenced object.
-     *
+     * 
      * @return the mediaType value.
      */
     public String getMediaType() {
@@ -66,7 +68,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the mediaType property: The MIME type of the referenced object.
-     *
+     * 
      * @param mediaType the mediaType value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
@@ -77,7 +79,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Get the size property: The number of bytes of the content. Same as Length field.
-     *
+     * 
      * @return the size value.
      */
     public Long getSize() {
@@ -86,7 +88,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the size property: The number of bytes of the content. Same as Length field.
-     *
+     * 
      * @param size the size value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
@@ -97,7 +99,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Get the digest property: The digest of the content, as defined by the Registry V2 HTTP API Specification.
-     *
+     * 
      * @return the digest value.
      */
     public String getDigest() {
@@ -106,7 +108,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the digest property: The digest of the content, as defined by the Registry V2 HTTP API Specification.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
@@ -117,7 +119,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Get the length property: The number of bytes of the content. Same as Size field.
-     *
+     * 
      * @return the length value.
      */
     public Long getLength() {
@@ -126,7 +128,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the length property: The number of bytes of the content. Same as Size field.
-     *
+     * 
      * @param length the length value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
@@ -137,7 +139,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Get the repository property: The repository name.
-     *
+     * 
      * @return the repository value.
      */
     public String getRepository() {
@@ -146,7 +148,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the repository property: The repository name.
-     *
+     * 
      * @param repository the repository value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
@@ -157,7 +159,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Get the url property: The direct URL to the content.
-     *
+     * 
      * @return the url value.
      */
     public String getUrl() {
@@ -166,7 +168,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the url property: The direct URL to the content.
-     *
+     * 
      * @param url the url value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
@@ -177,7 +179,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Get the tag property: The tag name.
-     *
+     * 
      * @return the tag value.
      */
     public String getTag() {
@@ -186,12 +188,63 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the tag property: The tag name.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
     public ContainerRegistryEventTarget setTag(String tag) {
         this.tag = tag;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mediaType", this.mediaType);
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeStringField("digest", this.digest);
+        jsonWriter.writeNumberField("length", this.length);
+        jsonWriter.writeStringField("repository", this.repository);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("tag", this.tag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerRegistryEventTarget from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerRegistryEventTarget if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerRegistryEventTarget.
+     */
+    public static ContainerRegistryEventTarget fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerRegistryEventTarget deserializedContainerRegistryEventTarget = new ContainerRegistryEventTarget();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mediaType".equals(fieldName)) {
+                    deserializedContainerRegistryEventTarget.mediaType = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedContainerRegistryEventTarget.size = reader.getNullable(JsonReader::getLong);
+                } else if ("digest".equals(fieldName)) {
+                    deserializedContainerRegistryEventTarget.digest = reader.getString();
+                } else if ("length".equals(fieldName)) {
+                    deserializedContainerRegistryEventTarget.length = reader.getNullable(JsonReader::getLong);
+                } else if ("repository".equals(fieldName)) {
+                    deserializedContainerRegistryEventTarget.repository = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedContainerRegistryEventTarget.url = reader.getString();
+                } else if ("tag".equals(fieldName)) {
+                    deserializedContainerRegistryEventTarget.tag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerRegistryEventTarget;
+        });
     }
 }

@@ -64,6 +64,7 @@ public final class TestConstants {
     public static final String ID_2 = "id-2";
     public static final String ID_3 = "id-3";
     public static final String ID_4 = "id-4";
+    public static final String ID_5 = "id-5";
     public static final String NEW_FIRST_NAME = "new_first_name";
     public static final String NEW_LAST_NAME = "new_last_name";
     public static final Integer NEW_ZIP_CODE = 67890;
@@ -72,6 +73,7 @@ public final class TestConstants {
     public static final String LEVEL = "B";
     public static final String LEVEL_2 = "C";
     public static final String ROLE_NAME = "Developer";
+    public static final String ROLE_NAME_2 = "Engineer";
     public static final String NOT_EXIST_ID = "non_exist_id";
 
     public static final String DATE_STRING = "8/8/2017";

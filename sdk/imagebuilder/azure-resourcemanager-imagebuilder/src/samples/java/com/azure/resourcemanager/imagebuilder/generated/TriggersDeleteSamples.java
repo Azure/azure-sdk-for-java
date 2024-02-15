@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.imagebuilder.generated;
 
-/** Samples for Triggers Delete. */
+/**
+ * Samples for Triggers Delete.
+ */
 public final class TriggersDeleteSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-07-01/examples/DeleteTrigger.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/
+     * DeleteTrigger.json
      */
     /**
      * Sample code: Delete a trigger resource.
-     *
+     * 
      * @param manager Entry point to ImageBuilderManager.
      */
     public static void deleteATriggerResource(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {

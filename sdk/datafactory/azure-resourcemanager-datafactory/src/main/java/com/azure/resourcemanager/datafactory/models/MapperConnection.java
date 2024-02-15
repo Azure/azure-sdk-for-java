@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Source connection details. */
+/**
+ * Source connection details.
+ */
 @Fluent
 public final class MapperConnection {
     /*
@@ -43,13 +45,15 @@ public final class MapperConnection {
     @JsonProperty(value = "commonDslConnectorProperties")
     private List<MapperDslConnectorProperties> commonDslConnectorProperties;
 
-    /** Creates an instance of MapperConnection class. */
+    /**
+     * Creates an instance of MapperConnection class.
+     */
     public MapperConnection() {
     }
 
     /**
      * Get the linkedService property: Linked service reference.
-     *
+     * 
      * @return the linkedService value.
      */
     public LinkedServiceReference linkedService() {
@@ -58,7 +62,7 @@ public final class MapperConnection {
 
     /**
      * Set the linkedService property: Linked service reference.
-     *
+     * 
      * @param linkedService the linkedService value to set.
      * @return the MapperConnection object itself.
      */
@@ -69,7 +73,7 @@ public final class MapperConnection {
 
     /**
      * Get the linkedServiceType property: Type of the linked service e.g.: AzureBlobFS.
-     *
+     * 
      * @return the linkedServiceType value.
      */
     public String linkedServiceType() {
@@ -78,7 +82,7 @@ public final class MapperConnection {
 
     /**
      * Set the linkedServiceType property: Type of the linked service e.g.: AzureBlobFS.
-     *
+     * 
      * @param linkedServiceType the linkedServiceType value to set.
      * @return the MapperConnection object itself.
      */
@@ -89,7 +93,7 @@ public final class MapperConnection {
 
     /**
      * Get the type property: Type of connection via linked service or dataset.
-     *
+     * 
      * @return the type value.
      */
     public ConnectionType type() {
@@ -98,7 +102,7 @@ public final class MapperConnection {
 
     /**
      * Set the type property: Type of connection via linked service or dataset.
-     *
+     * 
      * @param type the type value to set.
      * @return the MapperConnection object itself.
      */
@@ -110,7 +114,7 @@ public final class MapperConnection {
     /**
      * Get the isInlineDataset property: A boolean indicating whether linked service is of type inline dataset.
      * Currently only inline datasets are supported.
-     *
+     * 
      * @return the isInlineDataset value.
      */
     public Boolean isInlineDataset() {
@@ -120,7 +124,7 @@ public final class MapperConnection {
     /**
      * Set the isInlineDataset property: A boolean indicating whether linked service is of type inline dataset.
      * Currently only inline datasets are supported.
-     *
+     * 
      * @param isInlineDataset the isInlineDataset value to set.
      * @return the MapperConnection object itself.
      */
@@ -131,7 +135,7 @@ public final class MapperConnection {
 
     /**
      * Get the commonDslConnectorProperties property: List of name/value pairs for connection properties.
-     *
+     * 
      * @return the commonDslConnectorProperties value.
      */
     public List<MapperDslConnectorProperties> commonDslConnectorProperties() {
@@ -140,19 +144,19 @@ public final class MapperConnection {
 
     /**
      * Set the commonDslConnectorProperties property: List of name/value pairs for connection properties.
-     *
+     * 
      * @param commonDslConnectorProperties the commonDslConnectorProperties value to set.
      * @return the MapperConnection object itself.
      */
-    public MapperConnection withCommonDslConnectorProperties(
-        List<MapperDslConnectorProperties> commonDslConnectorProperties) {
+    public MapperConnection
+        withCommonDslConnectorProperties(List<MapperDslConnectorProperties> commonDslConnectorProperties) {
         this.commonDslConnectorProperties = commonDslConnectorProperties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -160,9 +164,8 @@ public final class MapperConnection {
             linkedService().validate();
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model MapperConnection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model MapperConnection"));
         }
         if (commonDslConnectorProperties() != null) {
             commonDslConnectorProperties().forEach(e -> e.validate());

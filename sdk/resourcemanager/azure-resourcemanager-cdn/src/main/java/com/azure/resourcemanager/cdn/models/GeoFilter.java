@@ -30,6 +30,10 @@ public final class GeoFilter {
     @JsonProperty(value = "countryCodes", required = true)
     private List<String> countryCodes;
 
+    /** Creates an instance of GeoFilter class. */
+    public GeoFilter() {
+    }
+
     /**
      * Get the relativePath property: Relative path applicable to geo filter. (e.g. '/mypictures',
      * '/mypicture/kitty.jpg', and etc.).

@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * AdHocBackupRuleOptions
- *
- * <p>Adhoc backup rules.
+ * 
+ * Adhoc backup rules.
  */
 @Fluent
 public final class AdHocBackupRuleOptions {
@@ -23,19 +23,21 @@ public final class AdHocBackupRuleOptions {
 
     /*
      * AdhocBackupTriggerOption
-     *
+     * 
      * Adhoc backup trigger option
      */
     @JsonProperty(value = "triggerOption", required = true)
     private AdhocBackupTriggerOption triggerOption;
 
-    /** Creates an instance of AdHocBackupRuleOptions class. */
+    /**
+     * Creates an instance of AdHocBackupRuleOptions class.
+     */
     public AdHocBackupRuleOptions() {
     }
 
     /**
      * Get the ruleName property: The ruleName property.
-     *
+     * 
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -44,7 +46,7 @@ public final class AdHocBackupRuleOptions {
 
     /**
      * Set the ruleName property: The ruleName property.
-     *
+     * 
      * @param ruleName the ruleName value to set.
      * @return the AdHocBackupRuleOptions object itself.
      */
@@ -55,9 +57,9 @@ public final class AdHocBackupRuleOptions {
 
     /**
      * Get the triggerOption property: AdhocBackupTriggerOption
-     *
-     * <p>Adhoc backup trigger option.
-     *
+     * 
+     * Adhoc backup trigger option.
+     * 
      * @return the triggerOption value.
      */
     public AdhocBackupTriggerOption triggerOption() {
@@ -66,9 +68,9 @@ public final class AdHocBackupRuleOptions {
 
     /**
      * Set the triggerOption property: AdhocBackupTriggerOption
-     *
-     * <p>Adhoc backup trigger option.
-     *
+     * 
+     * Adhoc backup trigger option.
+     * 
      * @param triggerOption the triggerOption value to set.
      * @return the AdHocBackupRuleOptions object itself.
      */
@@ -79,20 +81,17 @@ public final class AdHocBackupRuleOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleName in model AdHocBackupRuleOptions"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ruleName in model AdHocBackupRuleOptions"));
         }
         if (triggerOption() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property triggerOption in model AdHocBackupRuleOptions"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property triggerOption in model AdHocBackupRuleOptions"));
         } else {
             triggerOption().validate();
         }

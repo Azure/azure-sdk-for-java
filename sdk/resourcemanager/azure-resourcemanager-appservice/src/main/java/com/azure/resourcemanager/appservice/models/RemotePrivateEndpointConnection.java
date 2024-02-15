@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointC
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A remote private endpoint connection. */
+/**
+ * A remote private endpoint connection.
+ */
 @Fluent
 public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private RemotePrivateEndpointConnectionProperties innerProperties;
 
-    /** Creates an instance of RemotePrivateEndpointConnection class. */
+    /**
+     * Creates an instance of RemotePrivateEndpointConnection class.
+     */
     public RemotePrivateEndpointConnection() {
     }
 
     /**
      * Get the innerProperties property: RemotePrivateEndpointConnection resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RemotePrivateEndpointConnectionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RemotePrivateEndpointConnection withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -49,7 +55,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Get the privateEndpoint property: PrivateEndpoint of a remote private endpoint connection.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public ArmIdWrapper privateEndpoint() {
@@ -58,7 +64,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Set the privateEndpoint property: PrivateEndpoint of a remote private endpoint connection.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the RemotePrivateEndpointConnection object itself.
      */
@@ -72,7 +78,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Get the privateLinkServiceConnectionState property: The state of a private link connection.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkConnectionState privateLinkServiceConnectionState() {
@@ -81,12 +87,12 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Set the privateLinkServiceConnectionState property: The state of a private link connection.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the RemotePrivateEndpointConnection object itself.
      */
-    public RemotePrivateEndpointConnection withPrivateLinkServiceConnectionState(
-        PrivateLinkConnectionState privateLinkServiceConnectionState) {
+    public RemotePrivateEndpointConnection
+        withPrivateLinkServiceConnectionState(PrivateLinkConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RemotePrivateEndpointConnectionProperties();
         }
@@ -96,7 +102,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Get the ipAddresses property: Private IPAddresses mapped to the remote private endpoint.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -105,7 +111,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Set the ipAddresses property: Private IPAddresses mapped to the remote private endpoint.
-     *
+     * 
      * @param ipAddresses the ipAddresses value to set.
      * @return the RemotePrivateEndpointConnection object itself.
      */
@@ -119,7 +125,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

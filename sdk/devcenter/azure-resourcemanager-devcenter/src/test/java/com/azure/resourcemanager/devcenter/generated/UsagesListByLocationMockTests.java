@@ -33,7 +33,7 @@ public final class UsagesListByLocationMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"currentValue\":1586087299236435326,\"limit\":9156400089416857939,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"q\",\"value\":\"aqvlgafcqusr\"}}]}";
+            "{\"value\":[{\"currentValue\":93360494435068160,\"limit\":5877070544326341372,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"fcngjsa\",\"value\":\"iixtmkzj\"},\"id\":\"viirhgfgrws\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,12 +61,13 @@ public final class UsagesListByLocationMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Usage> response = manager.usages().listByLocation("hoxgsgbpf", com.azure.core.util.Context.NONE);
+        PagedIterable<Usage> response = manager.usages().listByLocation("lqqmpiz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1586087299236435326L, response.iterator().next().currentValue());
-        Assertions.assertEquals(9156400089416857939L, response.iterator().next().limit());
+        Assertions.assertEquals(93360494435068160L, response.iterator().next().currentValue());
+        Assertions.assertEquals(5877070544326341372L, response.iterator().next().limit());
         Assertions.assertEquals(UsageUnit.COUNT, response.iterator().next().unit());
-        Assertions.assertEquals("q", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals("aqvlgafcqusr", response.iterator().next().name().value());
+        Assertions.assertEquals("fcngjsa", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("iixtmkzj", response.iterator().next().name().value());
+        Assertions.assertEquals("viirhgfgrws", response.iterator().next().id());
     }
 }

@@ -161,7 +161,9 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
     @Override
     public boolean isValid() {
         Instant now = Instant.now();
-        return this.enabled && now.isAfter(this.startTime) && now.isBefore(this.expireTime);
+        return this.enabled
+            && (now.equals(this.startTime) ||  now.isAfter(this.startTime))
+            && (now.equals(this.expireTime) || now.isBefore(this.expireTime));
     }
 
     @Override

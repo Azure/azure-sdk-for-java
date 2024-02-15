@@ -10,23 +10,17 @@ import com.azure.resourcemanager.datafactory.models.MicrosoftAccessSource;
 public final class MicrosoftAccessSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MicrosoftAccessSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"MicrosoftAccessSource\",\"query\":\"datadtuhdoimojcm\",\"additionalColumns\":\"datacd\",\"sourceRetryCount\":\"datavorzhzfoc\",\"sourceRetryWait\":\"datayltornv\",\"maxConcurrentConnections\":\"datauy\",\"disableMetricsCollection\":\"datawifbdwyvvcywb\",\"\":{\"okeqeowbp\":\"datathrexzvejqzyuik\",\"tgwerbpobvj\":\"dataiehvgchsg\",\"vvmdtkllqhznutrx\":\"dataunicgrxce\"}}")
-                .toObject(MicrosoftAccessSource.class);
+        MicrosoftAccessSource model = BinaryData.fromString(
+            "{\"type\":\"MicrosoftAccessSource\",\"query\":\"dataezgvaeqiygbou\",\"additionalColumns\":\"datajodidgudar\",\"sourceRetryCount\":\"dataajbenf\",\"sourceRetryWait\":\"dataufvojikffczw\",\"maxConcurrentConnections\":\"datawpilsuhsghdovcpb\",\"disableMetricsCollection\":\"datanapg\",\"\":{\"whh\":\"datahsixzcdaukh\"}}")
+            .toObject(MicrosoftAccessSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MicrosoftAccessSource model =
-            new MicrosoftAccessSource()
-                .withSourceRetryCount("datavorzhzfoc")
-                .withSourceRetryWait("datayltornv")
-                .withMaxConcurrentConnections("datauy")
-                .withDisableMetricsCollection("datawifbdwyvvcywb")
-                .withQuery("datadtuhdoimojcm")
-                .withAdditionalColumns("datacd");
+        MicrosoftAccessSource model
+            = new MicrosoftAccessSource().withSourceRetryCount("dataajbenf").withSourceRetryWait("dataufvojikffczw")
+                .withMaxConcurrentConnections("datawpilsuhsghdovcpb").withDisableMetricsCollection("datanapg")
+                .withQuery("dataezgvaeqiygbou").withAdditionalColumns("datajodidgudar");
         model = BinaryData.fromObject(model).toObject(MicrosoftAccessSource.class);
     }
 }

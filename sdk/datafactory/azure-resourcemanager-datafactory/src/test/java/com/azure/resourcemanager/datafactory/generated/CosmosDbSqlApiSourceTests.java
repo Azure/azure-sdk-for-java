@@ -10,26 +10,18 @@ import com.azure.resourcemanager.datafactory.models.CosmosDbSqlApiSource;
 public final class CosmosDbSqlApiSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CosmosDbSqlApiSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"CosmosDbSqlApiSource\",\"query\":\"datatrgyyjea\",\"pageSize\":\"datavjdunbaets\",\"preferredRegions\":\"datafegbvv\",\"detectDatetime\":\"datazygzrzubdtzs\",\"additionalColumns\":\"datahmhzpurnpkk\",\"sourceRetryCount\":\"datakzcfiosralbx\",\"sourceRetryWait\":\"dataxnluvcwuafbh\",\"maxConcurrentConnections\":\"dataaqf\",\"disableMetricsCollection\":\"datafpk\",\"\":{\"efvnvscyut\":\"databkvqogzawfoqdnxu\"}}")
-                .toObject(CosmosDbSqlApiSource.class);
+        CosmosDbSqlApiSource model = BinaryData.fromString(
+            "{\"type\":\"CosmosDbSqlApiSource\",\"query\":\"dataad\",\"pageSize\":\"datamjquliovrcnn\",\"preferredRegions\":\"dataluzeyvalezkyfy\",\"detectDatetime\":\"datanreasuwepqegty\",\"additionalColumns\":\"datayc\",\"sourceRetryCount\":\"dataufutfqffw\",\"sourceRetryWait\":\"datajgjrykshiz\",\"maxConcurrentConnections\":\"datasw\",\"disableMetricsCollection\":\"dataye\",\"\":{\"meftlgjrfkqf\":\"datakzwqzwsguipqq\"}}")
+            .toObject(CosmosDbSqlApiSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbSqlApiSource model =
-            new CosmosDbSqlApiSource()
-                .withSourceRetryCount("datakzcfiosralbx")
-                .withSourceRetryWait("dataxnluvcwuafbh")
-                .withMaxConcurrentConnections("dataaqf")
-                .withDisableMetricsCollection("datafpk")
-                .withQuery("datatrgyyjea")
-                .withPageSize("datavjdunbaets")
-                .withPreferredRegions("datafegbvv")
-                .withDetectDatetime("datazygzrzubdtzs")
-                .withAdditionalColumns("datahmhzpurnpkk");
+        CosmosDbSqlApiSource model
+            = new CosmosDbSqlApiSource().withSourceRetryCount("dataufutfqffw").withSourceRetryWait("datajgjrykshiz")
+                .withMaxConcurrentConnections("datasw").withDisableMetricsCollection("dataye").withQuery("dataad")
+                .withPageSize("datamjquliovrcnn").withPreferredRegions("dataluzeyvalezkyfy")
+                .withDetectDatetime("datanreasuwepqegty").withAdditionalColumns("datayc");
         model = BinaryData.fromObject(model).toObject(CosmosDbSqlApiSource.class);
     }
 }

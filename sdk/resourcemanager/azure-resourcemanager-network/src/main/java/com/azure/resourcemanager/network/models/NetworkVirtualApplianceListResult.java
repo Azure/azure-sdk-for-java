@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListNetworkVirtualAppliances API service call. */
+/**
+ * Response for ListNetworkVirtualAppliances API service call.
+ */
 @Fluent
 public final class NetworkVirtualApplianceListResult {
     /*
@@ -24,13 +26,15 @@ public final class NetworkVirtualApplianceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkVirtualApplianceListResult class. */
+    /**
+     * Creates an instance of NetworkVirtualApplianceListResult class.
+     */
     public NetworkVirtualApplianceListResult() {
     }
 
     /**
      * Get the value property: List of Network Virtual Appliances.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkVirtualApplianceInner> value() {
@@ -39,7 +43,7 @@ public final class NetworkVirtualApplianceListResult {
 
     /**
      * Set the value property: List of Network Virtual Appliances.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkVirtualApplianceListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class NetworkVirtualApplianceListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NetworkVirtualApplianceListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkVirtualApplianceListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class NetworkVirtualApplianceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

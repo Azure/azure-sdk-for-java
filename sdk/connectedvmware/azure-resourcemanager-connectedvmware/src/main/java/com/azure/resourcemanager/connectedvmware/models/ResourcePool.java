@@ -155,11 +155,53 @@ public interface ResourcePool {
     Long memLimitMB();
 
     /**
+     * Gets the memOverallUsageGB property: Gets the used physical memory on the pool in GB.
+     *
+     * @return the memOverallUsageGB value.
+     */
+    Long memOverallUsageGB();
+
+    /**
+     * Gets the memCapacityGB property: Gets the total amount of physical memory on the pool in GB.
+     *
+     * @return the memCapacityGB value.
+     */
+    Long memCapacityGB();
+
+    /**
+     * Gets the cpuOverallUsageMHz property: Gets the used CPU usage across all cores on the pool in MHz.
+     *
+     * @return the cpuOverallUsageMHz value.
+     */
+    Long cpuOverallUsageMHz();
+
+    /**
+     * Gets the cpuCapacityMHz property: Gets the max CPU usage across all cores on the pool in MHz.
+     *
+     * @return the cpuCapacityMHz value.
+     */
+    Long cpuCapacityMHz();
+
+    /**
      * Gets the customResourceName property: Gets the name of the corresponding resource in Kubernetes.
      *
      * @return the customResourceName value.
      */
     String customResourceName();
+
+    /**
+     * Gets the datastoreIds property: Gets the datastore ARM ids.
+     *
+     * @return the datastoreIds value.
+     */
+    List<String> datastoreIds();
+
+    /**
+     * Gets the networkIds property: Gets the network ARM ids.
+     *
+     * @return the networkIds value.
+     */
+    List<String> networkIds();
 
     /**
      * Gets the statuses property: The resource status information.
@@ -169,11 +211,11 @@ public interface ResourcePool {
     List<ResourceStatus> statuses();
 
     /**
-     * Gets the provisioningState property: Gets or sets the provisioning state.
+     * Gets the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the region of the resource.
@@ -210,11 +252,13 @@ public interface ResourcePool {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The ResourcePool definition stages. */
     interface DefinitionStages {
         /** The first stage of the ResourcePool definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ResourcePool definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -233,6 +277,7 @@ public interface ResourcePool {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ResourcePool definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -243,6 +288,7 @@ public interface ResourcePool {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the ResourcePool definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -269,6 +315,7 @@ public interface ResourcePool {
              */
             ResourcePool create(Context context);
         }
+
         /** The stage of the ResourcePool definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -279,6 +326,7 @@ public interface ResourcePool {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ResourcePool definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -289,6 +337,7 @@ public interface ResourcePool {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the ResourcePool definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -303,6 +352,7 @@ public interface ResourcePool {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the ResourcePool definition allowing to specify vCenterId. */
         interface WithVCenterId {
             /**
@@ -314,6 +364,7 @@ public interface ResourcePool {
              */
             WithCreate withVCenterId(String vCenterId);
         }
+
         /** The stage of the ResourcePool definition allowing to specify moRefId. */
         interface WithMoRefId {
             /**
@@ -325,6 +376,7 @@ public interface ResourcePool {
              */
             WithCreate withMoRefId(String moRefId);
         }
+
         /** The stage of the ResourcePool definition allowing to specify inventoryItemId. */
         interface WithInventoryItemId {
             /**
@@ -336,6 +388,7 @@ public interface ResourcePool {
             WithCreate withInventoryItemId(String inventoryItemId);
         }
     }
+
     /**
      * Begins update for the ResourcePool resource.
      *
@@ -360,6 +413,7 @@ public interface ResourcePool {
          */
         ResourcePool apply(Context context);
     }
+
     /** The ResourcePool update stages. */
     interface UpdateStages {
         /** The stage of the ResourcePool update allowing to specify tags. */
@@ -373,6 +427,7 @@ public interface ResourcePool {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

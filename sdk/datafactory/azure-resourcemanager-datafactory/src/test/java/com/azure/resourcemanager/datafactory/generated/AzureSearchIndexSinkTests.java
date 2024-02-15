@@ -12,26 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureSearchIndexSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureSearchIndexSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureSearchIndexSink\",\"writeBehavior\":\"Upload\",\"writeBatchSize\":\"datamrtdznvjgovy\",\"writeBatchTimeout\":\"datappswlept\",\"sinkRetryCount\":\"databrkntfwxkeuyxgpc\",\"sinkRetryWait\":\"datavmrdlckpznov\",\"maxConcurrentConnections\":\"databwpai\",\"disableMetricsCollection\":\"datakzysdhars\",\"\":{\"vtvtyqlthn\":\"datamrpdxnr\",\"diehrajbatgmxk\":\"datadfplk\"}}")
-                .toObject(AzureSearchIndexSink.class);
-        Assertions.assertEquals(AzureSearchIndexWriteBehaviorType.UPLOAD, model.writeBehavior());
+        AzureSearchIndexSink model = BinaryData.fromString(
+            "{\"type\":\"AzureSearchIndexSink\",\"writeBehavior\":\"Merge\",\"writeBatchSize\":\"datatq\",\"writeBatchTimeout\":\"datapbtqibq\",\"sinkRetryCount\":\"dataugcwzgdfdrdxo\",\"sinkRetryWait\":\"datakgezulnntpbarej\",\"maxConcurrentConnections\":\"datahlxoljbpoeoywykh\",\"disableMetricsCollection\":\"datavwhrivvzr\",\"\":{\"eearbbxaneviqk\":\"datafrxlsypwu\",\"gbpcenirjhd\":\"dataupvidzhjcppq\",\"btlharjbakp\":\"dataxup\"}}")
+            .toObject(AzureSearchIndexSink.class);
+        Assertions.assertEquals(AzureSearchIndexWriteBehaviorType.MERGE, model.writeBehavior());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSearchIndexSink model =
-            new AzureSearchIndexSink()
-                .withWriteBatchSize("datamrtdznvjgovy")
-                .withWriteBatchTimeout("datappswlept")
-                .withSinkRetryCount("databrkntfwxkeuyxgpc")
-                .withSinkRetryWait("datavmrdlckpznov")
-                .withMaxConcurrentConnections("databwpai")
-                .withDisableMetricsCollection("datakzysdhars")
-                .withWriteBehavior(AzureSearchIndexWriteBehaviorType.UPLOAD);
+        AzureSearchIndexSink model = new AzureSearchIndexSink().withWriteBatchSize("datatq")
+            .withWriteBatchTimeout("datapbtqibq").withSinkRetryCount("dataugcwzgdfdrdxo")
+            .withSinkRetryWait("datakgezulnntpbarej").withMaxConcurrentConnections("datahlxoljbpoeoywykh")
+            .withDisableMetricsCollection("datavwhrivvzr").withWriteBehavior(AzureSearchIndexWriteBehaviorType.MERGE);
         model = BinaryData.fromObject(model).toObject(AzureSearchIndexSink.class);
-        Assertions.assertEquals(AzureSearchIndexWriteBehaviorType.UPLOAD, model.writeBehavior());
+        Assertions.assertEquals(AzureSearchIndexWriteBehaviorType.MERGE, model.writeBehavior());
     }
 }

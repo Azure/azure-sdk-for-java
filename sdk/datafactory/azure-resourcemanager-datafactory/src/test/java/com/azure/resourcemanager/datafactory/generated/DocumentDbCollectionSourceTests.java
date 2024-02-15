@@ -10,25 +10,18 @@ import com.azure.resourcemanager.datafactory.models.DocumentDbCollectionSource;
 public final class DocumentDbCollectionSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DocumentDbCollectionSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"DocumentDbCollectionSource\",\"query\":\"dataolfensibq\",\"nestingSeparator\":\"databpyjzvye\",\"queryTimeout\":\"dataf\",\"additionalColumns\":\"datavz\",\"sourceRetryCount\":\"datavvwroug\",\"sourceRetryWait\":\"dataywgqrevbobheyx\",\"maxConcurrentConnections\":\"datacsktvkwb\",\"disableMetricsCollection\":\"datakfvvxiikrja\",\"\":{\"gv\":\"datavnm\",\"mhksgouzvegtnph\":\"dataypuotmkbofu\"}}")
-                .toObject(DocumentDbCollectionSource.class);
+        DocumentDbCollectionSource model = BinaryData.fromString(
+            "{\"type\":\"DocumentDbCollectionSource\",\"query\":\"datamhlcxbaxcgcdf\",\"nestingSeparator\":\"datavapbdbicjzntibl\",\"queryTimeout\":\"dataygosuhroicjt\",\"additionalColumns\":\"datadymoanpkcmdixiux\",\"sourceRetryCount\":\"datacalgspz\",\"sourceRetryWait\":\"datafprzlvhohzkcsjd\",\"maxConcurrentConnections\":\"dataposmnmkypeqm\",\"disableMetricsCollection\":\"dataeox\",\"\":{\"hw\":\"dataulavxeaymfl\",\"a\":\"datafunptsryp\",\"tbxcj\":\"datakbwbxvs\"}}")
+            .toObject(DocumentDbCollectionSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DocumentDbCollectionSource model =
-            new DocumentDbCollectionSource()
-                .withSourceRetryCount("datavvwroug")
-                .withSourceRetryWait("dataywgqrevbobheyx")
-                .withMaxConcurrentConnections("datacsktvkwb")
-                .withDisableMetricsCollection("datakfvvxiikrja")
-                .withQuery("dataolfensibq")
-                .withNestingSeparator("databpyjzvye")
-                .withQueryTimeout("dataf")
-                .withAdditionalColumns("datavz");
+        DocumentDbCollectionSource model = new DocumentDbCollectionSource().withSourceRetryCount("datacalgspz")
+            .withSourceRetryWait("datafprzlvhohzkcsjd").withMaxConcurrentConnections("dataposmnmkypeqm")
+            .withDisableMetricsCollection("dataeox").withQuery("datamhlcxbaxcgcdf")
+            .withNestingSeparator("datavapbdbicjzntibl").withQueryTimeout("dataygosuhroicjt")
+            .withAdditionalColumns("datadymoanpkcmdixiux");
         model = BinaryData.fromObject(model).toObject(DocumentDbCollectionSource.class);
     }
 }

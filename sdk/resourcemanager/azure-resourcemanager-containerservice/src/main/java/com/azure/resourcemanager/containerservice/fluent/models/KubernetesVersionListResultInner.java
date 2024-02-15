@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.models.KubernetesVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Hold values properties, which is array of KubernetesVersion. */
+/**
+ * Hold values properties, which is array of KubernetesVersion.
+ */
 @Fluent
 public final class KubernetesVersionListResultInner {
     /*
@@ -18,13 +20,15 @@ public final class KubernetesVersionListResultInner {
     @JsonProperty(value = "values")
     private List<KubernetesVersion> values;
 
-    /** Creates an instance of KubernetesVersionListResultInner class. */
+    /**
+     * Creates an instance of KubernetesVersionListResultInner class.
+     */
     public KubernetesVersionListResultInner() {
     }
 
     /**
      * Get the values property: Array of AKS supported Kubernetes versions.
-     *
+     * 
      * @return the values value.
      */
     public List<KubernetesVersion> values() {
@@ -33,7 +37,7 @@ public final class KubernetesVersionListResultInner {
 
     /**
      * Set the values property: Array of AKS supported Kubernetes versions.
-     *
+     * 
      * @param values the values value to set.
      * @return the KubernetesVersionListResultInner object itself.
      */
@@ -44,7 +48,7 @@ public final class KubernetesVersionListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

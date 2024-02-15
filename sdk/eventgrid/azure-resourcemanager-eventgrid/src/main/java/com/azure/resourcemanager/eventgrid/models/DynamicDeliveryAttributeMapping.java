@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Dynamic delivery attribute mapping details. */
+/**
+ * Dynamic delivery attribute mapping details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Dynamic")
 @Fluent
@@ -21,20 +23,24 @@ public final class DynamicDeliveryAttributeMapping extends DeliveryAttributeMapp
     @JsonProperty(value = "properties")
     private DynamicDeliveryAttributeMappingProperties innerProperties;
 
-    /** Creates an instance of DynamicDeliveryAttributeMapping class. */
+    /**
+     * Creates an instance of DynamicDeliveryAttributeMapping class.
+     */
     public DynamicDeliveryAttributeMapping() {
     }
 
     /**
      * Get the innerProperties property: Properties of dynamic delivery attribute mapping.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DynamicDeliveryAttributeMappingProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicDeliveryAttributeMapping withName(String name) {
         super.withName(name);
@@ -43,7 +49,7 @@ public final class DynamicDeliveryAttributeMapping extends DeliveryAttributeMapp
 
     /**
      * Get the sourceField property: JSON path in the event which contains attribute value.
-     *
+     * 
      * @return the sourceField value.
      */
     public String sourceField() {
@@ -52,7 +58,7 @@ public final class DynamicDeliveryAttributeMapping extends DeliveryAttributeMapp
 
     /**
      * Set the sourceField property: JSON path in the event which contains attribute value.
-     *
+     * 
      * @param sourceField the sourceField value to set.
      * @return the DynamicDeliveryAttributeMapping object itself.
      */
@@ -66,7 +72,7 @@ public final class DynamicDeliveryAttributeMapping extends DeliveryAttributeMapp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

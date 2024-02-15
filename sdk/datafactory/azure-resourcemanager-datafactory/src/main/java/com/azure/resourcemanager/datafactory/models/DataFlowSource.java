@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Transformation for data flow source. */
+/**
+ * Transformation for data flow source.
+ */
 @Fluent
 public class DataFlowSource extends Transformation {
     /*
@@ -16,13 +18,15 @@ public class DataFlowSource extends Transformation {
     @JsonProperty(value = "schemaLinkedService")
     private LinkedServiceReference schemaLinkedService;
 
-    /** Creates an instance of DataFlowSource class. */
+    /**
+     * Creates an instance of DataFlowSource class.
+     */
     public DataFlowSource() {
     }
 
     /**
      * Get the schemaLinkedService property: Schema linked service reference.
-     *
+     * 
      * @return the schemaLinkedService value.
      */
     public LinkedServiceReference schemaLinkedService() {
@@ -31,7 +35,7 @@ public class DataFlowSource extends Transformation {
 
     /**
      * Set the schemaLinkedService property: Schema linked service reference.
-     *
+     * 
      * @param schemaLinkedService the schemaLinkedService value to set.
      * @return the DataFlowSource object itself.
      */
@@ -40,35 +44,45 @@ public class DataFlowSource extends Transformation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource withDataset(DatasetReference dataset) {
         super.withDataset(dataset);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource withLinkedService(LinkedServiceReference linkedService) {
         super.withLinkedService(linkedService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource withFlowlet(DataFlowReference flowlet) {
         super.withFlowlet(flowlet);
@@ -77,7 +91,7 @@ public class DataFlowSource extends Transformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

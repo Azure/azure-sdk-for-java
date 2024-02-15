@@ -25,11 +25,14 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devcenter.fluent.DevCenterManagementClient;
 import com.azure.resourcemanager.devcenter.implementation.AttachedNetworksImpl;
+import com.azure.resourcemanager.devcenter.implementation.CatalogDevBoxDefinitionsImpl;
 import com.azure.resourcemanager.devcenter.implementation.CatalogsImpl;
 import com.azure.resourcemanager.devcenter.implementation.CheckNameAvailabilitiesImpl;
+import com.azure.resourcemanager.devcenter.implementation.CustomizationTasksImpl;
 import com.azure.resourcemanager.devcenter.implementation.DevBoxDefinitionsImpl;
 import com.azure.resourcemanager.devcenter.implementation.DevCenterManagementClientBuilder;
 import com.azure.resourcemanager.devcenter.implementation.DevCentersImpl;
+import com.azure.resourcemanager.devcenter.implementation.EnvironmentDefinitionsImpl;
 import com.azure.resourcemanager.devcenter.implementation.EnvironmentTypesImpl;
 import com.azure.resourcemanager.devcenter.implementation.GalleriesImpl;
 import com.azure.resourcemanager.devcenter.implementation.ImageVersionsImpl;
@@ -45,10 +48,13 @@ import com.azure.resourcemanager.devcenter.implementation.SchedulesImpl;
 import com.azure.resourcemanager.devcenter.implementation.SkusImpl;
 import com.azure.resourcemanager.devcenter.implementation.UsagesImpl;
 import com.azure.resourcemanager.devcenter.models.AttachedNetworks;
+import com.azure.resourcemanager.devcenter.models.CatalogDevBoxDefinitions;
 import com.azure.resourcemanager.devcenter.models.Catalogs;
 import com.azure.resourcemanager.devcenter.models.CheckNameAvailabilities;
+import com.azure.resourcemanager.devcenter.models.CustomizationTasks;
 import com.azure.resourcemanager.devcenter.models.DevBoxDefinitions;
 import com.azure.resourcemanager.devcenter.models.DevCenters;
+import com.azure.resourcemanager.devcenter.models.EnvironmentDefinitions;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypes;
 import com.azure.resourcemanager.devcenter.models.Galleries;
 import com.azure.resourcemanager.devcenter.models.ImageVersions;
@@ -101,6 +107,12 @@ public final class DevCenterManager {
     private Usages usages;
 
     private CheckNameAvailabilities checkNameAvailabilities;
+
+    private CatalogDevBoxDefinitions catalogDevBoxDefinitions;
+
+    private CustomizationTasks customizationTasks;
+
+    private EnvironmentDefinitions environmentDefinitions;
 
     private Skus skus;
 
@@ -275,7 +287,7 @@ public final class DevCenterManager {
                 .append("-")
                 .append("com.azure.resourcemanager.devcenter")
                 .append("/")
-                .append("1.0.0-beta.5");
+                .append("1.0.0-beta.6");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -516,6 +528,44 @@ public final class DevCenterManager {
     }
 
     /**
+     * Gets the resource collection API of CatalogDevBoxDefinitions.
+     *
+     * @return Resource collection API of CatalogDevBoxDefinitions.
+     */
+    public CatalogDevBoxDefinitions catalogDevBoxDefinitions() {
+        if (this.catalogDevBoxDefinitions == null) {
+            this.catalogDevBoxDefinitions =
+                new CatalogDevBoxDefinitionsImpl(clientObject.getCatalogDevBoxDefinitions(), this);
+        }
+        return catalogDevBoxDefinitions;
+    }
+
+    /**
+     * Gets the resource collection API of CustomizationTasks.
+     *
+     * @return Resource collection API of CustomizationTasks.
+     */
+    public CustomizationTasks customizationTasks() {
+        if (this.customizationTasks == null) {
+            this.customizationTasks = new CustomizationTasksImpl(clientObject.getCustomizationTasks(), this);
+        }
+        return customizationTasks;
+    }
+
+    /**
+     * Gets the resource collection API of EnvironmentDefinitions.
+     *
+     * @return Resource collection API of EnvironmentDefinitions.
+     */
+    public EnvironmentDefinitions environmentDefinitions() {
+        if (this.environmentDefinitions == null) {
+            this.environmentDefinitions =
+                new EnvironmentDefinitionsImpl(clientObject.getEnvironmentDefinitions(), this);
+        }
+        return environmentDefinitions;
+    }
+
+    /**
      * Gets the resource collection API of Skus.
      *
      * @return Resource collection API of Skus.
@@ -564,8 +614,10 @@ public final class DevCenterManager {
     }
 
     /**
-     * @return Wrapped service client DevCenterManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client DevCenterManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client DevCenterManagementClient.
      */
     public DevCenterManagementClient serviceClient() {
         return this.clientObject;

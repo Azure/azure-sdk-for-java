@@ -61,9 +61,9 @@ public final class PollingUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> Mono<T> deserializeResponse(BinaryData binaryData, ObjectSerializer serializer,
-                                                  TypeReference<T> typeReference) {
+        TypeReference<T> typeReference) {
         if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, typeReference.getJavaType())) {
-            return Mono.just((T) binaryData);
+            return (Mono<T>) binaryData.toReplayableBinaryDataAsync();
         } else {
             return binaryData.toObjectAsync(typeReference, serializer);
         }
@@ -83,7 +83,7 @@ public final class PollingUtils {
     public static <T> T deserializeResponseSync(BinaryData binaryData, ObjectSerializer serializer,
         TypeReference<T> typeReference) {
         if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, typeReference.getJavaType())) {
-            return (T) binaryData;
+            return (T) binaryData.toReplayableBinaryData();
         } else {
             return binaryData.toObject(typeReference, serializer);
         }
@@ -105,7 +105,7 @@ public final class PollingUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> Mono<T> convertResponse(Object response, ObjectSerializer serializer,
-                                              TypeReference<T> typeReference) {
+        TypeReference<T> typeReference) {
         if (response == null) {
             return Mono.empty();
         } else if (TypeUtil.isTypeOrSubTypeOf(response.getClass(), typeReference.getJavaType())) {
@@ -148,6 +148,7 @@ public final class PollingUtils {
      *
      * @param path a relative path or absolute path.
      * @param endpoint an endpoint to create the absolute path if the path is relative.
+     * @param logger a {@link ClientLogger} to log the exception.
      * @return an absolute path.
      */
     public static String getAbsolutePath(String path, String endpoint, ClientLogger logger) {

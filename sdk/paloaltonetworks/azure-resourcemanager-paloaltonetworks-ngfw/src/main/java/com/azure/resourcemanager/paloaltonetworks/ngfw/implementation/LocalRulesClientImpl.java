@@ -41,22 +41,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LocalRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LocalRulesClient.
+ */
 public final class LocalRulesClientImpl implements LocalRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LocalRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PaloAltoNetworksCloudngfwImpl client;
 
     /**
      * Initializes an instance of LocalRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LocalRulesClientImpl(PaloAltoNetworksCloudngfwImpl client) {
-        this.service =
-            RestProxy.create(LocalRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(LocalRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,150 +73,107 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
     @Host("{$host}")
     @ServiceInterface(name = "PaloAltoNetworksClou")
     public interface LocalRulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LocalRulesResourceListResult>> listByLocalRulestacks(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<LocalRulesResourceListResult>> listByLocalRulestacks(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("localRulestackName") String localRulestackName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LocalRulesResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<LocalRulesResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @PathParam("priority") String priority,
-            @HeaderParam("Accept") String accept,
+            @PathParam("localRulestackName") String localRulestackName, @PathParam("priority") String priority,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("localRulestackName") String localRulestackName, @PathParam("priority") String priority,
+            @BodyParam("application/json") LocalRulesResourceInner resource, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @PathParam("priority") String priority,
-            @BodyParam("application/json") LocalRulesResourceInner resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @PathParam("priority") String priority,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}/getCounters")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<RuleCounterInner>> getCounters(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @PathParam("priority") String priority,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @PathParam("priority") String priority,
+            @QueryParam("firewallName") String firewallName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}/getCounters")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}/refreshCounters")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RuleCounterInner>> getCounters(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Void>> refreshCounters(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @PathParam("priority") String priority,
-            @QueryParam("firewallName") String firewallName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @PathParam("priority") String priority,
+            @QueryParam("firewallName") String firewallName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}/refreshCounters")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}/resetCounters")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> refreshCounters(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<RuleCounterResetInner>> resetCounters(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @PathParam("priority") String priority,
-            @QueryParam("firewallName") String firewallName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @PathParam("priority") String priority,
+            @QueryParam("firewallName") String firewallName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}/resetCounters")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RuleCounterResetInner>> resetCounters(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @PathParam("priority") String priority,
-            @QueryParam("firewallName") String firewallName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LocalRulesResourceListResult>> listByLocalRulestacksNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List LocalRulesResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulesResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocalRulesResourceInner>> listByLocalRulestacksSinglePageAsync(
-        String resourceGroupName, String localRulestackName) {
+    private Mono<PagedResponse<LocalRulesResourceInner>> listByLocalRulestacksSinglePageAsync(String resourceGroupName,
+        String localRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -223,31 +186,16 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByLocalRulestacks(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            accept,
-                            context))
-            .<PagedResponse<LocalRulesResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByLocalRulestacks(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context))
+            .<PagedResponse<LocalRulesResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List LocalRulesResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -255,22 +203,18 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulesResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocalRulesResourceInner>> listByLocalRulestacksSinglePageAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private Mono<PagedResponse<LocalRulesResourceInner>> listByLocalRulestacksSinglePageAsync(String resourceGroupName,
+        String localRulestackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -283,28 +227,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByLocalRulestacks(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByLocalRulestacks(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List LocalRulesResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -313,16 +244,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the response of a LocalRulesResource list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LocalRulesResourceInner> listByLocalRulestacksAsync(
-        String resourceGroupName, String localRulestackName) {
-        return new PagedFlux<>(
-            () -> listByLocalRulestacksSinglePageAsync(resourceGroupName, localRulestackName),
+    private PagedFlux<LocalRulesResourceInner> listByLocalRulestacksAsync(String resourceGroupName,
+        String localRulestackName) {
+        return new PagedFlux<>(() -> listByLocalRulestacksSinglePageAsync(resourceGroupName, localRulestackName),
             nextLink -> listByLocalRulestacksNextSinglePageAsync(nextLink));
     }
 
     /**
      * List LocalRulesResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -332,8 +262,8 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the response of a LocalRulesResource list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LocalRulesResourceInner> listByLocalRulestacksAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private PagedFlux<LocalRulesResourceInner> listByLocalRulestacksAsync(String resourceGroupName,
+        String localRulestackName, Context context) {
         return new PagedFlux<>(
             () -> listByLocalRulestacksSinglePageAsync(resourceGroupName, localRulestackName, context),
             nextLink -> listByLocalRulestacksNextSinglePageAsync(nextLink, context));
@@ -341,7 +271,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
 
     /**
      * List LocalRulesResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -350,14 +280,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the response of a LocalRulesResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LocalRulesResourceInner> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName) {
+    public PagedIterable<LocalRulesResourceInner> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName) {
         return new PagedIterable<>(listByLocalRulestacksAsync(resourceGroupName, localRulestackName));
     }
 
     /**
      * List LocalRulesResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -367,14 +297,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the response of a LocalRulesResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LocalRulesResourceInner> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context) {
+    public PagedIterable<LocalRulesResourceInner> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName, Context context) {
         return new PagedIterable<>(listByLocalRulestacksAsync(resourceGroupName, localRulestackName, context));
     }
 
     /**
      * Get a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -384,19 +314,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return a LocalRulesResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LocalRulesResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String priority) {
+    private Mono<Response<LocalRulesResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String priority) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -411,24 +337,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            priority,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -439,19 +355,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return a LocalRulesResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LocalRulesResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String priority, Context context) {
+    private Mono<Response<LocalRulesResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String priority, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -466,21 +378,13 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                priority,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, localRulestackName, priority, accept, context);
     }
 
     /**
      * Get a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -490,15 +394,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return a LocalRulesResource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LocalRulesResourceInner> getAsync(
-        String resourceGroupName, String localRulestackName, String priority) {
+    private Mono<LocalRulesResourceInner> getAsync(String resourceGroupName, String localRulestackName,
+        String priority) {
         return getWithResponseAsync(resourceGroupName, localRulestackName, priority)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -509,14 +413,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return a LocalRulesResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LocalRulesResourceInner> getWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, Context context) {
+    public Response<LocalRulesResourceInner> getWithResponse(String resourceGroupName, String localRulestackName,
+        String priority, Context context) {
         return getWithResponseAsync(resourceGroupName, localRulestackName, priority, context).block();
     }
 
     /**
      * Get a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -532,7 +436,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -543,19 +447,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return localRulestack rule list along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String priority, LocalRulesResourceInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String priority, LocalRulesResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -575,25 +475,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            priority,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, resource, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -605,23 +495,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return localRulestack rule list along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String priority,
-        LocalRulesResourceInner resource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String priority, LocalRulesResourceInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -641,22 +523,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                priority,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, resource, accept,
+            context);
     }
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -669,21 +543,16 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LocalRulesResourceInner>, LocalRulesResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String localRulestackName, String priority, LocalRulesResourceInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, priority, resource);
-        return this
-            .client
-            .<LocalRulesResourceInner, LocalRulesResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LocalRulesResourceInner.class,
-                LocalRulesResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, priority, resource);
+        return this.client.<LocalRulesResourceInner, LocalRulesResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LocalRulesResourceInner.class, LocalRulesResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -696,27 +565,18 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LocalRulesResourceInner>, LocalRulesResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String priority,
-        LocalRulesResourceInner resource,
+        String resourceGroupName, String localRulestackName, String priority, LocalRulesResourceInner resource,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, priority, resource, context);
-        return this
-            .client
-            .<LocalRulesResourceInner, LocalRulesResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LocalRulesResourceInner.class,
-                LocalRulesResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, priority, resource, context);
+        return this.client.<LocalRulesResourceInner, LocalRulesResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LocalRulesResourceInner.class, LocalRulesResourceInner.class, context);
     }
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -734,7 +594,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -747,19 +607,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LocalRulesResourceInner>, LocalRulesResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String priority,
-        LocalRulesResourceInner resource,
+        String resourceGroupName, String localRulestackName, String priority, LocalRulesResourceInner resource,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, priority, resource, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, priority, resource, context)
             .getSyncPoller();
     }
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -770,16 +626,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return localRulestack rule list on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LocalRulesResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String localRulestackName, String priority, LocalRulesResourceInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, priority, resource)
-            .last()
+    private Mono<LocalRulesResourceInner> createOrUpdateAsync(String resourceGroupName, String localRulestackName,
+        String priority, LocalRulesResourceInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, priority, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -791,20 +646,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return localRulestack rule list on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LocalRulesResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String priority,
-        LocalRulesResourceInner resource,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, priority, resource, context)
-            .last()
+    private Mono<LocalRulesResourceInner> createOrUpdateAsync(String resourceGroupName, String localRulestackName,
+        String priority, LocalRulesResourceInner resource, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, priority, resource, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -815,14 +665,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return localRulestack rule list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LocalRulesResourceInner createOrUpdate(
-        String resourceGroupName, String localRulestackName, String priority, LocalRulesResourceInner resource) {
+    public LocalRulesResourceInner createOrUpdate(String resourceGroupName, String localRulestackName, String priority,
+        LocalRulesResourceInner resource) {
         return createOrUpdateAsync(resourceGroupName, localRulestackName, priority, resource).block();
     }
 
     /**
      * Create a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -834,18 +684,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return localRulestack rule list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LocalRulesResourceInner createOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String priority,
-        LocalRulesResourceInner resource,
-        Context context) {
+    public LocalRulesResourceInner createOrUpdate(String resourceGroupName, String localRulestackName, String priority,
+        LocalRulesResourceInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, localRulestackName, priority, resource, context).block();
     }
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -855,19 +701,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String priority) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String priority) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -882,24 +724,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            priority,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -910,19 +742,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String priority, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String priority, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -937,21 +765,13 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                priority,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, localRulestackName, priority, accept, context);
     }
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -961,19 +781,17 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String localRulestackName, String priority) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, localRulestackName, priority);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String localRulestackName,
+        String priority) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, localRulestackName, priority);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -984,19 +802,18 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String localRulestackName, String priority, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String localRulestackName,
+        String priority, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, localRulestackName, priority, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, localRulestackName, priority, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1006,14 +823,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, String priority) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
+        String priority) {
         return this.beginDeleteAsync(resourceGroupName, localRulestackName, priority).getSyncPoller();
     }
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1024,14 +841,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, String priority, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
+        String priority, Context context) {
         return this.beginDeleteAsync(resourceGroupName, localRulestackName, priority, context).getSyncPoller();
     }
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1042,14 +859,13 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String localRulestackName, String priority) {
-        return beginDeleteAsync(resourceGroupName, localRulestackName, priority)
-            .last()
+        return beginDeleteAsync(resourceGroupName, localRulestackName, priority).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1060,16 +876,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String localRulestackName, String priority, Context context) {
-        return beginDeleteAsync(resourceGroupName, localRulestackName, priority, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String localRulestackName, String priority,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, localRulestackName, priority, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1084,7 +899,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1100,7 +915,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
 
     /**
      * Get counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1111,19 +926,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return counters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RuleCounterInner>> getCountersWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName) {
+    private Mono<Response<RuleCounterInner>> getCountersWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String priority, String firewallName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1138,25 +949,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getCounters(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            priority,
-                            firewallName,
-                            accept,
-                            context))
+            .withContext(context -> service.getCounters(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, firewallName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1168,19 +969,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return counters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RuleCounterInner>> getCountersWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context) {
+    private Mono<Response<RuleCounterInner>> getCountersWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String priority, String firewallName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1195,22 +992,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getCounters(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                priority,
-                firewallName,
-                accept,
-                context);
+        return service.getCounters(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, firewallName, accept,
+            context);
     }
 
     /**
      * Get counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1220,8 +1009,8 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return counters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RuleCounterInner> getCountersAsync(
-        String resourceGroupName, String localRulestackName, String priority) {
+    private Mono<RuleCounterInner> getCountersAsync(String resourceGroupName, String localRulestackName,
+        String priority) {
         final String firewallName = null;
         return getCountersWithResponseAsync(resourceGroupName, localRulestackName, priority, firewallName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1229,7 +1018,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
 
     /**
      * Get counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1241,15 +1030,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return counters along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RuleCounterInner> getCountersWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context) {
+    public Response<RuleCounterInner> getCountersWithResponse(String resourceGroupName, String localRulestackName,
+        String priority, String firewallName, Context context) {
         return getCountersWithResponseAsync(resourceGroupName, localRulestackName, priority, firewallName, context)
             .block();
     }
 
     /**
      * Get counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1267,7 +1056,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1278,19 +1067,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> refreshCountersWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName) {
+    private Mono<Response<Void>> refreshCountersWithResponseAsync(String resourceGroupName, String localRulestackName,
+        String priority, String firewallName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1305,25 +1090,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .refreshCounters(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            priority,
-                            firewallName,
-                            accept,
-                            context))
+            .withContext(context -> service.refreshCounters(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, firewallName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1335,19 +1110,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> refreshCountersWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context) {
+    private Mono<Response<Void>> refreshCountersWithResponseAsync(String resourceGroupName, String localRulestackName,
+        String priority, String firewallName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1362,22 +1133,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .refreshCounters(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                priority,
-                firewallName,
-                accept,
-                context);
+        return service.refreshCounters(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, firewallName, accept,
+            context);
     }
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1395,7 +1158,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1407,15 +1170,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> refreshCountersWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context) {
+    public Response<Void> refreshCountersWithResponse(String resourceGroupName, String localRulestackName,
+        String priority, String firewallName, Context context) {
         return refreshCountersWithResponseAsync(resourceGroupName, localRulestackName, priority, firewallName, context)
             .block();
     }
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1431,7 +1194,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
 
     /**
      * Reset counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1442,19 +1205,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return rule counter reset along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RuleCounterResetInner>> resetCountersWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName) {
+    private Mono<Response<RuleCounterResetInner>> resetCountersWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String priority, String firewallName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1469,25 +1228,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resetCounters(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            priority,
-                            firewallName,
-                            accept,
-                            context))
+            .withContext(context -> service.resetCounters(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, firewallName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Reset counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1499,19 +1248,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return rule counter reset along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RuleCounterResetInner>> resetCountersWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context) {
+    private Mono<Response<RuleCounterResetInner>> resetCountersWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String priority, String firewallName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1526,22 +1271,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .resetCounters(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                priority,
-                firewallName,
-                accept,
-                context);
+        return service.resetCounters(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, firewallName, accept,
+            context);
     }
 
     /**
      * Reset counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1551,8 +1288,8 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return rule counter reset on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RuleCounterResetInner> resetCountersAsync(
-        String resourceGroupName, String localRulestackName, String priority) {
+    private Mono<RuleCounterResetInner> resetCountersAsync(String resourceGroupName, String localRulestackName,
+        String priority) {
         final String firewallName = null;
         return resetCountersWithResponseAsync(resourceGroupName, localRulestackName, priority, firewallName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1560,7 +1297,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
 
     /**
      * Reset counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1572,15 +1309,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      * @return rule counter reset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RuleCounterResetInner> resetCountersWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context) {
+    public Response<RuleCounterResetInner> resetCountersWithResponse(String resourceGroupName,
+        String localRulestackName, String priority, String firewallName, Context context) {
         return resetCountersWithResponseAsync(resourceGroupName, localRulestackName, priority, firewallName, context)
             .block();
     }
 
     /**
      * Reset counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -1598,14 +1335,15 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulesResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocalRulesResourceInner>> listByLocalRulestacksNextSinglePageAsync(String nextLink) {
@@ -1613,63 +1351,45 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByLocalRulestacksNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LocalRulesResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<LocalRulesResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulesResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocalRulesResourceInner>> listByLocalRulestacksNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<LocalRulesResourceInner>> listByLocalRulestacksNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByLocalRulestacksNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByLocalRulestacksNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

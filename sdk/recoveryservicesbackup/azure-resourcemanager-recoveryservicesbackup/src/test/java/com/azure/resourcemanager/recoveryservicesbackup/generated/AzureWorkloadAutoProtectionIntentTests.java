@@ -13,32 +13,27 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureWorkloadAutoProtectionIntentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureWorkloadAutoProtectionIntent model =
-            BinaryData
-                .fromString(
-                    "{\"protectionIntentItemType\":\"AzureWorkloadAutoProtectionIntent\",\"backupManagementType\":\"AzureSql\",\"sourceResourceId\":\"fulopmjnlexwhcb\",\"itemId\":\"ibkeph\",\"policyId\":\"uerct\",\"protectionState\":\"NotProtected\"}")
-                .toObject(AzureWorkloadAutoProtectionIntent.class);
+        AzureWorkloadAutoProtectionIntent model = BinaryData.fromString(
+            "{\"protectionIntentItemType\":\"AzureWorkloadAutoProtectionIntent\",\"backupManagementType\":\"AzureSql\",\"sourceResourceId\":\"t\",\"itemId\":\"eaqnrmvvfkoxm\",\"policyId\":\"hktuidvrma\",\"protectionState\":\"ProtectionFailed\"}")
+            .toObject(AzureWorkloadAutoProtectionIntent.class);
         Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
-        Assertions.assertEquals("fulopmjnlexwhcb", model.sourceResourceId());
-        Assertions.assertEquals("ibkeph", model.itemId());
-        Assertions.assertEquals("uerct", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
+        Assertions.assertEquals("t", model.sourceResourceId());
+        Assertions.assertEquals("eaqnrmvvfkoxm", model.itemId());
+        Assertions.assertEquals("hktuidvrma", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureWorkloadAutoProtectionIntent model =
-            new AzureWorkloadAutoProtectionIntent()
-                .withBackupManagementType(BackupManagementType.AZURE_SQL)
-                .withSourceResourceId("fulopmjnlexwhcb")
-                .withItemId("ibkeph")
-                .withPolicyId("uerct")
-                .withProtectionState(ProtectionStatus.NOT_PROTECTED);
+        AzureWorkloadAutoProtectionIntent model
+            = new AzureWorkloadAutoProtectionIntent().withBackupManagementType(BackupManagementType.AZURE_SQL)
+                .withSourceResourceId("t").withItemId("eaqnrmvvfkoxm").withPolicyId("hktuidvrma")
+                .withProtectionState(ProtectionStatus.PROTECTION_FAILED);
         model = BinaryData.fromObject(model).toObject(AzureWorkloadAutoProtectionIntent.class);
         Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
-        Assertions.assertEquals("fulopmjnlexwhcb", model.sourceResourceId());
-        Assertions.assertEquals("ibkeph", model.itemId());
-        Assertions.assertEquals("uerct", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
+        Assertions.assertEquals("t", model.sourceResourceId());
+        Assertions.assertEquals("eaqnrmvvfkoxm", model.itemId());
+        Assertions.assertEquals("hktuidvrma", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
     }
 }

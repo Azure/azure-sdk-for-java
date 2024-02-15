@@ -35,55 +35,33 @@ public final class DataFlowDebugSessionsCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"status\":\"ygecly\",\"sessionId\":\"oshkzibbjbzdnkg\"}";
+        String responseStr = "{\"status\":\"ztrmtimtfauylqpz\",\"sessionId\":\"ngfcbldpeforx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CreateDataFlowDebugSessionResponse response =
-            manager
-                .dataFlowDebugSessions()
-                .create(
-                    "acurmmbunazlivvn",
-                    "zcnqwisuh",
-                    new CreateDataFlowDebugSessionRequest()
-                        .withComputeType("eqyiadv")
-                        .withCoreCount(1802611604)
-                        .withTimeToLive(902558442)
-                        .withIntegrationRuntime(
-                            new IntegrationRuntimeDebugResource()
-                                .withName("siflf")
-                                .withProperties(
-                                    new IntegrationRuntime()
-                                        .withDescription("lpnlpnyyu")
-                                        .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))),
-                    com.azure.core.util.Context.NONE);
+        CreateDataFlowDebugSessionResponse response = manager.dataFlowDebugSessions().create("hengkwhkekxohqv", "pwzoq",
+            new CreateDataFlowDebugSessionRequest().withComputeType("mkjleelakvhgefvp").withCoreCount(384659902)
+                .withTimeToLive(37607510)
+                .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("exu")
+                    .withProperties(new IntegrationRuntime().withDescription("gqiprbqdtcibb")
+                        .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))),
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ygecly", response.status());
-        Assertions.assertEquals("oshkzibbjbzdnkg", response.sessionId());
+        Assertions.assertEquals("ztrmtimtfauylqpz", response.status());
+        Assertions.assertEquals("ngfcbldpeforx", response.sessionId());
     }
 
     // Use "Map.of" if available

@@ -11,7 +11,9 @@ public final class EnvironmentRoleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnvironmentRole model =
-            BinaryData.fromString("{\"roleName\":\"z\",\"description\":\"zka\"}").toObject(EnvironmentRole.class);
+            BinaryData
+                .fromString("{\"roleName\":\"n\",\"description\":\"wncwzzhxgktrmg\"}")
+                .toObject(EnvironmentRole.class);
     }
 
     @org.junit.jupiter.api.Test

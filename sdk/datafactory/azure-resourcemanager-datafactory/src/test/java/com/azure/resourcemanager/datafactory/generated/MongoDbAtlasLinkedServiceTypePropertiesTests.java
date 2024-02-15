@@ -10,20 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.MongoDbAtlasLinkedSer
 public final class MongoDbAtlasLinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MongoDbAtlasLinkedServiceTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"connectionString\":\"dataqawupqkvmy\",\"database\":\"dataueefrxzwvcvtjd\",\"driverVersion\":\"dataagw\"}")
-                .toObject(MongoDbAtlasLinkedServiceTypeProperties.class);
+        MongoDbAtlasLinkedServiceTypeProperties model = BinaryData.fromString(
+            "{\"connectionString\":\"datalvxsulcdwbib\",\"database\":\"dataviacghygm\",\"driverVersion\":\"dataivpzjnrw\"}")
+            .toObject(MongoDbAtlasLinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbAtlasLinkedServiceTypeProperties model =
-            new MongoDbAtlasLinkedServiceTypeProperties()
-                .withConnectionString("dataqawupqkvmy")
-                .withDatabase("dataueefrxzwvcvtjd")
-                .withDriverVersion("dataagw");
+        MongoDbAtlasLinkedServiceTypeProperties model = new MongoDbAtlasLinkedServiceTypeProperties()
+            .withConnectionString("datalvxsulcdwbib").withDatabase("dataviacghygm").withDriverVersion("dataivpzjnrw");
         model = BinaryData.fromObject(model).toObject(MongoDbAtlasLinkedServiceTypeProperties.class);
     }
 }

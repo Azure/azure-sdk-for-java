@@ -7,31 +7,42 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
-/** File server write settings. */
+/**
+ * File server write settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileServerWriteSettings")
 @Fluent
 public final class FileServerWriteSettings extends StoreWriteSettings {
-    /** Creates an instance of FileServerWriteSettings class. */
+    /**
+     * Creates an instance of FileServerWriteSettings class.
+     */
     public FileServerWriteSettings() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileServerWriteSettings withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileServerWriteSettings withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileServerWriteSettings withCopyBehavior(Object copyBehavior) {
         super.withCopyBehavior(copyBehavior);
@@ -39,8 +50,17 @@ public final class FileServerWriteSettings extends StoreWriteSettings {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FileServerWriteSettings withMetadata(List<MetadataItem> metadata) {
+        super.withMetadata(metadata);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** connect information from the AKS agent nodes to a single endpoint. */
+/**
+ * connect information from the AKS agent nodes to a single endpoint.
+ */
 @Fluent
 public final class EndpointDetail {
     /*
@@ -34,13 +36,15 @@ public final class EndpointDetail {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of EndpointDetail class. */
+    /**
+     * Creates an instance of EndpointDetail class.
+     */
     public EndpointDetail() {
     }
 
     /**
      * Get the ipAddress property: An IP Address that Domain Name currently resolves to.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -49,7 +53,7 @@ public final class EndpointDetail {
 
     /**
      * Set the ipAddress property: An IP Address that Domain Name currently resolves to.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the EndpointDetail object itself.
      */
@@ -60,7 +64,7 @@ public final class EndpointDetail {
 
     /**
      * Get the port property: The port an endpoint is connected to.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -69,7 +73,7 @@ public final class EndpointDetail {
 
     /**
      * Set the port property: The port an endpoint is connected to.
-     *
+     * 
      * @param port the port value to set.
      * @return the EndpointDetail object itself.
      */
@@ -80,7 +84,7 @@ public final class EndpointDetail {
 
     /**
      * Get the protocol property: The protocol used for connection.
-     *
+     * 
      * @return the protocol value.
      */
     public String protocol() {
@@ -89,7 +93,7 @@ public final class EndpointDetail {
 
     /**
      * Set the protocol property: The protocol used for connection.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the EndpointDetail object itself.
      */
@@ -100,7 +104,7 @@ public final class EndpointDetail {
 
     /**
      * Get the description property: Description of the detail.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public final class EndpointDetail {
 
     /**
      * Set the description property: Description of the detail.
-     *
+     * 
      * @param description the description value to set.
      * @return the EndpointDetail object itself.
      */
@@ -120,7 +124,7 @@ public final class EndpointDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

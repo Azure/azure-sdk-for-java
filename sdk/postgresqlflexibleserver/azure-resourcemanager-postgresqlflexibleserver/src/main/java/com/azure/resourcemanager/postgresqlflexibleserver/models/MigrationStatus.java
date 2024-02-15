@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Migration status. */
+/**
+ * Migration status.
+ */
 @Immutable
 public final class MigrationStatus {
     /*
@@ -28,13 +30,15 @@ public final class MigrationStatus {
     @JsonProperty(value = "currentSubStateDetails", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationSubStateDetails currentSubStateDetails;
 
-    /** Creates an instance of MigrationStatus class. */
+    /**
+     * Creates an instance of MigrationStatus class.
+     */
     public MigrationStatus() {
     }
 
     /**
      * Get the state property: State of migration.
-     *
+     * 
      * @return the state value.
      */
     public MigrationState state() {
@@ -43,7 +47,7 @@ public final class MigrationStatus {
 
     /**
      * Get the error property: Error message, if any, for the migration state.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -52,7 +56,7 @@ public final class MigrationStatus {
 
     /**
      * Get the currentSubStateDetails property: Current Migration sub state details.
-     *
+     * 
      * @return the currentSubStateDetails value.
      */
     public MigrationSubStateDetails currentSubStateDetails() {
@@ -61,7 +65,7 @@ public final class MigrationStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

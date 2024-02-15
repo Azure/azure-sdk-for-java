@@ -7,7 +7,9 @@ package com.azure.resourcemanager.deviceupdate.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Private endpoint connection proxy object properties. */
+/**
+ * Private endpoint connection proxy object properties.
+ */
 @Immutable
 public final class ConnectionDetails {
     /*
@@ -41,8 +43,14 @@ public final class ConnectionDetails {
     private String memberName;
 
     /**
+     * Creates an instance of ConnectionDetails class.
+     */
+    public ConnectionDetails() {
+    }
+
+    /**
      * Get the id property: Connection details ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -51,7 +59,7 @@ public final class ConnectionDetails {
 
     /**
      * Get the privateIpAddress property: Private IP address.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -60,7 +68,7 @@ public final class ConnectionDetails {
 
     /**
      * Get the linkIdentifier property: Link ID.
-     *
+     * 
      * @return the linkIdentifier value.
      */
     public String linkIdentifier() {
@@ -69,7 +77,7 @@ public final class ConnectionDetails {
 
     /**
      * Get the groupId property: Group ID.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -78,7 +86,7 @@ public final class ConnectionDetails {
 
     /**
      * Get the memberName property: Member name.
-     *
+     * 
      * @return the memberName value.
      */
     public String memberName() {
@@ -87,7 +95,7 @@ public final class ConnectionDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.GreenplumSource;
 public final class GreenplumSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GreenplumSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"GreenplumSource\",\"query\":\"dataszbe\",\"queryTimeout\":\"datahxikrgokyngarwz\",\"additionalColumns\":\"datazjxgassmna\",\"sourceRetryCount\":\"datapolueylqysgmiix\",\"sourceRetryWait\":\"dataekcwec\",\"maxConcurrentConnections\":\"datatkdginm\",\"disableMetricsCollection\":\"datagp\",\"\":{\"wrwvbqv\":\"dataqccey\",\"iqfaxtljpyzcgugs\":\"datacqgqrsopq\",\"vslocdkpvv\":\"datapvyktfuhfaabi\",\"xnzjzashhiz\":\"dataqlkh\"}}")
-                .toObject(GreenplumSource.class);
+        GreenplumSource model = BinaryData.fromString(
+            "{\"type\":\"GreenplumSource\",\"query\":\"databrolqxloed\",\"queryTimeout\":\"datarvfrfsyqb\",\"additionalColumns\":\"datawujwowthvuepszzn\",\"sourceRetryCount\":\"datajnsp\",\"sourceRetryWait\":\"dataqo\",\"maxConcurrentConnections\":\"datautqt\",\"disableMetricsCollection\":\"dataivvnmavfzjwdwwnx\",\"\":{\"piwcgcwmsh\":\"datand\",\"pzclkatpuomga\":\"datapqxjxhdwjfx\",\"vcfbflyzcqomlybs\":\"datavcqnjjfm\"}}")
+            .toObject(GreenplumSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GreenplumSource model =
-            new GreenplumSource()
-                .withSourceRetryCount("datapolueylqysgmiix")
-                .withSourceRetryWait("dataekcwec")
-                .withMaxConcurrentConnections("datatkdginm")
-                .withDisableMetricsCollection("datagp")
-                .withQueryTimeout("datahxikrgokyngarwz")
-                .withAdditionalColumns("datazjxgassmna")
-                .withQuery("dataszbe");
+        GreenplumSource model = new GreenplumSource().withSourceRetryCount("datajnsp").withSourceRetryWait("dataqo")
+            .withMaxConcurrentConnections("datautqt").withDisableMetricsCollection("dataivvnmavfzjwdwwnx")
+            .withQueryTimeout("datarvfrfsyqb").withAdditionalColumns("datawujwowthvuepszzn")
+            .withQuery("databrolqxloed");
         model = BinaryData.fromObject(model).toObject(GreenplumSource.class);
     }
 }

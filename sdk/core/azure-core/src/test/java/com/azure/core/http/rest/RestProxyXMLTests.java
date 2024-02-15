@@ -18,9 +18,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.AccessPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.SignedIdentifierInner;
 import com.azure.core.util.serializer.SignedIdentifiersWrapper;
@@ -29,11 +29,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -43,26 +39,33 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RestProxyXMLTests {
+    private static final String CONTAINERS_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        + "<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->"
+        + "<SignedIdentifiers><SignedIdentifier><Id>MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=</Id>"
+        + "<AccessPolicy><Start>2009-09-28T08:49:37.0000000Z</Start><Expiry>2009-09-29T08:49:37.0000000Z</Expiry>"
+        + "<Permission>rwd</Permission></AccessPolicy></SignedIdentifier></SignedIdentifiers>";
+
+    private static final String SLIDESHOW_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        + "<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->"
+        + "<slideshow title=\"Sample Slide Show\" date=\"Date of publication\" author=\"Yours Truly\">"
+        + "<slide type=\"all\"><title>Wake up to WonderWidgets!</title></slide><slide type=\"all\">"
+        + "<title>Overview</title><item>Why WonderWidgets are great</item><item/><item>Who buys WonderWidgets</item>"
+        + "</slide></slideshow>";
+
     static class MockXMLHTTPClient implements HttpClient {
-        private HttpResponse response(HttpRequest request, String resource) throws IOException, URISyntaxException {
-            URL url = getClass().getClassLoader().getResource(resource);
-            byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
+        private static HttpResponse response(HttpRequest request, String xml) {
             HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
-            HttpResponse res = new MockHttpResponse(request, 200, headers, bytes);
-            return res;
+            return new MockHttpResponse(request, 200, headers, xml.getBytes(StandardCharsets.UTF_8));
         }
+
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
-            try {
-                if (request.getUrl().toString().endsWith("GetContainerACLs")) {
-                    return Mono.just(response(request, "GetContainerACLs.xml"));
-                } else if (request.getUrl().toString().endsWith("GetXMLWithAttributes")) {
-                    return Mono.just(response(request, "GetXMLWithAttributes.xml"));
-                } else {
-                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 404));
-                }
-            } catch (IOException | URISyntaxException e) {
-                return Mono.error(e);
+            if (request.getUrl().toString().endsWith("GetContainerACLs")) {
+                return Mono.just(response(request, CONTAINERS_XML));
+            } else if (request.getUrl().toString().endsWith("GetXMLWithAttributes")) {
+                return Mono.just(response(request, SLIDESHOW_XML));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 404));
             }
         }
     }
@@ -78,16 +81,16 @@ public class RestProxyXMLTests {
     }
 
     @Test
-    public void canReadXMLResponse() throws Exception {
+    public void canReadXMLResponse() {
         //
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockXMLHTTPClient())
             .build();
 
         //
-        MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
-            pipeline,
-            new JacksonAdapter());
+        MyXMLService myXMLService = RestProxy.create(MyXMLService.class, pipeline,
+            JacksonAdapter.createDefaultSerializerAdapter());
+
         List<SignedIdentifierInner> identifiers = myXMLService.getContainerACLs().signedIdentifiers();
         assertNotNull(identifiers);
         assertNotEquals(0, identifiers.size());
@@ -105,18 +108,15 @@ public class RestProxyXMLTests {
                         return new MockHttpResponse(request, 200);
                     });
             } else {
-                return Mono.<HttpResponse>just(new MockHttpResponse(request, 404));
+                return Mono.just(new MockHttpResponse(request, 404));
             }
         }
     }
 
     @Test
-    public void canWriteXMLRequest() throws Exception {
-        URL url = getClass().getClassLoader().getResource("GetContainerACLs.xml");
-        byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
-        HttpRequest request = new HttpRequest(HttpMethod.PUT,
-            UrlBuilder.parse("http://unused/SetContainerACLs").toUrl());
-        request.setBody(bytes);
+    public void canWriteXMLRequest() throws IOException {
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, "http://unused/SetContainerACLs");
+        request.setBody(CONTAINERS_XML.getBytes(StandardCharsets.UTF_8));
 
         SignedIdentifierInner si = new SignedIdentifierInner();
         si.withId("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=");
@@ -129,16 +129,14 @@ public class RestProxyXMLTests {
         si.withAccessPolicy(ap);
         List<SignedIdentifierInner> expectedAcls = Collections.singletonList(si);
 
-        JacksonAdapter serializer = new JacksonAdapter();
+        SerializerAdapter serializer = JacksonAdapter.createDefaultSerializerAdapter();
         MockXMLReceiverClient httpClient = new MockXMLReceiverClient();
         //
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .build();
         //
-        MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
-            pipeline,
-            serializer);
+        MyXMLService myXMLService = RestProxy.create(MyXMLService.class, pipeline, serializer);
         SignedIdentifiersWrapper wrapper = new SignedIdentifiersWrapper(expectedAcls);
         myXMLService.setContainerACLs(wrapper);
 
@@ -149,8 +147,9 @@ public class RestProxyXMLTests {
 
         List<SignedIdentifierInner> actualAcls = actualAclsWrapped.signedIdentifiers();
 
-        // Ideally we'd just check for "things that matter" about the XML-- e.g. the tag names, structure, and attributes needs to be the same,
-        // but it doesn't matter if one document has a trailing newline or has UTF-8 in the header instead of utf-8, or if comments are missing.
+        // Ideally we'd just check for "things that matter" about the XML-- e.g. the tag names, structure, and
+        // attributes needs to be the same, but it doesn't matter if one document has a trailing newline or has UTF-8 in
+        // the header instead of utf-8, or if comments are missing.
         assertEquals(expectedAcls.size(), actualAcls.size());
         assertEquals(expectedAcls.get(0).id(), actualAcls.get(0).id());
         assertEquals(expectedAcls.get(0).accessPolicy().expiry(), actualAcls.get(0).accessPolicy().expiry());
@@ -166,17 +165,15 @@ public class RestProxyXMLTests {
     }
 
     @Test
-    public void canDeserializeXMLWithAttributes() throws Exception {
-        JacksonAdapter serializer = new JacksonAdapter();
+    public void canDeserializeXMLWithAttributes() throws IOException {
+        SerializerAdapter serializer = JacksonAdapter.createDefaultSerializerAdapter();
         //
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockXMLHTTPClient())
             .build();
 
         //
-        MyXMLServiceWithAttributes myXMLService = RestProxy.create(
-            MyXMLServiceWithAttributes.class,
-            pipeline,
+        MyXMLServiceWithAttributes myXMLService = RestProxy.create(MyXMLServiceWithAttributes.class, pipeline,
             serializer);
 
         Slideshow slideshow = myXMLService.getSlideshow();

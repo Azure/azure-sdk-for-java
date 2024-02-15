@@ -9,7 +9,7 @@ import com.azure.resourcemanager.kusto.models.ClusterMigrateRequest;
 /** Samples for Clusters Migrate. */
 public final class ClustersMigrateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClusterMigrate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterMigrate.json
      */
     /**
      * Sample code: KustoClusterMigrate.

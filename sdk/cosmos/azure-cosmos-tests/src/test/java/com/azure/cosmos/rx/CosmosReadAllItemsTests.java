@@ -30,7 +30,6 @@ public class CosmosReadAllItemsTests extends TestSuiteBase {
 
     @Test(groups = { "query" }, timeOut = 2 * TIMEOUT)
     public void readMany_UsePageSizeInPagedFluxOption() {
-
         // first creating few items
         String pkValue = UUID.randomUUID().toString();
         int itemCount = 10;
@@ -51,9 +50,6 @@ public class CosmosReadAllItemsTests extends TestSuiteBase {
             this.container.readAllItems(new PartitionKey(pkValue), cosmosQueryRequestOptions, TestObject.class);
 
         validateQuerySuccess(queryObservable1.byPage(5), validator1, TIMEOUT);
-
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setMaxDegreeOfParallelism(2);
 
         FeedResponseListValidator<TestObject> validator2 =
             new FeedResponseListValidator

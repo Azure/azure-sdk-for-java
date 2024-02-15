@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExcludedPath model. */
+/**
+ * The ExcludedPath model.
+ */
 @Fluent
 public final class ExcludedPath {
     /*
@@ -17,14 +19,16 @@ public final class ExcludedPath {
     @JsonProperty(value = "path")
     private String path;
 
-    /** Creates an instance of ExcludedPath class. */
+    /**
+     * Creates an instance of ExcludedPath class.
+     */
     public ExcludedPath() {
     }
 
     /**
-     * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with root
-     * and end with wildcard (/path/*).
-     *
+     * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with
+     * root and end with wildcard (/path/*).
+     * 
      * @return the path value.
      */
     public String path() {
@@ -32,9 +36,9 @@ public final class ExcludedPath {
     }
 
     /**
-     * Set the path property: The path for which the indexing behavior applies to. Index paths typically start with root
-     * and end with wildcard (/path/*).
-     *
+     * Set the path property: The path for which the indexing behavior applies to. Index paths typically start with
+     * root and end with wildcard (/path/*).
+     * 
      * @param path the path value to set.
      * @return the ExcludedPath object itself.
      */
@@ -45,7 +49,7 @@ public final class ExcludedPath {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

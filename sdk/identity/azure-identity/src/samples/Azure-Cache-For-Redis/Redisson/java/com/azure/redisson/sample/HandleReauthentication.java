@@ -22,13 +22,13 @@ public class HandleReauthentication {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-        // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
-        // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
+        // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
+        // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
         TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
         AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
         // Create Redisson Client
-        // Host Name, Port, Username and Azure AD Token are required here.
+        // Host Name, Port, Username, and Microsoft Entra token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
         RedissonClient redisson = createRedissonClient("rediss://<HOST_NAME>:6380", "<USERNAME>", accessToken);
 

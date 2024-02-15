@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.MicrosoftAccessSink;
 public final class MicrosoftAccessSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MicrosoftAccessSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"MicrosoftAccessSink\",\"preCopyScript\":\"datavsozjfnpwx\",\"writeBatchSize\":\"dataciotlbpuemqetmo\",\"writeBatchTimeout\":\"datavhhedc\",\"sinkRetryCount\":\"datalycrldwccas\",\"sinkRetryWait\":\"databdvsorvhbygw\",\"maxConcurrentConnections\":\"dataxqlzzkbx\",\"disableMetricsCollection\":\"datacgg\",\"\":{\"hlexvqhbnwmokz\":\"databtqizydaiolnkk\",\"pqjfoujeiagny\":\"dataylt\",\"jssay\":\"datae\"}}")
-                .toObject(MicrosoftAccessSink.class);
+        MicrosoftAccessSink model = BinaryData.fromString(
+            "{\"type\":\"MicrosoftAccessSink\",\"preCopyScript\":\"datafo\",\"writeBatchSize\":\"datafksormf\",\"writeBatchTimeout\":\"datauhwxmnrdfjobhr\",\"sinkRetryCount\":\"dataneaupjmjigy\",\"sinkRetryWait\":\"datadfrtasa\",\"maxConcurrentConnections\":\"dataxtoxlxojijtt\",\"disableMetricsCollection\":\"datarxynn\",\"\":{\"cpxftyhfcduqsdur\":\"datanyciss\"}}")
+            .toObject(MicrosoftAccessSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MicrosoftAccessSink model =
-            new MicrosoftAccessSink()
-                .withWriteBatchSize("dataciotlbpuemqetmo")
-                .withWriteBatchTimeout("datavhhedc")
-                .withSinkRetryCount("datalycrldwccas")
-                .withSinkRetryWait("databdvsorvhbygw")
-                .withMaxConcurrentConnections("dataxqlzzkbx")
-                .withDisableMetricsCollection("datacgg")
-                .withPreCopyScript("datavsozjfnpwx");
+        MicrosoftAccessSink model = new MicrosoftAccessSink().withWriteBatchSize("datafksormf")
+            .withWriteBatchTimeout("datauhwxmnrdfjobhr").withSinkRetryCount("dataneaupjmjigy")
+            .withSinkRetryWait("datadfrtasa").withMaxConcurrentConnections("dataxtoxlxojijtt")
+            .withDisableMetricsCollection("datarxynn").withPreCopyScript("datafo");
         model = BinaryData.fromObject(model).toObject(MicrosoftAccessSink.class);
     }
 }

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
 import com.azure.resourcemanager.network.models.TrafficAnalyticsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information on the configuration of flow log and traffic analytics (optional) . */
+/**
+ * Information on the configuration of flow log and traffic analytics (optional) .
+ */
 @Fluent
 public final class FlowLogInformationInner {
     /*
@@ -32,14 +34,16 @@ public final class FlowLogInformationInner {
     @JsonProperty(value = "flowAnalyticsConfiguration")
     private TrafficAnalyticsProperties flowAnalyticsConfiguration;
 
-    /** Creates an instance of FlowLogInformationInner class. */
+    /**
+     * Creates an instance of FlowLogInformationInner class.
+     */
     public FlowLogInformationInner() {
     }
 
     /**
      * Get the targetResourceId property: The ID of the resource to configure for flow log and traffic analytics
      * (optional) .
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -49,7 +53,7 @@ public final class FlowLogInformationInner {
     /**
      * Set the targetResourceId property: The ID of the resource to configure for flow log and traffic analytics
      * (optional) .
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -60,7 +64,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Get the innerProperties property: Properties of the flow log.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FlowLogProperties innerProperties() {
@@ -69,7 +73,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Get the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     *
+     * 
      * @return the flowAnalyticsConfiguration value.
      */
     public TrafficAnalyticsProperties flowAnalyticsConfiguration() {
@@ -78,19 +82,19 @@ public final class FlowLogInformationInner {
 
     /**
      * Set the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     *
+     * 
      * @param flowAnalyticsConfiguration the flowAnalyticsConfiguration value to set.
      * @return the FlowLogInformationInner object itself.
      */
-    public FlowLogInformationInner withFlowAnalyticsConfiguration(
-        TrafficAnalyticsProperties flowAnalyticsConfiguration) {
+    public FlowLogInformationInner
+        withFlowAnalyticsConfiguration(TrafficAnalyticsProperties flowAnalyticsConfiguration) {
         this.flowAnalyticsConfiguration = flowAnalyticsConfiguration;
         return this;
     }
 
     /**
      * Get the storageId property: ID of the storage account which is used to store the flow log.
-     *
+     * 
      * @return the storageId value.
      */
     public String storageId() {
@@ -99,7 +103,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Set the storageId property: ID of the storage account which is used to store the flow log.
-     *
+     * 
      * @param storageId the storageId value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -113,7 +117,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Get the enabled property: Flag to enable/disable flow logging.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -122,7 +126,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Set the enabled property: Flag to enable/disable flow logging.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -136,7 +140,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Get the retentionPolicy property: Parameters that define the retention policy for flow log.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicyParameters retentionPolicy() {
@@ -145,7 +149,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Set the retentionPolicy property: Parameters that define the retention policy for flow log.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -159,7 +163,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Get the format property: Parameters that define the flow log format.
-     *
+     * 
      * @return the format value.
      */
     public FlowLogFormatParameters format() {
@@ -168,7 +172,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Set the format property: Parameters that define the flow log format.
-     *
+     * 
      * @param format the format value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -182,21 +186,17 @@ public final class FlowLogInformationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model FlowLogInformationInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetResourceId in model FlowLogInformationInner"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model FlowLogInformationInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model FlowLogInformationInner"));
         } else {
             innerProperties().validate();
         }

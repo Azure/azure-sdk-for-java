@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.util.Beta;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * The type Cosmos client encryption key response.
@@ -14,11 +15,11 @@ import com.azure.cosmos.util.Beta;
 public final class CosmosClientEncryptionKeyResponse extends CosmosResponse<CosmosClientEncryptionKeyProperties>  {
     CosmosClientEncryptionKeyResponse(ResourceResponse<ClientEncryptionKey> response) {
         super(response);
-        String bodyAsString = response.getBodyAsString();
-        if (StringUtils.isEmpty(bodyAsString)) {
+        ObjectNode bodyAsJson = (ObjectNode)response.getBody();
+        if (bodyAsJson == null) {
             super.setProperties(null);
         } else {
-            CosmosClientEncryptionKeyProperties props = new CosmosClientEncryptionKeyProperties(bodyAsString);
+            CosmosClientEncryptionKeyProperties props = new CosmosClientEncryptionKeyProperties(bodyAsJson);
             super.setProperties(props);
         }
     }

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the admin rule collection properties. */
+/**
+ * Defines the admin rule collection properties.
+ */
 @Fluent
 public final class AdminRuleCollectionPropertiesFormat {
     /*
@@ -38,13 +40,15 @@ public final class AdminRuleCollectionPropertiesFormat {
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
-    /** Creates an instance of AdminRuleCollectionPropertiesFormat class. */
+    /**
+     * Creates an instance of AdminRuleCollectionPropertiesFormat class.
+     */
     public AdminRuleCollectionPropertiesFormat() {
     }
 
     /**
      * Get the description property: A description of the admin rule collection.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -53,7 +57,7 @@ public final class AdminRuleCollectionPropertiesFormat {
 
     /**
      * Set the description property: A description of the admin rule collection.
-     *
+     * 
      * @param description the description value to set.
      * @return the AdminRuleCollectionPropertiesFormat object itself.
      */
@@ -64,7 +68,7 @@ public final class AdminRuleCollectionPropertiesFormat {
 
     /**
      * Get the appliesToGroups property: Groups for configuration.
-     *
+     * 
      * @return the appliesToGroups value.
      */
     public List<NetworkManagerSecurityGroupItem> appliesToGroups() {
@@ -73,19 +77,19 @@ public final class AdminRuleCollectionPropertiesFormat {
 
     /**
      * Set the appliesToGroups property: Groups for configuration.
-     *
+     * 
      * @param appliesToGroups the appliesToGroups value to set.
      * @return the AdminRuleCollectionPropertiesFormat object itself.
      */
-    public AdminRuleCollectionPropertiesFormat withAppliesToGroups(
-        List<NetworkManagerSecurityGroupItem> appliesToGroups) {
+    public AdminRuleCollectionPropertiesFormat
+        withAppliesToGroups(List<NetworkManagerSecurityGroupItem> appliesToGroups) {
         this.appliesToGroups = appliesToGroups;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -94,7 +98,7 @@ public final class AdminRuleCollectionPropertiesFormat {
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -103,15 +107,13 @@ public final class AdminRuleCollectionPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (appliesToGroups() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property appliesToGroups in model AdminRuleCollectionPropertiesFormat"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property appliesToGroups in model AdminRuleCollectionPropertiesFormat"));
         } else {
             appliesToGroups().forEach(e -> e.validate());
         }

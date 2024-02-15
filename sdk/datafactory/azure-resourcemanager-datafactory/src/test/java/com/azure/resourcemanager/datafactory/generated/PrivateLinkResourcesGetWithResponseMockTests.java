@@ -30,41 +30,27 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"groupId\":\"yvqofpemcf\",\"requiredMembers\":[\"ifjvi\",\"azo\",\"wudbewb\",\"aufowhmdpggaktu\"],\"requiredZoneNames\":[\"hqdoctgno\",\"qw\",\"wtwjzzyi\"]},\"name\":\"bklyaelvhxutct\",\"type\":\"kdjusasfjwty\",\"etag\":\"knbucjybt\",\"id\":\"dlfg\"},{\"properties\":{\"groupId\":\"jnikwzlowus\",\"requiredMembers\":[\"mjiz\",\"tdf\"],\"requiredZoneNames\":[\"gjcepx\",\"yswvpavutiszwy\",\"lehagbjmwe\"]},\"name\":\"mpzamq\",\"type\":\"it\",\"etag\":\"yphtdwhmwxhvs\",\"id\":\"mokmymspatpvebxe\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"groupId\":\"ipptpreputu\",\"requiredMembers\":[\"wnkzwyry\",\"hhnoiqtvfruy\",\"navbfkzvvrzdbr\"],\"requiredZoneNames\":[\"ey\"]},\"name\":\"dzuldtfx\",\"type\":\"mmxzszhvjfijx\",\"etag\":\"ojbgiip\",\"id\":\"qyapn\"},{\"properties\":{\"groupId\":\"y\",\"requiredMembers\":[\"jy\",\"uswdwdau\"],\"requiredZoneNames\":[\"v\"]},\"name\":\"fso\",\"type\":\"hjkiaj\",\"etag\":\"juehcrywwfns\",\"id\":\"cjadnwafjib\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateLinkResourcesWrapper response =
-            manager
-                .privateLinkResources()
-                .getWithResponse("plkemvvlg", "zyishipl", com.azure.core.util.Context.NONE)
-                .getValue();
+        PrivateLinkResourcesWrapper response = manager.privateLinkResources()
+            .getWithResponse("agsx", "shau", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("dlfg", response.value().get(0).id());
+        Assertions.assertEquals("qyapn", response.value().get(0).id());
     }
 }

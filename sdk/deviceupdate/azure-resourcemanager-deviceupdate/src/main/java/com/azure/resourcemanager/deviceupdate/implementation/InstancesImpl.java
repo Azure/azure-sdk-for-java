@@ -21,8 +21,8 @@ public final class InstancesImpl implements Instances {
 
     private final com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager;
 
-    public InstancesImpl(
-        InstancesClient innerClient, com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager) {
+    public InstancesImpl(InstancesClient innerClient,
+        com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -33,9 +33,21 @@ public final class InstancesImpl implements Instances {
     }
 
     public PagedIterable<Instance> listByAccount(String resourceGroupName, String accountName, Context context) {
-        PagedIterable<InstanceInner> inner =
-            this.serviceClient().listByAccount(resourceGroupName, accountName, context);
+        PagedIterable<InstanceInner> inner
+            = this.serviceClient().listByAccount(resourceGroupName, accountName, context);
         return Utils.mapPage(inner, inner1 -> new InstanceImpl(inner1, this.manager()));
+    }
+
+    public Response<Instance> getWithResponse(String resourceGroupName, String accountName, String instanceName,
+        Context context) {
+        Response<InstanceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, instanceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new InstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Instance get(String resourceGroupName, String accountName, String instanceName) {
@@ -47,28 +59,13 @@ public final class InstancesImpl implements Instances {
         }
     }
 
-    public Response<Instance> getWithResponse(
-        String resourceGroupName, String accountName, String instanceName, Context context) {
-        Response<InstanceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, instanceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new InstanceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> headWithResponse(String resourceGroupName, String accountName, String instanceName,
+        Context context) {
+        return this.serviceClient().headWithResponse(resourceGroupName, accountName, instanceName, context);
     }
 
     public void head(String resourceGroupName, String accountName, String instanceName) {
         this.serviceClient().head(resourceGroupName, accountName, instanceName);
-    }
-
-    public Response<Void> headWithResponse(
-        String resourceGroupName, String accountName, String instanceName, Context context) {
-        return this.serviceClient().headWithResponse(resourceGroupName, accountName, instanceName, context);
     }
 
     public void delete(String resourceGroupName, String accountName, String instanceName) {
@@ -82,25 +79,18 @@ public final class InstancesImpl implements Instances {
     public Instance getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String instanceName = Utils.getValueFromIdByName(id, "instances");
         if (instanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, instanceName, Context.NONE).getValue();
     }
@@ -108,25 +98,18 @@ public final class InstancesImpl implements Instances {
     public Response<Instance> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String instanceName = Utils.getValueFromIdByName(id, "instances");
         if (instanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, instanceName, context);
     }
@@ -134,25 +117,18 @@ public final class InstancesImpl implements Instances {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String instanceName = Utils.getValueFromIdByName(id, "instances");
         if (instanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
         }
         this.delete(resourceGroupName, accountName, instanceName, Context.NONE);
     }
@@ -160,25 +136,18 @@ public final class InstancesImpl implements Instances {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String instanceName = Utils.getValueFromIdByName(id, "instances");
         if (instanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
         }
         this.delete(resourceGroupName, accountName, instanceName, context);
     }

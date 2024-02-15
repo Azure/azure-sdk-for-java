@@ -1,18 +1,65 @@
 # Release History
 
-## 2.31.0-beta.1 (Unreleased)
+## 2.36.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Supported `listByVirtualMachineScaleSet` for `VirtualMachines`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
-- Fixed a bug that `VirtualMachineCustomImages.getById()` returns `HyperVGenerationTypes.V1` for all instances. ([#36619](https://github.com/Azure/azure-sdk-for-java/issues/36619))
+### Other Changes
+
+## 2.35.0 (2024-01-26)
+
+### Features Added
+
+- Supported `WINDOWS_DESKTOP_10_PRO` in `KnownWindowsVirtualMachineImage`.
+- Added `withEncryptionAtHost` in `VirtualMachine`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-10-02`.
+
+## 2.34.0 (2023-12-22)
+
+### Features Added
+
+- Supported `userData` for `VirtualMachine` in create and update.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-09-01`.
+
+## 2.33.0 (2023-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.32.0 (2023-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.31.0 (2023-09-28)
+
+### Features Added
+
+- Supported `listByVirtualMachineScaleSet` for `VirtualMachines`.
+
+### Bugs Fixed
+
+- Fixed a bug that `VirtualMachineCustomImages.getById()` returns `HyperVGenerationTypes.V1` for all instances. ([#36619](https://github.com/Azure/azure-sdk-for-java/issues/36619))
 
 ## 2.30.0 (2023-08-25)
 

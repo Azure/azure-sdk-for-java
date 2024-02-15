@@ -10,25 +10,17 @@ import com.azure.resourcemanager.datafactory.models.DynamicsAXSource;
 public final class DynamicsAXSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynamicsAXSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"DynamicsAXSource\",\"query\":\"dataxjlvvvzpjj\",\"httpRequestTimeout\":\"dataintgkveogeld\",\"queryTimeout\":\"datab\",\"additionalColumns\":\"databii\",\"sourceRetryCount\":\"databkxiujaagfeiwuux\",\"sourceRetryWait\":\"datamzmsivqeg\",\"maxConcurrentConnections\":\"datafzbrha\",\"disableMetricsCollection\":\"dataptkr\",\"\":{\"yxyoyjasqdhbftt\":\"datapziievcttszca\"}}")
-                .toObject(DynamicsAXSource.class);
+        DynamicsAXSource model = BinaryData.fromString(
+            "{\"type\":\"DynamicsAXSource\",\"query\":\"dataeaqaviq\",\"httpRequestTimeout\":\"dataylwp\",\"queryTimeout\":\"datacyfccnwmdpbso\",\"additionalColumns\":\"datan\",\"sourceRetryCount\":\"dataxpveruuckr\",\"sourceRetryWait\":\"dataraqaptqyrnlyuy\",\"maxConcurrentConnections\":\"datawwnqoubwbssvfzjj\",\"disableMetricsCollection\":\"datacxeosylgjpp\",\"\":{\"mckzeaia\":\"datajbqrfwnpwvpnbgyx\",\"qpzqivfgemvuicxw\":\"datacauvlfsct\",\"jatj\":\"datayrydlvfnucgwfl\",\"dyfjsskvzv\":\"datandbrcdumkqhatcko\"}}")
+            .toObject(DynamicsAXSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicsAXSource model =
-            new DynamicsAXSource()
-                .withSourceRetryCount("databkxiujaagfeiwuux")
-                .withSourceRetryWait("datamzmsivqeg")
-                .withMaxConcurrentConnections("datafzbrha")
-                .withDisableMetricsCollection("dataptkr")
-                .withQueryTimeout("datab")
-                .withAdditionalColumns("databii")
-                .withQuery("dataxjlvvvzpjj")
-                .withHttpRequestTimeout("dataintgkveogeld");
+        DynamicsAXSource model = new DynamicsAXSource().withSourceRetryCount("dataxpveruuckr")
+            .withSourceRetryWait("dataraqaptqyrnlyuy").withMaxConcurrentConnections("datawwnqoubwbssvfzjj")
+            .withDisableMetricsCollection("datacxeosylgjpp").withQueryTimeout("datacyfccnwmdpbso")
+            .withAdditionalColumns("datan").withQuery("dataeaqaviq").withHttpRequestTimeout("dataylwp");
         model = BinaryData.fromObject(model).toObject(DynamicsAXSource.class);
     }
 }

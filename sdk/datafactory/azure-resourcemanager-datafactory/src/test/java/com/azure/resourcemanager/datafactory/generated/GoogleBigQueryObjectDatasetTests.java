@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GoogleBigQueryObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GoogleBigQueryObjectDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"GoogleBigQueryObject\",\"typeProperties\":{\"tableName\":\"datamemfvrcclclfkfvy\",\"table\":\"datammw\",\"dataset\":\"datapoipjylxtebvse\"},\"description\":\"zvvpaysqwh\",\"structure\":\"datacyandb\",\"schema\":\"databntcvpvd\",\"linkedServiceName\":{\"referenceName\":\"moqqctfvxuosqp\",\"parameters\":{\"wyjzuakkiubeqk\":\"datapjpjmsbzzjsnyf\"}},\"parameters\":{\"hogsezre\":{\"type\":\"Int\",\"defaultValue\":\"dataglhxsoanguhb\"},\"itwkejmg\":{\"type\":\"Float\",\"defaultValue\":\"datagpdtyzpx\"},\"skvsdfvhryp\":{\"type\":\"Array\",\"defaultValue\":\"datadupe\"}},\"annotations\":[\"datammpkapvnpeukg\",\"datamfakeqn\",\"datatromlcsvk\",\"datafpsrowshvfxj\"],\"folder\":{\"name\":\"awmv\"},\"\":{\"znyjyu\":\"dataabjropxfqdml\",\"wgdp\":\"dataql\",\"iri\":\"datah\",\"dpkwdtobpgdcid\":\"dataamqtrhqdoxdegacd\"}}")
-                .toObject(GoogleBigQueryObjectDataset.class);
+        GoogleBigQueryObjectDataset model = BinaryData.fromString(
+            "{\"type\":\"GoogleBigQueryObject\",\"typeProperties\":{\"tableName\":\"datamemfvrcclclfkfvy\",\"table\":\"datammw\",\"dataset\":\"datapoipjylxtebvse\"},\"description\":\"zvvpaysqwh\",\"structure\":\"datacyandb\",\"schema\":\"databntcvpvd\",\"linkedServiceName\":{\"referenceName\":\"moqqctfvxuosqp\",\"parameters\":{\"wyjzuakkiubeqk\":\"datapjpjmsbzzjsnyf\"}},\"parameters\":{\"hogsezre\":{\"type\":\"Int\",\"defaultValue\":\"dataglhxsoanguhb\"},\"itwkejmg\":{\"type\":\"Float\",\"defaultValue\":\"datagpdtyzpx\"},\"skvsdfvhryp\":{\"type\":\"Array\",\"defaultValue\":\"datadupe\"}},\"annotations\":[\"datammpkapvnpeukg\",\"datamfakeqn\",\"datatromlcsvk\",\"datafpsrowshvfxj\"],\"folder\":{\"name\":\"awmv\"},\"\":{\"znyjyu\":\"dataabjropxfqdml\",\"wgdp\":\"dataql\",\"iri\":\"datah\",\"dpkwdtobpgdcid\":\"dataamqtrhqdoxdegacd\"}}")
+            .toObject(GoogleBigQueryObjectDataset.class);
         Assertions.assertEquals("zvvpaysqwh", model.description());
         Assertions.assertEquals("moqqctfvxuosqp", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.INT, model.parameters().get("hogsezre").type());
@@ -31,28 +29,17 @@ public final class GoogleBigQueryObjectDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQueryObjectDataset model =
-            new GoogleBigQueryObjectDataset()
-                .withDescription("zvvpaysqwh")
-                .withStructure("datacyandb")
-                .withSchema("databntcvpvd")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("moqqctfvxuosqp")
-                        .withParameters(mapOf("wyjzuakkiubeqk", "datapjpjmsbzzjsnyf")))
-                .withParameters(
-                    mapOf(
-                        "hogsezre",
-                        new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataglhxsoanguhb"),
-                        "itwkejmg",
-                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datagpdtyzpx"),
-                        "skvsdfvhryp",
-                        new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datadupe")))
-                .withAnnotations(Arrays.asList("datammpkapvnpeukg", "datamfakeqn", "datatromlcsvk", "datafpsrowshvfxj"))
-                .withFolder(new DatasetFolder().withName("awmv"))
-                .withTableName("datamemfvrcclclfkfvy")
-                .withTable("datammw")
-                .withDataset("datapoipjylxtebvse");
+        GoogleBigQueryObjectDataset model = new GoogleBigQueryObjectDataset().withDescription("zvvpaysqwh")
+            .withStructure("datacyandb").withSchema("databntcvpvd")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("moqqctfvxuosqp")
+                .withParameters(mapOf("wyjzuakkiubeqk", "datapjpjmsbzzjsnyf")))
+            .withParameters(mapOf("hogsezre",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataglhxsoanguhb"),
+                "itwkejmg", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datagpdtyzpx"),
+                "skvsdfvhryp", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datadupe")))
+            .withAnnotations(Arrays.asList("datammpkapvnpeukg", "datamfakeqn", "datatromlcsvk", "datafpsrowshvfxj"))
+            .withFolder(new DatasetFolder().withName("awmv")).withTableName("datamemfvrcclclfkfvy").withTable("datammw")
+            .withDataset("datapoipjylxtebvse");
         model = BinaryData.fromObject(model).toObject(GoogleBigQueryObjectDataset.class);
         Assertions.assertEquals("zvvpaysqwh", model.description());
         Assertions.assertEquals("moqqctfvxuosqp", model.linkedServiceName().referenceName());

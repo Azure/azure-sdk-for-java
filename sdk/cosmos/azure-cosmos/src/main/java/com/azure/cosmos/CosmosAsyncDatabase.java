@@ -4,12 +4,14 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Paths;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -37,7 +39,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
  * Perform read and delete databases, update database throughput, and perform operations on child resources
@@ -639,18 +640,22 @@ public class CosmosAsyncDatabase {
                 .CosmosQueryRequestOptionsHelper
                 .getCosmosQueryRequestOptionsAccessor()
                 .getQueryNameOrDefault(requestOptions, spanName);
-            pagedFluxOptions.setTracerInformation(
+
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                client,
                 spanName,
                 getId(),
                 null,
-                operationId,
-                OperationType.ReadFeed,
                 ResourceType.DocumentCollection,
-                client,
-                requestOptions.getConsistencyLevel(),
-                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(requestOptions)));
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
-            return getDocClientWrapper().readCollections(getLink(), requestOptions)
+                OperationType.ReadFeed,
+                queryOptionsAccessor.getQueryNameOrDefault(requestOptions, spanName),
+                requestOptions,
+                pagedFluxOptions
+            );
+
+            pagedFluxOptions.setFeedOperationState(state);
+
+            return getDocClientWrapper().readCollections(getLink(), state)
                 .map(response -> feedResponseAccessor.createFeedResponse(
                     ModelBridgeInternal.getCosmosContainerPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders(),
@@ -934,22 +939,22 @@ public class CosmosAsyncDatabase {
             String spanName = "readAllUsers." + this.getId();
             CosmosAsyncClient client = this.getClient();
             CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
-            String operationId = ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getQueryNameOrDefault(nonNullOptions, spanName);
-            pagedFluxOptions.setTracerInformation(
+
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                client,
                 spanName,
                 getId(),
                 null,
-                operationId,
-                OperationType.ReadFeed,
                 ResourceType.User,
-                client,
-                nonNullOptions.getConsistencyLevel(),
-                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(nonNullOptions)));
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
-            return getDocClientWrapper().readUsers(getLink(), options)
+                OperationType.ReadFeed,
+                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                nonNullOptions,
+                pagedFluxOptions
+            );
+
+            pagedFluxOptions.setFeedOperationState(state);
+
+            return getDocClientWrapper().readUsers(getLink(), state)
                 .map(response -> feedResponseAccessor.createFeedResponse(
                     ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()), response
                         .getResponseHeaders(),
@@ -997,22 +1002,22 @@ public class CosmosAsyncDatabase {
             String spanName = "readAllClientEncryptionKeys." + this.getId();
             CosmosAsyncClient client = this.getClient();
             CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
-            String operationId = ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getQueryNameOrDefault(nonNullOptions, spanName);
-            pagedFluxOptions.setTracerInformation(
+
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                client,
                 spanName,
                 getId(),
                 null,
-                operationId,
-                OperationType.ReadFeed,
                 ResourceType.ClientEncryptionKey,
-                client,
-                nonNullOptions.getConsistencyLevel(),
-                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(nonNullOptions)));
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
-            return getDocClientWrapper().readClientEncryptionKeys(getLink(), options)
+                OperationType.ReadFeed,
+                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                nonNullOptions,
+                pagedFluxOptions
+            );
+
+            pagedFluxOptions.setFeedOperationState(state);
+
+            return getDocClientWrapper().readClientEncryptionKeys(getLink(), state)
                 .map(response -> feedResponseAccessor.createFeedResponse(
                     ModelBridgeInternal.getClientEncryptionKeyPropertiesList(response.getResults()), response
                         .getResponseHeaders(),
@@ -1098,22 +1103,22 @@ public class CosmosAsyncDatabase {
             String spanName = "queryClientEncryptionKeys." + this.getId();
             CosmosAsyncClient client = this.getClient();
             CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
-            String operationId = ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getQueryNameOrDefault(nonNullOptions, spanName);
-            pagedFluxOptions.setTracerInformation(
+
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                client,
                 spanName,
                 getId(),
                 null,
-                operationId,
-                OperationType.Query,
                 ResourceType.ClientEncryptionKey,
-                client,
-                nonNullOptions.getConsistencyLevel(),
-                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(nonNullOptions)));
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
-            return getDocClientWrapper().queryClientEncryptionKeys(getLink(), querySpec, options)
+                OperationType.Query,
+                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                nonNullOptions,
+                pagedFluxOptions
+            );
+
+            pagedFluxOptions.setFeedOperationState(state);
+
+            return getDocClientWrapper().queryClientEncryptionKeys(getLink(), querySpec, state)
                 .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
                     ModelBridgeInternal.getClientEncryptionKeyPropertiesList(response.getResults()),
                     response.getResponseHeaders(),
@@ -1282,22 +1287,22 @@ public class CosmosAsyncDatabase {
             String spanName = "queryContainers." + this.getId();
             CosmosAsyncClient client = this.getClient();
             CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
-            String operationId = ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getQueryNameOrDefault(nonNullOptions, spanName);
-            pagedFluxOptions.setTracerInformation(
+
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                client,
                 spanName,
                 getId(),
                 null,
-                operationId,
-                OperationType.Query,
                 ResourceType.DocumentCollection,
-                client,
-                nonNullOptions.getConsistencyLevel(),
-                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(nonNullOptions)));
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
-            return getDocClientWrapper().queryCollections(getLink(), querySpec, options)
+                OperationType.Query,
+                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                nonNullOptions,
+                pagedFluxOptions
+            );
+
+            pagedFluxOptions.setFeedOperationState(state);
+
+            return getDocClientWrapper().queryCollections(getLink(), querySpec, state)
                 .map(response -> feedResponseAccessor.createFeedResponse(
                     ModelBridgeInternal.getCosmosContainerPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders(),
@@ -1310,22 +1315,22 @@ public class CosmosAsyncDatabase {
             String spanName = "queryUsers." + this.getId();
             CosmosAsyncClient client = this.getClient();
             CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
-            String operationId = ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getQueryNameOrDefault(nonNullOptions, spanName);
-            pagedFluxOptions.setTracerInformation(
+
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                client,
                 spanName,
                 getId(),
                 null,
-                operationId,
-                OperationType.Query,
                 ResourceType.User,
-                client,
-                nonNullOptions.getConsistencyLevel(),
-                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(nonNullOptions)));
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
-            return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
+                OperationType.Query,
+                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                nonNullOptions,
+                pagedFluxOptions
+            );
+
+            pagedFluxOptions.setFeedOperationState(state);
+
+            return getDocClientWrapper().queryUsers(getLink(), querySpec, state)
                 .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
                     ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders(),
@@ -1520,10 +1525,23 @@ public class CosmosAsyncDatabase {
     }
 
     private Mono<ThroughputResponse> replaceThroughputInternal(Mono<CosmosDatabaseResponse> responseMono, ThroughputProperties throughputProperties) {
+
+        QueryFeedOperationState state = new QueryFeedOperationState(
+            this.getClient(),
+            "replaceThroughputInternal",
+            this.getId(),
+            null,
+            ResourceType.Offer,
+            OperationType.Query,
+            null,
+            new CosmosQueryRequestOptions(),
+            new CosmosPagedFluxOptions()
+        );
+
         return responseMono
             .flatMap(response -> this.getDocClientWrapper()
                 .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties().getResourceId()),
-                    new CosmosQueryRequestOptions())
+                    state)
                 .single()
                 .flatMap(offerFeedResponse -> {
                     if (offerFeedResponse.getResults().isEmpty()) {
@@ -1551,7 +1569,8 @@ public class CosmosAsyncDatabase {
         Context nestedContext = context.addData(
             DiagnosticsProvider.COSMOS_CALL_DEPTH,
             DiagnosticsProvider.COSMOS_CALL_DEPTH_VAL);
-        Mono<ThroughputResponse> responseMono = readThroughputInternal(this.readInternal(new CosmosDatabaseRequestOptions(), nestedContext));
+        CosmosQueryRequestOptions qryOptions = new CosmosQueryRequestOptions();
+        Mono<ThroughputResponse> responseMono = readThroughputInternal(this.readInternal(new CosmosDatabaseRequestOptions(), nestedContext), qryOptions);
         return this.client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,
             context,
@@ -1562,14 +1581,30 @@ public class CosmosAsyncDatabase {
             null,
             OperationType.Read,
             ResourceType.Offer,
-            null);
+            ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .toRequestOptions(qryOptions));
     }
 
-    private Mono<ThroughputResponse> readThroughputInternal(Mono<CosmosDatabaseResponse> responseMono) {
+    private Mono<ThroughputResponse> readThroughputInternal(Mono<CosmosDatabaseResponse> responseMono, CosmosQueryRequestOptions qryOptions) {
+
+        QueryFeedOperationState state = new QueryFeedOperationState(
+            this.getClient(),
+            "readThroughputInternal",
+            this.getId(),
+            null,
+            ResourceType.Offer,
+            OperationType.Query,
+            null,
+            new CosmosQueryRequestOptions(),
+            new CosmosPagedFluxOptions()
+        );
+
         return responseMono
             .flatMap(response -> getDocClientWrapper()
                 .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties().getResourceId()),
-                    new CosmosQueryRequestOptions())
+                    state)
                 .single()
                 .flatMap(offerFeedResponse -> {
                     if (offerFeedResponse.getResults().isEmpty()) {

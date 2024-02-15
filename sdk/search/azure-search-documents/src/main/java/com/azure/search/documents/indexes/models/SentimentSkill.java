@@ -123,28 +123,28 @@ public final class SentimentSkill extends SearchIndexerSkill {
      *
      * @return the includeOpinionMining value.
      */
-    public Boolean isIncludeOpinionMining() {
+    public Boolean isOpinionMiningIncluded() {
         return (v1Skill != null) ? null : v3Skill.isIncludeOpinionMining();
     }
 
     /**
-     * Set the includeOpinionMining property: If set to true, the skill output will include information from Text
+     * Set the opinionMiningIncluded property: If set to true, the skill output will include information from Text
      * Analytics for opinion mining, namely targets (nouns or verbs) and their associated assessment (adjective) in the
      * text. Default is false.
      *
-     * @param includeOpinionMining the includeOpinionMining value to set.
+     * @param opinionMiningIncluded the opinionMiningIncluded value to set.
      * @return the SentimentSkill object itself.
-     * @throws IllegalArgumentException If {@code includeOpinionMining} is supplied when {@link #getSkillVersion()} is
+     * @throws IllegalArgumentException If {@code opinionMiningIncluded} is supplied when {@link #getSkillVersion()} is
      *     {@link SentimentSkillVersion#V1}.
      */
-    public SentimentSkill setIncludeOpinionMining(Boolean includeOpinionMining) {
-        if (includeOpinionMining != null && version == SentimentSkillVersion.V1) {
+    public SentimentSkill setOpinionMiningIncluded(Boolean opinionMiningIncluded) {
+        if (opinionMiningIncluded != null && version == SentimentSkillVersion.V1) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("SentimentSkill using V1 doesn't support 'includeOpinionMining'."));
+                new IllegalArgumentException("SentimentSkill using V1 doesn't support 'opinionMiningIncluded'."));
         }
 
         if (v3Skill != null) {
-            v3Skill.setIncludeOpinionMining(includeOpinionMining);
+            v3Skill.setIncludeOpinionMining(opinionMiningIncluded);
         }
 
         return this;

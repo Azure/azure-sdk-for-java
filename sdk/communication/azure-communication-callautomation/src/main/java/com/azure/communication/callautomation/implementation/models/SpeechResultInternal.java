@@ -7,7 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The speech status as a result. */
+/** The speech recognition status as a result. */
 @Fluent
 public final class SpeechResultInternal {
     /*

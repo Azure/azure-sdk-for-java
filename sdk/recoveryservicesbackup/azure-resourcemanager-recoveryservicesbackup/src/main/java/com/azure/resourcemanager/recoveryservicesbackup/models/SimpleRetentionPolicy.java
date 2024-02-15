@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Simple policy retention. */
+/**
+ * Simple policy retention.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "retentionPolicyType")
 @JsonTypeName("SimpleRetentionPolicy")
 @Fluent
@@ -20,13 +22,15 @@ public final class SimpleRetentionPolicy extends RetentionPolicy {
     @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
-    /** Creates an instance of SimpleRetentionPolicy class. */
+    /**
+     * Creates an instance of SimpleRetentionPolicy class.
+     */
     public SimpleRetentionPolicy() {
     }
 
     /**
      * Get the retentionDuration property: Retention duration of the protection policy.
-     *
+     * 
      * @return the retentionDuration value.
      */
     public RetentionDuration retentionDuration() {
@@ -35,7 +39,7 @@ public final class SimpleRetentionPolicy extends RetentionPolicy {
 
     /**
      * Set the retentionDuration property: Retention duration of the protection policy.
-     *
+     * 
      * @param retentionDuration the retentionDuration value to set.
      * @return the SimpleRetentionPolicy object itself.
      */
@@ -46,7 +50,7 @@ public final class SimpleRetentionPolicy extends RetentionPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

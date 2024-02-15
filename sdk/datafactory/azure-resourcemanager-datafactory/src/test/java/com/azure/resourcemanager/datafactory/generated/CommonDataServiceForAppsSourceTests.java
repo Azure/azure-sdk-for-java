@@ -10,23 +10,17 @@ import com.azure.resourcemanager.datafactory.models.CommonDataServiceForAppsSour
 public final class CommonDataServiceForAppsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommonDataServiceForAppsSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"CommonDataServiceForAppsSource\",\"query\":\"datanxrjmilogcnzfg\",\"additionalColumns\":\"databbtplrtxhzt\",\"sourceRetryCount\":\"datawyrsfj\",\"sourceRetryWait\":\"dataoyusrbuydeyh\",\"maxConcurrentConnections\":\"datattkdrblehenj\",\"disableMetricsCollection\":\"dataiwdeosbijikjf\",\"\":{\"avfjx\":\"datauwhbpojujpifxtgr\",\"lauhr\":\"dataiwx\",\"r\":\"datachphovu\"}}")
-                .toObject(CommonDataServiceForAppsSource.class);
+        CommonDataServiceForAppsSource model = BinaryData.fromString(
+            "{\"type\":\"CommonDataServiceForAppsSource\",\"query\":\"dataeqvpedw\",\"additionalColumns\":\"dataqcjreryp\",\"sourceRetryCount\":\"datayqxeyzqnupsi\",\"sourceRetryWait\":\"datalxvaovssibnv\",\"maxConcurrentConnections\":\"datavi\",\"disableMetricsCollection\":\"datadbmzwlejiiyoon\",\"\":{\"dwcfmzmqmgdlgsxk\":\"datalrixzdbntopbab\"}}")
+            .toObject(CommonDataServiceForAppsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommonDataServiceForAppsSource model =
-            new CommonDataServiceForAppsSource()
-                .withSourceRetryCount("datawyrsfj")
-                .withSourceRetryWait("dataoyusrbuydeyh")
-                .withMaxConcurrentConnections("datattkdrblehenj")
-                .withDisableMetricsCollection("dataiwdeosbijikjf")
-                .withQuery("datanxrjmilogcnzfg")
-                .withAdditionalColumns("databbtplrtxhzt");
+        CommonDataServiceForAppsSource model = new CommonDataServiceForAppsSource()
+            .withSourceRetryCount("datayqxeyzqnupsi").withSourceRetryWait("datalxvaovssibnv")
+            .withMaxConcurrentConnections("datavi").withDisableMetricsCollection("datadbmzwlejiiyoon")
+            .withQuery("dataeqvpedw").withAdditionalColumns("dataqcjreryp");
         model = BinaryData.fromObject(model).toObject(CommonDataServiceForAppsSource.class);
     }
 }

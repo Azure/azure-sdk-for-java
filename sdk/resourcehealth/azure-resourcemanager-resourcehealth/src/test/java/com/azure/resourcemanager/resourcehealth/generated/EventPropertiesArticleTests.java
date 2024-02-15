@@ -14,21 +14,21 @@ public final class EventPropertiesArticleTests {
         EventPropertiesArticle model =
             BinaryData
                 .fromString(
-                    "{\"articleContent\":\"sucocmnyyazttbtw\",\"articleId\":\"qpuedckzywbiex\",\"parameters\":\"dataeyueaxibxujwb\"}")
+                    "{\"articleContent\":\"gvraeaen\",\"articleId\":\"nzar\",\"parameters\":\"datalquuijfqkacewii\"}")
                 .toObject(EventPropertiesArticle.class);
-        Assertions.assertEquals("sucocmnyyazttbtw", model.articleContent());
-        Assertions.assertEquals("qpuedckzywbiex", model.articleId());
+        Assertions.assertEquals("gvraeaen", model.articleContent());
+        Assertions.assertEquals("nzar", model.articleId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventPropertiesArticle model =
             new EventPropertiesArticle()
-                .withArticleContent("sucocmnyyazttbtw")
-                .withArticleId("qpuedckzywbiex")
-                .withParameters("dataeyueaxibxujwb");
+                .withArticleContent("gvraeaen")
+                .withArticleId("nzar")
+                .withParameters("datalquuijfqkacewii");
         model = BinaryData.fromObject(model).toObject(EventPropertiesArticle.class);
-        Assertions.assertEquals("sucocmnyyazttbtw", model.articleContent());
-        Assertions.assertEquals("qpuedckzywbiex", model.articleId());
+        Assertions.assertEquals("gvraeaen", model.articleContent());
+        Assertions.assertEquals("nzar", model.articleId());
     }
 }

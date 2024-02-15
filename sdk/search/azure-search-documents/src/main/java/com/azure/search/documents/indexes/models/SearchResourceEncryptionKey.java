@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * A customer-managed encryption key in Azure Key Vault. Keys that you create and manage can be used to encrypt or
- * decrypt data-at-rest in Azure Cognitive Search, such as indexes and synonym maps.
+ * decrypt data-at-rest, such as indexes and synonym maps.
  */
 @Fluent
 public final class SearchResourceEncryptionKey implements JsonSerializable<SearchResourceEncryptionKey> {
@@ -34,12 +34,12 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
 
     /*
      * The URI of your Azure Key Vault, also referred to as DNS name, that contains the key to be used to encrypt your
-     * data at rest. An example URI might be https://my-keyvault-name.vault.azure.net.
+     * data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
      */
     private final String vaultUrl;
 
     /*
-     * Optional Azure Active Directory credentials used for accessing your Azure Key Vault. Not required if using
+     * Optional Microsoft Entra ID credentials used for accessing your Azure Key Vault. Not required if using
      * managed identity instead.
      */
     private AzureActiveDirectoryApplicationCredentials accessCredentials;
@@ -84,7 +84,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
 
     /**
      * Get the vaultUrl property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
-     * to be used to encrypt your data at rest. An example URI might be https://my-keyvault-name.vault.azure.net.
+     * to be used to encrypt your data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
      *
      * @return the vaultUrl value.
      */
@@ -95,8 +95,8 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     /**
      * Get the identity property: An explicit managed identity to use for this encryption key. If not specified and the
      * access credentials property is null, the system-assigned managed identity is used. On update to the resource, if
-     * the explicit identity is unspecified, it remains unchanged. If "none" is specified, the value of this property is
-     * cleared.
+     * the explicit identity is unspecified, it remains unchanged. If "none" is specified, the value of this property
+     * is cleared.
      *
      * @return the identity value.
      */
@@ -107,8 +107,8 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     /**
      * Set the identity property: An explicit managed identity to use for this encryption key. If not specified and the
      * access credentials property is null, the system-assigned managed identity is used. On update to the resource, if
-     * the explicit identity is unspecified, it remains unchanged. If "none" is specified, the value of this property is
-     * cleared.
+     * the explicit identity is unspecified, it remains unchanged. If "none" is specified, the value of this property
+     * is cleared.
      *
      * @param identity the identity value to set.
      * @return the SearchResourceEncryptionKey object itself.
@@ -134,64 +134,63 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchResourceEncryptionKey if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchResourceEncryptionKey.
      */
     public static SearchResourceEncryptionKey fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean keyNameFound = false;
-                    String keyName = null;
-                    boolean keyVersionFound = false;
-                    String keyVersion = null;
-                    boolean vaultUrlFound = false;
-                    String vaultUrl = null;
-                    AzureActiveDirectoryApplicationCredentials accessCredentials = null;
-                    SearchIndexerDataIdentity identity = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean keyNameFound = false;
+            String keyName = null;
+            boolean keyVersionFound = false;
+            String keyVersion = null;
+            boolean vaultUrlFound = false;
+            String vaultUrl = null;
+            AzureActiveDirectoryApplicationCredentials accessCredentials = null;
+            SearchIndexerDataIdentity identity = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("keyVaultKeyName".equals(fieldName)) {
-                            keyName = reader.getString();
-                            keyNameFound = true;
-                        } else if ("keyVaultKeyVersion".equals(fieldName)) {
-                            keyVersion = reader.getString();
-                            keyVersionFound = true;
-                        } else if ("keyVaultUri".equals(fieldName)) {
-                            vaultUrl = reader.getString();
-                            vaultUrlFound = true;
-                        } else if ("accessCredentials".equals(fieldName)) {
-                            accessCredentials = AzureActiveDirectoryApplicationCredentials.fromJson(reader);
-                        } else if ("identity".equals(fieldName)) {
-                            identity = SearchIndexerDataIdentity.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (keyNameFound && keyVersionFound && vaultUrlFound) {
-                        SearchResourceEncryptionKey deserializedSearchResourceEncryptionKey =
-                                new SearchResourceEncryptionKey(keyName, keyVersion, vaultUrl);
-                        deserializedSearchResourceEncryptionKey.accessCredentials = accessCredentials;
-                        deserializedSearchResourceEncryptionKey.identity = identity;
+                if ("keyVaultKeyName".equals(fieldName)) {
+                    keyName = reader.getString();
+                    keyNameFound = true;
+                } else if ("keyVaultKeyVersion".equals(fieldName)) {
+                    keyVersion = reader.getString();
+                    keyVersionFound = true;
+                } else if ("keyVaultUri".equals(fieldName)) {
+                    vaultUrl = reader.getString();
+                    vaultUrlFound = true;
+                } else if ("accessCredentials".equals(fieldName)) {
+                    accessCredentials = AzureActiveDirectoryApplicationCredentials.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    identity = SearchIndexerDataIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (keyNameFound && keyVersionFound && vaultUrlFound) {
+                SearchResourceEncryptionKey deserializedSearchResourceEncryptionKey
+                    = new SearchResourceEncryptionKey(keyName, keyVersion, vaultUrl);
+                deserializedSearchResourceEncryptionKey.accessCredentials = accessCredentials;
+                deserializedSearchResourceEncryptionKey.identity = identity;
 
-                        return deserializedSearchResourceEncryptionKey;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!keyNameFound) {
-                        missingProperties.add("keyVaultKeyName");
-                    }
-                    if (!keyVersionFound) {
-                        missingProperties.add("keyVaultKeyVersion");
-                    }
-                    if (!vaultUrlFound) {
-                        missingProperties.add("keyVaultUri");
-                    }
+                return deserializedSearchResourceEncryptionKey;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!keyNameFound) {
+                missingProperties.add("keyVaultKeyName");
+            }
+            if (!keyVersionFound) {
+                missingProperties.add("keyVaultKeyVersion");
+            }
+            if (!vaultUrlFound) {
+                missingProperties.add("keyVaultUri");
+            }
 
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 
     /**

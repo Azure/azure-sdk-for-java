@@ -9,25 +9,33 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * This property allows you to specify the operation type of gallery sharing update. &lt;br&gt;&lt;br&gt; Possible
- * values are: &lt;br&gt;&lt;br&gt; **Add** &lt;br&gt;&lt;br&gt; **Remove** &lt;br&gt;&lt;br&gt; **Reset**.
+ * This property allows you to specify the operation type of gallery sharing update. Possible values are: **Add,**
+ * **Remove,** **Reset.**.
  */
 public final class SharingUpdateOperationTypes extends ExpandableStringEnum<SharingUpdateOperationTypes> {
-    /** Static value Add for SharingUpdateOperationTypes. */
+    /**
+     * Static value Add for SharingUpdateOperationTypes.
+     */
     public static final SharingUpdateOperationTypes ADD = fromString("Add");
 
-    /** Static value Remove for SharingUpdateOperationTypes. */
+    /**
+     * Static value Remove for SharingUpdateOperationTypes.
+     */
     public static final SharingUpdateOperationTypes REMOVE = fromString("Remove");
 
-    /** Static value Reset for SharingUpdateOperationTypes. */
+    /**
+     * Static value Reset for SharingUpdateOperationTypes.
+     */
     public static final SharingUpdateOperationTypes RESET = fromString("Reset");
 
-    /** Static value EnableCommunity for SharingUpdateOperationTypes. */
+    /**
+     * Static value EnableCommunity for SharingUpdateOperationTypes.
+     */
     public static final SharingUpdateOperationTypes ENABLE_COMMUNITY = fromString("EnableCommunity");
 
     /**
      * Creates a new instance of SharingUpdateOperationTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +44,7 @@ public final class SharingUpdateOperationTypes extends ExpandableStringEnum<Shar
 
     /**
      * Creates or finds a SharingUpdateOperationTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SharingUpdateOperationTypes.
      */
@@ -47,7 +55,7 @@ public final class SharingUpdateOperationTypes extends ExpandableStringEnum<Shar
 
     /**
      * Gets known SharingUpdateOperationTypes values.
-     *
+     * 
      * @return known SharingUpdateOperationTypes values.
      */
     public static Collection<SharingUpdateOperationTypes> values() {

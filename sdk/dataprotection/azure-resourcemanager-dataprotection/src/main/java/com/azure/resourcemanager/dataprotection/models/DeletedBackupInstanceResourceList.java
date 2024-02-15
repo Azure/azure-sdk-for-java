@@ -9,7 +9,9 @@ import com.azure.resourcemanager.dataprotection.fluent.models.DeletedBackupInsta
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of DeletedBackupInstance resources. */
+/**
+ * List of DeletedBackupInstance resources.
+ */
 @Fluent
 public final class DeletedBackupInstanceResourceList extends DppResourceList {
     /*
@@ -18,13 +20,15 @@ public final class DeletedBackupInstanceResourceList extends DppResourceList {
     @JsonProperty(value = "value")
     private List<DeletedBackupInstanceResourceInner> value;
 
-    /** Creates an instance of DeletedBackupInstanceResourceList class. */
+    /**
+     * Creates an instance of DeletedBackupInstanceResourceList class.
+     */
     public DeletedBackupInstanceResourceList() {
     }
 
     /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<DeletedBackupInstanceResourceInner> value() {
@@ -33,7 +37,7 @@ public final class DeletedBackupInstanceResourceList extends DppResourceList {
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the DeletedBackupInstanceResourceList object itself.
      */
@@ -42,7 +46,9 @@ public final class DeletedBackupInstanceResourceList extends DppResourceList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedBackupInstanceResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -51,7 +57,7 @@ public final class DeletedBackupInstanceResourceList extends DppResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Append value for a Variable of type Array. */
+/**
+ * Append value for a Variable of type Array.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AppendVariable")
 @JsonFlatten
@@ -29,12 +31,15 @@ public class AppendVariableActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.value")
     private Object value;
 
-    /** Creates an instance of AppendVariableActivity class. */
-    public AppendVariableActivity() {}
+    /**
+     * Creates an instance of AppendVariableActivity class.
+     */
+    public AppendVariableActivity() {
+    }
 
     /**
      * Get the variableName property: Name of the variable whose value needs to be appended to.
-     *
+     * 
      * @return the variableName value.
      */
     public String getVariableName() {
@@ -43,7 +48,7 @@ public class AppendVariableActivity extends ControlActivity {
 
     /**
      * Set the variableName property: Name of the variable whose value needs to be appended to.
-     *
+     * 
      * @param variableName the variableName value to set.
      * @return the AppendVariableActivity object itself.
      */
@@ -54,7 +59,7 @@ public class AppendVariableActivity extends ControlActivity {
 
     /**
      * Get the value property: Value to be appended. Could be a static value or Expression.
-     *
+     * 
      * @return the value value.
      */
     public Object getValue() {
@@ -63,7 +68,7 @@ public class AppendVariableActivity extends ControlActivity {
 
     /**
      * Set the value property: Value to be appended. Could be a static value or Expression.
-     *
+     * 
      * @param value the value value to set.
      * @return the AppendVariableActivity object itself.
      */
@@ -72,42 +77,54 @@ public class AppendVariableActivity extends ControlActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppendVariableActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppendVariableActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppendVariableActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppendVariableActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppendVariableActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppendVariableActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

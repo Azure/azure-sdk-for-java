@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
@@ -16,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * AFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be served from
- * CDN.
+ * Azure Front Door.
  */
 @Fluent
 public final class AfdOriginGroupInner extends ProxyResource {
@@ -26,11 +25,9 @@ public final class AfdOriginGroupInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AfdOriginGroupProperties innerProperties;
 
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of AfdOriginGroupInner class. */
+    public AfdOriginGroupInner() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin group.
@@ -39,15 +36,6 @@ public final class AfdOriginGroupInner extends ProxyResource {
      */
     private AfdOriginGroupProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

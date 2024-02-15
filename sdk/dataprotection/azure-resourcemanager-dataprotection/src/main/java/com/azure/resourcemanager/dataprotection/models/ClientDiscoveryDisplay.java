@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * ClientDiscoveryDisplay
- *
- * <p>Localized display information of an operation.
+ * 
+ * Localized display information of an operation.
  */
 @Fluent
 public final class ClientDiscoveryDisplay {
@@ -38,13 +38,15 @@ public final class ClientDiscoveryDisplay {
     @JsonProperty(value = "resource")
     private String resource;
 
-    /** Creates an instance of ClientDiscoveryDisplay class. */
+    /**
+     * Creates an instance of ClientDiscoveryDisplay class.
+     */
     public ClientDiscoveryDisplay() {
     }
 
     /**
      * Get the description property: Description of the operation having details of what operation is about.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -53,7 +55,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Set the description property: Description of the operation having details of what operation is about.
-     *
+     * 
      * @param description the description value to set.
      * @return the ClientDiscoveryDisplay object itself.
      */
@@ -64,7 +66,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Get the operation property: Operations Name itself.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -73,7 +75,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Set the operation property: Operations Name itself.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the ClientDiscoveryDisplay object itself.
      */
@@ -84,7 +86,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Get the provider property: Name of the provider for display purposes.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -93,7 +95,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Set the provider property: Name of the provider for display purposes.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the ClientDiscoveryDisplay object itself.
      */
@@ -104,7 +106,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Get the resource property: ResourceType for which this Operation can be performed.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -113,7 +115,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Set the resource property: ResourceType for which this Operation can be performed.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ClientDiscoveryDisplay object itself.
      */
@@ -124,7 +126,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

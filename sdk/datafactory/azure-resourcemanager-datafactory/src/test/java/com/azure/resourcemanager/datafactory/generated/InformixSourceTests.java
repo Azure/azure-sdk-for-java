@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.InformixSource;
 public final class InformixSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InformixSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"InformixSource\",\"query\":\"datalzk\",\"queryTimeout\":\"datajtapvqjebtdp\",\"additionalColumns\":\"datakeexso\",\"sourceRetryCount\":\"datakvy\",\"sourceRetryWait\":\"datatytwtfqpmpyww\",\"maxConcurrentConnections\":\"dataukqmjcwdo\",\"disableMetricsCollection\":\"datadqun\",\"\":{\"rbn\":\"datacocchdxjrrb\",\"p\":\"dataqpsquou\"}}")
-                .toObject(InformixSource.class);
+        InformixSource model = BinaryData.fromString(
+            "{\"type\":\"InformixSource\",\"query\":\"dataiiuexyqy\",\"queryTimeout\":\"dataudmlqpward\",\"additionalColumns\":\"datar\",\"sourceRetryCount\":\"datavfiskkqspzwsxn\",\"sourceRetryWait\":\"datackpcssusdr\",\"maxConcurrentConnections\":\"datammrzwm\",\"disableMetricsCollection\":\"datatkcvolaxnuk\",\"\":{\"oxyxiyhmjwsn\":\"dataoumndc\"}}")
+            .toObject(InformixSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InformixSource model =
-            new InformixSource()
-                .withSourceRetryCount("datakvy")
-                .withSourceRetryWait("datatytwtfqpmpyww")
-                .withMaxConcurrentConnections("dataukqmjcwdo")
-                .withDisableMetricsCollection("datadqun")
-                .withQueryTimeout("datajtapvqjebtdp")
-                .withAdditionalColumns("datakeexso")
-                .withQuery("datalzk");
+        InformixSource model
+            = new InformixSource().withSourceRetryCount("datavfiskkqspzwsxn").withSourceRetryWait("datackpcssusdr")
+                .withMaxConcurrentConnections("datammrzwm").withDisableMetricsCollection("datatkcvolaxnuk")
+                .withQueryTimeout("dataudmlqpward").withAdditionalColumns("datar").withQuery("dataiiuexyqy");
         model = BinaryData.fromObject(model).toObject(InformixSource.class);
     }
 }

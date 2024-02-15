@@ -22,6 +22,10 @@ public final class DomainValidationProperties {
     @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private String expirationDate;
 
+    /** Creates an instance of DomainValidationProperties class. */
+    public DomainValidationProperties() {
+    }
+
     /**
      * Get the validationToken property: Challenge used for DNS TXT record or file based validation.
      *

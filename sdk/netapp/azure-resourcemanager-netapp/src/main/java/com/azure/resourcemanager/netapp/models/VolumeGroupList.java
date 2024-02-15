@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.fluent.models.VolumeGroupInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of volume group resources. */
+/**
+ * List of volume group resources.
+ */
 @Fluent
 public final class VolumeGroupList {
     /*
@@ -18,13 +20,15 @@ public final class VolumeGroupList {
     @JsonProperty(value = "value")
     private List<VolumeGroupInner> value;
 
-    /** Creates an instance of VolumeGroupList class. */
+    /**
+     * Creates an instance of VolumeGroupList class.
+     */
     public VolumeGroupList() {
     }
 
     /**
      * Get the value property: List of volume Groups.
-     *
+     * 
      * @return the value value.
      */
     public List<VolumeGroupInner> value() {
@@ -33,7 +37,7 @@ public final class VolumeGroupList {
 
     /**
      * Set the value property: List of volume Groups.
-     *
+     * 
      * @param value the value value to set.
      * @return the VolumeGroupList object itself.
      */
@@ -44,7 +48,7 @@ public final class VolumeGroupList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

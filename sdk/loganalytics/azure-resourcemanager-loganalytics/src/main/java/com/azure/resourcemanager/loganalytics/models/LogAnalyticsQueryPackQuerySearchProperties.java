@@ -26,6 +26,10 @@ public final class LogAnalyticsQueryPackQuerySearchProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<String>> tags;
 
+    /** Creates an instance of LogAnalyticsQueryPackQuerySearchProperties class. */
+    public LogAnalyticsQueryPackQuerySearchProperties() {
+    }
+
     /**
      * Get the related property: The related metadata items for the function.
      *

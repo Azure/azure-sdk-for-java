@@ -68,20 +68,14 @@ public final class ClientGroupImpl implements ClientGroup, ClientGroup.Definitio
     }
 
     public ClientGroup create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClientGroups()
-                .createOrUpdate(resourceGroupName, namespaceName, clientGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getClientGroups().createOrUpdate(resourceGroupName,
+            namespaceName, clientGroupName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ClientGroup create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClientGroups()
-                .createOrUpdate(resourceGroupName, namespaceName, clientGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getClientGroups().createOrUpdate(resourceGroupName,
+            namespaceName, clientGroupName, this.innerModel(), context);
         return this;
     }
 
@@ -96,20 +90,14 @@ public final class ClientGroupImpl implements ClientGroup, ClientGroup.Definitio
     }
 
     public ClientGroup apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClientGroups()
-                .createOrUpdate(resourceGroupName, namespaceName, clientGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getClientGroups().createOrUpdate(resourceGroupName,
+            namespaceName, clientGroupName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ClientGroup apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClientGroups()
-                .createOrUpdate(resourceGroupName, namespaceName, clientGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getClientGroups().createOrUpdate(resourceGroupName,
+            namespaceName, clientGroupName, this.innerModel(), context);
         return this;
     }
 
@@ -122,22 +110,14 @@ public final class ClientGroupImpl implements ClientGroup, ClientGroup.Definitio
     }
 
     public ClientGroup refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClientGroups()
-                .getWithResponse(resourceGroupName, namespaceName, clientGroupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getClientGroups()
+            .getWithResponse(resourceGroupName, namespaceName, clientGroupName, Context.NONE).getValue();
         return this;
     }
 
     public ClientGroup refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClientGroups()
-                .getWithResponse(resourceGroupName, namespaceName, clientGroupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getClientGroups()
+            .getWithResponse(resourceGroupName, namespaceName, clientGroupName, context).getValue();
         return this;
     }
 

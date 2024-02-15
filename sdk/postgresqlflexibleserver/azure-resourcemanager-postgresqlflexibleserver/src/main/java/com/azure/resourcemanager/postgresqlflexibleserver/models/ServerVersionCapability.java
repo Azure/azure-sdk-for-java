@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Server version capabilities. */
+/**
+ * Server version capabilities.
+ */
 @Immutable
 public final class ServerVersionCapability extends CapabilityBase {
     /*
@@ -23,13 +25,15 @@ public final class ServerVersionCapability extends CapabilityBase {
     @JsonProperty(value = "supportedVersionsToUpgrade", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> supportedVersionsToUpgrade;
 
-    /** Creates an instance of ServerVersionCapability class. */
+    /**
+     * Creates an instance of ServerVersionCapability class.
+     */
     public ServerVersionCapability() {
     }
 
     /**
      * Get the name property: Server version.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class ServerVersionCapability extends CapabilityBase {
 
     /**
      * Get the supportedVersionsToUpgrade property: Supported servers versions to upgrade.
-     *
+     * 
      * @return the supportedVersionsToUpgrade value.
      */
     public List<String> supportedVersionsToUpgrade() {
@@ -47,7 +51,7 @@ public final class ServerVersionCapability extends CapabilityBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -13,10 +13,11 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.SearchAlias;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-/** Response from a List Aliases request. If successful, it includes the associated index mappings for all aliases. */
+/**
+ * Response from a List Aliases request. If successful, it includes the associated index mappings for all aliases.
+ */
 @Immutable
 public final class ListAliasesResult implements JsonSerializable<ListAliasesResult> {
     /*
@@ -26,7 +27,7 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
 
     /**
      * Creates an instance of ListAliasesResult class.
-     *
+     * 
      * @param aliases the aliases value to set.
      */
     public ListAliasesResult(List<SearchAlias> aliases) {
@@ -35,7 +36,7 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
 
     /**
      * Get the aliases property: The aliases in the Search service.
-     *
+     * 
      * @return the aliases value.
      */
     public List<SearchAlias> getAliases() {
@@ -45,47 +46,37 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.aliases, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of ListAliasesResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ListAliasesResult if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ListAliasesResult.
      */
     public static ListAliasesResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean aliasesFound = false;
-                    List<SearchAlias> aliases = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean aliasesFound = false;
+            List<SearchAlias> aliases = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            aliases = reader.readArray(reader1 -> SearchAlias.fromJson(reader1));
-                            aliasesFound = true;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (aliasesFound) {
-                        ListAliasesResult deserializedListAliasesResult = new ListAliasesResult(aliases);
-
-                        return deserializedListAliasesResult;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!aliasesFound) {
-                        missingProperties.add("value");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+                if ("value".equals(fieldName)) {
+                    aliases = reader.readArray(reader1 -> SearchAlias.fromJson(reader1));
+                    aliasesFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (aliasesFound) {
+                return new ListAliasesResult(aliases);
+            }
+            throw new IllegalStateException("Missing required property: value");
+        });
     }
 }

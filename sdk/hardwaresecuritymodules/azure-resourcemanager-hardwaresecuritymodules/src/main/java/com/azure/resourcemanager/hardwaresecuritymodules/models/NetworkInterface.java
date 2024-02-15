@@ -7,12 +7,13 @@ package com.azure.resourcemanager.hardwaresecuritymodules.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The network interface definition. */
+/**
+ * The network interface definition.
+ */
 @Fluent
 public final class NetworkInterface {
     /*
-     * The ARM resource id in the form of
-     * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
+     * The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -24,9 +25,15 @@ public final class NetworkInterface {
     private String privateIpAddress;
 
     /**
+     * Creates an instance of NetworkInterface class.
+     */
+    public NetworkInterface() {
+    }
+
+    /**
      * Get the id property: The ARM resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -35,7 +42,7 @@ public final class NetworkInterface {
 
     /**
      * Get the privateIpAddress property: Private Ip address of the interface.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -44,7 +51,7 @@ public final class NetworkInterface {
 
     /**
      * Set the privateIpAddress property: Private Ip address of the interface.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the NetworkInterface object itself.
      */
@@ -55,7 +62,7 @@ public final class NetworkInterface {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

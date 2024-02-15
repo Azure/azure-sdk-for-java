@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DynamicsEntityDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynamicsEntityDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"DynamicsEntity\",\"typeProperties\":{\"entityName\":\"datammtbt\"},\"description\":\"u\",\"structure\":\"datavvraabeurdeewlsu\",\"schema\":\"datacbwkdwjyj\",\"linkedServiceName\":{\"referenceName\":\"zni\",\"parameters\":{\"cr\":\"dataofmftasp\"}},\"parameters\":{\"nuwqxungro\":{\"type\":\"Float\",\"defaultValue\":\"datatrnighm\"}},\"annotations\":[\"datafmsxjwdy\",\"datawxm\"],\"folder\":{\"name\":\"ow\"},\"\":{\"chy\":\"dataeerclbltbhpw\",\"gpruccwme\":\"dataurjwmvwryvdifkii\"}}")
-                .toObject(DynamicsEntityDataset.class);
+        DynamicsEntityDataset model = BinaryData.fromString(
+            "{\"type\":\"DynamicsEntity\",\"typeProperties\":{\"entityName\":\"datammtbt\"},\"description\":\"u\",\"structure\":\"datavvraabeurdeewlsu\",\"schema\":\"datacbwkdwjyj\",\"linkedServiceName\":{\"referenceName\":\"zni\",\"parameters\":{\"cr\":\"dataofmftasp\"}},\"parameters\":{\"nuwqxungro\":{\"type\":\"Float\",\"defaultValue\":\"datatrnighm\"}},\"annotations\":[\"datafmsxjwdy\",\"datawxm\"],\"folder\":{\"name\":\"ow\"},\"\":{\"chy\":\"dataeerclbltbhpw\",\"gpruccwme\":\"dataurjwmvwryvdifkii\"}}")
+            .toObject(DynamicsEntityDataset.class);
         Assertions.assertEquals("u", model.description());
         Assertions.assertEquals("zni", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("nuwqxungro").type());
@@ -31,20 +29,14 @@ public final class DynamicsEntityDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicsEntityDataset model =
-            new DynamicsEntityDataset()
-                .withDescription("u")
-                .withStructure("datavvraabeurdeewlsu")
-                .withSchema("datacbwkdwjyj")
-                .withLinkedServiceName(
-                    new LinkedServiceReference().withReferenceName("zni").withParameters(mapOf("cr", "dataofmftasp")))
-                .withParameters(
-                    mapOf(
-                        "nuwqxungro",
-                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datatrnighm")))
-                .withAnnotations(Arrays.asList("datafmsxjwdy", "datawxm"))
-                .withFolder(new DatasetFolder().withName("ow"))
-                .withEntityName("datammtbt");
+        DynamicsEntityDataset model = new DynamicsEntityDataset().withDescription("u")
+            .withStructure("datavvraabeurdeewlsu").withSchema("datacbwkdwjyj")
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("zni").withParameters(mapOf("cr", "dataofmftasp")))
+            .withParameters(mapOf("nuwqxungro",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datatrnighm")))
+            .withAnnotations(Arrays.asList("datafmsxjwdy", "datawxm")).withFolder(new DatasetFolder().withName("ow"))
+            .withEntityName("datammtbt");
         model = BinaryData.fromObject(model).toObject(DynamicsEntityDataset.class);
         Assertions.assertEquals("u", model.description());
         Assertions.assertEquals("zni", model.linkedServiceName().referenceName());

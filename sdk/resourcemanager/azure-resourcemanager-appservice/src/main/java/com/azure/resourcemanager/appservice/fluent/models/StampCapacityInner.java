@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.ComputeModeOptions;
 import com.azure.resourcemanager.appservice.models.WorkerSizeOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Stamp capacity information. */
+/**
+ * Stamp capacity information.
+ */
 @Fluent
 public final class StampCapacityInner {
     /*
@@ -82,13 +84,15 @@ public final class StampCapacityInner {
     @JsonProperty(value = "isLinux")
     private Boolean isLinux;
 
-    /** Creates an instance of StampCapacityInner class. */
+    /**
+     * Creates an instance of StampCapacityInner class.
+     */
     public StampCapacityInner() {
     }
 
     /**
      * Get the name property: Name of the stamp.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -97,7 +101,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the name property: Name of the stamp.
-     *
+     * 
      * @param name the name value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -108,7 +112,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the availableCapacity property: Available capacity (# of machines, bytes of storage etc...).
-     *
+     * 
      * @return the availableCapacity value.
      */
     public Long availableCapacity() {
@@ -117,7 +121,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the availableCapacity property: Available capacity (# of machines, bytes of storage etc...).
-     *
+     * 
      * @param availableCapacity the availableCapacity value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -128,7 +132,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the totalCapacity property: Total capacity (# of machines, bytes of storage etc...).
-     *
+     * 
      * @return the totalCapacity value.
      */
     public Long totalCapacity() {
@@ -137,7 +141,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the totalCapacity property: Total capacity (# of machines, bytes of storage etc...).
-     *
+     * 
      * @param totalCapacity the totalCapacity value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -148,7 +152,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the unit property: Name of the unit.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -157,7 +161,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the unit property: Name of the unit.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -168,7 +172,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the computeMode property: Shared/dedicated workers.
-     *
+     * 
      * @return the computeMode value.
      */
     public ComputeModeOptions computeMode() {
@@ -177,7 +181,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the computeMode property: Shared/dedicated workers.
-     *
+     * 
      * @param computeMode the computeMode value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -188,7 +192,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the workerSize property: Size of the machines.
-     *
+     * 
      * @return the workerSize value.
      */
     public WorkerSizeOptions workerSize() {
@@ -197,7 +201,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the workerSize property: Size of the machines.
-     *
+     * 
      * @param workerSize the workerSize value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -207,8 +211,11 @@ public final class StampCapacityInner {
     }
 
     /**
-     * Get the workerSizeId property: Size ID of machines: 0 - Small 1 - Medium 2 - Large.
-     *
+     * Get the workerSizeId property: Size ID of machines:
+     * 0 - Small
+     * 1 - Medium
+     * 2 - Large.
+     * 
      * @return the workerSizeId value.
      */
     public Integer workerSizeId() {
@@ -216,8 +223,11 @@ public final class StampCapacityInner {
     }
 
     /**
-     * Set the workerSizeId property: Size ID of machines: 0 - Small 1 - Medium 2 - Large.
-     *
+     * Set the workerSizeId property: Size ID of machines:
+     * 0 - Small
+     * 1 - Medium
+     * 2 - Large.
+     * 
      * @param workerSizeId the workerSizeId value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -227,9 +237,9 @@ public final class StampCapacityInner {
     }
 
     /**
-     * Get the excludeFromCapacityAllocation property: If &lt;code&gt;true&lt;/code&gt;, it includes basic apps. Basic
-     * apps are not used for capacity allocation.
-     *
+     * Get the excludeFromCapacityAllocation property: If &lt;code&gt;true&lt;/code&gt;, it includes basic apps.
+     * Basic apps are not used for capacity allocation.
+     * 
      * @return the excludeFromCapacityAllocation value.
      */
     public Boolean excludeFromCapacityAllocation() {
@@ -237,9 +247,9 @@ public final class StampCapacityInner {
     }
 
     /**
-     * Set the excludeFromCapacityAllocation property: If &lt;code&gt;true&lt;/code&gt;, it includes basic apps. Basic
-     * apps are not used for capacity allocation.
-     *
+     * Set the excludeFromCapacityAllocation property: If &lt;code&gt;true&lt;/code&gt;, it includes basic apps.
+     * Basic apps are not used for capacity allocation.
+     * 
      * @param excludeFromCapacityAllocation the excludeFromCapacityAllocation value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -251,7 +261,7 @@ public final class StampCapacityInner {
     /**
      * Get the isApplicableForAllComputeModes property: &lt;code&gt;true&lt;/code&gt; if capacity is applicable for all
      * apps; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isApplicableForAllComputeModes value.
      */
     public Boolean isApplicableForAllComputeModes() {
@@ -261,7 +271,7 @@ public final class StampCapacityInner {
     /**
      * Set the isApplicableForAllComputeModes property: &lt;code&gt;true&lt;/code&gt; if capacity is applicable for all
      * apps; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param isApplicableForAllComputeModes the isApplicableForAllComputeModes value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -272,7 +282,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the siteMode property: Shared or Dedicated.
-     *
+     * 
      * @return the siteMode value.
      */
     public String siteMode() {
@@ -281,7 +291,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the siteMode property: Shared or Dedicated.
-     *
+     * 
      * @param siteMode the siteMode value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -292,7 +302,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the isLinux property: Is this a linux stamp capacity.
-     *
+     * 
      * @return the isLinux value.
      */
     public Boolean isLinux() {
@@ -301,7 +311,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the isLinux property: Is this a linux stamp capacity.
-     *
+     * 
      * @param isLinux the isLinux value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -312,7 +322,7 @@ public final class StampCapacityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

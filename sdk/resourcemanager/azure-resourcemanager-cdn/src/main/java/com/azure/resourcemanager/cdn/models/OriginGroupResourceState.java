@@ -20,6 +20,15 @@ public final class OriginGroupResourceState extends ExpandableStringEnum<OriginG
     public static final OriginGroupResourceState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of OriginGroupResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OriginGroupResourceState() {
+    }
+
+    /**
      * Creates or finds a OriginGroupResourceState from its string representation.
      *
      * @param name a name to look for.

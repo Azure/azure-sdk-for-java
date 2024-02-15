@@ -6,32 +6,34 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.resourcemanager.datafactory.fluent.models.AccessPolicyResponseInner;
 
-/** An immutable client-side representation of AccessPolicyResponse. */
+/**
+ * An immutable client-side representation of AccessPolicyResponse.
+ */
 public interface AccessPolicyResponse {
     /**
      * Gets the policy property: The user access policy.
-     *
+     * 
      * @return the policy value.
      */
     UserAccessPolicy policy();
 
     /**
      * Gets the accessToken property: Data Plane read only access token.
-     *
+     * 
      * @return the accessToken value.
      */
     String accessToken();
 
     /**
      * Gets the dataPlaneUrl property: Data Plane service base URL.
-     *
+     * 
      * @return the dataPlaneUrl value.
      */
     String dataPlaneUrl();
 
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.AccessPolicyResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     AccessPolicyResponseInner innerModel();

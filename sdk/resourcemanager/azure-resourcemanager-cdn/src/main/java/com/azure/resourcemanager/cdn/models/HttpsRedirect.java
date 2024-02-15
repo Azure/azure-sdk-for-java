@@ -20,6 +20,15 @@ public final class HttpsRedirect extends ExpandableStringEnum<HttpsRedirect> {
     public static final HttpsRedirect DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of HttpsRedirect value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HttpsRedirect() {
+    }
+
+    /**
      * Creates or finds a HttpsRedirect from its string representation.
      *
      * @param name a name to look for.

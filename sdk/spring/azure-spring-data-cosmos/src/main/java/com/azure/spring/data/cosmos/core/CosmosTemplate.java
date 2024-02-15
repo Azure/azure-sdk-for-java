@@ -6,9 +6,13 @@ package com.azure.spring.data.cosmos.core;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
@@ -56,7 +60,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -226,7 +229,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .createItem(originalItem, partitionKey, options)
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .doOnNext(cosmosItemResponse ->
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null))
@@ -237,6 +240,55 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         assert response != null;
         return toDomainObject(domainType, response.getItem());
+    }
+
+    /**
+     * Insert all items with bulk.
+     *
+     * @param information the CosmosEntityInformation
+     * @param entities the Iterable entities to be inserted
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return Flux of result
+     */
+    @SuppressWarnings("unchecked")
+    public <S extends T, T> Iterable<S> insertAll(CosmosEntityInformation<T, ?> information, Iterable<S> entities) {
+        Assert.notNull(entities, "entities to be inserted should not be null");
+
+        String containerName = information.getContainerName();
+        Class<T> domainType = information.getJavaType();
+
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        entities.forEach(entity -> {
+            generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
+            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));
+            final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+            applyBulkVersioning(domainType, originalItem, options);
+            cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(originalItem,
+                partitionKey, options));
+        });
+
+        // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
+        // allows it to start at 1 and increase until it finds the appropriate batch size.
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
+
+        return (Iterable<S>) this.getCosmosAsyncClient()
+            .getDatabase(this.getDatabaseName())
+            .getContainer(containerName)
+            .executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions)
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,
+                    this.responseDiagnosticsProcessor))
+            .flatMap(r -> {
+                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                    r.getResponse().getCosmosDiagnostics(), null);
+                JsonNode responseItem = r.getResponse().getItem(JsonNode.class);
+                return responseItem != null ? Flux.just(toDomainObject(domainType, responseItem)) : Flux.empty();
+            })
+            .collectList().block();
     }
 
     /**
@@ -283,7 +335,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .patchItem(id.toString(), partitionKey, patchOperations, options, JsonNode.class)
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .doOnNext(cosmosItemResponse ->
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null))
@@ -327,7 +379,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .readItem(idToQuery, partitionKey, JsonNode.class)
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .flatMap(cosmosItemResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null);
@@ -374,7 +426,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getContainer(finalContainerName)
             .queryItems(sqlQuerySpec, options, JsonNode.class)
             .byPage()
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
@@ -442,7 +494,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .upsertItem(originalItem, options)
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                 response.getDiagnostics(), null))
             .onErrorResume(throwable ->
@@ -502,7 +554,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getContainer(containerName)
             .queryItems("SELECT * FROM r", cosmosQueryRequestOptions, JsonNode.class)
             .byPage()
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
@@ -535,7 +587,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .delete()
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .doOnNext(response -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     response.getDiagnostics(), null);
@@ -569,7 +621,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public CosmosContainerProperties createContainerIfNotExists(CosmosEntityInformation<?, ?> information) {
 
         final CosmosContainerResponse response = createDatabaseIfNotExists()
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to create database", throwable,
                     this.responseDiagnosticsProcessor))
@@ -681,6 +733,50 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         deleteItem(originalItem, containerName, domainType);
     }
 
+    /**
+     * Deletes the entities using bulk
+     *
+     * @param information the CosmosEntityInformation
+     * @param entities the Iterable entities to be inserted
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     */
+    @Override
+    public <S extends T, T> void deleteEntities(CosmosEntityInformation<T, ?> information, Iterable<S> entities) {
+        Assert.notNull(entities, "entities to be deleted should not be null");
+
+        String containerName = information.getContainerName();
+        Class<T> domainType = information.getJavaType();
+
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        entities.forEach(entity -> {
+            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+            applyBulkVersioning(domainType, originalItem, options);
+            cosmosItemOperations.add(CosmosBulkOperations.getDeleteItemOperation(String.valueOf(information.getId(entity)),
+                new PartitionKey(information.getPartitionKeyFieldValue(entity)), options));
+        });
+
+        // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
+        // allows it to start at 1 and increase until it finds the appropriate batch size.
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
+
+        this.getCosmosAsyncClient()
+                .getDatabase(this.getDatabaseName())
+                .getContainer(containerName)
+                .executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions)
+                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                .onErrorResume(throwable ->
+                    CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
+                        this.responseDiagnosticsProcessor))
+                .flatMap(response -> {
+                    CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                        response.getResponse().getCosmosDiagnostics(), null);
+                    return Flux.empty();
+                }).blockLast();
+    }
+
     private void deleteById(String containerName, Object id, PartitionKey partitionKey,
                             CosmosItemRequestOptions options) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
@@ -696,7 +792,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .deleteItem(idToDelete, partitionKey, options)
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .doOnNext(response ->
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     response.getDiagnostics(), null))
@@ -755,7 +851,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     /**
      * Delete the DocumentQuery, need to query the domains at first, then delete the item from the result. The cosmos db
-     * Sql API do _NOT_ support DELETE query, we cannot add one DeleteQueryGenerator.
+     * Sql API do _NOT_ support DELETE query, we cannot add one DeleteQueryGenerator. Uses bulk if possible.
      *
      * @param query The representation for query method.
      * @param domainType Class of domain
@@ -771,11 +867,46 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
         String finalContainerName = getContainerNameOverride(containerName);
 
+        @SuppressWarnings("unchecked")
+        CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
+
         final List<JsonNode> results = findItemsAsFlux(query, finalContainerName, domainType).collectList().block();
         assert results != null;
-        return results.stream()
-            .map(item -> deleteItem(item, finalContainerName, domainType))
-            .collect(Collectors.toList());
+
+        if (entityInfo.getPartitionKeyFieldName() != null) {
+            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(results).map(item -> {
+                T object = toDomainObject(domainType, item);
+                Object id = entityInfo.getId(object);
+                String idString = id != null ? id.toString() : "";
+                final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+                applyBulkVersioning(domainType, item, options);
+                return CosmosBulkOperations.getDeleteItemOperation(idString,
+                    new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)), options);
+            });
+
+            // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
+            // allows it to start at 1 and increase until it finds the appropriate batch size.
+            CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+            cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
+
+            this.getCosmosAsyncClient()
+                .getDatabase(this.getDatabaseName())
+                .getContainer(containerName)
+                .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
+                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                .onErrorResume(throwable ->
+                    CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)",
+                        throwable, this.responseDiagnosticsProcessor))
+                .collectList().block();
+
+            return results.stream()
+                .map(jsonNode -> toDomainObject(domainType, jsonNode))
+                .collect(Collectors.toList());
+        } else {
+            return results.stream()
+                .map(item -> deleteItem(item, finalContainerName, domainType))
+                .collect(Collectors.toList());
+        }
     }
 
     @Override
@@ -887,7 +1018,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
                 .byPage(continuationToken, feedResponseContentSize);
             FeedResponse<JsonNode> feedResponse = feedResponseFlux
-                .publishOn(Schedulers.parallel())
+                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
                 .doOnNext(propertiesFeedResponse ->
                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                         propertiesFeedResponse.getCosmosDiagnostics(), propertiesFeedResponse))
@@ -999,7 +1130,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         containerName = getContainerNameOverride(containerName);
 
         return executeQuery(querySpec, containerName, options)
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to get count value", throwable,
                     this.responseDiagnosticsProcessor))
@@ -1041,7 +1172,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getContainer(containerName)
             .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
             .byPage()
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemFeedResponse.getCosmosDiagnostics(),
@@ -1067,7 +1198,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getContainer(containerName)
             .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
             .byPage()
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemFeedResponse.getCosmosDiagnostics(),
@@ -1100,7 +1231,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .deleteItem(jsonNode, options)
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                 response.getDiagnostics(), null))
             .onErrorResume(throwable ->
@@ -1123,6 +1254,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private void applyVersioning(Class<?> domainType,
                                  JsonNode jsonNode,
                                  CosmosItemRequestOptions options) {
+        CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
+        if (entityInformation.isVersioned()) {
+            options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());
+        }
+    }
+
+    private void applyBulkVersioning(Class<?> domainType,
+                                 JsonNode jsonNode,
+                                 CosmosBulkItemRequestOptions options) {
         CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
         if (entityInformation.isVersioned()) {
             options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());

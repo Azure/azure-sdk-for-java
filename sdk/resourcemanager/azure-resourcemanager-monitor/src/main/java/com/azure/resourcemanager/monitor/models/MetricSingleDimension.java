@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The metric dimension name and value. */
+/**
+ * The metric dimension name and value.
+ */
 @Fluent
 public final class MetricSingleDimension {
     /*
@@ -23,13 +25,15 @@ public final class MetricSingleDimension {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of MetricSingleDimension class. */
+    /**
+     * Creates an instance of MetricSingleDimension class.
+     */
     public MetricSingleDimension() {
     }
 
     /**
      * Get the name property: Name of the dimension.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class MetricSingleDimension {
 
     /**
      * Set the name property: Name of the dimension.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricSingleDimension object itself.
      */
@@ -49,7 +53,7 @@ public final class MetricSingleDimension {
 
     /**
      * Get the value property: Value of the dimension.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -58,7 +62,7 @@ public final class MetricSingleDimension {
 
     /**
      * Set the value property: Value of the dimension.
-     *
+     * 
      * @param value the value value to set.
      * @return the MetricSingleDimension object itself.
      */
@@ -69,19 +73,17 @@ public final class MetricSingleDimension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model MetricSingleDimension"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model MetricSingleDimension"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model MetricSingleDimension"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model MetricSingleDimension"));
         }
     }
 

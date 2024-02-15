@@ -10,8 +10,8 @@ import com.azure.resourcemanager.quota.models.LimitJsonObject;
 public final class LimitJsonObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LimitJsonObject model =
-            BinaryData.fromString("{\"limitObjectType\":\"LimitJsonObject\"}").toObject(LimitJsonObject.class);
+        LimitJsonObject model
+            = BinaryData.fromString("{\"limitObjectType\":\"LimitJsonObject\"}").toObject(LimitJsonObject.class);
     }
 
     @org.junit.jupiter.api.Test

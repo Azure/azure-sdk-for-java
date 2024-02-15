@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Allow to exclude some variable satisfy the condition for the WAF check. */
+/**
+ * Allow to exclude some variable satisfy the condition for the WAF check.
+ */
 @Fluent
 public final class ManagedRulesDefinition {
     /*
@@ -24,13 +26,15 @@ public final class ManagedRulesDefinition {
     @JsonProperty(value = "managedRuleSets", required = true)
     private List<ManagedRuleSet> managedRuleSets;
 
-    /** Creates an instance of ManagedRulesDefinition class. */
+    /**
+     * Creates an instance of ManagedRulesDefinition class.
+     */
     public ManagedRulesDefinition() {
     }
 
     /**
      * Get the exclusions property: The Exclusions that are applied on the policy.
-     *
+     * 
      * @return the exclusions value.
      */
     public List<OwaspCrsExclusionEntry> exclusions() {
@@ -39,7 +43,7 @@ public final class ManagedRulesDefinition {
 
     /**
      * Set the exclusions property: The Exclusions that are applied on the policy.
-     *
+     * 
      * @param exclusions the exclusions value to set.
      * @return the ManagedRulesDefinition object itself.
      */
@@ -50,7 +54,7 @@ public final class ManagedRulesDefinition {
 
     /**
      * Get the managedRuleSets property: The managed rule sets that are associated with the policy.
-     *
+     * 
      * @return the managedRuleSets value.
      */
     public List<ManagedRuleSet> managedRuleSets() {
@@ -59,7 +63,7 @@ public final class ManagedRulesDefinition {
 
     /**
      * Set the managedRuleSets property: The managed rule sets that are associated with the policy.
-     *
+     * 
      * @param managedRuleSets the managedRuleSets value to set.
      * @return the ManagedRulesDefinition object itself.
      */
@@ -70,7 +74,7 @@ public final class ManagedRulesDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -78,10 +82,8 @@ public final class ManagedRulesDefinition {
             exclusions().forEach(e -> e.validate());
         }
         if (managedRuleSets() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managedRuleSets in model ManagedRulesDefinition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property managedRuleSets in model ManagedRulesDefinition"));
         } else {
             managedRuleSets().forEach(e -> e.validate());
         }

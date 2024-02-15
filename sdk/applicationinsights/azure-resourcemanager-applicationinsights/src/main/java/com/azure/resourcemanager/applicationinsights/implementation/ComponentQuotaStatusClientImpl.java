@@ -51,11 +51,10 @@ public final class ComponentQuotaStatusClientImpl implements ComponentQuotaStatu
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
-    private interface ComponentQuotaStatusService {
+    public interface ComponentQuotaStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-                + "/{resourceName}/quotastatus")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/quotastatus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationInsightsComponentQuotaStatusInner>> get(
@@ -186,21 +185,6 @@ public final class ComponentQuotaStatusClientImpl implements ComponentQuotaStatu
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component daily data volume cap status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentQuotaStatusInner get(String resourceGroupName, String resourceName) {
-        return getAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Returns daily data volume cap (quota) status for an Application Insights component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -211,5 +195,20 @@ public final class ComponentQuotaStatusClientImpl implements ComponentQuotaStatu
     public Response<ApplicationInsightsComponentQuotaStatusInner> getWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Returns daily data volume cap (quota) status for an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Application Insights component daily data volume cap status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInsightsComponentQuotaStatusInner get(String resourceGroupName, String resourceName) {
+        return getWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 }

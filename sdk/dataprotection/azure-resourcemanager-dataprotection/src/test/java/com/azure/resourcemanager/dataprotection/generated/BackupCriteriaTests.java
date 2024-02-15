@@ -10,8 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.BackupCriteria;
 public final class BackupCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupCriteria model =
-            BinaryData.fromString("{\"objectType\":\"BackupCriteria\"}").toObject(BackupCriteria.class);
+        BackupCriteria model
+            = BinaryData.fromString("{\"objectType\":\"BackupCriteria\"}").toObject(BackupCriteria.class);
     }
 
     @org.junit.jupiter.api.Test

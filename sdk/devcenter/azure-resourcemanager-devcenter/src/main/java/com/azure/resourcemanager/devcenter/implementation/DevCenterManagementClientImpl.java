@@ -23,11 +23,14 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.devcenter.fluent.AttachedNetworksClient;
+import com.azure.resourcemanager.devcenter.fluent.CatalogDevBoxDefinitionsClient;
 import com.azure.resourcemanager.devcenter.fluent.CatalogsClient;
 import com.azure.resourcemanager.devcenter.fluent.CheckNameAvailabilitiesClient;
+import com.azure.resourcemanager.devcenter.fluent.CustomizationTasksClient;
 import com.azure.resourcemanager.devcenter.fluent.DevBoxDefinitionsClient;
 import com.azure.resourcemanager.devcenter.fluent.DevCenterManagementClient;
 import com.azure.resourcemanager.devcenter.fluent.DevCentersClient;
+import com.azure.resourcemanager.devcenter.fluent.EnvironmentDefinitionsClient;
 import com.azure.resourcemanager.devcenter.fluent.EnvironmentTypesClient;
 import com.azure.resourcemanager.devcenter.fluent.GalleriesClient;
 import com.azure.resourcemanager.devcenter.fluent.ImageVersionsClient;
@@ -306,6 +309,42 @@ public final class DevCenterManagementClientImpl implements DevCenterManagementC
         return this.checkNameAvailabilities;
     }
 
+    /** The CatalogDevBoxDefinitionsClient object to access its operations. */
+    private final CatalogDevBoxDefinitionsClient catalogDevBoxDefinitions;
+
+    /**
+     * Gets the CatalogDevBoxDefinitionsClient object to access its operations.
+     *
+     * @return the CatalogDevBoxDefinitionsClient object.
+     */
+    public CatalogDevBoxDefinitionsClient getCatalogDevBoxDefinitions() {
+        return this.catalogDevBoxDefinitions;
+    }
+
+    /** The CustomizationTasksClient object to access its operations. */
+    private final CustomizationTasksClient customizationTasks;
+
+    /**
+     * Gets the CustomizationTasksClient object to access its operations.
+     *
+     * @return the CustomizationTasksClient object.
+     */
+    public CustomizationTasksClient getCustomizationTasks() {
+        return this.customizationTasks;
+    }
+
+    /** The EnvironmentDefinitionsClient object to access its operations. */
+    private final EnvironmentDefinitionsClient environmentDefinitions;
+
+    /**
+     * Gets the EnvironmentDefinitionsClient object to access its operations.
+     *
+     * @return the EnvironmentDefinitionsClient object.
+     */
+    public EnvironmentDefinitionsClient getEnvironmentDefinitions() {
+        return this.environmentDefinitions;
+    }
+
     /** The SkusClient object to access its operations. */
     private final SkusClient skus;
 
@@ -376,7 +415,7 @@ public final class DevCenterManagementClientImpl implements DevCenterManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-04-01";
+        this.apiVersion = "2023-10-01-preview";
         this.devCenters = new DevCentersClientImpl(this);
         this.projects = new ProjectsClientImpl(this);
         this.attachedNetworks = new AttachedNetworksClientImpl(this);
@@ -392,6 +431,9 @@ public final class DevCenterManagementClientImpl implements DevCenterManagementC
         this.operationStatuses = new OperationStatusesClientImpl(this);
         this.usages = new UsagesClientImpl(this);
         this.checkNameAvailabilities = new CheckNameAvailabilitiesClientImpl(this);
+        this.catalogDevBoxDefinitions = new CatalogDevBoxDefinitionsClientImpl(this);
+        this.customizationTasks = new CustomizationTasksClientImpl(this);
+        this.environmentDefinitions = new EnvironmentDefinitionsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.pools = new PoolsClientImpl(this);
         this.schedules = new SchedulesClientImpl(this);

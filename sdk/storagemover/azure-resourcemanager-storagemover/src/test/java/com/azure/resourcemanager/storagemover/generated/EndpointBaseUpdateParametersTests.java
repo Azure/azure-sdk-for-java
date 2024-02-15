@@ -15,17 +15,16 @@ public final class EndpointBaseUpdateParametersTests {
         EndpointBaseUpdateParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"endpointType\":\"EndpointBaseUpdateProperties\",\"description\":\"odmgl\"}}")
+                    "{\"properties\":{\"endpointType\":\"EndpointBaseUpdateProperties\",\"description\":\"ap\"}}")
                 .toObject(EndpointBaseUpdateParameters.class);
-        Assertions.assertEquals("odmgl", model.properties().description());
+        Assertions.assertEquals("ap", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EndpointBaseUpdateParameters model =
-            new EndpointBaseUpdateParameters()
-                .withProperties(new EndpointBaseUpdateProperties().withDescription("odmgl"));
+            new EndpointBaseUpdateParameters().withProperties(new EndpointBaseUpdateProperties().withDescription("ap"));
         model = BinaryData.fromObject(model).toObject(EndpointBaseUpdateParameters.class);
-        Assertions.assertEquals("odmgl", model.properties().description());
+        Assertions.assertEquals("ap", model.properties().description());
     }
 }

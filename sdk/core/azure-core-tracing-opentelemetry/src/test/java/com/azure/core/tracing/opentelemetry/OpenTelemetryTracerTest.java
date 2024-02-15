@@ -30,15 +30,18 @@ import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
-import io.opentelemetry.sdk.trace.internal.data.ExceptionEventData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.Exceptions;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -47,6 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_ENQUEUED_TIME;
@@ -100,7 +104,7 @@ public class OpenTelemetryTracerTest {
     private final HashMap<String, Object> expectedAttributeMap = new HashMap<String, Object>() {
         {
             put("messaging.destination.name", ENTITY_PATH_VALUE);
-            put("net.peer.name", HOSTNAME_VALUE);
+            put("server.address", HOSTNAME_VALUE);
             put("az.namespace", AZ_NAMESPACE_VALUE);
         }
     };
@@ -554,39 +558,31 @@ public class OpenTelemetryTracerTest {
     @Test
     public void endSpanErrorMessageTest() {
         // Arrange
-        final ReadableSpan recordEventsSpan = (ReadableSpan) parentSpan;
+        final ReadableSpan span = (ReadableSpan) parentSpan;
         final String throwableMessage = "custom error message";
 
         // Act
         openTelemetryTracer.end(null, new Throwable(throwableMessage), tracingContext);
 
         // Assert
-        assertEquals(StatusCode.ERROR, recordEventsSpan.toSpanData().getStatus().getStatusCode());
-        List<EventData> events = recordEventsSpan.toSpanData().getEvents();
-        assertEquals(1, events.size());
-        EventData event = events.get(0);
-        assertEquals("exception", event.getName());
-        assertEquals("custom error message",
-            event.getAttributes().get(AttributeKey.stringKey("exception.message")));
+        assertEquals(StatusCode.ERROR, span.toSpanData().getStatus().getStatusCode());
+        assertEquals(throwableMessage, span.toSpanData().getStatus().getDescription());
+        assertEquals(Throwable.class.getName(), span.getAttribute(AttributeKey.stringKey("error.type")));
     }
 
     @Test
     @SuppressWarnings("deprecation")
     public void endSpanTestThrowableResponseCode() {
         // Arrange
-        final ReadableSpan recordEventsSpan = (ReadableSpan) parentSpan;
+        final ReadableSpan span = (ReadableSpan) parentSpan;
 
         // Act
         openTelemetryTracer.end(404, new Throwable("this is an exception"), tracingContext);
 
         // Assert
-        assertEquals(StatusCode.ERROR, recordEventsSpan.toSpanData().getStatus().getStatusCode());
-        assertEquals("", recordEventsSpan.toSpanData().getStatus().getDescription());
-
-        List<EventData> events = recordEventsSpan.toSpanData().getEvents();
-        assertEquals(1, events.size());
-        EventData event = events.get(0);
-        assertEquals("exception", event.getName());
+        assertEquals(StatusCode.ERROR, span.toSpanData().getStatus().getStatusCode());
+        assertEquals("this is an exception", span.toSpanData().getStatus().getDescription());
+        assertEquals(Throwable.class.getName(), span.getAttribute(AttributeKey.stringKey("error.type")));
     }
 
     @Test
@@ -1050,8 +1046,8 @@ public class OpenTelemetryTracerTest {
         openTelemetryTracer.setAttribute("outer2", "bar", outer);
         openTelemetryTracer.setAttribute("innerSuppressed", "foo", innerSuppressed);
 
-        openTelemetryTracer.end("ok", null, innerSuppressed);
-        openTelemetryTracer.end("ok", null, outer);
+        openTelemetryTracer.end("success", null, innerSuppressed);
+        openTelemetryTracer.end("success", null, outer);
 
         SpanData outerSpan = testExporter.getFinishedSpanItems().get(0);
         assertEquals("outer", outerSpan.getName());
@@ -1168,6 +1164,7 @@ public class OpenTelemetryTracerTest {
 
         SpanData spanData = getSpan(span).toSpanData();
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
+        assertEquals("foo", spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
         assertEquals("foo", spanData.getStatus().getDescription());
     }
 
@@ -1178,35 +1175,33 @@ public class OpenTelemetryTracerTest {
 
         SpanData spanData = getSpan(span).toSpanData();
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
+        assertEquals("", spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
         assertEquals("", spanData.getStatus().getDescription());
     }
 
-    @Test
-    public void setStatusThrowable() {
+    @ParameterizedTest
+    @MethodSource("exceptions")
+    public void setStatusThrowable(Throwable error, Throwable originalError) {
         final Context span = openTelemetryTracer.start(METHOD_NAME, tracingContext);
-        Throwable error = new IOException("bar");
         openTelemetryTracer.end(null, error, span);
 
         SpanData spanData = getSpan(span).toSpanData();
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
-        assertEquals("", spanData.getStatus().getDescription());
-        assertEquals(1, spanData.getEvents().size());
-
-        EventData exceptionEvent = spanData.getEvents().get(0);
-        assertTrue(exceptionEvent instanceof ExceptionEventData);
-        assertSame(error, ((ExceptionEventData) exceptionEvent).getException());
+        assertEquals(originalError.getMessage(), spanData.getStatus().getDescription());
+        assertEquals(0, spanData.getEvents().size());
+        assertEquals(originalError.getClass().getName(), spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
     }
 
     @Test
-    public void setStatusThrowableAndStatus() {
+    public void setErrorThrowableAndStatusMessage() {
         final Context span = openTelemetryTracer.start(METHOD_NAME, tracingContext);
         Throwable error = new IOException("bar");
         openTelemetryTracer.end("foo", error, span);
 
         SpanData spanData = getSpan(span).toSpanData();
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
-        assertEquals("foo", spanData.getStatus().getDescription());
-        assertEquals(1, spanData.getEvents().size());
+        assertEquals("bar", spanData.getStatus().getDescription());
+        assertEquals("foo", spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
     }
 
     @Test
@@ -1289,5 +1284,19 @@ public class OpenTelemetryTracerTest {
         assertEquals(expected.size(), actual.size());
 
         assertTrue(expected.asMap().entrySet().stream().allMatch(e -> e.getValue().equals(actual.get(e.getKey()))));
+    }
+
+    public static Stream<Arguments> exceptions() {
+        IOException rootCause = new IOException("foo");
+        return Stream.of(
+            Arguments.of(rootCause, rootCause),
+            Arguments.of(Exceptions.propagate(rootCause), rootCause),
+            Arguments.of(new UncheckedIOException(rootCause), rootCause),
+            Arguments.of(Exceptions.propagate(new UncheckedIOException(rootCause)), rootCause),
+            Arguments.of(new ExecutionException(rootCause), rootCause),
+            Arguments.of(new InvocationTargetException(rootCause), rootCause),
+            Arguments.of(new InvocationTargetException(rootCause), rootCause),
+            Arguments.of(new UndeclaredThrowableException(rootCause), rootCause),
+            Arguments.of(new UndeclaredThrowableException(new InvocationTargetException(Exceptions.propagate(rootCause))), rootCause));
     }
 }

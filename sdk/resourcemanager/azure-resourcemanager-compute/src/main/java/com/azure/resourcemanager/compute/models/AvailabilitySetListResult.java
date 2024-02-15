@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Availability Set operation response. */
+/**
+ * The List Availability Set operation response.
+ */
 @Fluent
 public final class AvailabilitySetListResult {
     /*
@@ -26,13 +28,15 @@ public final class AvailabilitySetListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AvailabilitySetListResult class. */
+    /**
+     * Creates an instance of AvailabilitySetListResult class.
+     */
     public AvailabilitySetListResult() {
     }
 
     /**
      * Get the value property: The list of availability sets.
-     *
+     * 
      * @return the value value.
      */
     public List<AvailabilitySetInner> value() {
@@ -41,7 +45,7 @@ public final class AvailabilitySetListResult {
 
     /**
      * Set the value property: The list of availability sets.
-     *
+     * 
      * @param value the value value to set.
      * @return the AvailabilitySetListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class AvailabilitySetListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of AvailabilitySets. Call ListNext() with this URI to
      * fetch the next page of AvailabilitySets.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +67,7 @@ public final class AvailabilitySetListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of AvailabilitySets. Call ListNext() with this URI to
      * fetch the next page of AvailabilitySets.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AvailabilitySetListResult object itself.
      */
@@ -74,14 +78,13 @@ public final class AvailabilitySetListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model AvailabilitySetListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model AvailabilitySetListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

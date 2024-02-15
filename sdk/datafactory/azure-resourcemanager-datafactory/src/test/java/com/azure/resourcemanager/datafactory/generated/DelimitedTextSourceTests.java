@@ -15,33 +15,23 @@ import java.util.Map;
 public final class DelimitedTextSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DelimitedTextSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"DelimitedTextSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datayrwfh\",\"disableMetricsCollection\":\"dataoyxxszpa\",\"\":{\"veekhsmulv\":\"dataurfsofshfmgiixu\",\"iuwhcyckekm\":\"dataywoefkpuuu\",\"oycpotmaosongtbh\":\"datafipygt\",\"nrvwjxmwalh\":\"datahsqvubwwqgiyu\"}},\"formatSettings\":{\"type\":\"DelimitedTextReadSettings\",\"skipLineCount\":\"datansnbpiuvqhod\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"zfbjucgbgzjyrd\":\"datatrsnpbsungnjkkm\",\"qvpjydwmaq\":\"dataiwhmrhz\",\"pqupdcsvzugiur\":\"dataytjpua\"}},\"\":{\"tnqbkpobjufksdd\":\"datalvlbjzscr\",\"wxlylxfpvoylf\":\"datakg\",\"ime\":\"datalsrguecbthauivg\",\"uvckpdpdcnrjqs\":\"dataedqgyrvulz\"}},\"additionalColumns\":\"datakqdqiybqtl\",\"sourceRetryCount\":\"datafjjsetiz\",\"sourceRetryWait\":\"datanadn\",\"maxConcurrentConnections\":\"datasbpxlserqgxnh\",\"disableMetricsCollection\":\"dataccd\",\"\":{\"jbhmpmeglo\":\"datayb\"}}")
-                .toObject(DelimitedTextSource.class);
+        DelimitedTextSource model = BinaryData.fromString(
+            "{\"type\":\"DelimitedTextSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datavtaulxxznfx\",\"disableMetricsCollection\":\"dataqzikvg\",\"\":{\"rzxvffq\":\"datawodhaslpaae\",\"mhrztbyulk\":\"dataht\"}},\"formatSettings\":{\"type\":\"DelimitedTextReadSettings\",\"skipLineCount\":\"datassoqdibygrqcidiw\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"xlxoksyypft\":\"dataxi\"}},\"\":{\"rbqgatkliopgwpka\":\"datacs\",\"nsdp\":\"dataccetyyvxkwobb\",\"lzk\":\"datairt\"}},\"additionalColumns\":\"dataeegzhhfnaqc\",\"sourceRetryCount\":\"datapcklowuthfwphn\",\"sourceRetryWait\":\"datalbljehw\",\"maxConcurrentConnections\":\"dataxuofneaqahzkv\",\"disableMetricsCollection\":\"datapxhtqwsddxaovubf\",\"\":{\"iibuab\":\"datakeub\",\"bu\":\"datavdwhvnj\",\"eoukvinkgbkzqb\":\"dataudkq\"}}")
+            .toObject(DelimitedTextSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelimitedTextSource model =
-            new DelimitedTextSource()
-                .withSourceRetryCount("datafjjsetiz")
-                .withSourceRetryWait("datanadn")
-                .withMaxConcurrentConnections("datasbpxlserqgxnh")
-                .withDisableMetricsCollection("dataccd")
-                .withStoreSettings(
-                    new StoreReadSettings()
-                        .withMaxConcurrentConnections("datayrwfh")
-                        .withDisableMetricsCollection("dataoyxxszpa")
-                        .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
-                .withFormatSettings(
-                    new DelimitedTextReadSettings()
-                        .withSkipLineCount("datansnbpiuvqhod")
-                        .withCompressionProperties(
-                            new CompressionReadSettings()
-                                .withAdditionalProperties(mapOf("type", "CompressionReadSettings"))))
-                .withAdditionalColumns("datakqdqiybqtl");
+        DelimitedTextSource model
+            = new DelimitedTextSource().withSourceRetryCount("datapcklowuthfwphn").withSourceRetryWait("datalbljehw")
+                .withMaxConcurrentConnections("dataxuofneaqahzkv").withDisableMetricsCollection("datapxhtqwsddxaovubf")
+                .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datavtaulxxznfx")
+                    .withDisableMetricsCollection("dataqzikvg")
+                    .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
+                .withFormatSettings(new DelimitedTextReadSettings().withSkipLineCount("datassoqdibygrqcidiw")
+                    .withCompressionProperties(new CompressionReadSettings()
+                        .withAdditionalProperties(mapOf("type", "CompressionReadSettings"))))
+                .withAdditionalColumns("dataeegzhhfnaqc");
         model = BinaryData.fromObject(model).toObject(DelimitedTextSource.class);
     }
 

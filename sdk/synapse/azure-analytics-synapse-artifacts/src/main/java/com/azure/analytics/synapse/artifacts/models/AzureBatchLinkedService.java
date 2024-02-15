@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Batch linked service. */
+/**
+ * Azure Batch linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBatch")
 @JsonFlatten
@@ -61,12 +63,15 @@ public class AzureBatchLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.credential")
     private CredentialReference credential;
 
-    /** Creates an instance of AzureBatchLinkedService class. */
-    public AzureBatchLinkedService() {}
+    /**
+     * Creates an instance of AzureBatchLinkedService class.
+     */
+    public AzureBatchLinkedService() {
+    }
 
     /**
      * Get the accountName property: The Azure Batch account name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the accountName value.
      */
     public Object getAccountName() {
@@ -75,7 +80,7 @@ public class AzureBatchLinkedService extends LinkedService {
 
     /**
      * Set the accountName property: The Azure Batch account name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the AzureBatchLinkedService object itself.
      */
@@ -86,7 +91,7 @@ public class AzureBatchLinkedService extends LinkedService {
 
     /**
      * Get the accessKey property: The Azure Batch account access key.
-     *
+     * 
      * @return the accessKey value.
      */
     public SecretBase getAccessKey() {
@@ -95,7 +100,7 @@ public class AzureBatchLinkedService extends LinkedService {
 
     /**
      * Set the accessKey property: The Azure Batch account access key.
-     *
+     * 
      * @param accessKey the accessKey value to set.
      * @return the AzureBatchLinkedService object itself.
      */
@@ -106,7 +111,7 @@ public class AzureBatchLinkedService extends LinkedService {
 
     /**
      * Get the batchUri property: The Azure Batch URI. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the batchUri value.
      */
     public Object getBatchUri() {
@@ -115,7 +120,7 @@ public class AzureBatchLinkedService extends LinkedService {
 
     /**
      * Set the batchUri property: The Azure Batch URI. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param batchUri the batchUri value to set.
      * @return the AzureBatchLinkedService object itself.
      */
@@ -126,7 +131,7 @@ public class AzureBatchLinkedService extends LinkedService {
 
     /**
      * Get the poolName property: The Azure Batch pool name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the poolName value.
      */
     public Object getPoolName() {
@@ -135,7 +140,7 @@ public class AzureBatchLinkedService extends LinkedService {
 
     /**
      * Set the poolName property: The Azure Batch pool name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param poolName the poolName value to set.
      * @return the AzureBatchLinkedService object itself.
      */
@@ -146,7 +151,7 @@ public class AzureBatchLinkedService extends LinkedService {
 
     /**
      * Get the linkedServiceName property: The Azure Storage linked service reference.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference getLinkedServiceName() {
@@ -155,7 +160,7 @@ public class AzureBatchLinkedService extends LinkedService {
 
     /**
      * Set the linkedServiceName property: The Azure Storage linked service reference.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the AzureBatchLinkedService object itself.
      */
@@ -165,9 +170,9 @@ public class AzureBatchLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -175,9 +180,9 @@ public class AzureBatchLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBatchLinkedService object itself.
      */
@@ -188,7 +193,7 @@ public class AzureBatchLinkedService extends LinkedService {
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference getCredential() {
@@ -197,7 +202,7 @@ public class AzureBatchLinkedService extends LinkedService {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the AzureBatchLinkedService object itself.
      */
@@ -206,28 +211,36 @@ public class AzureBatchLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBatchLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBatchLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBatchLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBatchLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

@@ -18,6 +18,12 @@ public final class ListAnomaliesDetectedFilter {
     private List<DimensionKey> seriesGroupKeys;
 
     /**
+     * Creates an instance of ListAnomaliesDetectedFilter.
+     */
+    public ListAnomaliesDetectedFilter() {
+    }
+
+    /**
      * Gets the minimum severity of the anomalies to be included in the list.
      *
      * @return The minimum severity.

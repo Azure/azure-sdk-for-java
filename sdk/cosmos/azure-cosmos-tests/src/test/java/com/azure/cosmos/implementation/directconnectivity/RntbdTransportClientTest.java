@@ -118,6 +118,7 @@ public final class RntbdTransportClientTest {
     private static final int timeoutDetectionOnWriteThreshold = 1;
     private static final Duration timeoutDetectionOnWriteTimeLimit = Duration.ofSeconds(6L);
     private static final double timeoutDetectionDisableCPUThreshold = 90.0;
+    private static final double  channelAcquisitionContextLatencyThresholdInMillis = 1000;
 
     @DataProvider(name = "fromMockedNetworkFailureToExpectedDocumentClientException")
     public Object[][] fromMockedNetworkFailureToExpectedDocumentClientException() {
@@ -761,6 +762,7 @@ public final class RntbdTransportClientTest {
         assertEquals(options.timeoutDetectionOnWriteThreshold(), timeoutDetectionOnWriteThreshold);
         assertEquals(options.timeoutDetectionOnWriteTimeLimit(), timeoutDetectionOnWriteTimeLimit);
         assertEquals(options.timeoutDetectionDisableCPUThreshold(), timeoutDetectionDisableCPUThreshold);
+        assertEquals(options.channelAcquisitionContextLatencyThresholdInMillis(), channelAcquisitionContextLatencyThresholdInMillis);
     }
 
     // TODO: add validations for other properties
@@ -774,7 +776,8 @@ public final class RntbdTransportClientTest {
                 "{\"sslHandshakeTimeoutMinDuration\":\"PT15S\"," +
                     "\"timeoutDetectionTimeLimit\":\"PT61S\", \"timeoutDetectionHighFrequencyThreshold\":\"4\", " +
                     "\"timeoutDetectionHighFrequencyTimeLimit\":\"PT11S\", \"timeoutDetectionOnWriteThreshold\":\"2\"," +
-                    "\"timeoutDetectionOnWriteTimeLimit\":\"PT7S\", \"timeoutDetectionDisableCPUThreshold\":\"80.0\"}");
+                    "\"timeoutDetectionOnWriteTimeLimit\":\"PT7S\", \"timeoutDetectionDisableCPUThreshold\":\"80.0\"," +
+                        "\"channelAcquisitionContextLatencyThresholdInMillis\":\"2000\"}");
 
             ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             UserAgentContainer userAgentContainer = new UserAgentContainer();
@@ -791,6 +794,7 @@ public final class RntbdTransportClientTest {
             assertEquals(options.timeoutDetectionOnWriteThreshold(), 2);
             assertEquals(options.timeoutDetectionOnWriteTimeLimit(), Duration.ofSeconds(7));
             assertEquals(options.timeoutDetectionDisableCPUThreshold(), 80.0);
+            assertEquals(options.channelAcquisitionContextLatencyThresholdInMillis(), 2000);
 
         } finally {
             System.clearProperty("azure.cosmos.directTcp.defaultOptions");
@@ -1010,11 +1014,9 @@ public final class RntbdTransportClientTest {
 
             RntbdRequestManager requestManager = new RntbdRequestManager(
                     new RntbdClientChannelHealthChecker(config),
-                    30,
+                    config,
                     null,
-                    Duration.ofMillis(100).toNanos(),
-                    null,
-                    config.tcpNetworkRequestTimeoutInNanos());
+                    null);
             this.requestTimer = timer;
 
             this.fakeChannel = new FakeChannel(responses,

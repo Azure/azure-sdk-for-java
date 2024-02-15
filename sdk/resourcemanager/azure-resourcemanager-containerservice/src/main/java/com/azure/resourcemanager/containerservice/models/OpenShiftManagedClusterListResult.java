@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.fluent.models.OpenShiftManaged
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the List OpenShift Managed Clusters operation. */
+/**
+ * The response from the List OpenShift Managed Clusters operation.
+ */
 @Fluent
 public final class OpenShiftManagedClusterListResult {
     /*
@@ -24,13 +26,15 @@ public final class OpenShiftManagedClusterListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of OpenShiftManagedClusterListResult class. */
+    /**
+     * Creates an instance of OpenShiftManagedClusterListResult class.
+     */
     public OpenShiftManagedClusterListResult() {
     }
 
     /**
      * Get the value property: The list of OpenShift managed clusters.
-     *
+     * 
      * @return the value value.
      */
     public List<OpenShiftManagedClusterInner> value() {
@@ -39,7 +43,7 @@ public final class OpenShiftManagedClusterListResult {
 
     /**
      * Set the value property: The list of OpenShift managed clusters.
-     *
+     * 
      * @param value the value value to set.
      * @return the OpenShiftManagedClusterListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class OpenShiftManagedClusterListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of OpenShift managed cluster results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class OpenShiftManagedClusterListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

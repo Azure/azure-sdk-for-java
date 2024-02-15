@@ -79,7 +79,7 @@ final class MemberNameConverterImpl implements MemberNameConverter {
                 if (m.isAnnotationPresent(JsonGetter.class) || m.isAnnotationPresent(JsonProperty.class)) {
                     LOGGER.atInfo()
                         .addKeyValue("method", m.getName())
-                        .log("Method is annotated with either JsonGetter or JsonProperty but isn't accessible  to JacksonJsonSerializer.");
+                        .log("Method is annotated with either JsonGetter or JsonProperty but isn't accessible to JacksonJsonSerializer.");
                 }
                 return null;
             }

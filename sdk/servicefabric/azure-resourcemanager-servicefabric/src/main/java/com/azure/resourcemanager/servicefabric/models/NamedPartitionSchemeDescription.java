@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Describes the named partition scheme of the service. */
+/**
+ * Describes the named partition scheme of the service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "partitionScheme")
 @JsonTypeName("Named")
 @Fluent
@@ -28,13 +30,15 @@ public final class NamedPartitionSchemeDescription extends PartitionSchemeDescri
     @JsonProperty(value = "names", required = true)
     private List<String> names;
 
-    /** Creates an instance of NamedPartitionSchemeDescription class. */
+    /**
+     * Creates an instance of NamedPartitionSchemeDescription class.
+     */
     public NamedPartitionSchemeDescription() {
     }
 
     /**
      * Get the count property: The number of partitions.
-     *
+     * 
      * @return the count value.
      */
     public int count() {
@@ -43,7 +47,7 @@ public final class NamedPartitionSchemeDescription extends PartitionSchemeDescri
 
     /**
      * Set the count property: The number of partitions.
-     *
+     * 
      * @param count the count value to set.
      * @return the NamedPartitionSchemeDescription object itself.
      */
@@ -54,7 +58,7 @@ public final class NamedPartitionSchemeDescription extends PartitionSchemeDescri
 
     /**
      * Get the names property: Array of size specified by the ‘count’ parameter, for the names of the partitions.
-     *
+     * 
      * @return the names value.
      */
     public List<String> names() {
@@ -63,7 +67,7 @@ public final class NamedPartitionSchemeDescription extends PartitionSchemeDescri
 
     /**
      * Set the names property: Array of size specified by the ‘count’ parameter, for the names of the partitions.
-     *
+     * 
      * @param names the names value to set.
      * @return the NamedPartitionSchemeDescription object itself.
      */
@@ -74,17 +78,15 @@ public final class NamedPartitionSchemeDescription extends PartitionSchemeDescri
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (names() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property names in model NamedPartitionSchemeDescription"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property names in model NamedPartitionSchemeDescription"));
         }
     }
 

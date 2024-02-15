@@ -21,6 +21,10 @@ public final class DeliveryRuleCacheExpirationAction extends DeliveryRuleAction 
     @JsonProperty(value = "parameters", required = true)
     private CacheExpirationActionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleCacheExpirationAction class. */
+    public DeliveryRuleCacheExpirationAction() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the action.
      *

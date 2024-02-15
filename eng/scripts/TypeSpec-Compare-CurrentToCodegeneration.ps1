@@ -21,17 +21,28 @@ param(
 Write-Host "
 
 ===========================================
-Invoking TypeSpec Project Sync and Generate
+Installing typespec-client-generator-cli
 ===========================================
 
 "
 
+npm install -g @azure-tools/typespec-client-generator-cli
+
+Write-Host "
+
+===========================================
+Invoking tsp-client update
+===========================================
+
+"
 
 foreach ($tspLocationPath in (Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse)) {
   $sdkPath = (get-item $tspLocationPath).Directory.FullName
   Write-Host "Generate SDK for $sdkPath"
-  ./eng/common/scripts/TypeSpec-Project-Sync.ps1 $sdkPath
-  ./eng/common/scripts/TypeSpec-Project-Generate.ps1 $sdkPath
+  Push-Location
+  Set-Location -Path $sdkPath
+  tsp-client update
+  Pop-Location
 }
 
 Write-Host "
@@ -43,7 +54,7 @@ Verify no diff
 "
 
 # prevent warning related to EOL differences which triggers an exception for some reason
-git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**"
+git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**"
 
 if ($LastExitCode -ne 0) {
   $status = git status -s | Out-String
@@ -58,3 +69,7 @@ $status
 Get-ChildItem -Path $Directory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
     Remove-Item -Path $_.FullName -Recurse -Force
 }
+
+# Clean up generated code, so that next step will not be affected.
+git checkout $sdkPath
+git clean -fd $sdkPath

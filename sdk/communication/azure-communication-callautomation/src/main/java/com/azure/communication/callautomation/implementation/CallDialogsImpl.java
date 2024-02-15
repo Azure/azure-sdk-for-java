@@ -6,13 +6,15 @@ package com.azure.communication.callautomation.implementation;
 
 import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
-import com.azure.communication.callautomation.implementation.models.StartDialogRequest;
+import com.azure.communication.callautomation.implementation.models.StartDialogRequestInternal;
+import com.azure.communication.callautomation.implementation.models.UpdateDialogRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
@@ -60,7 +62,7 @@ public final class CallDialogsImpl {
                 @PathParam("callConnectionId") String callConnectionId,
                 @PathParam("dialogId") String dialogId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") StartDialogRequest startDialogRequest,
+                @BodyParam("application/json") StartDialogRequestInternal startDialogRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -71,7 +73,20 @@ public final class CallDialogsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @PathParam("dialogId") String dialogId,
+                @QueryParam("operationCallbackUri") String operationCallbackUri,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Patch("/calling/callConnections/{callConnectionId}/dialogs/{dialogId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> updateDialog(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @PathParam("dialogId") String dialogId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") UpdateDialogRequest updateDialogRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -89,7 +104,7 @@ public final class CallDialogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DialogStateResponse>> startDialogWithResponseAsync(
-            String callConnectionId, String dialogId, StartDialogRequest startDialogRequest) {
+            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -117,7 +132,7 @@ public final class CallDialogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DialogStateResponse>> startDialogWithResponseAsync(
-            String callConnectionId, String dialogId, StartDialogRequest startDialogRequest, Context context) {
+            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest, Context context) {
         final String accept = "application/json";
         return service.startDialog(
                 this.client.getEndpoint(),
@@ -142,7 +157,7 @@ public final class CallDialogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DialogStateResponse> startDialogAsync(
-            String callConnectionId, String dialogId, StartDialogRequest startDialogRequest) {
+            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest) {
         return startDialogWithResponseAsync(callConnectionId, dialogId, startDialogRequest)
                 .flatMap(
                         (Response<DialogStateResponse> res) -> {
@@ -168,7 +183,7 @@ public final class CallDialogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DialogStateResponse> startDialogAsync(
-            String callConnectionId, String dialogId, StartDialogRequest startDialogRequest, Context context) {
+            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest, Context context) {
         return startDialogWithResponseAsync(callConnectionId, dialogId, startDialogRequest, context)
                 .flatMap(
                         (Response<DialogStateResponse> res) -> {
@@ -193,7 +208,7 @@ public final class CallDialogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DialogStateResponse startDialog(
-            String callConnectionId, String dialogId, StartDialogRequest startDialogRequest) {
+            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest) {
         return startDialogAsync(callConnectionId, dialogId, startDialogRequest).block();
     }
 
@@ -211,7 +226,7 @@ public final class CallDialogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DialogStateResponse> startDialogWithResponse(
-            String callConnectionId, String dialogId, StartDialogRequest startDialogRequest, Context context) {
+            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest, Context context) {
         return startDialogWithResponseAsync(callConnectionId, dialogId, startDialogRequest, context).block();
     }
 
@@ -220,13 +235,15 @@ public final class CallDialogsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
+     * @param operationCallbackUri Opeation callback URI.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopDialogWithResponseAsync(String callConnectionId, String dialogId) {
+    public Mono<Response<Void>> stopDialogWithResponseAsync(
+            String callConnectionId, String dialogId, String operationCallbackUri) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -234,6 +251,7 @@ public final class CallDialogsImpl {
                                 this.client.getEndpoint(),
                                 callConnectionId,
                                 dialogId,
+                                operationCallbackUri,
                                 this.client.getApiVersion(),
                                 accept,
                                 context));
@@ -244,6 +262,7 @@ public final class CallDialogsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
+     * @param operationCallbackUri Opeation callback URI.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -251,10 +270,17 @@ public final class CallDialogsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopDialogWithResponseAsync(String callConnectionId, String dialogId, Context context) {
+    public Mono<Response<Void>> stopDialogWithResponseAsync(
+            String callConnectionId, String dialogId, String operationCallbackUri, Context context) {
         final String accept = "application/json";
         return service.stopDialog(
-                this.client.getEndpoint(), callConnectionId, dialogId, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(),
+                callConnectionId,
+                dialogId,
+                operationCallbackUri,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -262,30 +288,15 @@ public final class CallDialogsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
+     * @param operationCallbackUri Opeation callback URI.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopDialogAsync(String callConnectionId, String dialogId) {
-        return stopDialogWithResponseAsync(callConnectionId, dialogId).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Stop a dialog.
-     *
-     * @param callConnectionId The call connection id.
-     * @param dialogId The dialog id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopDialogAsync(String callConnectionId, String dialogId, Context context) {
-        return stopDialogWithResponseAsync(callConnectionId, dialogId, context)
+    public Mono<Void> stopDialogAsync(String callConnectionId, String dialogId, String operationCallbackUri) {
+        return stopDialogWithResponseAsync(callConnectionId, dialogId, operationCallbackUri)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -294,13 +305,18 @@ public final class CallDialogsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
+     * @param operationCallbackUri Opeation callback URI.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopDialog(String callConnectionId, String dialogId) {
-        stopDialogAsync(callConnectionId, dialogId).block();
+    public Mono<Void> stopDialogAsync(
+            String callConnectionId, String dialogId, String operationCallbackUri, Context context) {
+        return stopDialogWithResponseAsync(callConnectionId, dialogId, operationCallbackUri, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -308,6 +324,22 @@ public final class CallDialogsImpl {
      *
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
+     * @param operationCallbackUri Opeation callback URI.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stopDialog(String callConnectionId, String dialogId, String operationCallbackUri) {
+        stopDialogAsync(callConnectionId, dialogId, operationCallbackUri).block();
+    }
+
+    /**
+     * Stop a dialog.
+     *
+     * @param callConnectionId The call connection id.
+     * @param dialogId The dialog id.
+     * @param operationCallbackUri Opeation callback URI.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -315,7 +347,131 @@ public final class CallDialogsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopDialogWithResponse(String callConnectionId, String dialogId, Context context) {
-        return stopDialogWithResponseAsync(callConnectionId, dialogId, context).block();
+    public Response<Void> stopDialogWithResponse(
+            String callConnectionId, String dialogId, String operationCallbackUri, Context context) {
+        return stopDialogWithResponseAsync(callConnectionId, dialogId, operationCallbackUri, context).block();
+    }
+
+    /**
+     * Update a dialog.
+     *
+     * @param callConnectionId The call connection id.
+     * @param dialogId The dialog id.
+     * @param updateDialogRequest The update dialog request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateDialogWithResponseAsync(
+            String callConnectionId, String dialogId, UpdateDialogRequest updateDialogRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.updateDialog(
+                                this.client.getEndpoint(),
+                                callConnectionId,
+                                dialogId,
+                                this.client.getApiVersion(),
+                                updateDialogRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Update a dialog.
+     *
+     * @param callConnectionId The call connection id.
+     * @param dialogId The dialog id.
+     * @param updateDialogRequest The update dialog request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateDialogWithResponseAsync(
+            String callConnectionId, String dialogId, UpdateDialogRequest updateDialogRequest, Context context) {
+        final String accept = "application/json";
+        return service.updateDialog(
+                this.client.getEndpoint(),
+                callConnectionId,
+                dialogId,
+                this.client.getApiVersion(),
+                updateDialogRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Update a dialog.
+     *
+     * @param callConnectionId The call connection id.
+     * @param dialogId The dialog id.
+     * @param updateDialogRequest The update dialog request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateDialogAsync(
+            String callConnectionId, String dialogId, UpdateDialogRequest updateDialogRequest) {
+        return updateDialogWithResponseAsync(callConnectionId, dialogId, updateDialogRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Update a dialog.
+     *
+     * @param callConnectionId The call connection id.
+     * @param dialogId The dialog id.
+     * @param updateDialogRequest The update dialog request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateDialogAsync(
+            String callConnectionId, String dialogId, UpdateDialogRequest updateDialogRequest, Context context) {
+        return updateDialogWithResponseAsync(callConnectionId, dialogId, updateDialogRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Update a dialog.
+     *
+     * @param callConnectionId The call connection id.
+     * @param dialogId The dialog id.
+     * @param updateDialogRequest The update dialog request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateDialog(String callConnectionId, String dialogId, UpdateDialogRequest updateDialogRequest) {
+        updateDialogAsync(callConnectionId, dialogId, updateDialogRequest).block();
+    }
+
+    /**
+     * Update a dialog.
+     *
+     * @param callConnectionId The call connection id.
+     * @param dialogId The dialog id.
+     * @param updateDialogRequest The update dialog request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateDialogWithResponse(
+            String callConnectionId, String dialogId, UpdateDialogRequest updateDialogRequest, Context context) {
+        return updateDialogWithResponseAsync(callConnectionId, dialogId, updateDialogRequest, context).block();
     }
 }

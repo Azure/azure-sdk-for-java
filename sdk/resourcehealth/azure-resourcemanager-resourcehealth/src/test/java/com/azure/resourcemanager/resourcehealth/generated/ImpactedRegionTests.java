@@ -12,16 +12,16 @@ public final class ImpactedRegionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImpactedRegion model =
-            BinaryData.fromString("{\"id\":\"ftpvjzbexil\",\"name\":\"nfqqnvwp\"}").toObject(ImpactedRegion.class);
-        Assertions.assertEquals("ftpvjzbexil", model.id());
-        Assertions.assertEquals("nfqqnvwp", model.name());
+            BinaryData.fromString("{\"id\":\"rvqahqkghtpwi\",\"name\":\"hyjsvfycx\"}").toObject(ImpactedRegion.class);
+        Assertions.assertEquals("rvqahqkghtpwi", model.id());
+        Assertions.assertEquals("hyjsvfycx", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImpactedRegion model = new ImpactedRegion().withId("ftpvjzbexil").withName("nfqqnvwp");
+        ImpactedRegion model = new ImpactedRegion().withId("rvqahqkghtpwi").withName("hyjsvfycx");
         model = BinaryData.fromObject(model).toObject(ImpactedRegion.class);
-        Assertions.assertEquals("ftpvjzbexil", model.id());
-        Assertions.assertEquals("nfqqnvwp", model.name());
+        Assertions.assertEquals("rvqahqkghtpwi", model.id());
+        Assertions.assertEquals("hyjsvfycx", model.name());
     }
 }

@@ -11,34 +11,22 @@ import com.azure.resourcemanager.datafactory.models.SqlServerSource;
 public final class SqlServerSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlServerSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SqlServerSource\",\"sqlReaderQuery\":\"dataajsrdecbowkhmaff\",\"sqlReaderStoredProcedureName\":\"datapdnnsujx\",\"storedProcedureParameters\":\"dataeqljzkhncaeyk\",\"isolationLevel\":\"dataatztnprnsh\",\"produceAdditionalTypes\":\"dataiahvlzgsqwiubgbl\",\"partitionOption\":\"datayisjscuw\",\"partitionSettings\":{\"partitionColumnName\":\"dataktzcuxuxaihhegu\",\"partitionUpperBound\":\"dataziryxrpj\",\"partitionLowerBound\":\"datatmxq\"},\"queryTimeout\":\"dataepoftsapfwusf\",\"additionalColumns\":\"datanjvzlynvje\",\"sourceRetryCount\":\"datavu\",\"sourceRetryWait\":\"datalwzn\",\"maxConcurrentConnections\":\"dataie\",\"disableMetricsCollection\":\"datafg\",\"\":{\"kpswwutduchcfn\":\"dataftgbupu\"}}")
-                .toObject(SqlServerSource.class);
+        SqlServerSource model = BinaryData.fromString(
+            "{\"type\":\"SqlServerSource\",\"sqlReaderQuery\":\"datarvzewogh\",\"sqlReaderStoredProcedureName\":\"datazxkjqecj\",\"storedProcedureParameters\":\"dataromeawthycbigpi\",\"isolationLevel\":\"datapxhzjnparsulmuwl\",\"produceAdditionalTypes\":\"dataakheox\",\"partitionOption\":\"datagoavzycxpzat\",\"partitionSettings\":{\"partitionColumnName\":\"dataoomf\",\"partitionUpperBound\":\"dataxwtwzslrp\",\"partitionLowerBound\":\"datatqhfvouyqzho\"},\"queryTimeout\":\"dataemhohxabmxoow\",\"additionalColumns\":\"dataogozercczvpbnkgk\",\"sourceRetryCount\":\"datajeqqjqa\",\"sourceRetryWait\":\"datakajlogv\",\"maxConcurrentConnections\":\"datawqzolva\",\"disableMetricsCollection\":\"dataqkyc\",\"\":{\"ehjyb\":\"datag\",\"xiycd\":\"dataoq\",\"myd\":\"datadgem\",\"vgslm\":\"datazjtx\"}}")
+            .toObject(SqlServerSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlServerSource model =
-            new SqlServerSource()
-                .withSourceRetryCount("datavu")
-                .withSourceRetryWait("datalwzn")
-                .withMaxConcurrentConnections("dataie")
-                .withDisableMetricsCollection("datafg")
-                .withQueryTimeout("dataepoftsapfwusf")
-                .withAdditionalColumns("datanjvzlynvje")
-                .withSqlReaderQuery("dataajsrdecbowkhmaff")
-                .withSqlReaderStoredProcedureName("datapdnnsujx")
-                .withStoredProcedureParameters("dataeqljzkhncaeyk")
-                .withIsolationLevel("dataatztnprnsh")
-                .withProduceAdditionalTypes("dataiahvlzgsqwiubgbl")
-                .withPartitionOption("datayisjscuw")
-                .withPartitionSettings(
-                    new SqlPartitionSettings()
-                        .withPartitionColumnName("dataktzcuxuxaihhegu")
-                        .withPartitionUpperBound("dataziryxrpj")
-                        .withPartitionLowerBound("datatmxq"));
+        SqlServerSource model
+            = new SqlServerSource().withSourceRetryCount("datajeqqjqa").withSourceRetryWait("datakajlogv")
+                .withMaxConcurrentConnections("datawqzolva").withDisableMetricsCollection("dataqkyc")
+                .withQueryTimeout("dataemhohxabmxoow").withAdditionalColumns("dataogozercczvpbnkgk")
+                .withSqlReaderQuery("datarvzewogh").withSqlReaderStoredProcedureName("datazxkjqecj")
+                .withStoredProcedureParameters("dataromeawthycbigpi").withIsolationLevel("datapxhzjnparsulmuwl")
+                .withProduceAdditionalTypes("dataakheox").withPartitionOption("datagoavzycxpzat")
+                .withPartitionSettings(new SqlPartitionSettings().withPartitionColumnName("dataoomf")
+                    .withPartitionUpperBound("dataxwtwzslrp").withPartitionLowerBound("datatqhfvouyqzho"));
         model = BinaryData.fromObject(model).toObject(SqlServerSource.class);
     }
 }

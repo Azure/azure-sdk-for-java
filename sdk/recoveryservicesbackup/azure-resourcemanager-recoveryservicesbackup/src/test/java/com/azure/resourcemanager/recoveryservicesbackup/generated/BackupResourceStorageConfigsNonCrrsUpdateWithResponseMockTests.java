@@ -38,76 +38,49 @@ public final class BackupResourceStorageConfigsNonCrrsUpdateWithResponseMockTest
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"storageModelType\":\"LocallyRedundant\",\"storageType\":\"ReadAccessGeoZoneRedundant\",\"storageTypeState\":\"Unlocked\",\"crossRegionRestoreFlag\":true,\"dedupState\":\"Enabled\",\"xcoolState\":\"Disabled\"},\"eTag\":\"nracw\",\"location\":\"pqigtuujwouhd\",\"tags\":{\"bxsjybvitvqkj\":\"igrb\"},\"id\":\"az\",\"name\":\"umtggmuwdchozfn\",\"type\":\"fexl\"}";
+        String responseStr
+            = "{\"properties\":{\"storageModelType\":\"LocallyRedundant\",\"storageType\":\"Invalid\",\"storageTypeState\":\"Unlocked\",\"crossRegionRestoreFlag\":false,\"dedupState\":\"Invalid\",\"xcoolState\":\"Enabled\"},\"eTag\":\"tjo\",\"location\":\"qcvov\",\"tags\":{\"ej\":\"ycsjmlbem\"},\"id\":\"riuxegthortuda\",\"name\":\"lpjfelqerpptcbgq\",\"type\":\"zmnhiilialwc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        BackupResourceConfigResource response =
-            manager
-                .backupResourceStorageConfigsNonCrrs()
-                .updateWithResponse(
-                    "upnqrmgjfb",
-                    "kuwxeoiojfizfavk",
-                    new BackupResourceConfigResourceInner()
-                        .withLocation("rzx")
-                        .withTags(
-                            mapOf(
-                                "ejwwviyoyps",
-                                "wsrsxkrplbja",
-                                "qwjhqkbiwetpozyc",
-                                "hbrnnhjx",
-                                "ledynojpz",
-                                "qiqyhgfsetzlexbs",
-                                "ljselp",
-                                "uwfbzkkdtnhqsy"))
-                        .withProperties(
-                            new BackupResourceConfig()
-                                .withStorageModelType(StorageType.GEO_REDUNDANT)
-                                .withStorageType(StorageType.GEO_REDUNDANT)
-                                .withStorageTypeState(StorageTypeState.UNLOCKED)
-                                .withCrossRegionRestoreFlag(false)
-                                .withDedupState(DedupState.INVALID)
-                                .withXcoolState(XcoolState.ENABLED))
-                        .withEtag("bfw"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        BackupResourceConfigResource response = manager.backupResourceStorageConfigsNonCrrs()
+            .updateWithResponse("yxvrqtvbczsul", "dgglmepjpfs",
+                new BackupResourceConfigResourceInner().withLocation("ylkvecjuj")
+                    .withTags(mapOf("dm", "oady", "pkpztrg", "rgjfoknubnoi", "gyxpqit", "gxvcoqrasw"))
+                    .withProperties(
+                        new BackupResourceConfig().withStorageModelType(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT)
+                            .withStorageType(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT)
+                            .withStorageTypeState(StorageTypeState.LOCKED).withCrossRegionRestoreFlag(true)
+                            .withDedupState(DedupState.INVALID).withXcoolState(XcoolState.INVALID))
+                    .withEtag("p"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("pqigtuujwouhd", response.location());
-        Assertions.assertEquals("igrb", response.tags().get("bxsjybvitvqkj"));
+        Assertions.assertEquals("qcvov", response.location());
+        Assertions.assertEquals("ycsjmlbem", response.tags().get("ej"));
         Assertions.assertEquals(StorageType.LOCALLY_REDUNDANT, response.properties().storageModelType());
-        Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, response.properties().storageType());
+        Assertions.assertEquals(StorageType.INVALID, response.properties().storageType());
         Assertions.assertEquals(StorageTypeState.UNLOCKED, response.properties().storageTypeState());
-        Assertions.assertEquals(true, response.properties().crossRegionRestoreFlag());
-        Assertions.assertEquals(DedupState.ENABLED, response.properties().dedupState());
-        Assertions.assertEquals(XcoolState.DISABLED, response.properties().xcoolState());
-        Assertions.assertEquals("nracw", response.etag());
+        Assertions.assertEquals(false, response.properties().crossRegionRestoreFlag());
+        Assertions.assertEquals(DedupState.INVALID, response.properties().dedupState());
+        Assertions.assertEquals(XcoolState.ENABLED, response.properties().xcoolState());
+        Assertions.assertEquals("tjo", response.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

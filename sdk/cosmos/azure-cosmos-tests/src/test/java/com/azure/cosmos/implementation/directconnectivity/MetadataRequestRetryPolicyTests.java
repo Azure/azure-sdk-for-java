@@ -14,7 +14,6 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ClientRetryPolicyTest;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -32,6 +31,7 @@ import com.azure.cosmos.implementation.ShouldRetryValidator;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicyControlPlaneHotPath;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -49,7 +49,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
-import io.netty.handler.timeout.ReadTimeoutException;
+import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -66,6 +66,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -136,36 +137,40 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
     @DataProvider(name = "metadataRetryPolicyTestContext")
     public Object[][] metadataRetryPolicyTestContext() {
 
-        RxDocumentServiceRequest createRequest = RxDocumentServiceRequest.create(
-            mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document);
-
-        createRequest.setAddressRefresh(true, true);
-
-        RxDocumentServiceRequest readRequest = RxDocumentServiceRequest.create(
-            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
-
-        readRequest.setAddressRefresh(true, true);
-
-        return new Object[][]{
+        return new Object[][] {
             {
                 new SocketException("Socket has been closed"),
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
-                createRequest,
+                createRequest(OperationType.Create, ResourceType.Document, true, true),
                 true /* isNetworkFailure */
             },
             {
                 new SocketException("Socket has been closed"),
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
-                createRequest,
+                createRequest(OperationType.Read, ResourceType.Document, true, true),
+                true /* isNetworkFailure */
+            },
+            {
+                new SocketException("Socket has been closed"),
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                createRequest(OperationType.Read, ResourceType.DatabaseAccount, false, true),
                 true /* isNetworkFailure */
             },
             {
                 new NotFoundException(),
                 HttpConstants.StatusCodes.NOTFOUND,
                 HttpConstants.SubStatusCodes.UNKNOWN,
-                readRequest,
+                createRequest(OperationType.Read, ResourceType.Document, true, true),
+                false /* isNetworkFailure */
+            },
+            {
+                new NotFoundException(),
+                HttpConstants.StatusCodes.NOTFOUND,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                createRequest(OperationType.Create, ResourceType.Document, true, true),
                 false /* isNetworkFailure */
             }
         };
@@ -296,7 +301,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 cosmosEndToEndOperationLatencyPolicyConfigForFaultyOperation);
 
             // allow enough time for operation and connection establishment to timeout
-            Thread.sleep(5000);
+            Thread.sleep(6000);
 
             assertThat(faultInjectionRule.getHitCount()).isGreaterThanOrEqualTo(1);
 
@@ -328,24 +333,39 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
         CosmosException cosmosException = BridgeInternal.createCosmosException(null, statusCode, exception);
         BridgeInternal.setSubStatusCode(cosmosException, subStatusCode);
 
-        Mono<ShouldRetryResult> shouldRetry = metadataRequestRetryPolicy.shouldRetry(cosmosException);
-
-        ClientRetryPolicyTest.validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-            .shouldRetry(false)
-            .withException(cosmosException)
-            .build());
-
         if (isNetworkFailure) {
-            if (request.isReadOnlyRequest()) {
-                Mockito
-                    .verify(globalEndpointManagerMock, Mockito.times(1))
-                    .markEndpointUnavailableForRead(Mockito.any());
-            } else {
-                Mockito
-                    .verify(globalEndpointManagerMock, Mockito.times(1))
-                    .markEndpointUnavailableForWrite(Mockito.any());
+            int totalRetryCount = HttpTimeoutPolicyControlPlaneHotPath.INSTANCE.totalRetryCount();
+            for (int i = 0; i <= totalRetryCount; i++) {
+                Mono<ShouldRetryResult> shouldRetry = metadataRequestRetryPolicy.shouldRetry(cosmosException);
+                if (i < totalRetryCount) {
+                    validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                        .shouldRetry(true)
+                        .build());
+                } else {
+                    validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                        .shouldRetry(false)
+                        .withException(cosmosException)
+                        .build());
+
+                    int desiredInvocationCount = request.requestContext.locationEndpointToRoute == null ? 0 : 1;
+
+                    if (request.isReadOnlyRequest()) {
+                        Mockito
+                            .verify(globalEndpointManagerMock, Mockito.times(desiredInvocationCount))
+                            .markEndpointUnavailableForRead(Mockito.any());
+                    } else {
+                        Mockito
+                            .verify(globalEndpointManagerMock, Mockito.times(desiredInvocationCount))
+                            .markEndpointUnavailableForWrite(Mockito.any());
+                    }
+                }
             }
         } else {
+            Mono<ShouldRetryResult> shouldRetry = metadataRequestRetryPolicy.shouldRetry(cosmosException);
+            validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                .shouldRetry(false)
+                .withException(cosmosException)
+                .build());
             Mockito
                 .verify(globalEndpointManagerMock, Mockito.times(0))
                 .markEndpointUnavailableForRead(Mockito.any());
@@ -502,5 +522,46 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
         }
 
         return regionMap;
+    }
+
+    public static void validateSuccess(Mono<ShouldRetryResult> single,
+                                       ShouldRetryValidator validator) {
+        validateSuccess(single, validator, TIMEOUT);
+    }
+
+    public static void validateSuccess(Mono<ShouldRetryResult> single,
+                                       ShouldRetryValidator validator,
+                                       long timeout) {
+        TestSubscriber<ShouldRetryResult> testSubscriber = new TestSubscriber<>();
+
+        single.flux().subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
+        testSubscriber.assertComplete();
+        testSubscriber.assertNoErrors();
+        testSubscriber.assertValueCount(1);
+        validator.validate(testSubscriber.values().get(0));
+    }
+
+    private static RxDocumentServiceRequest createRequest(
+        OperationType operationType,
+        ResourceType resourceType,
+        boolean hasLocationEndpointToRoute,
+        boolean isAddressRefresh) {
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), operationType, resourceType);
+
+        assert request.requestContext != null;
+
+        if (hasLocationEndpointToRoute) {
+            request.requestContext.locationEndpointToRoute
+                = URI.create("https://account-name-some-region.documents.azure.com:443");
+        }
+
+        if (isAddressRefresh) {
+            request.setAddressRefresh(true, true);
+        }
+
+        return request;
     }
 }

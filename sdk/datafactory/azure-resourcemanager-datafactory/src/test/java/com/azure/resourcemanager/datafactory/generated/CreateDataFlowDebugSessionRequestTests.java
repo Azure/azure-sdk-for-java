@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateDataFlowDebugSessionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateDataFlowDebugSessionRequest model =
-            BinaryData
-                .fromString(
-                    "{\"computeType\":\"foudor\",\"coreCount\":199814192,\"timeToLive\":1885072328,\"integrationRuntime\":{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"otwypundmb\",\"\":{\"or\":\"datagcmjkavl\",\"jltfvnzcyjtotpv\":\"datamftpmdtz\",\"qwthmky\":\"datapvpbdbzqgqqiheds\",\"gqcwdhohsdtmc\":\"databcysih\"}},\"name\":\"sufco\"}}")
-                .toObject(CreateDataFlowDebugSessionRequest.class);
+        CreateDataFlowDebugSessionRequest model = BinaryData.fromString(
+            "{\"computeType\":\"foudor\",\"coreCount\":199814192,\"timeToLive\":1885072328,\"integrationRuntime\":{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"otwypundmb\",\"\":{\"or\":\"datagcmjkavl\",\"jltfvnzcyjtotpv\":\"datamftpmdtz\",\"qwthmky\":\"datapvpbdbzqgqqiheds\",\"gqcwdhohsdtmc\":\"databcysih\"}},\"name\":\"sufco\"}}")
+            .toObject(CreateDataFlowDebugSessionRequest.class);
         Assertions.assertEquals("foudor", model.computeType());
         Assertions.assertEquals(199814192, model.coreCount());
         Assertions.assertEquals(1885072328, model.timeToLive());
@@ -29,18 +27,10 @@ public final class CreateDataFlowDebugSessionRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateDataFlowDebugSessionRequest model =
-            new CreateDataFlowDebugSessionRequest()
-                .withComputeType("foudor")
-                .withCoreCount(199814192)
-                .withTimeToLive(1885072328)
-                .withIntegrationRuntime(
-                    new IntegrationRuntimeDebugResource()
-                        .withName("sufco")
-                        .withProperties(
-                            new IntegrationRuntime()
-                                .withDescription("otwypundmb")
-                                .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))));
+        CreateDataFlowDebugSessionRequest model = new CreateDataFlowDebugSessionRequest().withComputeType("foudor")
+            .withCoreCount(199814192).withTimeToLive(1885072328).withIntegrationRuntime(
+                new IntegrationRuntimeDebugResource().withName("sufco").withProperties(new IntegrationRuntime()
+                    .withDescription("otwypundmb").withAdditionalProperties(mapOf("type", "IntegrationRuntime"))));
         model = BinaryData.fromObject(model).toObject(CreateDataFlowDebugSessionRequest.class);
         Assertions.assertEquals("foudor", model.computeType());
         Assertions.assertEquals(199814192, model.coreCount());

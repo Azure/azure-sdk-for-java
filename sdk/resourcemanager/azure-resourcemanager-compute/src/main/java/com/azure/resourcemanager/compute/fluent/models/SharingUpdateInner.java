@@ -11,12 +11,14 @@ import com.azure.resourcemanager.compute.models.SharingUpdateOperationTypes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies information about the gallery sharing profile update. */
+/**
+ * Specifies information about the gallery sharing profile update.
+ */
 @Fluent
 public final class SharingUpdateInner {
     /*
-     * This property allows you to specify the operation type of gallery sharing update. <br><br> Possible values are:
-     * <br><br> **Add** <br><br> **Remove** <br><br> **Reset**
+     * This property allows you to specify the operation type of gallery sharing update. Possible values are: **Add,**
+     * **Remove,** **Reset.**
      */
     @JsonProperty(value = "operationType", required = true)
     private SharingUpdateOperationTypes operationType;
@@ -27,15 +29,16 @@ public final class SharingUpdateInner {
     @JsonProperty(value = "groups")
     private List<SharingProfileGroup> groups;
 
-    /** Creates an instance of SharingUpdateInner class. */
+    /**
+     * Creates an instance of SharingUpdateInner class.
+     */
     public SharingUpdateInner() {
     }
 
     /**
-     * Get the operationType property: This property allows you to specify the operation type of gallery sharing update.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Add** &lt;br&gt;&lt;br&gt; **Remove**
-     * &lt;br&gt;&lt;br&gt; **Reset**.
-     *
+     * Get the operationType property: This property allows you to specify the operation type of gallery sharing
+     * update. Possible values are: **Add,** **Remove,** **Reset.**.
+     * 
      * @return the operationType value.
      */
     public SharingUpdateOperationTypes operationType() {
@@ -43,10 +46,9 @@ public final class SharingUpdateInner {
     }
 
     /**
-     * Set the operationType property: This property allows you to specify the operation type of gallery sharing update.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Add** &lt;br&gt;&lt;br&gt; **Remove**
-     * &lt;br&gt;&lt;br&gt; **Reset**.
-     *
+     * Set the operationType property: This property allows you to specify the operation type of gallery sharing
+     * update. Possible values are: **Add,** **Remove,** **Reset.**.
+     * 
      * @param operationType the operationType value to set.
      * @return the SharingUpdateInner object itself.
      */
@@ -57,7 +59,7 @@ public final class SharingUpdateInner {
 
     /**
      * Get the groups property: A list of sharing profile groups.
-     *
+     * 
      * @return the groups value.
      */
     public List<SharingProfileGroup> groups() {
@@ -66,7 +68,7 @@ public final class SharingUpdateInner {
 
     /**
      * Set the groups property: A list of sharing profile groups.
-     *
+     * 
      * @param groups the groups value to set.
      * @return the SharingUpdateInner object itself.
      */
@@ -77,15 +79,13 @@ public final class SharingUpdateInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (operationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operationType in model SharingUpdateInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property operationType in model SharingUpdateInner"));
         }
         if (groups() != null) {
             groups().forEach(e -> e.validate());

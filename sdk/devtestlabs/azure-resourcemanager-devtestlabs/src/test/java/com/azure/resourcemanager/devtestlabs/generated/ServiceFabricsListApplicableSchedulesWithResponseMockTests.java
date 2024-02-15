@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.devtestlabs.DevTestLabsManager;
 import com.azure.resourcemanager.devtestlabs.models.ApplicableSchedule;
+import com.azure.resourcemanager.devtestlabs.models.EnableStatus;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,7 +32,7 @@ public final class ServiceFabricsListApplicableSchedulesWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"labVmsShutdown\":{\"location\":\"qlmfaewz\",\"tags\":{},\"id\":\"udjpxpqht\",\"name\":\"qhnmhk\",\"type\":\"ezsdsuxheq\"},\"labVmsStartup\":{\"location\":\"cruxspinym\",\"tags\":{},\"id\":\"gwokmikpazfbmjxu\",\"name\":\"jipfdvh\",\"type\":\"xdvwz\"}},\"location\":\"ehpphthdklmveta\",\"tags\":{\"tooxrpog\":\"kfqoixwgiksbb\",\"mbf\":\"phchgjtnhtukfaci\",\"uvwc\":\"tumeezbxvqxb\",\"mjzwx\":\"asgom\"},\"id\":\"qgo\",\"name\":\"sxpwwztjfmkkh\",\"type\":\"gfredmlscg\"}";
+            "{\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"musuaawja\",\"weeklyRecurrence\":{\"weekdays\":[\"nfczmnniixyxvq\",\"anosj\",\"gir\"],\"time\":\"gmgmdd\"},\"dailyRecurrence\":{\"time\":\"mynltwmpftmfoeaj\"},\"hourlyRecurrence\":{\"minute\":971513853},\"timeZoneId\":\"wetamfddrvlk\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":622642791,\"webhookUrl\":\"ecchdidrmuhkahm\",\"emailRecipient\":\"dbiucvkhhwmjpjbw\",\"notificationLocale\":\"nx\"},\"createdDate\":\"2021-05-20T15:06:34Z\",\"targetResourceId\":\"ihufoihp\",\"provisioningState\":\"ybxvgn\",\"uniqueIdentifier\":\"zpbgkzc\"},\"location\":\"cpiuzvk\",\"tags\":{\"pucdocf\":\"dimjuktirzkau\",\"o\":\"plw\",\"xwr\":\"m\",\"vbgikyj\":\"lvzkl\"},\"id\":\"kakvlbishjvpza\",\"name\":\"tuoska\",\"type\":\"izjixwfgcd\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"xwnujvqyn\",\"weeklyRecurrence\":{\"weekdays\":[\"tmdmuqohhihr\"],\"time\":\"quddrwjclj\"},\"dailyRecurrence\":{\"time\":\"lhpv\"},\"hourlyRecurrence\":{\"minute\":495666062},\"timeZoneId\":\"enninafhxrzfrm\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":671742673,\"webhookUrl\":\"viqlluk\",\"emailRecipient\":\"rcqxgcbvzarmqc\",\"notificationLocale\":\"okstsinvagovjyh\"},\"createdDate\":\"2021-05-26T07:55:45Z\",\"targetResourceId\":\"rdvcehqwhit\",\"provisioningState\":\"mxgnmguzbuwv\",\"uniqueIdentifier\":\"balkjnbkbdhl\"},\"location\":\"tqstqkqsygxiyne\",\"tags\":{\"heu\":\"agz\",\"ckqiawzlzk\":\"anlxunpq\",\"wsaudoejtighsxj\":\"aslgacizuxlrarwp\"},\"id\":\"ytnkqb\",\"name\":\"lahovuuwx\",\"type\":\"mehjnhjioti\"}},\"location\":\"fbbcngkegxcypxbb\",\"tags\":{\"lyr\":\"w\",\"frolq\":\"oxpdxq\",\"u\":\"wnk\"},\"id\":\"jew\",\"name\":\"ahwkxjjm\",\"type\":\"tnlmsoodtmvecdhd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +64,41 @@ public final class ServiceFabricsListApplicableSchedulesWithResponseMockTests {
             manager
                 .serviceFabrics()
                 .listApplicableSchedulesWithResponse(
-                    "trkxgpazwu", "x", "qvn", "obfelhldiuhz", com.azure.core.util.Context.NONE)
+                    "zpdgonjhxshthmgp", "zqulptkbv", "pxtzhigqqbtimpk", "blornsih", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ehpphthdklmveta", response.location());
-        Assertions.assertEquals("kfqoixwgiksbb", response.tags().get("tooxrpog"));
-        Assertions.assertEquals("qlmfaewz", response.labVmsShutdown().location());
-        Assertions.assertEquals("cruxspinym", response.labVmsStartup().location());
+        Assertions.assertEquals("fbbcngkegxcypxbb", response.location());
+        Assertions.assertEquals("w", response.tags().get("lyr"));
+        Assertions.assertEquals("cpiuzvk", response.labVmsShutdown().location());
+        Assertions.assertEquals("dimjuktirzkau", response.labVmsShutdown().tags().get("pucdocf"));
+        Assertions.assertEquals(EnableStatus.DISABLED, response.labVmsShutdown().status());
+        Assertions.assertEquals("musuaawja", response.labVmsShutdown().taskType());
+        Assertions.assertEquals("nfczmnniixyxvq", response.labVmsShutdown().weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("gmgmdd", response.labVmsShutdown().weeklyRecurrence().time());
+        Assertions.assertEquals("mynltwmpftmfoeaj", response.labVmsShutdown().dailyRecurrence().time());
+        Assertions.assertEquals(971513853, response.labVmsShutdown().hourlyRecurrence().minute());
+        Assertions.assertEquals("wetamfddrvlk", response.labVmsShutdown().timeZoneId());
+        Assertions.assertEquals(EnableStatus.DISABLED, response.labVmsShutdown().notificationSettings().status());
+        Assertions.assertEquals(622642791, response.labVmsShutdown().notificationSettings().timeInMinutes());
+        Assertions.assertEquals("ecchdidrmuhkahm", response.labVmsShutdown().notificationSettings().webhookUrl());
+        Assertions.assertEquals("dbiucvkhhwmjpjbw", response.labVmsShutdown().notificationSettings().emailRecipient());
+        Assertions.assertEquals("nx", response.labVmsShutdown().notificationSettings().notificationLocale());
+        Assertions.assertEquals("ihufoihp", response.labVmsShutdown().targetResourceId());
+        Assertions.assertEquals("tqstqkqsygxiyne", response.labVmsStartup().location());
+        Assertions.assertEquals("agz", response.labVmsStartup().tags().get("heu"));
+        Assertions.assertEquals(EnableStatus.DISABLED, response.labVmsStartup().status());
+        Assertions.assertEquals("xwnujvqyn", response.labVmsStartup().taskType());
+        Assertions.assertEquals("tmdmuqohhihr", response.labVmsStartup().weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("quddrwjclj", response.labVmsStartup().weeklyRecurrence().time());
+        Assertions.assertEquals("lhpv", response.labVmsStartup().dailyRecurrence().time());
+        Assertions.assertEquals(495666062, response.labVmsStartup().hourlyRecurrence().minute());
+        Assertions.assertEquals("enninafhxrzfrm", response.labVmsStartup().timeZoneId());
+        Assertions.assertEquals(EnableStatus.ENABLED, response.labVmsStartup().notificationSettings().status());
+        Assertions.assertEquals(671742673, response.labVmsStartup().notificationSettings().timeInMinutes());
+        Assertions.assertEquals("viqlluk", response.labVmsStartup().notificationSettings().webhookUrl());
+        Assertions.assertEquals("rcqxgcbvzarmqc", response.labVmsStartup().notificationSettings().emailRecipient());
+        Assertions
+            .assertEquals("okstsinvagovjyh", response.labVmsStartup().notificationSettings().notificationLocale());
+        Assertions.assertEquals("rdvcehqwhit", response.labVmsStartup().targetResourceId());
     }
 }

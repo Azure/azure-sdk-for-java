@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DayDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DayDetails model = BinaryData.fromString("{\"time\":\"ksymd\"}").toObject(DayDetails.class);
-        Assertions.assertEquals("ksymd", model.time());
+        DayDetails model = BinaryData.fromString("{\"time\":\"suyonobglaocq\"}").toObject(DayDetails.class);
+        Assertions.assertEquals("suyonobglaocq", model.time());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DayDetails model = new DayDetails().withTime("ksymd");
+        DayDetails model = new DayDetails().withTime("suyonobglaocq");
         model = BinaryData.fromObject(model).toObject(DayDetails.class);
-        Assertions.assertEquals("ksymd", model.time());
+        Assertions.assertEquals("suyonobglaocq", model.time());
     }
 }

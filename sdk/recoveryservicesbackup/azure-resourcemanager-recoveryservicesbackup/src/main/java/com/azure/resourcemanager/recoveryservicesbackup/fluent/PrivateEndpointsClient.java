@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointsClient.
+ */
 public interface PrivateEndpointsClient {
     /**
      * Gets the operation status for a private endpoint connection.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -26,16 +28,12 @@ public interface PrivateEndpointsClient {
      * @return the operation status for a private endpoint connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusInner> getOperationStatusWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String privateEndpointConnectionName,
-        String operationId,
-        Context context);
+    Response<OperationStatusInner> getOperationStatusWithResponse(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, String operationId, Context context);
 
     /**
      * Gets the operation status for a private endpoint connection.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -46,6 +44,6 @@ public interface PrivateEndpointsClient {
      * @return the operation status for a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner getOperationStatus(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName, String operationId);
+    OperationStatusInner getOperationStatus(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, String operationId);
 }

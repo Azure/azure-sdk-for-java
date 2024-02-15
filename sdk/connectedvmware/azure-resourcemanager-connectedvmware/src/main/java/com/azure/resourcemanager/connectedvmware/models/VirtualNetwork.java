@@ -121,11 +121,11 @@ public interface VirtualNetwork {
     List<ResourceStatus> statuses();
 
     /**
-     * Gets the provisioningState property: Gets or sets the provisioning state.
+     * Gets the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the region of the resource.
@@ -162,11 +162,13 @@ public interface VirtualNetwork {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The VirtualNetwork definition stages. */
     interface DefinitionStages {
         /** The first stage of the VirtualNetwork definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -185,6 +187,7 @@ public interface VirtualNetwork {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -195,6 +198,7 @@ public interface VirtualNetwork {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the VirtualNetwork definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -221,6 +225,7 @@ public interface VirtualNetwork {
              */
             VirtualNetwork create(Context context);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -231,6 +236,7 @@ public interface VirtualNetwork {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -241,6 +247,7 @@ public interface VirtualNetwork {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -255,6 +262,7 @@ public interface VirtualNetwork {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify vCenterId. */
         interface WithVCenterId {
             /**
@@ -266,6 +274,7 @@ public interface VirtualNetwork {
              */
             WithCreate withVCenterId(String vCenterId);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify moRefId. */
         interface WithMoRefId {
             /**
@@ -277,6 +286,7 @@ public interface VirtualNetwork {
              */
             WithCreate withMoRefId(String moRefId);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify inventoryItemId. */
         interface WithInventoryItemId {
             /**
@@ -288,6 +298,7 @@ public interface VirtualNetwork {
             WithCreate withInventoryItemId(String inventoryItemId);
         }
     }
+
     /**
      * Begins update for the VirtualNetwork resource.
      *
@@ -312,6 +323,7 @@ public interface VirtualNetwork {
          */
         VirtualNetwork apply(Context context);
     }
+
     /** The VirtualNetwork update stages. */
     interface UpdateStages {
         /** The stage of the VirtualNetwork update allowing to specify tags. */
@@ -325,6 +337,7 @@ public interface VirtualNetwork {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Information about the HybridConnection destination for an event subscription. */
+/**
+ * Information about the HybridConnection destination for an event subscription.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("HybridConnection")
 @Fluent
@@ -22,13 +24,15 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
     @JsonProperty(value = "properties")
     private HybridConnectionEventSubscriptionDestinationProperties innerProperties;
 
-    /** Creates an instance of HybridConnectionEventSubscriptionDestination class. */
+    /**
+     * Creates an instance of HybridConnectionEventSubscriptionDestination class.
+     */
     public HybridConnectionEventSubscriptionDestination() {
     }
 
     /**
      * Get the innerProperties property: Hybrid connection Properties of the event subscription destination.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HybridConnectionEventSubscriptionDestinationProperties innerProperties() {
@@ -38,7 +42,7 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
     /**
      * Get the resourceId property: The Azure Resource ID of an hybrid connection that is the destination of an event
      * subscription.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -48,7 +52,7 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
     /**
      * Set the resourceId property: The Azure Resource ID of an hybrid connection that is the destination of an event
      * subscription.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the HybridConnectionEventSubscriptionDestination object itself.
      */
@@ -62,7 +66,7 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
 
     /**
      * Get the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @return the deliveryAttributeMappings value.
      */
     public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
@@ -71,12 +75,12 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
 
     /**
      * Set the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
      * @return the HybridConnectionEventSubscriptionDestination object itself.
      */
-    public HybridConnectionEventSubscriptionDestination withDeliveryAttributeMappings(
-        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+    public HybridConnectionEventSubscriptionDestination
+        withDeliveryAttributeMappings(List<DeliveryAttributeMapping> deliveryAttributeMappings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new HybridConnectionEventSubscriptionDestinationProperties();
         }
@@ -86,7 +90,7 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

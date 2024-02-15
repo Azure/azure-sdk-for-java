@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Metadata about the resource. */
+/**
+ * Metadata about the resource.
+ */
 @Immutable
 public class Metadata {
     /*
@@ -16,13 +18,15 @@ public class Metadata {
     @JsonProperty(value = "provisionedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String provisionedBy;
 
-    /** Creates an instance of Metadata class. */
+    /**
+     * Creates an instance of Metadata class.
+     */
     public Metadata() {
     }
 
     /**
      * Get the provisionedBy property: Azure offering managing this resource on-behalf-of customer.
-     *
+     * 
      * @return the provisionedBy value.
      */
     public String provisionedBy() {
@@ -31,7 +35,7 @@ public class Metadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

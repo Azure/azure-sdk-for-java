@@ -18,21 +18,6 @@ public interface AnalyticsItems {
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
      *     users with access to the Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Analytics Items defined within an Application Insights component.
-     */
-    List<ApplicationInsightsComponentAnalyticsItem> list(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath);
-
-    /**
-     * Gets a list of Analytics Items defined within an Application Insights component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
-     *     users with access to the Application Insights component.
      * @param scope Enum indicating if this item definition is owned by a specific user or is shared between all users
      *     with access to the Application Insights component.
      * @param type Enum indicating the type of the Analytics item.
@@ -54,7 +39,7 @@ public interface AnalyticsItems {
         Context context);
 
     /**
-     * Gets a specific Analytics Items defined within an Application Insights component.
+     * Gets a list of Analytics Items defined within an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
@@ -63,9 +48,9 @@ public interface AnalyticsItems {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Analytics Items defined within an Application Insights component.
+     * @return a list of Analytics Items defined within an Application Insights component.
      */
-    ApplicationInsightsComponentAnalyticsItem get(
+    List<ApplicationInsightsComponentAnalyticsItem> list(
         String resourceGroupName, String resourceName, ItemScopePath scopePath);
 
     /**
@@ -92,24 +77,19 @@ public interface AnalyticsItems {
         Context context);
 
     /**
-     * Adds or Updates a specific Analytics Item within an Application Insights component.
+     * Gets a specific Analytics Items defined within an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
      *     users with access to the Application Insights component.
-     * @param itemProperties Properties that need to be specified to create a new item and add it to an Application
-     *     Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an Analytics item that is associated to an Application Insights component.
+     * @return a specific Analytics Items defined within an Application Insights component.
      */
-    ApplicationInsightsComponentAnalyticsItem put(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties);
+    ApplicationInsightsComponentAnalyticsItem get(
+        String resourceGroupName, String resourceName, ItemScopePath scopePath);
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
@@ -138,17 +118,24 @@ public interface AnalyticsItems {
         Context context);
 
     /**
-     * Deletes a specific Analytics Items defined within an Application Insights component.
+     * Adds or Updates a specific Analytics Item within an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
      *     users with access to the Application Insights component.
+     * @param itemProperties Properties that need to be specified to create a new item and add it to an Application
+     *     Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties that define an Analytics item that is associated to an Application Insights component.
      */
-    void delete(String resourceGroupName, String resourceName, ItemScopePath scopePath);
+    ApplicationInsightsComponentAnalyticsItem put(
+        String resourceGroupName,
+        String resourceName,
+        ItemScopePath scopePath,
+        ApplicationInsightsComponentAnalyticsItemInner itemProperties);
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
@@ -172,4 +159,17 @@ public interface AnalyticsItems {
         String id,
         String name,
         Context context);
+
+    /**
+     * Deletes a specific Analytics Items defined within an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all
+     *     users with access to the Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String resourceName, ItemScopePath scopePath);
 }

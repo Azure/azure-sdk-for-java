@@ -61,28 +61,21 @@ public final class BaseBackupPolicyResourceImpl
     }
 
     public BaseBackupPolicyResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, vaultName, backupPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public BaseBackupPolicyResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupPolicies()
-                .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    BaseBackupPolicyResourceImpl(
-        String name, com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
+    BaseBackupPolicyResourceImpl(String name,
+        com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = new BaseBackupPolicyResourceInner();
         this.serviceManager = serviceManager;
         this.backupPolicyName = name;
@@ -93,28 +86,20 @@ public final class BaseBackupPolicyResourceImpl
     }
 
     public BaseBackupPolicyResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, vaultName, backupPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public BaseBackupPolicyResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupPolicies()
-                .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    BaseBackupPolicyResourceImpl(
-        BaseBackupPolicyResourceInner innerObject,
+    BaseBackupPolicyResourceImpl(BaseBackupPolicyResourceInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -124,22 +109,14 @@ public final class BaseBackupPolicyResourceImpl
     }
 
     public BaseBackupPolicyResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupPolicies()
-                .getWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
+            .getWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE).getValue();
         return this;
     }
 
     public BaseBackupPolicyResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupPolicies()
-                .getWithResponse(resourceGroupName, vaultName, backupPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
+            .getWithResponse(resourceGroupName, vaultName, backupPolicyName, context).getValue();
         return this;
     }
 

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleEligibilitySchedules ListForScope. */
 public final class RoleEligibilitySchedulesListForScopeSamples {
     /*
@@ -26,6 +24,6 @@ public final class RoleEligibilitySchedulesListForScopeSamples {
             .listForScope(
                 "providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f",
                 "assignedTo('a3bb8764-cb92-4276-9d2a-ca1e895e55ea')",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -11,37 +11,23 @@ import com.azure.resourcemanager.datafactory.models.SapTableSource;
 public final class SapTableSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapTableSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SapTableSource\",\"rowCount\":\"dataukcojyx\",\"rowSkips\":\"datavoowrtcsucot\",\"rfcTableFields\":\"datayiqz\",\"rfcTableOptions\":\"dataxzvjnmpv\",\"batchSize\":\"dataludfbhzu\",\"customRfcReadTableFunctionModule\":\"datapfbhihddiiuex\",\"sapDataColumnDelimiter\":\"datayfku\",\"partitionOption\":\"datalq\",\"partitionSettings\":{\"partitionColumnName\":\"datardpw\",\"partitionUpperBound\":\"datalvfisk\",\"partitionLowerBound\":\"datasp\",\"maxPartitionsNumber\":\"datasxnyo\"},\"queryTimeout\":\"datapcssusdrgzmmrz\",\"additionalColumns\":\"dataibtkcvolaxnukgo\",\"sourceRetryCount\":\"datau\",\"sourceRetryWait\":\"datadcqoxyxiyhmj\",\"maxConcurrentConnections\":\"datanw\",\"disableMetricsCollection\":\"datazgvaeqiygbo\",\"\":{\"laj\":\"datajodidgudar\",\"ojikffczwaewp\":\"dataenfyuuf\",\"wfnapgagvhsix\":\"datalsuhsghdovcp\"}}")
-                .toObject(SapTableSource.class);
+        SapTableSource model = BinaryData.fromString(
+            "{\"type\":\"SapTableSource\",\"rowCount\":\"dataixsjhinpyekslll\",\"rowSkips\":\"dataqolckwhgnfbnnh\",\"rfcTableFields\":\"datanloifxzdohfvxav\",\"rfcTableOptions\":\"datahlxqwwzp\",\"batchSize\":\"datamcfrf\",\"customRfcReadTableFunctionModule\":\"datatcygoombnrm\",\"sapDataColumnDelimiter\":\"dataklfp\",\"partitionOption\":\"datagfvvnkpwl\",\"partitionSettings\":{\"partitionColumnName\":\"dataxdzold\",\"partitionUpperBound\":\"datafnpn\",\"partitionLowerBound\":\"dataterjjuzarege\",\"maxPartitionsNumber\":\"dataozpudal\"},\"queryTimeout\":\"datagdhdtt\",\"additionalColumns\":\"datakeculxvkuxvccpda\",\"sourceRetryCount\":\"dataasi\",\"sourceRetryWait\":\"datatyvvgxe\",\"maxConcurrentConnections\":\"dataqoswjwbh\",\"disableMetricsCollection\":\"datawbchybne\",\"\":{\"jcywyrzxipxhl\":\"dataeikadhusgxkbg\",\"avxgmogcnwxk\":\"dataxkviyjruqyej\",\"thnlceggyqlvn\":\"dataqxpnjqtzdahv\"}}")
+            .toObject(SapTableSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapTableSource model =
-            new SapTableSource()
-                .withSourceRetryCount("datau")
-                .withSourceRetryWait("datadcqoxyxiyhmj")
-                .withMaxConcurrentConnections("datanw")
-                .withDisableMetricsCollection("datazgvaeqiygbo")
-                .withQueryTimeout("datapcssusdrgzmmrz")
-                .withAdditionalColumns("dataibtkcvolaxnukgo")
-                .withRowCount("dataukcojyx")
-                .withRowSkips("datavoowrtcsucot")
-                .withRfcTableFields("datayiqz")
-                .withRfcTableOptions("dataxzvjnmpv")
-                .withBatchSize("dataludfbhzu")
-                .withCustomRfcReadTableFunctionModule("datapfbhihddiiuex")
-                .withSapDataColumnDelimiter("datayfku")
-                .withPartitionOption("datalq")
-                .withPartitionSettings(
-                    new SapTablePartitionSettings()
-                        .withPartitionColumnName("datardpw")
-                        .withPartitionUpperBound("datalvfisk")
-                        .withPartitionLowerBound("datasp")
-                        .withMaxPartitionsNumber("datasxnyo"));
+        SapTableSource model = new SapTableSource().withSourceRetryCount("dataasi").withSourceRetryWait("datatyvvgxe")
+            .withMaxConcurrentConnections("dataqoswjwbh").withDisableMetricsCollection("datawbchybne")
+            .withQueryTimeout("datagdhdtt").withAdditionalColumns("datakeculxvkuxvccpda")
+            .withRowCount("dataixsjhinpyekslll").withRowSkips("dataqolckwhgnfbnnh")
+            .withRfcTableFields("datanloifxzdohfvxav").withRfcTableOptions("datahlxqwwzp").withBatchSize("datamcfrf")
+            .withCustomRfcReadTableFunctionModule("datatcygoombnrm").withSapDataColumnDelimiter("dataklfp")
+            .withPartitionOption("datagfvvnkpwl")
+            .withPartitionSettings(new SapTablePartitionSettings().withPartitionColumnName("dataxdzold")
+                .withPartitionUpperBound("datafnpn").withPartitionLowerBound("dataterjjuzarege")
+                .withMaxPartitionsNumber("dataozpudal"));
         model = BinaryData.fromObject(model).toObject(SapTableSource.class);
     }
 }

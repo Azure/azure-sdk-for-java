@@ -6,21 +6,19 @@ package com.azure.resourcemanager.hybridnetwork.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.OperationInner;
-import org.junit.jupiter.api.Test;
+import com.azure.resourcemanager.hybridnetwork.models.OperationDisplay;
 
 public final class OperationInnerTests {
-    @Test
-    public void testDeserialize() {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ozwyiftyhxhuro\",\"display\":{\"provider\":\"yxolniwp\",\"resource\":\"ukjfkgiawxklr\",\"operation\":\"lwckbasyypnddhs\",\"description\":\"bacphejko\"}}")
-                .toObject(OperationInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"vfgbvfvpdboda\",\"isDataAction\":false,\"display\":{\"provider\":\"q\",\"resource\":\"krribdeibqi\",\"operation\":\"kghv\",\"description\":\"dzwmkrefajpj\"},\"origin\":\"system\",\"actionType\":\"Internal\"}")
+            .toObject(OperationInner.class);
     }
 
-    @Test
-    public void testSerialize() {
-        OperationInner model = new OperationInner();
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OperationInner model = new OperationInner().withDisplay(new OperationDisplay());
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
     }
 }

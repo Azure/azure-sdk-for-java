@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.MariaDBSource;
 public final class MariaDBSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MariaDBSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"MariaDBSource\",\"query\":\"datagyivsiirx\",\"queryTimeout\":\"datappqpsiniidaxbesb\",\"additionalColumns\":\"dataizyjch\",\"sourceRetryCount\":\"dataasjrseqpo\",\"sourceRetryWait\":\"datahgksqwzuosyyxl\",\"maxConcurrentConnections\":\"dataxzudfarzayrdyrow\",\"disableMetricsCollection\":\"datakpdpudqiwhvxb\",\"\":{\"deffrbxzjedy\":\"dataoeuufws\",\"no\":\"datajisxspnmfydphls\",\"vjlqfzlbpe\":\"dataqb\",\"nlxstp\":\"datavjpgllr\"}}")
-                .toObject(MariaDBSource.class);
+        MariaDBSource model = BinaryData.fromString(
+            "{\"type\":\"MariaDBSource\",\"query\":\"datahrygw\",\"queryTimeout\":\"datavuiox\",\"additionalColumns\":\"dataztrfot\",\"sourceRetryCount\":\"datafzcvhfnbccffsb\",\"sourceRetryWait\":\"databt\",\"maxConcurrentConnections\":\"dataqlejxoudjc\",\"disableMetricsCollection\":\"dataa\",\"\":{\"wh\":\"datahpzvqzmlfer\",\"fqttfqgdoowgqooi\":\"datannqudexnicqu\"}}")
+            .toObject(MariaDBSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MariaDBSource model =
-            new MariaDBSource()
-                .withSourceRetryCount("dataasjrseqpo")
-                .withSourceRetryWait("datahgksqwzuosyyxl")
-                .withMaxConcurrentConnections("dataxzudfarzayrdyrow")
-                .withDisableMetricsCollection("datakpdpudqiwhvxb")
-                .withQueryTimeout("datappqpsiniidaxbesb")
-                .withAdditionalColumns("dataizyjch")
-                .withQuery("datagyivsiirx");
+        MariaDBSource model
+            = new MariaDBSource().withSourceRetryCount("datafzcvhfnbccffsb").withSourceRetryWait("databt")
+                .withMaxConcurrentConnections("dataqlejxoudjc").withDisableMetricsCollection("dataa")
+                .withQueryTimeout("datavuiox").withAdditionalColumns("dataztrfot").withQuery("datahrygw");
         model = BinaryData.fromObject(model).toObject(MariaDBSource.class);
     }
 }

@@ -9,12 +9,15 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Response for ElasticSan request. */
+/**
+ * Response for ElasticSan request.
+ */
 @Fluent
 public final class ElasticSanInner extends Resource {
     /*
@@ -29,13 +32,15 @@ public final class ElasticSanInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ElasticSanInner class. */
+    /**
+     * Creates an instance of ElasticSanInner class.
+     */
     public ElasticSanInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of ElasticSan.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ElasticSanProperties innerProperties() {
@@ -44,21 +49,25 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ElasticSanInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ElasticSanInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -67,7 +76,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Get the sku property: resource sku.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -76,7 +85,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Set the sku property: resource sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ElasticSanInner object itself.
      */
@@ -90,7 +99,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Get the availabilityZones property: Logical zone for Elastic San resource; example: ["1"].
-     *
+     * 
      * @return the availabilityZones value.
      */
     public List<String> availabilityZones() {
@@ -99,7 +108,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Set the availabilityZones property: Logical zone for Elastic San resource; example: ["1"].
-     *
+     * 
      * @param availabilityZones the availabilityZones value to set.
      * @return the ElasticSanInner object itself.
      */
@@ -113,7 +122,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -122,7 +131,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Get the baseSizeTiB property: Base size of the Elastic San appliance in TiB.
-     *
+     * 
      * @return the baseSizeTiB value.
      */
     public long baseSizeTiB() {
@@ -131,7 +140,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Set the baseSizeTiB property: Base size of the Elastic San appliance in TiB.
-     *
+     * 
      * @param baseSizeTiB the baseSizeTiB value to set.
      * @return the ElasticSanInner object itself.
      */
@@ -145,7 +154,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Get the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB.
-     *
+     * 
      * @return the extendedCapacitySizeTiB value.
      */
     public long extendedCapacitySizeTiB() {
@@ -154,7 +163,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Set the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB.
-     *
+     * 
      * @param extendedCapacitySizeTiB the extendedCapacitySizeTiB value to set.
      * @return the ElasticSanInner object itself.
      */
@@ -168,7 +177,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Get the totalVolumeSizeGiB property: Total size of the provisioned Volumes in GiB.
-     *
+     * 
      * @return the totalVolumeSizeGiB value.
      */
     public Long totalVolumeSizeGiB() {
@@ -177,7 +186,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Get the volumeGroupCount property: Total number of volume groups in this Elastic San appliance.
-     *
+     * 
      * @return the volumeGroupCount value.
      */
     public Long volumeGroupCount() {
@@ -186,7 +195,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Get the totalIops property: Total Provisioned IOPS of the Elastic San appliance.
-     *
+     * 
      * @return the totalIops value.
      */
     public Long totalIops() {
@@ -195,7 +204,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Get the totalMBps property: Total Provisioned MBps Elastic San appliance.
-     *
+     * 
      * @return the totalMBps value.
      */
     public Long totalMBps() {
@@ -204,7 +213,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Get the totalSizeTiB property: Total size of the Elastic San appliance in TB.
-     *
+     * 
      * @return the totalSizeTiB value.
      */
     public Long totalSizeTiB() {
@@ -213,7 +222,7 @@ public final class ElasticSanInner extends Resource {
 
     /**
      * Get the privateEndpointConnections property: The list of Private Endpoint Connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -221,15 +230,39 @@ public final class ElasticSanInner extends Resource {
     }
 
     /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to ElasticSan. Value is optional
+     * but if passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to ElasticSan. Value is optional
+     * but if passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ElasticSanInner object itself.
+     */
+    public ElasticSanInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticSanProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model ElasticSanInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model ElasticSanInner"));
         } else {
             innerProperties().validate();
         }

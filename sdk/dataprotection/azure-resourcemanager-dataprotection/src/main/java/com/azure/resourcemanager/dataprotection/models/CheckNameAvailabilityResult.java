@@ -6,32 +6,34 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.resourcemanager.dataprotection.fluent.models.CheckNameAvailabilityResultInner;
 
-/** An immutable client-side representation of CheckNameAvailabilityResult. */
+/**
+ * An immutable client-side representation of CheckNameAvailabilityResult.
+ */
 public interface CheckNameAvailabilityResult {
     /**
      * Gets the message property: Gets or sets the message.
-     *
+     * 
      * @return the message value.
      */
     String message();
 
     /**
      * Gets the nameAvailable property: Gets or sets a value indicating whether [name available].
-     *
+     * 
      * @return the nameAvailable value.
      */
     Boolean nameAvailable();
 
     /**
      * Gets the reason property: Gets or sets the reason.
-     *
+     * 
      * @return the reason value.
      */
     String reason();
 
     /**
      * Gets the inner com.azure.resourcemanager.dataprotection.fluent.models.CheckNameAvailabilityResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     CheckNameAvailabilityResultInner innerModel();

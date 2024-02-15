@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * AzureBackupRestoreRequest
- *
- * <p>Azure backup restore request.
+ * 
+ * Azure backup restore request.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -28,8 +28,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = AzureBackupRecoveryPointBasedRestoreRequest.class),
     @JsonSubTypes.Type(
         name = "AzureBackupRecoveryTimeBasedRestoreRequest",
-        value = AzureBackupRecoveryTimeBasedRestoreRequest.class)
-})
+        value = AzureBackupRecoveryTimeBasedRestoreRequest.class) })
 @Fluent
 public class AzureBackupRestoreRequest {
     /*
@@ -57,13 +56,15 @@ public class AzureBackupRestoreRequest {
     @JsonProperty(value = "identityDetails")
     private IdentityDetails identityDetails;
 
-    /** Creates an instance of AzureBackupRestoreRequest class. */
+    /**
+     * Creates an instance of AzureBackupRestoreRequest class.
+     */
     public AzureBackupRestoreRequest() {
     }
 
     /**
      * Get the restoreTargetInfo property: Gets or sets the restore target information.
-     *
+     * 
      * @return the restoreTargetInfo value.
      */
     public RestoreTargetInfoBase restoreTargetInfo() {
@@ -72,7 +73,7 @@ public class AzureBackupRestoreRequest {
 
     /**
      * Set the restoreTargetInfo property: Gets or sets the restore target information.
-     *
+     * 
      * @param restoreTargetInfo the restoreTargetInfo value to set.
      * @return the AzureBackupRestoreRequest object itself.
      */
@@ -83,7 +84,7 @@ public class AzureBackupRestoreRequest {
 
     /**
      * Get the sourceDataStoreType property: Gets or sets the type of the source data store.
-     *
+     * 
      * @return the sourceDataStoreType value.
      */
     public SourceDataStoreType sourceDataStoreType() {
@@ -92,7 +93,7 @@ public class AzureBackupRestoreRequest {
 
     /**
      * Set the sourceDataStoreType property: Gets or sets the type of the source data store.
-     *
+     * 
      * @param sourceDataStoreType the sourceDataStoreType value to set.
      * @return the AzureBackupRestoreRequest object itself.
      */
@@ -104,7 +105,7 @@ public class AzureBackupRestoreRequest {
     /**
      * Get the sourceResourceId property: Fully qualified Azure Resource Manager ID of the datasource which is being
      * recovered.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -114,7 +115,7 @@ public class AzureBackupRestoreRequest {
     /**
      * Set the sourceResourceId property: Fully qualified Azure Resource Manager ID of the datasource which is being
      * recovered.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the AzureBackupRestoreRequest object itself.
      */
@@ -124,9 +125,9 @@ public class AzureBackupRestoreRequest {
     }
 
     /**
-     * Get the identityDetails property: Contains information of the Identity Details for the BI. If it is null, default
-     * will be considered as System Assigned.
-     *
+     * Get the identityDetails property: Contains information of the Identity Details for the BI.
+     * If it is null, default will be considered as System Assigned.
+     * 
      * @return the identityDetails value.
      */
     public IdentityDetails identityDetails() {
@@ -134,9 +135,9 @@ public class AzureBackupRestoreRequest {
     }
 
     /**
-     * Set the identityDetails property: Contains information of the Identity Details for the BI. If it is null, default
-     * will be considered as System Assigned.
-     *
+     * Set the identityDetails property: Contains information of the Identity Details for the BI.
+     * If it is null, default will be considered as System Assigned.
+     * 
      * @param identityDetails the identityDetails value to set.
      * @return the AzureBackupRestoreRequest object itself.
      */
@@ -147,23 +148,19 @@ public class AzureBackupRestoreRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (restoreTargetInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property restoreTargetInfo in model AzureBackupRestoreRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property restoreTargetInfo in model AzureBackupRestoreRequest"));
         } else {
             restoreTargetInfo().validate();
         }
         if (sourceDataStoreType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceDataStoreType in model AzureBackupRestoreRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceDataStoreType in model AzureBackupRestoreRequest"));
         }
         if (identityDetails() != null) {
             identityDetails().validate();

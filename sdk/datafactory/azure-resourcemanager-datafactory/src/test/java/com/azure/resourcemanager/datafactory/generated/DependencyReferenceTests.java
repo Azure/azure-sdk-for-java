@@ -10,8 +10,8 @@ import com.azure.resourcemanager.datafactory.models.DependencyReference;
 public final class DependencyReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DependencyReference model =
-            BinaryData.fromString("{\"type\":\"DependencyReference\"}").toObject(DependencyReference.class);
+        DependencyReference model
+            = BinaryData.fromString("{\"type\":\"DependencyReference\"}").toObject(DependencyReference.class);
     }
 
     @org.junit.jupiter.api.Test

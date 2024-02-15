@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.OdbcSource;
 public final class OdbcSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OdbcSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"OdbcSource\",\"query\":\"dataodrvwnqbpxyofft\",\"queryTimeout\":\"dataovbhqelsslfxejp\",\"additionalColumns\":\"datasgigs\",\"sourceRetryCount\":\"datatx\",\"sourceRetryWait\":\"datayjwmglgstrzfh\",\"maxConcurrentConnections\":\"datadzovkbcbefohny\",\"disableMetricsCollection\":\"datahmlj\",\"\":{\"szxdbgl\":\"datagfvzvmtjcxig\",\"ivmbu\":\"dataeet\",\"wfhfptbdxtvl\":\"dataizw\"}}")
-                .toObject(OdbcSource.class);
+        OdbcSource model = BinaryData.fromString(
+            "{\"type\":\"OdbcSource\",\"query\":\"datahqgvtzdxtwy\",\"queryTimeout\":\"datakwwdkkvdevdvkey\",\"additionalColumns\":\"datajchd\",\"sourceRetryCount\":\"dataxeiluexvmlg\",\"sourceRetryWait\":\"datapsqpfxjwta\",\"maxConcurrentConnections\":\"dataqkguchdyxrjjdj\",\"disableMetricsCollection\":\"dataiqtz\",\"\":{\"lwnxryyqtjcrpax\":\"dataddkujvqzcuqc\",\"dldm\":\"dataxlfxsetvdz\",\"iuxotbvflgkkiu\":\"datafqftywbbanzhd\",\"fobpyeo\":\"datahop\"}}")
+            .toObject(OdbcSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OdbcSource model =
-            new OdbcSource()
-                .withSourceRetryCount("datatx")
-                .withSourceRetryWait("datayjwmglgstrzfh")
-                .withMaxConcurrentConnections("datadzovkbcbefohny")
-                .withDisableMetricsCollection("datahmlj")
-                .withQueryTimeout("dataovbhqelsslfxejp")
-                .withAdditionalColumns("datasgigs")
-                .withQuery("dataodrvwnqbpxyofft");
+        OdbcSource model
+            = new OdbcSource().withSourceRetryCount("dataxeiluexvmlg").withSourceRetryWait("datapsqpfxjwta")
+                .withMaxConcurrentConnections("dataqkguchdyxrjjdj").withDisableMetricsCollection("dataiqtz")
+                .withQueryTimeout("datakwwdkkvdevdvkey").withAdditionalColumns("datajchd").withQuery("datahqgvtzdxtwy");
         model = BinaryData.fromObject(model).toObject(OdbcSource.class);
     }
 }

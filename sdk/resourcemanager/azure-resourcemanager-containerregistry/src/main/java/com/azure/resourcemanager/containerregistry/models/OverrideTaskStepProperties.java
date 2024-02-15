@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OverrideTaskStepProperties model. */
+/**
+ * The OverrideTaskStepProperties model.
+ */
 @Fluent
 public final class OverrideTaskStepProperties {
     /*
@@ -48,13 +50,15 @@ public final class OverrideTaskStepProperties {
     @JsonProperty(value = "updateTriggerToken")
     private String updateTriggerToken;
 
-    /** Creates an instance of OverrideTaskStepProperties class. */
+    /**
+     * Creates an instance of OverrideTaskStepProperties class.
+     */
     public OverrideTaskStepProperties() {
     }
 
     /**
      * Get the contextPath property: The source context against which run has to be queued.
-     *
+     * 
      * @return the contextPath value.
      */
     public String contextPath() {
@@ -63,7 +67,7 @@ public final class OverrideTaskStepProperties {
 
     /**
      * Set the contextPath property: The source context against which run has to be queued.
-     *
+     * 
      * @param contextPath the contextPath value to set.
      * @return the OverrideTaskStepProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class OverrideTaskStepProperties {
 
     /**
      * Get the file property: The file against which run has to be queued.
-     *
+     * 
      * @return the file value.
      */
     public String file() {
@@ -83,7 +87,7 @@ public final class OverrideTaskStepProperties {
 
     /**
      * Set the file property: The file against which run has to be queued.
-     *
+     * 
      * @param file the file value to set.
      * @return the OverrideTaskStepProperties object itself.
      */
@@ -93,9 +97,9 @@ public final class OverrideTaskStepProperties {
     }
 
     /**
-     * Get the arguments property: Gets or sets the collection of override arguments to be used when executing a build
-     * step.
-     *
+     * Get the arguments property: Gets or sets the collection of override arguments to be used when
+     * executing a build step.
+     * 
      * @return the arguments value.
      */
     public List<Argument> arguments() {
@@ -103,9 +107,9 @@ public final class OverrideTaskStepProperties {
     }
 
     /**
-     * Set the arguments property: Gets or sets the collection of override arguments to be used when executing a build
-     * step.
-     *
+     * Set the arguments property: Gets or sets the collection of override arguments to be used when
+     * executing a build step.
+     * 
      * @param arguments the arguments value to set.
      * @return the OverrideTaskStepProperties object itself.
      */
@@ -116,7 +120,7 @@ public final class OverrideTaskStepProperties {
 
     /**
      * Get the target property: The name of the target build stage for the docker build.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -125,7 +129,7 @@ public final class OverrideTaskStepProperties {
 
     /**
      * Set the target property: The name of the target build stage for the docker build.
-     *
+     * 
      * @param target the target value to set.
      * @return the OverrideTaskStepProperties object itself.
      */
@@ -136,7 +140,7 @@ public final class OverrideTaskStepProperties {
 
     /**
      * Get the values property: The collection of overridable values that can be passed when running a Task.
-     *
+     * 
      * @return the values value.
      */
     public List<SetValue> values() {
@@ -145,7 +149,7 @@ public final class OverrideTaskStepProperties {
 
     /**
      * Set the values property: The collection of overridable values that can be passed when running a Task.
-     *
+     * 
      * @param values the values value to set.
      * @return the OverrideTaskStepProperties object itself.
      */
@@ -157,7 +161,7 @@ public final class OverrideTaskStepProperties {
     /**
      * Get the updateTriggerToken property: Base64 encoded update trigger token that will be attached with the base
      * image trigger webhook.
-     *
+     * 
      * @return the updateTriggerToken value.
      */
     public String updateTriggerToken() {
@@ -167,7 +171,7 @@ public final class OverrideTaskStepProperties {
     /**
      * Set the updateTriggerToken property: Base64 encoded update trigger token that will be attached with the base
      * image trigger webhook.
-     *
+     * 
      * @param updateTriggerToken the updateTriggerToken value to set.
      * @return the OverrideTaskStepProperties object itself.
      */
@@ -178,7 +182,7 @@ public final class OverrideTaskStepProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

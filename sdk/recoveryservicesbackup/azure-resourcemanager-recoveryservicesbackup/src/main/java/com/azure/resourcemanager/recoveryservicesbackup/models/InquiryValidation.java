@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Validation for inquired protectable items under a given container. */
+/**
+ * Validation for inquired protectable items under a given container.
+ */
 @Fluent
 public final class InquiryValidation {
     /*
@@ -28,13 +30,21 @@ public final class InquiryValidation {
     @JsonProperty(value = "additionalDetail", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalDetail;
 
-    /** Creates an instance of InquiryValidation class. */
+    /*
+     * Dictionary to store the count of ProtectableItems with key POType.
+     */
+    @JsonProperty(value = "protectableItemCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Object protectableItemCount;
+
+    /**
+     * Creates an instance of InquiryValidation class.
+     */
     public InquiryValidation() {
     }
 
     /**
      * Get the status property: Status for the Inquiry Validation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -43,7 +53,7 @@ public final class InquiryValidation {
 
     /**
      * Set the status property: Status for the Inquiry Validation.
-     *
+     * 
      * @param status the status value to set.
      * @return the InquiryValidation object itself.
      */
@@ -54,7 +64,7 @@ public final class InquiryValidation {
 
     /**
      * Get the errorDetail property: Error Detail in case the status is non-success.
-     *
+     * 
      * @return the errorDetail value.
      */
     public ErrorDetail errorDetail() {
@@ -63,7 +73,7 @@ public final class InquiryValidation {
 
     /**
      * Set the errorDetail property: Error Detail in case the status is non-success.
-     *
+     * 
      * @param errorDetail the errorDetail value to set.
      * @return the InquiryValidation object itself.
      */
@@ -74,7 +84,7 @@ public final class InquiryValidation {
 
     /**
      * Get the additionalDetail property: Error Additional Detail in case the status is non-success.
-     *
+     * 
      * @return the additionalDetail value.
      */
     public String additionalDetail() {
@@ -82,8 +92,17 @@ public final class InquiryValidation {
     }
 
     /**
+     * Get the protectableItemCount property: Dictionary to store the count of ProtectableItems with key POType.
+     * 
+     * @return the protectableItemCount value.
+     */
+    public Object protectableItemCount() {
+        return this.protectableItemCount;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionIntent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Base class for backup ProtectionIntent. */
+/**
+ * Base class for backup ProtectionIntent.
+ */
 @Fluent
 public final class ProtectionIntentResourceInner extends Resource {
     /*
@@ -25,13 +27,15 @@ public final class ProtectionIntentResourceInner extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
-    /** Creates an instance of ProtectionIntentResourceInner class. */
+    /**
+     * Creates an instance of ProtectionIntentResourceInner class.
+     */
     public ProtectionIntentResourceInner() {
     }
 
     /**
      * Get the properties property: ProtectionIntentResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public ProtectionIntent properties() {
@@ -40,7 +44,7 @@ public final class ProtectionIntentResourceInner extends Resource {
 
     /**
      * Set the properties property: ProtectionIntentResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ProtectionIntentResourceInner object itself.
      */
@@ -51,7 +55,7 @@ public final class ProtectionIntentResourceInner extends Resource {
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -60,7 +64,7 @@ public final class ProtectionIntentResourceInner extends Resource {
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the ProtectionIntentResourceInner object itself.
      */
@@ -69,14 +73,18 @@ public final class ProtectionIntentResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProtectionIntentResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProtectionIntentResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -85,7 +93,7 @@ public final class ProtectionIntentResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

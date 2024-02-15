@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Property of git environment. */
+/**
+ * Property of git environment.
+ */
 @Fluent
 public final class ConfigurationServiceGitProperty {
     /*
@@ -18,8 +20,14 @@ public final class ConfigurationServiceGitProperty {
     private List<ConfigurationServiceGitRepository> repositories;
 
     /**
+     * Creates an instance of ConfigurationServiceGitProperty class.
+     */
+    public ConfigurationServiceGitProperty() {
+    }
+
+    /**
      * Get the repositories property: Repositories of Application Configuration Service git property.
-     *
+     * 
      * @return the repositories value.
      */
     public List<ConfigurationServiceGitRepository> repositories() {
@@ -28,7 +36,7 @@ public final class ConfigurationServiceGitProperty {
 
     /**
      * Set the repositories property: Repositories of Application Configuration Service git property.
-     *
+     * 
      * @param repositories the repositories value to set.
      * @return the ConfigurationServiceGitProperty object itself.
      */
@@ -39,7 +47,7 @@ public final class ConfigurationServiceGitProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

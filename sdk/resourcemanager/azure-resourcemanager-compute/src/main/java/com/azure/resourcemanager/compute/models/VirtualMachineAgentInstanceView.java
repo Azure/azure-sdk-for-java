@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The instance view of the VM Agent running on the virtual machine. */
+/**
+ * The instance view of the VM Agent running on the virtual machine.
+ */
 @Fluent
 public final class VirtualMachineAgentInstanceView {
     /*
@@ -29,13 +31,15 @@ public final class VirtualMachineAgentInstanceView {
     @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
-    /** Creates an instance of VirtualMachineAgentInstanceView class. */
+    /**
+     * Creates an instance of VirtualMachineAgentInstanceView class.
+     */
     public VirtualMachineAgentInstanceView() {
     }
 
     /**
      * Get the vmAgentVersion property: The VM Agent full version.
-     *
+     * 
      * @return the vmAgentVersion value.
      */
     public String vmAgentVersion() {
@@ -44,7 +48,7 @@ public final class VirtualMachineAgentInstanceView {
 
     /**
      * Set the vmAgentVersion property: The VM Agent full version.
-     *
+     * 
      * @param vmAgentVersion the vmAgentVersion value to set.
      * @return the VirtualMachineAgentInstanceView object itself.
      */
@@ -55,7 +59,7 @@ public final class VirtualMachineAgentInstanceView {
 
     /**
      * Get the extensionHandlers property: The virtual machine extension handler instance view.
-     *
+     * 
      * @return the extensionHandlers value.
      */
     public List<VirtualMachineExtensionHandlerInstanceView> extensionHandlers() {
@@ -64,19 +68,19 @@ public final class VirtualMachineAgentInstanceView {
 
     /**
      * Set the extensionHandlers property: The virtual machine extension handler instance view.
-     *
+     * 
      * @param extensionHandlers the extensionHandlers value to set.
      * @return the VirtualMachineAgentInstanceView object itself.
      */
-    public VirtualMachineAgentInstanceView withExtensionHandlers(
-        List<VirtualMachineExtensionHandlerInstanceView> extensionHandlers) {
+    public VirtualMachineAgentInstanceView
+        withExtensionHandlers(List<VirtualMachineExtensionHandlerInstanceView> extensionHandlers) {
         this.extensionHandlers = extensionHandlers;
         return this;
     }
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -85,7 +89,7 @@ public final class VirtualMachineAgentInstanceView {
 
     /**
      * Set the statuses property: The resource status information.
-     *
+     * 
      * @param statuses the statuses value to set.
      * @return the VirtualMachineAgentInstanceView object itself.
      */
@@ -96,7 +100,7 @@ public final class VirtualMachineAgentInstanceView {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

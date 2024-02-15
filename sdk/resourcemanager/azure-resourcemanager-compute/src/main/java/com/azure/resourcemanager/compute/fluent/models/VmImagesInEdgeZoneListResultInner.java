@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List VmImages in EdgeZone operation response. */
+/**
+ * The List VmImages in EdgeZone operation response.
+ */
 @Fluent
 public final class VmImagesInEdgeZoneListResultInner {
     /*
@@ -24,13 +26,15 @@ public final class VmImagesInEdgeZoneListResultInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VmImagesInEdgeZoneListResultInner class. */
+    /**
+     * Creates an instance of VmImagesInEdgeZoneListResultInner class.
+     */
     public VmImagesInEdgeZoneListResultInner() {
     }
 
     /**
      * Get the value property: The list of VMImages in EdgeZone.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualMachineImageResourceInner> value() {
@@ -39,7 +43,7 @@ public final class VmImagesInEdgeZoneListResultInner {
 
     /**
      * Set the value property: The list of VMImages in EdgeZone.
-     *
+     * 
      * @param value the value value to set.
      * @return the VmImagesInEdgeZoneListResultInner object itself.
      */
@@ -51,7 +55,7 @@ public final class VmImagesInEdgeZoneListResultInner {
     /**
      * Get the nextLink property: The URI to fetch the next page of VMImages in EdgeZone. Call ListNext() with this URI
      * to fetch the next page of VmImages.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,7 +65,7 @@ public final class VmImagesInEdgeZoneListResultInner {
     /**
      * Set the nextLink property: The URI to fetch the next page of VMImages in EdgeZone. Call ListNext() with this URI
      * to fetch the next page of VmImages.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VmImagesInEdgeZoneListResultInner object itself.
      */
@@ -72,7 +76,7 @@ public final class VmImagesInEdgeZoneListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

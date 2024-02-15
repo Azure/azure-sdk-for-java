@@ -14,14 +14,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the asynchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class WorkspaceAsyncClient {
-    @Generated private final WorkspacesImpl serviceClient;
+    @Generated
+    private final WorkspacesImpl serviceClient;
 
     /**
      * Initializes an instance of WorkspaceAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -31,7 +34,7 @@ public final class WorkspaceAsyncClient {
 
     /**
      * Get Workspace.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace along with {@link Response} on successful completion of {@link Mono}.
@@ -44,7 +47,7 @@ public final class WorkspaceAsyncClient {
 
     /**
      * Get Workspace.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace on successful completion of {@link Mono}.

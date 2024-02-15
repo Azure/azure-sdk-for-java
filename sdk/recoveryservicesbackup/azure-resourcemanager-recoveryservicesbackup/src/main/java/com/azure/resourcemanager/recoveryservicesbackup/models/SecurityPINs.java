@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SecurityPINs. */
+/**
+ * Resource collection API of SecurityPINs.
+ */
 public interface SecurityPINs {
     /**
      * Get the security PIN.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters security pin request.
@@ -21,12 +23,12 @@ public interface SecurityPINs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the security PIN along with {@link Response}.
      */
-    Response<TokenInformation> getWithResponse(
-        String vaultName, String resourceGroupName, SecurityPinBase parameters, Context context);
+    Response<TokenInformation> getWithResponse(String vaultName, String resourceGroupName, SecurityPinBase parameters,
+        Context context);
 
     /**
      * Get the security PIN.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

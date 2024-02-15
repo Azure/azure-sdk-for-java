@@ -7,7 +7,9 @@ package com.azure.resourcemanager.servicefabric.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The application type name properties. */
+/**
+ * The application type name properties.
+ */
 @Immutable
 public final class ApplicationTypeResourceProperties {
     /*
@@ -16,14 +18,16 @@ public final class ApplicationTypeResourceProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
-    /** Creates an instance of ApplicationTypeResourceProperties class. */
+    /**
+     * Creates an instance of ApplicationTypeResourceProperties class.
+     */
     public ApplicationTypeResourceProperties() {
     }
 
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -32,7 +36,7 @@ public final class ApplicationTypeResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

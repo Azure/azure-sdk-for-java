@@ -8,7 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
-import com.azure.search.documents.implementation.batching.SearchIndexingPublisher;
+import com.azure.search.documents.implementation.batching.SearchIndexingAsyncPublisher;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.options.OnActionAddedOptions;
@@ -18,13 +18,14 @@ import com.azure.search.documents.options.OnActionSucceededOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -41,12 +42,13 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     private final boolean autoFlush;
     private final long flushWindowMillis;
 
-    final SearchIndexingPublisher<T> publisher;
+    final SearchIndexingAsyncPublisher<T> publisher;
 
     private Timer autoFlushTimer;
     private final AtomicReference<TimerTask> flushTask = new AtomicReference<>();
 
     private volatile boolean isClosed = false;
+    private final ReentrantLock closeLock = new ReentrantLock();
 
     SearchIndexingBufferedAsyncSender(SearchIndexClientImpl restClient, JsonSerializer serializer,
         Function<T, String> documentKeyRetriever, boolean autoFlush, Duration autoFlushInterval,
@@ -55,7 +57,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
         Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer,
         Consumer<OnActionErrorOptions<T>> onActionErrorConsumer,
         Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
-        this.publisher = new SearchIndexingPublisher<>(restClient, serializer, documentKeyRetriever, autoFlush,
+        this.publisher = new SearchIndexingAsyncPublisher<>(restClient, serializer, documentKeyRetriever, autoFlush,
             initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay, onActionAddedConsumer,
             onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
 
@@ -211,7 +213,8 @@ public final class SearchIndexingBufferedAsyncSender<T> {
 
     Mono<Void> close(Context context) {
         if (!isClosed) {
-            synchronized (this) {
+            closeLock.lock();
+            try {
                 if (!isClosed) {
                     isClosed = true;
                     if (this.autoFlush) {
@@ -229,13 +232,15 @@ public final class SearchIndexingBufferedAsyncSender<T> {
                 }
 
                 return Mono.empty();
+            } finally {
+                closeLock.unlock();
             }
         }
 
         return Mono.empty();
     }
 
-    private synchronized void ensureOpen() {
+    private void ensureOpen() {
         if (isClosed) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Buffered sender has been closed."));
         }
@@ -243,9 +248,12 @@ public final class SearchIndexingBufferedAsyncSender<T> {
 
     private static <T> Collection<IndexAction<T>> createDocumentActions(Collection<T> documents,
         IndexActionType actionType) {
-        return documents.stream().map(document -> new IndexAction<T>()
-            .setActionType(actionType)
-            .setDocument(document))
-            .collect(Collectors.toList());
+        Collection<IndexAction<T>> actions = new ArrayList<>(documents.size());
+
+        for (T document : documents) {
+            actions.add(new IndexAction<T>().setActionType(actionType).setDocument(document));
+        }
+
+        return actions;
     }
 }

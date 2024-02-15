@@ -8,19 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KnownWindowsEventLogDataSourceStreams. */
+/**
+ * Defines values for KnownWindowsEventLogDataSourceStreams.
+ */
 public final class KnownWindowsEventLogDataSourceStreams
     extends ExpandableStringEnum<KnownWindowsEventLogDataSourceStreams> {
-    /** Static value Microsoft-WindowsEvent for KnownWindowsEventLogDataSourceStreams. */
-    public static final KnownWindowsEventLogDataSourceStreams MICROSOFT_WINDOWS_EVENT =
-        fromString("Microsoft-WindowsEvent");
+    /**
+     * Static value Microsoft-WindowsEvent for KnownWindowsEventLogDataSourceStreams.
+     */
+    public static final KnownWindowsEventLogDataSourceStreams MICROSOFT_WINDOWS_EVENT
+        = fromString("Microsoft-WindowsEvent");
 
-    /** Static value Microsoft-Event for KnownWindowsEventLogDataSourceStreams. */
+    /**
+     * Static value Microsoft-Event for KnownWindowsEventLogDataSourceStreams.
+     */
     public static final KnownWindowsEventLogDataSourceStreams MICROSOFT_EVENT = fromString("Microsoft-Event");
 
     /**
+     * Creates a new instance of KnownWindowsEventLogDataSourceStreams value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KnownWindowsEventLogDataSourceStreams() {
+    }
+
+    /**
      * Creates or finds a KnownWindowsEventLogDataSourceStreams from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KnownWindowsEventLogDataSourceStreams.
      */
@@ -31,7 +46,7 @@ public final class KnownWindowsEventLogDataSourceStreams
 
     /**
      * Gets known KnownWindowsEventLogDataSourceStreams values.
-     *
+     * 
      * @return known KnownWindowsEventLogDataSourceStreams values.
      */
     public static Collection<KnownWindowsEventLogDataSourceStreams> values() {

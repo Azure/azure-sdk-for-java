@@ -5,8 +5,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.statsbeat;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.StatsbeatTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
+import reactor.util.annotation.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.function.Function;
 
@@ -76,8 +76,8 @@ class AttachStatsbeat extends BaseStatsbeat {
                 } else {
                     return UNKNOWN_RP_ID;
                 }
-            case RP_AKS: // TODO will update resourceProviderId when cluster_id becomes available from the
-                // AKS AzureMetadataService extension.
+            case RP_AKS:
+                return envVarFn.apply("AKS_ARM_NAMESPACE_ID");
             case UNKNOWN:
                 return UNKNOWN_RP_ID;
         }

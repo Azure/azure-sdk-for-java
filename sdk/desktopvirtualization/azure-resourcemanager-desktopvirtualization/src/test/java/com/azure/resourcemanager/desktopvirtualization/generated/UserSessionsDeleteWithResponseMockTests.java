@@ -58,6 +58,7 @@ public final class UserSessionsDeleteWithResponseMockTests {
 
         manager
             .userSessions()
-            .deleteWithResponse("zcyjtot", "vopvp", "dbzqgqqihed", "vqwt", false, com.azure.core.util.Context.NONE);
+            .deleteWithResponse(
+                "aifghtmoqqt", "ffhzbkrkjjjavfq", "vhnqo", "wdogiyetesyp", false, com.azure.core.util.Context.NONE);
     }
 }

@@ -46,7 +46,10 @@ public final class ScheduleCreationParameterProperties {
     private HourDetails hourlyRecurrence;
 
     /*
-     * The time zone ID (e.g. Pacific Standard time).
+     * The time zone ID (e.g. China Standard Time, Greenland Standard Time, Pacific Standard time, etc.). The possible
+     * values for this property can be found in `IReadOnlyCollection<string>
+     * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
+     * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md)
      */
     @JsonProperty(value = "timeZoneId")
     private String timeZoneId;
@@ -174,7 +177,10 @@ public final class ScheduleCreationParameterProperties {
     }
 
     /**
-     * Get the timeZoneId property: The time zone ID (e.g. Pacific Standard time).
+     * Get the timeZoneId property: The time zone ID (e.g. China Standard Time, Greenland Standard Time, Pacific
+     * Standard time, etc.). The possible values for this property can be found in `IReadOnlyCollection&lt;string&gt;
+     * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
+     * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
      *
      * @return the timeZoneId value.
      */
@@ -183,7 +189,10 @@ public final class ScheduleCreationParameterProperties {
     }
 
     /**
-     * Set the timeZoneId property: The time zone ID (e.g. Pacific Standard time).
+     * Set the timeZoneId property: The time zone ID (e.g. China Standard Time, Greenland Standard Time, Pacific
+     * Standard time, etc.). The possible values for this property can be found in `IReadOnlyCollection&lt;string&gt;
+     * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
+     * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
      *
      * @param timeZoneId the timeZoneId value to set.
      * @return the ScheduleCreationParameterProperties object itself.

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The instance view of a virtual machine boot diagnostics. */
+/**
+ * The instance view of a virtual machine boot diagnostics.
+ */
 @Immutable
 public final class BootDiagnosticsInstanceView {
     /*
@@ -31,14 +33,16 @@ public final class BootDiagnosticsInstanceView {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private InstanceViewStatus status;
 
-    /** Creates an instance of BootDiagnosticsInstanceView class. */
+    /**
+     * Creates an instance of BootDiagnosticsInstanceView class.
+     */
     public BootDiagnosticsInstanceView() {
     }
 
     /**
-     * Get the consoleScreenshotBlobUri property: The console screenshot blob URI. **Note:** This will **not** be set if
-     * boot diagnostics is currently enabled with managed storage.
-     *
+     * Get the consoleScreenshotBlobUri property: The console screenshot blob URI. **Note:** This will **not** be set
+     * if boot diagnostics is currently enabled with managed storage.
+     * 
      * @return the consoleScreenshotBlobUri value.
      */
     public String consoleScreenshotBlobUri() {
@@ -48,7 +52,7 @@ public final class BootDiagnosticsInstanceView {
     /**
      * Get the serialConsoleLogBlobUri property: The serial console log blob Uri. **Note:** This will **not** be set if
      * boot diagnostics is currently enabled with managed storage.
-     *
+     * 
      * @return the serialConsoleLogBlobUri value.
      */
     public String serialConsoleLogBlobUri() {
@@ -58,7 +62,7 @@ public final class BootDiagnosticsInstanceView {
     /**
      * Get the status property: The boot diagnostics status information for the VM. **Note:** It will be set only if
      * there are errors encountered in enabling boot diagnostics.
-     *
+     * 
      * @return the status value.
      */
     public InstanceViewStatus status() {
@@ -67,7 +71,7 @@ public final class BootDiagnosticsInstanceView {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

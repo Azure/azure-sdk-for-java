@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class MapperDslConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MapperDslConnectorProperties model =
-            BinaryData
-                .fromString("{\"name\":\"lkwq\",\"value\":\"datatv\"}")
-                .toObject(MapperDslConnectorProperties.class);
+        MapperDslConnectorProperties model = BinaryData.fromString("{\"name\":\"lkwq\",\"value\":\"datatv\"}")
+            .toObject(MapperDslConnectorProperties.class);
         Assertions.assertEquals("lkwq", model.name());
     }
 

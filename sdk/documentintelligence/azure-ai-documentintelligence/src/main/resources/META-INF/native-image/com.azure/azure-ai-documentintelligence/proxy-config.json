@@ -1,0 +1,8 @@
+[
+  [
+    "com.azure.ai.documentintelligence.implementation.DocumentIntelligenceClientImpl$DocumentIntelligenceClientService"
+  ],
+  [
+    "com.azure.ai.documentintelligence.implementation.DocumentIntelligenceAdministrationClientImpl$DocumentIntelligenceAdministrationClientService"
+  ]
+]

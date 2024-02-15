@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The type used for update operations of the FirewallResource. */
+/**
+ * The type used for update operations of the FirewallResource.
+ */
 @Fluent
 public final class FirewallResourceUpdate {
     /*
@@ -31,13 +33,15 @@ public final class FirewallResourceUpdate {
     @JsonProperty(value = "properties")
     private FirewallResourceUpdateProperties properties;
 
-    /** Creates an instance of FirewallResourceUpdate class. */
+    /**
+     * Creates an instance of FirewallResourceUpdate class.
+     */
     public FirewallResourceUpdate() {
     }
 
     /**
      * Get the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @return the identity value.
      */
     public AzureResourceManagerManagedIdentityProperties identity() {
@@ -46,7 +50,7 @@ public final class FirewallResourceUpdate {
 
     /**
      * Set the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the FirewallResourceUpdate object itself.
      */
@@ -57,7 +61,7 @@ public final class FirewallResourceUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -66,7 +70,7 @@ public final class FirewallResourceUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the FirewallResourceUpdate object itself.
      */
@@ -77,7 +81,7 @@ public final class FirewallResourceUpdate {
 
     /**
      * Get the properties property: The updatable properties of the FirewallResource.
-     *
+     * 
      * @return the properties value.
      */
     public FirewallResourceUpdateProperties properties() {
@@ -86,7 +90,7 @@ public final class FirewallResourceUpdate {
 
     /**
      * Set the properties property: The updatable properties of the FirewallResource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the FirewallResourceUpdate object itself.
      */
@@ -97,7 +101,7 @@ public final class FirewallResourceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

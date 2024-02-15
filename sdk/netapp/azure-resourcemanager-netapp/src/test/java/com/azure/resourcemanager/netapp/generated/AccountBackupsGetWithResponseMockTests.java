@@ -30,43 +30,30 @@ public final class AccountBackupsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"location\":\"oibgsxg\",\"properties\":{\"backupId\":\"fyq\",\"creationDate\":\"2021-01-20T15:12:39Z\",\"provisioningState\":\"qoxwd\",\"size\":6770631017855519279,\"label\":\"iqxeiiqbimht\",\"backupType\":\"Scheduled\",\"failureReason\":\"nhe\",\"volumeName\":\"qpofvwbc\",\"useExistingSnapshot\":false},\"id\":\"mbnkb\",\"name\":\"vqvxk\",\"type\":\"ivqiheb\"}";
+        String responseStr
+            = "{\"properties\":{\"backupId\":\"auxofshfph\",\"creationDate\":\"2021-08-16T03:23:29Z\",\"provisioningState\":\"lai\",\"size\":161630464243090095,\"label\":\"ywhslwkojpllndnp\",\"backupType\":\"Manual\",\"failureReason\":\"qafgfugsnnfhyet\",\"volumeResourceId\":\"fypococtfjgti\",\"useExistingSnapshot\":false,\"snapshotName\":\"zuyt\",\"backupPolicyResourceId\":\"mlmuowol\"},\"id\":\"uir\",\"name\":\"p\",\"type\":\"ons\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetAppFilesManager manager =
-            NetAppFilesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Backup response =
-            manager
-                .accountBackups()
-                .getWithResponse("tayx", "nsup", "ujlzqnhcvsqltn", com.azure.core.util.Context.NONE)
-                .getValue();
+        Backup response = manager.accountBackups()
+            .getWithResponse("w", "epdfgkmtdherng", "tcjuahokqto", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("oibgsxg", response.location());
-        Assertions.assertEquals("iqxeiiqbimht", response.label());
+        Assertions.assertEquals("ywhslwkojpllndnp", response.label());
+        Assertions.assertEquals("fypococtfjgti", response.volumeResourceId());
         Assertions.assertEquals(false, response.useExistingSnapshot());
+        Assertions.assertEquals("zuyt", response.snapshotName());
     }
 }
