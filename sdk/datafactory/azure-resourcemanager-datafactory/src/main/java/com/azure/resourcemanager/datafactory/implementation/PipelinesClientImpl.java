@@ -817,7 +817,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
         final Map<String, Object> parameters = null;
         return createRunWithResponseAsync(resourceGroupName, factoryName, pipelineName, referencePipelineRunId,
             isRecovery, startActivityName, startFromFailure, parameters)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
