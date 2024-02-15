@@ -3,6 +3,8 @@
 
 package com.generic.core.http.models;
 
+import com.generic.core.implementation.util.ServerSentEventHelper;
+
 import java.time.Duration;
 import java.util.List;
 
@@ -78,51 +80,69 @@ public final class ServerSentEvent {
     /**
      * Set event ID
      * @param id the event id
-     * @return the {@link ServerSentEvent} object
      */
-    public ServerSentEvent setId(Long id) {
+    private void setId(Long id) {
         this.id = id;
-        return this;
     }
 
     /**
      * Set the value of "event" field from stream
      * @param event the value of "event" field
-     * @return the {@link ServerSentEvent} object
      */
-    public ServerSentEvent setEvent(String event) {
+    private void setEvent(String event) {
         this.event = event;
-        return this;
     }
 
     /**
      * Set the value of "data" field from stream
      * @param data the value of "data" field
-     * @return the {@link ServerSentEvent} object
      */
-    public ServerSentEvent setData(List<String> data) {
+    private void setData(List<String> data) {
         this.data = data;
-        return this;
     }
 
     /**
      * Set the comment associated with the event
      * @param comment the comment associated with the event
-     * @return the {@link ServerSentEvent} object
      */
-    public ServerSentEvent setComment(String comment) {
+    private void setComment(String comment) {
         this.comment = comment;
-        return this;
     }
 
     /**
      * Set the new connection retry time duration the event receiver should wait before attempting to reconnect
      * after a connection error.
      * @param retryAfter the new connection retry time in milliseconds
-     * @return the {@link ServerSentEvent} object
      */
-    public ServerSentEvent setRetryAfter(Duration retryAfter) {
+    private void setRetryAfter(Duration retryAfter) {
         this.retryAfter = retryAfter;
-        return this;
+    }
+
+    static {
+        ServerSentEventHelper.setAccessor(new ServerSentEventHelper.ServerSentEventAccessor() {
+            @Override
+            public void setId(ServerSentEvent serverSentEvent, Long id) {
+                serverSentEvent.setId(id);
+            }
+            @Override
+            public void setEvent(ServerSentEvent serverSentEvent, String event) {
+                serverSentEvent.setEvent(event);
+            }
+
+            @Override
+            public void setData(ServerSentEvent serverSentEvent, List<String> data) {
+                serverSentEvent.setData(data);
+            }
+
+            @Override
+            public void setComment(ServerSentEvent serverSentEvent, String comment) {
+                serverSentEvent.setComment(comment);
+            }
+
+            @Override
+            public void setRetryAfter(ServerSentEvent serverSentEvent, Duration retryAfter) {
+                serverSentEvent.setRetryAfter(retryAfter);
+            }
+        });
     }
 }

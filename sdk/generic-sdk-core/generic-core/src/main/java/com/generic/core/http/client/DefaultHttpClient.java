@@ -11,6 +11,7 @@ import com.generic.core.http.models.ServerSentEvent;
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.http.ContentType;
+import com.generic.core.implementation.util.ServerSentEventHelper;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
@@ -53,7 +54,7 @@ class DefaultHttpClient implements HttpClient {
     private final ProxyOptions proxyOptions;
     private static final String LAST_EVENT_ID = "Last-Event-Id";
     private static final String DEFAULT_EVENT = "message";
-    private final Pattern DIGITS_ONLY = Pattern.compile("^[\\d]*$");
+    private static final Pattern DIGITS_ONLY = Pattern.compile("^[\\d]*$");
 
     DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions) {
         this.connectionTimeout = connectionTimeout == null ? -1 : connectionTimeout.toMillis();
@@ -278,13 +279,13 @@ class DefaultHttpClient implements HttpClient {
     }
 
     private ServerSentEvent processLines(String[] lines) {
-        List<String> eventData = new ArrayList<>();
+        List<String> eventData = null;
         ServerSentEvent event = new ServerSentEvent();
 
         for (String line : lines) {
             int idx = line.indexOf(':');
             if (idx == 0) {
-                event.setComment(line.substring(1).trim());
+                ServerSentEventHelper.setComment(event, line.substring(1).trim());
                 continue;
             }
             String field = line.substring(0, idx < 0 ? lines.length : idx).trim().toLowerCase();
@@ -292,19 +293,22 @@ class DefaultHttpClient implements HttpClient {
 
             switch (field) {
                 case "event":
-                    event.setEvent(value);
+                    ServerSentEventHelper.setEvent(event, value);
                     break;
                 case "data":
+                    if(eventData == null) {
+                        eventData = new ArrayList<>();
+                    }
                     eventData.add(value);
                     break;
                 case "id":
                     if (!value.isEmpty()) {
-                        event.setId(Long.parseLong(value));
+                        ServerSentEventHelper.setId(event, Long.parseLong(value));
                     }
                     break;
                 case "retry":
                     if (!value.isEmpty() && DIGITS_ONLY.matcher(value).matches()) {
-                        event.setRetryAfter(Duration.ofMillis(Long.parseLong(value)));
+                        ServerSentEventHelper.setRetryAfter(event, Duration.ofMillis(Long.parseLong(value)));
                     }
                     break;
                 default:
@@ -312,9 +316,11 @@ class DefaultHttpClient implements HttpClient {
             }
         }
 
-        event.setEvent(event.getEvent() == null ? DEFAULT_EVENT : event.getEvent());
-        if (!eventData.isEmpty()) {
-            event.setData(eventData);
+        if (event.getEvent() == null) {
+            ServerSentEventHelper.setEvent(event, DEFAULT_EVENT);
+        }
+        if (eventData != null) {
+            ServerSentEventHelper.setData(event, eventData);
         }
 
         return event;
