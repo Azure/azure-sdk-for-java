@@ -79,6 +79,7 @@ public final class IdentityClientOptions implements Cloneable {
     private long brokerWindowHandle;
     private boolean brokerEnabled;
     private boolean enableMsaPassthrough;
+    private boolean useOperatingSystemAccount;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -782,11 +783,29 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
+     * Sets whether to use the logged-in user's account for broker authentication.
+     * @param useOperatingSystemAccount
+     * @return the updated client options
+     */
+    public IdentityClientOptions setUseOperatingSystemAccount(boolean useOperatingSystemAccount) {
+        this.useOperatingSystemAccount = useOperatingSystemAccount;
+        return this;
+    }
+
+    /**
      * Gets the status whether MSA passthrough is enabled or not.
      * @return the flag indicating if MSA passthrough is enabled or not.
      */
     public boolean isMsaPassthroughEnabled() {
         return this.enableMsaPassthrough;
+    }
+
+    /**
+     * Gets the status whether to use the logged-in user's account for broker authentication.
+     * @return the flag indicating if the logged-in user's account should be used for broker authentication.
+     */
+    public boolean useOperatingSystemAccount() {
+        return this.useOperatingSystemAccount;
     }
 
     public IdentityClientOptions clone() {
