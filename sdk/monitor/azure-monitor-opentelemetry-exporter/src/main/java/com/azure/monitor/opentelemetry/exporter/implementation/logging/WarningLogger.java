@@ -40,11 +40,20 @@ public class WarningLogger {
     public void recordWarning(@Nullable Throwable exception) {
         if (!firstFailure.getAndSet(true)) {
             // log the first time we see an exception as soon as it occurs, along with full stack trace
-            logger.warn(
-                "{} (future warnings will be aggregated and logged once every {} minutes)",
-                message,
-                intervalSeconds / 60,
-                exception);
+            String message = "{} (future warnings will be aggregated and logged once every {} minutes)";
+            if(exception instanceof java.util.concurrent.TimeoutException && exception.getMessage().equals("Channel response timed out after 60000 milliseconds.")) {
+                logger.debug(
+                    message,
+                    this.message,
+                    intervalSeconds / 60,
+                    exception);
+            } else {
+                logger.warn(
+                    message,
+                    this.message,
+                    intervalSeconds / 60,
+                    exception);
+            }
             AggregatingLogger.scheduledExecutor.scheduleWithFixedDelay(
                 new ExceptionStatsLogger(), intervalSeconds, intervalSeconds, TimeUnit.SECONDS);
             return;
@@ -64,11 +73,20 @@ public class WarningLogger {
                 return;
             }
             long numMinutes = WarningLogger.this.intervalSeconds / 60;
-            logger.warn(
-                "In the last {} minutes, the following warning has occurred {} times: {}",
-                numMinutes,
-                numWarnings,
-                message);
+            String message = "In the last {} minutes, the following warning has occurred {} times: {}";
+            if (numWarnings == 1 && WarningLogger.this.message != null && WarningLogger.this.message.contains("Sending telemetry to the ingestion service") && WarningLogger.this.message.contains("Connection refused")) {
+                logger.debug(
+                    message,
+                    numMinutes,
+                    numWarnings,
+                    WarningLogger.this.message);
+            } else {
+                logger.warn(
+                    message,
+                    numMinutes,
+                    numWarnings,
+                    WarningLogger.this.message);
+            }
         }
     }
 }
