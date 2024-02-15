@@ -4,7 +4,7 @@
 package com.generic.core.http.models;
 
 import com.generic.core.http.policy.RequestRetryCondition;
-import com.generic.core.models.HeaderName;
+import com.generic.core.models.Header;
 import com.generic.core.util.ClientLogger;
 
 import java.time.Duration;
@@ -22,7 +22,7 @@ public final class RetryOptions {
     private final Duration maxDelay;
     private final Duration fixedDelay;
     private Predicate<RequestRetryCondition> shouldRetryCondition;
-    private Function<HeaderName, Duration> retryHeaders;
+    private Function<Header, Duration> delayFromHeaders;
 
     /**
      * Creates an instance of {@link RetryOptions} with values for {@code baseDelay} and {@code maxDelay}. Use this
@@ -129,17 +129,17 @@ public final class RetryOptions {
      * Gets the headers that will be added to a retry request.
      * @return The headers that will be added to a retry request.
      */
-    public Function<HeaderName, Duration> getRetryHeaders() {
-        return retryHeaders;
+    public Function<Header, Duration> getDelayFromHeaders() {
+        return delayFromHeaders;
     }
 
     /**
      * Sets the headers that will be added to a retry request.
-     * @param retryHeaders the map of headers to add to a retry request.
+     * @param delayFromHeaders the map of headers to add to a retry request.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions setRetryHeaders(Function<HeaderName, Duration> retryHeaders) {
-        this.retryHeaders = retryHeaders;
+    public RetryOptions setDelayFromHeaders(Function<Header, Duration> delayFromHeaders) {
+        this.delayFromHeaders = delayFromHeaders;
         return this;
     }
 }

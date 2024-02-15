@@ -372,7 +372,7 @@ public class RetryPolicyTests {
     @Test
     public void retryOptionsCanConfigureRetryHeaders() {
         RetryOptions retryOptions = new RetryOptions(1, Duration.ofMillis(1))
-            .setRetryHeaders(headerName -> headerName.equals(HeaderName.RETRY_AFTER) ? Duration.ofMillis(100) : null);
+            .setDelayFromHeaders(header -> HeaderName.RETRY_AFTER.toString().equalsIgnoreCase(header.getName()) ? Duration.ofSeconds(10) : null);
         Headers headers = new Headers().set(HeaderName.RETRY_AFTER, "10");
 
         AtomicInteger attemptCount = new AtomicInteger();

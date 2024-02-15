@@ -12,7 +12,6 @@ import com.generic.core.implementation.http.policy.ExponentialBackoffDelay;
 import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.implementation.util.LoggingKeys;
 import com.generic.core.models.Header;
-import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.configuration.Configuration;
@@ -40,7 +39,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RetryPolicy.class);
     private int maxRetries;
     private RetryStrategy retryStrategy;
-    private final Function<HeaderName, Duration> retryHeaders;
+    private final Function<Header, Duration> delayFromHeaders;
 
     private static final int DEFAULT_MAX_RETRIES;
 
@@ -78,7 +77,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * @throws NullPointerException If {@code retryOptions} is null.
      */
     RetryPolicy(RetryOptions retryOptions) {
-        this(ImplUtils.getRetryStrategyFromOptions(retryOptions), retryOptions.getMaxRetries(), retryOptions.getRetryHeaders());
+        this(ImplUtils.getRetryStrategyFromOptions(retryOptions), retryOptions.getMaxRetries(), retryOptions.getDelayFromHeaders());
     }
 
     /**
@@ -88,14 +87,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
      * @param maxRetries The maximum number of retry attempts to be made.
-     * @param retryHeaders The header set to look for retry after duration.
+     * @param delayFromHeaders The header set to look for retry after duration.
      * @throws NullPointerException If {@code retryStrategy} is null or when {@code retryAfterTimeUnit} is null and
      * {@code retryAfterHeader} is not null.
      */
-    RetryPolicy(RetryStrategy retryStrategy, int maxRetries, Function<HeaderName, Duration> retryHeaders) {
+    RetryPolicy(RetryStrategy retryStrategy, int maxRetries, Function<Header, Duration> delayFromHeaders) {
         this.maxRetries = maxRetries;
         this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null.");
-        this.retryHeaders = retryHeaders;
+        this.delayFromHeaders = delayFromHeaders;
     }
 
     @Override
@@ -180,7 +179,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
         if (shouldRetryResponse(retryStrategy, httpResponse, tryCount, suppressed)) {
             final Duration delayDuration =
-                determineDelayDuration(httpResponse, tryCount, retryStrategy, retryHeaders);
+                determineDelayDuration(httpResponse, tryCount, retryStrategy, delayFromHeaders);
 
             logRetry(tryCount, delayDuration);
 
@@ -206,14 +205,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Determines the delay duration that should be waited before retrying.
      */
     private static Duration determineDelayDuration(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
-                                                   Function<HeaderName, Duration> retryHeaders) {
+                                                   Function<Header, Duration> delayFromHeaders) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
-        if (retryHeaders == null) {
+        if (delayFromHeaders == null) {
             return getWellKnownRetryDelay(response.getHeaders(), tryCount, retryStrategy, OffsetDateTime::now);
         }
         AtomicReference<Duration> retryHeaderValue = new AtomicReference<>();
         for (Header header : response.getHeaders()) {
-            Duration duration = retryHeaders.apply(HeaderName.fromString(header.getName()));
+            Duration duration = delayFromHeaders.apply(header);
             if (duration != null) {
                 retryHeaderValue.set(duration);
                 break;
