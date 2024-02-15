@@ -216,7 +216,7 @@
 
 # ServiceLabel: %Storage
 # PRLabel: %Storage
-/sdk/storage/                                        @ibrahimrabab @seanmcc-msft @ibrandes
+/sdk/storage/                                        @ibrahimrabab @seanmcc-msft @ibrandes @alzimmermsft
 
 # AzureSdkOwners: @jairmyree
 # ServiceLabel: %Tables
