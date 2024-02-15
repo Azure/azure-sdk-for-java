@@ -38,6 +38,26 @@ public final class CertificatesUtils {
         return pieces.length >= index + 1 ? pieces[index] : null;
     }
 
+    public static String toHexString(byte[] x509Thumbprint) {
+        if (x509Thumbprint == null) {
+            return null;
+        }
+
+        StringBuilder hexString = new StringBuilder();
+
+        for (byte b : x509Thumbprint) {
+            String hex = Integer.toHexString(0xFF & b);
+
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+
+            hexString.append(hex);
+        }
+
+        return hexString.toString().replace("-", "");
+    }
+
     private CertificatesUtils() {
     }
 }

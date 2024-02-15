@@ -873,8 +873,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         importCertificateRunner((importCertificateOptions) ->
             StepVerifier.create(certificateAsyncClient.importCertificate(importCertificateOptions))
                 .assertNext(importedCertificate -> {
-                    assertTrue(toHexString(importedCertificate.getProperties().getX509Thumbprint())
-                        .equalsIgnoreCase("db1497bc2c82b365c5c7c73f611513ee117790a9"));
+                    assertTrue("db1497bc2c82b365c5c7c73f611513ee117790a9"
+                        .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintHexString()));
                     assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
                     // Load the CER part into X509Certificate object
