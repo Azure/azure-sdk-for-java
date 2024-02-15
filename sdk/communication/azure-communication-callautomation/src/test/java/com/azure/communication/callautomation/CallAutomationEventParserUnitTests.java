@@ -111,7 +111,7 @@ public class CallAutomationEventParserUnitTests {
             + "        \"source\": \"calling/recordings/serverCallId/recordingId/recordingId/TeamsComplianceRecordingStateChanged\",\n"
             + "        \"type\": \"Microsoft.Communication.TeamsComplianceRecordingStateChanged\",\n"
             + "        \"data\": {\n"
-            + "            \"type\": \"teamsComplianceRecordingStateChanged\",\n"
+            + "            \"type\": \"teamsCompliance\",\n"
             + "            \"recordingId\": \"recordingId\",\n"
             + "            \"state\": \"active\",\n"
             + "            \"startDateTime\": \"2022-08-11T23:42:45.4394211+00:00\",\n"
