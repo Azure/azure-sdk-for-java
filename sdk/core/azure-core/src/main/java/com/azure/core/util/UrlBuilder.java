@@ -309,8 +309,8 @@ public final class UrlBuilder {
                     break;
 
                 case QUERY:
-                    CoreUtils.parseQueryParameters(tokenText).forEachRemaining(queryParam ->
-                        addQueryParameter(queryParam.getKey(), queryParam.getValue()));
+                    CoreUtils.parseQueryParameters(tokenText)
+                        .forEachRemaining(queryParam -> addQueryParameter(queryParam.getKey(), queryParam.getValue()));
                     break;
 
                 default:
@@ -403,8 +403,8 @@ public final class UrlBuilder {
         if (PARSED_URLS.size() >= MAX_CACHE_SIZE) {
             PARSED_URLS.clear();
         }
-        return PARSED_URLS.computeIfAbsent(concurrentSafeUrl, u ->
-            new UrlBuilder().with(u, UrlTokenizerState.SCHEME_OR_HOST)).copy();
+        return PARSED_URLS
+            .computeIfAbsent(concurrentSafeUrl, u -> new UrlBuilder().with(u, UrlTokenizerState.SCHEME_OR_HOST)).copy();
     }
 
     /**

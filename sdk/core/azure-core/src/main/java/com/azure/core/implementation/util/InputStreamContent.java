@@ -48,7 +48,6 @@ public final class InputStreamContent extends BinaryDataContent {
     private static final AtomicReferenceFieldUpdater<InputStreamContent, byte[]> BYTES_UPDATER
         = AtomicReferenceFieldUpdater.newUpdater(InputStreamContent.class, byte[].class, "bytes");
 
-
     /**
      * Creates an instance of {@link InputStreamContent}.
      *
@@ -169,8 +168,7 @@ public final class InputStreamContent extends BinaryDataContent {
         }
 
         InputStream inputStream = this.content.get();
-        return Mono.just(inputStream)
-            .publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
+        return Mono.just(inputStream).publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
             .map(is -> readAndBuffer(is, length));
     }
 
@@ -194,8 +192,8 @@ public final class InputStreamContent extends BinaryDataContent {
 
     private static InputStreamContent readAndBuffer(InputStream inputStream, Long length) {
         try {
-            Tuple2<Long, List<ByteBuffer>> streamRead = StreamUtil.readStreamToListOfByteBuffers(
-                inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
+            Tuple2<Long, List<ByteBuffer>> streamRead = StreamUtil.readStreamToListOfByteBuffers(inputStream, length,
+                INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
             long readLength = streamRead.getT1();
             List<ByteBuffer> byteBuffers = streamRead.getT2();
 

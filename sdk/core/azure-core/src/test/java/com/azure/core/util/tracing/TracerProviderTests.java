@@ -24,14 +24,14 @@ public class TracerProviderTests {
 
     @Test
     public void invalidParams() {
-        assertThrows(NullPointerException.class, () -> TracerProvider.getDefaultProvider().createTracer(null, null, null, null));
+        assertThrows(NullPointerException.class,
+            () -> TracerProvider.getDefaultProvider().createTracer(null, null, null, null));
     }
 
     @Test
     public void createTracerCustomProviderDoesNotExistConfiguration() {
         Configuration config = new ConfigurationBuilder()
-            .putProperty("tracing.provider.implementation", "com.azure.core.util.tracing.TestTracerProvider")
-            .build();
+            .putProperty("tracing.provider.implementation", "com.azure.core.util.tracing.TestTracerProvider").build();
 
         assertThrows(RuntimeException.class, () -> TracingOptions.fromConfiguration(config));
     }
@@ -48,49 +48,49 @@ public class TracerProviderTests {
     @Test
     public void createTracerCustomProviderDoesNotExistEnvVar() {
         TestConfigurationSource envSource = new TestConfigurationSource();
-        envSource.put(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION, "com.azure.core.util.tracing.TracerProviderTests");
-        Configuration config = new ConfigurationBuilder(new TestConfigurationSource(), new TestConfigurationSource(), envSource)
-            .build();
+        envSource.put(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION,
+            "com.azure.core.util.tracing.TracerProviderTests");
+        Configuration config
+            = new ConfigurationBuilder(new TestConfigurationSource(), new TestConfigurationSource(), envSource).build();
 
         // class exists, so no exception here
         TracingOptions options = TracingOptions.fromConfiguration(config);
 
         // but it should fail attempting create a provider, since TracerProviderTests don't implement TracerProvider
-        assertThrows(RuntimeException.class, () -> TracerProvider.getDefaultProvider()
-            .createTracer("test", null, null, options));
+        assertThrows(RuntimeException.class,
+            () -> TracerProvider.getDefaultProvider().createTracer("test", null, null, options));
     }
 
     @Test
     public void createTracerCustomProviderNotInMetaInf() {
         TestConfigurationSource envSource = new TestConfigurationSource();
-        envSource.put(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION, "com.azure.core.util.tracing.TracerProviderTests$TestTracerProvider");
-        Configuration config = new ConfigurationBuilder(new TestConfigurationSource(), new TestConfigurationSource(), envSource)
-            .build();
+        envSource.put(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION,
+            "com.azure.core.util.tracing.TracerProviderTests$TestTracerProvider");
+        Configuration config
+            = new ConfigurationBuilder(new TestConfigurationSource(), new TestConfigurationSource(), envSource).build();
 
         // class exists, so no exception here
         TracingOptions options = TracingOptions.fromConfiguration(config);
 
         // but it should fail attempting to find it through SPI
-        assertThrows(RuntimeException.class, () -> TracerProvider.getDefaultProvider()
-            .createTracer("test", null, null, options));
+        assertThrows(RuntimeException.class,
+            () -> TracerProvider.getDefaultProvider().createTracer("test", null, null, options));
     }
 
     @Test
     public void createTracerDisabledConfiguration() {
-        Configuration config = new ConfigurationBuilder()
-            .putProperty("tracing.disabled", "true")
-            .build();
+        Configuration config = new ConfigurationBuilder().putProperty("tracing.disabled", "true").build();
 
         TracingOptions options = TracingOptions.fromConfiguration(config);
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer("test", null, null, options);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, null, options);
         assertFalse(tracer.isEnabled());
         assertInstanceOf(NoopTracer.class, tracer);
     }
 
     public static class TestTracerProvider implements TracerProvider {
         @Override
-        public Tracer createTracer(String libraryName, String libraryVersion, String azNamespace, TracingOptions options) {
+        public Tracer createTracer(String libraryName, String libraryVersion, String azNamespace,
+            TracingOptions options) {
             return null;
         }
     }

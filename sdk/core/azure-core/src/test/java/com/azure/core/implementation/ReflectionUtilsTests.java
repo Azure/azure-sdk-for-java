@@ -60,12 +60,10 @@ public class ReflectionUtilsTests {
 
     @SuppressWarnings("DataFlowIssue")
     private static Stream<Executable> validateNullPointerExceptionThrownSupplier() {
-        return Stream.of(
-            () -> ReflectionUtils.getConstructorInvoker(null, null),
+        return Stream.of(() -> ReflectionUtils.getConstructorInvoker(null, null),
             () -> ReflectionUtils.getConstructorInvoker(null, null, false),
             () -> ReflectionUtils.getMethodInvoker(null, null),
-            () -> ReflectionUtils.getMethodInvoker(null, null, false)
-        );
+            () -> ReflectionUtils.getMethodInvoker(null, null, false));
     }
 
     @ParameterizedTest
@@ -78,12 +76,10 @@ public class ReflectionUtilsTests {
         try {
             Constructor<?> httpHeadersConstructor = HttpHeaders.class.getDeclaredConstructor();
             Method httpHeadersSet = HttpHeaders.class.getDeclaredMethod("set", String.class, String.class);
-            return Stream.of(
-                () -> ReflectionUtils.getConstructorInvoker(null, httpHeadersConstructor),
+            return Stream.of(() -> ReflectionUtils.getConstructorInvoker(null, httpHeadersConstructor),
                 () -> ReflectionUtils.getConstructorInvoker(null, httpHeadersConstructor, true),
                 () -> ReflectionUtils.getMethodInvoker(null, httpHeadersSet),
-                () -> ReflectionUtils.getMethodInvoker(null, httpHeadersSet, true)
-            );
+                () -> ReflectionUtils.getMethodInvoker(null, httpHeadersSet, true));
         } catch (ReflectiveOperationException ex) {
             throw new RuntimeException(ex);
         }

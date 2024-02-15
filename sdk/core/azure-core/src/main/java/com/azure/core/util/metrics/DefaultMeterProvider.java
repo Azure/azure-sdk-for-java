@@ -20,7 +20,8 @@ final class DefaultMeterProvider implements MeterProvider {
         + "but one could not be found on the classpath. If you are using a dependency manager, consider including a "
         + "dependency on azure-core-metrics-opentelemetry or enabling instrumentation package.";
 
-    private static final Providers<MeterProvider, Meter> METER_PROVIDER = new Providers<>(MeterProvider.class, null, NO_DEFAULT_PROVIDER);
+    private static final Providers<MeterProvider, Meter> METER_PROVIDER
+        = new Providers<>(MeterProvider.class, null, NO_DEFAULT_PROVIDER);
 
     private DefaultMeterProvider() {
     }

@@ -20,8 +20,11 @@ import java.util.Objects;
  * The pipeline policy that puts a UUID in the request header. Azure uses the request id as
  * the unique identifier for the request.
  *
- * <p>The default {@link HttpHeader} name can be overwritten as shown below
- * <p><strong>Code sample</strong></p>
+ * <p>
+ * The default {@link HttpHeader} name can be overwritten as shown below
+ * <p>
+ * <strong>Code sample</strong>
+ * </p>
  * <!-- src_embed com.azure.core.http.policy.RequestIdPolicy.constructor.overrideRequestIdHeaderName -->
  * <pre>
  * new RequestIdPolicy&#40;&quot;x-ms-my-custom-request-id&quot;&#41;;
@@ -38,8 +41,8 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
      * @param requestIdHeaderName to be used to set in {@link HttpRequest}.
      */
     public RequestIdPolicy(String requestIdHeaderName) {
-        this.requestIdHeaderName = HttpHeaderName.fromString(Objects.requireNonNull(requestIdHeaderName,
-            "requestIdHeaderName can not be null."));
+        this.requestIdHeaderName = HttpHeaderName
+            .fromString(Objects.requireNonNull(requestIdHeaderName, "requestIdHeaderName can not be null."));
     }
 
     /**
@@ -54,6 +57,7 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
         setRequestIdHeader(context.getHttpRequest(), requestIdHeaderName);
         return next.process();
     }
+
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         setRequestIdHeader(context.getHttpRequest(), requestIdHeaderName);
@@ -68,4 +72,3 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
         }
     }
 }
-

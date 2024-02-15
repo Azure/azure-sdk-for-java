@@ -41,7 +41,7 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
     }
 
     ContinuablePagedByIteratorBase(PageRetrieverSync<C, P> pageRetrieverSync, ContinuationState<C> continuationState,
-                                   Integer defaultPageSize, ClientLogger logger) {
+        Integer defaultPageSize, ClientLogger logger) {
         this.continuationState = continuationState;
         this.pageRetrieverSync = pageRetrieverSync;
         this.defaultPageSize = defaultPageSize;
@@ -87,7 +87,8 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
         AtomicBoolean receivedPages = new AtomicBoolean(false);
         if (pageRetriever != null) {
             /*
-             * In the scenario where multiple threads were waiting on synchronization, check that no earlier thread made a
+             * In the scenario where multiple threads were waiting on synchronization, check that no earlier thread made
+             * a
              * request that would satisfy the current element request. Additionally, check to make sure that any earlier
              * requests didn't consume the paged responses to completion.
              */
@@ -95,11 +96,10 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
                 return;
             }
 
-            pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize)
-                .map(page -> {
-                    receivePage(receivedPages, page);
-                    return page;
-                }).blockLast();
+            pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize).map(page -> {
+                receivePage(receivedPages, page);
+                return page;
+            }).blockLast();
         } else if (pageRetrieverSync != null) {
             P page = pageRetrieverSync.getPage(continuationState.getLastContinuationToken(), defaultPageSize);
             if (page != null) {

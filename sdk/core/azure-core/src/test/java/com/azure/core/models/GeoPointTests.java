@@ -73,16 +73,13 @@ public class GeoPointTests {
             Arguments.of(point, 1, false),
 
             // Other is itself.
-            Arguments.of(point, point, true),
-            Arguments.of(point1, point1, true),
+            Arguments.of(point, point, true), Arguments.of(point1, point1, true),
 
             // Other is a different value.
-            Arguments.of(point, point1, false),
-            Arguments.of(point1, point, false),
+            Arguments.of(point, point1, false), Arguments.of(point1, point, false),
 
             // Other is the same value.
             Arguments.of(point, new GeoPoint(position), true),
-            Arguments.of(point1, new GeoPoint(position1, boundingBox, properties), true)
-        );
+            Arguments.of(point1, new GeoPoint(position1, boundingBox, properties), true));
     }
 }

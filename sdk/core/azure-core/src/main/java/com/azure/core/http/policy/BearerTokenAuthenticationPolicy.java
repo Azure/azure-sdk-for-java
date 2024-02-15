@@ -95,29 +95,26 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         }
         HttpPipelineNextPolicy nextPolicy = next.clone();
 
-        return authorizeRequest(context)
-            .then(Mono.defer(next::process))
-            .flatMap(httpResponse -> {
-                String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-                if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                    return authorizeRequestOnChallenge(context, httpResponse).flatMap(retry -> {
-                        if (retry) {
-                            // Both Netty and OkHttp expect the requestBody to be closed after the response has been read.
-                            // Failure to do so results in memory leak.
-                            // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
-                            // the response body may not be consumed.
-                            // This can cause potential leaks in the scenarios like above, where the policy
-                            // may intercept the response and it may never be read.
-                            // Forcing the read here - so that the memory can be released.
-                            return httpResponse.getBody().ignoreElements()
-                                .then(nextPolicy.process());
-                        } else {
-                            return Mono.just(httpResponse);
-                        }
-                    });
-                }
-                return Mono.just(httpResponse);
-            });
+        return authorizeRequest(context).then(Mono.defer(next::process)).flatMap(httpResponse -> {
+            String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+            if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+                return authorizeRequestOnChallenge(context, httpResponse).flatMap(retry -> {
+                    if (retry) {
+                        // Both Netty and OkHttp expect the requestBody to be closed after the response has been read.
+                        // Failure to do so results in memory leak.
+                        // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
+                        // the response body may not be consumed.
+                        // This can cause potential leaks in the scenarios like above, where the policy
+                        // may intercept the response and it may never be read.
+                        // Forcing the read here - so that the memory can be released.
+                        return httpResponse.getBody().ignoreElements().then(nextPolicy.process());
+                    } else {
+                        return Mono.just(httpResponse);
+                    }
+                });
+            }
+            return Mono.just(httpResponse);
+        });
     }
 
     @Override
@@ -171,11 +168,10 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
 
     private Mono<Void> setAuthorizationHeaderHelper(HttpPipelineCallContext context,
         TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
-        return cache.getToken(tokenRequestContext, checkToForceFetchToken)
-            .flatMap(token -> {
-                setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
-                return Mono.empty();
-            });
+        return cache.getToken(tokenRequestContext, checkToForceFetchToken).flatMap(token -> {
+            setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
+            return Mono.empty();
+        });
     }
 
     private void setAuthorizationHeaderHelperSync(HttpPipelineCallContext context,

@@ -96,8 +96,7 @@ public final class GeoPolygonCollection extends GeoObject {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject()
-            .writeStringField("type", GeoObjectType.MULTI_POLYGON.toString())
+        jsonWriter.writeStartObject().writeStringField("type", GeoObjectType.MULTI_POLYGON.toString())
             .writeArrayField("coordinates", polygons,
                 (writer, geoPolygon) -> writer.writeArray(geoPolygon.getRings(), JsonWriter::writeJson))
             .writeJsonField("bbox", getBoundingBox());
@@ -130,8 +129,8 @@ public final class GeoPolygonCollection extends GeoObject {
                             + "'MultiPolygon'. The found 'type' was '" + type + "'.");
                     }
                 } else if ("coordinates".equals(fieldName)) {
-                    List<List<GeoLinearRing>> polygonRings =
-                        reader.readArray(polygon -> polygon.readArray(GeoLinearRing::fromJson));
+                    List<List<GeoLinearRing>> polygonRings
+                        = reader.readArray(polygon -> polygon.readArray(GeoLinearRing::fromJson));
                     polygons = new ArrayList<>(polygonRings.size());
                     for (List<GeoLinearRing> rings : polygonRings) {
                         polygons.add(new GeoPolygon(rings));

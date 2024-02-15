@@ -35,10 +35,8 @@ public class CoreUtilsSecurityIT {
 
         // Set the System property codebase.azure-core to the location of CoreUtils's codebase.
         // This gets picked up by the policy setting to prevent needing to hardcode the code base location.
-        System.setProperty("codebase.azure-core", CoreUtils.class.getProtectionDomain()
-            .getCodeSource()
-            .getLocation()
-            .toString());
+        System.setProperty("codebase.azure-core",
+            CoreUtils.class.getProtectionDomain().getCodeSource().getLocation().toString());
     }
 
     public void revertDefaultConfigurations() {
@@ -58,8 +56,8 @@ public class CoreUtilsSecurityIT {
         captureDefaultConfigurations();
 
         try {
-            java.security.Policy.setPolicy(java.security.Policy
-                .getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
+            java.security.Policy
+                .setPolicy(java.security.Policy.getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
             System.setSecurityManager(new SecurityManager());
 
             assertThrows(SecurityException.class,
@@ -79,8 +77,8 @@ public class CoreUtilsSecurityIT {
         try {
             CoreUtils.setShutdownHookAccessHelper(true);
 
-            java.security.Policy.setPolicy(java.security.Policy
-                .getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
+            java.security.Policy
+                .setPolicy(java.security.Policy.getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
             System.setSecurityManager(new SecurityManager());
 
             assertThrows(SecurityException.class,
@@ -100,12 +98,12 @@ public class CoreUtilsSecurityIT {
         try {
             CoreUtils.setShutdownHookAccessHelper(true);
 
-            java.security.Policy.setPolicy(java.security.Policy
-                .getInstance("JavaPolicy", getUriParameter("access-helper-succeeds.policy")));
+            java.security.Policy.setPolicy(
+                java.security.Policy.getInstance("JavaPolicy", getUriParameter("access-helper-succeeds.policy")));
             System.setSecurityManager(new SecurityManager());
 
-            assertDoesNotThrow(() -> CoreUtils.addShutdownHookSafely(Executors.newCachedThreadPool(),
-                SHUTDOWN_TIMEOUT));
+            assertDoesNotThrow(
+                () -> CoreUtils.addShutdownHookSafely(Executors.newCachedThreadPool(), SHUTDOWN_TIMEOUT));
         } finally {
             revertDefaultConfigurations();
         }
@@ -121,16 +119,15 @@ public class CoreUtilsSecurityIT {
         try {
             CoreUtils.setShutdownHookAccessHelper(false);
 
-            assertDoesNotThrow(() -> CoreUtils.addShutdownHookSafely(Executors.newCachedThreadPool(),
-                SHUTDOWN_TIMEOUT));
+            assertDoesNotThrow(
+                () -> CoreUtils.addShutdownHookSafely(Executors.newCachedThreadPool(), SHUTDOWN_TIMEOUT));
         } finally {
             revertDefaultConfigurations();
         }
     }
 
     private static URIParameter getUriParameter(String policyFile) throws URISyntaxException {
-        return new URIParameter(CoreUtilsSecurityIT.class
-            .getResource("/CoreUtilsSecurityPolicies/" + policyFile)
-            .toURI());
+        return new URIParameter(
+            CoreUtilsSecurityIT.class.getResource("/CoreUtilsSecurityPolicies/" + policyFile).toURI());
     }
 }

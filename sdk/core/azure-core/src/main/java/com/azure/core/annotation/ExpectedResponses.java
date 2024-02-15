@@ -12,7 +12,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Annotation to annotate list of HTTP status codes that are expected in response from a REST endpoint.
  *
- * <p><strong>Example:</strong></p>
+ * <p>
+ * <strong>Example:</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.ExpectedResponses.class -->
  * <pre>

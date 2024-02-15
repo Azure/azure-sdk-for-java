@@ -9,34 +9,40 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * <p>The {@link TokenRequestContext} is a class used to provide additional information and context when requesting an
+ * <p>
+ * The {@link TokenRequestContext} is a class used to provide additional information and context when requesting an
  * access token from an authentication source. It allows you to customize the token request and specify additional
- * parameters, such as scopes, claims, or authentication options.</p>
+ * parameters, such as scopes, claims, or authentication options.
+ * </p>
  *
- * <p>The {@link TokenRequestContext} is typically used with authentication mechanisms that require more advanced
+ * <p>
+ * The {@link TokenRequestContext} is typically used with authentication mechanisms that require more advanced
  * configurations or options, such as
  * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)</a>
- * authentication.</p>
+ * authentication.
+ * </p>
  *
- * <p> Here's a high-level overview of how you can use the {@link TokenRequestContext}:</p>
+ * <p>
+ * Here's a high-level overview of how you can use the {@link TokenRequestContext}:
+ * </p>
  *
  * <ol>
- *     <li> Create an instance of the {@link TokenRequestContext} class and configure the required properties.
- *     The {@link TokenRequestContext} class allows you to specify the scopes or resources for which you want to request
- *     an access token, as well as any additional claims or options.</li>
+ * <li>Create an instance of the {@link TokenRequestContext} class and configure the required properties.
+ * The {@link TokenRequestContext} class allows you to specify the scopes or resources for which you want to request
+ * an access token, as well as any additional claims or options.</li>
  *
- *     <li> Pass the TokenRequestContext instance to the appropriate authentication client or mechanism when
- *     requesting an access token. The specific method or API to do this will depend on the authentication mechanism
- *     you are using. For example, if you are using Azure Identity for AAD authentication, you would pass the
- *     TokenRequestContext instance to the getToken method of the {@link TokenCredential} implementation.</li>
+ * <li>Pass the TokenRequestContext instance to the appropriate authentication client or mechanism when
+ * requesting an access token. The specific method or API to do this will depend on the authentication mechanism
+ * you are using. For example, if you are using Azure Identity for AAD authentication, you would pass the
+ * TokenRequestContext instance to the getToken method of the {@link TokenCredential} implementation.</li>
  *
- *     <li> The authentication client or mechanism will handle the token request and return an access token that can
- *     be used to authenticate and authorize requests to Azure services.</li>
+ * <li>The authentication client or mechanism will handle the token request and return an access token that can
+ * be used to authenticate and authorize requests to Azure services.</li>
  * </ol>
  *
  * @see com.azure.core.credential
  * @see com.azure.core.credential.TokenCredential
-*/
+ */
 
 public class TokenRequestContext {
     private final List<String> scopes;
@@ -81,7 +87,7 @@ public class TokenRequestContext {
         return this;
     }
 
-   /**
+    /**
      * Set the additional claims to be included in the token.
      *
      * @see <a href="https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter">
@@ -126,7 +132,6 @@ public class TokenRequestContext {
     public String getTenantId() {
         return this.tenantId;
     }
-
 
     /**
      * Indicates whether to enable Continuous Access Evaluation (CAE) for the requested token.

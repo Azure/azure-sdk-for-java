@@ -18,11 +18,11 @@ import java.util.function.Supplier;
  * <p>
  * It provides the following functionality:
  * <ul>
- *      <li>Querying the current state of the long-running operation.</li>
- *      <li>Requesting cancellation of long-running operation, if supported by the service.</li>
- *      <li>Fetching final result of long-running operation, if supported by the service.</li>
- *      <li>Wait for long-running operation to complete, with optional timeout.</li>
- *      <li>Wait for long-running operation to reach a specific state.</li>
+ * <li>Querying the current state of the long-running operation.</li>
+ * <li>Requesting cancellation of long-running operation, if supported by the service.</li>
+ * <li>Fetching final result of long-running operation, if supported by the service.</li>
+ * <li>Wait for long-running operation to complete, with optional timeout.</li>
+ * <li>Wait for long-running operation to reach a specific state.</li>
  * </ul>
  *
  * @param <T> The type of poll response value.
@@ -232,8 +232,8 @@ public interface SyncPoller<T, U> {
             return strategy.onInitialResponse(response, pollingContext, pollResponseType);
         };
 
-        Function<PollingContext<T>, PollResponse<T>> pollOperation =
-            context -> strategy.poll(context, pollResponseType);
+        Function<PollingContext<T>, PollResponse<T>> pollOperation
+            = context -> strategy.poll(context, pollResponseType);
         BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation = strategy::cancel;
         Function<PollingContext<T>, U> fetchResultOperation = context -> strategy.getResult(context, resultType);
 

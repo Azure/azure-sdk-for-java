@@ -31,7 +31,6 @@ public class ResourceNotFoundException extends HttpResponseException {
         super(message, response, value);
     }
 
-
     /**
      * Initializes a new instance of the ResourceNotFoundException class.
      *

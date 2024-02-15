@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 /**
- * The pipeline policy that override or add  {@link HttpHeaders} in {@link HttpRequest} by reading values from
+ * The pipeline policy that override or add {@link HttpHeaders} in {@link HttpRequest} by reading values from
  * {@link Context} with key 'azure-http-headers-key'. The value for this key should be of type {@link HttpHeaders} for
  * it to be added in {@link HttpRequest}.
  *
- * <p><strong>Code Sample: Add multiple HttpHeader in Context and call client</strong></p>
+ * <p>
+ * <strong>Code Sample: Add multiple HttpHeader in Context and call client</strong>
+ * </p>
  * <pre>
  * // Create ConfigurationClient for example
  * ConfigurationClient configurationClient = new ConfigurationClientBuilder()
