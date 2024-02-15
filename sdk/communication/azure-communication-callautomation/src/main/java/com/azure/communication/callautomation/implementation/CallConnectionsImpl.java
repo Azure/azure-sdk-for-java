@@ -644,7 +644,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get participants from a call. Recording and transcription bots are omitted from this list.
+     * Get participants from a call.
      *
      * @param callConnectionId The call connection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -675,7 +675,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get participants from a call. Recording and transcription bots are omitted from this list.
+     * Get participants from a call.
      *
      * @param callConnectionId The call connection Id.
      * @param context The context to associate with this operation.
@@ -702,7 +702,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get participants from a call. Recording and transcription bots are omitted from this list.
+     * Get participants from a call.
      *
      * @param callConnectionId The call connection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -718,7 +718,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get participants from a call. Recording and transcription bots are omitted from this list.
+     * Get participants from a call.
      *
      * @param callConnectionId The call connection Id.
      * @param context The context to associate with this operation.
@@ -735,7 +735,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get participants from a call. Recording and transcription bots are omitted from this list.
+     * Get participants from a call.
      *
      * @param callConnectionId The call connection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -749,7 +749,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get participants from a call. Recording and transcription bots are omitted from this list.
+     * Get participants from a call.
      *
      * @param callConnectionId The call connection Id.
      * @param context The context to associate with this operation.
@@ -764,7 +764,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get participants from a call. Recording and transcription bots are omitted from this list.
+     * Get participants from a call.
      *
      * @param callConnectionId The call connection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -778,7 +778,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get participants from a call. Recording and transcription bots are omitted from this list.
+     * Get participants from a call.
      *
      * @param callConnectionId The call connection Id.
      * @param context The context to associate with this operation.
