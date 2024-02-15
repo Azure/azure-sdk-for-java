@@ -75,7 +75,10 @@ public class WarningLogger {
             }
             long numMinutes = WarningLogger.this.intervalSeconds / 60;
             String message = "In the last {} minutes, the following warning has occurred {} times: {}";
-            if (numWarnings == 1 && WarningLogger.this.message != null && WarningLogger.this.message.contains("Sending telemetry to the ingestion service") && WarningLogger.this.message.contains("Connection refused")) {
+            if (numWarnings == 1 
+            && WarningLogger.this.message != null 
+            && WarningLogger.this.message.contains("Sending telemetry to the ingestion service") 
+            && WarningLogger.this.message.contains("Connection refused")) {
                 logger.debug(
                     message,
                     numMinutes,
