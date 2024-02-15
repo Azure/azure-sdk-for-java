@@ -11,25 +11,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MicrosoftTeamsUserIdentifierModel {
     /*
-     * The Id of the Microsoft Teams user. If not anonymous, this is the AAD
-     * object Id of the user.
+     * The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the user.
      */
     @JsonProperty(value = "userId", required = true)
     private String userId;
 
     /*
-     * True if the Microsoft Teams user is anonymous. By default false if
-     * missing.
+     * True if the Microsoft Teams user is anonymous. By default false if missing.
      */
     @JsonProperty(value = "isAnonymous")
     private Boolean isAnonymous;
 
     /*
-     * The cloud that the Microsoft Teams user belongs to. By default 'public'
-     * if missing.
+     * The cloud that the Microsoft Teams user belongs to. By default 'public' if missing.
      */
     @JsonProperty(value = "cloud")
     private CommunicationCloudEnvironmentModel cloud;
+
+    /** Creates an instance of MicrosoftTeamsUserIdentifierModel class. */
+    public MicrosoftTeamsUserIdentifierModel() {}
 
     /**
      * Get the userId property: The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the

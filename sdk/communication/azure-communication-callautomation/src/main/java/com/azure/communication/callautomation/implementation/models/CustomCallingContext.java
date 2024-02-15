@@ -23,6 +23,9 @@ public final class CustomCallingContext {
     @JsonProperty(value = "sipHeaders")
     private Map<String, String> sipHeaders;
 
+    /** Creates an instance of CustomCallingContext class. */
+    public CustomCallingContext() {}
+
     /**
      * Get the voipHeaders property: Custom calling context VoiP headers.
      *

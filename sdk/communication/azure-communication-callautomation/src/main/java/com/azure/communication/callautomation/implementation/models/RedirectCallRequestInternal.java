@@ -22,6 +22,9 @@ public final class RedirectCallRequestInternal {
     @JsonProperty(value = "target", required = true)
     private CommunicationIdentifierModel target;
 
+    /** Creates an instance of RedirectCallRequestInternal class. */
+    public RedirectCallRequestInternal() {}
+
     /**
      * Get the incomingCallContext property: The context associated with the call.
      *

@@ -17,8 +17,7 @@ public final class TransferToParticipantRequestInternal {
     private CommunicationIdentifierModel targetParticipant;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
@@ -30,10 +29,9 @@ public final class TransferToParticipantRequestInternal {
     private CommunicationIdentifierModel transferee;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
@@ -43,6 +41,9 @@ public final class TransferToParticipantRequestInternal {
      */
     @JsonProperty(value = "customCallingContext")
     private CustomCallingContext customCallingContext;
+
+    /** Creates an instance of TransferToParticipantRequestInternal class. */
+    public TransferToParticipantRequestInternal() {}
 
     /**
      * Get the targetParticipant property: The identity of the target where call should be transferred to.

@@ -40,6 +40,9 @@ public final class AnswerCallRequestInternal {
     @JsonProperty(value = "answeredBy")
     private CommunicationUserIdentifierModel answeredBy;
 
+    /** Creates an instance of AnswerCallRequestInternal class. */
+    public AnswerCallRequestInternal() {}
+
     /**
      * Get the incomingCallContext property: The context associated with the call.
      *
