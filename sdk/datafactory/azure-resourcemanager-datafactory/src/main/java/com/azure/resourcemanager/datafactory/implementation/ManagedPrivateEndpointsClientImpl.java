@@ -418,7 +418,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, managedVirtualNetworkName,
             managedPrivateEndpointName, managedPrivateEndpoint, ifMatch)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
