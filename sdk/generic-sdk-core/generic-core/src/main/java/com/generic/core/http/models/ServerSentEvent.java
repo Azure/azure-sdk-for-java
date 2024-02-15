@@ -4,6 +4,7 @@
 package com.generic.core.http.models;
 
 import java.time.Duration;
+import java.util.List;
 
 /**
  * Represents the SSE response from the server on event stream interpretation
@@ -12,7 +13,7 @@ import java.time.Duration;
 public final class ServerSentEvent {
     private Long id;
     private String event;
-    private String data;
+    private List<String> data;
     private String comment;
     private Duration retryAfter;
 
@@ -46,7 +47,7 @@ public final class ServerSentEvent {
      * Contains value of SSE {@code "data"} field. This field is optional and may return {@code null}, if the event
      * data is not specified.
      */
-    public String getData() {
+    public List<String> getData() {
         return this.data;
     }
 
@@ -99,7 +100,7 @@ public final class ServerSentEvent {
      * @param data the value of "data" field
      * @return the {@link ServerSentEvent} object
      */
-    public ServerSentEvent setData(String data) {
+    public ServerSentEvent setData(List<String> data) {
         this.data = data;
         return this;
     }

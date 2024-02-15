@@ -272,11 +272,12 @@ public class DefaultHttpClientTest {
                     id = 1L;
                     Assertions.assertEquals("test stream", sse.getComment());
                 } else {
-                    expected = "This is the second message, it\n" +
-                        "has two lines.";
+                    expected = "This is the second message, it";
+                    String line2 = "has two lines.";;
                     id = 2L;
+                    Assertions.assertEquals(line2, sse.getData().get(1));
                 }
-                Assertions.assertEquals(expected, sse.getData());
+                Assertions.assertEquals(expected, sse.getData().get(0));
                 Assertions.assertEquals(id, sse.getId());
                 if (++i[0] > 2) {
                     assertFalse(true, "Should not have received more than two messages.");
@@ -295,8 +296,8 @@ public class DefaultHttpClientTest {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, SSE_RESPONSE)).setBody(requestBody);
         request.getMetadata().setEagerlyConvertHeaders(false);
-
-        createHttpClient().send(request.setServerSentEventListener(sse -> assertEquals("YHOO\n+2\n10", sse.getData())));
+        List<String> expected = Arrays.asList("YHOO", "+2", "10");
+        createHttpClient().send(request.setServerSentEventListener(sse -> assertEquals(expected, sse.getData())));
     }
 
     @Test
@@ -327,19 +328,16 @@ public class DefaultHttpClientTest {
             .setServerSentEventListener(new ServerSentEventListener() {
                 @Override
                 public void onEvent(ServerSentEvent sse) throws IOException {
-                    String expected;
                     if (++i[0] == 1) {
-                        expected = "first event";
                         assertEquals("test stream", sse.getComment());
                         assertEquals(Duration.ofMillis(100L), sse.getRetryAfter());
-                        assertEquals(expected, sse.getData());
+                        assertEquals("first event", sse.getData().get(0));
                         assertEquals(1, sse.getId());
                         throw new IOException("test exception");
                     } else {
-                        expected = "This is the second message, it\n" +
-                            "has two lines.";
                         assertTimeout(Duration.ofMillis(100L), () -> assertEquals(2, sse.getId()));
-                        assertEquals(expected, sse.getData());
+                        assertEquals("This is the second message, it", sse.getData().get(0));
+                        assertEquals("has two lines.", sse.getData().get(1));
                     }
                     if (++i[0] > 3) {
                         fail("Should not have received more than two messages.");

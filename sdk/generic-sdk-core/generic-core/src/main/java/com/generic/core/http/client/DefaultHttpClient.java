@@ -36,6 +36,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -277,7 +278,7 @@ class DefaultHttpClient implements HttpClient {
     }
 
     private ServerSentEvent processLines(String[] lines) {
-        StringBuilder eventData = new StringBuilder();
+        List<String> eventData = new ArrayList<>();
         ServerSentEvent event = new ServerSentEvent();
 
         for (String line : lines) {
@@ -294,10 +295,7 @@ class DefaultHttpClient implements HttpClient {
                     event.setEvent(value);
                     break;
                 case "data":
-                    if (eventData.length() > 0) {
-                        eventData.append("\n");
-                    }
-                    eventData.append(value);
+                    eventData.add(value);
                     break;
                 case "id":
                     if (!value.isEmpty()) {
@@ -315,8 +313,8 @@ class DefaultHttpClient implements HttpClient {
         }
 
         event.setEvent(event.getEvent() == null ? DEFAULT_EVENT : event.getEvent());
-        if (eventData.length() != 0) {
-            event.setData(eventData.toString());
+        if (!eventData.isEmpty()) {
+            event.setData(eventData);
         }
 
         return event;
