@@ -89,7 +89,7 @@ public final class CallConnectionPropertiesInternal {
     /*
      * The original PSTN target of the incoming Call.
      */
-    @JsonProperty(value = "originalPSTNTarget")
+    @JsonProperty(value = "originalPstnTarget")
     private PhoneNumberIdentifierModel originalPstnTarget;
 
     /**
