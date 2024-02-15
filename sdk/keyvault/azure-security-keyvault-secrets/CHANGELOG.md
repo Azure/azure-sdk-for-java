@@ -1,14 +1,17 @@
 # Release History
 
-## 4.8.0-beta.2 (Unreleased)
+## 4.8.0 (2024-02-20)
+Changes when compared to the last stable release (`4.7.3`) include:
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for service version `7.5`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 
 ## 4.7.3 (2023-12-04)
 
