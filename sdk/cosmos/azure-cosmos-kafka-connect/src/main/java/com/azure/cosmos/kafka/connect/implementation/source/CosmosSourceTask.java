@@ -96,11 +96,12 @@ public class CosmosSourceTask extends SourceTask {
 
                 stopwatch.stop();
                 LOGGER.info(
-                    "Return {} records, databaseName {}, containerName {}, containerRid {}, durationInMs {}",
+                    "Return {} records, databaseName {}, containerName {}, containerRid {}, feedRange {}, durationInMs {}",
                     results.size(),
                     ((FeedRangeTaskUnit) taskUnit).getDatabaseName(),
                     ((FeedRangeTaskUnit) taskUnit).getContainerName(),
                     ((FeedRangeTaskUnit) taskUnit).getContainerRid(),
+                    ((FeedRangeTaskUnit) taskUnit).getFeedRange(),
                     stopwatch.elapsed().toMillis());
             }
             return results;
@@ -196,8 +197,6 @@ public class CosmosSourceTask extends SourceTask {
                 new FeedRangeContinuationTopicOffset(
                     feedResponse.getContinuationToken(),
                     getItemLsn(item));
-
-            System.out.println("getItemLsn:" + getItemLsn(item));
 
             // Set the Kafka message key if option is enabled and field is configured in document
             String messageKey = this.getMessageKey(item);

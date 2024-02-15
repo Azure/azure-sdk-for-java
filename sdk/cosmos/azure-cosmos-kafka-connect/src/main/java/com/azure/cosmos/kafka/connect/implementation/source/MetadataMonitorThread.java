@@ -91,6 +91,7 @@ public class MetadataMonitorThread extends Thread {
                 })
                 .doOnNext(shouldRequestReconfiguration -> {
                     if (shouldRequestReconfiguration) {
+                        LOGGER.info("Changes detected, requestTaskReconfiguration");
                         this.connectorContext.requestTaskReconfiguration();
                     }
                 })
