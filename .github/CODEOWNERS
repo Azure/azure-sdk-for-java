@@ -127,7 +127,7 @@
 /sdk/eventgrid/                                     @billwert @mssfang @srnagar @lmolkova 
 
 # AzureSdkOwners: @conniey @anuchandy @lmolkova
-# ServiceLabel %Event Hubs
+# ServiceLabel: %Event Hubs
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                      @conniey @anuchandy @lmolkova
 
