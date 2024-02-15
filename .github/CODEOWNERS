@@ -21,26 +21,25 @@
 /sdk/                                                @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
 
 # BOM
-# AzureSDKOwners: @vcolin7 @alzimmermsft
+# AzureSdkOwners: @vcolin7 @alzimmermsft
 # ServiceLabel: %azure-sdk-bom
 # PRLabel: %azure-sdk-bom
 /sdk/boms/azure-sdk-bom/                             @vcolin7 @alzimmermsft @jonathangiles @srnagar @anuchandy
 
-# ServiceOwners: @saragluna
 # ServiceLabel: %azure-spring
 # PRLabel: %azure-spring
-/sdk/boms/spring-cloud-azure-dependencies/           @chenrujun @netyyyy @saragluna @moarychan
+/sdk/boms/spring-cloud-azure-dependencies/           @saragluna @chenrujun @netyyyy @moarychan
 
 ####
 # Service teams
 ####
 
-# AzureSDKOwners: @srnagar
+# AzureSdkOwners: @srnagar
 # ServiceLabel: %graalvm
 # PRLabel: %graalvm
 /sdk/aot/                                            @srnagar @jonathangiles
 
-# AzureSDKOwners: @mssfang
+# AzureSdkOwners: @mssfang
 # ServiceLabel: %App Configuration
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                               @mssfang @alzimmermsft
@@ -86,27 +85,26 @@
 # PRLabel: %Communication - Rooms
 /sdk/communication/azure-communication-rooms/       @minnieliu @paolamvhz @alexokun @Mrayyan @shwali-msft @allchiang-msft @mikehang-msft
 
-# AzureSDKOwners: @lmolkova
+# AzureSdkOwners: @lmolkova
 # ServiceLabel: %Container Registry
 # PRLabel: %Container Registry
 /sdk/containerregistry/                              @lmolkova @alzimmermsft @Azure/azsdk-acr
 
-# AzureSDKOwners: @alzimmermsft
+# AzureSdkOwners: @alzimmermsft
 # ServiceLabel: %Azure.Core
 # PRLabel: %Azure.Core
 /sdk/core/                                           @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
 
-# AzureSDKOwners: @anuchandy @conniey @lmolkova
+# AzureSdkOwners: @anuchandy @conniey @lmolkova
 # ServiceLabel: %Azure.Core.AMQP
 # PRLabel: %Azure.Core.AMQP
 /sdk/core/azure-core-amqp/                           @anuchandy @conniey @lmolkova
 
-# AzureSDKOwners: @lmolkova
-# ServiceLabel: %Azure.Core.Tracing.OpenTelemetry
-# PRLabel: %Azure.Core.Tracing.OpenTelemetry
+# AzureSdkOwners: @lmolkova
+# ServiceLabel: %OpenTelemetry
+# PRLabel: %OpenTelemetry
 /sdk/core/azure-core-tracing-opentelemetry/          @lmolkova @trask
 
-# ServiceOwners: @kushagraThapar
 # ServiceLabel: %Cosmos 
 # PRLabel: %Cosmos
 /sdk/cosmos/                                         @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011 @simorenoh @jeet1995 @Pilchie
@@ -212,15 +210,13 @@
 # PRLabel: %Service Bus
 /sdk/servicebus/                                     @anuchandy @conniey @lmolkova
 
-# ServiceOwners: @yvgopal
 # ServiceLabel: %Service Bus %Service Attention %Track 1
 # PRLabel: %Service Bus
 /sdk/servicebus/microsoft-azure-servicebus/          @shankarsama @yvgopal
 
-# ServiceOwners: @ibrahimrabab @seanmcc-msft @ibrandes
 # ServiceLabel: %Storage
 # PRLabel: %Storage
-/sdk/storage/                                        @ibrahimrabab @alzimmermsft @seanmcc-msft @ibrandes
+/sdk/storage/                                        @ibrahimrabab @seanmcc-msft @ibrandes
 
 # AzureSdkOwners: @jairmyree
 # ServiceLabel: %Tables
@@ -241,14 +237,12 @@
 # PRLabel: %Azure SDK Tools
 /sdk/tools/                                          @srnagar @jonathangiles
 
-# ServiceOwners: @saragluna
 # ServiceLabel: %azure-spring
 # PRLabel: %azure-spring
 /sdk/spring/                                         @chenrujun @netyyyy @saragluna @moarychan
 # PRLabel: %azure-spring
 /sdk/spring-experimental/                            @chenrujun @netyyyy @saragluna @moarychan
 
-# ServiceOwners: @jeanbisutti @trask @ramthi @heyams
 # ServiceLabel:  %Monitor - Spring
 # PRLabel:  %Monitor - Spring
 /sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams
