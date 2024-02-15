@@ -16,6 +16,7 @@ import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyOperation;
 import reactor.core.publisher.Mono;
 
 import java.security.KeyPair;
@@ -24,6 +25,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.Security;
 import java.util.Objects;
+
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.verifyKeyPermissions;
 
 class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     private final KeyPair ecKeyPair;
@@ -78,13 +81,8 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context) {
-        if (algorithm == null) {
-            throw new NullPointerException("Signature algorithm cannot be null.");
-        }
-
-        if (digest == null) {
-            throw new NullPointerException("Digest content cannot be null.");
-        }
+        Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
+        Objects.requireNonNull(digest, "Digest content cannot be null.");
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
@@ -107,6 +105,8 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
             throw new IllegalArgumentException(
                 "The private portion of the key is not locally available to perform the sign operation.");
         }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.SIGN);
 
         Ecdsa algo;
 
@@ -148,6 +148,8 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
                 "The private portion of the key is not locally available to perform the sign operation.");
         }
 
+        verifyKeyPermissions(jsonWebKey, KeyOperation.SIGN);
+
         Ecdsa algo;
 
         if (baseAlgorithm instanceof Ecdsa) {
@@ -172,17 +174,9 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     @Override
     public Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
                                           Context context) {
-        if (algorithm == null) {
-            throw new NullPointerException("Signature algorithm cannot be null.");
-        }
-
-        if (digest == null) {
-            throw new NullPointerException("Digest content cannot be null.");
-        }
-
-        if (signature == null) {
-            throw new NullPointerException("Signature to be verified cannot be null.");
-        }
+        Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
+        Objects.requireNonNull(digest, "Digest content cannot be null.");
+        Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
@@ -205,6 +199,8 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
             throw new IllegalArgumentException(
                 "The public portion of the key is not locally available to perform the verify operation.");
         }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.VERIFY);
 
         Ecdsa algo;
 
@@ -248,7 +244,10 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
                 "The public portion of the key is not locally available to perform the verify operation.");
         }
 
+        verifyKeyPermissions(jsonWebKey, KeyOperation.VERIFY);
+
         Ecdsa algo;
+
         if (baseAlgorithm instanceof Ecdsa) {
             algo = (Ecdsa) baseAlgorithm;
         } else {

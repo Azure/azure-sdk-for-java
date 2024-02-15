@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys.cryptography;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
@@ -143,7 +144,7 @@ public class CryptographyAsyncClient {
 
     private final HttpPipeline pipeline;
 
-    private volatile boolean attemptedToInitializeLocalClient;
+    private volatile boolean shouldAttemptToInitializeLocalClient;
     private volatile JsonWebKey jsonWebKey;
     private volatile LocalKeyCryptographyClient localKeyCryptographyClient;
 
@@ -191,7 +192,7 @@ public class CryptographyAsyncClient {
 
         try {
             this.localKeyCryptographyClient = initializeLocalClient(jsonWebKey, null);
-            this.attemptedToInitializeLocalClient = true;
+            this.shouldAttemptToInitializeLocalClient = false;
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("Could not initialize local cryptography client.", e));
@@ -911,20 +912,38 @@ public class CryptographyAsyncClient {
     }
 
     private Mono<Boolean> isLocalClientAvailable() {
-        if (!attemptedToInitializeLocalClient) {
+        if (shouldAttemptToInitializeLocalClient) {
             return retrieveJwkAndInitializeLocalAsyncClient()
                 .map(localClient -> {
                     localKeyCryptographyClient = localClient;
                     jsonWebKey = localKeyCryptographyClient.getJsonWebKey();
-                    attemptedToInitializeLocalClient = true;
+                    shouldAttemptToInitializeLocalClient = false;
 
                     return true;
                 })
                 .onErrorResume(e -> {
-                    LOGGER.info(
-                        "Cannot perform cryptographic operations locally. Defaulting to service-side cryptography.", e);
+                    if (e instanceof HttpResponseException) {
+                        int statusCode = ((HttpResponseException) e).getResponse().getStatusCode();
 
-                    attemptedToInitializeLocalClient = true;
+                        // Not a retriable error code.
+                        if (statusCode == 501 || statusCode == 505
+                            || (statusCode < 500 && statusCode != 408 && statusCode != 429)) {
+
+                            shouldAttemptToInitializeLocalClient = false;
+
+                            LOGGER.verbose("Could not set up local cryptography. Defaulting to service-side "
+                                + "cryptography for all operations." ,e);
+                        } else {
+                            LOGGER.verbose("Could not set up local cryptography for this operation. Defaulting to "
+                                + "service-side cryptography.", e);
+                        }
+                    } else {
+                        // Not a service-related transient error.
+                        shouldAttemptToInitializeLocalClient = false;
+
+                        LOGGER.verbose("Could not set up local cryptography. Defaulting to service-side cryptography "
+                            + "for all operations.", e);
+                    }
 
                     return Mono.just(false);
                 });
@@ -942,19 +961,17 @@ public class CryptographyAsyncClient {
                 ? implClient.getSecretKeyAsync()
                 : implClient.getKeyAsync().map(keyVaultKeyResponse -> keyVaultKeyResponse.getValue().getKey());
 
-            return jsonWebKeyMono
-                .switchIfEmpty(Mono.error(new IllegalStateException(
-                    "Could not retrieve JSON Web Key to perform local cryptographic operations.")))
-                .handle((jsonWebKey, sink) -> {
-                    if (jsonWebKey.isValid()) {
-                        sink.next(initializeLocalClient(jsonWebKey, implClient));
-                    } else {
-                        sink.error(new IllegalStateException("The retrieved JSON Web Key is not valid."));
-                    }
-                });
+            return jsonWebKeyMono.handle((jsonWebKey, sink) -> {
+                if (jsonWebKey.isValid()) {
+                    sink.next(initializeLocalClient(jsonWebKey, implClient));
+                } else {
+                    sink.error(new IllegalStateException("The retrieved JSON Web Key is not valid."));
+                }
+            });
+        } else {
+            // Couldn't/didn't create a local cryptography client.
+            return Mono.error(new IllegalStateException(
+                "Could not create a local cryptography client. Key collection is null or empty."));
         }
-
-        // Couldn't/didn't create a local cryptography client.
-        return Mono.error(new IllegalStateException("Could not create a local cryptography client."));
     }
 }

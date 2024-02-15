@@ -16,6 +16,7 @@ import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyOperation;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.BadPaddingException;
@@ -27,6 +28,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Objects;
+
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.verifyKeyPermissions;
 
 class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     private final byte[] aesKey;
@@ -45,13 +48,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        if (algorithm == null) {
-            throw new NullPointerException("Encryption algorithm cannot be null.");
-        }
-
-        if (plaintext == null) {
-            throw new NullPointerException("Plaintext cannot be null.");
-        }
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(plaintext, "Plaintext cannot be null.");
 
         try {
             return encryptInternalAsync(algorithm, plaintext, null, null, context);
@@ -74,9 +72,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<EncryptResult> encryptAsync(EncryptParameters encryptParameters, Context context) {
-        if (encryptParameters == null) {
-            throw new NullPointerException("Encrypt parameters cannot be null.");
-        }
+        Objects.requireNonNull(encryptParameters, "Encrypt parameters cannot be null.");
 
         try {
             return encryptInternalAsync(encryptParameters.getAlgorithm(), encryptParameters.getPlainText(),
@@ -100,8 +96,6 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     private Mono<EncryptResult> encryptInternalAsync(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv,
                                                      byte[] additionalAuthenticatedData, Context context) throws NoSuchAlgorithmException {
-        validateEncryptionAlgorithm(algorithm);
-
         // Interpret the algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
@@ -113,6 +107,9 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
             throw new NoSuchAlgorithmException(algorithm.toString());
         }
 
+        verifyKeyPermissions(jsonWebKey, KeyOperation.ENCRYPT);
+        validateEncryptionAlgorithm(algorithm);
+
         SymmetricEncryptionAlgorithm symmetricEncryptionAlgorithm = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
         final byte[] finalIv;
@@ -120,7 +117,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (iv == null) {
             if (isAes(algorithm)) {
                 try {
-                    finalIv = generateRandomByteArray(AES_BLOCK_SIZE);
+                    finalIv = generateIv(AES_BLOCK_SIZE);
                 } catch (NoSuchAlgorithmException e) {
                     throw new RuntimeException("Could not generate iv for this local operation.", e);
                 }
@@ -146,8 +143,6 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         throws BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException,
         InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
 
-        validateEncryptionAlgorithm(algorithm);
-
         // Interpret the algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
@@ -159,12 +154,15 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
             throw new NoSuchAlgorithmException(algorithm.toString());
         }
 
+        verifyKeyPermissions(jsonWebKey, KeyOperation.ENCRYPT);
+        validateEncryptionAlgorithm(algorithm);
+
         SymmetricEncryptionAlgorithm symmetricEncryptionAlgorithm = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
         if (iv == null) {
             if (isAes(algorithm)) {
                 try {
-                    iv = generateRandomByteArray(AES_BLOCK_SIZE);
+                    iv = generateIv(AES_BLOCK_SIZE);
                 } catch (NoSuchAlgorithmException e) {
                     throw new RuntimeException("Could not generate iv for this local operation.", e);
                 }
@@ -182,13 +180,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
-        if (algorithm == null) {
-            throw new NullPointerException("Encryption algorithm cannot be null.");
-        }
-
-        if (ciphertext == null) {
-            throw new NullPointerException("Ciphertext cannot be null.");
-        }
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(ciphertext, "Ciphertext cannot be null.");
 
         try {
             return decryptInternalAsync(algorithm, ciphertext, null, null, null, context);
@@ -211,6 +204,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<DecryptResult> decryptAsync(DecryptParameters decryptParameters, Context context) {
+        Objects.requireNonNull(decryptParameters, "Decrypt parameters cannot be null.");
+
         try {
             return decryptInternalAsync(decryptParameters.getAlgorithm(), decryptParameters.getCipherText(),
                 decryptParameters.getIv(), decryptParameters.getAdditionalAuthenticatedData(),
@@ -236,8 +231,6 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     private Mono<DecryptResult> decryptInternalAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
                                                      byte[] additionalAuthenticatedData, byte[] authenticationTag,
                                                      Context context) throws NoSuchAlgorithmException {
-        validateEncryptionAlgorithm(algorithm);
-
         // Interpret the algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
@@ -249,11 +242,12 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
             throw new NoSuchAlgorithmException(algorithm.toString());
         }
 
+        verifyKeyPermissions(jsonWebKey, KeyOperation.DECRYPT);
+        validateEncryptionAlgorithm(algorithm);
+
         SymmetricEncryptionAlgorithm symmetricEncryptionAlgorithm = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
-        if (iv == null) {
-            throw new NullPointerException("'iv' cannot be null in local decryption operations.");
-        }
+        Objects.requireNonNull(iv, "'iv' cannot be null in local decryption operations.");
 
         return Mono.fromCallable(() -> {
             byte[] plaintext =
@@ -270,8 +264,6 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         throws BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException,
         InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
 
-        validateEncryptionAlgorithm(algorithm);
-
         // Interpret the algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
@@ -282,6 +274,9 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             throw new NoSuchAlgorithmException(algorithm.toString());
         }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.DECRYPT);
+        validateEncryptionAlgorithm(algorithm);
 
         SymmetricEncryptionAlgorithm symmetricEncryptionAlgorithm = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
@@ -326,13 +321,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] keyToWrap, Context context) {
-        if (algorithm == null) {
-            throw new NullPointerException("Key wrap algorithm cannot be null.");
-        }
-
-        if (keyToWrap == null) {
-            throw new NullPointerException("Key content to be wrapped cannot be null.");
-        }
+        Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
+        Objects.requireNonNull(keyToWrap, "Key content to be wrapped cannot be null.");
 
         // Interpret the algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
@@ -344,6 +334,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.WRAP_KEY);
 
         LocalKeyWrapAlgorithm localKeyWrapAlgorithm = (LocalKeyWrapAlgorithm) baseAlgorithm;
 
@@ -370,6 +362,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.WRAP_KEY);
 
         LocalKeyWrapAlgorithm localKeyWrapAlgorithm = (LocalKeyWrapAlgorithm) baseAlgorithm;
 
@@ -398,13 +392,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
-        if (algorithm == null) {
-            throw new NullPointerException("Key wrap algorithm cannot be null.");
-        }
-
-        if (encryptedKey == null) {
-            throw new NullPointerException("Encrypted key content to be unwrapped cannot be null.");
-        }
+        Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
+        Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
@@ -415,6 +404,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.UNWRAP_KEY);
 
         LocalKeyWrapAlgorithm localKeyWrapAlgorithm = (LocalKeyWrapAlgorithm) baseAlgorithm;
 
@@ -430,6 +421,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
+        verifyKeyPermissions(jsonWebKey, KeyOperation.UNWRAP_KEY);
+
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
@@ -439,6 +432,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.UNWRAP_KEY);
 
         LocalKeyWrapAlgorithm localKeyWrapAlgorithm = (LocalKeyWrapAlgorithm) baseAlgorithm;
 
@@ -471,7 +466,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         return verify(algorithm, data, signature, context);
     }
 
-    private static byte[] generateRandomByteArray(int sizeInBytes) throws NoSuchAlgorithmException {
+    private static byte[] generateIv(int sizeInBytes) throws NoSuchAlgorithmException {
         SecureRandom randomSecureRandom = SecureRandom.getInstance("SHA1PRNG");
         byte[] iv = new byte[sizeInBytes];
 
