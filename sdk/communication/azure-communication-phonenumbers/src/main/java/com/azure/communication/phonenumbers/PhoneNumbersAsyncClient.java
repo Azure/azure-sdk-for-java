@@ -15,7 +15,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersRe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
-import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequestOptions;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
@@ -728,23 +728,27 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers) {
-        return this.searchOperatorInformation(phoneNumbers, false);
+        OperatorInformationRequest request = new OperatorInformationRequest();
+        request.setPhoneNumbers(phoneNumbers);
+        request.setOptions(new OperatorInformationOptions().setIncludeAdditionalOperatorDetails(false));
+        return client.operatorInformationSearchAsync(request)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }
 
     /**
      * Searches for operator information for a given list of phone numbers.
      *
      * @param phoneNumbers The phone number(s) whose operator information should be searched.
-     * @param includeAdditionalPhoneAndOperatorDetails Modifies the search to include additional fields in the response.
+     * @param includeAdditionalOperatorDetails Modifies the search to include additional fields in the response.
      *                  Please note: use of this option will affect the cost of the search.
      *
      * @return A {@link OperatorInformationResult} which contains the results of the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<OperatorInformationResult>> searchOperatorInformationWithResponse(List<String> phoneNumbers, boolean includeAdditionalPhoneAndOperatorDetails) {
+    public Mono<Response<OperatorInformationResult>> searchOperatorInformationWithResponse(List<String> phoneNumbers, boolean includeAdditionalOperatorDetails) {
         OperatorInformationRequest request = new OperatorInformationRequest();
         request.setPhoneNumbers(phoneNumbers);
-        request.setOptions(new OperatorInformationRequestOptions().setIncludeAdditionalPhoneAndOperatorDetails(includeAdditionalPhoneAndOperatorDetails));
+        request.setOptions(new OperatorInformationOptions().setIncludeAdditionalOperatorDetails(includeAdditionalOperatorDetails));
         return client.operatorInformationSearchWithResponseAsync(request)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }

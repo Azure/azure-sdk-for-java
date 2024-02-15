@@ -222,7 +222,7 @@ public final class PhoneNumberAdminClientImplBuilder
             this.pipeline = createHttpPipeline();
         }
         if (apiVersion == null) {
-            this.apiVersion = "2024-03-01";
+            this.apiVersion = "2024-03-01-preview";
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();

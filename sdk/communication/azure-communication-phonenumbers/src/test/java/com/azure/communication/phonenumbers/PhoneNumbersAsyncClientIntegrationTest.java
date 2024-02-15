@@ -476,27 +476,27 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
-                        .searchOperatorInformation(phoneNumbers))
-                .assertNext((OperatorInformationResult result) -> {
-                    assertEquals(phoneNumbers.get(0), result.getValues().get(0).getPhoneNumber());
-                    assertNotNull(result.getValues().get(0).getNationalFormat());
-                    assertNotNull(result.getValues().get(0).getInternationalFormat());
-                    assertEquals(null, result.getValues().get(0).getNumberType());
-                    assertEquals(null, result.getValues().get(0).getIsoCountryCode());
-                    assertEquals(null, result.getValues().get(0).getOperatorDetails());
+                        .searchOperatorInformationWithResponse(phoneNumbers, false))
+                .assertNext((Response<OperatorInformationResult> result) -> {
+                    assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
+                    assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
+                    assertNotNull(result.getValue().getValues().get(0).getInternationalFormat());
+                    assertEquals(null, result.getValue().getValues().get(0).getNumberType());
+                    assertEquals(null, result.getValue().getValues().get(0).getIsoCountryCode());
+                    assertEquals(null, result.getValue().getValues().get(0).getOperatorDetails());
                 })
                 .verifyComplete();
 
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
-                        .searchOperatorInformation(phoneNumbers, true))
-                .assertNext((OperatorInformationResult result) -> {
-                    assertEquals(phoneNumbers.get(0), result.getValues().get(0).getPhoneNumber());
-                    assertNotNull(result.getValues().get(0).getNationalFormat());
-                    assertNotNull(result.getValues().get(0).getInternationalFormat());
-                    assertNotNull(result.getValues().get(0).getNumberType());
-                    assertNotNull(result.getValues().get(0).getIsoCountryCode());
-                    assertNotNull(result.getValues().get(0).getOperatorDetails());
+                        .searchOperatorInformationWithResponse(phoneNumbers, true))
+                .assertNext((Response<OperatorInformationResult> result) -> {
+                    assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
+                    assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
+                    assertNotNull(result.getValue().getValues().get(0).getInternationalFormat());
+                    assertNotNull(result.getValue().getValues().get(0).getNumberType());
+                    assertNotNull(result.getValue().getValues().get(0).getIsoCountryCode());
+                    assertNotNull(result.getValue().getValues().get(0).getOperatorDetails());
                 })
                 .verifyComplete();
     }

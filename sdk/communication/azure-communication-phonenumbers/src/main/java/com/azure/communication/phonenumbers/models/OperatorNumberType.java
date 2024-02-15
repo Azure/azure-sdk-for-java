@@ -10,8 +10,8 @@ import java.util.Collection;
 
 /** Defines values for OperatorNumberType. */
 public final class OperatorNumberType extends ExpandableStringEnum<OperatorNumberType> {
-    /** Static value unavailable for OperatorNumberType. */
-    public static final OperatorNumberType UNAVAILABLE = fromString("unavailable");
+    /** Static value unknown for OperatorNumberType. */
+    public static final OperatorNumberType UNKNOWN = fromString("unknown");
 
     /** Static value other for OperatorNumberType. */
     public static final OperatorNumberType OTHER = fromString("other");

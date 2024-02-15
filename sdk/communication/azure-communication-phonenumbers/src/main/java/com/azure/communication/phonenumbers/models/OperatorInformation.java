@@ -29,17 +29,17 @@ public final class OperatorInformation {
     private String internationalFormat;
 
     /*
-     * Type of service associated with the phone number
-     */
-    @JsonProperty(value = "numberType", access = JsonProperty.Access.WRITE_ONLY)
-    private OperatorNumberType numberType;
-
-    /*
      * ISO 3166-1 two character ('alpha-2') code associated with the phone
      * number.
      */
     @JsonProperty(value = "isoCountryCode", access = JsonProperty.Access.WRITE_ONLY)
     private String isoCountryCode;
+
+    /*
+     * Type of service associated with the phone number
+     */
+    @JsonProperty(value = "numberType", access = JsonProperty.Access.WRITE_ONLY)
+    private OperatorNumberType numberType;
 
     /*
      * Represents metadata describing the operator of a phone number
@@ -75,21 +75,21 @@ public final class OperatorInformation {
     }
 
     /**
-     * Get the numberType property: Type of service associated with the phone number.
-     *
-     * @return the numberType value.
-     */
-    public OperatorNumberType getNumberType() {
-        return this.numberType;
-    }
-
-    /**
      * Get the isoCountryCode property: ISO 3166-1 two character ('alpha-2') code associated with the phone number.
      *
      * @return the isoCountryCode value.
      */
     public String getIsoCountryCode() {
         return this.isoCountryCode;
+    }
+
+    /**
+     * Get the numberType property: Type of service associated with the phone number.
+     *
+     * @return the numberType value.
+     */
+    public OperatorNumberType getNumberType() {
+        return this.numberType;
     }
 
     /**

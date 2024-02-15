@@ -8,7 +8,7 @@ import java.util.Objects;
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
-import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequestOptions;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
@@ -709,24 +709,29 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperatorInformationResult searchOperatorInformation(List<String> phoneNumbers) {
-        return this.searchOperatorInformation(phoneNumbers, false);
+        OperatorInformationRequest request = new OperatorInformationRequest();
+        request.setPhoneNumbers(phoneNumbers);
+        request.setOptions(new OperatorInformationOptions().setIncludeAdditionalOperatorDetails(false));
+        return client.operatorInformationSearch(request);
     }
 
     /**
      * Searches for operator information for a given list of phone numbers.
      *
      * @param phoneNumbers The phone number(s) whose operator information should be searched.
-     * @param includeAdditionalPhoneAndOperatorDetails Modifies the search to include additional fields in the response.
+     * @param includeAdditionalOperatorDetails Modifies the search to include additional fields in the response.
      *                  Please note: use of this option will affect the cost of the search.
      *
      * @return A {@link OperatorInformationResult} which contains the results of the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers,
-            boolean includeAdditionalPhoneAndOperatorDetails) {
+            boolean includeAdditionalOperatorDetails,
+            Context context) {
+        context = context == null ? Context.NONE : context;
         OperatorInformationRequest request = new OperatorInformationRequest();
         request.setPhoneNumbers(phoneNumbers);
-        request.setOptions(new OperatorInformationRequestOptions().setIncludeAdditionalPhoneAndOperatorDetails(includeAdditionalPhoneAndOperatorDetails));
-        return client.operatorInformationSearchWithResponse(request);
+        request.setOptions(new OperatorInformationOptions().setIncludeAdditionalOperatorDetails(includeAdditionalOperatorDetails));
+        return client.operatorInformationSearchWithResponse(request, context);
     }
 }
