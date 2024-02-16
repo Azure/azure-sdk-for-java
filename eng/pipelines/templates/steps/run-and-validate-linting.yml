@@ -68,11 +68,11 @@ steps:
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
-  - publish: $(Build.ArtifactStagingDirectory)/linting-reports.zip
-    displayName: 'Publish Linting Reports'
-    artifact: linting-reports-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-    continueOnError: ${{ parameters.ContinueOnError }}
-    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
+  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+    parameters:
+      ArtifactPath: '$(Build.ArtifactStagingDirectory)/linting-reports.zip'
+      ArtifactName: 'linting-reports-$(System.StageName)-$(System.JobName)'
+      CustomCondition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
   - pwsh: |
       if ((Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/linting-reports -Directory | Measure-Object).Count -gt 0) {

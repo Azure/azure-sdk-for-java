@@ -113,10 +113,10 @@ jobs:
         displayName: 'Generate Linting Reports'
         condition: and(always(), ne(variables['LintingGoals'], ''))
 
-      - publish: $(Build.ArtifactStagingDirectory)/linting-reports.zip
-        displayName: 'Publish Linting Reports'
-        artifact: linting-reports-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-        condition: and(always(), ne(variables['LintingGoals'], ''))
+      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+        parameters:
+          ArtifactPath: '$(Build.ArtifactStagingDirectory)/linting-reports.zip'
+          ArtifactName: 'linting-reports'
 
       - pwsh: |
           if ((Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/linting-reports -Directory | Measure-Object).Count -gt 0) {

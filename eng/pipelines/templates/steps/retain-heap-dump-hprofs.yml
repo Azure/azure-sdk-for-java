@@ -24,7 +24,8 @@ steps:
     displayName: 'Copy OOM hprofs'
     condition: eq(variables['HAS_OOM_PROFS'], 'true')
 
-  - publish: $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}.zip
-    displayName: 'Publish OOM hprofs'
-    artifact: ${{ parameters.OomArtifactName }}-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-    condition: eq(variables['HAS_OOM_PROFS'], 'true')
+  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+    parameters:
+      ArtifactPath: '$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}.zip'
+      ArtifactName: '${{ parameters.OomArtifactName }}-$(System.StageName)-$(System.JobName)'
+      CustomCondition: eq(variables['HAS_OOM_PROFS'], 'true')

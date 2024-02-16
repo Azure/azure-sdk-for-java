@@ -19,6 +19,7 @@ stages:
             Copy-Item eng/scripts/bompom.html $(Build.ArtifactStagingDirectory)/staging
           displayName: 'Analyze and generate patches'
 
-        - publish: $(Build.ArtifactStagingDirectory)
-          displayName: 'Publish Report Artifacts'
-          artifact: patchreport
+        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+          parameters:
+            ArtifactPath: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'patchreport'
