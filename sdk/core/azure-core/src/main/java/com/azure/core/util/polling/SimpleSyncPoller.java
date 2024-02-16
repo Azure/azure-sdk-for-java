@@ -62,8 +62,8 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
         Objects.requireNonNull(syncActivationOperation, "'syncActivationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
-        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
-            "'fetchResultOperation' cannot be null.");
+        this.fetchResultOperation
+            = Objects.requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
         this.activationResponse = syncActivationOperation.apply(this.pollingContext);
         this.pollingContext.setOnetimeActivationResponse(this.activationResponse);
         this.pollingContext.setLatestResponse(this.activationResponse);
@@ -126,8 +126,8 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
             return currentTerminalPollContext.getLatestResponse();
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            PollResponse<T> pollResponse = PollingUtil.pollingLoop(context, timeout, statusToWaitFor, pollOperation,
-                pollInterval, true);
+            PollResponse<T> pollResponse
+                = PollingUtil.pollingLoop(context, timeout, statusToWaitFor, pollOperation, pollInterval, true);
 
             if (pollResponse.getStatus().isComplete()) {
                 this.terminalPollContext = context;
@@ -144,8 +144,8 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
         }
 
         PollingContext<T> context = this.pollingContext.copy();
-        PollResponse<T> pollResponse = PollingUtil.pollingLoop(context, timeout, null, pollOperation, pollInterval,
-            false);
+        PollResponse<T> pollResponse
+            = PollingUtil.pollingLoop(context, timeout, null, pollOperation, pollInterval, false);
         this.terminalPollContext = context;
         return pollResponse;
     }

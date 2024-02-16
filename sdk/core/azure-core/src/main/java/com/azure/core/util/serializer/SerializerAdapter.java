@@ -94,8 +94,7 @@ public interface SerializerAdapter {
             return null;
         }
 
-        return StreamSupport.stream(iterable.spliterator(), false)
-            .map(this::serializeRaw)
+        return StreamSupport.stream(iterable.spliterator(), false).map(this::serializeRaw)
             .map(serializedString -> serializedString == null ? "" : serializedString)
             .collect(Collectors.joining(format.getDelimiter()));
     }

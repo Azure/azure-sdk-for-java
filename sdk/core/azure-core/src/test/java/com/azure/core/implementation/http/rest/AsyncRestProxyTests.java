@@ -40,8 +40,6 @@ public class AsyncRestProxyTests {
 
     private SwaggerInterfaceParser swaggerInterfaceParser;
 
-
-
     @Host("https://example.com")
     @ServiceInterface(name = "async-rest-proxy-tests")
     private interface MockService {
@@ -64,10 +62,7 @@ public class AsyncRestProxyTests {
     }
 
     public static Stream<Arguments> handleBodyReturnTypeBoolean() {
-        return Stream.of(
-            Arguments.of(boolean.class, 200, true),
-            Arguments.of(Boolean.class, 404, false)
-        );
+        return Stream.of(Arguments.of(boolean.class, 200, true), Arguments.of(Boolean.class, 404, false));
     }
 
     /**
@@ -79,19 +74,17 @@ public class AsyncRestProxyTests {
         throws NoSuchMethodException {
 
         // Arrange
-        SwaggerMethodParser methodParser = swaggerInterfaceParser
-            .getMethodParser(MockService.class.getDeclaredMethod("headBoolean"));
+        SwaggerMethodParser methodParser
+            = swaggerInterfaceParser.getMethodParser(MockService.class.getDeclaredMethod("headBoolean"));
         HttpResponse httpResponse = new MockHttpResponse(null, statusCode);
 
         // Act
-        StepVerifier.create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser,
-                returnType))
+        StepVerifier
+            .create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser, returnType))
             .assertNext(value -> {
                 assertTrue(value instanceof Boolean);
                 assertEquals(expectedValue, value);
-            })
-            .expectComplete()
-            .verify();
+            }).expectComplete().verify();
     }
 
     /**
@@ -100,8 +93,8 @@ public class AsyncRestProxyTests {
     @Test
     public void handleBodyReturnTypeByte() throws NoSuchMethodException {
         // Arrange
-        SwaggerMethodParser methodParser = swaggerInterfaceParser
-            .getMethodParser(MockService.class.getDeclaredMethod("getByteArray"));
+        SwaggerMethodParser methodParser
+            = swaggerInterfaceParser.getMethodParser(MockService.class.getDeclaredMethod("getByteArray"));
 
         final byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
         final Type returnType = byte[].class;
@@ -109,16 +102,13 @@ public class AsyncRestProxyTests {
         HttpResponse httpResponse = new MockHttpResponse(null, 200, new HttpHeaders(), expectedBytes);
 
         // Act
-        StepVerifier.create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser,
-                returnType))
+        StepVerifier
+            .create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser, returnType))
             .assertNext(value -> {
                 assertTrue(value instanceof byte[]);
                 assertArraysEqual(expectedBytes, (byte[]) value);
-            })
-            .expectComplete()
-            .verify();
+            }).expectComplete().verify();
     }
-
 
     /**
      * Validates scenario for decoding input stream.
@@ -126,8 +116,8 @@ public class AsyncRestProxyTests {
     @Test
     public void handleBodyReturnTypeInputStream() throws NoSuchMethodException {
         // Arrange
-        SwaggerMethodParser methodParser = swaggerInterfaceParser
-            .getMethodParser(MockService.class.getDeclaredMethod("getInputStream"));
+        SwaggerMethodParser methodParser
+            = swaggerInterfaceParser.getMethodParser(MockService.class.getDeclaredMethod("getInputStream"));
 
         final byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
         final Type returnType = InputStream.class;
@@ -135,8 +125,8 @@ public class AsyncRestProxyTests {
         HttpResponse httpResponse = new MockHttpResponse(null, 200, new HttpHeaders(), expectedBytes);
 
         // Act
-        StepVerifier.create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser,
-                returnType))
+        StepVerifier
+            .create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser, returnType))
             .assertNext(value -> {
                 assertTrue(value instanceof InputStream);
 
@@ -154,9 +144,7 @@ public class AsyncRestProxyTests {
                 } catch (IOException e) {
                     fail("Should not have thrown an error.", e);
                 }
-            })
-            .expectComplete()
-            .verify();
+            }).expectComplete().verify();
     }
 
     /**
@@ -167,8 +155,8 @@ public class AsyncRestProxyTests {
     @MethodSource("getResponseHeaderAndReplayability")
     public void handleBodyReturnTypeStream(HttpHeaders headers, boolean isReplayable) throws NoSuchMethodException {
         // Arrange
-        SwaggerMethodParser methodParser = swaggerInterfaceParser
-            .getMethodParser(MockService.class.getDeclaredMethod("getStreamResponse"));
+        SwaggerMethodParser methodParser
+            = swaggerInterfaceParser.getMethodParser(MockService.class.getDeclaredMethod("getStreamResponse"));
 
         final byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
         final Type returnType = BinaryData.class;
@@ -176,8 +164,8 @@ public class AsyncRestProxyTests {
         HttpResponse httpResponse = new MockHttpResponse(null, 200, headers, expectedBytes);
 
         // Act
-        StepVerifier.create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser,
-                returnType))
+        StepVerifier
+            .create(AsyncRestProxy.handleBodyReturnType(httpResponse, ignored -> null, methodParser, returnType))
             .assertNext(value -> {
                 assertTrue(value instanceof BinaryData);
                 BinaryData binaryData = (BinaryData) value;
@@ -185,17 +173,15 @@ public class AsyncRestProxyTests {
                 byte[] actualBytes = binaryData.toBytes();
                 assertEquals(expectedBytes.length, actualBytes.length);
                 assertArraysEqual(expectedBytes, actualBytes);
-            })
-            .expectComplete()
-            .verify();
+            }).expectComplete().verify();
     }
 
     public static Stream<Arguments> getResponseHeaderAndReplayability() {
         return Stream.of(
-            Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM), true),
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM),
+                true),
             Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/event-stream"), false),
             Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_JSON), true),
-            Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml"), true)
-        );
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml"), true));
     }
 }

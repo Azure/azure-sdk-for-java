@@ -26,15 +26,13 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             if (overwrite || urlBuilder.getScheme() == null) {
-                LOGGER.atVerbose()
-                    .addKeyValue("protocol", protocol)
-                    .log("Setting protocol");
+                LOGGER.atVerbose().addKeyValue("protocol", protocol).log("Setting protocol");
 
                 try {
                     context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());
                 } catch (MalformedURLException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Failed to set the HTTP request protocol to "
-                        + protocol + ".", e));
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException("Failed to set the HTTP request protocol to " + protocol + ".", e));
                 }
             }
         }

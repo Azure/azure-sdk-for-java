@@ -25,10 +25,8 @@ public class AzureSasCredentialTests {
     }
 
     private static Stream<Arguments> invalidConstructorParametersSupplier() {
-        return Stream.of(
-            Arguments.of(null, NullPointerException.class),
-            Arguments.of("", IllegalArgumentException.class)
-        );
+        return Stream.of(Arguments.of(null, NullPointerException.class),
+            Arguments.of("", IllegalArgumentException.class));
     }
 
     @Test
@@ -71,8 +69,8 @@ public class AzureSasCredentialTests {
         final String updatedSignature = "sas=a b c";
         final String expectedSignature = "sas=a%20b%20c";
 
-        AzureSasCredential credential = new AzureSasCredential(signature, sig -> sig.replaceAll(" ", "%20"))
-            .update(updatedSignature);
+        AzureSasCredential credential
+            = new AzureSasCredential(signature, sig -> sig.replaceAll(" ", "%20")).update(updatedSignature);
         assertEquals(expectedSignature, credential.getSignature());
     }
 }

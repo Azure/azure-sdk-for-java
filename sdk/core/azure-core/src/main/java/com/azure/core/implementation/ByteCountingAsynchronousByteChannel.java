@@ -23,11 +23,11 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
     private final ProgressReporter readProgressReporter;
     private final ProgressReporter writeProgressReporter;
 
-    private static final AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> BYTES_WRITTEN_ATOMIC_UPDATER =
-        AtomicLongFieldUpdater.newUpdater(ByteCountingAsynchronousByteChannel.class, "bytesWritten");
+    private static final AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> BYTES_WRITTEN_ATOMIC_UPDATER
+        = AtomicLongFieldUpdater.newUpdater(ByteCountingAsynchronousByteChannel.class, "bytesWritten");
     private volatile long bytesWritten;
-    private static final AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> BYTES_READ_ATOMIC_UPDATER =
-        AtomicLongFieldUpdater.newUpdater(ByteCountingAsynchronousByteChannel.class, "bytesRead");
+    private static final AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> BYTES_READ_ATOMIC_UPDATER
+        = AtomicLongFieldUpdater.newUpdater(ByteCountingAsynchronousByteChannel.class, "bytesRead");
     private volatile long bytesRead;
 
     /**
@@ -38,9 +38,7 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
      * @param readProgressReporter The {@link ProgressReporter} to report progress on read operations.
      * @param writeProgressReporter The {@link ProgressReporter} to report progress on write operations.
      */
-    public ByteCountingAsynchronousByteChannel(
-        AsynchronousByteChannel channel,
-        ProgressReporter readProgressReporter,
+    public ByteCountingAsynchronousByteChannel(AsynchronousByteChannel channel, ProgressReporter readProgressReporter,
         ProgressReporter writeProgressReporter) {
         this.channel = Objects.requireNonNull(channel, "'channel' must not be null");
         this.readProgressReporter = readProgressReporter;
@@ -113,8 +111,7 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
         private final AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> atomicLongFieldUpdater;
         private final ProgressReporter progressReporter;
 
-        private DelegatingCompletionHandler(
-            CompletionHandler<Integer, ? super T> handler,
+        private DelegatingCompletionHandler(CompletionHandler<Integer, ? super T> handler,
             AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> atomicLongFieldUpdater,
             ProgressReporter progressReporter) {
             this.handler = handler;
@@ -123,8 +120,7 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
             this.progressReporter = progressReporter;
         }
 
-        private DelegatingCompletionHandler(
-            CompletableFuture<Integer> future,
+        private DelegatingCompletionHandler(CompletableFuture<Integer> future,
             AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> atomicLongFieldUpdater,
             ProgressReporter progressReporter) {
             this.handler = null;

@@ -35,7 +35,6 @@ public class DateTimeSerializerTests {
             Arguments.of(OffsetDateTime.of(LocalDate.of(10000, 1, 1), LocalTime.parse("13:59:59.999"), ZoneOffset.UTC),
                 "10000-01-01T13:59:59.999Z"),
             Arguments.of(OffsetDateTime.of(2010, 1, 1, 12, 34, 56, 0, ZoneOffset.UTC), "2010-01-01T12:34:56Z"),
-            Arguments.of(OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), "0001-01-01T00:00:00Z")
-        );
+            Arguments.of(OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), "0001-01-01T00:00:00Z"));
     }
 }

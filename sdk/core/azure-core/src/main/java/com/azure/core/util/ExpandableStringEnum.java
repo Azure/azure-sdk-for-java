@@ -51,7 +51,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      *
      * @throws RuntimeException wrapping implementation class constructor exception (if any is thrown).
      */
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings({ "unchecked", "deprecation" })
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
         if (name == null) {
             return null;

@@ -28,15 +28,13 @@ public class PortPolicy implements HttpPipelinePolicy {
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             if (overwrite || urlBuilder.getPort() == null) {
-                LOGGER.atVerbose()
-                    .addKeyValue("port", port)
-                    .log("Changing host");
+                LOGGER.atVerbose().addKeyValue("port", port).log("Changing host");
 
                 try {
                     context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
                 } catch (MalformedURLException e) {
-                    throw LOGGER.logExceptionAsError(new
-                        RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
                 }
             }
         }

@@ -32,12 +32,12 @@ final class JacksonVersion {
     private static final String HELP_STRING;
 
     static {
-        SemanticVersion coreVersion = SemanticVersion.parse(com.fasterxml.jackson.core.json.PackageVersion.VERSION
-            .toString());
-        SemanticVersion databindVersion = SemanticVersion.parse(com.fasterxml.jackson.databind.cfg.PackageVersion
-            .VERSION.toString());
-        SemanticVersion jsr310Version = SemanticVersion.parse(com.fasterxml.jackson.datatype.jsr310.PackageVersion
-            .VERSION.toString());
+        SemanticVersion coreVersion
+            = SemanticVersion.parse(com.fasterxml.jackson.core.json.PackageVersion.VERSION.toString());
+        SemanticVersion databindVersion
+            = SemanticVersion.parse(com.fasterxml.jackson.databind.cfg.PackageVersion.VERSION.toString());
+        SemanticVersion jsr310Version
+            = SemanticVersion.parse(com.fasterxml.jackson.datatype.jsr310.PackageVersion.VERSION.toString());
 
         SemanticVersion xmlVersion1;
         try {
@@ -53,13 +53,11 @@ final class JacksonVersion {
         checkVersion(xmlVersion, XML_PACKAGE_NAME);
         checkVersion(jsr310Version, JSR310_PACKAGE_NAME);
 
-        HELP_STRING = "Package versions: "
-            + CORE_PACKAGE_NAME + "=" + coreVersion.getVersionString() + ", "
-            + DATABIND_PACKAGE_NAME + "=" + databindVersion.getVersionString() + ", "
-            + XML_PACKAGE_NAME + "=" + xmlVersion.getVersionString() + ", "
-            + JSR310_PACKAGE_NAME + "=" + jsr310Version.getVersionString() + ", "
-            + "azure-core=" + AZURE_CORE_VERSION + ", "
-            + "Troubleshooting version conflicts: " + TROUBLESHOOTING_DOCS_LINK;
+        HELP_STRING = "Package versions: " + CORE_PACKAGE_NAME + "=" + coreVersion.getVersionString() + ", "
+            + DATABIND_PACKAGE_NAME + "=" + databindVersion.getVersionString() + ", " + XML_PACKAGE_NAME + "="
+            + xmlVersion.getVersionString() + ", " + JSR310_PACKAGE_NAME + "=" + jsr310Version.getVersionString() + ", "
+            + "azure-core=" + AZURE_CORE_VERSION + ", " + "Troubleshooting version conflicts: "
+            + TROUBLESHOOTING_DOCS_LINK;
 
         LOGGER.info(HELP_STRING);
     }
@@ -93,9 +91,10 @@ final class JacksonVersion {
         }
 
         if (version.getMajorVersion() > MAX_SUPPORTED_MAJOR_VERSION) {
-            LOGGER.log(LogLevel.WARNING, () -> "Major version '" + version + "' of package '" + packageName + "' is "
-                + "newer than latest supported version - '" + MAX_SUPPORTED_MAJOR_VERSION + "'. It may result in "
-                + "runtime exceptions during serialization.");
+            LOGGER.log(LogLevel.WARNING,
+                () -> "Major version '" + version + "' of package '" + packageName + "' is "
+                    + "newer than latest supported version - '" + MAX_SUPPORTED_MAJOR_VERSION + "'. It may result in "
+                    + "runtime exceptions during serialization.");
         }
     }
 }

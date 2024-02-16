@@ -55,15 +55,16 @@ public class HttpPipelineNextPolicy {
             return Mono.fromCallable(() -> new HttpPipelineNextSyncPolicy(state).processSync());
         } else {
             if (originatedFromSyncPolicy) {
-                LOGGER.log(LogLevel.WARNING, () -> "The pipeline switched from synchronous to asynchronous. Check if "
-                    + this.state.getCurrentPolicy().getClass().getSimpleName() + " does not override "
-                    + "HttpPipelinePolicy.processSync");
+                LOGGER.log(LogLevel.WARNING,
+                    () -> "The pipeline switched from synchronous to asynchronous. Check if "
+                        + this.state.getCurrentPolicy().getClass().getSimpleName() + " does not override "
+                        + "HttpPipelinePolicy.processSync");
             }
 
             HttpPipelinePolicy nextPolicy = state.getNextPolicy();
             if (nextPolicy == null) {
-                return this.state.getPipeline().getHttpClient().send(
-                    this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext());
+                return this.state.getPipeline().getHttpClient().send(this.state.getCallContext().getHttpRequest(),
+                    this.state.getCallContext().getContext());
             } else {
                 return nextPolicy.process(this.state.getCallContext(), this);
             }
