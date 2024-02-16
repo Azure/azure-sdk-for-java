@@ -190,6 +190,11 @@ public final class HeaderName implements ExpandableStringEnum<HeaderName> {
     public static final HeaderName CLIENT_REQUEST_ID = fromString("client-request-id");
 
     /**
+     * {@code traceparent}
+     */
+    public static final HeaderName TRACEPARENT = HeaderName.fromString("traceparent");
+
+    /**
      * {@code Connection}/{@code connection}
      */
     public static final HeaderName CONNECTION = fromString("Connection");
