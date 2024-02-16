@@ -137,8 +137,8 @@ public class JacksonAdapterTests {
     @ParameterizedTest
     @MethodSource("deserializeJsonSupplier")
     public void deserializeJson(String json, OffsetDateTime expected) throws IOException {
-        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter().deserialize(json,
-            DateTimeWrapper.class, SerializerEncoding.JSON);
+        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(json, DateTimeWrapper.class, SerializerEncoding.JSON);
 
         assertEquals(expected, wrapper.getOffsetDateTime());
     }
@@ -167,8 +167,8 @@ public class JacksonAdapterTests {
     @ParameterizedTest
     @MethodSource("deserializeXmlSupplier")
     public void deserializeXml(String xml, OffsetDateTime expected) throws IOException {
-        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter().deserialize(xml,
-            DateTimeWrapper.class, SerializerEncoding.XML);
+        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(xml, DateTimeWrapper.class, SerializerEncoding.XML);
 
         assertEquals(expected, wrapper.getOffsetDateTime());
     }
@@ -222,8 +222,8 @@ public class JacksonAdapterTests {
     @Test
     public void invalidStronglyTypedHeadersClassThrowsCorrectException() throws IOException {
         try {
-            JacksonAdapter.createDefaultSerializerAdapter().deserialize(new HttpHeaders(),
-                InvalidStronglyTypedHeaders.class);
+            JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(new HttpHeaders(), InvalidStronglyTypedHeaders.class);
 
             fail("An exception should have been thrown.");
         } catch (RuntimeException ex) {

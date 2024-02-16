@@ -388,7 +388,8 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase
                         throw e;
                     }
                 } else {
-                    record.next = fieldSetFlags()[1] ? this.next
+                    record.next = fieldSetFlags()[1]
+                        ? this.next
                         : (com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList) defaultValue(
                             fields()[1]);
                 }

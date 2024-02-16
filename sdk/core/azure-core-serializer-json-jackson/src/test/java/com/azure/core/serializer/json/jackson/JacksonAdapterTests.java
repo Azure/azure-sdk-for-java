@@ -137,8 +137,8 @@ public class JacksonAdapterTests {
     @ParameterizedTest
     @MethodSource("deserializeJsonSupplier")
     public void deserializeJson(String json, OffsetDateTime expected) throws IOException {
-        DateTimeWrapper wrapper = JacksonAdapter.defaultSerializerAdapter().deserialize(json, DateTimeWrapper.class,
-            SerializerEncoding.JSON);
+        DateTimeWrapper wrapper = JacksonAdapter.defaultSerializerAdapter()
+            .deserialize(json, DateTimeWrapper.class, SerializerEncoding.JSON);
 
         assertEquals(expected, wrapper.getOffsetDateTime());
     }

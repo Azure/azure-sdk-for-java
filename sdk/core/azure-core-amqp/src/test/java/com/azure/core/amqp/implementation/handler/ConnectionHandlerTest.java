@@ -201,7 +201,9 @@ public class ConnectionHandlerTest {
         // Act
         handler.onConnectionBound(event);
 
-        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.CLOSED).then(handler::close)
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.CLOSED)
+            .then(handler::close)
             .verifyComplete();
 
         // Assert

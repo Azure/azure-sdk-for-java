@@ -41,8 +41,11 @@ class ActiveClientTokenManagerTest {
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
         StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
-            .expectNext(AmqpResponseCode.ACCEPTED).thenAwait(DEFAULT_DURATION).expectNext(AmqpResponseCode.ACCEPTED)
-            .thenCancel().verify(VERIFY_TIMEOUT);
+            .expectNext(AmqpResponseCode.ACCEPTED)
+            .thenAwait(DEFAULT_DURATION)
+            .expectNext(AmqpResponseCode.ACCEPTED)
+            .thenCancel()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -65,10 +68,13 @@ class ActiveClientTokenManagerTest {
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
         StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
-            .expectNext(AmqpResponseCode.ACCEPTED).assertNext(code -> {
+            .expectNext(AmqpResponseCode.ACCEPTED)
+            .assertNext(code -> {
                 assertEquals(AmqpResponseCode.ACCEPTED, code);
                 returnError.set(true);
-            }).expectError(IllegalArgumentException.class).verify();
+            })
+            .expectError(IllegalArgumentException.class)
+            .verify();
     }
 
     /**
@@ -117,10 +123,13 @@ class ActiveClientTokenManagerTest {
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
         StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
-            .expectNext(AmqpResponseCode.ACCEPTED).thenAwait(DEFAULT_DURATION)
+            .expectNext(AmqpResponseCode.ACCEPTED)
+            .thenAwait(DEFAULT_DURATION)
 
             // This is where the exception occurs and we await another retry.
-            .thenAwait(DEFAULT_DURATION).expectNext(AmqpResponseCode.ACCEPTED).thenCancel()
+            .thenAwait(DEFAULT_DURATION)
+            .expectNext(AmqpResponseCode.ACCEPTED)
+            .thenCancel()
             .verify(VERIFY_TIMEOUT.multipliedBy(2));
     }
 
@@ -154,10 +163,13 @@ class ActiveClientTokenManagerTest {
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
         StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
-            .expectNext(AmqpResponseCode.ACCEPTED).thenAwait(DEFAULT_DURATION).expectErrorSatisfies(throwable -> {
+            .expectNext(AmqpResponseCode.ACCEPTED)
+            .thenAwait(DEFAULT_DURATION)
+            .expectErrorSatisfies(throwable -> {
                 Assertions.assertTrue(throwable instanceof AmqpException);
                 Assertions.assertFalse(((AmqpException) throwable).isTransient());
-            }).verify(VERIFY_TIMEOUT);
+            })
+            .verify(VERIFY_TIMEOUT);
     }
 
     private Mono<OffsetDateTime> getNextExpiration(Duration duration) {

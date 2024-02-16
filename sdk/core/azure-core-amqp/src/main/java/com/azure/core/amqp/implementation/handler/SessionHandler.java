@@ -88,8 +88,10 @@ public class SessionHandler extends Handler {
         try {
             reactorDispatcher.invoke(this::onSessionTimeout, this.openTimeout);
         } catch (IOException | RejectedExecutionException ioException) {
-            logger.atInfo().addKeyValue(SESSION_NAME_KEY, sessionName)
-                .addKeyValue("reactorDispatcherError", ioException.getMessage()).log("onSessionLocalOpen");
+            logger.atInfo()
+                .addKeyValue(SESSION_NAME_KEY, sessionName)
+                .addKeyValue("reactorDispatcherError", ioException.getMessage())
+                .log("onSessionLocalOpen");
 
             session.close();
 
@@ -116,7 +118,8 @@ public class SessionHandler extends Handler {
 
         logBuilder.addKeyValue(SESSION_NAME_KEY, sessionName)
             .addKeyValue("sessionIncCapacity", session.getIncomingCapacity())
-            .addKeyValue("sessionOutgoingWindow", session.getOutgoingWindow()).log("onSessionRemoteOpen");
+            .addKeyValue("sessionOutgoingWindow", session.getOutgoingWindow())
+            .log("onSessionRemoteOpen");
 
         onNext(EndpointState.ACTIVE);
     }

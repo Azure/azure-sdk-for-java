@@ -22,8 +22,8 @@ import java.util.Objects;
  * <!-- end com.azure.core.amqp.models.AmqpMessageId.createAndGet -->
  *
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-string"
- *      target="_blank">
- *      String </a>
+ * target="_blank">
+ * String </a>
  */
 public final class AmqpMessageId {
     private final String messageId;

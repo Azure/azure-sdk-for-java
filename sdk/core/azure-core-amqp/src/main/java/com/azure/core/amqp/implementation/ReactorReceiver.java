@@ -159,7 +159,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
             logger.atVerbose().log("State {}", state);
             return AmqpEndpointStateUtil.getConnectionState(state);
         }).doOnError(error -> {
-            final String message = isDisposed.getAndSet(true) ? "This was already disposed. Dropping error."
+            final String message = isDisposed.getAndSet(true)
+                ? "This was already disposed. Dropping error."
                 : "Freeing resources due to error.";
 
             logger.atInfo().log(message);

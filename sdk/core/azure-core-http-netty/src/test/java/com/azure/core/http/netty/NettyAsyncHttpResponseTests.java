@@ -82,7 +82,8 @@ public class NettyAsyncHttpResponseTests {
             = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST, false, false);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
-            .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual)).verifyComplete();
+            .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
+            .verifyComplete();
     }
 
     @Test
@@ -96,7 +97,8 @@ public class NettyAsyncHttpResponseTests {
         NettyAsyncHttpResponse response
             = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST, false, false);
 
-        StepVerifier.create(response.getBodyAsByteArray()).assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
+        StepVerifier.create(response.getBodyAsByteArray())
+            .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
             .verifyComplete();
     }
 
@@ -112,7 +114,8 @@ public class NettyAsyncHttpResponseTests {
         NettyAsyncHttpResponse response
             = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST, false, false);
 
-        StepVerifier.create(response.getBodyAsString()).assertNext(actual -> assertEquals(HELLO, actual))
+        StepVerifier.create(response.getBodyAsString())
+            .assertNext(actual -> assertEquals(HELLO, actual))
             .verifyComplete();
     }
 
@@ -128,7 +131,8 @@ public class NettyAsyncHttpResponseTests {
             = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST, false, false);
 
         StepVerifier.create(response.getBodyAsString(StandardCharsets.UTF_8))
-            .assertNext(actual -> assertEquals(HELLO, actual)).verifyComplete();
+            .assertNext(actual -> assertEquals(HELLO, actual))
+            .verifyComplete();
     }
 
     @ParameterizedTest

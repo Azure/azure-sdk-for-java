@@ -66,7 +66,8 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
         this.writeTimeoutMillis = writeTimeoutMillis;
         this.progressReporter = (context != null) ? context.getProgressReporter() : null;
         this.responseTimeoutMillis = (context != null && context.getResponseTimeoutOverride() != null)
-            ? context.getResponseTimeoutOverride() : responseTimeoutMillis;
+            ? context.getResponseTimeoutOverride()
+            : responseTimeoutMillis;
         this.readTimeoutMillis = readTimeoutMillis;
     }
 
@@ -95,8 +96,9 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
     public void startWriteTracking() {
         writeTrackingStarted = true;
         if (ctx != null && writeTimeoutMillis > 0) {
-            this.writeTimeoutWatcher = ctx.executor().scheduleAtFixedRate(() -> writeTimeoutRunnable(ctx),
-                writeTimeoutMillis, writeTimeoutMillis, TimeUnit.MILLISECONDS);
+            this.writeTimeoutWatcher = ctx.executor()
+                .scheduleAtFixedRate(() -> writeTimeoutRunnable(ctx), writeTimeoutMillis, writeTimeoutMillis,
+                    TimeUnit.MILLISECONDS);
         }
     }
 
@@ -237,8 +239,9 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
     public void startReadTracking() {
         readTrackingStarted = true;
         if (ctx != null && readTimeoutMillis > 0) {
-            this.readTimeoutWatcher = ctx.executor().scheduleAtFixedRate(() -> readTimeoutRunnable(ctx),
-                readTimeoutMillis, readTimeoutMillis, TimeUnit.MILLISECONDS);
+            this.readTimeoutWatcher = ctx.executor()
+                .scheduleAtFixedRate(() -> readTimeoutRunnable(ctx), readTimeoutMillis, readTimeoutMillis,
+                    TimeUnit.MILLISECONDS);
         }
     }
 

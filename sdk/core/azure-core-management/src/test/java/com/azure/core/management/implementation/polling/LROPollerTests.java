@@ -123,24 +123,29 @@ public class LROPollerTests {
 
                 if (!request.getUrl().endsWith(resourceEndpoint) && !request.getUrl().endsWith(operationEndpoint)) {
                     return new com.github.tomakehurst.wiremock.http.Response.Builder().status(500)
-                        .body("Unsupported path:" + request.getUrl()).build();
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT)) {
                     // accept response
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
                         .headers(new HttpHeaders(new HttpHeader("Azure-AsyncOperation",
                             request.getAbsoluteUrl().replace(resourceEndpoint, operationEndpoint))))
-                        .body(toJson(new FooWithProvisioningState("Creating"))).status(201).build();
+                        .body(toJson(new FooWithProvisioningState("Creating")))
+                        .status(201)
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.GET)) {
                     if (request.getUrl().endsWith(operationEndpoint)) {
                         getCallCount[0]++;
                         if (getCallCount[0] < serverConfigure.pollingCountTillSuccess) {
                             return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                                .body("{\"status\": \"InProgress\"}").build();
+                                .body("{\"status\": \"InProgress\"}")
+                                .build();
                         } else if (getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
                             return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                                .body("{\"status\": \"Succeeded\"}").build();
+                                .body("{\"status\": \"Succeeded\"}")
+                                .build();
                         }
                     } else if (request.getUrl().endsWith(resourceEndpoint)
                         && getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
@@ -150,7 +155,8 @@ public class LROPollerTests {
                             .build();
                     } else {
                         return new com.github.tomakehurst.wiremock.http.Response.Builder().status(400)
-                            .body("Invalid state:" + request.getUrl()).build();
+                            .body("Invalid state:" + request.getUrl())
+                            .build();
                     }
                 }
                 return response;
@@ -215,30 +221,36 @@ public class LROPollerTests {
 
                 if (!request.getUrl().endsWith(resourceEndpoint) && !request.getUrl().endsWith(operationEndpoint)) {
                     return new com.github.tomakehurst.wiremock.http.Response.Builder().status(500)
-                        .body("Unsupported path:" + request.getUrl()).build();
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT)) {
                     // accept response
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
                         .headers(new HttpHeaders(new HttpHeader("Azure-AsyncOperation",
                             request.getAbsoluteUrl().replace(resourceEndpoint, operationEndpoint))))
-                        .body(toJson(new FooWithProvisioningState("Creating"))).status(201).build();
+                        .body(toJson(new FooWithProvisioningState("Creating")))
+                        .status(201)
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.GET)) {
                     if (request.getUrl().endsWith(operationEndpoint)) {
                         getCallCount[0]++;
                         if (getCallCount[0] < serverConfigure.pollingCountTillSuccess) {
                             return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                                .body("{\"status\": \"InProgress\"}").build();
+                                .body("{\"status\": \"InProgress\"}")
+                                .build();
                         } else if (getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
                             return new com.github.tomakehurst.wiremock.http.Response.Builder()
                                 .headers(
                                     new HttpHeaders(new HttpHeader("x-ms-request-id", UUID.randomUUID().toString())))
-                                .body("{\"status\": \"Failed\"}").build();
+                                .body("{\"status\": \"Failed\"}")
+                                .build();
                         }
                     } else {
                         return new com.github.tomakehurst.wiremock.http.Response.Builder().status(400)
-                            .body("Invalid state:" + request.getUrl()).build();
+                            .body("Invalid state:" + request.getUrl())
+                            .build();
                     }
                 }
                 return response;
@@ -299,12 +311,14 @@ public class LROPollerTests {
 
                 if (!request.getUrl().endsWith(resourceEndpoint)) {
                     return new com.github.tomakehurst.wiremock.http.Response.Builder().status(500)
-                        .body("Unsupported path:" + request.getUrl()).build();
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT)) {
                     // 200 response with provisioningState=Succeeded.
                     return new com.github.tomakehurst.wiremock.http.Response.Builder().status(200)
-                        .body(sampleVaultUpdateSucceededResponse).build();
+                        .body(sampleVaultUpdateSucceededResponse)
+                        .build();
                 }
                 return response;
             }
@@ -328,8 +342,10 @@ public class LROPollerTests {
 
             StepVerifier.create(lroFlux).expectSubscription().expectNextMatches(response -> {
                 PollResult<Resource> pollResult = response.getValue();
-                return response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED && pollResult != null
-                    && pollResult.getValue() != null && pollResult.getValue().id() != null;
+                return response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+                    && pollResult != null
+                    && pollResult.getValue() != null
+                    && pollResult.getValue().id() != null;
             }).verifyComplete();
 
             AsyncPollResponse<PollResult<Resource>, Resource> asyncPollResponse = lroFlux.blockLast();
@@ -359,14 +375,17 @@ public class LROPollerTests {
 
                 if (!request.getUrl().endsWith(resourceEndpoint)) {
                     return new com.github.tomakehurst.wiremock.http.Response.Builder().status(500)
-                        .body("Unsupported path:" + request.getUrl()).build();
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT)) {
                     // 201 response with provisioningState=Succeeded.
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
                         .headers(new HttpHeaders(new HttpHeader("Azure-AsyncOperation",
                             "https://management.azure.com/subscriptions/000/providers/Microsoft.Network/locations/eastus/operations/123")))
-                        .body(sampleNicCreateSucceededResponse).status(201).build();
+                        .body(sampleNicCreateSucceededResponse)
+                        .status(201)
+                        .build();
                 }
                 return response;
             }
@@ -390,8 +409,10 @@ public class LROPollerTests {
 
             StepVerifier.create(lroFlux).expectSubscription().expectNextMatches(response -> {
                 PollResult<Resource> pollResult = response.getValue();
-                return response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED && pollResult != null
-                    && pollResult.getValue() != null && pollResult.getValue().id() != null;
+                return response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+                    && pollResult != null
+                    && pollResult.getValue() != null
+                    && pollResult.getValue().id() != null;
             }).verifyComplete();
 
             AsyncPollResponse<PollResult<Resource>, Resource> asyncPollResponse = lroFlux.blockLast();
@@ -421,14 +442,17 @@ public class LROPollerTests {
 
                 if (!request.getUrl().endsWith(resourceEndpoint)) {
                     return new com.github.tomakehurst.wiremock.http.Response.Builder().status(500)
-                        .body("Unsupported path:" + request.getUrl()).build();
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT)) {
                     // 201 response with provisioningState=Succeeded.
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
                         .headers(new HttpHeaders(new HttpHeader("Location",
                             "https://management.azure.com/subscriptions/000/resourceGroups/rg86829b7a87d74/providers/Microsoft.Search/searchServices/ss3edfb54d")))
-                        .body(sampleSearchServiceCreateSucceededResponse).status(201).build();
+                        .body(sampleSearchServiceCreateSucceededResponse)
+                        .status(201)
+                        .build();
                 }
                 return response;
             }
@@ -452,8 +476,10 @@ public class LROPollerTests {
 
             StepVerifier.create(lroFlux).expectSubscription().expectNextMatches(response -> {
                 PollResult<Resource> pollResult = response.getValue();
-                return response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED && pollResult != null
-                    && pollResult.getValue() != null && pollResult.getValue().id() != null;
+                return response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+                    && pollResult != null
+                    && pollResult.getValue() != null
+                    && pollResult.getValue().id() != null;
             }).verifyComplete();
 
             AsyncPollResponse<PollResult<Resource>, Resource> asyncPollResponse = lroFlux.blockLast();
@@ -487,14 +513,17 @@ public class LROPollerTests {
 
                 if (!request.getUrl().endsWith(resourceEndpoint) && !request.getUrl().endsWith(operationEndpoint)) {
                     return new com.github.tomakehurst.wiremock.http.Response.Builder().status(500)
-                        .body("Unsupported path:" + request.getUrl()).build();
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT)) {
                     // accept response
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
                         .headers(new HttpHeaders(new HttpHeader("Azure-AsyncOperation",
                             request.getAbsoluteUrl().replace(resourceEndpoint, operationEndpoint))))
-                        .body(toJson(new FooWithProvisioningState("Creating"))).status(201).build();
+                        .body(toJson(new FooWithProvisioningState("Creating")))
+                        .status(201)
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.GET)) {
                     if (request.getUrl().endsWith(operationEndpoint)) {
@@ -502,7 +531,8 @@ public class LROPollerTests {
                         if (getCallCount[0] < serverConfigure.pollingCountTillSuccess) {
                             if (getCallCount[0] == 1) {
                                 return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                                    .body("{\"status\": \"InProgress\"}").build();
+                                    .body("{\"status\": \"InProgress\"}")
+                                    .build();
                             } else {
                                 return new com.github.tomakehurst.wiremock.http.Response.Builder()
                                     .body("{\"status\": \"InProgress\"}")
@@ -511,7 +541,8 @@ public class LROPollerTests {
                             }
                         } else if (getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
                             return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                                .body("{\"status\": \"Succeeded\"}").build();
+                                .body("{\"status\": \"Succeeded\"}")
+                                .build();
                         }
                     } else if (request.getUrl().endsWith(resourceEndpoint)
                         && getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
@@ -521,7 +552,8 @@ public class LROPollerTests {
                             .build();
                     } else {
                         return new com.github.tomakehurst.wiremock.http.Response.Builder().status(400)
-                            .body("Invalid state:" + request.getUrl()).build();
+                            .body("Invalid state:" + request.getUrl())
+                            .build();
                     }
                 }
                 return response;
@@ -546,11 +578,13 @@ public class LROPollerTests {
 
             StepVerifier.create(lroFlux).expectSubscription().expectNextMatches(response -> {
                 PollResult<FooWithProvisioningState> pollResult = response.getValue();
-                return response.getStatus() == LongRunningOperationStatus.IN_PROGRESS && pollResult != null
+                return response.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+                    && pollResult != null
                     && pollResult.getValue() != null;
             }).expectNextMatches(response -> {
                 PollResult<FooWithProvisioningState> pollResult = response.getValue();
-                return response.getStatus() == LongRunningOperationStatus.FAILED && pollResult != null
+                return response.getStatus() == LongRunningOperationStatus.FAILED
+                    && pollResult != null
                     && pollResult.getError() != null;
             }).verifyComplete();
         } finally {
@@ -573,14 +607,16 @@ public class LROPollerTests {
 
                 if (!request.getUrl().endsWith(resourceEndpoint)) {
                     return new com.github.tomakehurst.wiremock.http.Response.Builder().status(500)
-                        .body("Unsupported path:" + request.getUrl()).build();
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT, RequestMethod.GET)) {
                     if (request.getMethod().isOneOf(RequestMethod.GET)) {
                         getCallCount.getAndIncrement();
                     }
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                        .body(toJson(new FooWithProvisioningState("IN_PROGRESS"))).build();
+                        .body(toJson(new FooWithProvisioningState("IN_PROGRESS")))
+                        .build();
                 }
                 return response;
             }
@@ -737,24 +773,29 @@ public class LROPollerTests {
 
                 if (!request.getUrl().endsWith(resourceEndpoint) && !request.getUrl().endsWith(operationEndpoint)) {
                     return new com.github.tomakehurst.wiremock.http.Response.Builder().status(500)
-                        .body("Unsupported path:" + request.getUrl()).build();
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT)) {
                     // accept response
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
                         .headers(new HttpHeaders(new HttpHeader("Azure-AsyncOperation",
                             request.getAbsoluteUrl().replace(resourceEndpoint, operationEndpoint))))
-                        .body(toJson(new FooWithProvisioningState("Creating"))).status(201).build();
+                        .body(toJson(new FooWithProvisioningState("Creating")))
+                        .status(201)
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.GET)) {
                     if (request.getUrl().endsWith(operationEndpoint)) {
                         getCallCount[0]++;
                         if (getCallCount[0] < serverConfigure.pollingCountTillSuccess) {
                             return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                                .body("{\"status\": \"InProgress\"}").build();
+                                .body("{\"status\": \"InProgress\"}")
+                                .build();
                         } else if (getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
                             return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                                .body("{\"status\": \"Succeeded\"}").build();
+                                .body("{\"status\": \"Succeeded\"}")
+                                .build();
                         }
                     } else if (request.getUrl().endsWith(resourceEndpoint)
                         && getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
@@ -764,7 +805,8 @@ public class LROPollerTests {
                             .build();
                     } else {
                         return new com.github.tomakehurst.wiremock.http.Response.Builder().status(400)
-                            .body("Invalid state:" + request.getUrl()).build();
+                            .body("Invalid state:" + request.getUrl())
+                            .build();
                     }
                 }
                 return response;
@@ -833,13 +875,15 @@ public class LROPollerTests {
 
                 if (!request.getUrl().endsWith(resourceEndpoint)) {
                     return new com.github.tomakehurst.wiremock.http.Response.Builder().status(500)
-                        .body("Unsupported path:" + request.getUrl()).build();
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT)) {
                     System.out.printf("[%s] PUT status %s%n", OffsetDateTime.now(), "IN_PROGRESS");
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
                         .headers(serverConfigure.additionalHeaders)
-                        .body(toJson(new FooWithProvisioningState("IN_PROGRESS"))).build();
+                        .body(toJson(new FooWithProvisioningState("IN_PROGRESS")))
+                        .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.GET)) {
                     getCallCount[0]++;
@@ -847,7 +891,8 @@ public class LROPollerTests {
                         System.out.printf("[%s] GET status %s%n", OffsetDateTime.now(), "IN_PROGRESS");
                         return new com.github.tomakehurst.wiremock.http.Response.Builder()
                             .headers(serverConfigure.additionalHeaders)
-                            .body(toJson(new FooWithProvisioningState("IN_PROGRESS"))).build();
+                            .body(toJson(new FooWithProvisioningState("IN_PROGRESS")))
+                            .build();
                     } else if (getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
                         System.out.printf("[%s] GET status %s%n", OffsetDateTime.now(), "SUCCEEDED");
                         return new com.github.tomakehurst.wiremock.http.Response.Builder()

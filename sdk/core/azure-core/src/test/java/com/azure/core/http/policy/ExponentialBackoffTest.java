@@ -91,7 +91,8 @@ public class ExponentialBackoffTest {
     @Test
     public void testExponentialBackoffOptions() {
         ExponentialBackoffOptions exponentialBackoffOptions = new ExponentialBackoffOptions().setMaxRetries(10)
-            .setBaseDelay(Duration.ofSeconds(1)).setMaxDelay(Duration.ofSeconds(10));
+            .setBaseDelay(Duration.ofSeconds(1))
+            .setMaxDelay(Duration.ofSeconds(10));
         ExponentialBackoff expBackoff = new ExponentialBackoff(exponentialBackoffOptions);
 
         // exponential backoff

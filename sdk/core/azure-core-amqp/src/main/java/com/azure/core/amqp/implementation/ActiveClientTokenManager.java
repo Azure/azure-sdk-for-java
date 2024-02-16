@@ -133,28 +133,35 @@ public class ActiveClientTokenManager implements TokenManager {
             return false;
         });
 
-        return Flux.switchOnNext(durationSource.asFlux().map(Flux::interval)).takeUntil(duration -> hasDisposed.get())
+        return Flux.switchOnNext(durationSource.asFlux().map(Flux::interval))
+            .takeUntil(duration -> hasDisposed.get())
             .flatMap(delay -> {
 
                 LOGGER.atInfo().addKeyValue("scopes", scopes).log("Refreshing token.");
 
                 return authorize();
-            }).onErrorContinue(error -> (error instanceof AmqpException) && ((AmqpException) error).isTransient(),
+            })
+            .onErrorContinue(error -> (error instanceof AmqpException) && ((AmqpException) error).isTransient(),
                 (amqpException, interval) -> {
                     final Duration lastRefresh = lastRefreshInterval.get();
 
-                    LOGGER.atError().addKeyValue("scopes", scopes).addKeyValue(INTERVAL_KEY, interval)
+                    LOGGER.atError()
+                        .addKeyValue("scopes", scopes)
+                        .addKeyValue(INTERVAL_KEY, interval)
                         .log("Error is transient. Rescheduling authorization task.", amqpException);
 
                     durationSource.emitNext(lastRefresh, (signalType, emitResult) -> {
                         addSignalTypeAndResult(LOGGER.atVerbose(), signalType, emitResult)
-                            .addKeyValue("lastRefresh", lastRefresh).log("Could not emit lastRefresh.");
+                            .addKeyValue("lastRefresh", lastRefresh)
+                            .log("Could not emit lastRefresh.");
 
                         return false;
                     });
                 })
             .subscribe(interval -> {
-                LOGGER.atVerbose().addKeyValue("scopes", scopes).addKeyValue(INTERVAL_KEY, interval)
+                LOGGER.atVerbose()
+                    .addKeyValue("scopes", scopes)
+                    .addKeyValue(INTERVAL_KEY, interval)
                     .log("Authorization successful. Refreshing token.");
 
                 authorizationResults.emitNext(AmqpResponseCode.ACCEPTED, (signalType, emitResult) -> {
@@ -168,12 +175,15 @@ public class ActiveClientTokenManager implements TokenManager {
 
                 durationSource.emitNext(nextRefresh, (signalType, emitResult) -> {
                     addSignalTypeAndResult(LOGGER.atVerbose(), signalType, emitResult)
-                        .addKeyValue("nextRefresh", nextRefresh).log("Could not emit nextRefresh.");
+                        .addKeyValue("nextRefresh", nextRefresh)
+                        .log("Could not emit nextRefresh.");
 
                     return false;
                 });
             }, error -> {
-                LOGGER.atError().addKeyValue("scopes", scopes).addKeyValue("audience", tokenAudience)
+                LOGGER.atError()
+                    .addKeyValue("scopes", scopes)
+                    .addKeyValue("audience", tokenAudience)
                     .log("Error occurred while refreshing token that is not retriable. Not scheduling"
                         + " refresh task. Use ActiveClientTokenManager.authorize() to schedule task again.", error);
 

@@ -268,7 +268,8 @@ class RequestResponseChannelTest {
         when(message.getReplyTo()).thenReturn("test-reply-to");
 
         // Act & Assert
-        StepVerifier.create(channel.sendWithAck(message)).expectError(IllegalArgumentException.class)
+        StepVerifier.create(channel.sendWithAck(message))
+            .expectError(IllegalArgumentException.class)
             .verify(VERIFY_TIMEOUT);
     }
 
@@ -288,7 +289,8 @@ class RequestResponseChannelTest {
         sendEndpoints.next(EndpointState.ACTIVE);
 
         // Act & Assert
-        StepVerifier.create(channel.sendWithAck(message)).expectError(IllegalArgumentException.class)
+        StepVerifier.create(channel.sendWithAck(message))
+            .expectError(IllegalArgumentException.class)
             .verify(VERIFY_TIMEOUT);
     }
 
@@ -407,7 +409,8 @@ class RequestResponseChannelTest {
         // Act
         StepVerifier.create(channel.sendWithAck(message, transactionalState))
             .then(() -> deliveryProcessor.next(delivery))
-            .assertNext(received -> assertEquals(messageId, received.getCorrelationId())).expectComplete()
+            .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
+            .expectComplete()
             .verify(VERIFY_TIMEOUT);
 
         // Assert
@@ -532,8 +535,10 @@ class RequestResponseChannelTest {
         sendEndpoints.next(EndpointState.ACTIVE);
 
         // Act
-        StepVerifier.create(channel.sendWithAck(message)).then(() -> deliveryProcessor.next(delivery))
-            .assertNext(received -> assertEquals(messageId, received.getCorrelationId())).expectComplete()
+        StepVerifier.create(channel.sendWithAck(message))
+            .then(() -> deliveryProcessor.next(delivery))
+            .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
+            .expectComplete()
             .verify(VERIFY_TIMEOUT);
 
         // Assert
@@ -663,8 +668,10 @@ class RequestResponseChannelTest {
 
         long start = Instant.now().toEpochMilli();
         // Act
-        StepVerifier.create(channel.sendWithAck(message)).then(() -> deliveryProcessor.next(delivery))
-            .assertNext(received -> assertEquals(messageId, received.getCorrelationId())).expectComplete()
+        StepVerifier.create(channel.sendWithAck(message))
+            .then(() -> deliveryProcessor.next(delivery))
+            .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
+            .expectComplete()
             .verify(VERIFY_TIMEOUT);
 
         // Assert
@@ -744,8 +751,10 @@ class RequestResponseChannelTest {
         long start = Instant.now().toEpochMilli();
 
         // Act
-        StepVerifier.create(channel.sendWithAck(message)).then(() -> sendEndpoints.error(error))
-            .expectError(AmqpException.class).verify(VERIFY_TIMEOUT);
+        StepVerifier.create(channel.sendWithAck(message))
+            .then(() -> sendEndpoints.error(error))
+            .expectError(AmqpException.class)
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
 
@@ -777,8 +786,10 @@ class RequestResponseChannelTest {
         sendEndpoints.next(EndpointState.ACTIVE);
 
         // Act
-        StepVerifier.create(channel.sendWithAck(message)).then(() -> sendEndpoints.error(error))
-            .expectError(AmqpException.class).verify(VERIFY_TIMEOUT);
+        StepVerifier.create(channel.sendWithAck(message))
+            .then(() -> sendEndpoints.error(error))
+            .expectError(AmqpException.class)
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         assertTrue(channel.isDisposed());
@@ -835,7 +846,9 @@ class RequestResponseChannelTest {
             SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, AmqpMetricsProvider.noop(), isV2);
 
         // Act & Assert
-        StepVerifier.create(channel.closeAsync()).thenAwait(retry.getTryTimeout()).expectComplete()
+        StepVerifier.create(channel.closeAsync())
+            .thenAwait(retry.getTryTimeout())
+            .expectComplete()
             .verify(Duration.ofSeconds(30));
 
         // Calling closeAsync() returns the same completed status.
@@ -878,7 +891,9 @@ class RequestResponseChannelTest {
         StepVerifier.create(channel.closeAsync()).expectComplete().verify(VERIFY_TIMEOUT);
 
         // The last endpoint we saw was active.
-        StepVerifier.create(channel.getEndpointStates()).expectNext(AmqpEndpointState.ACTIVE).expectComplete()
+        StepVerifier.create(channel.getEndpointStates())
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .expectComplete()
             .verify(VERIFY_TIMEOUT);
 
         assertTrue(channel.isDisposed());

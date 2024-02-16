@@ -80,7 +80,9 @@ final class JacksonJsonWriter extends JsonWriter {
 
             // Get JsonGenerator.Feature enum value for allowing non-numeric numbers
             Class<?> jsonGeneratorFeature = Arrays.stream(jacksonJsonGeneratorClass.getDeclaredClasses())
-                .filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
+                .filter(c -> "Feature".equals(c.getSimpleName()))
+                .findAny()
+                .orElse(null);
             Class<?> jsonWriteFeature = Class.forName("com.fasterxml.jackson.core.json.JsonWriteFeature");
             MethodHandle jsonWriteFeatureMappedFeature
                 = lookup.findVirtual(jsonWriteFeature, "mappedFeature", methodType(jsonGeneratorFeature));

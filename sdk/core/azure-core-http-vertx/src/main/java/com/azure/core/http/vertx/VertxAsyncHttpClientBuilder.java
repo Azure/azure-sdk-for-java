@@ -205,7 +205,8 @@ public class VertxAsyncHttpClientBuilder {
                 = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
             ProxyOptions buildProxyOptions = (this.proxyOptions == null)
-                ? ProxyOptions.fromConfiguration(buildConfiguration, true) : this.proxyOptions;
+                ? ProxyOptions.fromConfiguration(buildConfiguration, true)
+                : this.proxyOptions;
 
             if (buildProxyOptions != null) {
                 io.vertx.core.net.ProxyOptions vertxProxyOptions = new io.vertx.core.net.ProxyOptions();

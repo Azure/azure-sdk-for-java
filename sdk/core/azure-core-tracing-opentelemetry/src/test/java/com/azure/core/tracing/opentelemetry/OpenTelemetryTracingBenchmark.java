@@ -69,7 +69,9 @@ public class OpenTelemetryTracingBenchmark {
         }
 
         return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200))).tracer(tracer).build();
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .tracer(tracer)
+            .build();
     }
 
     private static Tracer configureTracer(boolean enabled) {
@@ -78,8 +80,10 @@ public class OpenTelemetryTracingBenchmark {
                 new OpenTelemetryTracingOptions().setEnabled(false));
         }
 
-        SdkTracerProvider provider = SdkTracerProvider.builder().setSampler(Sampler.traceIdRatioBased(0.01))
-            .addSpanProcessor(new NoopProcessor()).build();
+        SdkTracerProvider provider = SdkTracerProvider.builder()
+            .setSampler(Sampler.traceIdRatioBased(0.01))
+            .addSpanProcessor(new NoopProcessor())
+            .build();
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(provider).build();
         return new OpenTelemetryTracer("benchmark", null, null,

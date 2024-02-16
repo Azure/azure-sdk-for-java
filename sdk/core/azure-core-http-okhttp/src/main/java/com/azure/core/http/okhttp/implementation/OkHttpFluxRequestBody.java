@@ -73,8 +73,10 @@ public class OkHttpFluxRequestBody extends RequestBody {
         if (bodySent.compareAndSet(false, true)) {
             Mono<Void> requestSendMono = content.toFluxByteBuffer().flatMapSequential(buffer -> {
                 if (Schedulers.isInNonBlockingThread()) {
-                    return Mono.just(buffer).publishOn(Schedulers.boundedElastic())
-                        .map(b -> writeBuffer(bufferedSink, b)).then();
+                    return Mono.just(buffer)
+                        .publishOn(Schedulers.boundedElastic())
+                        .map(b -> writeBuffer(bufferedSink, b))
+                        .then();
                 } else {
                     writeBuffer(bufferedSink, buffer);
                     return Mono.empty();

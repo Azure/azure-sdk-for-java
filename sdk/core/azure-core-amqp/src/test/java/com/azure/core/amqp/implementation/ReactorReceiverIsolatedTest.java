@@ -150,12 +150,15 @@ public class ReactorReceiverIsolatedTest {
                 .withVirtualTime(() -> reactorReceiver.closeAsync(message, condition), () -> virtualTimeScheduler, 1)
                 // Advance virtual time beyond the default timeout of 60 sec, so endpoint state
                 // completion timeout kicks in.
-                .thenAwait(Duration.ofSeconds(100)).expectComplete().verify(VERIFY_TIMEOUT);
+                .thenAwait(Duration.ofSeconds(100))
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
 
             // Assert
             StepVerifier.create(reactorReceiver.getEndpointStates())
                 // Assert endpoint state completes (via timeout) when there is no broker remote-close ack.
-                .expectComplete().verify(VERIFY_TIMEOUT);
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
 
             assertTrue(reactorReceiver.isDisposed());
 

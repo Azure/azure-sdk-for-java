@@ -108,14 +108,17 @@ public class MessageFluxIsolatedTest {
         when(secondReceiver.closeAsync()).thenReturn(Mono.empty());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).then(firstReceiverFacade.emit())
+            verifier.create(() -> messageFlux)
+                .then(firstReceiverFacade.emit())
                 .then(firstReceiverFacade.errorEndpointStates(new AmqpException(true, "retriable", null)))
-                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT).then(secondReceiverFacade.emit())
+                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
+                .then(secondReceiverFacade.emit())
                 .then(() -> firstReceiverFacade.assertNoPendingSubscriptionsToMessages()) // Subscription made to the
                                                                                           // 1st receiver should not be
                                                                                           // leaked when switching to
                                                                                           // 2nd.
-                .then(() -> upstream.complete()).verifyComplete();
+                .then(() -> upstream.complete())
+                .verifyComplete();
         }
 
         Assertions.assertTrue(firstReceiverFacade.wasSubscribedToMessages());
@@ -146,11 +149,14 @@ public class MessageFluxIsolatedTest {
         when(secondReceiver.closeAsync()).thenReturn(Mono.empty());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).then(firstReceiverFacade.emit())
-                .then(firstReceiverFacade.completeEndpointStates()).thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
+            verifier.create(() -> messageFlux)
+                .then(firstReceiverFacade.emit())
+                .then(firstReceiverFacade.completeEndpointStates())
+                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
                 .then(secondReceiverFacade.emit())
                 .then(() -> firstReceiverFacade.assertNoPendingSubscriptionsToMessages())
-                .then(() -> upstream.complete()).verifyComplete();
+                .then(() -> upstream.complete())
+                .verifyComplete();
         }
 
         Assertions.assertTrue(firstReceiverFacade.wasSubscribedToMessages());
@@ -182,11 +188,14 @@ public class MessageFluxIsolatedTest {
         when(secondReceiver.closeAsync()).thenReturn(Mono.empty());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).then(firstReceiverFacade.emit())
+            verifier.create(() -> messageFlux)
+                .then(firstReceiverFacade.emit())
                 .then(firstReceiverFacade.errorEndpointStates(new AmqpException(false, "non-retriable", null)))
                 .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
                 .then(() -> firstReceiverFacade.assertNoPendingSubscriptionsToMessages())
-                .then(secondReceiverFacade.emit()).then(() -> upstream.complete()).verifyError();
+                .then(secondReceiverFacade.emit())
+                .then(() -> upstream.complete())
+                .verifyError();
         }
 
         Assertions.assertTrue(firstReceiverFacade.wasSubscribedToMessages());
@@ -215,14 +224,22 @@ public class MessageFluxIsolatedTest {
         when(receiver.closeAsync()).thenReturn(Mono.empty());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).then(receiverFacade.emit())
-                .then(receiverFacade.errorEndpointStates(error)).then(receiverFacade.completeMessages())
-                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT).then(receiverFacade.emit())                // response for retry1
-                .then(receiverFacade.errorEndpointStates(error)).then(receiverFacade.completeMessages())
-                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT).then(receiverFacade.emit())                // response for retry2
-                .then(receiverFacade.errorEndpointStates(error)).then(receiverFacade.completeMessages())
-                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT).then(receiverFacade.emit())                // response for retry3
-                .then(receiverFacade.errorEndpointStates(error)).then(receiverFacade.completeMessages())
+            verifier.create(() -> messageFlux)
+                .then(receiverFacade.emit())
+                .then(receiverFacade.errorEndpointStates(error))
+                .then(receiverFacade.completeMessages())
+                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
+                .then(receiverFacade.emit())                // response for retry1
+                .then(receiverFacade.errorEndpointStates(error))
+                .then(receiverFacade.completeMessages())
+                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
+                .then(receiverFacade.emit())                // response for retry2
+                .then(receiverFacade.errorEndpointStates(error))
+                .then(receiverFacade.completeMessages())
+                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
+                .then(receiverFacade.emit())                // response for retry3
+                .then(receiverFacade.errorEndpointStates(error))
+                .then(receiverFacade.completeMessages())
                 .verifyErrorMatches(e -> e == error);
         }
 
@@ -282,18 +299,22 @@ public class MessageFluxIsolatedTest {
         final int request = firstReceiverMessagesCount + secondReceiverMessagesCount + 5;
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier
-                .create(() -> messageFlux.concatMap(m -> messageFlux
-                    .updateDisposition(dispositionTags.get(idx[0]++), Accepted.getInstance()).thenReturn(m), 1))
-                .then(firstReceiverFacade.emit()).thenRequest(request)
+            verifier.create(() -> messageFlux.concatMap(
+                m -> messageFlux.updateDisposition(dispositionTags.get(idx[0]++), Accepted.getInstance()).thenReturn(m),
+                1))
+                .then(firstReceiverFacade.emit())
+                .thenRequest(request)
                 .then(firstReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
                 .then(firstReceiverFacade.emitAndCompleteMessages(firstReceiverMessages))
-                .then(firstReceiverFacade.completeEndpointStates()).thenAwait(retryDelay.plusSeconds(1))
+                .then(firstReceiverFacade.completeEndpointStates())
+                .thenAwait(retryDelay.plusSeconds(1))
                 .then(secondReceiverFacade.emit())
                 .then(secondReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
                 .then(secondReceiverFacade.emitAndCompleteMessages(secondReceiverMessages))
-                .then(secondReceiverFacade.completeEndpointStates()).then(() -> upstream.complete())
-                .expectNextCount(firstReceiverMessagesCount + secondReceiverMessagesCount).thenConsumeWhile(m -> true)
+                .then(secondReceiverFacade.completeEndpointStates())
+                .then(() -> upstream.complete())
+                .expectNextCount(firstReceiverMessagesCount + secondReceiverMessagesCount)
+                .thenConsumeWhile(m -> true)
                 .verifyComplete();
         }
 
@@ -323,9 +344,12 @@ public class MessageFluxIsolatedTest {
         final RuntimeException endpointError = new RuntimeException("endpoint-error");
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).then(receiverFacade.emit()).thenRequest(5)
+            verifier.create(() -> messageFlux)
+                .then(receiverFacade.emit())
+                .thenRequest(5)
                 .then(receiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
-                .then(receiverFacade.errorEndpointStates(endpointError)).verifyErrorSatisfies(error -> {
+                .then(receiverFacade.errorEndpointStates(endpointError))
+                .verifyErrorSatisfies(error -> {
                     Assertions.assertEquals(endpointError, error);
                 });
         }
@@ -389,16 +413,19 @@ public class MessageFluxIsolatedTest {
         final MessageFlux messageFlux = new MessageFlux(upstream, prefetch, creditFlowMode, retryPolicy);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).thenRequest(1)
+            verifier.create(() -> messageFlux)
+                .thenRequest(1)
                 // The initial request ^ for one message, that leads to obtaining the first-receiver.
                 // Since first-receiver gets terminated, the message-flux will initiate a retry that
                 // will get the second-receiver only after 10 seconds.
                 .thenAwait(Duration.ofSeconds(1))
                 // After 1 sec ^, while there is still 9 seconds remaining in retry backoff, request for one
                 // message, resulting a drain-loop iteration, which should not attempt to get another receiver.
-                .thenRequest(1).thenAwait(Duration.ofSeconds(15))
+                .thenRequest(1)
+                .thenAwait(Duration.ofSeconds(15))
                 // Await 15 seconds ^ so that retry backoff elapses and message-flux will get second-receiver.
-                .thenCancel().verify(Duration.ofSeconds(30));
+                .thenCancel()
+                .verify(Duration.ofSeconds(30));
         }
 
         // Assert there were only two emissions i.e. there were no attempt to obtain a receiver while retry
@@ -421,9 +448,13 @@ public class MessageFluxIsolatedTest {
         when(receiver.closeAsync()).thenReturn(Mono.empty());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).then(receiverFacade.emit()).thenRequest(request)
+            verifier.create(() -> messageFlux)
+                .then(receiverFacade.emit())
+                .thenRequest(request)
                 .then(receiverFacade.emitAndCompleteEndpointStates(AmqpEndpointState.ACTIVE))
-                .then(receiverFacade.completeMessages()).then(() -> upstream.complete()).verifyComplete();
+                .then(receiverFacade.completeMessages())
+                .then(() -> upstream.complete())
+                .verifyComplete();
         }
 
         Assertions.assertEquals(request, receiverFacade.getRequestedMessages());
@@ -445,9 +476,13 @@ public class MessageFluxIsolatedTest {
         when(receiver.closeAsync()).thenReturn(Mono.empty());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).then(receiverFacade.emit()).thenRequest(request)
+            verifier.create(() -> messageFlux)
+                .then(receiverFacade.emit())
+                .thenRequest(request)
                 .then(receiverFacade.emitAndCompleteEndpointStates(AmqpEndpointState.UNINITIALIZED))
-                .then(receiverFacade.completeMessages()).then(() -> upstream.complete()).verifyComplete();
+                .then(receiverFacade.completeMessages())
+                .then(() -> upstream.complete())
+                .verifyComplete();
         }
 
         Assertions.assertEquals(0, receiverFacade.getRequestedMessages());
@@ -511,12 +546,17 @@ public class MessageFluxIsolatedTest {
         secondReceiverRemainingEmissions[0] = secondReceiverMessagesCount - 1;
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).then(firstReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
+            verifier.create(() -> messageFlux)
+                .then(firstReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
                 .then(firstReceiverFacade.emitMessage(firstReceiverMessages.get(0)))
                 .then(secondReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
-                .then(secondReceiverFacade.emitMessage(secondReceiverMessages.get(0))).thenRequest(request)
-                .then(firstReceiverFacade.emit()).thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
-                .then(secondReceiverFacade.emit()).then(() -> upstream.complete()).thenConsumeWhile(__ -> {
+                .then(secondReceiverFacade.emitMessage(secondReceiverMessages.get(0)))
+                .thenRequest(request)
+                .then(firstReceiverFacade.emit())
+                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
+                .then(secondReceiverFacade.emit())
+                .then(() -> upstream.complete())
+                .thenConsumeWhile(__ -> {
                     if (isFirstMessage[0]) {
                         isFirstMessage[0] = false;
                         return true;
@@ -536,11 +576,13 @@ public class MessageFluxIsolatedTest {
                     // gets buffered into 'ReactorReceiverMediator.queue'. After all the buffering, we let the endpoint
                     // signal terminal error.
                     firstReceiverFacade
-                        .emitAndCompleteMessages(firstReceiverMessages.subList(1, firstReceiverMessagesCount)).run();
+                        .emitAndCompleteMessages(firstReceiverMessages.subList(1, firstReceiverMessagesCount))
+                        .run();
                     firstReceiverFacade.errorEndpointStates(error).run();
                     // Goal of the test is to assert that - the buffered messages in a queue are drained before moving
                     // to the second receiver.
-                }).thenConsumeWhile(__ -> {
+                })
+                .thenConsumeWhile(__ -> {
                     if (firstReceiverRemainingEmissions[0] > 0) {
                         firstReceiverRemainingEmissions[0]--;
                         return true;
@@ -549,7 +591,8 @@ public class MessageFluxIsolatedTest {
                 }, m -> {
                     // Messages 2 to 4 (from first receiver).
                     Assertions.assertEquals(firstReceiverMessageIds.poll(), m.getMessageId());
-                }).thenConsumeWhile(__ -> {
+                })
+                .thenConsumeWhile(__ -> {
                     if (isFifthMessage[0]) {
                         isFifthMessage[0] = false;
                         return true;
@@ -559,9 +602,11 @@ public class MessageFluxIsolatedTest {
                     // Message 5 (from second receiver).
                     Assertions.assertEquals(secondReceiverMessageIds.poll(), fifthMessage.getMessageId());
                     secondReceiverFacade
-                        .emitAndCompleteMessages(secondReceiverMessages.subList(1, secondReceiverMessagesCount)).run();
+                        .emitAndCompleteMessages(secondReceiverMessages.subList(1, secondReceiverMessagesCount))
+                        .run();
                     secondReceiverFacade.completeEndpointStates().run();
-                }).thenConsumeWhile(__ -> {
+                })
+                .thenConsumeWhile(__ -> {
                     if (secondReceiverRemainingEmissions[0] > 0) {
                         secondReceiverRemainingEmissions[0]--;
                         return true;
@@ -570,7 +615,8 @@ public class MessageFluxIsolatedTest {
                 }, m -> {
                     // Messages 6 to 10 (from second receiver).
                     Assertions.assertEquals(secondReceiverMessageIds.poll(), m.getMessageId());
-                }).verifyComplete();
+                })
+                .verifyComplete();
         }
 
         Assertions.assertEquals(firstReceiverMessagesCount, firstReceiverFacade.getMessageEmitCount());
@@ -634,12 +680,17 @@ public class MessageFluxIsolatedTest {
         secondReceiverRemainingEmissions[0] = secondReceiverMessagesCount - 1;
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).then(firstReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
+            verifier.create(() -> messageFlux)
+                .then(firstReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
                 .then(firstReceiverFacade.emitMessage(firstReceiverMessages.get(0)))
                 .then(secondReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
-                .then(secondReceiverFacade.emitMessage(secondReceiverMessages.get(0))).thenRequest(request)
-                .then(firstReceiverFacade.emit()).thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
-                .then(secondReceiverFacade.emit()).then(() -> upstream.complete()).thenConsumeWhile(__ -> {
+                .then(secondReceiverFacade.emitMessage(secondReceiverMessages.get(0)))
+                .thenRequest(request)
+                .then(firstReceiverFacade.emit())
+                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
+                .then(secondReceiverFacade.emit())
+                .then(() -> upstream.complete())
+                .thenConsumeWhile(__ -> {
                     if (isFirstMessage[0]) {
                         isFirstMessage[0] = false;
                         return true;
@@ -649,9 +700,11 @@ public class MessageFluxIsolatedTest {
                     Assertions.assertEquals(firstReceiverMessageIds.poll(), firstMessage.getMessageId());
                     // Refer Notes for test: 'shouldDrainErroredReceiverBeforeGettingNextReceiver'
                     firstReceiverFacade
-                        .emitAndCompleteMessages(firstReceiverMessages.subList(1, firstReceiverMessagesCount)).run();
+                        .emitAndCompleteMessages(firstReceiverMessages.subList(1, firstReceiverMessagesCount))
+                        .run();
                     firstReceiverFacade.completeEndpointStates().run();
-                }).thenConsumeWhile(__ -> {
+                })
+                .thenConsumeWhile(__ -> {
                     if (firstReceiverRemainingEmissions[0] > 0) {
                         firstReceiverRemainingEmissions[0]--;
                         return true;
@@ -660,7 +713,8 @@ public class MessageFluxIsolatedTest {
                 }, m -> {
                     // Messages 2 to 4 (from first receiver).
                     Assertions.assertEquals(firstReceiverMessageIds.poll(), m.getMessageId());
-                }).thenConsumeWhile(__ -> {
+                })
+                .thenConsumeWhile(__ -> {
                     if (isFifthMessage[0]) {
                         isFifthMessage[0] = false;
                         return true;
@@ -670,9 +724,11 @@ public class MessageFluxIsolatedTest {
                     // Message 5 (from second receiver).
                     Assertions.assertEquals(secondReceiverMessageIds.poll(), fifthMessage.getMessageId());
                     secondReceiverFacade
-                        .emitAndCompleteMessages(secondReceiverMessages.subList(1, secondReceiverMessagesCount)).run();
+                        .emitAndCompleteMessages(secondReceiverMessages.subList(1, secondReceiverMessagesCount))
+                        .run();
                     secondReceiverFacade.completeEndpointStates().run();
-                }).thenConsumeWhile(__ -> {
+                })
+                .thenConsumeWhile(__ -> {
                     if (secondReceiverRemainingEmissions[0] > 0) {
                         secondReceiverRemainingEmissions[0]--;
                         return true;
@@ -681,7 +737,8 @@ public class MessageFluxIsolatedTest {
                 }, m -> {
                     // Messages 6 to 10 (from second receiver).
                     Assertions.assertEquals(secondReceiverMessageIds.poll(), m.getMessageId());
-                }).verifyComplete();
+                })
+                .verifyComplete();
         }
 
         Assertions.assertEquals(firstReceiverMessagesCount, firstReceiverFacade.getMessageEmitCount());
@@ -724,16 +781,20 @@ public class MessageFluxIsolatedTest {
                 return messageFlux.takeUntilOther(completionSink.asMono());
             };
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(scenario).then(() -> upstream.next(receiver))
-                    .then(() -> completionSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST)).verifyComplete();
+                verifier.create(scenario)
+                    .then(() -> upstream.next(receiver))
+                    .then(() -> completionSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST))
+                    .verifyComplete();
             }
         } else {
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
                 final Supplier<Flux<Void>> scenario = () -> {
                     return Mono.firstWithSignal(messageFlux.ignoreElements().then(), completionSink.asMono()).flux();
                 };
-                verifier.create(scenario).then(() -> upstream.next(receiver))
-                    .then(() -> completionSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST)).verifyComplete();
+                verifier.create(scenario)
+                    .then(() -> upstream.next(receiver))
+                    .then(() -> completionSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST))
+                    .verifyComplete();
             }
         }
 
@@ -762,12 +823,17 @@ public class MessageFluxIsolatedTest {
         when(secondReceiver.closeAsync()).thenReturn(Mono.empty());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).then(firstReceiverFacade.emit()).thenRequest(request)
+            verifier.create(() -> messageFlux)
+                .then(firstReceiverFacade.emit())
+                .thenRequest(request)
                 .then(firstReceiverFacade.emitAndErrorEndpointStates(AmqpEndpointState.ACTIVE, error))
-                .then(firstReceiverFacade.completeMessages()).thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
+                .then(firstReceiverFacade.completeMessages())
+                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
                 .then(secondReceiverFacade.emit())
                 .then(secondReceiverFacade.emitAndCompleteEndpointStates(AmqpEndpointState.ACTIVE))
-                .then(secondReceiverFacade.completeMessages()).then(() -> upstream.complete()).verifyComplete();
+                .then(secondReceiverFacade.completeMessages())
+                .then(() -> upstream.complete())
+                .verifyComplete();
         }
 
         Assertions.assertEquals(request, firstReceiverFacade.getRequestedMessages());
@@ -802,15 +868,20 @@ public class MessageFluxIsolatedTest {
         final int request = firstReceiverMessagesCount + secondReceiverMessagesCount + 5; // 15
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).then(firstReceiverFacade.emit()).thenRequest(request)
+            verifier.create(() -> messageFlux)
+                .then(firstReceiverFacade.emit())
+                .thenRequest(request)
                 .then(firstReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
                 .then(firstReceiverFacade.emitAndCompleteMessages(firstReceiverMessages))
-                .then(firstReceiverFacade.completeEndpointStates()).thenAwait(retryDelay.plusSeconds(1))
+                .then(firstReceiverFacade.completeEndpointStates())
+                .thenAwait(retryDelay.plusSeconds(1))
                 .then(secondReceiverFacade.emit())
                 .then(secondReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
                 .then(secondReceiverFacade.emitAndCompleteMessages(secondReceiverMessages))
-                .then(secondReceiverFacade.completeMessages()).then(() -> upstream.complete())
-                .expectNextCount(firstReceiverMessagesCount + secondReceiverMessagesCount).thenConsumeWhile(m -> true)
+                .then(secondReceiverFacade.completeMessages())
+                .then(() -> upstream.complete())
+                .expectNextCount(firstReceiverMessagesCount + secondReceiverMessagesCount)
+                .thenConsumeWhile(m -> true)
                 .verifyComplete();
         }
 

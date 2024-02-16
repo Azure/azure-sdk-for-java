@@ -104,7 +104,8 @@ public class ReactorProvider {
         ReactorConnection.ReactorExceptionHandler reactorExceptionHandler, AmqpRetryOptions retryOptions) {
         final Duration timeoutDivided = retryOptions.getTryTimeout().dividedBy(2);
         final Duration pendingTasksDuration = ClientConstants.SERVER_BUSY_WAIT_TIME.compareTo(timeoutDivided) < 0
-            ? ClientConstants.SERVER_BUSY_WAIT_TIME : timeoutDivided;
+            ? ClientConstants.SERVER_BUSY_WAIT_TIME
+            : timeoutDivided;
         // Use a new single-threaded scheduler to run QPID's Reactor's work as Reactor is not thread-safe.
         // Using Schedulers.single() will use the same thread for all connections in this process which
         // limits the scalability of the no. of concurrent connections a single process can have.

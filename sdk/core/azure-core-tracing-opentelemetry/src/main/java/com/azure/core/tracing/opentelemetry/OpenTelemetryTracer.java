@@ -71,8 +71,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         TracerProvider otelProvider = getTracerProvider(options);
         this.isEnabled = (options == null || options.isEnabled()) && otelProvider != TracerProvider.noop();
         this.azNamespace = azNamespace;
-        this.tracer = otelProvider.tracerBuilder(libraryName).setInstrumentationVersion(libraryVersion)
-            .setSchemaUrl(SCHEMA_URL).build();
+        this.tracer = otelProvider.tracerBuilder(libraryName)
+            .setInstrumentationVersion(libraryVersion)
+            .setSchemaUrl(SCHEMA_URL)
+            .build();
     }
 
     /**
@@ -409,7 +411,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     private static TracerProvider getTracerProvider(TracingOptions options) {
-        if (options != null && options.isEnabled() && options instanceof OpenTelemetryTracingOptions
+        if (options != null
+            && options.isEnabled()
+            && options instanceof OpenTelemetryTracingOptions
             && ((OpenTelemetryTracingOptions) options).getOpenTelemetryProvider() != null) {
             return ((OpenTelemetryTracingOptions) options).getOpenTelemetryProvider();
         }

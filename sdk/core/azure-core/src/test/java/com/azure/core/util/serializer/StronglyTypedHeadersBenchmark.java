@@ -33,7 +33,8 @@ public class StronglyTypedHeadersBenchmark {
 
     private static final HttpHeaders HEADERS
         = new HttpHeaders().set(HttpHeaderName.DATE, "Tue, 04 May 2021 23:22:58 GMT")
-            .set(HttpHeaderName.CONTENT_LENGTH, "12345").set(HttpHeaderName.CONTENT_TYPE, "application/json")
+            .set(HttpHeaderName.CONTENT_LENGTH, "12345")
+            .set(HttpHeaderName.CONTENT_TYPE, "application/json")
             .set(HttpHeaderName.LAST_MODIFIED, "Tue, 04 May 2021 23:22:58 GMT")
             .set(HttpHeaderName.ETAG, "0x8D90F538E5DF4FD");
 

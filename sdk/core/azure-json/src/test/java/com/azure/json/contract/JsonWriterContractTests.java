@@ -72,8 +72,10 @@ public abstract class JsonWriterContractTests {
             Arguments.of(write(jsonWriter -> jsonWriter.writeStartArray().writeEndArray()), "[]"),
 
             // Field name has to happening in an object.
-            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName")
-                .writeString("value").writeEndObject()), "{\"fieldName\":\"value\"}"),
+            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject()
+                .writeFieldName("fieldName")
+                .writeString("value")
+                .writeEndObject()), "{\"fieldName\":\"value\"}"),
 
             // Value handling.
 
@@ -277,9 +279,11 @@ public abstract class JsonWriterContractTests {
             Arguments.of(
                 write(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName").writeEndObject()),
                 IllegalStateException.class),
-            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName")
+            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject()
+                .writeFieldName("fieldName")
                 .writeFieldName("anotherFieldName")), IllegalStateException.class),
-            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName")
+            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject()
+                .writeFieldName("fieldName")
                 .writeIntField("anotherFieldName", 0)), IllegalStateException.class),
 
             // Completed doesn't allow any additional writing operations.
@@ -397,11 +401,15 @@ public abstract class JsonWriterContractTests {
                 JsonWriteState.ARRAY),
 
             // Closing an object that is a field value enters OBJECT state.
-            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName")
-                .writeStartObject().writeEndObject()), JsonWriteState.OBJECT),
+            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject()
+                .writeFieldName("fieldName")
+                .writeStartObject()
+                .writeEndObject()), JsonWriteState.OBJECT),
 
             // Closing an array that is a field value enters OBJECT state.
-            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName").writeStartArray()
+            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject()
+                .writeFieldName("fieldName")
+                .writeStartArray()
                 .writeEndArray()), JsonWriteState.OBJECT));
     }
 
@@ -615,7 +623,8 @@ public abstract class JsonWriterContractTests {
     @Test
     public void writeNullableFieldNonNullValueWritesJsonField() throws IOException {
         writeAndValidate(writer -> writer.writeStartObject()
-            .writeNullableField("field", "hello", JsonWriter::writeString).writeEndObject(), "{\"field\":\"hello\"}");
+            .writeNullableField("field", "hello", JsonWriter::writeString)
+            .writeEndObject(), "{\"field\":\"hello\"}");
     }
 
     private void writeAndValidate(IOExceptionConsumer<JsonWriter> write, String expected) throws IOException {

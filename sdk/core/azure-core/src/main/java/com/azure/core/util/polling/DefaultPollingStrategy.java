@@ -22,7 +22,7 @@ import java.util.Objects;
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *        kept
+ * kept
  */
 public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private final ChainedPollingStrategy<T, U> chainedPollingStrategy;
@@ -78,7 +78,8 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      */
     public DefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer,
         Context context) {
-        this(new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint).setSerializer(serializer)
+        this(new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint)
+            .setSerializer(serializer)
             .setContext(context));
     }
 

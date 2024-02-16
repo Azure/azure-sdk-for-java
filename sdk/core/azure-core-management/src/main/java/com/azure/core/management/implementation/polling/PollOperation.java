@@ -104,7 +104,9 @@ public final class PollOperation {
                             .send(decorateRequest(new HttpRequest(HttpMethod.GET, finalResult.getResultUri())),
                                 fluxContext)
                             .flux();
-                    }).next().flatMap((Function<HttpResponse, Mono<String>>) response -> response.getBodyAsString())
+                    })
+                        .next()
+                        .flatMap((Function<HttpResponse, Mono<String>>) response -> response.getBodyAsString())
                         .flatMap(body -> {
                             U result = deserialize(serializerAdapter, body, finalResultType);
                             return result != null ? Mono.just(result) : Mono.empty();
@@ -158,10 +160,14 @@ public final class PollOperation {
             fluxContext = CoreUtils.mergeContexts(fluxContext, context);
 
             return pipeline
-                .send(decorateRequest(new HttpRequest(HttpMethod.GET, pollingState.getPollUrl())), fluxContext).flux();
-        }).next().flatMap((Function<HttpResponse, Mono<PollingState>>) response -> response.getBodyAsString()
-            .map(body -> pollingState.update(response.getStatusCode(), response.getHeaders(), body)).switchIfEmpty(
-                Mono.fromSupplier(() -> pollingState.update(response.getStatusCode(), response.getHeaders(), null))));
+                .send(decorateRequest(new HttpRequest(HttpMethod.GET, pollingState.getPollUrl())), fluxContext)
+                .flux();
+        })
+            .next()
+            .flatMap((Function<HttpResponse, Mono<PollingState>>) response -> response.getBodyAsString()
+                .map(body -> pollingState.update(response.getStatusCode(), response.getHeaders(), body))
+                .switchIfEmpty(Mono
+                    .fromSupplier(() -> pollingState.update(response.getStatusCode(), response.getHeaders(), null))));
     }
 
     private static <T> Mono<PollResponse<PollResult<T>>> pollResponseMonoFromPollingState(

@@ -583,8 +583,10 @@ final class MessageUtils {
             return null;
         }
 
-        return sourceMap.entrySet().stream().collect(HashMap::new,
-            (existing, entry) -> existing.put(Symbol.valueOf(entry.getKey()), entry.getValue()), (HashMap::putAll));
+        return sourceMap.entrySet()
+            .stream()
+            .collect(HashMap::new, (existing, entry) -> existing.put(Symbol.valueOf(entry.getKey()), entry.getValue()),
+                (HashMap::putAll));
     }
 
     /**

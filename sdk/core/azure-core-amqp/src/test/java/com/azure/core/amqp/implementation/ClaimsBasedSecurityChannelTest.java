@@ -110,8 +110,10 @@ class ClaimsBasedSecurityChannelTest {
             .thenReturn(Mono.just(accessToken));
 
         // Act
-        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes)).expectNext(accessToken.getExpiresAt())
-            .expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
+            .expectNext(accessToken.getExpiresAt())
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(requestResponseChannel).sendWithAck(messageArgumentCaptor.capture());
@@ -140,8 +142,10 @@ class ClaimsBasedSecurityChannelTest {
             .thenReturn(Mono.just(accessToken));
 
         // Act
-        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes)).expectNext(accessToken.getExpiresAt())
-            .expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
+            .expectNext(accessToken.getExpiresAt())
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(requestResponseChannel).sendWithAck(messageArgumentCaptor.capture());

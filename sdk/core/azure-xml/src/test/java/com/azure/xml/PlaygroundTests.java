@@ -39,7 +39,8 @@ public class PlaygroundTests {
     @Test
     public void toXmlSimple() throws IOException, XMLStreamException {
         AccessPolicy accessPolicy = new AccessPolicy().setStartsOn(OffsetDateTime.parse("2009-09-28T08:49:37Z"))
-            .setExpiresOn(OffsetDateTime.parse("2009-09-29T08:49:37Z")).setPermissions("rwd");
+            .setExpiresOn(OffsetDateTime.parse("2009-09-29T08:49:37Z"))
+            .setPermissions("rwd");
 
         SignedIdentifier signedIdentifier = new SignedIdentifier().setId("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=")
             .setAccessPolicy(accessPolicy);
@@ -59,7 +60,8 @@ public class PlaygroundTests {
     @Test
     public void fromXmlSimple() throws IOException, XMLStreamException {
         AccessPolicy accessPolicy = new AccessPolicy().setStartsOn(OffsetDateTime.parse("2009-09-28T08:49:37Z"))
-            .setExpiresOn(OffsetDateTime.parse("2009-09-29T08:49:37Z")).setPermissions("rwd");
+            .setExpiresOn(OffsetDateTime.parse("2009-09-29T08:49:37Z"))
+            .setPermissions("rwd");
 
         SignedIdentifier signedIdentifier = new SignedIdentifier().setId("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=")
             .setAccessPolicy(accessPolicy);
@@ -97,17 +99,24 @@ public class PlaygroundTests {
             .setRel("self");
 
         NamespaceProperties namespaceProperties = new NamespaceProperties().setAlias("MyServiceBusFallback")
-            .setCreatedTime(OffsetDateTime.parse("2020-04-09T08:38:55.807Z")).setMessagingSku(MessagingSku.PREMIUM)
-            .setMessagingUnits(1).setModifiedTime(OffsetDateTime.parse("2020-06-12T06:34:38.383Z"))
-            .setName("ShivangiServiceBus").setNamespaceType(NamespaceType.MESSAGING);
+            .setCreatedTime(OffsetDateTime.parse("2020-04-09T08:38:55.807Z"))
+            .setMessagingSku(MessagingSku.PREMIUM)
+            .setMessagingUnits(1)
+            .setModifiedTime(OffsetDateTime.parse("2020-06-12T06:34:38.383Z"))
+            .setName("ShivangiServiceBus")
+            .setNamespaceType(NamespaceType.MESSAGING);
 
-        NamespacePropertiesEntryContent namespacePropertiesEntryContent = new NamespacePropertiesEntryContent()
-            .setType("application/xml").setNamespaceProperties(namespaceProperties);
+        NamespacePropertiesEntryContent namespacePropertiesEntryContent
+            = new NamespacePropertiesEntryContent().setType("application/xml")
+                .setNamespaceProperties(namespaceProperties);
 
         NamespacePropertiesEntry namespacePropertiesEntry = new NamespacePropertiesEntry()
             .setId("https://shivangiservicebus.servicebus.windows.net/$namespaceinfo?api-version=2021-05")
-            .setTitle("ShivangiServiceBus").setUpdated(OffsetDateTime.parse("2020-07-02T09:53:19Z"))
-            .setAuthor(responseAuthor).setLink(responseLink).setContent(namespacePropertiesEntryContent);
+            .setTitle("ShivangiServiceBus")
+            .setUpdated(OffsetDateTime.parse("2020-07-02T09:53:19Z"))
+            .setAuthor(responseAuthor)
+            .setLink(responseLink)
+            .setContent(namespacePropertiesEntryContent);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try (XmlWriter xmlWriter = DefaultXmlWriter.toStream(byteArrayOutputStream)) {
@@ -128,17 +137,24 @@ public class PlaygroundTests {
             .setRel("self");
 
         NamespaceProperties namespaceProperties = new NamespaceProperties().setAlias("MyServiceBusFallback")
-            .setCreatedTime(OffsetDateTime.parse("2020-04-09T08:38:55.807Z")).setMessagingSku(MessagingSku.PREMIUM)
-            .setMessagingUnits(1).setModifiedTime(OffsetDateTime.parse("2020-06-12T06:34:38.383Z"))
-            .setName("ShivangiServiceBus").setNamespaceType(NamespaceType.MESSAGING);
+            .setCreatedTime(OffsetDateTime.parse("2020-04-09T08:38:55.807Z"))
+            .setMessagingSku(MessagingSku.PREMIUM)
+            .setMessagingUnits(1)
+            .setModifiedTime(OffsetDateTime.parse("2020-06-12T06:34:38.383Z"))
+            .setName("ShivangiServiceBus")
+            .setNamespaceType(NamespaceType.MESSAGING);
 
-        NamespacePropertiesEntryContent namespacePropertiesEntryContent = new NamespacePropertiesEntryContent()
-            .setType("application/xml").setNamespaceProperties(namespaceProperties);
+        NamespacePropertiesEntryContent namespacePropertiesEntryContent
+            = new NamespacePropertiesEntryContent().setType("application/xml")
+                .setNamespaceProperties(namespaceProperties);
 
         NamespacePropertiesEntry namespacePropertiesEntry = new NamespacePropertiesEntry()
             .setId("https://shivangiservicebus.servicebus.windows.net/$namespaceinfo?api-version=2021-05")
-            .setTitle("ShivangiServiceBus").setUpdated(OffsetDateTime.parse("2020-07-02T09:53:19Z"))
-            .setAuthor(responseAuthor).setLink(responseLink).setContent(namespacePropertiesEntryContent);
+            .setTitle("ShivangiServiceBus")
+            .setUpdated(OffsetDateTime.parse("2020-07-02T09:53:19Z"))
+            .setAuthor(responseAuthor)
+            .setLink(responseLink)
+            .setContent(namespacePropertiesEntryContent);
 
         try (XmlReader xmlReader = DefaultXmlReader.fromString(COMPLEX_XML)) {
             NamespacePropertiesEntry actualEntry = NamespacePropertiesEntry.fromXml(xmlReader);

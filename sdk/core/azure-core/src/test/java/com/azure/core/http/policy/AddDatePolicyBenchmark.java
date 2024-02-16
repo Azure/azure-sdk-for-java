@@ -107,10 +107,12 @@ public class AddDatePolicyBenchmark {
     @Setup
     public void setup() {
         dateTimeRfc1123Pipeline = new HttpPipelineBuilder().policies(DATE_TIME_RFC_1123)
-            .httpClient(request -> Mono.just(MOCK_RESPONSE_GENERATOR.apply(request))).build();
+            .httpClient(request -> Mono.just(MOCK_RESPONSE_GENERATOR.apply(request)))
+            .build();
 
         dateTimeFormatterPipeline = new HttpPipelineBuilder().policies(DATE_TIME_FORMATTER)
-            .httpClient(request -> Mono.just(MOCK_RESPONSE_GENERATOR.apply(request))).build();
+            .httpClient(request -> Mono.just(MOCK_RESPONSE_GENERATOR.apply(request)))
+            .build();
     }
 
     /**

@@ -97,7 +97,9 @@ public class VertxAsyncHttpClientProviderTests {
     public void optionsWithTimeouts() {
         Duration timeout = Duration.ofMillis(15000);
         HttpClientOptions clientOptions = new HttpClientOptions().setConnectTimeout(timeout)
-            .setConnectionIdleTimeout(timeout).setReadTimeout(timeout).setWriteTimeout(timeout);
+            .setConnectionIdleTimeout(timeout)
+            .setReadTimeout(timeout)
+            .setWriteTimeout(timeout);
 
         VertxAsyncHttpClient httpClient
             = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider().createInstance(clientOptions);

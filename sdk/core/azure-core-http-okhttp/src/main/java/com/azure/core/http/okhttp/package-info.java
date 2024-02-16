@@ -48,10 +48,10 @@
  * final String proxyHost = &quot;&lt;proxy-host&gt;&quot;; &#47;&#47; e.g. localhost
  * final int proxyPort = 9999; &#47;&#47; Proxy port
  * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
- *         new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
+ * new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
- *         .proxy&#40;proxyOptions&#41;
- *         .build&#40;&#41;;
+ * .proxy&#40;proxyOptions&#41;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions -->
  *
@@ -66,12 +66,13 @@
  *
  * <!-- src_embed readme-sample-useHttp2WithConfiguredOkHttpClient -->
  * <pre>
- * &#47;&#47; Constructs an HttpClient that supports both HTTP&#47;1.1 and HTTP&#47;2 with HTTP&#47;2 being the preferred protocol.
+ * &#47;&#47; Constructs an HttpClient that supports both HTTP&#47;1.1 and HTTP&#47;2 with HTTP&#47;2 being the
+ * preferred protocol.
  * &#47;&#47; This is the default handling for OkHttp.
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;new OkHttpClient.Builder&#40;&#41;
- *     .protocols&#40;Arrays.asList&#40;Protocol.HTTP_2, Protocol.HTTP_1_1&#41;&#41;
- *     .build&#40;&#41;&#41;
- *     .build&#40;&#41;;
+ * .protocols&#40;Arrays.asList&#40;Protocol.HTTP_2, Protocol.HTTP_1_1&#41;&#41;
+ * .build&#40;&#41;&#41;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-useHttp2WithConfiguredOkHttpClient -->
  *
@@ -83,9 +84,9 @@
  * <pre>
  * &#47;&#47; Constructs an HttpClient that only supports HTTP&#47;2.
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;new OkHttpClient.Builder&#40;&#41;
- *     .protocols&#40;Collections.singletonList&#40;Protocol.H2_PRIOR_KNOWLEDGE&#41;&#41;
- *     .build&#40;&#41;&#41;
- *     .build&#40;&#41;;
+ * .protocols&#40;Collections.singletonList&#40;Protocol.H2_PRIOR_KNOWLEDGE&#41;&#41;
+ * .build&#40;&#41;&#41;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
  *

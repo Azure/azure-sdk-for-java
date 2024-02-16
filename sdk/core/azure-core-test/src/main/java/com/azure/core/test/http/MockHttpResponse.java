@@ -159,7 +159,8 @@ public class MockHttpResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString() {
-        return (bodyBytes == null) ? Mono.empty()
+        return (bodyBytes == null)
+            ? Mono.empty()
             : Mono.just(CoreUtils.bomAwareToString(bodyBytes, getHeaderValue("Content-Type")));
     }
 

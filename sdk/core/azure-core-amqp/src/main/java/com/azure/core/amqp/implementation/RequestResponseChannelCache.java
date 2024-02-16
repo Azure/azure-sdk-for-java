@@ -83,16 +83,18 @@ public final class RequestResponseChannelCache implements Disposable {
         this.createOrGetCachedChannel = newChannel.flatMap(c -> {
             logger.atInfo().log("Waiting for channel to active.");
 
-            final Mono<RequestResponseChannel> awaitToActive
-                = c.getEndpointStates().filter(s -> s == AmqpEndpointState.ACTIVE).next()
-                    .switchIfEmpty(
-                        Mono.error(() -> new AmqpException(true, "Channel completed without being active.", null)))
-                    .then(Mono.just(c)).timeout(activationTimeout, Mono.defer(() -> {
-                        final String timeoutMessage
-                            = String.format("The channel activation wait timed-out (%s).", activationTimeout);
-                        logger.atInfo().log(timeoutMessage + " Closing channel.");
-                        return c.closeAsync().then(Mono.error(new AmqpException(true, timeoutMessage, null)));
-                    }));
+            final Mono<RequestResponseChannel> awaitToActive = c.getEndpointStates()
+                .filter(s -> s == AmqpEndpointState.ACTIVE)
+                .next()
+                .switchIfEmpty(
+                    Mono.error(() -> new AmqpException(true, "Channel completed without being active.", null)))
+                .then(Mono.just(c))
+                .timeout(activationTimeout, Mono.defer(() -> {
+                    final String timeoutMessage
+                        = String.format("The channel activation wait timed-out (%s).", activationTimeout);
+                    logger.atInfo().log(timeoutMessage + " Closing channel.");
+                    return c.closeAsync().then(Mono.error(new AmqpException(true, timeoutMessage, null)));
+                }));
 
             return awaitToActive.doOnCancel(() -> {
                 logger.atInfo().log("The channel request was canceled while waiting to active.");
@@ -185,10 +187,12 @@ public final class RequestResponseChannelCache implements Disposable {
             // v1 AmqpChannelProcessor that v2 RequestResponseChannelCache replaces.
             final boolean shouldRetry = error instanceof TimeoutException
                 || (error instanceof AmqpException && ((AmqpException) error).isTransient()
-                    || (error instanceof IllegalStateException) || (error instanceof RejectedExecutionException));
+                    || (error instanceof IllegalStateException)
+                    || (error instanceof RejectedExecutionException));
 
             if (!shouldRetry) {
-                logger.atWarning().addKeyValue(TRY_COUNT_KEY, iteration)
+                logger.atWarning()
+                    .addKeyValue(TRY_COUNT_KEY, iteration)
                     .log("Exception is non-retriable, not retrying for a new channel.", error);
                 if (error instanceof RecoveryTerminatedException) {
                     return Mono.error(((RecoveryTerminatedException) error).propagate());
@@ -197,7 +201,8 @@ public final class RequestResponseChannelCache implements Disposable {
                 }
             }
 
-            final Throwable errorToUse = error instanceof AmqpException ? error
+            final Throwable errorToUse = error instanceof AmqpException
+                ? error
                 : new AmqpException(true, "Non-AmqpException occurred upstream.", error, null);
             // Using the min of retry attempts and max-retries to compute the 'back-off'.
             // The min is taken so that it never exhaust the retry attempts for transient errors.
@@ -207,12 +212,15 @@ public final class RequestResponseChannelCache implements Disposable {
             final Duration backoff = retryPolicy.calculateRetryDelay(errorToUse, (int) attempts);
 
             if (backoff == null) {
-                logger.atWarning().addKeyValue(TRY_COUNT_KEY, iteration)
+                logger.atWarning()
+                    .addKeyValue(TRY_COUNT_KEY, iteration)
                     .log("Retry is disabled, not retrying for a new channel.", error);
                 return Mono.error(error);
             }
 
-            logger.atInfo().addKeyValue(TRY_COUNT_KEY, iteration).addKeyValue(INTERVAL_KEY, backoff.toMillis())
+            logger.atInfo()
+                .addKeyValue(TRY_COUNT_KEY, iteration)
+                .addKeyValue(INTERVAL_KEY, backoff.toMillis())
                 .log("Transient error occurred. Retrying.", error);
 
             return Mono.delay(backoff);
@@ -236,8 +244,10 @@ public final class RequestResponseChannelCache implements Disposable {
         final boolean isCacheTerminated = terminated;
         final boolean isConnectionTerminated = connection.isDisposed();
         if (isCacheTerminated || isConnectionTerminated) {
-            logger.atInfo().addKeyValue(IS_CACHE_TERMINATED_KEY, isCacheTerminated)
-                .addKeyValue(IS_CONNECTION_TERMINATED_KEY, isConnectionTerminated).addKeyValue(CALL_SITE_KEY, callSite)
+            logger.atInfo()
+                .addKeyValue(IS_CACHE_TERMINATED_KEY, isCacheTerminated)
+                .addKeyValue(IS_CONNECTION_TERMINATED_KEY, isConnectionTerminated)
+                .addKeyValue(CALL_SITE_KEY, callSite)
                 .log("Channel recovery support is terminated.");
             return new RecoveryTerminatedException(connection.getId(), isCacheTerminated, isConnectionTerminated);
         }

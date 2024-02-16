@@ -52,10 +52,11 @@ import java.util.function.Supplier;
  * <!-- src_embed com.azure.core.credential.simpleTokenCache -->
  * <pre>
  * SimpleTokenCache simpleTokenCache =
- *     new SimpleTokenCache&#40;&#40;&#41; -&gt; &#123;
- *         &#47;&#47; Your logic to retrieve access token goes here.
- *         return Mono.just&#40;new AccessToken&#40;&quot;dummy-token&quot;, OffsetDateTime.now&#40;&#41;.plusHours&#40;2&#41;&#41;&#41;;
- *     &#125;&#41;;
+ * new SimpleTokenCache&#40;&#40;&#41; -&gt; &#123;
+ * &#47;&#47; Your logic to retrieve access token goes here.
+ * return Mono.just&#40;new AccessToken&#40;&quot;dummy-token&quot;,
+ * OffsetDateTime.now&#40;&#41;.plusHours&#40;2&#41;&#41;&#41;;
+ * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.core.credential.simpleTokenCache -->
  *
@@ -182,6 +183,7 @@ public class SimpleTokenCache {
         Duration tte = Duration.between(now, cache.getExpiresAt());
         return logBuilder.addKeyValue("expiresAt", cache.getExpiresAt())
             .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
-            .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING).addKeyValue("expired", tte.isNegative());
+            .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING)
+            .addKeyValue("expired", tte.isNegative());
     }
 }

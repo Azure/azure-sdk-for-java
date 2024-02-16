@@ -470,10 +470,12 @@ public class AuthorizationChallengeHandlerTests {
         // The authorization header will be "Digest <authorization info>", this removes the digest portion.
         String authorizationInfo = authorizationHeader.split(" ", 2)[1];
 
-        return Stream.of(authorizationInfo.split(",")).map(String::trim) // Cleanup any leading or trailing whitespaces.
+        return Stream.of(authorizationInfo.split(","))
+            .map(String::trim) // Cleanup any leading or trailing whitespaces.
             .map(info -> info.split("=", 2)) // Split the info into its key-value pair.
             .filter(kvp -> kvp[0].equalsIgnoreCase(valueKey)) // Select the value we are looking for.
             .map(kvp -> kvp[1].replace("\"", "")) // Unquote the value.
-            .findFirst().get();
+            .findFirst()
+            .get();
     }
 }

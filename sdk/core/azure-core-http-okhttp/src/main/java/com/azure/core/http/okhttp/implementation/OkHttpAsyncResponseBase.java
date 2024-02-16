@@ -24,7 +24,8 @@ abstract class OkHttpAsyncResponseBase extends HttpResponse {
     OkHttpAsyncResponseBase(Response response, HttpRequest request, boolean eagerlyConvertHeaders) {
         super(request);
         this.statusCode = response.code();
-        this.headers = eagerlyConvertHeaders ? fromOkHttpHeaders(response.headers())
+        this.headers = eagerlyConvertHeaders
+            ? fromOkHttpHeaders(response.headers())
             : new OkHttpToAzureCoreHttpHeadersWrapper(response.headers());
     }
 

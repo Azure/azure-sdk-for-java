@@ -85,12 +85,15 @@ public class ReactorConnectionCacheIsolatedTest {
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> connectionMono).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+                verifier.create(() -> connectionMono)
+                    .thenRequest(1)
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
                         connectionSupplier.assertConnection(con);
                         Assertions.assertFalse(con.isDisposed());
                         return true;
-                    }).verifyComplete();
+                    })
+                    .verifyComplete();
                 // Two connection should be supplied (initial connection and second connection on retry
                 // when initial connection timeout).
                 connectionSupplier.assertInvocationCount(connectionsCount);
@@ -117,12 +120,15 @@ public class ReactorConnectionCacheIsolatedTest {
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> connectionMono).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+                verifier.create(() -> connectionMono)
+                    .thenRequest(1)
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
                         connectionSupplier.assertConnection(con);
                         Assertions.assertFalse(con.isDisposed());
                         return true;
-                    }).verifyComplete();
+                    })
+                    .verifyComplete();
                 // Two connection should be supplied (initial connection and second connection on retry
                 // when initial connection complete without emitting any state).
                 connectionSupplier.assertInvocationCount(connectionsCount);
@@ -149,12 +155,15 @@ public class ReactorConnectionCacheIsolatedTest {
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> connectionMono).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+                verifier.create(() -> connectionMono)
+                    .thenRequest(1)
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
                         connectionSupplier.assertConnection(con);
                         Assertions.assertFalse(con.isDisposed());
                         return true;
-                    }).verifyComplete();
+                    })
+                    .verifyComplete();
                 connectionSupplier.assertInvocationCount(connectionsCount);
             }
         } finally {
@@ -190,12 +199,15 @@ public class ReactorConnectionCacheIsolatedTest {
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> connectionMono).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+                verifier.create(() -> connectionMono)
+                    .thenRequest(1)
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
                         connectionSupplier.assertConnection(con);
                         Assertions.assertFalse(con.isDisposed());
                         return true;
-                    }).verifyComplete();
+                    })
+                    .verifyComplete();
                 // assert that all 8 connections were supplied though the max-retry was 4.
                 connectionSupplier.assertInvocationCount(connectionsCount);
             }
@@ -261,11 +273,14 @@ public class ReactorConnectionCacheIsolatedTest {
             // The first connection request where the internal retry-cycle inspects the state of all connections
             // from set1 and emits the 'active' one (i.e., the last one in set1).
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> connectionMono).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+                verifier.create(() -> connectionMono)
+                    .thenRequest(1)
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
                         Assertions.assertFalse(con.isDisposed());
                         return true;
-                    }).verifyComplete();
+                    })
+                    .verifyComplete();
             }
 
             connectionSupplier.assertInvocationCount(connectionsCountSet1);
@@ -284,11 +299,14 @@ public class ReactorConnectionCacheIsolatedTest {
             // The second connection request where the internal retry-cycle inspects the state of all connections
             // from set2 and emits the 'active' one (i.e., the last one in set2).
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> connectionMono).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+                verifier.create(() -> connectionMono)
+                    .thenRequest(1)
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
                         Assertions.assertFalse(con.isDisposed());
                         return true;
-                    }).verifyComplete();
+                    })
+                    .verifyComplete();
             }
 
             connectionSupplier.assertInvocationCount(connectionsCountSet1 + connectionsCountSet2);
@@ -351,7 +369,9 @@ public class ReactorConnectionCacheIsolatedTest {
         final Retry retrySpec = retryWhenSpec(retryPolicy);
         final Mono<Void> sourceWithRetry = source.retryWhen(retrySpec);
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> sourceWithRetry).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+            verifier.create(() -> sourceWithRetry)
+                .thenRequest(1)
+                .thenAwait(VIRTUAL_TIME_SHIFT)
                 .verifyErrorMatches(e -> e == errorExpectedToPropagate);
         }
         Assertions.assertEquals(1, errors.size());
@@ -415,7 +435,9 @@ public class ReactorConnectionCacheIsolatedTest {
         final Mono<Void> sourceWithRetry = source.retryWhen(retrySpec);
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             connectionCache.dispose();
-            verifier.create(() -> sourceWithRetry).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+            verifier.create(() -> sourceWithRetry)
+                .thenRequest(1)
+                .thenAwait(VIRTUAL_TIME_SHIFT)
                 .verifyErrorSatisfies(e -> {
                     Assertions.assertTrue(e instanceof AmqpException);
                     final AmqpException amqpException = (AmqpException) e;

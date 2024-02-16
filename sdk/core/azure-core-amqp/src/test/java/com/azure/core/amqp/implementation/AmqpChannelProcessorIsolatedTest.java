@@ -68,9 +68,13 @@ public class AmqpChannelProcessorIsolatedTest {
             StepVerifier
                 .withVirtualTime(() -> publisher.next(connection1).flux().subscribeWith(channelProcessor),
                     () -> virtualTimeScheduler, 1)
-                .expectSubscription().thenAwait(Duration.ofMinutes(10)).expectNoEvent(Duration.ofMinutes(10))
+                .expectSubscription()
+                .thenAwait(Duration.ofMinutes(10))
+                .expectNoEvent(Duration.ofMinutes(10))
                 .then(() -> connection1.getSink().next(AmqpEndpointState.UNINITIALIZED))
-                .expectNoEvent(Duration.ofMinutes(10)).thenCancel().verify(VERIFY_TIMEOUT);
+                .expectNoEvent(Duration.ofMinutes(10))
+                .thenCancel()
+                .verify(VERIFY_TIMEOUT);
         } finally {
             virtualTimeScheduler.dispose();
         }
@@ -92,9 +96,12 @@ public class AmqpChannelProcessorIsolatedTest {
             StepVerifier
                 .withVirtualTime(() -> publisher.next(connection1).flux().subscribeWith(channelProcessor),
                     () -> virtualTimeScheduler, 1)
-                .expectSubscription().thenAwait(Duration.ofMinutes(10))
-                .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE)).expectNext(connection1)
-                .expectComplete().verify(VERIFY_TIMEOUT);
+                .expectSubscription()
+                .thenAwait(Duration.ofMinutes(10))
+                .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
+                .expectNext(connection1)
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
         } finally {
             virtualTimeScheduler.dispose();
         }
@@ -115,10 +122,16 @@ public class AmqpChannelProcessorIsolatedTest {
         final VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create();
         try {
             StepVerifier.withVirtualTime(() -> {
-                return publisher.next(connection1).flux().subscribeWith(channelProcessor)
+                return publisher.next(connection1)
+                    .flux()
+                    .subscribeWith(channelProcessor)
                     .flatMap(e -> Mono.just(contents));
-            }, () -> virtualTimeScheduler, 1).expectSubscription().thenAwait(Duration.ofMinutes(10))
-                .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE)).expectNext(contents).expectComplete()
+            }, () -> virtualTimeScheduler, 1)
+                .expectSubscription()
+                .thenAwait(Duration.ofMinutes(10))
+                .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
+                .expectNext(contents)
+                .expectComplete()
                 .verify(VERIFY_TIMEOUT);
         } finally {
             virtualTimeScheduler.dispose();

@@ -94,8 +94,9 @@ public class ManagementChannelTest {
         autoCloseable = MockitoAnnotations.openMocks(this);
 
         final AmqpChannelProcessor<RequestResponseChannel> requestResponseMono
-            = Mono.defer(() -> Mono.just(requestResponseChannel)).subscribeWith(new AmqpChannelProcessor<>("foo",
-                RequestResponseChannel::getEndpointStates, retryPolicy, new HashMap<>()));
+            = Mono.defer(() -> Mono.just(requestResponseChannel))
+                .subscribeWith(new AmqpChannelProcessor<>("foo", RequestResponseChannel::getEndpointStates, retryPolicy,
+                    new HashMap<>()));
 
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults()).thenReturn(tokenProviderResults.flux());
@@ -127,11 +128,13 @@ public class ManagementChannelTest {
 
         // Act & Assert
         StepVerifier.create(managementChannel.send(annotatedMessage))
-            .then(() -> tokenProviderResults.next(AmqpResponseCode.OK)).expectErrorSatisfies(error -> {
+            .then(() -> tokenProviderResults.next(AmqpResponseCode.OK))
+            .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
                 assertEquals(errorContext, ((AmqpException) error).getContext());
                 assertTrue(((AmqpException) error).isTransient());
-            }).verify(VERIFY_TIMEOUT);
+            })
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -153,13 +156,16 @@ public class ManagementChannelTest {
 
         // Act & Assert
         StepVerifier.create(managementChannel.send(annotatedMessage))
-            .then(() -> tokenProviderResults.next(AmqpResponseCode.OK)).assertNext(actual -> {
+            .then(() -> tokenProviderResults.next(AmqpResponseCode.OK))
+            .assertNext(actual -> {
                 assertNotNull(actual.getApplicationProperties());
                 assertEquals(responseCode.getValue(), actual.getApplicationProperties().get(STATUS_CODE_KEY));
 
                 assertEquals(AmqpMessageBodyType.DATA, actual.getBody().getBodyType());
                 assertEquals(body, actual.getBody().getFirstData());
-            }).expectComplete().verify(VERIFY_TIMEOUT);
+            })
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -183,13 +189,16 @@ public class ManagementChannelTest {
 
         // Act & Assert
         StepVerifier.create(managementChannel.send(annotatedMessage, outcome))
-            .then(() -> tokenProviderResults.next(AmqpResponseCode.OK)).assertNext(actual -> {
+            .then(() -> tokenProviderResults.next(AmqpResponseCode.OK))
+            .assertNext(actual -> {
                 assertNotNull(actual.getApplicationProperties());
                 assertEquals(responseCode.getValue(), actual.getApplicationProperties().get(STATUS_CODE_KEY));
 
                 assertEquals(AmqpMessageBodyType.DATA, actual.getBody().getBodyType());
                 assertEquals(body, actual.getBody().getFirstData());
-            }).expectComplete().verify(VERIFY_TIMEOUT);
+            })
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -206,11 +215,13 @@ public class ManagementChannelTest {
 
         // Act & Assert
         StepVerifier.create(managementChannel.send(annotatedMessage, outcome))
-            .then(() -> tokenProviderResults.next(AmqpResponseCode.OK)).expectErrorSatisfies(error -> {
+            .then(() -> tokenProviderResults.next(AmqpResponseCode.OK))
+            .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
                 assertEquals(errorContext, ((AmqpException) error).getContext());
                 assertTrue(((AmqpException) error).isTransient());
-            }).verify(VERIFY_TIMEOUT);
+            })
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -227,10 +238,12 @@ public class ManagementChannelTest {
 
         // Act & Assert
         StepVerifier.create(managementChannel.send(annotatedMessage, outcome))
-            .then(() -> tokenProviderResults.complete()).expectErrorSatisfies(error -> {
+            .then(() -> tokenProviderResults.complete())
+            .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
                 assertFalse(((AmqpException) error).isTransient());
-            }).verify(VERIFY_TIMEOUT);
+            })
+            .verify(VERIFY_TIMEOUT);
 
         verify(requestResponseChannel, never()).sendWithAck(any(), any());
     }
@@ -257,13 +270,16 @@ public class ManagementChannelTest {
 
         // Act & Assert
         StepVerifier.create(managementChannel.send(annotatedMessage))
-            .then(() -> tokenProviderResults.next(AmqpResponseCode.OK)).assertNext(actual -> {
+            .then(() -> tokenProviderResults.next(AmqpResponseCode.OK))
+            .assertNext(actual -> {
                 assertNotNull(actual.getApplicationProperties());
                 assertEquals(responseCode.getValue(), actual.getApplicationProperties().get(STATUS_CODE_KEY));
 
                 assertEquals(AmqpMessageBodyType.DATA, actual.getBody().getBodyType());
                 assertEquals(body, actual.getBody().getFirstData());
-            }).expectComplete().verify(VERIFY_TIMEOUT);
+            })
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -286,12 +302,14 @@ public class ManagementChannelTest {
 
         // Act & Assert
         StepVerifier.create(managementChannel.send(annotatedMessage))
-            .then(() -> tokenProviderResults.next(AmqpResponseCode.OK)).expectErrorSatisfies(error -> {
+            .then(() -> tokenProviderResults.next(AmqpResponseCode.OK))
+            .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
                 assertFalse(((AmqpException) error).isTransient());
                 assertEquals(errorCondition, ((AmqpException) error).getErrorCondition());
                 assertEquals(errorContext, ((AmqpException) error).getContext());
-            }).verify(VERIFY_TIMEOUT);
+            })
+            .verify(VERIFY_TIMEOUT);
     }
 
     public static Stream<AmqpErrorCondition> sendMessageNotFound() {
@@ -313,9 +331,11 @@ public class ManagementChannelTest {
 
         // Act & Assert
         StepVerifier.create(managementChannel.send(annotatedMessage))
-            .then(() -> tokenProviderResults.next(responseCode)).expectErrorSatisfies(error -> {
+            .then(() -> tokenProviderResults.next(responseCode))
+            .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
                 assertEquals(expected, ((AmqpException) error).getErrorCondition());
-            }).verify(VERIFY_TIMEOUT);
+            })
+            .verify(VERIFY_TIMEOUT);
     }
 }

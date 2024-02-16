@@ -35,7 +35,7 @@ import java.time.OffsetDateTime;
  * <!-- src_embed com.azure.core.credential.basicAuthenticationCredential -->
  * <pre>
  * BasicAuthenticationCredential basicAuthenticationCredential =
- *     new BasicAuthenticationCredential&#40;&quot;&lt;username&gt;&quot;, &quot;&lt;password&gt;&quot;&#41;;
+ * new BasicAuthenticationCredential&#40;&quot;&lt;username&gt;&quot;, &quot;&lt;password&gt;&quot;&#41;;
  * </pre>
  * <!-- end com.azure.core.credential.basicAuthenticationCredential -->
  *

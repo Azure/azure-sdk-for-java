@@ -110,8 +110,10 @@ public final class MockProxyServer implements Closeable {
         HttpMethod httpMethod = HttpMethod.valueOf(request.method().name());
         URL url;
         try {
-            url = new UrlBuilder().setScheme("http").setHost(request.requestHeaders().get("host"))
-                .setPath(request.fullPath()).toUrl();
+            url = new UrlBuilder().setScheme("http")
+                .setHost(request.requestHeaders().get("host"))
+                .setPath(request.fullPath())
+                .toUrl();
         } catch (MalformedURLException ex) {
             throw new RuntimeException(ex);
         }

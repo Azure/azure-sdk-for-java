@@ -185,7 +185,8 @@ public final class AzureMethodSourceArgumentsProvider
     }
 
     private static Enum<?> getEnumOrNull(String serviceVersion, Class<? extends ServiceVersion> serviceVersionType) {
-        return CoreUtils.isNullOrEmpty(serviceVersion) ? null
+        return CoreUtils.isNullOrEmpty(serviceVersion)
+            ? null
             : (Enum<?>) CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).get(serviceVersion);
     }
 

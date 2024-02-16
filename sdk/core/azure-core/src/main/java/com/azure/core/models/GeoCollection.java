@@ -83,8 +83,10 @@ public final class GeoCollection extends GeoObject {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject().writeStringField("type", GeoObjectType.GEOMETRY_COLLECTION.toString())
-            .writeArrayField("geometries", geometries, JsonWriter::writeJson).writeJsonField("bbox", getBoundingBox());
+        jsonWriter.writeStartObject()
+            .writeStringField("type", GeoObjectType.GEOMETRY_COLLECTION.toString())
+            .writeArrayField("geometries", geometries, JsonWriter::writeJson)
+            .writeJsonField("bbox", getBoundingBox());
 
         return writeCustomProperties(jsonWriter).writeEndObject();
     }

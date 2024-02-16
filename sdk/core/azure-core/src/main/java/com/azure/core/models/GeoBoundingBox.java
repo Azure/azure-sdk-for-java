@@ -140,9 +140,12 @@ public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
         }
 
         GeoBoundingBox other = (GeoBoundingBox) obj;
-        return Double.compare(west, other.west) == 0 && Double.compare(south, other.south) == 0
-            && Double.compare(east, other.east) == 0 && Double.compare(north, other.north) == 0
-            && Objects.equals(minAltitude, other.minAltitude) && Objects.equals(maxAltitude, other.maxAltitude);
+        return Double.compare(west, other.west) == 0
+            && Double.compare(south, other.south) == 0
+            && Double.compare(east, other.east) == 0
+            && Double.compare(north, other.north) == 0
+            && Objects.equals(minAltitude, other.minAltitude)
+            && Objects.equals(maxAltitude, other.maxAltitude);
     }
 
     /**

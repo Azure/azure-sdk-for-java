@@ -248,8 +248,11 @@ public final class TestUtils {
     public static HttpClient getFaultInjectingHttpClient(HttpClient clientToWrap, boolean useHttps, int successRate,
         int partialRate, int failureRate) {
         if (successRate + partialRate + failureRate != 100 || successRate < 0 || partialRate < 0 || failureRate < 0) {
-            throw LOGGER.atError().addKeyValue("successRate", successRate).addKeyValue("partialRage", partialRate)
-                .addKeyValue("failureRate", failureRate).log(new IllegalStateException(
+            throw LOGGER.atError()
+                .addKeyValue("successRate", successRate)
+                .addKeyValue("partialRage", partialRate)
+                .addKeyValue("failureRate", failureRate)
+                .log(new IllegalStateException(
                     "'successRate', 'partialRate', and 'failureRate' must add to 100 and no values can be negative."));
         }
 
@@ -306,8 +309,11 @@ public final class TestUtils {
 
         private URL rewriteUrl(URL originalUrl) {
             try {
-                return UrlBuilder.parse(originalUrl).setScheme(useHttps ? "https" : "http").setHost("localhost")
-                    .setPort(useHttps ? 7778 : 7777).toUrl();
+                return UrlBuilder.parse(originalUrl)
+                    .setScheme(useHttps ? "https" : "http")
+                    .setHost("localhost")
+                    .setPort(useHttps ? 7778 : 7777)
+                    .toUrl();
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
             }

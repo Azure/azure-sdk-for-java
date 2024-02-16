@@ -431,7 +431,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
 
     @Override
     public String toString() {
-        return this.stream().map(header -> header.getName() + "=" + header.getValue())
+        return this.stream()
+            .map(header -> header.getName() + "=" + header.getValue())
             .collect(Collectors.joining(", "));
     }
 

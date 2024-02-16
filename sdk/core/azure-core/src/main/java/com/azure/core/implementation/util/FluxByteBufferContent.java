@@ -202,6 +202,7 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         return FluxUtil.collectBytesInByteBufferStream(content)
             // this doesn't seem to be working (newBoundedElastic() didn't work either)
             // .publishOn(Schedulers.boundedElastic())
-            .share().block();
+            .share()
+            .block();
     }
 }

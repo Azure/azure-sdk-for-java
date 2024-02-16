@@ -29,7 +29,8 @@ public class RetriableDownloadFluxTests {
             (ignoredThrowable, ignoredOffset) -> Flux.empty(), createDefaultRetryOptions(0), 0L);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
-            .assertNext(bytes -> assertEquals(0, bytes.length)).verifyComplete();
+            .assertNext(bytes -> assertEquals(0, bytes.length))
+            .verifyComplete();
     }
 
     @Test
@@ -39,7 +40,8 @@ public class RetriableDownloadFluxTests {
                 (ignoredThrowable, ignoredOffset) -> Flux.empty(), createDefaultRetryOptions(1), 0L);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
-            .assertNext(bytes -> assertEquals(0, bytes.length)).verifyComplete();
+            .assertNext(bytes -> assertEquals(0, bytes.length))
+            .verifyComplete();
     }
 
     @Test
@@ -56,7 +58,8 @@ public class RetriableDownloadFluxTests {
             }, createDefaultRetryOptions(2), 0L);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
-            .assertNext(bytes -> assertEquals(0, bytes.length)).verifyComplete();
+            .assertNext(bytes -> assertEquals(0, bytes.length))
+            .verifyComplete();
     }
 
     @Test
@@ -116,11 +119,14 @@ public class RetriableDownloadFluxTests {
 
         byte[] expected = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        StepVerifier.create(Flux.range(0, 100).parallel()
-            .flatMap(ignored -> FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux)).map(bytes -> {
+        StepVerifier.create(Flux.range(0, 100)
+            .parallel()
+            .flatMap(ignored -> FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
+            .map(bytes -> {
                 assertArraysEqual(expected, bytes);
                 return bytes;
-            }).then()).verifyComplete();
+            })
+            .then()).verifyComplete();
     }
 
     @Test
@@ -137,7 +143,8 @@ public class RetriableDownloadFluxTests {
         byte[] expected = new byte[] { 0, 0, 0, 0, 0 };
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
-            .assertNext(bytes -> assertArraysEqual(expected, bytes)).verifyComplete();
+            .assertNext(bytes -> assertArraysEqual(expected, bytes))
+            .verifyComplete();
     }
 
     private static Flux<ByteBuffer> generateFromOffset(long offset) {

@@ -151,9 +151,14 @@ public class ReactorSessionTest {
     public void verifyEndpointStates() {
         when(session.getRemoteState()).thenReturn(EndpointState.ACTIVE);
 
-        StepVerifier.create(reactorSession.getEndpointStates()).expectNext(AmqpEndpointState.UNINITIALIZED)
-            .then(() -> handler.onSessionRemoteOpen(event)).expectNext(AmqpEndpointState.ACTIVE)
-            .then(() -> handler.close()).expectNext(AmqpEndpointState.CLOSED).expectComplete().verify();
+        StepVerifier.create(reactorSession.getEndpointStates())
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
+            .then(() -> handler.onSessionRemoteOpen(event))
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .then(() -> handler.close())
+            .expectNext(AmqpEndpointState.CLOSED)
+            .expectComplete()
+            .verify();
     }
 
     @Test
@@ -192,11 +197,14 @@ public class ReactorSessionTest {
 
         StepVerifier
             .create(reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties))
-            .then(() -> handler.onSessionRemoteOpen(event)).thenAwait(Duration.ofSeconds(2))
-            .assertNext(producer -> assertTrue(producer instanceof ReactorSender)).verifyComplete();
+            .then(() -> handler.onSessionRemoteOpen(event))
+            .thenAwait(Duration.ofSeconds(2))
+            .assertNext(producer -> assertTrue(producer instanceof ReactorSender))
+            .verifyComplete();
 
-        final AmqpLink sendLink = reactorSession
-            .createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties).block(TIMEOUT);
+        final AmqpLink sendLink
+            = reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties)
+                .block(TIMEOUT);
 
         assertNotNull(sendLink);
     }
@@ -237,8 +245,9 @@ public class ReactorSessionTest {
 
         handler.onSessionRemoteOpen(event);
 
-        final AmqpLink sendLink = reactorSession
-            .createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties).block(TIMEOUT);
+        final AmqpLink sendLink
+            = reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties)
+                .block(TIMEOUT);
 
         assertNotNull(sendLink);
         assertTrue(sendLink instanceof AmqpSendLink);
@@ -269,8 +278,10 @@ public class ReactorSessionTest {
         when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler);
 
         StepVerifier.create(reactorSession.getOrCreateTransactionCoordinator())
-            .then(() -> handler.onSessionRemoteOpen(event)).thenAwait(Duration.ofSeconds(2))
-            .assertNext(Assertions::assertNotNull).verifyComplete();
+            .then(() -> handler.onSessionRemoteOpen(event))
+            .thenAwait(Duration.ofSeconds(2))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
 
         verify(session).sender(transactionLinkName);
         verify(sender).setTarget(any(Coordinator.class));

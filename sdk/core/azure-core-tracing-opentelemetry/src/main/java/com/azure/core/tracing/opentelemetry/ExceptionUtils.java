@@ -26,9 +26,12 @@ final class ExceptionUtils {
 
     public static Throwable unwrapError(Throwable error) {
         error = Exceptions.unwrap(error);
-        if (error != null && error.getCause() != null
-            && (error instanceof UncheckedIOException || error instanceof ExecutionException
-                || isInstanceOfCompletionException(error) || error instanceof InvocationTargetException
+        if (error != null
+            && error.getCause() != null
+            && (error instanceof UncheckedIOException
+                || error instanceof ExecutionException
+                || isInstanceOfCompletionException(error)
+                || error instanceof InvocationTargetException
                 || error instanceof UndeclaredThrowableException)) {
             return unwrapError(error.getCause());
         }

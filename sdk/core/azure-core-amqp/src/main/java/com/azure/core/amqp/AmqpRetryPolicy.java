@@ -69,7 +69,8 @@ public abstract class AmqpRetryPolicy {
      * is no longer eligible to be retried.
      */
     public Duration calculateRetryDelay(Throwable lastException, int retryCount) {
-        if (retryOptions.getDelay() == Duration.ZERO || retryOptions.getMaxDelay() == Duration.ZERO
+        if (retryOptions.getDelay() == Duration.ZERO
+            || retryOptions.getMaxDelay() == Duration.ZERO
             || retryCount > retryOptions.getMaxRetries()) {
             return null;
         }
@@ -77,7 +78,8 @@ public abstract class AmqpRetryPolicy {
         final Duration baseDelay;
         if (lastException instanceof AmqpException && isRetriableException(lastException)) {
             baseDelay = ((AmqpException) lastException).getErrorCondition() == SERVER_BUSY_ERROR
-                ? retryOptions.getDelay().plus(SERVER_BUSY_WAIT_TIME) : retryOptions.getDelay();
+                ? retryOptions.getDelay().plus(SERVER_BUSY_WAIT_TIME)
+                : retryOptions.getDelay();
         } else if (lastException instanceof TimeoutException) {
             baseDelay = retryOptions.getDelay();
         } else {

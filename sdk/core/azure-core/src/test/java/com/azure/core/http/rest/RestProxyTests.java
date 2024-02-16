@@ -101,8 +101,9 @@ public class RestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
-        Response<Void> response = testInterface
-            .testMethod(Flux.just(ByteBuffer.wrap(bytes)), "application/json", (long) bytes.length).block();
+        Response<Void> response
+            = testInterface.testMethod(Flux.just(ByteBuffer.wrap(bytes)), "application/json", (long) bytes.length)
+                .block();
         assertEquals(200, response.getStatusCode());
     }
 
@@ -124,7 +125,8 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        StepVerifier.create(testInterface.testDownloadAsync().doOnNext(StreamResponse::close)).expectNextCount(1)
+        StepVerifier.create(testInterface.testDownloadAsync().doOnNext(StreamResponse::close))
+            .expectNextCount(1)
             .verifyComplete();
         // This indirectly tests that StreamResponse has HttpResponse reference
         assertTrue(client.closeCalledOnResponse);
@@ -263,7 +265,8 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        StepVerifier.create(testInterface.testDownloadAsync().doOnNext(StreamResponse::close)).expectNextCount(1)
+        StepVerifier.create(testInterface.testDownloadAsync().doOnNext(StreamResponse::close))
+            .expectNextCount(1)
             .verifyComplete();
 
         assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());

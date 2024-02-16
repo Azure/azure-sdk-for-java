@@ -90,8 +90,10 @@ final class DeferredCacheImmutableMap<V> extends AbstractMap<String, V> {
         return new AbstractSet<Entry<String, V>>() {
             @Override
             public Iterator<Entry<String, V>> iterator() {
-                return nettyHeaders.names().stream()
-                    .map(name -> (Map.Entry<String, V>) new SimpleImmutableEntry<>(name, get(name))).iterator();
+                return nettyHeaders.names()
+                    .stream()
+                    .map(name -> (Map.Entry<String, V>) new SimpleImmutableEntry<>(name, get(name)))
+                    .iterator();
             }
 
             @Override

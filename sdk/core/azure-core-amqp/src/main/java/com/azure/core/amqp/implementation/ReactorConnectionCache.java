@@ -112,7 +112,8 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             }
         }).cacheInvalidateIf(c -> {
             if (c.isDisposed()) {
-                logger.atInfo().addKeyValue(CONNECTION_ID_KEY, c.getId())
+                logger.atInfo()
+                    .addKeyValue(CONNECTION_ID_KEY, c.getId())
                     .log("The connection is closed, requesting a new connection.");
                 return true;
             } else {
@@ -222,15 +223,18 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             // Continue to log (to detect any other unknown edge-case) and recover on ISE.
             final boolean shouldRetry = error instanceof TimeoutException
                 || (error instanceof AmqpException && ((AmqpException) error).isTransient()
-                    || (error instanceof IllegalStateException) || (error instanceof RejectedExecutionException));
+                    || (error instanceof IllegalStateException)
+                    || (error instanceof RejectedExecutionException));
 
             if (!shouldRetry) {
-                logger.atWarning().addKeyValue(TRY_COUNT_KEY, iteration)
+                logger.atWarning()
+                    .addKeyValue(TRY_COUNT_KEY, iteration)
                     .log("Exception is non-retriable, not retrying for a new connection.", error);
                 return Mono.error(error);
             }
 
-            final Throwable errorToUse = error instanceof AmqpException ? error
+            final Throwable errorToUse = error instanceof AmqpException
+                ? error
                 : new AmqpException(true, "Non-AmqpException occurred upstream.", error, errorContext);
             // Using the min of retry attempts and max-retries to compute the 'back-off'.
             // The min is taken so that it never exhaust the retry attempts for transient errors.
@@ -242,7 +246,8 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             final Duration backoff = retryPolicy.calculateRetryDelay(errorToUse, (int) attempts);
 
             if (backoff == null) {
-                logger.atWarning().addKeyValue(TRY_COUNT_KEY, iteration)
+                logger.atWarning()
+                    .addKeyValue(TRY_COUNT_KEY, iteration)
                     .log("Retry is disabled, not retrying for a new connection.", error);
                 return Mono.error(error);
             }
@@ -251,7 +256,9 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
                 return Mono.error(TERMINATED_ERROR);
             }
 
-            logger.atInfo().addKeyValue(TRY_COUNT_KEY, iteration).addKeyValue(INTERVAL_KEY, backoff.toMillis())
+            logger.atInfo()
+                .addKeyValue(TRY_COUNT_KEY, iteration)
+                .addKeyValue(INTERVAL_KEY, backoff.toMillis())
                 .log("Transient error occurred. Retrying.", error);
 
             return Mono.delay(backoff);

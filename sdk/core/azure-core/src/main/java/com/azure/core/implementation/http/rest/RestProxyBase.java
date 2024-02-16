@@ -379,7 +379,8 @@ public abstract class RestProxyBase {
         // If the decoded response content is on of these exception types there was a failure in creating the actual
         // exception body type. In this case return an HttpResponseException to maintain the exception having a
         // reference to the HttpResponse and information about what caused the deserialization failure.
-        if (responseDecodedContent instanceof IOException || responseDecodedContent instanceof MalformedValueException
+        if (responseDecodedContent instanceof IOException
+            || responseDecodedContent instanceof MalformedValueException
             || responseDecodedContent instanceof IllegalStateException) {
             return new HttpResponseException(exceptionMessage.toString(), httpResponse,
                 (Throwable) responseDecodedContent);
@@ -411,7 +412,8 @@ public abstract class RestProxyBase {
                     httpResponse, responseDecodedContent);
             } catch (RuntimeException e) {
                 // And if reflection fails, return an HttpResponseException.
-                exceptionMessage.append(". An instance of ").append(exceptionType.getCanonicalName())
+                exceptionMessage.append(". An instance of ")
+                    .append(exceptionType.getCanonicalName())
                     .append(" couldn't be created.");
                 HttpResponseException exception1
                     = new HttpResponseException(exceptionMessage.toString(), httpResponse, responseDecodedContent);

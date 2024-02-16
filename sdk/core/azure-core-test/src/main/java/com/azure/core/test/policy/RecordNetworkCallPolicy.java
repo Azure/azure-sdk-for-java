@@ -107,22 +107,23 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             networkCallRecord.setException(new NetworkCallError(throwable));
             recordedData.addNetworkCall(networkCallRecord);
             throw logger.logExceptionAsWarning(Exceptions.propagate(throwable));
-        }).flatMap(
-            httpResponse -> extractResponseData(httpResponse, redactor, logger).map(responseAndSessionRecordData -> {
-                Map<String, String> sessionRecordData = responseAndSessionRecordData.getT2();
-                networkCallRecord.setResponse(sessionRecordData);
-                String body = sessionRecordData.get(BODY);
+        })
+            .flatMap(httpResponse -> extractResponseData(httpResponse, redactor, logger)
+                .map(responseAndSessionRecordData -> {
+                    Map<String, String> sessionRecordData = responseAndSessionRecordData.getT2();
+                    networkCallRecord.setResponse(sessionRecordData);
+                    String body = sessionRecordData.get(BODY);
 
-                // Remove pre-added header if this is a waiting or redirection
-                if (body != null && body.contains("<Status>InProgress</Status>")
-                    || Integer.parseInt(sessionRecordData.get(STATUS_CODE)) == HttpURLConnection.HTTP_MOVED_TEMP) {
-                    logger.info("Waiting for a response or redirection.");
-                } else {
-                    recordedData.addNetworkCall(networkCallRecord);
-                }
+                    // Remove pre-added header if this is a waiting or redirection
+                    if (body != null && body.contains("<Status>InProgress</Status>")
+                        || Integer.parseInt(sessionRecordData.get(STATUS_CODE)) == HttpURLConnection.HTTP_MOVED_TEMP) {
+                        logger.info("Waiting for a response or redirection.");
+                    } else {
+                        recordedData.addNetworkCall(networkCallRecord);
+                    }
 
-                return responseAndSessionRecordData.getT1();
-            }));
+                    return responseAndSessionRecordData.getT1();
+                }));
     }
 
     private static void redactedAccountName(UrlBuilder urlBuilder) {

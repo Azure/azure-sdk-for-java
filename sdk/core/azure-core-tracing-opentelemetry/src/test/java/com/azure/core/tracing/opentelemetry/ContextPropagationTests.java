@@ -162,7 +162,8 @@ public class ContextPropagationTests {
             IdGenerator.random().generateSpanId(), TraceFlags.getSampled(), state);
 
         Span span = otelTracer.spanBuilder("span")
-            .setParent(io.opentelemetry.context.Context.root().with(Span.wrap(withTraceState))).startSpan();
+            .setParent(io.opentelemetry.context.Context.root().with(Span.wrap(withTraceState)))
+            .startSpan();
         Context contextWithSpan
             = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(span));
 

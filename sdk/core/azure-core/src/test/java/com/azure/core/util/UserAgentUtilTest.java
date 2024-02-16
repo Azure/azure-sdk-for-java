@@ -19,8 +19,14 @@ public class UserAgentUtilTest {
         String javaVersion = System.getProperty("java.version");
         String osName = System.getProperty("os.name");
         String osVersion = System.getProperty("os.version");
-        String platform = new StringBuilder().append("(").append(javaVersion).append("; ").append(osName).append("; ")
-            .append(osVersion).append(")").toString();
+        String platform = new StringBuilder().append("(")
+            .append(javaVersion)
+            .append("; ")
+            .append(osName)
+            .append("; ")
+            .append(osVersion)
+            .append(")")
+            .toString();
 
         // with platform info
         assertEquals("azsdk-java-azure-storage-blob/12.0.0 " + platform,

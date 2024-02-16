@@ -50,7 +50,8 @@ public class AccessPolicy implements XmlSerializable<AccessPolicy> {
         return xmlWriter.writeStartElement(getRootElementName(rootElementName, "AccessPolicy"))
             .writeStringElement("Start", startsOn == null ? null : startsOn.toString())
             .writeStringElement("Expiry", expiresOn == null ? null : expiresOn.toString())
-            .writeStringElement("Permission", permissions).writeEndElement();
+            .writeStringElement("Permission", permissions)
+            .writeEndElement();
     }
 
     public static AccessPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {

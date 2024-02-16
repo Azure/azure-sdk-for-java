@@ -260,7 +260,8 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase
         public HandOfCards build() {
             try {
                 HandOfCards record = new HandOfCards();
-                record.cards = fieldSetFlags()[0] ? this.cards
+                record.cards = fieldSetFlags()[0]
+                    ? this.cards
                     : (java.util.List<com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCard>) defaultValue(
                         fields()[0]);
                 return record;

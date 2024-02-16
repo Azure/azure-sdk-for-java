@@ -390,8 +390,10 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                 return Mono.defer(() -> Mono.just(linkSize));
             }
 
-            return RetryUtil.withRetry(getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
-                retryOptions, activeTimeoutMessage).then(Mono.fromCallable(() -> {
+            return RetryUtil
+                .withRetry(getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), retryOptions,
+                    activeTimeoutMessage)
+                .then(Mono.fromCallable(() -> {
                     final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
                     if (remoteMaxMessageSize != null) {
                         linkSize = remoteMaxMessageSize.intValue();
@@ -556,7 +558,8 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
 
             if (workItem == null) {
                 if (deliveryTag != null) {
-                    logger.atVerbose().addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
+                    logger.atVerbose()
+                        .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
                         .log("sendData not found for this delivery.");
                 }
 
@@ -590,9 +593,11 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                 scheduler.schedule(new SendTimeout(deliveryTag), retryOptions.getTryTimeout().toMillis(),
                     TimeUnit.MILLISECONDS);
             } else {
-                logger.atVerbose().addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
+                logger.atVerbose()
+                    .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
                     .addKeyValue("sentMessageSize", sentMsgSize)
-                    .addKeyValue("payloadActualSize", workItem.getEncodedMessageSize()).log("Sendlink advance failed.");
+                    .addKeyValue("payloadActualSize", workItem.getEncodedMessageSize())
+                    .log("Sendlink advance failed.");
 
                 DeliveryState outcome = null;
                 if (delivery != null) {
@@ -644,7 +649,9 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             final Exception exception = ExceptionUtil.toException(error.getCondition().toString(),
                 error.getDescription(), handler.getErrorContext(sender));
 
-            logger.atWarning().addKeyValue(DELIVERY_TAG_KEY, deliveryTag).addKeyValue("rejected", rejected)
+            logger.atWarning()
+                .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
+                .addKeyValue("rejected", rejected)
                 .log("Delivery rejected.");
 
             final int retryAttempt;
@@ -730,7 +737,8 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             if (isDisposed.getAndSet(true)) {
                 logger.verbose("This was already disposed. Dropping error.");
             } else {
-                logger.atVerbose().addKeyValue(PENDING_SENDS_SIZE_KEY, () -> String.valueOf(pendingSendsMap.size()))
+                logger.atVerbose()
+                    .addKeyValue(PENDING_SENDS_SIZE_KEY, () -> String.valueOf(pendingSendsMap.size()))
                     .log("Disposing pending sends with error.");
             }
 
@@ -752,7 +760,8 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             if (isDisposed.getAndSet(true)) {
                 logger.verbose("This was already disposed.");
             } else {
-                logger.atVerbose().addKeyValue(PENDING_SENDS_SIZE_KEY, () -> String.valueOf(pendingSendsMap.size()))
+                logger.atVerbose()
+                    .addKeyValue(PENDING_SENDS_SIZE_KEY, () -> String.valueOf(pendingSendsMap.size()))
                     .log("Disposing pending sends.");
             }
 
@@ -765,7 +774,8 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     }
 
     private static boolean isGeneralSendError(Symbol amqpError) {
-        return (amqpError == AmqpErrorCode.SERVER_BUSY_ERROR || amqpError == AmqpErrorCode.TIMEOUT_ERROR
+        return (amqpError == AmqpErrorCode.SERVER_BUSY_ERROR
+            || amqpError == AmqpErrorCode.TIMEOUT_ERROR
             || amqpError == AmqpErrorCode.RESOURCE_LIMIT_EXCEEDED);
     }
 

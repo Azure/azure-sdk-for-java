@@ -217,8 +217,10 @@ public final class IOUtils {
 
                 long bytesWritten = targetChannel.getBytesWritten();
                 createBasicLoggingContext(LogLevel.INFORMATIONAL, response)
-                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount).addKeyValue("maxRetries", maxRetries)
-                    .addKeyValue("bytesWritten", bytesWritten).log("Attempt failed. Scheduling retry.", exception);
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
+                    .addKeyValue("maxRetries", maxRetries)
+                    .addKeyValue("bytesWritten", bytesWritten)
+                    .log("Attempt failed. Scheduling retry.", exception);
                 return onErrorResume.apply(exception, bytesWritten)
                     .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(targetChannel,
                         newResponse, onErrorResume, maxRetries, updatedRetryCount));

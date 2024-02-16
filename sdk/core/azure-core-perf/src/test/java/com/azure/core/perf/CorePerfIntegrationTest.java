@@ -41,8 +41,10 @@ public class CorePerfIntegrationTest {
     @ParameterizedTest
     @MethodSource("providePerfTests")
     public void testAsync(PerfStressTest<? extends CorePerfStressOptions> perfTest) {
-        StepVerifier.create(Mono.defer(perfTest::globalSetupAsync).then(Mono.defer(perfTest::setupAsync))
-            .then(Mono.defer(perfTest::runAsync)).then(Mono.defer(perfTest::cleanupAsync))
+        StepVerifier.create(Mono.defer(perfTest::globalSetupAsync)
+            .then(Mono.defer(perfTest::setupAsync))
+            .then(Mono.defer(perfTest::runAsync))
+            .then(Mono.defer(perfTest::cleanupAsync))
             .then(Mono.defer(perfTest::globalCleanupAsync))).verifyComplete();
     }
 
@@ -56,12 +58,15 @@ public class CorePerfIntegrationTest {
             assertNotNull(parsedCommand);
             assertFalse(parsedCommand.isEmpty());
             return options;
-        }).flatMap(options -> Stream.<Supplier<PerfStressTest<? extends CorePerfStressOptions>>>of(
-            () -> new BinaryDataReceiveTest(options), () -> new BinaryDataSendTest(options),
-            () -> new ByteBufferReceiveTest(options), () -> new ByteBufferSendTest(options),
-            () -> new JsonReceiveTest(options), () -> new JsonSendTest(options), () -> new PipelineSendTest(options),
-            () -> new XmlReceiveTest(options), () -> new XmlSendTest(options), () -> new TracingTest(options)))
-            .map(Supplier::get).map(Arguments::of);
+        })
+            .flatMap(options -> Stream.<Supplier<PerfStressTest<? extends CorePerfStressOptions>>>of(
+                () -> new BinaryDataReceiveTest(options), () -> new BinaryDataSendTest(options),
+                () -> new ByteBufferReceiveTest(options), () -> new ByteBufferSendTest(options),
+                () -> new JsonReceiveTest(options), () -> new JsonSendTest(options),
+                () -> new PipelineSendTest(options), () -> new XmlReceiveTest(options), () -> new XmlSendTest(options),
+                () -> new TracingTest(options)))
+            .map(Supplier::get)
+            .map(Arguments::of);
     }
 
     private static Stream<String[]> generateArgsCombination() {

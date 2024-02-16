@@ -36,11 +36,13 @@ import java.util.concurrent.ThreadLocalRandom;
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient extends NoOpHttpClient {
-    private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders()
-        .set(HttpHeaderName.DATE, "Fri, 13 Oct 2017 20:33:09 GMT").set(HttpHeaderName.VIA, "1.1 vegur")
-        .set(HttpHeaderName.CONNECTION, "keep-alive").set(HttpHeaderName.fromString("X-Processed-Time"), "1.0")
-        .set(HttpHeaderName.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
-        .set(HttpHeaderName.CONTENT_TYPE, "application/json");
+    private static final HttpHeaders RESPONSE_HEADERS
+        = new HttpHeaders().set(HttpHeaderName.DATE, "Fri, 13 Oct 2017 20:33:09 GMT")
+            .set(HttpHeaderName.VIA, "1.1 vegur")
+            .set(HttpHeaderName.CONNECTION, "keep-alive")
+            .set(HttpHeaderName.fromString("X-Processed-Time"), "1.0")
+            .set(HttpHeaderName.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+            .set(HttpHeaderName.CONTENT_TYPE, "application/json");
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {

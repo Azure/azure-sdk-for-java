@@ -113,8 +113,8 @@ public final class PlaybackClient implements HttpClient {
                 networkCallRecord.getHeaders().get(X_MS_CLIENT_REQUEST_ID));
         }
         if (request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256_HEADER) != null) {
-            networkCallRecord.getResponse().put(X_MS_ENCRYPTION_KEY_SHA256,
-                request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256_HEADER));
+            networkCallRecord.getResponse()
+                .put(X_MS_ENCRYPTION_KEY_SHA256, request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256_HEADER));
         }
 
         int recordStatusCode = Integer.parseInt(networkCallRecord.getResponse().get("StatusCode"));
@@ -138,8 +138,9 @@ public final class PlaybackClient implements HttpClient {
              * in a drastically smaller size on disk. In addition to a smaller size on disk, loading the body when it
              * is Base64 encoded is much faster as it doesn't require string splitting.
              */
-            if (contentType != null && (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
-                || "avro/binary".equalsIgnoreCase(contentType))) {
+            if (contentType != null
+                && (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
+                    || "avro/binary".equalsIgnoreCase(contentType))) {
                 if (rawBody.startsWith("[") && rawBody.endsWith("]")) {
                     /*
                      * Body is encoded using the old Arrays.toString() format. Remove the leading '[' and trailing ']'

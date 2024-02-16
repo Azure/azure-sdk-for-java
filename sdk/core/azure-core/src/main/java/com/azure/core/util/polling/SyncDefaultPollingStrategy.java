@@ -21,7 +21,7 @@ import java.util.Objects;
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *        kept
+ * kept
  */
 public final class SyncDefaultPollingStrategy<T, U> implements SyncPollingStrategy<T, U> {
     private final SyncChainedPollingStrategy<T, U> chainedPollingStrategy;

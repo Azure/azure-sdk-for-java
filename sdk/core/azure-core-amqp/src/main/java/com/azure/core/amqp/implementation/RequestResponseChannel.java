@@ -346,7 +346,8 @@ public class RequestResponseChannel implements AsyncCloseable {
         return RetryUtil.withRetry(onActiveEndpoints, retryOptions, activeEndpointTimeoutMessage)
             .then(captureStartTime(message, Mono.create(sink -> {
                 try {
-                    logger.atVerbose().addKeyValue("messageId", message.getCorrelationId())
+                    logger.atVerbose()
+                        .addKeyValue("messageId", message.getCorrelationId())
                         .log("Scheduling on dispatcher.");
                     unconfirmedSends.putIfAbsent(messageId, sink);
 
@@ -419,7 +420,8 @@ public class RequestResponseChannel implements AsyncCloseable {
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
 
         if (sink == null) {
-            logger.atWarning().addKeyValue("messageId", message.getCorrelationId())
+            logger.atWarning()
+                .addKeyValue("messageId", message.getCorrelationId())
                 .log("Received delivery without pending message.");
             return;
         }
@@ -485,8 +487,10 @@ public class RequestResponseChannel implements AsyncCloseable {
             this.receiveLinkState = receiveLinkState;
         }
 
-        logger.atVerbose().addKeyValue("sendState", this.sendLinkState)
-            .addKeyValue("receiveState", this.receiveLinkState).log("Updating endpoint states.");
+        logger.atVerbose()
+            .addKeyValue("sendState", this.sendLinkState)
+            .addKeyValue("receiveState", this.receiveLinkState)
+            .log("Updating endpoint states.");
 
         if (this.sendLinkState == this.receiveLinkState) {
             this.endpointStates.emitNext(this.sendLinkState, Sinks.EmitFailureHandler.FAIL_FAST);
@@ -507,8 +511,8 @@ public class RequestResponseChannel implements AsyncCloseable {
         }
 
         // The below log can also help debug if the external code that error() calls into never return.
-        logger.atVerbose().log("completed the termination of {} unconfirmed sends (reason: {}).", count,
-            error.getMessage());
+        logger.atVerbose()
+            .log("completed the termination of {} unconfirmed sends (reason: {}).", count, error.getMessage());
     }
 
     /**
@@ -517,7 +521,8 @@ public class RequestResponseChannel implements AsyncCloseable {
     private Mono<Message> captureStartTime(Message toSend, Mono<Message> publisher) {
         if (metricsProvider.isRequestResponseDurationEnabled()) {
             String operationName = "unknown";
-            if (toSend != null && toSend.getApplicationProperties() != null
+            if (toSend != null
+                && toSend.getApplicationProperties() != null
                 && toSend.getApplicationProperties().getValue() != null) {
                 Map<String, Object> properties = toSend.getApplicationProperties().getValue();
                 Object operationObj = properties.get(MANAGEMENT_OPERATION_KEY);

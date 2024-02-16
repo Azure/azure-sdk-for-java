@@ -234,8 +234,11 @@ public class AuthorizationChallengeHandler {
             header = header.split(" ", 2)[1];
         }
 
-        return Stream.of(header.split(",")).map(String::trim).map(kvp -> kvp.split("=", 2)).collect(Collectors
-            .toMap(kvpPieces -> kvpPieces[0].toLowerCase(Locale.ROOT), kvpPieces -> kvpPieces[1].replace("\"", "")));
+        return Stream.of(header.split(","))
+            .map(String::trim)
+            .map(kvp -> kvp.split("=", 2))
+            .collect(Collectors.toMap(kvpPieces -> kvpPieces[0].toLowerCase(Locale.ROOT),
+                kvpPieces -> kvpPieces[1].replace("\"", "")));
     }
 
     /*
@@ -262,13 +265,13 @@ public class AuthorizationChallengeHandler {
             clientNonce = generateNonce();
         }
 
-        String ha1
-            = algorithm.endsWith(SESS) ? calculateHa1Sess(digestFunction, username, realm, password, nonce, clientNonce)
-                : calculateHa1NoSess(digestFunction, username, realm, password);
+        String ha1 = algorithm.endsWith(SESS)
+            ? calculateHa1Sess(digestFunction, username, realm, password, nonce, clientNonce)
+            : calculateHa1NoSess(digestFunction, username, realm, password);
 
-        String ha2
-            = AUTH_INT.equals(qop) ? calculateHa2AuthIntQop(digestFunction, method, uri, entityBodySupplier.get())
-                : calculateHa2AuthQopOrEmpty(digestFunction, method, uri);
+        String ha2 = AUTH_INT.equals(qop)
+            ? calculateHa2AuthIntQop(digestFunction, method, uri, entityBodySupplier.get())
+            : calculateHa2AuthQopOrEmpty(digestFunction, method, uri);
 
         String response = (AUTH.equals(qop) || AUTH_INT.equals(qop))
             ? calculateResponseKnownQop(digestFunction, ha1, nonce, nc, clientNonce, qop, ha2)
@@ -466,9 +469,22 @@ public class AuthorizationChallengeHandler {
         String nonce, int nc, String cnonce, String qop, String response, String opaque, boolean userhash) {
         StringBuilder authorizationBuilder = new StringBuilder(512);
 
-        authorizationBuilder.append(DIGEST).append("username=\"").append(username).append("\", ").append("realm=\"")
-            .append(realm).append("\", ").append("nonce=\"").append(nonce).append("\", ").append("uri=\"").append(uri)
-            .append("\", ").append("response=\"").append(response).append("\"");
+        authorizationBuilder.append(DIGEST)
+            .append("username=\"")
+            .append(username)
+            .append("\", ")
+            .append("realm=\"")
+            .append(realm)
+            .append("\", ")
+            .append("nonce=\"")
+            .append(nonce)
+            .append("\", ")
+            .append("uri=\"")
+            .append(uri)
+            .append("\", ")
+            .append("response=\"")
+            .append(response)
+            .append("\"");
 
         if (!CoreUtils.isNullOrEmpty(algorithm)) {
             authorizationBuilder.append(", algorithm=").append(algorithm);

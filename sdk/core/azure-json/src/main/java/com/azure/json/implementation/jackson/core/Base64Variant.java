@@ -273,7 +273,8 @@ public final class Base64Variant implements java.io.Serializable {
      * @since 2.12
      */
     public Base64Variant withWritePadding(boolean writePadding) {
-        return (writePadding == _writePadding) ? this
+        return (writePadding == _writePadding)
+            ? this
             : new Base64Variant(this, _name, writePadding, _paddingChar, _maxLineLength);
     }
 
@@ -289,8 +290,10 @@ public final class Base64Variant implements java.io.Serializable {
     // handle overrides
     protected Object readResolve() {
         Base64Variant base = Base64Variants.valueOf(_name);
-        if ((_writePadding != base._writePadding) || (_paddingChar != base._paddingChar)
-            || (_paddingReadBehaviour != base._paddingReadBehaviour) || (_maxLineLength != base._maxLineLength)
+        if ((_writePadding != base._writePadding)
+            || (_paddingChar != base._paddingChar)
+            || (_paddingReadBehaviour != base._paddingReadBehaviour)
+            || (_maxLineLength != base._maxLineLength)
             || (_writePadding != base._writePadding)) {
             return new Base64Variant(base, _name, _writePadding, _paddingChar, _paddingReadBehaviour, _maxLineLength);
         }
@@ -795,8 +798,10 @@ public final class Base64Variant implements java.io.Serializable {
             return false;
 
         Base64Variant other = (Base64Variant) o;
-        return (other._paddingChar == _paddingChar) && (other._maxLineLength == _maxLineLength)
-            && (other._writePadding == _writePadding) && (other._paddingReadBehaviour == _paddingReadBehaviour)
+        return (other._paddingChar == _paddingChar)
+            && (other._maxLineLength == _maxLineLength)
+            && (other._writePadding == _writePadding)
+            && (other._paddingReadBehaviour == _paddingReadBehaviour)
             && (_name.equals(other._name));
     }
 

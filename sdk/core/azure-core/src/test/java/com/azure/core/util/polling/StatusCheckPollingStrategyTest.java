@@ -36,7 +36,8 @@ public class StatusCheckPollingStrategyTest {
             = PollerFlux.create(Duration.ofMillis(1), activationOperation::get, new StatusCheckPollingStrategy<>(),
                 POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
-        StepVerifier.create(pollerFlux).expectSubscription()
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
             .expectNextMatches(
                 asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
             .verifyComplete();

@@ -76,8 +76,10 @@ public class NettyAsyncHttpClientProviderTests {
     public void optionsWithTimeouts() {
         long expectedTimeout = 15000;
         Duration timeout = Duration.ofMillis(expectedTimeout);
-        HttpClientOptions clientOptions = new HttpClientOptions().setConnectTimeout(timeout).setWriteTimeout(timeout)
-            .setResponseTimeout(timeout).setReadTimeout(timeout);
+        HttpClientOptions clientOptions = new HttpClientOptions().setConnectTimeout(timeout)
+            .setWriteTimeout(timeout)
+            .setResponseTimeout(timeout)
+            .setReadTimeout(timeout);
 
         NettyAsyncHttpClient httpClient
             = (NettyAsyncHttpClient) new NettyAsyncHttpClientProvider().createInstance(clientOptions);

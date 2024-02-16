@@ -97,7 +97,8 @@ class PollingUtil {
             cxt -> Mono.defer(() -> pollOperation.apply(cxt))
                 .delaySubscription(getDelay(cxt.getLatestResponse(), pollInterval))
                 .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
-                .repeat().takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
+                .repeat()
+                .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
                 .concatMap(currentPollResponse -> {
                     cxt.setLatestResponse(currentPollResponse);
                     return Mono.just(new AsyncPollResponse<>(cxt, cancelOperation, fetchResultOperation));

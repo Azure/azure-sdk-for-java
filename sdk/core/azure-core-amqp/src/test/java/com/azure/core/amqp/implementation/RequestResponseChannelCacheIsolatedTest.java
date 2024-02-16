@@ -78,12 +78,15 @@ public class RequestResponseChannelCacheIsolatedTest {
         try {
             final Mono<RequestResponseChannel> channelMono = channelCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> channelMono).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+                verifier.create(() -> channelMono)
+                    .thenRequest(1)
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(ch -> {
                         Assertions.assertTrue(endpoint.isCurrentChannel(ch));
                         Assertions.assertFalse(ch.isDisposed());
                         return true;
-                    }).verifyComplete();
+                    })
+                    .verifyComplete();
                 // Two channel should be supplied (initial channel and second channel on retry when initial channel
                 // timeout).
                 endpoint.assertChannelCreateCount(channelsCount);
@@ -111,12 +114,15 @@ public class RequestResponseChannelCacheIsolatedTest {
         try {
             final Mono<RequestResponseChannel> channelMono = channelCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> channelMono).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+                verifier.create(() -> channelMono)
+                    .thenRequest(1)
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(ch -> {
                         Assertions.assertTrue(endpoint.isCurrentChannel(ch));
                         Assertions.assertFalse(ch.isDisposed());
                         return true;
-                    }).verifyComplete();
+                    })
+                    .verifyComplete();
                 // Two channel should be supplied (initial channel and second channel on retry when initial channel
                 // complete without emitting any state).
                 endpoint.assertChannelCreateCount(channelsCount);
@@ -144,12 +150,15 @@ public class RequestResponseChannelCacheIsolatedTest {
         try {
             final Mono<RequestResponseChannel> channelMono = channelCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> channelMono).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+                verifier.create(() -> channelMono)
+                    .thenRequest(1)
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(ch -> {
                         Assertions.assertTrue(endpoint.isCurrentChannel(ch));
                         Assertions.assertFalse(ch.isDisposed());
                         return true;
-                    }).verifyComplete();
+                    })
+                    .verifyComplete();
                 // Two channel should be supplied (initial channel and second channel on retry when initial channel
                 // emits retriable error).
                 endpoint.assertChannelCreateCount(channelsCount);
@@ -177,12 +186,15 @@ public class RequestResponseChannelCacheIsolatedTest {
         try {
             final Mono<RequestResponseChannel> channelMono = channelCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> channelMono).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+                verifier.create(() -> channelMono)
+                    .thenRequest(1)
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(ch -> {
                         Assertions.assertTrue(endpoint.isCurrentChannel(ch));
                         Assertions.assertFalse(ch.isDisposed());
                         return true;
-                    }).verifyComplete();
+                    })
+                    .verifyComplete();
                 endpoint.assertChannelCreateCount(channelsCount);
             }
         } finally {
@@ -206,7 +218,9 @@ public class RequestResponseChannelCacheIsolatedTest {
         try {
             final Mono<RequestResponseChannel> channelMono = channelCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> channelMono).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT)
+                verifier.create(() -> channelMono)
+                    .thenRequest(1)
+                    .thenAwait(VIRTUAL_TIME_SHIFT)
                     .verifyErrorMatches(e -> e == nonRetriableError);
                 endpoint.assertChannelCreateCount(channelsCount);
             }
@@ -230,10 +244,13 @@ public class RequestResponseChannelCacheIsolatedTest {
         try {
             final Mono<RequestResponseChannel> channelMono = channelCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> channelMono).thenRequest(1).thenAwait(OPERATION_TIMEOUT.minusSeconds(2)) // OPERATION_TIMEOUT
-                                                                                                               // == 3
-                                                                                                               // seconds
-                    .thenCancel().verify();
+                verifier.create(() -> channelMono)
+                    .thenRequest(1)
+                    .thenAwait(OPERATION_TIMEOUT.minusSeconds(2)) // OPERATION_TIMEOUT
+                                                                  // == 3
+                                                                  // seconds
+                    .thenCancel()
+                    .verify();
                 // Assert that the cancel while waiting for channel to active will close the channel.
                 endpoint.assertCurrentChannelClosed();
                 endpoint.assertChannelCreateCount(channelsCount);

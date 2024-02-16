@@ -409,7 +409,8 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase
                 record.isFaceCard
                     = fieldSetFlags()[0] ? this.isFaceCard : (java.lang.Boolean) defaultValue(fields()[0]);
                 record.cardValue = fieldSetFlags()[1] ? this.cardValue : (java.lang.Integer) defaultValue(fields()[1]);
-                record.playingCardSuit = fieldSetFlags()[2] ? this.playingCardSuit
+                record.playingCardSuit = fieldSetFlags()[2]
+                    ? this.playingCardSuit
                     : (com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCardSuit) defaultValue(
                         fields()[2]);
                 return record;

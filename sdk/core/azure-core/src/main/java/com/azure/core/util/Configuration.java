@@ -24,12 +24,13 @@ import java.util.function.Function;
  * <!-- src_embed com.azure.core.util.Configuration -->
  * <pre>
  * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
- *     .root&#40;&quot;azure.sdk&quot;&#41;
- *     .buildSection&#40;&quot;client-name&quot;&#41;;
+ * .root&#40;&quot;azure.sdk&quot;&#41;
+ * .buildSection&#40;&quot;client-name&quot;&#41;;
  *
- * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
- *     .shared&#40;true&#41;
- *     .build&#40;&#41;;
+ * ConfigurationProperty&lt;String&gt; proxyHostnameProperty =
+ * ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+ * .shared&#40;true&#41;
+ * .build&#40;&#41;;
  * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
  * </pre>
  * <!-- end com.azure.core.util.Configuration -->
@@ -501,7 +502,9 @@ public class Configuration implements Cloneable {
 
         if (value == null) {
             if (property.isRequired()) {
-                throw LOGGER.atError().addKeyValue("name", property.getName()).addKeyValue("path", path)
+                throw LOGGER.atError()
+                    .addKeyValue("name", property.getName())
+                    .addKeyValue("path", path)
                     .log(new IllegalArgumentException("Missing required property."));
             }
             return property.getDefaultValue();
@@ -510,8 +513,11 @@ public class Configuration implements Cloneable {
         try {
             return property.getConverter().apply(value);
         } catch (RuntimeException ex) {
-            throw LOGGER.atError().addKeyValue("name", property.getName()).addKeyValue("path", path)
-                .addKeyValue("value", property.getValueSanitizer().apply(value)).log(ex);
+            throw LOGGER.atError()
+                .addKeyValue("name", property.getName())
+                .addKeyValue("path", path)
+                .addKeyValue("value", property.getValueSanitizer().apply(value))
+                .log(ex);
         }
     }
 
@@ -522,8 +528,11 @@ public class Configuration implements Cloneable {
 
         final String value = configurations.get(name);
         if (value != null) {
-            LOGGER.atVerbose().addKeyValue("name", name).addKeyValue("path", path)
-                .addKeyValue("value", () -> valueSanitizer.apply(value)).log("Got property value by name.");
+            LOGGER.atVerbose()
+                .addKeyValue("name", name)
+                .addKeyValue("path", path)
+                .addKeyValue("value", () -> valueSanitizer.apply(value))
+                .log("Got property value by name.");
 
             return value;
         }
@@ -531,8 +540,12 @@ public class Configuration implements Cloneable {
         for (String alias : aliases) {
             final String valueByAlias = configurations.get(alias);
             if (valueByAlias != null) {
-                LOGGER.atVerbose().addKeyValue("name", name).addKeyValue("path", path).addKeyValue("alias", alias)
-                    .addKeyValue("value", () -> valueSanitizer.apply(valueByAlias)).log("Got property value by alias.");
+                LOGGER.atVerbose()
+                    .addKeyValue("name", name)
+                    .addKeyValue("path", path)
+                    .addKeyValue("alias", alias)
+                    .addKeyValue("value", () -> valueSanitizer.apply(valueByAlias))
+                    .log("Got property value by alias.");
                 return valueByAlias;
             }
         }
@@ -563,7 +576,9 @@ public class Configuration implements Cloneable {
         if (systemProperty != null) {
             final String value = environmentConfiguration.getSystemProperty(systemProperty);
             if (value != null) {
-                LOGGER.atVerbose().addKeyValue("name", property.getName()).addKeyValue("systemProperty", systemProperty)
+                LOGGER.atVerbose()
+                    .addKeyValue("name", property.getName())
+                    .addKeyValue("systemProperty", systemProperty)
                     .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
                     .log("Got property from system property.");
                 return value;
@@ -574,7 +589,9 @@ public class Configuration implements Cloneable {
         if (envVar != null) {
             final String value = environmentConfiguration.getEnvironmentVariable(envVar);
             if (value != null) {
-                LOGGER.atVerbose().addKeyValue("name", property.getName()).addKeyValue("envVar", envVar)
+                LOGGER.atVerbose()
+                    .addKeyValue("name", property.getName())
+                    .addKeyValue("envVar", envVar)
                     .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
                     .log("Got property from environment variable.");
                 return value;

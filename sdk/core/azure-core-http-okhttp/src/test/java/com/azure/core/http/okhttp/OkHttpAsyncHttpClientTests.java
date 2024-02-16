@@ -68,13 +68,17 @@ public class OkHttpAsyncHttpClientTests {
         HttpResponse response = getResponse("/short").block();
 
         // Subscription:1
-        StepVerifier.create(response.getBodyAsByteArray()).assertNext(Assertions::assertNotNull).expectComplete()
+        StepVerifier.create(response.getBodyAsByteArray())
+            .assertNext(Assertions::assertNotNull)
+            .expectComplete()
             .verify(Duration.ofSeconds(20));
 
         // Subscription:2
         // Getting the bytes of an OkHttp response closes the stream on first read.
         // Subsequent reads will return an IllegalStateException due to the stream being closed.
-        StepVerifier.create(response.getBodyAsByteArray()).expectNextCount(0).expectError(IllegalStateException.class)
+        StepVerifier.create(response.getBodyAsByteArray())
+            .expectNextCount(0)
+            .expectError(IllegalStateException.class)
             .verify(Duration.ofSeconds(20));
 
     }
@@ -90,36 +94,47 @@ public class OkHttpAsyncHttpClientTests {
     @Test
     public void testFlowableBackpressure() {
         StepVerifier.create(getResponse("/long").flatMapMany(HttpResponse::getBody), EMPTY_INITIAL_REQUEST_OPTIONS)
-            .expectNextCount(0).thenRequest(1).expectNextCount(1).thenRequest(3).expectNextCount(3)
-            .thenRequest(Long.MAX_VALUE).thenConsumeWhile(ByteBuffer::hasRemaining).verifyComplete();
+            .expectNextCount(0)
+            .thenRequest(1)
+            .expectNextCount(1)
+            .thenRequest(3)
+            .expectNextCount(3)
+            .thenRequest(Long.MAX_VALUE)
+            .thenConsumeWhile(ByteBuffer::hasRemaining)
+            .verifyComplete();
     }
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
-        HttpClient client = new OkHttpAsyncHttpClientBuilder()
-            .dispatcher(createQuietDispatcher(RuntimeException.class, "boo")).build();
+        HttpClient client
+            = new OkHttpAsyncHttpClientBuilder().dispatcher(createQuietDispatcher(RuntimeException.class, "boo"))
+                .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, "132").setBody(Flux.error(new RuntimeException("boo")));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, url("/shortPost")).setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
+                .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request)).expectErrorMatches(e -> e.getMessage().contains("boo")).verify();
     }
 
     @Test
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
-        HttpClient client = new OkHttpAsyncHttpClientBuilder()
-            .dispatcher(createQuietDispatcher(RuntimeException.class, "boo")).build();
+        HttpClient client
+            = new OkHttpAsyncHttpClientBuilder().dispatcher(createQuietDispatcher(RuntimeException.class, "boo"))
+                .build();
 
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
             .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)))
-            .setBody(Flux.just(contentChunk).repeat(repetitions)
+            .setBody(Flux.just(contentChunk)
+                .repeat(repetitions)
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                 .concatWith(Flux.error(new RuntimeException("boo"))));
 
         try {
-            StepVerifier.create(client.send(request)).expectErrorMatches(e -> e.getMessage().contains("boo"))
+            StepVerifier.create(client.send(request))
+                .expectErrorMatches(e -> e.getMessage().contains("boo"))
                 .verify(Duration.ofSeconds(10));
         } catch (Exception ex) {
             assertEquals("boo", ex.getMessage());
@@ -141,7 +156,9 @@ public class OkHttpAsyncHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new OkHttpAsyncClientProvider().createInstance();
 
-        ParallelFlux<byte[]> responses = Flux.range(1, numRequests).parallel().runOn(Schedulers.boundedElastic())
+        ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
+            .parallel()
+            .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> doRequest(client, "/long").flatMap(HttpResponse::getBodyAsByteArray));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
@@ -201,7 +218,9 @@ public class OkHttpAsyncHttpClientTests {
                 HttpHeader multiValueHeader = responseHeaders.get(multiValueHeaderName);
                 assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName());
                 assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValuesList());
-            }).expectComplete().verify(Duration.ofSeconds(10));
+            })
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
     }
 
     private static Mono<HttpResponse> getResponse(String path) {
@@ -225,7 +244,8 @@ public class OkHttpAsyncHttpClientTests {
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> assertArrayEquals(expectedBody, bytes)).verifyComplete();
+            .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
+            .verifyComplete();
     }
 
     private static Mono<HttpResponse> doRequest(HttpClient client, String path) {

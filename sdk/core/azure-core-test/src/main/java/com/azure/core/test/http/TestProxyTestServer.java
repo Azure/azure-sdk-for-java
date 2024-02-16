@@ -38,37 +38,40 @@ public class TestProxyTestServer implements Closeable {
      * Constructor for TestProxyTestServer
      */
     public TestProxyTestServer() {
-        server
-            = HttpServer
-                .create().host(
-                    "localhost")
-                .port(3000)
-                .route(routes -> routes
-                    .get("/", (req, res) -> res.status(HttpResponseStatus.OK).sendString(Mono.just("hello world")))
-                    .post("/first/path",
-                        (req, res) -> res.status(HttpResponseStatus.OK).sendString(Mono.just("first path")))
-                    .get("/echoheaders", (req, res) -> {
-                        for (Map.Entry<String, String> requestHeader : req.requestHeaders()) {
-                            res.addHeader(requestHeader.getKey(), requestHeader.getValue());
-                        }
-                        return res.status(HttpResponseStatus.OK).sendString(Mono.just("echoheaders"));
-                    }).get("/fr/path/1", (req, res) -> {
-                        for (Map.Entry<String, String> requestHeader : req.requestHeaders()) {
-                            res.addHeader(requestHeader.getKey(), requestHeader.getValue());
-                        }
-                        return res.status(HttpResponseStatus.OK).addHeader("Content-Type", "application/json")
-                            .addHeader("Operation-Location",
-                                "https://resourceInfo.cognitiveservices.azure.com/fr/models//905a58f9-131e-42b8-8410-493ab1517d62")
-                            .sendString(Mono.just(TEST_JSON_RESPONSE_BODY));
-                    })
-                    .get("/fr/path/2", (req, res) -> res.status(HttpResponseStatus.OK)
-                        .addHeader("Content-Type", "application/json").sendString(Mono.just(TEST_XML_RESPONSE_BODY)))
-                    .get("/getRedirect", (req, res) -> {
-                        return res.status(HttpResponseStatus.TEMPORARY_REDIRECT)
-                            .addHeader("Content-Type", "application/json").addHeader("Location", url.toString());
-                    }))
+        server = HttpServer.create()
+            .host("localhost")
+            .port(3000)
+            .route(routes -> routes
+                .get("/", (req, res) -> res.status(HttpResponseStatus.OK).sendString(Mono.just("hello world")))
+                .post("/first/path",
+                    (req, res) -> res.status(HttpResponseStatus.OK).sendString(Mono.just("first path")))
+                .get("/echoheaders", (req, res) -> {
+                    for (Map.Entry<String, String> requestHeader : req.requestHeaders()) {
+                        res.addHeader(requestHeader.getKey(), requestHeader.getValue());
+                    }
+                    return res.status(HttpResponseStatus.OK).sendString(Mono.just("echoheaders"));
+                })
+                .get("/fr/path/1", (req, res) -> {
+                    for (Map.Entry<String, String> requestHeader : req.requestHeaders()) {
+                        res.addHeader(requestHeader.getKey(), requestHeader.getValue());
+                    }
+                    return res.status(HttpResponseStatus.OK)
+                        .addHeader("Content-Type", "application/json")
+                        .addHeader("Operation-Location",
+                            "https://resourceInfo.cognitiveservices.azure.com/fr/models//905a58f9-131e-42b8-8410-493ab1517d62")
+                        .sendString(Mono.just(TEST_JSON_RESPONSE_BODY));
+                })
+                .get("/fr/path/2",
+                    (req, res) -> res.status(HttpResponseStatus.OK)
+                        .addHeader("Content-Type", "application/json")
+                        .sendString(Mono.just(TEST_XML_RESPONSE_BODY)))
+                .get("/getRedirect", (req, res) -> {
+                    return res.status(HttpResponseStatus.TEMPORARY_REDIRECT)
+                        .addHeader("Content-Type", "application/json")
+                        .addHeader("Location", url.toString());
+                }))
 
-                .bindNow();
+            .bindNow();
     }
 
     @Override

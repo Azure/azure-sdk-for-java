@@ -196,11 +196,12 @@ public class ReactorSenderTest {
         final ReactorSender spyReactorSender = spy(reactorSender);
 
         final Throwable exception = new RuntimeException(exceptionString);
-        doReturn(Mono.error(exception)).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(),
-            eq(transactionalState));
+        doReturn(Mono.error(exception)).when(spyReactorSender)
+            .send(any(byte[].class), anyInt(), anyInt(), eq(transactionalState));
 
         // Act
-        StepVerifier.create(spyReactorSender.send(message, transactionalState)).expectErrorMessage(exceptionString)
+        StepVerifier.create(spyReactorSender.send(message, transactionalState))
+            .expectErrorMessage(exceptionString)
             .verify(VERIFY_TIMEOUT);
 
         // Assert
@@ -219,8 +220,8 @@ public class ReactorSenderTest {
             messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final ReactorSender spyReactorSender = spy(reactorSender);
 
-        doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(),
-            eq(transactionalState));
+        doReturn(Mono.empty()).when(spyReactorSender)
+            .send(any(byte[].class), anyInt(), anyInt(), eq(transactionalState));
 
         // Act
         StepVerifier.create(spyReactorSender.send(message, transactionalState)).expectComplete().verify(VERIFY_TIMEOUT);
@@ -262,15 +263,16 @@ public class ReactorSenderTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act
-        StepVerifier.create(reactorSender.send(message, transactionalState)).expectError(AmqpException.class) // Because
-                                                                                                              // we did
-                                                                                                              // not
-                                                                                                              // process
-                                                                                                              // a
-                                                                                                              // "delivered
-                                                                                                              // message",
-                                                                                                              // it'll
-                                                                                                              // timeout.
+        StepVerifier.create(reactorSender.send(message, transactionalState))
+            .expectError(AmqpException.class) // Because
+                                              // we did
+                                              // not
+                                              // process
+                                              // a
+                                              // "delivered
+                                              // message",
+                                              // it'll
+                                              // timeout.
             .verify(VERIFY_TIMEOUT);
 
         // Assert
@@ -312,9 +314,11 @@ public class ReactorSenderTest {
         doReturn(Mono.empty()).when(spyReactorSender).send(any(ReadableBuffer.class), anyInt(), isNull());
 
         // Act
-        StepVerifier.create(spyReactorSender.send(Arrays.asList(message, message2))).expectComplete()
+        StepVerifier.create(spyReactorSender.send(Arrays.asList(message, message2)))
+            .expectComplete()
             .verify(VERIFY_TIMEOUT);
-        StepVerifier.create(spyReactorSender.send(Arrays.asList(message, message2))).expectComplete()
+        StepVerifier.create(spyReactorSender.send(Arrays.asList(message, message2)))
+            .expectComplete()
             .verify(VERIFY_TIMEOUT);
 
         // Assert
@@ -416,8 +420,11 @@ public class ReactorSenderTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act
-        StepVerifier.create(reactorSender.getEndpointStates()).expectNext(AmqpEndpointState.ACTIVE)
-            .then(() -> shutdownSignals.next(shutdownSignal)).expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.getEndpointStates())
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .then(() -> shutdownSignals.next(shutdownSignal))
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         assertTrue(reactorSender.isDisposed());
@@ -439,8 +446,10 @@ public class ReactorSenderTest {
         final UnsupportedOperationException testException = new UnsupportedOperationException("test-exception");
 
         // Act and Assert
-        StepVerifier.create(reactorSender.getEndpointStates()).expectNext(AmqpEndpointState.ACTIVE)
-            .then(() -> endpointStatePublisher.error(testException)).expectError(UnsupportedOperationException.class)
+        StepVerifier.create(reactorSender.getEndpointStates())
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .then(() -> endpointStatePublisher.error(testException))
+            .expectError(UnsupportedOperationException.class)
             .verify(VERIFY_TIMEOUT);
 
         // Expect that this Mono has completed.
@@ -468,8 +477,11 @@ public class ReactorSenderTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act and Assert
-        StepVerifier.create(reactorSender.getEndpointStates()).expectNext(AmqpEndpointState.ACTIVE)
-            .then(() -> endpointStatePublisher.complete()).expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.getEndpointStates())
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .then(() -> endpointStatePublisher.complete())
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Expect that this Mono has completed.
         StepVerifier.create(reactorSender.isClosed()).expectComplete().verify(VERIFY_TIMEOUT);
@@ -503,7 +515,8 @@ public class ReactorSenderTest {
 
         // Act and Assert
         StepVerifier.create(reactorSender.closeAsync().doOnSubscribe(subscribed -> wasClosed.set(true)))
-            .expectComplete().verify(VERIFY_TIMEOUT);
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Expect that this Mono has completed.
         StepVerifier.create(reactorSender.isClosed()).expectComplete().verify(VERIFY_TIMEOUT);
@@ -642,8 +655,10 @@ public class ReactorSenderTest {
         // Act
 
         // Assert and Act
-        StepVerifier.create(reactorSender.send(message)).then(() -> authorizationResults.error(error))
-            .expectError(OperationCancelledException.class).verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.send(message))
+            .then(() -> authorizationResults.error(error))
+            .expectError(OperationCancelledException.class)
+            .verify(VERIFY_TIMEOUT);
     }
 
     @Test
@@ -664,8 +679,10 @@ public class ReactorSenderTest {
         }).when(sender).close();
 
         // Assert and Act
-        StepVerifier.create(reactorSender.send(message)).then(() -> authorizationResults.complete())
-            .expectError(OperationCancelledException.class).verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.send(message))
+            .then(() -> authorizationResults.complete())
+            .expectError(OperationCancelledException.class)
+            .verify(VERIFY_TIMEOUT);
     }
 
     @Test
@@ -734,7 +751,8 @@ public class ReactorSenderTest {
                 messageSerializer, options, scheduler, new AmqpMetricsProvider(meter, HOSTNAME, ENTITY_PATH));
 
         // Act
-        StepVerifier.create(reactorSenderWithMetrics.send(message)).expectError(AmqpException.class)
+        StepVerifier.create(reactorSenderWithMetrics.send(message))
+            .expectError(AmqpException.class)
             .verify(VERIFY_TIMEOUT);
 
         // Assert

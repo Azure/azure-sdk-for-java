@@ -111,7 +111,9 @@ public final class SimpleXmlSerializable implements XmlSerializable<SimpleXmlSer
 
         SimpleXmlSerializable other = (SimpleXmlSerializable) obj;
 
-        return aBooleanAsAttribute == other.aBooleanAsAttribute && anInt == other.anInt
-            && aDecimalAsAttribute == other.aDecimalAsAttribute && Objects.equals(aString, other.aString);
+        return aBooleanAsAttribute == other.aBooleanAsAttribute
+            && anInt == other.anInt
+            && aDecimalAsAttribute == other.aDecimalAsAttribute
+            && Objects.equals(aString, other.aString);
     }
 }

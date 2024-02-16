@@ -186,7 +186,8 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionInit(Event event) {
-        logger.atInfo().addKeyValue(HOSTNAME_KEY, getHostname())
+        logger.atInfo()
+            .addKeyValue(HOSTNAME_KEY, getHostname())
             .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, connectionOptions.getFullyQualifiedNamespace())
             .log("onConnectionInit");
 
@@ -213,7 +214,8 @@ public class ConnectionHandler extends Handler {
     public void onConnectionBound(Event event) {
         final Transport transport = event.getTransport();
 
-        logger.atInfo().addKeyValue(HOSTNAME_KEY, getHostname())
+        logger.atInfo()
+            .addKeyValue(HOSTNAME_KEY, getHostname())
             .addKeyValue("peerDetails", () -> peerDetails.getHostname() + ":" + peerDetails.getPort())
             .log("onConnectionBound");
 
@@ -228,8 +230,10 @@ public class ConnectionHandler extends Handler {
     @Override
     public void onConnectionUnbound(Event event) {
         final Connection connection = event.getConnection();
-        logger.atInfo().addKeyValue(HOSTNAME_KEY, connection.getHostname())
-            .addKeyValue("state", connection.getLocalState()).addKeyValue("remoteState", connection.getRemoteState())
+        logger.atInfo()
+            .addKeyValue(HOSTNAME_KEY, connection.getHostname())
+            .addKeyValue("state", connection.getLocalState())
+            .addKeyValue("remoteState", connection.getRemoteState())
             .log("onConnectionUnbound");
 
         // if failure happened while establishing transport - nothing to free up.
@@ -286,8 +290,10 @@ public class ConnectionHandler extends Handler {
     public void onConnectionRemoteOpen(Event event) {
         final Connection connection = event.getConnection();
 
-        logger.atInfo().addKeyValue(HOSTNAME_KEY, connection.getHostname())
-            .addKeyValue("remoteContainer", connection.getRemoteContainer()).log("onConnectionRemoteOpen");
+        logger.atInfo()
+            .addKeyValue(HOSTNAME_KEY, connection.getHostname())
+            .addKeyValue("remoteContainer", connection.getRemoteContainer())
+            .log("onConnectionRemoteOpen");
 
         onNext(connection.getRemoteState());
     }

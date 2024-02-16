@@ -57,7 +57,8 @@ public class VertxAsyncHttpClientBuilderTests {
         String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     @Test
@@ -71,7 +72,8 @@ public class VertxAsyncHttpClientBuilderTests {
         String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
 
         assertEquals(10000, options.getConnectTimeout());
         assertEquals(60, options.getIdleTimeout());
@@ -82,16 +84,19 @@ public class VertxAsyncHttpClientBuilderTests {
     @Test
     public void buildWithConnectionOptions() {
         VertxAsyncHttpClientBuilder builder = new VertxAsyncHttpClientBuilder();
-        VertxAsyncHttpClient httpClient
-            = (VertxAsyncHttpClient) builder.connectTimeout(Duration.ofSeconds(10)).idleTimeout(Duration.ofSeconds(20))
-                .readIdleTimeout(Duration.ofSeconds(30)).writeIdleTimeout(Duration.ofSeconds(40)).build();
+        VertxAsyncHttpClient httpClient = (VertxAsyncHttpClient) builder.connectTimeout(Duration.ofSeconds(10))
+            .idleTimeout(Duration.ofSeconds(20))
+            .readIdleTimeout(Duration.ofSeconds(30))
+            .writeIdleTimeout(Duration.ofSeconds(40))
+            .build();
 
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 
         String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
 
         assertEquals(10000, options.getConnectTimeout());
         assertEquals(20, options.getIdleTimeout());
@@ -145,7 +150,8 @@ public class VertxAsyncHttpClientBuilderTests {
         HttpClient httpClient = new VertxAsyncHttpClientBuilder().proxy(clientProxyOptions).build();
 
         final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))).expectNextCount(1)
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .expectNextCount(1)
             .verifyComplete();
     }
 
@@ -160,19 +166,22 @@ public class VertxAsyncHttpClientBuilderTests {
         HttpClient httpClient = new VertxAsyncHttpClientBuilder().configuration(configuration).build();
 
         final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))).expectNextCount(1)
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .expectNextCount(1)
             .verifyComplete();
     }
 
     @Test
     public void buildWithHttpProxyFromExplicitConfiguration() {
         Configuration configuration = new ConfigurationBuilder().putProperty("http.proxy.hostname", "localhost")
-            .putProperty("http.proxy.port", String.valueOf(PROXY_SERVER_HTTP_PORT)).build();
+            .putProperty("http.proxy.port", String.valueOf(PROXY_SERVER_HTTP_PORT))
+            .build();
 
         HttpClient httpClient = new VertxAsyncHttpClientBuilder().configuration(configuration).build();
 
         final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))).expectNextCount(1)
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .expectNextCount(1)
             .verifyComplete();
     }
 
@@ -186,7 +195,8 @@ public class VertxAsyncHttpClientBuilderTests {
         String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
         try {
             StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-                .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+                .assertNext(response -> assertEquals(200, response.getStatusCode()))
+                .verifyComplete();
         } finally {
             CountDownLatch latch = new CountDownLatch(1);
             vertx.close(event -> latch.countDown());
@@ -204,8 +214,11 @@ public class VertxAsyncHttpClientBuilderTests {
         options.setWriteIdleTimeout(70);
 
         HttpClient httpClient = new VertxAsyncHttpClientBuilder().connectTimeout(Duration.ofSeconds(10))
-            .idleTimeout(Duration.ofSeconds(20)).readIdleTimeout(Duration.ofSeconds(30))
-            .writeIdleTimeout(Duration.ofSeconds(40)).httpClientOptions(options).build();
+            .idleTimeout(Duration.ofSeconds(20))
+            .readIdleTimeout(Duration.ofSeconds(30))
+            .writeIdleTimeout(Duration.ofSeconds(40))
+            .httpClientOptions(options)
+            .build();
 
         // Verify the original configuration was preserved and not overwritten
         assertEquals(30000, options.getConnectTimeout());
@@ -216,7 +229,8 @@ public class VertxAsyncHttpClientBuilderTests {
         String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     @Test
@@ -238,7 +252,8 @@ public class VertxAsyncHttpClientBuilderTests {
         HttpClient httpClient = new VertxAsyncHttpClientBuilder().proxy(mockPoxyOptions).build();
 
         final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))).expectNextCount(1)
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .expectNextCount(1)
             .verifyComplete();
     }
 
@@ -250,7 +265,8 @@ public class VertxAsyncHttpClientBuilderTests {
         HttpClient httpClient = new VertxAsyncHttpClientBuilder().proxy(clientProxyOptions).build();
 
         final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))).expectNextCount(1)
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .expectNextCount(1)
             .verifyComplete();
     }
 }

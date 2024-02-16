@@ -135,7 +135,8 @@ class VertxAsyncHttpClient implements HttpClient {
         }
 
         BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
-        if (bodyContent instanceof ByteArrayContent || bodyContent instanceof StringContent
+        if (bodyContent instanceof ByteArrayContent
+            || bodyContent instanceof StringContent
             || bodyContent instanceof SerializableContent) {
             byte[] content = bodyContent.toBytes();
             vertxRequest.send(Buffer.buffer(Unpooled.wrappedBuffer(content)), result -> {

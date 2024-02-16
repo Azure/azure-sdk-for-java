@@ -46,12 +46,18 @@ public class JsonPatchDocumentTests {
     }
 
     private static Stream<Arguments> formattingSupplier() {
-        JsonPatchDocument complexDocument = newDocument().appendTest("/a/b/c", "foo").appendRemove("/a/b/c")
-            .appendAdd("/a/b/c", new String[] { "foo", "bar" }).appendReplace("/a/b/c", 42)
-            .appendMove("/a/b/c", "/a/b/d").appendCopy("/a/b/d", "/a/b/e");
+        JsonPatchDocument complexDocument = newDocument().appendTest("/a/b/c", "foo")
+            .appendRemove("/a/b/c")
+            .appendAdd("/a/b/c", new String[] { "foo", "bar" })
+            .appendReplace("/a/b/c", 42)
+            .appendMove("/a/b/c", "/a/b/d")
+            .appendCopy("/a/b/d", "/a/b/e");
 
-        JsonPatchDocument complexDocumentRaw = newDocument().appendTestRaw("/a/b/c", "\"foo\"").appendRemove("/a/b/c")
-            .appendAddRaw("/a/b/c", "[\"foo\",\"bar\"]").appendReplaceRaw("/a/b/c", "42").appendMove("/a/b/c", "/a/b/d")
+        JsonPatchDocument complexDocumentRaw = newDocument().appendTestRaw("/a/b/c", "\"foo\"")
+            .appendRemove("/a/b/c")
+            .appendAddRaw("/a/b/c", "[\"foo\",\"bar\"]")
+            .appendReplaceRaw("/a/b/c", "42")
+            .appendMove("/a/b/c", "/a/b/d")
             .appendCopy("/a/b/d", "/a/b/e");
 
         String complexExpected = "[" + "{\"op\":\"test\",\"path\":\"/a/b/c\",\"value\":\"foo\"},"

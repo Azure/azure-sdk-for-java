@@ -80,7 +80,8 @@ public class OperationLocationPollingStrategyTests {
                 RESOURCE_POLL_RESULT_TYPE_REFERENCE, RESOURCE_TYPE_REFERENCE);
 
         // verify poll result
-        StepVerifier.create(pollerFlux).expectSubscription()
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
             .expectNextMatches(
                 asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
                     && operationId.equals(asyncPollResponse.getValue().getOperationId()))
@@ -92,10 +93,10 @@ public class OperationLocationPollingStrategyTests {
         pollCount[0] = 0;
 
         // verify final result
-        StepVerifier
-            .create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last()
-                .flatMap(AsyncPollResponse::getFinalResult))
-            .expectNextMatches(resource -> resourceName.equals(resource.getName())).verifyComplete();
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult))
+            .expectNextMatches(resource -> resourceName.equals(resource.getName()))
+            .verifyComplete();
     }
 
     @Test
@@ -140,7 +141,8 @@ public class OperationLocationPollingStrategyTests {
                 RESOURCE_POLL_RESULT_TYPE_REFERENCE, RESOURCE_TYPE_REFERENCE);
 
         // verify poll result
-        StepVerifier.create(pollerFlux).expectSubscription()
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
             .expectNextMatches(
                 asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
                     && operationId.equals(asyncPollResponse.getValue().getOperationId())
@@ -196,7 +198,8 @@ public class OperationLocationPollingStrategyTests {
                 RESOURCE_POLL_RESULT_TYPE_REFERENCE, ACTION_RESULT_TYPE_REFERENCE);
 
         // verify poll result
-        StepVerifier.create(pollerFlux).expectSubscription()
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
             .expectNextMatches(
                 asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
                     && operationId.equals(asyncPollResponse.getValue().getOperationId()))
@@ -208,10 +211,10 @@ public class OperationLocationPollingStrategyTests {
         pollCount[0] = 0;
 
         // verify final result
-        StepVerifier
-            .create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last()
-                .flatMap(AsyncPollResponse::getFinalResult))
-            .expectNextMatches(actionResult -> actionResultName.equals(actionResult.getName())).verifyComplete();
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult))
+            .expectNextMatches(actionResult -> actionResultName.equals(actionResult.getName()))
+            .verifyComplete();
     }
 
     @Test
@@ -255,7 +258,8 @@ public class OperationLocationPollingStrategyTests {
                 RESOURCE_POLL_RESULT_TYPE_REFERENCE, ACTION_RESULT_TYPE_REFERENCE);
 
         // verify poll result
-        StepVerifier.create(pollerFlux).expectSubscription()
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
             .expectNextMatches(
                 asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
                     && operationId.equals(asyncPollResponse.getValue().getOperationId()))

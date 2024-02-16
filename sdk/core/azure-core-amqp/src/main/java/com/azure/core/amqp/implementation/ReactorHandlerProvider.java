@@ -113,9 +113,9 @@ public class ReactorHandlerProvider {
                 peerDetails, metricsProvider);
         }
 
-        final SslPeerDetails peerDetails
-            = isCustomEndpointConfigured ? Proton.sslPeerDetails(options.getHostname(), options.getPort())
-                : Proton.sslPeerDetails(options.getFullyQualifiedNamespace(), options.getPort());
+        final SslPeerDetails peerDetails = isCustomEndpointConfigured
+            ? Proton.sslPeerDetails(options.getHostname(), options.getPort())
+            : Proton.sslPeerDetails(options.getFullyQualifiedNamespace(), options.getPort());
 
         return new WebSocketsConnectionHandler(connectionId, options, peerDetails, metricsProvider);
     }

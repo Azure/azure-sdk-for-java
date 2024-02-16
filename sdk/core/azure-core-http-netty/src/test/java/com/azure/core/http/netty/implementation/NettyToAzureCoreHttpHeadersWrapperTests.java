@@ -192,12 +192,16 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
         HttpHeaders singleValueHeaders = new DefaultHttpHeaders().set("test", "value").set("test2", "value");
 
         // Overwritten value headers
-        HttpHeaders overwrittenValueHeaders = new DefaultHttpHeaders().set("test", "value").set("test", "value2")
-            .set("test2", "value").set("test2", "value2");
+        HttpHeaders overwrittenValueHeaders = new DefaultHttpHeaders().set("test", "value")
+            .set("test", "value2")
+            .set("test2", "value")
+            .set("test2", "value2");
 
         // Multi-value headers
-        HttpHeaders multiValueHeaders = new DefaultHttpHeaders().set("test", "value").add("test", "value2")
-            .set("test2", "value").add("test2", "value2");
+        HttpHeaders multiValueHeaders = new DefaultHttpHeaders().set("test", "value")
+            .add("test", "value2")
+            .set("test2", "value")
+            .add("test2", "value2");
 
         return Stream.of(Arguments.of(nullValueHeader, Collections.emptyList()),
             Arguments.of(singleValueHeader, Collections.singletonList(new HttpHeader("test", "value"))),

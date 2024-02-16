@@ -84,8 +84,11 @@ public class MessageFluxEmissionDrivenCreditFlowIsolatedTest {
         }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux).thenRequest(10).then(() -> upstream.next(receiver))
-                .then(() -> upstream.complete()).verifyComplete();
+            verifier.create(() -> messageFlux)
+                .thenRequest(10)
+                .then(() -> upstream.next(receiver))
+                .then(() -> upstream.complete())
+                .verifyComplete();
         }
 
         Assertions.assertEquals(prefetch, initialFlow.get());

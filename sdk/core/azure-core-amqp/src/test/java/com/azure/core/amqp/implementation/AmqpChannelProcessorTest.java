@@ -53,9 +53,12 @@ class AmqpChannelProcessorTest {
 
         try {
             // Act & Assert
-            StepVerifier.create(processor).then(() -> publisher.next(connection1))
-                .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE)).expectNext(connection1)
-                .expectComplete().verify(VERIFY_TIMEOUT);
+            StepVerifier.create(processor)
+                .then(() -> publisher.next(connection1))
+                .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
+                .expectNext(connection1)
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
 
             publisher.assertMaxRequested(1L);
         } finally {
@@ -75,8 +78,11 @@ class AmqpChannelProcessorTest {
 
         try {
             // Act & Assert
-            StepVerifier.create(processor).then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
-                .expectNext(connection1).expectComplete().verify(VERIFY_TIMEOUT);
+            StepVerifier.create(processor)
+                .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
+                .expectNext(connection1)
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
 
             StepVerifier.create(processor).expectNext(connection1).expectComplete().verify(VERIFY_TIMEOUT);
         } finally {
@@ -97,8 +103,11 @@ class AmqpChannelProcessorTest {
         try {
             // Act & Assert
             // Verify that we get the first connection.
-            StepVerifier.create(processor).then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
-                .expectNext(connection1).expectComplete().verify(VERIFY_TIMEOUT);
+            StepVerifier.create(processor)
+                .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
+                .expectNext(connection1)
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
 
             // Close that connection.
             connection1.getSink().complete();
@@ -227,17 +236,22 @@ class AmqpChannelProcessorTest {
         try {
             // Act & Assert
             // Verify that we get the first connection.
-            StepVerifier.create(processor).then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
-                .expectNext(connection1).expectComplete().verify(VERIFY_TIMEOUT);
+            StepVerifier.create(processor)
+                .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
+                .expectNext(connection1)
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
 
             connection1.getSink().error(exception);
 
             // Expect that the error is returned to us.
-            StepVerifier.create(processor).expectErrorMatches(error -> Objects.equals(exception, error))
+            StepVerifier.create(processor)
+                .expectErrorMatches(error -> Objects.equals(exception, error))
                 .verify(VERIFY_TIMEOUT);
 
             // Expect that the error is returned to us again.
-            StepVerifier.create(processor).expectErrorMatches(error -> Objects.equals(exception, error))
+            StepVerifier.create(processor)
+                .expectErrorMatches(error -> Objects.equals(exception, error))
                 .verify(VERIFY_TIMEOUT);
         } finally {
             processor.dispose();
@@ -298,8 +312,11 @@ class AmqpChannelProcessorTest {
         try {
             // Act & Assert
             // Verify that we get the first connection.
-            StepVerifier.create(processor).then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
-                .expectNext(connection1).expectComplete().verify(VERIFY_TIMEOUT);
+            StepVerifier.create(processor)
+                .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
+                .expectNext(connection1)
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
 
             processor.dispose();
 

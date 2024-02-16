@@ -248,7 +248,8 @@ public final class GsonJsonReader extends JsonReader {
             throw LOGGER.logExceptionAsError(new IllegalStateException("'reset' isn't supported by this JsonReader."));
         }
 
-        return (jsonBytes != null) ? AzureJsonUtils.createReader(jsonBytes, jsonOptions)
+        return (jsonBytes != null)
+            ? AzureJsonUtils.createReader(jsonBytes, jsonOptions)
             : AzureJsonUtils.createReader(jsonString, jsonOptions);
     }
 

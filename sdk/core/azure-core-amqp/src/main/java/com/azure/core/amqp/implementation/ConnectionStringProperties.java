@@ -100,8 +100,9 @@ public class ConnectionStringProperties {
         boolean includesSharedKey = sharedAccessKeyName != null || sharedAccessKeyValue != null;
         boolean hasSharedKeyAndValue = sharedAccessKeyName != null && sharedAccessKeyValue != null;
         boolean includesSharedAccessSignature = sharedAccessSignature != null;
-        if (endpoint == null || (includesSharedKey && includesSharedAccessSignature) // includes both SAS and key or
-                                                                                     // value
+        if (endpoint == null
+            || (includesSharedKey && includesSharedAccessSignature) // includes both SAS and key or
+                                                                    // value
             || (!hasSharedKeyAndValue && !includesSharedAccessSignature)) { // invalid key, value and SAS
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(ERROR_MESSAGE_FORMAT));
         }

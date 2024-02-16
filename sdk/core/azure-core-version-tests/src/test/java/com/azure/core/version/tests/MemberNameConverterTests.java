@@ -266,7 +266,8 @@ public class MemberNameConverterTests {
     @MethodSource("classConversionSupplier")
     public <T> void classConversion(T object, JacksonJsonSerializer converter, Set<String> expected) {
         Set<String> actual = getAllDeclaredMembers(object.getClass()).map(converter::convertMemberName)
-            .filter(Objects::nonNull).collect(Collectors.toSet());
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
 
         assertEquals(expected, actual);
     }

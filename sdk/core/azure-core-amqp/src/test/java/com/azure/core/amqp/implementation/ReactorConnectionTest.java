@@ -370,7 +370,9 @@ class ReactorConnectionTest {
         // Act & Assert
         StepVerifier
             .create(connection.createSession(SESSION_NAME).map(s -> connection.removeSession(s.getSessionName())))
-            .expectNext(true).expectComplete().verify(VERIFY_TIMEOUT);
+            .expectNext(true)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         verify(record).set(Handler.class, Handler.class, sessionHandler);
     }
@@ -395,7 +397,9 @@ class ReactorConnectionTest {
 
         // Act & Assert
         StepVerifier.create(connection.createSession(SESSION_NAME).map(s -> connection.removeSession("does-not-exist")))
-            .expectNext(false).expectComplete().verify(VERIFY_TIMEOUT);
+            .expectNext(false)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         verify(record).set(Handler.class, Handler.class, sessionHandler);
     }
@@ -406,7 +410,9 @@ class ReactorConnectionTest {
     @Test
     void initialConnectionState() {
         // Assert
-        StepVerifier.create(connection.getEndpointStates()).expectNext(AmqpEndpointState.UNINITIALIZED).thenCancel()
+        StepVerifier.create(connection.getEndpointStates())
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
+            .thenCancel()
             .verify(VERIFY_TIMEOUT);
     }
 
@@ -422,10 +428,14 @@ class ReactorConnectionTest {
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
 
         // Act & Assert
-        StepVerifier.create(connection.getEndpointStates()).expectNext(AmqpEndpointState.UNINITIALIZED)
-            .then(() -> connectionHandler.onConnectionRemoteOpen(event)).expectNext(AmqpEndpointState.ACTIVE)
+        StepVerifier.create(connection.getEndpointStates())
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
+            .then(() -> connectionHandler.onConnectionRemoteOpen(event))
+            .expectNext(AmqpEndpointState.ACTIVE)
             // getConnectionStates is distinct. We don't expect to see another event with the same status.
-            .then(() -> connectionHandler.onConnectionRemoteOpen(event)).thenCancel().verify(VERIFY_TIMEOUT);
+            .then(() -> connectionHandler.onConnectionRemoteOpen(event))
+            .thenCancel()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -440,7 +450,8 @@ class ReactorConnectionTest {
 
         // Act and Assert
         StepVerifier.create(this.connection.getClaimsBasedSecurityNode())
-            .assertNext(node -> assertTrue(node instanceof ClaimsBasedSecurityChannel)).expectComplete()
+            .assertNext(node -> assertTrue(node instanceof ClaimsBasedSecurityChannel))
+            .expectComplete()
             .verify(VERIFY_TIMEOUT);
     }
 
@@ -455,8 +466,10 @@ class ReactorConnectionTest {
             return true;
         });
         final Duration timeout = Duration.ofSeconds(2);
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(1).setDelay(Duration.ofMillis(200))
-            .setMode(AmqpRetryMode.FIXED).setTryTimeout(timeout);
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(1)
+            .setDelay(Duration.ofMillis(200))
+            .setMode(AmqpRetryMode.FIXED)
+            .setTryTimeout(timeout);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP,
             retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
@@ -528,11 +541,17 @@ class ReactorConnectionTest {
         when(finalEvent.getConnection()).thenReturn(connectionProtonJ);
 
         // Act and Assert
-        StepVerifier.create(connection.getEndpointStates()).expectNext(AmqpEndpointState.ACTIVE)
-            .then(() -> connectionHandler.onConnectionRemoteClose(closeEvent)).expectNext(AmqpEndpointState.CLOSED)
-            .then(() -> connectionHandler.onConnectionFinal(finalEvent)).expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(connection.getEndpointStates())
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .then(() -> connectionHandler.onConnectionRemoteClose(closeEvent))
+            .expectNext(AmqpEndpointState.CLOSED)
+            .then(() -> connectionHandler.onConnectionFinal(finalEvent))
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
-        StepVerifier.create(connection.getEndpointStates()).expectNext(AmqpEndpointState.CLOSED).expectComplete()
+        StepVerifier.create(connection.getEndpointStates())
+            .expectNext(AmqpEndpointState.CLOSED)
+            .expectComplete()
             .verify(VERIFY_TIMEOUT);
     }
 
@@ -553,11 +572,14 @@ class ReactorConnectionTest {
         when(event.getTransport()).thenReturn(transport);
 
         // Act and Assert
-        StepVerifier.create(connection.getEndpointStates()).expectNext(AmqpEndpointState.UNINITIALIZED)
-            .then(() -> connectionHandler.onTransportError(event)).expectErrorMatches(error -> {
+        StepVerifier.create(connection.getEndpointStates())
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
+            .then(() -> connectionHandler.onTransportError(event))
+            .expectErrorMatches(error -> {
                 AmqpException amqpExp = (AmqpException) error;
                 return amqpExp.isTransient();
-            }).verify(VERIFY_TIMEOUT);
+            })
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -661,16 +683,20 @@ class ReactorConnectionTest {
         connectionHandler.onTransportError(event);
 
         // Act & Assert
-        StepVerifier.create(connection.getClaimsBasedSecurityNode()).expectErrorSatisfies(assertException)
+        StepVerifier.create(connection.getClaimsBasedSecurityNode())
+            .expectErrorSatisfies(assertException)
             .verify(VERIFY_TIMEOUT);
 
-        StepVerifier.create(connection.getReactorConnection()).expectErrorSatisfies(assertException)
+        StepVerifier.create(connection.getReactorConnection())
+            .expectErrorSatisfies(assertException)
             .verify(VERIFY_TIMEOUT);
 
         StepVerifier.create(connection.createRequestResponseChannel(SESSION_NAME, "test-link-name", "test-entity-path"))
-            .expectError(IllegalStateException.class).verify(VERIFY_TIMEOUT);
+            .expectError(IllegalStateException.class)
+            .verify(VERIFY_TIMEOUT);
 
-        StepVerifier.create(connection.createSession(SESSION_NAME)).expectErrorSatisfies(assertException)
+        StepVerifier.create(connection.createSession(SESSION_NAME))
+            .expectErrorSatisfies(assertException)
             .verify(VERIFY_TIMEOUT);
 
         verify(transport, times(1)).unbind();
@@ -834,7 +860,9 @@ class ReactorConnectionTest {
 
         // Act and Assert
         StepVerifier.create(connection.getManagementNode(entityPath))
-            .assertNext(node -> assertTrue(node instanceof ManagementChannel)).expectComplete().verify(VERIFY_TIMEOUT);
+            .assertNext(node -> assertTrue(node instanceof ManagementChannel))
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     private Answer<ReactorExecutor> answerByCreatingExecutor() {

@@ -230,8 +230,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse response, int tryCount,
         List<Throwable> retriedExceptions) {
-        return tryCount < retryStrategy.getMaxRetries() && retryStrategy
-            .shouldRetryCondition(new RequestRetryCondition(response, null, tryCount, retriedExceptions));
+        return tryCount < retryStrategy.getMaxRetries()
+            && retryStrategy
+                .shouldRetryCondition(new RequestRetryCondition(response, null, tryCount, retriedExceptions));
     }
 
     private static boolean shouldRetryException(RetryStrategy retryStrategy, Throwable throwable, int tryCount,
@@ -261,8 +262,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private static void logRetry(int tryCount, Duration delayDuration) {
-        LOGGER.atVerbose().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-            .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis()).log("Retrying.");
+        LOGGER.atVerbose()
+            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+            .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
+            .log("Retrying.");
     }
 
     private static void logRetryExhausted(int tryCount) {

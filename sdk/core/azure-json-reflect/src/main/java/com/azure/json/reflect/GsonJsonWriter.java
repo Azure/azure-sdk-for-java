@@ -70,7 +70,8 @@ final class GsonJsonWriter extends JsonWriter {
             jsonWriterConstructor = (JsonWriterConstructor) LambdaMetafactory
                 .metafactory(lookup, "createJsonWriter", methodType(JsonWriterConstructor.class),
                     methodType(Object.class, Writer.class), gsonWriterConstructor, gsonWriterConstructor.type())
-                .getTarget().invoke();
+                .getTarget()
+                .invoke();
 
             jsonWriterSetLenient
                 = createMetaFactory("setLenient", gsonJsonWriterClass, methodType(void.class, boolean.class),

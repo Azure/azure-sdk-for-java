@@ -162,7 +162,9 @@ public enum JsonToken {
         _isStructStart = (id == JsonTokenId.ID_START_OBJECT || id == JsonTokenId.ID_START_ARRAY);
         _isStructEnd = (id == JsonTokenId.ID_END_OBJECT || id == JsonTokenId.ID_END_ARRAY);
 
-        _isScalar = !_isStructStart && !_isStructEnd && (id != JsonTokenId.ID_FIELD_NAME)
+        _isScalar = !_isStructStart
+            && !_isStructEnd
+            && (id != JsonTokenId.ID_FIELD_NAME)
             && (id != JsonTokenId.ID_NOT_AVAILABLE);
     }
 

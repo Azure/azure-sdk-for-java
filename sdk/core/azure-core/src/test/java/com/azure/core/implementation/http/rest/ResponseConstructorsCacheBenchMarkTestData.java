@@ -279,7 +279,8 @@ class ResponseConstructorsCacheBenchMarkTestData {
 
         private Method findMethod(Class<?> cls, String methodName) {
             Optional<Method> optMethod = Arrays.stream(cls.getDeclaredMethods())
-                .filter(m -> m.getName().equalsIgnoreCase(methodName)).findFirst();
+                .filter(m -> m.getName().equalsIgnoreCase(methodName))
+                .findFirst();
             if (optMethod.isPresent()) {
                 return optMethod.get();
             } else {

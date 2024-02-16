@@ -36,7 +36,7 @@ import static com.azure.core.util.polling.implementation.PollingUtils.serializeR
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *        kept
+ * kept
  */
 public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T, U> {
     private static final ObjectSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
@@ -93,7 +93,8 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
      */
     public SyncLocationPollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
         Context context) {
-        this(new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint).setSerializer(serializer)
+        this(new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint)
+            .setSerializer(serializer)
             .setContext(context));
     }
 
@@ -107,7 +108,8 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
         Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
         this.httpPipeline = pollingStrategyOptions.getHttpPipeline();
         this.endpoint = pollingStrategyOptions.getEndpoint();
-        this.serializer = (pollingStrategyOptions.getSerializer() == null) ? DEFAULT_SERIALIZER
+        this.serializer = (pollingStrategyOptions.getSerializer() == null)
+            ? DEFAULT_SERIALIZER
             : pollingStrategyOptions.getSerializer();
         this.serviceVersion = pollingStrategyOptions.getServiceVersion();
         this.context = pollingStrategyOptions.getContext() == null ? Context.NONE : pollingStrategyOptions.getContext();
@@ -129,7 +131,9 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
         pollingContext.setData(PollingConstants.HTTP_METHOD, response.getRequest().getHttpMethod().name());
         pollingContext.setData(PollingConstants.REQUEST_URL, response.getRequest().getUrl().toString());
 
-        if (response.getStatusCode() == 200 || response.getStatusCode() == 201 || response.getStatusCode() == 202
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
             || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,

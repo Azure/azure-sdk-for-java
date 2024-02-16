@@ -495,8 +495,10 @@ public class TestProxyUtils {
     }
 
     private static List<TestProxySanitizer> addDefaultBodySanitizers() {
-        return JSON_PROPERTIES_TO_REDACT.stream().map(jsonProperty -> new TestProxySanitizer("$.." + jsonProperty, null,
-            REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)).collect(Collectors.toList());
+        return JSON_PROPERTIES_TO_REDACT.stream()
+            .map(jsonProperty -> new TestProxySanitizer("$.." + jsonProperty, null, REDACTED_VALUE,
+                TestProxySanitizerType.BODY_KEY))
+            .collect(Collectors.toList());
     }
 
     private static List<TestProxySanitizer> addDefaultRegexSanitizers() {

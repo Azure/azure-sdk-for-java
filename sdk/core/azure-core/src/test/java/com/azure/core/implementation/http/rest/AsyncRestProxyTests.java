@@ -84,7 +84,9 @@ public class AsyncRestProxyTests {
             .assertNext(value -> {
                 assertTrue(value instanceof Boolean);
                 assertEquals(expectedValue, value);
-            }).expectComplete().verify();
+            })
+            .expectComplete()
+            .verify();
     }
 
     /**
@@ -107,7 +109,9 @@ public class AsyncRestProxyTests {
             .assertNext(value -> {
                 assertTrue(value instanceof byte[]);
                 assertArraysEqual(expectedBytes, (byte[]) value);
-            }).expectComplete().verify();
+            })
+            .expectComplete()
+            .verify();
     }
 
     /**
@@ -144,7 +148,9 @@ public class AsyncRestProxyTests {
                 } catch (IOException e) {
                     fail("Should not have thrown an error.", e);
                 }
-            }).expectComplete().verify();
+            })
+            .expectComplete()
+            .verify();
     }
 
     /**
@@ -173,7 +179,9 @@ public class AsyncRestProxyTests {
                 byte[] actualBytes = binaryData.toBytes();
                 assertEquals(expectedBytes.length, actualBytes.length);
                 assertArraysEqual(expectedBytes, actualBytes);
-            }).expectComplete().verify();
+            })
+            .expectComplete()
+            .verify();
     }
 
     public static Stream<Arguments> getResponseHeaderAndReplayability() {

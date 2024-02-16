@@ -71,11 +71,15 @@ public class RequestResponseChannelCacheTest {
             try {
                 final Mono<RequestResponseChannel> channelMono = channelCache.get();
 
-                StepVerifier.create(channelMono, 0).thenRequest(1).then(() -> endpoint.activateCurrentChannel())
+                StepVerifier.create(channelMono, 0)
+                    .thenRequest(1)
+                    .then(() -> endpoint.activateCurrentChannel())
                     .expectNextMatches(ch -> {
                         Assertions.assertTrue(endpoint.isCurrentChannel(ch));
                         return true;
-                    }).expectComplete().verify(VERIFY_TIMEOUT);
+                    })
+                    .expectComplete()
+                    .verify(VERIFY_TIMEOUT);
             } finally {
                 channelCache.dispose();
             }
@@ -95,13 +99,17 @@ public class RequestResponseChannelCacheTest {
                 final Mono<RequestResponseChannel> channelMono = channelCache.get();
 
                 // The first request (subscription) for channel populates the cache.
-                StepVerifier.create(channelMono, 0).thenRequest(1).then(() -> endpoint.activateCurrentChannel())
+                StepVerifier.create(channelMono, 0)
+                    .thenRequest(1)
+                    .then(() -> endpoint.activateCurrentChannel())
                     .expectNextMatches(ch -> {
                         Assertions.assertTrue(endpoint.isCurrentChannel(ch));
                         // Store the channel to assert that the same is returned for later channel request.
                         c[0] = ch;
                         return true;
-                    }).expectComplete().verify(VERIFY_TIMEOUT);
+                    })
+                    .expectComplete()
+                    .verify(VERIFY_TIMEOUT);
 
                 // Later a second channel request (Subscription) must be served from the cache.
                 StepVerifier.create(channelMono, 0).thenRequest(1).expectNextMatches(ch -> {
@@ -130,26 +138,34 @@ public class RequestResponseChannelCacheTest {
                 final Mono<RequestResponseChannel> channelMono = channelCache.get();
 
                 // The first request (subscription) for channel populates the cache.
-                StepVerifier.create(channelMono, 0).thenRequest(1).then(() -> endpoint.activateCurrentChannel())
+                StepVerifier.create(channelMono, 0)
+                    .thenRequest(1)
+                    .then(() -> endpoint.activateCurrentChannel())
                     .expectNextMatches(ch -> {
                         Assertions.assertTrue(endpoint.isCurrentChannel(ch));
                         // Store the channel to assert that once it's closed later channel request
                         // gets a (new) different channel.
                         c[0] = ch;
                         return true;
-                    }).expectComplete().verify(VERIFY_TIMEOUT);
+                    })
+                    .expectComplete()
+                    .verify(VERIFY_TIMEOUT);
 
                 // Close the cached channel by completing channel endpoint.
                 endpoint.completeCurrentChannel();
 
                 // A new request (subscription) for connection should refresh cache.
-                StepVerifier.create(channelMono, 0).thenRequest(1).then(() -> endpoint.activateCurrentChannel())
+                StepVerifier.create(channelMono, 0)
+                    .thenRequest(1)
+                    .then(() -> endpoint.activateCurrentChannel())
                     .expectNextMatches(ch -> {
                         // Assert the second subscription got a new channel as a result of cache refresh.
                         Assertions.assertNotEquals(c[0], ch);
                         Assertions.assertTrue(endpoint.isCurrentChannel(ch));
                         return true;
-                    }).expectComplete().verify(VERIFY_TIMEOUT);
+                    })
+                    .expectComplete()
+                    .verify(VERIFY_TIMEOUT);
 
             } finally {
                 channelCache.dispose();
@@ -170,26 +186,34 @@ public class RequestResponseChannelCacheTest {
                 final Mono<RequestResponseChannel> channelMono = channelCache.get();
 
                 // The first request (subscription) for channel populates the cache.
-                StepVerifier.create(channelMono, 0).thenRequest(1).then(() -> endpoint.activateCurrentChannel())
+                StepVerifier.create(channelMono, 0)
+                    .thenRequest(1)
+                    .then(() -> endpoint.activateCurrentChannel())
                     .expectNextMatches(ch -> {
                         Assertions.assertTrue(endpoint.isCurrentChannel(ch));
                         // Store the channel to assert that once it's closed later channel request
                         // gets a (new) different channel.
                         c[0] = ch;
                         return true;
-                    }).expectComplete().verify(VERIFY_TIMEOUT);
+                    })
+                    .expectComplete()
+                    .verify(VERIFY_TIMEOUT);
 
                 // Close the cached channel by error-ing channel endpoint.
                 endpoint.errorCurrentChannel(new RuntimeException("channel dropped"));
 
                 // A new request (subscription) for connection should refresh cache.
-                StepVerifier.create(channelMono, 0).thenRequest(1).then(() -> endpoint.activateCurrentChannel())
+                StepVerifier.create(channelMono, 0)
+                    .thenRequest(1)
+                    .then(() -> endpoint.activateCurrentChannel())
                     .expectNextMatches(ch -> {
                         // Assert the second subscription got a new channel as a result of cache refresh.
                         Assertions.assertNotEquals(c[0], ch);
                         Assertions.assertTrue(endpoint.isCurrentChannel(ch));
                         return true;
-                    }).expectComplete().verify(VERIFY_TIMEOUT);
+                    })
+                    .expectComplete()
+                    .verify(VERIFY_TIMEOUT);
 
             } finally {
                 channelCache.dispose();
@@ -207,7 +231,9 @@ public class RequestResponseChannelCacheTest {
             = new RequestResponseChannelCache(connection, CH_ENTITY_PATH, CH_SESSION_NAME, CH_LINK_NAME, retryPolicy);
         try {
             final Mono<RequestResponseChannel> channelMono = channelCache.get();
-            StepVerifier.create(channelMono, 0).thenRequest(1).expectError(RequestResponseChannelClosedException.class)
+            StepVerifier.create(channelMono, 0)
+                .thenRequest(1)
+                .expectError(RequestResponseChannelClosedException.class)
                 .verify(VERIFY_TIMEOUT);
         } finally {
             channelCache.dispose();
@@ -220,7 +246,9 @@ public class RequestResponseChannelCacheTest {
             CH_ENTITY_PATH, CH_SESSION_NAME, CH_LINK_NAME, retryPolicy);
         final Mono<RequestResponseChannel> channelMono = channelCache.get();
         channelCache.dispose();
-        StepVerifier.create(channelMono, 0).thenRequest(1).expectError(RequestResponseChannelClosedException.class)
+        StepVerifier.create(channelMono, 0)
+            .thenRequest(1)
+            .expectError(RequestResponseChannelClosedException.class)
             .verify(VERIFY_TIMEOUT);
     }
 

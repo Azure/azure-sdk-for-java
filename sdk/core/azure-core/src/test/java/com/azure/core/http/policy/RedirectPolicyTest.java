@@ -110,7 +110,8 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5))).build();
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5)))
+            .build();
 
         try (HttpResponse response = SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET))) {
@@ -131,7 +132,8 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5))).build();
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5)))
+            .build();
 
         try (HttpResponse response = SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, HttpMethod.POST),
             () -> sendRequest(pipeline, HttpMethod.POST))) {
@@ -153,7 +155,8 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .policies(new RedirectPolicy(new DefaultRedirectStrategy())).build();
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy()))
+            .build();
 
         try (HttpResponse response = SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET))) {
@@ -177,7 +180,8 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .policies(new RedirectPolicy(new DefaultRedirectStrategy())).build();
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy()))
+            .build();
 
         try (HttpResponse response = SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET))) {
@@ -197,7 +201,8 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, "Location1", null))).build();
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, "Location1", null)))
+            .build();
 
         try (HttpResponse response = SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET))) {
@@ -229,7 +234,8 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, null, allowedMethods))).build();
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, null, allowedMethods)))
+            .build();
 
         try (HttpResponse response = SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET))) {
@@ -249,7 +255,8 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .policies(new RedirectPolicy(new DefaultRedirectStrategy())).build();
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy()))
+            .build();
 
         try (HttpResponse response = SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET))) {

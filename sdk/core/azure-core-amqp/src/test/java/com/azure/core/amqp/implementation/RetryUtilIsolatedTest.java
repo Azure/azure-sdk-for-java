@@ -57,8 +57,12 @@ public class RetryUtilIsolatedTest {
             StepVerifier
                 .withVirtualTime(() -> RetryUtil.withRetry(flux, options, timeoutMessage), () -> virtualTimeScheduler,
                     1)
-                .expectSubscription().then(() -> singleItem.next(AmqpTransportType.AMQP_WEB_SOCKETS))
-                .expectNext(AmqpTransportType.AMQP_WEB_SOCKETS).expectNoEvent(totalWaitTime).thenCancel().verify();
+                .expectSubscription()
+                .then(() -> singleItem.next(AmqpTransportType.AMQP_WEB_SOCKETS))
+                .expectNext(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .expectNoEvent(totalWaitTime)
+                .thenCancel()
+                .verify();
         } finally {
             virtualTimeScheduler.dispose();
         }
@@ -79,7 +83,9 @@ public class RetryUtilIsolatedTest {
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofSeconds(30);
         final AmqpRetryOptions options = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
-            .setDelay(Duration.ofSeconds(1)).setMaxRetries(1).setTryTimeout(timeout);
+            .setDelay(Duration.ofSeconds(1))
+            .setMaxRetries(1)
+            .setTryTimeout(timeout);
 
         final Flux<Integer> stream = Flux.concat(Flux.defer(() -> Flux.just(0, 1, 2)),
             Flux.defer(() -> Flux.error(nonTransientError)), Flux.defer(() -> Flux.just(3, 4)));
@@ -88,9 +94,12 @@ public class RetryUtilIsolatedTest {
 
         // Act & Assert
         try {
-            StepVerifier.withVirtualTime(() -> RetryUtil.withRetry(stream, options, timeoutMessage),
-                () -> virtualTimeScheduler, 4).expectNext(0, 1, 2)
-                .expectErrorMatches(error -> error.equals(nonTransientError)).verify();
+            StepVerifier
+                .withVirtualTime(() -> RetryUtil.withRetry(stream, options, timeoutMessage), () -> virtualTimeScheduler,
+                    4)
+                .expectNext(0, 1, 2)
+                .expectErrorMatches(error -> error.equals(nonTransientError))
+                .verify();
         } finally {
             virtualTimeScheduler.dispose();
         }

@@ -50,7 +50,8 @@ public final class AzureJdkHttpRequest extends HttpRequest {
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         this.method = method.toString();
-        this.bodyPublisher = (method == HttpMethod.GET || method == HttpMethod.HEAD) ? noBody()
+        this.bodyPublisher = (method == HttpMethod.GET || method == HttpMethod.HEAD)
+            ? noBody()
             : BodyPublisherUtils.toBodyPublisher(azureCoreRequest, progressReporter);
 
         try {

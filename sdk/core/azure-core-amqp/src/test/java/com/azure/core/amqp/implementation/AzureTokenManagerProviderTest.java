@@ -116,7 +116,9 @@ class AzureTokenManagerProviderTest {
         final TokenManager tokenManager = provider.getTokenManager(Mono.just(cbsNode), entityPath);
 
         // Assert
-        StepVerifier.create(tokenManager.authorize()).expectNextCount(1).expectComplete()
+        StepVerifier.create(tokenManager.authorize())
+            .expectNextCount(1)
+            .expectComplete()
             .verify(Duration.ofSeconds(10));
     }
 
@@ -140,7 +142,9 @@ class AzureTokenManagerProviderTest {
         final TokenManager tokenManager = provider.getTokenManager(Mono.just(cbsNode), entityPath);
 
         // Assert
-        StepVerifier.create(tokenManager.authorize()).expectNextCount(1).expectComplete()
+        StepVerifier.create(tokenManager.authorize())
+            .expectNextCount(1)
+            .expectComplete()
             .verify(Duration.ofSeconds(10));
     }
 

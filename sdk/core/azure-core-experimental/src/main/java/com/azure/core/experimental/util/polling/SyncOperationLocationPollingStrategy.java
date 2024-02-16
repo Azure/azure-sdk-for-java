@@ -31,7 +31,7 @@ import java.time.OffsetDateTime;
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *        kept
+ * kept
  */
 public class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationResourcePollingStrategy<T, U> {
 
@@ -54,7 +54,8 @@ public class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationRes
     public SyncOperationLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
         super(OPERATION_LOCATION_HEADER, pollingStrategyOptions);
         this.endpoint = pollingStrategyOptions.getEndpoint();
-        this.serializer = pollingStrategyOptions.getSerializer() != null ? pollingStrategyOptions.getSerializer()
+        this.serializer = pollingStrategyOptions.getSerializer() != null
+            ? pollingStrategyOptions.getSerializer()
             : JsonSerializerProviders.createInstance(true);
     }
 
@@ -72,7 +73,9 @@ public class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationRes
         final String httpMethod = response.getRequest().getHttpMethod().name();
         pollingContext.setData(PollingConstants.HTTP_METHOD, httpMethod);
 
-        if (response.getStatusCode() == 200 || response.getStatusCode() == 201 || response.getStatusCode() == 202
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
             || response.getStatusCode() == 204) {
             final Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)

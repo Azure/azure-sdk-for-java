@@ -91,7 +91,8 @@ public final class SyncAsyncExtension implements TestTemplateInvocationContextPr
 
     @Override
     public boolean supportsTestTemplate(ExtensionContext extensionContext) {
-        return extensionContext.getTestMethod().map(method -> method.getAnnotation(SyncAsyncTest.class) != null)
+        return extensionContext.getTestMethod()
+            .map(method -> method.getAnnotation(SyncAsyncTest.class) != null)
             .orElse(false);
     }
 

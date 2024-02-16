@@ -81,8 +81,10 @@ public class HttpClientTestsServer {
                 } else {
                     sendSimpleHttpBinResponse(req, resp, new String(requestBody, StandardCharsets.UTF_8));
                 }
-            } else if (((get || head) && path.startsWith("/anything")) || (put && path.startsWith("/put"))
-                || (delete && path.startsWith("/delete")) || (patch && path.startsWith("/patch"))
+            } else if (((get || head) && path.startsWith("/anything"))
+                || (put && path.startsWith("/put"))
+                || (delete && path.startsWith("/delete"))
+                || (patch && path.startsWith("/patch"))
                 || (get && path.startsWith("/get"))) {
                 // Stub that will return a response with a body that contains the URL string as-is.
                 sendSimpleHttpBinResponse(req, resp, new String(requestBody, StandardCharsets.UTF_8));

@@ -77,7 +77,8 @@ public class JdkHttpClientBuilderTests {
         final String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
 
         assertNotNull(marker[0]);
         assertEquals(marker[0], "on_custom_executor");
@@ -111,7 +112,8 @@ public class JdkHttpClientBuilderTests {
         final String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
 
         assertNotNull(marker[0]);
         assertEquals(marker[0], "on_custom_executor");
@@ -138,7 +140,8 @@ public class JdkHttpClientBuilderTests {
             = new JdkHttpClientBuilder(java.net.http.HttpClient.newBuilder()).proxy(clientProxyOptions).build();
         // Url of the service behind proxy
         final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))).expectNextCount(1)
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .expectNextCount(1)
             .verifyComplete();
     }
 
@@ -156,7 +159,8 @@ public class JdkHttpClientBuilderTests {
     @Test
     public void buildWithHttpProxyFromExplicitConfiguration() {
         Configuration configuration = new ConfigurationBuilder().putProperty("http.proxy.hostname", "localhost")
-            .putProperty("http.proxy.port", String.valueOf(PROXY_SERVER_HTTP_PORT)).build();
+            .putProperty("http.proxy.port", String.valueOf(PROXY_SERVER_HTTP_PORT))
+            .build();
 
         configurationProxyTest(configuration);
     }
@@ -168,7 +172,8 @@ public class JdkHttpClientBuilderTests {
         final String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -179,7 +184,8 @@ public class JdkHttpClientBuilderTests {
         final String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     private static Stream<Arguments> buildWithExplicitConfigurationProxySupplier() {
@@ -193,7 +199,9 @@ public class JdkHttpClientBuilderTests {
 
         final Configuration explicitConfiguration
             = new ConfigurationBuilder().putProperty("http.proxy.hostname", "localhost")
-                .putProperty("http.proxy.port", "42").putProperty("http.proxy.non-proxy-hosts", "localhost").build();
+                .putProperty("http.proxy.port", "42")
+                .putProperty("http.proxy.non-proxy-hosts", "localhost")
+                .build();
 
         arguments.add(Arguments.of(explicitConfiguration));
         return arguments.stream();
@@ -286,7 +294,8 @@ public class JdkHttpClientBuilderTests {
             = new JdkHttpClientBuilder(java.net.http.HttpClient.newBuilder()).configuration(configuration).build();
         // Url of the service behind proxy
         final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))).expectNextCount(1)
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            .expectNextCount(1)
             .verifyComplete();
     }
 

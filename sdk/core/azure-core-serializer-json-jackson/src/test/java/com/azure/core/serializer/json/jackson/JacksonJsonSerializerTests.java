@@ -60,7 +60,8 @@ public class JacksonJsonSerializerTests {
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
         StepVerifier.create(DEFAULT_SERIALIZER.deserializeAsync(jsonStream, TypeReference.createInstance(Person.class)))
-            .assertNext(actual -> assertEquals(expected, actual)).verifyComplete();
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
     }
 
     @Test
@@ -71,7 +72,8 @@ public class JacksonJsonSerializerTests {
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
         StepVerifier.create(CUSTOM_SERIALIZER.deserializeAsync(jsonStream, TypeReference.createInstance(Person.class)))
-            .assertNext(actual -> assertEquals(expected, actual)).verifyComplete();
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
     }
 
     @Test
@@ -85,7 +87,8 @@ public class JacksonJsonSerializerTests {
             .assertNext(actual -> {
                 assertEquals(50, actual.get("age").asInt());
                 assertTrue(actual.get("name").isNull());
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     @Test

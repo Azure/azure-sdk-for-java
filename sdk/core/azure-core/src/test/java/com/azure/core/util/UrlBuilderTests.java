@@ -349,29 +349,40 @@ public class UrlBuilderTests {
 
     @Test
     public void schemeAndHostAndTwoQueryParameters() {
-        final UrlBuilder builder = new UrlBuilder().setScheme("http").setHost("www.example.com")
-            .setQueryParameter("A", "B").setQueryParameter("C", "D");
+        final UrlBuilder builder = new UrlBuilder().setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("A", "B")
+            .setQueryParameter("C", "D");
         assertEquals("http://www.example.com?A=B&C=D", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndPathAndTwoQueryParameters() {
-        final UrlBuilder builder = new UrlBuilder().setScheme("http").setHost("www.example.com")
-            .setQueryParameter("A", "B").setQueryParameter("C", "D").setPath("index.html");
+        final UrlBuilder builder = new UrlBuilder().setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("A", "B")
+            .setQueryParameter("C", "D")
+            .setPath("index.html");
         assertEquals("http://www.example.com/index.html?A=B&C=D", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndPathAndTwoIdenticalQueryParameters() {
-        final UrlBuilder builder = new UrlBuilder().setScheme("http").setHost("www.example.com")
-            .addQueryParameter("A", "B").addQueryParameter("A", "D").setPath("index.html");
+        final UrlBuilder builder = new UrlBuilder().setScheme("http")
+            .setHost("www.example.com")
+            .addQueryParameter("A", "B")
+            .addQueryParameter("A", "D")
+            .setPath("index.html");
         assertEquals("http://www.example.com/index.html?A=B&A=D", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndPathAndTwoIdenticalQueryParametersGetQuery() {
-        final UrlBuilder builder = new UrlBuilder().setScheme("http").setHost("www.example.com")
-            .addQueryParameter("A", "B").addQueryParameter("A", "D").setPath("index.html");
+        final UrlBuilder builder = new UrlBuilder().setScheme("http")
+            .setHost("www.example.com")
+            .addQueryParameter("A", "B")
+            .addQueryParameter("A", "D")
+            .setPath("index.html");
         assertEquals(builder.getQuery().get("A"), "B,D");
     }
 
@@ -472,15 +483,19 @@ public class UrlBuilderTests {
 
     @Test
     public void queryInPath() {
-        final UrlBuilder builder = new UrlBuilder().setScheme("http").setHost("www.example.com")
-            .setPath("mypath?thing=stuff").setQueryParameter("otherthing", "otherstuff");
+        final UrlBuilder builder = new UrlBuilder().setScheme("http")
+            .setHost("www.example.com")
+            .setPath("mypath?thing=stuff")
+            .setQueryParameter("otherthing", "otherstuff");
         assertEquals("http://www.example.com/mypath?thing=stuff&otherthing=otherstuff", builder.toString());
     }
 
     @Test
     public void withAbsolutePathAndQuery() {
-        final UrlBuilder builder = new UrlBuilder().setScheme("http").setHost("www.example.com")
-            .setPath("http://www.othersite.com/mypath?thing=stuff").setQueryParameter("otherthing", "otherstuff");
+        final UrlBuilder builder = new UrlBuilder().setScheme("http")
+            .setHost("www.example.com")
+            .setPath("http://www.othersite.com/mypath?thing=stuff")
+            .setQueryParameter("otherthing", "otherstuff");
         assertEquals("http://www.othersite.com/mypath?thing=stuff&otherthing=otherstuff", builder.toString());
     }
 
@@ -705,11 +720,15 @@ public class UrlBuilderTests {
     @Test
     public void fluxParallelParsing() {
         AtomicInteger callCount = new AtomicInteger();
-        Mono<Void> mono = Flux.range(0, 20000).parallel(Runtime.getRuntime().availableProcessors())
-            .runOn(Schedulers.boundedElastic()).map(i -> {
+        Mono<Void> mono = Flux.range(0, 20000)
+            .parallel(Runtime.getRuntime().availableProcessors())
+            .runOn(Schedulers.boundedElastic())
+            .map(i -> {
                 callCount.incrementAndGet();
                 return UrlBuilder.parse("https://example" + i + ".com");
-            }).then().timeout(Duration.ofSeconds(10));
+            })
+            .then()
+            .timeout(Duration.ofSeconds(10));
 
         StepVerifier.create(mono).verifyComplete();
         assertEquals(20000, callCount.get());

@@ -137,7 +137,8 @@ public class ReactorDispatcherTest {
             final Selectable.Callback callback = workScheduler.get();
             assertNotNull(callback);
             callback.run(selectable);
-        }).expectErrorMatches(error -> error instanceof RuntimeException && error.getCause().equals(testException))
+        })
+            .expectErrorMatches(error -> error instanceof RuntimeException && error.getCause().equals(testException))
             .verify(VERIFY_TIMEOUT);
     }
 }

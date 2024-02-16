@@ -69,8 +69,10 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
         }
 
         OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder();
-        builder = builder.proxy(clientOptions.getProxyOptions()).configuration(clientOptions.getConfiguration())
-            .connectionTimeout(clientOptions.getConnectTimeout()).writeTimeout(clientOptions.getWriteTimeout())
+        builder = builder.proxy(clientOptions.getProxyOptions())
+            .configuration(clientOptions.getConfiguration())
+            .connectionTimeout(clientOptions.getConnectTimeout())
+            .writeTimeout(clientOptions.getWriteTimeout())
             .readTimeout(clientOptions.getReadTimeout());
 
         Integer poolSize = clientOptions.getMaximumConnectionPoolSize();

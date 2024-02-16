@@ -175,7 +175,8 @@ public class OpenTelemetryTracerTest {
 
         // Add additional metadata to spans for SEND
         final Context traceContext = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
-            .addData(HOST_NAME_KEY, HOSTNAME_VALUE).addData("az.namespace", "ignored");
+            .addData(HOST_NAME_KEY, HOSTNAME_VALUE)
+            .addData("az.namespace", "ignored");
 
         // Start user parent span.
         final Context withBuilder = openTelemetryTracer.getSharedSpanBuilder(METHOD_NAME, traceContext);
@@ -241,7 +242,8 @@ public class OpenTelemetryTracerTest {
             IdGenerator.random().generateSpanId(), TraceFlags.getDefault(), TraceState.getDefault());
 
         StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.CLIENT)
-            .setAttribute(ENTITY_PATH_KEY, ENTITY_PATH_VALUE).setAttribute(HOST_NAME_KEY, HOSTNAME_VALUE)
+            .setAttribute(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
+            .setAttribute(HOST_NAME_KEY, HOSTNAME_VALUE)
             .addLink(new TracingLink(new Context(SPAN_CONTEXT_KEY, linkCtx1), Collections.singletonMap("foo", "bar")))
             .addLink(new TracingLink(new Context(SPAN_CONTEXT_KEY, linkCtx2)));
 
@@ -271,7 +273,8 @@ public class OpenTelemetryTracerTest {
             IdGenerator.random().generateSpanId(), TraceFlags.getSampled(), TraceState.getDefault());
 
         StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.CONSUMER)
-            .setAttribute(ENTITY_PATH_KEY, ENTITY_PATH_VALUE).setAttribute(HOST_NAME_KEY, HOSTNAME_VALUE)
+            .setAttribute(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
+            .setAttribute(HOST_NAME_KEY, HOSTNAME_VALUE)
             .setRemoteParent(new Context(SPAN_CONTEXT_KEY, remoteParent));
 
         // Act
@@ -290,11 +293,13 @@ public class OpenTelemetryTracerTest {
 
         // Start user parent span.
         final SpanBuilder spanBuilder = tracer.spanBuilder(METHOD_NAME)
-            .setParent(io.opentelemetry.context.Context.root().with(parentSpan)).setSpanKind(SpanKind.CLIENT);
+            .setParent(io.opentelemetry.context.Context.root().with(parentSpan))
+            .setSpanKind(SpanKind.CLIENT);
         // Add additional metadata to spans for SEND
-        final Context traceContext
-            = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE).addData(HOST_NAME_KEY, HOSTNAME_VALUE)
-                .addData(SPAN_BUILDER_KEY, spanBuilder).addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+        final Context traceContext = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
+            .addData(HOST_NAME_KEY, HOSTNAME_VALUE)
+            .addData(SPAN_BUILDER_KEY, spanBuilder)
+            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
 
         // Act
         final Context updatedContext
@@ -317,7 +322,8 @@ public class OpenTelemetryTracerTest {
         // Arrange
         final String parentSpanId = parentSpan.getSpanContext().getSpanId();
         final Context contextWithAttributes = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
-            .addData(HOST_NAME_KEY, HOSTNAME_VALUE).addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+            .addData(HOST_NAME_KEY, HOSTNAME_VALUE)
+            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
 
         // Act
         final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, contextWithAttributes,
@@ -343,7 +349,8 @@ public class OpenTelemetryTracerTest {
         final String parentSpanId = parentSpan.getSpanContext().getSpanId();
         // Add additional metadata to spans for PROCESS
         final Context traceContext = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
-            .addData(HOST_NAME_KEY, HOSTNAME_VALUE).addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE)
+            .addData(HOST_NAME_KEY, HOSTNAME_VALUE)
+            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE)
             .addData(MESSAGE_ENQUEUED_TIME, MESSAGE_ENQUEUED_VALUE); // only in PROCESS
 
         // Act
@@ -709,11 +716,16 @@ public class OpenTelemetryTracerTest {
         assertEquals(eventName, eventData.get(0).getName());
         Attributes attributes = eventData.get(0).getAttributes();
         assertEquals(8, attributes.size());
-        Attributes expectedEventAttrs = Attributes.builder().put(AttributeKey.stringKey("attr1"), "value1")
-            .put(AttributeKey.booleanKey("attr2"), true).put(AttributeKey.longKey("attr3"), 1)
-            .put(AttributeKey.longKey("attr4"), 2).put(AttributeKey.longKey("attr5"), 3)
-            .put(AttributeKey.longKey("attr6"), 4).put(AttributeKey.doubleKey("attr7"), 1.0)
-            .put(AttributeKey.doubleKey("attr8"), 2.0).build();
+        Attributes expectedEventAttrs = Attributes.builder()
+            .put(AttributeKey.stringKey("attr1"), "value1")
+            .put(AttributeKey.booleanKey("attr2"), true)
+            .put(AttributeKey.longKey("attr3"), 1)
+            .put(AttributeKey.longKey("attr4"), 2)
+            .put(AttributeKey.longKey("attr5"), 3)
+            .put(AttributeKey.longKey("attr6"), 4)
+            .put(AttributeKey.doubleKey("attr7"), 1.0)
+            .put(AttributeKey.doubleKey("attr8"), 2.0)
+            .build();
 
         expectedEventAttrs.forEach((attributeKey, attrValue) -> assertEquals(attrValue, attributes.get(attributeKey)));
     }
@@ -856,8 +868,14 @@ public class OpenTelemetryTracerTest {
         attributes.put("B[]", new boolean[] { true });
         attributes.put("I[]", new int[] { 1 });
 
-        final Attributes expectedAttributes = Attributes.builder().put("S", "foo").put("L", 10L).put("I", 1)
-            .put("D", 0.1d).put("B", true).put("az.namespace", AZ_NAMESPACE_VALUE).build();
+        final Attributes expectedAttributes = Attributes.builder()
+            .put("S", "foo")
+            .put("L", 10L)
+            .put("I", 1)
+            .put("D", 0.1d)
+            .put("B", true)
+            .put("az.namespace", AZ_NAMESPACE_VALUE)
+            .build();
 
         final StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
         attributes.forEach(options::setAttribute);

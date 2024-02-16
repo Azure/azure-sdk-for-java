@@ -12,13 +12,18 @@ import static com.azure.core.implementation.ImplUtils.getClassByName;
  * Metrics configuration options for clients.
  */
 public class MetricsOptions {
-    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY = ConfigurationPropertyBuilder
-        .ofBoolean("metrics.disabled").environmentVariableName(Configuration.PROPERTY_AZURE_METRICS_DISABLED)
-        .shared(true).defaultValue(false).build();
+    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY
+        = ConfigurationPropertyBuilder.ofBoolean("metrics.disabled")
+            .environmentVariableName(Configuration.PROPERTY_AZURE_METRICS_DISABLED)
+            .shared(true)
+            .defaultValue(false)
+            .build();
 
     private static final ConfigurationProperty<String> PROVIDER_NAME_PROPERTY
         = ConfigurationPropertyBuilder.ofString("metrics.provider.implementation")
-            .environmentVariableName(Configuration.PROPERTY_AZURE_METRICS_IMPLEMENTATION).shared(true).build();
+            .environmentVariableName(Configuration.PROPERTY_AZURE_METRICS_IMPLEMENTATION)
+            .shared(true)
+            .build();
     private static final Configuration GLOBAL_CONFIG = Configuration.getGlobalConfiguration();
     private final Class<? extends MeterProvider> meterProvider;
     private boolean isEnabled;

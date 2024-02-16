@@ -17,7 +17,7 @@ import java.util.function.Supplier;
  * A unidirectional link from the client to the message broker that listens for messages.
  *
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#section-links">AMQP
- *      Specification 1.0: Links</a>
+ * Specification 1.0: Links</a>
  */
 public interface AmqpReceiveLink extends AmqpLink {
     /**

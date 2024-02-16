@@ -58,7 +58,8 @@ public class ApacheAvroSerializerTests {
     @MethodSource("deserializePrimitiveTypesSupplier")
     public <T> void deserializePrimitiveTypes(InputStream avro, String schema, TypeReference<T> type, T expected) {
         StepVerifier.create(getSerializer(schema).deserializeAsync(avro, type))
-            .assertNext(actual -> assertEquals(expected, actual)).verifyComplete();
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
     }
 
     private static Stream<Arguments> deserializePrimitiveTypesSupplier() {
@@ -105,7 +106,8 @@ public class ApacheAvroSerializerTests {
         StepVerifier
             .create(getSerializer(PlayingCardSuit.getClassSchema().toString()).deserializeAsync(avro,
                 createInstance(PlayingCardSuit.class)))
-            .assertNext(actual -> assertEquals(expected, actual)).verifyComplete();
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
     }
 
     private static Stream<Arguments> deserializeEnumSupplier() {
@@ -125,7 +127,8 @@ public class ApacheAvroSerializerTests {
     @MethodSource("deserializeListAndMapSupplier")
     public <T> void deserializeListAndMap(InputStream avro, String schema, TypeReference<T> type, T expected) {
         StepVerifier.create(getSerializer(schema).deserializeAsync(avro, type))
-            .assertNext(actual -> assertEquals(expected, actual)).verifyComplete();
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
     }
 
     private static Stream<Arguments> deserializeListAndMapSupplier() {
@@ -153,7 +156,8 @@ public class ApacheAvroSerializerTests {
     @MethodSource("deserializeRecordSupplier")
     public <T> void deserializeRecord(InputStream avro, String schema, TypeReference<T> type, T expected) {
         StepVerifier.create(getSerializer(schema).deserializeAsync(avro, type))
-            .assertNext(actual -> assertEquals(expected, actual)).verifyComplete();
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
     }
 
     private static Stream<Arguments> deserializeRecordSupplier() {

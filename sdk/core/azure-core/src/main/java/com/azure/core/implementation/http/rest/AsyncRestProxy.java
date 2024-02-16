@@ -127,7 +127,8 @@ public class AsyncRestProxy extends RestProxyBase {
             // First, try to create an error with the response body.
             // If there is no response body create an error without the response body.
             // Finally, return the error reactively.
-            return decodedResponse.getSourceResponse().getBodyAsByteArray()
+            return decodedResponse.getSourceResponse()
+                .getBodyAsByteArray()
                 .map(bytes -> instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                     decodedResponse.getSourceResponse(), bytes, decodedResponse.getDecodedBody(bytes)))
                 .switchIfEmpty(Mono.fromSupplier(
@@ -144,7 +145,9 @@ public class AsyncRestProxy extends RestProxyBase {
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                return response.getSourceResponse().getBody().ignoreElements()
+                return response.getSourceResponse()
+                    .getBody()
+                    .ignoreElements()
                     .then(Mono.fromCallable(() -> createResponse(response, entityType, null)));
             } else {
                 return handleBodyReturnType(response.getSourceResponse(), decodeBytes(response), methodParser, bodyType)
@@ -158,7 +161,8 @@ public class AsyncRestProxy extends RestProxyBase {
     }
 
     private static Function<byte[], Mono<Object>> decodeBytes(HttpResponseDecoder.HttpDecodedResponse response) {
-        return bytes -> Mono.fromCallable(() -> response.getDecodedBody(bytes)).publishOn(Schedulers.boundedElastic())
+        return bytes -> Mono.fromCallable(() -> response.getDecodedBody(bytes))
+            .publishOn(Schedulers.boundedElastic())
             .handle((object, sink) -> {
                 if (object == null) {
                     sink.complete();
@@ -176,8 +180,9 @@ public class AsyncRestProxy extends RestProxyBase {
         final Type returnValueWireType = methodParser.getReturnValueWireType();
 
         final Mono<?> asyncResult;
-        if (httpMethod == HttpMethod.HEAD && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
-            || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
+        if (httpMethod == HttpMethod.HEAD
+            && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
+                || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
             boolean isSuccess = (responseStatusCode / 100) == 2;
             asyncResult = Mono.just(isSuccess);
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
@@ -254,7 +259,8 @@ public class AsyncRestProxy extends RestProxyBase {
             // ProxyMethod ReturnType: T where T != async (Mono, Flux) or sync Void
             // Block the deserialization until a value T is received
             result = asyncExpectedResponse
-                .flatMap(httpResponse -> handleRestResponseReturnType(httpResponse, methodParser, returnType)).block();
+                .flatMap(httpResponse -> handleRestResponseReturnType(httpResponse, methodParser, returnType))
+                .block();
         }
         return result;
     }
@@ -269,7 +275,8 @@ public class AsyncRestProxy extends RestProxyBase {
                 } else if (signal.isOnError()) {
                     tracer.end(null, signal.getThrowable(), span);
                 }
-            }).doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
+            })
+                .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
                 .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", span));
         }
 

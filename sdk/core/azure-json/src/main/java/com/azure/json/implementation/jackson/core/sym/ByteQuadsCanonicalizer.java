@@ -768,7 +768,9 @@ public final class ByteQuadsCanonicalizer {
         final int bucketSize = (1 << _tertiaryShift);
         for (int end = offset + bucketSize; offset < end; offset += 4) {
             int len = hashArea[offset + 3];
-            if ((q1 == hashArea[offset]) && (q2 == hashArea[offset + 1]) && (q3 == hashArea[offset + 2])
+            if ((q1 == hashArea[offset])
+                && (q2 == hashArea[offset + 1])
+                && (q3 == hashArea[offset + 2])
                 && (3 == len)) {
                 return _names[offset >> 2];
             }
@@ -777,7 +779,9 @@ public final class ByteQuadsCanonicalizer {
             }
         }
         for (offset = _spilloverStart(); offset < _spilloverEnd; offset += 4) {
-            if ((q1 == hashArea[offset]) && (q2 == hashArea[offset + 1]) && (q3 == hashArea[offset + 2])
+            if ((q1 == hashArea[offset])
+                && (q2 == hashArea[offset + 1])
+                && (q3 == hashArea[offset + 2])
                 && (3 == hashArea[offset + 3])) {
                 return _names[offset >> 2];
             }

@@ -190,12 +190,14 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         // RejectedExecutionExceptions when attempting an operation that is closed or if the IO signal is accidentally
         // closed. In these cases, we want to re-attempt the operation.
         if (((throwable instanceof AmqpException) && ((AmqpException) throwable).isTransient())
-            || (throwable instanceof IllegalStateException) || (throwable instanceof RejectedExecutionException)) {
+            || (throwable instanceof IllegalStateException)
+            || (throwable instanceof RejectedExecutionException)) {
             // for the purpose of computing delay, we'll use the min of retry attempts or max retries set in
             // the retry policy to get the max delay duration.
             attempts = Math.min(attemptsMade, retryPolicy.getMaxRetries());
 
-            final Throwable throwableToUse = throwable instanceof AmqpException ? throwable
+            final Throwable throwableToUse = throwable instanceof AmqpException
+                ? throwable
                 : new AmqpException(true, "Non-AmqpException occurred upstream.", throwable, errorContext);
 
             retryInterval = retryPolicy.calculateRetryDelay(throwableToUse, attempts);
@@ -212,12 +214,15 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 return;
             }
 
-            logger.atInfo().addKeyValue(TRY_COUNT_KEY, attemptsMade).addKeyValue(INTERVAL_KEY, retryInterval.toMillis())
+            logger.atInfo()
+                .addKeyValue(TRY_COUNT_KEY, attemptsMade)
+                .addKeyValue(INTERVAL_KEY, retryInterval.toMillis())
                 .log("Transient error occurred. Retrying.", throwable);
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
                 if (isDisposed()) {
-                    logger.atInfo().addKeyValue(TRY_COUNT_KEY, attemptsMade)
+                    logger.atInfo()
+                        .addKeyValue(TRY_COUNT_KEY, attemptsMade)
                         .log("Not requesting from upstream. Processor is disposed.");
                 } else {
                     logger.atInfo().addKeyValue(TRY_COUNT_KEY, attemptsMade).log("Requesting from upstream.");
@@ -227,7 +232,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 }
             });
         } else {
-            logger.atWarning().addKeyValue(TRY_COUNT_KEY, attemptsMade)
+            logger.atWarning()
+                .addKeyValue(TRY_COUNT_KEY, attemptsMade)
                 .log("Retry attempts exhausted or exception was not retriable.", throwable);
 
             lastError = throwable;
@@ -413,7 +419,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 // first untrack before calling into external code.
                 processor.subscribers.remove(this);
                 actual.onComplete();
-                processor.logger.atInfo().addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
+                processor.logger.atInfo()
+                    .addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
                     .log("AMQP channel processor completed.");
             }
         }
@@ -424,7 +431,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 processor.subscribers.remove(this);
                 super.complete(channel);
 
-                processor.logger.atInfo().addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
+                processor.logger.atInfo()
+                    .addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
                     .log("Next AMQP channel received.");
             }
         }
@@ -434,7 +442,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             if (!isCancelled()) {
                 processor.subscribers.remove(this);
                 actual.onError(throwable);
-                processor.logger.atInfo().addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
+                processor.logger.atInfo()
+                    .addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
                     .log("Error in AMQP channel processor.");
             } else {
                 Operators.onErrorDropped(throwable, currentContext());

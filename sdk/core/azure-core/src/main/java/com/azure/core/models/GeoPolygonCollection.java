@@ -96,7 +96,8 @@ public final class GeoPolygonCollection extends GeoObject {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject().writeStringField("type", GeoObjectType.MULTI_POLYGON.toString())
+        jsonWriter.writeStartObject()
+            .writeStringField("type", GeoObjectType.MULTI_POLYGON.toString())
             .writeArrayField("coordinates", polygons,
                 (writer, geoPolygon) -> writer.writeArray(geoPolygon.getRings(), JsonWriter::writeJson))
             .writeJsonField("bbox", getBoundingBox());

@@ -48,11 +48,15 @@ public class CredentialsTests {
             return next.process();
         };
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).policies((context,
-            next) -> credentials.getToken(new TokenRequestContext().addScopes("scope./default")).flatMap(token -> {
-                context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, "Basic " + token.getToken());
-                return next.process();
-            }), auditorPolicy).build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies((context, next) -> credentials.getToken(new TokenRequestContext().addScopes("scope./default"))
+                .flatMap(token -> {
+                    context.getHttpRequest()
+                        .getHeaders()
+                        .set(HttpHeaderName.AUTHORIZATION, "Basic " + token.getToken());
+                    return next.process();
+                }), auditorPolicy)
+            .build();
 
         SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
     }
@@ -74,7 +78,8 @@ public class CredentialsTests {
         };
 
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy).build();
+            .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
+            .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, createUrl("https://localhost"));
         SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
@@ -92,7 +97,8 @@ public class CredentialsTests {
         };
 
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
-            .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy).build();
+            .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
+            .build();
 
         RuntimeException thrown = Assertions.assertThrows(RuntimeException.class,
             () -> SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline)));
@@ -118,7 +124,8 @@ public class CredentialsTests {
         };
 
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
-            .policies(new AzureSasCredentialPolicy(credential), auditorPolicy).build();
+            .policies(new AzureSasCredentialPolicy(credential), auditorPolicy)
+            .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, createUrl(url));
         pipeline.send(request).block();
@@ -142,7 +149,8 @@ public class CredentialsTests {
         };
 
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
-            .policies(new AzureSasCredentialPolicy(credential), auditorPolicy).build();
+            .policies(new AzureSasCredentialPolicy(credential), auditorPolicy)
+            .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, createUrl(url));
         pipeline.sendSync(request, Context.NONE);
@@ -153,7 +161,8 @@ public class CredentialsTests {
         AzureSasCredential credential = new AzureSasCredential("foo");
 
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
-            .policies(new AzureSasCredentialPolicy(credential)).build();
+            .policies(new AzureSasCredentialPolicy(credential))
+            .build();
 
         RuntimeException thrown = Assertions.assertThrows(RuntimeException.class,
             () -> SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline)));
@@ -174,7 +183,8 @@ public class CredentialsTests {
         };
 
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
-            .policies(new AzureSasCredentialPolicy(credential, false), auditorPolicy).build();
+            .policies(new AzureSasCredentialPolicy(credential, false), auditorPolicy)
+            .build();
 
         SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
     }

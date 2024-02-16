@@ -145,8 +145,10 @@ public class Version implements Comparable<Version>, java.io.Serializable {
         if (o.getClass() != getClass())
             return false;
         Version other = (Version) o;
-        return (other._majorVersion == _majorVersion) && (other._minorVersion == _minorVersion)
-            && (other._patchLevel == _patchLevel) && other._artifactId.equals(_artifactId)
+        return (other._majorVersion == _majorVersion)
+            && (other._minorVersion == _minorVersion)
+            && (other._patchLevel == _patchLevel)
+            && other._artifactId.equals(_artifactId)
             && other._groupId.equals(_groupId);
     }
 

@@ -19,8 +19,10 @@ public class FixedAmqpRetryPolicyTest {
     private final Duration maxBackoff = Duration.ofSeconds(60);
     private final Duration tolerance = Duration.ofSeconds(1);
     private final int retryAttempts = 5;
-    private final AmqpRetryOptions options = new AmqpRetryOptions().setDelay(minBackoff).setMaxDelay(maxBackoff)
-        .setMaxRetries(retryAttempts).setMode(AmqpRetryMode.FIXED);
+    private final AmqpRetryOptions options = new AmqpRetryOptions().setDelay(minBackoff)
+        .setMaxDelay(maxBackoff)
+        .setMaxRetries(retryAttempts)
+        .setMode(AmqpRetryMode.FIXED);
 
     /**
      * Verifies that when the service is busy and we retry an exception multiple times, the retry duration gets longer.
@@ -53,8 +55,10 @@ public class FixedAmqpRetryPolicyTest {
         // Arrange
         final FixedAmqpRetryPolicy policy = new FixedAmqpRetryPolicy(options);
 
-        final AmqpRetryOptions otherOptions = new AmqpRetryOptions().setDelay(minBackoff).setMaxDelay(maxBackoff)
-            .setMaxRetries(retryAttempts).setMode(AmqpRetryMode.FIXED);
+        final AmqpRetryOptions otherOptions = new AmqpRetryOptions().setDelay(minBackoff)
+            .setMaxDelay(maxBackoff)
+            .setMaxRetries(retryAttempts)
+            .setMode(AmqpRetryMode.FIXED);
         final FixedAmqpRetryPolicy otherPolicy = new FixedAmqpRetryPolicy(otherOptions);
 
         // Assert

@@ -36,10 +36,13 @@ public class TokenCacheTests {
             return incrementalRemoteGetTokenAsync(new AtomicInteger(1));
         });
 
-        StepVerifier.create(Flux.range(1, 10).flatMap(ignored -> Mono.just(OffsetDateTime.now())).parallel(10)
+        StepVerifier.create(Flux.range(1, 10)
+            .flatMap(ignored -> Mono.just(OffsetDateTime.now()))
+            .parallel(10)
             // Runs cache.getToken() on 10 different threads
-            .runOn(Schedulers.boundedElastic()).flatMap(start -> cache.getToken()).then()).expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(start -> cache.getToken())
+            .then()).expectComplete().verify(DEFAULT_TIMEOUT);
 
         // Ensure that only one refresh attempt is made.
         assertEquals(1, refreshes.get());
@@ -57,9 +60,12 @@ public class TokenCacheTests {
         // Token acquisition time grows in 1 sec, 2 sec... To make sure only one token acquisition is run
         AccessTokenCache cache = new AccessTokenCache(dummyCred);
 
-        StepVerifier.create(Flux.range(1, 10).flatMap(ignored -> Mono.just(OffsetDateTime.now())).parallel(10)
+        StepVerifier.create(Flux.range(1, 10)
+            .flatMap(ignored -> Mono.just(OffsetDateTime.now()))
+            .parallel(10)
             // Runs cache.getToken() on 10 different threads
-            .runOn(Schedulers.boundedElastic()).flatMap(start -> cache.getToken(new TokenRequestContext(), false))
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(start -> cache.getToken(new TokenRequestContext(), false))
             .then()).expectComplete().verify(DEFAULT_TIMEOUT);
 
         // Ensure that only one refresh attempt is made.
@@ -79,7 +85,9 @@ public class TokenCacheTests {
 
         AccessTokenCache cache = new AccessTokenCache(dummyCred);
 
-        StepVerifier.create(Flux.range(1, 5).flatMap(ignored -> Mono.just(OffsetDateTime.now())).parallel(5)
+        StepVerifier.create(Flux.range(1, 5)
+            .flatMap(ignored -> Mono.just(OffsetDateTime.now()))
+            .parallel(5)
             // Runs cache.getToken() on 5 different threads
             .runOn(Schedulers.boundedElastic())
             .flatMap(start -> cache.getToken(
@@ -147,8 +155,11 @@ public class TokenCacheTests {
         VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create();
 
         CountDownLatch latch = new CountDownLatch(1);
-        Flux.interval(Duration.ofMillis(100), virtualTimeScheduler).take(100).flatMap(i -> cache.getToken())
-            .doOnComplete(latch::countDown).subscribe();
+        Flux.interval(Duration.ofMillis(100), virtualTimeScheduler)
+            .take(100)
+            .flatMap(i -> cache.getToken())
+            .doOnComplete(latch::countDown)
+            .subscribe();
 
         virtualTimeScheduler.advanceTimeBy(Duration.ofSeconds(40));
 

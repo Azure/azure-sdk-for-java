@@ -83,7 +83,9 @@ public final class JsonWriteContext {
                     + " 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '" + token + "'.");
             }
         } else if (context == JsonWriteState.OBJECT) {
-            if (token == JsonToken.START_OBJECT || token == JsonToken.START_ARRAY || token == JsonToken.END_ARRAY
+            if (token == JsonToken.START_OBJECT
+                || token == JsonToken.START_ARRAY
+                || token == JsonToken.END_ARRAY
                 || isSimpleValue(token)) {
                 throw new IllegalStateException("Writing context is 'OBJECT', only 'END_OBJECT' and 'FIELD_NAME'"
                     + " tokens are allowed. Attempted: '" + token + "'.");
@@ -186,7 +188,9 @@ public final class JsonWriteContext {
     }
 
     private static boolean isSimpleValue(JsonToken token) {
-        return token == JsonToken.BOOLEAN || token == JsonToken.NULL || token == JsonToken.NUMBER
+        return token == JsonToken.BOOLEAN
+            || token == JsonToken.NULL
+            || token == JsonToken.NUMBER
             || token == JsonToken.STRING;
     }
 }

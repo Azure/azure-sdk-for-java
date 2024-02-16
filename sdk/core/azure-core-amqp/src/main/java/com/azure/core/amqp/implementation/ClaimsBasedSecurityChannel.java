@@ -86,10 +86,11 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
 
                         sink.error(error);
                     }
-                }).switchIfEmpty(Mono.error(() -> new AmqpException(true,
-                    String.format("No response received from CBS node. tokenAudience: '%s'. scopes: '%s'",
-                        tokenAudience, scopes),
-                    channel.getErrorContext())));
+                })
+                    .switchIfEmpty(Mono.error(() -> new AmqpException(true,
+                        String.format("No response received from CBS node. tokenAudience: '%s'. scopes: '%s'",
+                            tokenAudience, scopes),
+                        channel.getErrorContext())));
             }));
     }
 

@@ -32,7 +32,7 @@ import java.time.OffsetDateTime;
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *        kept
+ * kept
  */
 public class OperationLocationPollingStrategy<T, U> extends OperationResourcePollingStrategy<T, U> {
 
@@ -55,7 +55,8 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
     public OperationLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
         super(OPERATION_LOCATION_HEADER, pollingStrategyOptions);
         this.endpoint = pollingStrategyOptions.getEndpoint();
-        this.serializer = pollingStrategyOptions.getSerializer() != null ? pollingStrategyOptions.getSerializer()
+        this.serializer = pollingStrategyOptions.getSerializer() != null
+            ? pollingStrategyOptions.getSerializer()
             : JsonSerializerProviders.createInstance(true);
     }
 
@@ -73,7 +74,9 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
         final String httpMethod = response.getRequest().getHttpMethod().name();
         pollingContext.setData(PollingConstants.HTTP_METHOD, httpMethod);
 
-        if (response.getStatusCode() == 200 || response.getStatusCode() == 201 || response.getStatusCode() == 202
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
             || response.getStatusCode() == 204) {
             final Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             final Mono<PollResponse<T>> pollResponseMono;
@@ -132,7 +135,8 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
                     } else {
                         return Mono.error(new AzureException("Cannot get final result"));
                     }
-                }).switchIfEmpty(Mono.error(new AzureException("Cannot get final result")));
+                })
+                .switchIfEmpty(Mono.error(new AzureException("Cannot get final result")));
         } else {
             return Mono.error(new AzureException("Cannot get final result"));
         }

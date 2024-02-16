@@ -36,7 +36,7 @@ import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolut
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *        kept
+ * kept
  */
 public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingStrategy<T, U> {
     private static final ClientLogger LOGGER = new ClientLogger(SyncOperationResourcePollingStrategy.class);
@@ -99,7 +99,8 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
     public SyncOperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
         String operationLocationHeaderName, Context context) {
         this(operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
-            new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint).setSerializer(serializer)
+            new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint)
+                .setSerializer(serializer)
                 .setContext(context));
     }
 
@@ -115,7 +116,8 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
         Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
         this.httpPipeline = pollingStrategyOptions.getHttpPipeline();
         this.endpoint = pollingStrategyOptions.getEndpoint();
-        this.serializer = pollingStrategyOptions.getSerializer() != null ? pollingStrategyOptions.getSerializer()
+        this.serializer = pollingStrategyOptions.getSerializer() != null
+            ? pollingStrategyOptions.getSerializer()
             : new DefaultJsonSerializer();
         this.operationLocationHeaderName
             = (operationLocationHeaderName == null) ? DEFAULT_OPERATION_LOCATION_HEADER : operationLocationHeaderName;
@@ -147,7 +149,9 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
         pollingContext.setData(PollingConstants.HTTP_METHOD, response.getRequest().getHttpMethod().name());
         pollingContext.setData(PollingConstants.REQUEST_URL, response.getRequest().getUrl().toString());
 
-        if (response.getStatusCode() == 200 || response.getStatusCode() == 201 || response.getStatusCode() == 202
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
             || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,

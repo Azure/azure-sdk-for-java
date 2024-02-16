@@ -238,7 +238,8 @@ public class PollingWithTimeoutTests {
 
     private static Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>>
         asyncRunsOnce(AtomicBoolean hasBeenRan) {
-        return ignored -> (hasBeenRan.compareAndSet(false, true)) ? Mono.just(RESPONSE_ZERO)
+        return ignored -> (hasBeenRan.compareAndSet(false, true))
+            ? Mono.just(RESPONSE_ZERO)
             : Mono.delay(Duration.ofSeconds(10)).map(ignored2 -> RESPONSE_ONE);
     }
 

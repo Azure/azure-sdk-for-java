@@ -237,7 +237,9 @@ public interface Tracer {
                 if (spanBuilder == null) {
                     // we can't return context here, because caller would not know that span was not created.
                     // it will add attributes or events to parent span and end parent span.
-                    Utils.LOGGER.atWarning().addKeyValue("spanName", spanName).addKeyValue("processKind", processKind)
+                    Utils.LOGGER.atWarning()
+                        .addKeyValue("spanName", spanName)
+                        .addKeyValue("processKind", processKind)
                         .log("Start span is called without builder on the context, creating default builder.");
                     spanBuilder = new StartSpanOptions(SpanKind.CLIENT);
                 }
@@ -269,7 +271,9 @@ public interface Tracer {
                 return start(spanName, spanBuilder, context);
 
             default:
-                Utils.LOGGER.atWarning().addKeyValue("spanName", spanName).addKeyValue("processKind", processKind)
+                Utils.LOGGER.atWarning()
+                    .addKeyValue("spanName", spanName)
+                    .addKeyValue("processKind", processKind)
                     .log("Start span is called with unknown process kind, suppressing the span.");
                 return context;
         }

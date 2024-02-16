@@ -53,7 +53,9 @@ public final class PollOperationDetails implements JsonSerializable<PollOperatio
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject().writeStringField("id", operationId).writeJsonField("error", error)
+        return jsonWriter.writeStartObject()
+            .writeStringField("id", operationId)
+            .writeJsonField("error", error)
             .writeEndObject();
     }
 

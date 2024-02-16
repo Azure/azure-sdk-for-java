@@ -28,22 +28,28 @@ public class TracerProviderTests {
 
     @Test
     public void createTracerCustomProviderConfiguration() {
-        Configuration config = new ConfigurationBuilder().putProperty("tracing.provider.implementation",
-            "com.azure.core.experimental.util.tracing.LoggingTracerProvider").build();
+        Configuration config
+            = new ConfigurationBuilder()
+                .putProperty("tracing.provider.implementation",
+                    "com.azure.core.experimental.util.tracing.LoggingTracerProvider")
+                .build();
 
-        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, null,
-            TracingOptions.fromConfiguration(config));
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer("test", null, null, TracingOptions.fromConfiguration(config));
 
         assertEquals("LoggingTracer", tracer.getClass().getSimpleName());
     }
 
     @Test
     public void createTracerOTelProviderInConfig() {
-        Configuration config = new ConfigurationBuilder().putProperty("tracing.provider.implementation",
-            "com.azure.core.tracing.opentelemetry.OpenTelemetryTracerProvider").build();
+        Configuration config
+            = new ConfigurationBuilder()
+                .putProperty("tracing.provider.implementation",
+                    "com.azure.core.tracing.opentelemetry.OpenTelemetryTracerProvider")
+                .build();
 
-        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, null,
-            TracingOptions.fromConfiguration(config));
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer("test", null, null, TracingOptions.fromConfiguration(config));
 
         assertInstanceOf(OpenTelemetryTracer.class, tracer);
     }
@@ -56,8 +62,8 @@ public class TracerProviderTests {
         Configuration config
             = new ConfigurationBuilder(new TestConfigurationSource(), new TestConfigurationSource(), envSource).build();
 
-        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, null,
-            TracingOptions.fromConfiguration(config));
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer("test", null, null, TracingOptions.fromConfiguration(config));
 
         assertInstanceOf(OpenTelemetryTracer.class, tracer);
     }
@@ -95,7 +101,8 @@ public class TracerProviderTests {
     @Test
     public void createTracerCustomProviderDoesNotExistConfiguration() {
         Configuration config = new ConfigurationBuilder()
-            .putProperty("tracing.provider.implementation", "com.azure.core.util.tracing.TestTracerProvider").build();
+            .putProperty("tracing.provider.implementation", "com.azure.core.util.tracing.TestTracerProvider")
+            .build();
 
         assertThrows(RuntimeException.class, () -> TracingOptions.fromConfiguration(config));
     }

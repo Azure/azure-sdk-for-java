@@ -83,7 +83,8 @@ public final class GeoLineString extends GeoObject {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject().writeStringField("type", GeoObjectType.LINE_STRING.toString())
+        jsonWriter.writeStartObject()
+            .writeStringField("type", GeoObjectType.LINE_STRING.toString())
             .writeArrayField("coordinates", getCoordinates(), JsonWriter::writeJson)
             .writeJsonField("bbox", getBoundingBox());
 

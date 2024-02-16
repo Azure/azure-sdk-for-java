@@ -52,10 +52,12 @@ public class RecordNetworkCallPolicyTests {
     public void sigValueIsRedacted(String requestUrl, String expectedRedactedUrl) {
         RecordedData recordedData = new RecordedData();
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RecordNetworkCallPolicy(recordedData))
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200))).build();
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, requestUrl)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
 
         NetworkCallRecord record = assertDoesNotThrow(() -> recordedData.findFirstAndRemoveNetworkCall(call -> true));
         assertEquals(expectedRedactedUrl, record.getUri());

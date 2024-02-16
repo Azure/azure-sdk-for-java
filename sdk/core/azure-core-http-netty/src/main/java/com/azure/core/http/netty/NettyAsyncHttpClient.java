@@ -77,9 +77,9 @@ import java.util.function.BiFunction;
  * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
- *     .port&#40;8080&#41;
- *     .wiretap&#40;true&#41;
- *     .build&#40;&#41;;
+ * .port&#40;8080&#41;
+ * .wiretap&#40;true&#41;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
@@ -136,9 +136,10 @@ class NettyAsyncHttpClient implements HttpClient {
         boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
         boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
         boolean headersEagerlyConverted = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
-        Long responseTimeout
-            = context.getData(AZURE_RESPONSE_TIMEOUT).filter(timeoutDuration -> timeoutDuration instanceof Duration)
-                .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis()).orElse(null);
+        Long responseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT)
+            .filter(timeoutDuration -> timeoutDuration instanceof Duration)
+            .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
+            .orElse(null);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         return attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted, responseTimeout,
@@ -149,9 +150,11 @@ class NettyAsyncHttpClient implements HttpClient {
         boolean ignoreResponseBody, boolean headersEagerlyConverted, Long responseTimeout,
         ProgressReporter progressReporter, boolean proxyRetry) {
         Flux<Tuple2<HttpResponse, HttpHeaders>> nettyRequest
-            = nettyClient.request(toReactorNettyHttpMethod(request.getHttpMethod())).uri(request.getUrl().toString())
-                .send(bodySendDelegate(request)).responseConnection(responseDelegate(request, disableBufferCopy,
-                    eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted));
+            = nettyClient.request(toReactorNettyHttpMethod(request.getHttpMethod()))
+                .uri(request.getUrl().toString())
+                .send(bodySendDelegate(request))
+                .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse,
+                    ignoreResponseBody, headersEagerlyConverted));
 
         if (responseTimeout != null || progressReporter != null) {
             nettyRequest = nettyRequest.contextWrite(ctx -> ctx.put(AzureNettyHttpClientContext.KEY,
@@ -173,9 +176,11 @@ class NettyAsyncHttpClient implements HttpClient {
             } else {
                 return Mono.just(response);
             }
-        }).onErrorResume(throwable -> shouldRetryProxyError(proxyRetry, throwable) ? attemptAsync(request,
-            eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted, responseTimeout, progressReporter, true)
-            : Mono.error(throwable));
+        })
+            .onErrorResume(throwable -> shouldRetryProxyError(proxyRetry, throwable)
+                ? attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
+                    responseTimeout, progressReporter, true)
+                : Mono.error(throwable));
     }
 
     private static boolean shouldRetryProxyError(boolean proxyRetry, Throwable throwable) {
@@ -183,8 +188,9 @@ class NettyAsyncHttpClient implements HttpClient {
         // connect to the proxy.
         // Sometimes connecting to the proxy may return an SSLException that wraps the ProxyConnectException, this
         // generally happens if the proxy is using SSL.
-        return !proxyRetry && (throwable instanceof ProxyConnectException
-            || (throwable instanceof SSLException && throwable.getCause() instanceof ProxyConnectException));
+        return !proxyRetry
+            && (throwable instanceof ProxyConnectException
+                || (throwable instanceof SSLException && throwable.getCause() instanceof ProxyConnectException));
     }
 
     @Override
@@ -335,7 +341,10 @@ class NettyAsyncHttpClient implements HttpClient {
             if (eagerlyReadResponse || ignoreResponseBody) {
                 // Set up the body flux and dispose the connection once it has been received.
                 return Mono.using(() -> reactorNettyConnection,
-                    connection -> connection.inbound().receive().aggregate().asByteArray()
+                    connection -> connection.inbound()
+                        .receive()
+                        .aggregate()
+                        .asByteArray()
                         .switchIfEmpty(Mono.just(EMPTY_BYTES))
                         .map(bytes -> Tuples.of(new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest,
                             bytes, headersEagerlyConverted), reactorNettyResponse.responseHeaders())),

@@ -24,7 +24,9 @@ public class TestConfigurationSource implements ConfigurationSource {
         if (path == null) {
             return testData;
         }
-        return testData.entrySet().stream().filter(prop -> prop.getKey().startsWith(path + "."))
+        return testData.entrySet()
+            .stream()
+            .filter(prop -> prop.getKey().startsWith(path + "."))
             .collect(Collectors.toMap(Map.Entry<String, String>::getKey, Map.Entry<String, String>::getValue));
     }
 }

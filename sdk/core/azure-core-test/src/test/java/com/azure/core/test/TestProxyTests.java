@@ -264,7 +264,8 @@ public class TestProxyTests extends TestProxyTestBase {
             // default sanitizers
             assertEquals("http://REDACTED/fr/path/1", record.getUri());
             assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
-            assertTrue(record.getResponseHeaders().get("Operation-Location")
+            assertTrue(record.getResponseHeaders()
+                .get("Operation-Location")
                 .startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
             // custom sanitizers
             assertEquals(REDACTED, record.getResponse().get("modelId"));
@@ -326,7 +327,8 @@ public class TestProxyTests extends TestProxyTestBase {
         assertEquals("http://REDACTED/fr/path/2", record.getUri());
 
         // user delegation sanitizers
-        assertTrue(record.getResponse().get("Body")
+        assertTrue(record.getResponse()
+            .get("Body")
             .contains("<UserDelegationKey><SignedTid>REDACTED</SignedTid></UserDelegationKey>"));
         assertTrue(record.getResponse().get("primaryKey").contains("<PrimaryKey>REDACTED</PrimaryKey>"));
 
@@ -366,7 +368,8 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client)
-            .policies(new RedirectPolicy(), interceptorManager.getRecordPolicy()).build();
+            .policies(new RedirectPolicy(), interceptorManager.getRecordPolicy())
+            .build();
         URL url;
         try {
             url = new UrlBuilder().setHost("localhost").setPath("/getRedirect").setPort(3000).setScheme("http").toUrl();

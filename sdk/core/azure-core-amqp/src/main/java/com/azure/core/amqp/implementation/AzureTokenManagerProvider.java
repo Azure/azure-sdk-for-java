@@ -47,7 +47,9 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
         final String scopes = getScopesFromResource(resource);
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
 
-        LOGGER.atVerbose().addKeyValue("audience", tokenAudience).addKeyValue("resource", resource)
+        LOGGER.atVerbose()
+            .addKeyValue("audience", tokenAudience)
+            .addKeyValue("resource", resource)
             .log("Creating new token manager.");
 
         return new ActiveClientTokenManager(cbsNodeMono, tokenAudience, scopes);

@@ -152,8 +152,11 @@ final class ReceiverDeliveryHandler {
     public void close(String errorMessage) {
         isTerminated.set(true);
         messages.emitComplete((signalType, emitResult) -> {
-            logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, receiveLinkName)
-                .addKeyValue(EMIT_RESULT_KEY, emitResult).log(errorMessage);
+            logger.atVerbose()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(LINK_NAME_KEY, receiveLinkName)
+                .addKeyValue(EMIT_RESULT_KEY, emitResult)
+                .log(errorMessage);
             return false;
         });
     }
@@ -174,11 +177,16 @@ final class ReceiverDeliveryHandler {
             if (link != null) {
                 final ErrorCondition condition = link.getRemoteCondition();
                 addErrorCondition(logger.atVerbose(), condition).addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(LINK_NAME_KEY, receiveLinkName).addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
-                    .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit()).addKeyValue(IS_PARTIAL_DELIVERY_KEY, true)
-                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, delivery.isSettled()).log("onDelivery.");
+                    .addKeyValue(LINK_NAME_KEY, receiveLinkName)
+                    .addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
+                    .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit())
+                    .addKeyValue(IS_PARTIAL_DELIVERY_KEY, true)
+                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, delivery.isSettled())
+                    .log("onDelivery.");
             } else {
-                logger.atWarning().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
+                logger.atWarning()
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
                     .log("Partial delivery with no link.");
             }
             return true;
@@ -192,11 +200,15 @@ final class ReceiverDeliveryHandler {
             final Link link = delivery.getLink();
             if (link != null) {
                 addErrorCondition(logger.atInfo(), link.getRemoteCondition()).addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(LINK_NAME_KEY, receiveLinkName).addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
-                    .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit()).addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
+                    .addKeyValue(LINK_NAME_KEY, receiveLinkName)
+                    .addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
+                    .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit())
+                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
                     .log("onDelivery. Was already settled.");
             } else {
-                logger.atWarning().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
+                logger.atWarning()
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
                     .log("Settled delivery with no link.");
             }
             return true;
@@ -356,8 +368,11 @@ final class ReceiverDeliveryHandler {
      */
     private void emitMessage(Message message, Delivery delivery) {
         messages.emitNext(message, (signalType, emitResult) -> {
-            logger.atWarning().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, receiveLinkName)
-                .addKeyValue(EMIT_RESULT_KEY, emitResult).addKeyValue("delivery", delivery)
+            logger.atWarning()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(LINK_NAME_KEY, receiveLinkName)
+                .addKeyValue(EMIT_RESULT_KEY, emitResult)
+                .addKeyValue("delivery", delivery)
                 .log("Could not emit delivery.");
 
             final Link link = delivery.getLink();
@@ -381,8 +396,11 @@ final class ReceiverDeliveryHandler {
      */
     private void emitError(IllegalStateException error) {
         messages.emitError(error, (signalType, emitResult) -> {
-            logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, receiveLinkName)
-                .addKeyValue(EMIT_RESULT_KEY, emitResult).log("Could not emit messages.error.", error);
+            logger.atVerbose()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(LINK_NAME_KEY, receiveLinkName)
+                .addKeyValue(EMIT_RESULT_KEY, emitResult)
+                .log("Could not emit messages.error.", error);
             return false;
         });
     }
@@ -394,13 +412,15 @@ final class ReceiverDeliveryHandler {
         }
 
         final ErrorCondition condition = link.getRemoteCondition();
-        final LoggingEventBuilder loggingEvent = addErrorCondition(logger.atVerbose(), condition)
-            .addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, receiveLinkName);
+        final LoggingEventBuilder loggingEvent
+            = addErrorCondition(logger.atVerbose(), condition).addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(LINK_NAME_KEY, receiveLinkName);
         if (deliveryTag != null) {
             loggingEvent.addKeyValue(DELIVERY_TAG_KEY, deliveryTag);
         }
         loggingEvent.addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
-            .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit()).addKeyValue(IS_SETTLED_DELIVERY_KEY, wasSettled)
+            .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit())
+            .addKeyValue(IS_SETTLED_DELIVERY_KEY, wasSettled)
             .log("onDelivery.");
     }
 

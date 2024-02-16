@@ -87,7 +87,8 @@ public final class RetryUtil {
      *     Otherwise, propagates a {@link TimeoutException}.
      */
     public static <T> Flux<T> withRetry(Flux<T> source, AmqpRetryOptions retryOptions, String timeoutMessage) {
-        return source.timeout(retryOptions.getTryTimeout()).retryWhen(createRetry(retryOptions))
+        return source.timeout(retryOptions.getTryTimeout())
+            .retryWhen(createRetry(retryOptions))
             .doOnError(error -> LOGGER.error(timeoutMessage, error));
     }
 
@@ -123,7 +124,8 @@ public final class RetryUtil {
                 retrySpec = Retry.backoff(options.getMaxRetries(), delay);
                 break;
         }
-        return retrySpec.jitter(JITTER_FACTOR).maxBackoff(options.getMaxDelay())
+        return retrySpec.jitter(JITTER_FACTOR)
+            .maxBackoff(options.getMaxDelay())
             .filter(error -> error instanceof TimeoutException
                 || (error instanceof AmqpException && ((AmqpException) error).isTransient()));
     }

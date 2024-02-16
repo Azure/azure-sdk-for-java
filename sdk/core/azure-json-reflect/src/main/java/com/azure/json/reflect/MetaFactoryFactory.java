@@ -20,7 +20,8 @@ final class MetaFactoryFactory {
         MethodType invokedType, MethodHandles.Lookup lookup) throws Throwable {
         MethodHandle handle = lookup.findVirtual(implClass, methodName, implType);
         return (T) LambdaMetafactory
-            .metafactory(lookup, methodName, methodType(invokedClass), invokedType, handle, handle.type()).getTarget()
+            .metafactory(lookup, methodName, methodType(invokedClass), invokedType, handle, handle.type())
+            .getTarget()
             .invoke();
     }
 }

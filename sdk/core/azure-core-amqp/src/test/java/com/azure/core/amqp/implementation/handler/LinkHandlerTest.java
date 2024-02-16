@@ -159,13 +159,16 @@ public class LinkHandlerTest {
         when(session.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
         // Act
-        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.UNINITIALIZED)
-            .then(() -> handler.onLinkRemoteClose(event)).expectErrorSatisfies(error -> {
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onLinkRemoteClose(event))
+            .expectErrorSatisfies(error -> {
                 Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
                 Assertions.assertEquals(LINK_STOLEN, exception.getErrorCondition());
-            }).verify(VERIFY_TIMEOUT);
+            })
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(link).setCondition(errorCondition);
@@ -189,13 +192,16 @@ public class LinkHandlerTest {
         when(session.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
         // Act
-        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.UNINITIALIZED)
-            .then(() -> handler.onLinkRemoteDetach(event)).expectErrorSatisfies(error -> {
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onLinkRemoteDetach(event))
+            .expectErrorSatisfies(error -> {
                 Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
                 Assertions.assertEquals(LINK_STOLEN, exception.getErrorCondition());
-            }).verify(VERIFY_TIMEOUT);
+            })
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(link).setCondition(errorCondition);
@@ -218,13 +224,16 @@ public class LinkHandlerTest {
         when(link.getLocalState()).thenReturn(EndpointState.CLOSED);
 
         // Act & Assert
-        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.UNINITIALIZED)
-            .then(() -> handler.onLinkRemoteClose(event)).expectErrorSatisfies(error -> {
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onLinkRemoteClose(event))
+            .expectErrorSatisfies(error -> {
                 Assertions.assertTrue(error instanceof AmqpException);
 
                 AmqpException exception = (AmqpException) error;
                 Assertions.assertEquals(LINK_STOLEN, exception.getErrorCondition());
-            }).verify(VERIFY_TIMEOUT);
+            })
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(link, never()).setCondition(errorCondition);
@@ -356,8 +365,11 @@ public class LinkHandlerTest {
     @Test
     public void onLinkFinal() {
         // Act & Assert
-        StepVerifier.create(handler.getEndpointStates()).then(() -> handler.onLinkFinal(event))
-            .expectNext(EndpointState.UNINITIALIZED, EndpointState.CLOSED).expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(handler.getEndpointStates())
+            .then(() -> handler.onLinkFinal(event))
+            .expectNext(EndpointState.UNINITIALIZED, EndpointState.CLOSED)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**

@@ -42,8 +42,11 @@ public class GlobalOpenTelemetryMetricsTests {
         GlobalOpenTelemetry.resetForTest();
         testClock = TestClock.create();
         sdkMeterReader = InMemoryMetricReader.create();
-        sdkMeterProvider = SdkMeterProvider.builder().setClock(testClock).setResource(RESOURCE)
-            .registerMetricReader(sdkMeterReader).build();
+        sdkMeterProvider = SdkMeterProvider.builder()
+            .setClock(testClock)
+            .setResource(RESOURCE)
+            .registerMetricReader(sdkMeterReader)
+            .build();
     }
 
     @AfterEach
@@ -61,16 +64,18 @@ public class GlobalOpenTelemetryMetricsTests {
 
         histogram.record(1, null, Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
-        assertThat(sdkMeterReader.collectAllMetrics())
-            .satisfiesExactly(
-                metric -> assertThat(metric).hasResource(RESOURCE)
-                    .hasInstrumentationScope(InstrumentationScopeInfo.create("az.sdk-name", null, null))
-                    .hasName("az.sdk.test-histogram").hasDescription("important metric")
-                    .hasHistogramSatisfying(h -> h.isCumulative()
-                        .hasPointsSatisfying(point -> point
-                            .hasStartEpochNanos(testClock.now() - SECOND_NANOS).hasEpochNanos(testClock.now())
-                            .hasAttributes(Attributes.empty()).hasCount(1).hasSum(1).hasBucketBoundaries(0, 5, 10, 25,
-                                50, 75, 100, 250, 500, 750, 1_000, 2_500, 5_000, 7_500, 10_000)
-                            .hasBucketCounts(0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))));
+        assertThat(sdkMeterReader.collectAllMetrics()).satisfiesExactly(metric -> assertThat(metric)
+            .hasResource(RESOURCE)
+            .hasInstrumentationScope(InstrumentationScopeInfo.create("az.sdk-name", null, null))
+            .hasName("az.sdk.test-histogram")
+            .hasDescription("important metric")
+            .hasHistogramSatisfying(h -> h.isCumulative()
+                .hasPointsSatisfying(point -> point.hasStartEpochNanos(testClock.now() - SECOND_NANOS)
+                    .hasEpochNanos(testClock.now())
+                    .hasAttributes(Attributes.empty())
+                    .hasCount(1)
+                    .hasSum(1)
+                    .hasBucketBoundaries(0, 5, 10, 25, 50, 75, 100, 250, 500, 750, 1_000, 2_500, 5_000, 7_500, 10_000)
+                    .hasBucketCounts(0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))));
     }
 }

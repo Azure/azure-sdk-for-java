@@ -52,7 +52,8 @@ public class TestResourceNamer extends ResourceNamer {
         this(testContextManager.getTestName(), testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
             null, null, storage);
         // Only need recordedData if the test is running in playback or record.
-        if (testContextManager.getTestMode() != TestMode.LIVE && !testContextManager.doNotRecordTest()
+        if (testContextManager.getTestMode() != TestMode.LIVE
+            && !testContextManager.doNotRecordTest()
             && !testContextManager.isTestProxyEnabled()) {
             Objects.requireNonNull(storage, "'recordedData' cannot be null.");
         }

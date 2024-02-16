@@ -64,19 +64,25 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
                     if (paramCount == 3) {
                         MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
                         return new ResponseConstructor(3,
-                            LambdaMetafactory.metafactory(LOOKUP, "apply", ResponseFunc3.METHOD_TYPE,
-                                ResponseFunc3.SIGNATURE, ctrMethodHandle, ctrMethodHandle.type()).getTarget());
+                            LambdaMetafactory
+                                .metafactory(LOOKUP, "apply", ResponseFunc3.METHOD_TYPE, ResponseFunc3.SIGNATURE,
+                                    ctrMethodHandle, ctrMethodHandle.type())
+                                .getTarget());
                     } else if (paramCount == 4) {
                         MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
                         return new ResponseConstructor(4,
-                            LambdaMetafactory.metafactory(LOOKUP, "apply", ResponseFunc4.METHOD_TYPE,
-                                ResponseFunc4.SIGNATURE, ctrMethodHandle, ctrMethodHandle.type()).getTarget());
+                            LambdaMetafactory
+                                .metafactory(LOOKUP, "apply", ResponseFunc4.METHOD_TYPE, ResponseFunc4.SIGNATURE,
+                                    ctrMethodHandle, ctrMethodHandle.type())
+                                .getTarget());
                     } else {
                         // paramCount == 5
                         MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
                         return new ResponseConstructor(5,
-                            LambdaMetafactory.metafactory(LOOKUP, "apply", ResponseFunc5.METHOD_TYPE,
-                                ResponseFunc5.SIGNATURE, ctrMethodHandle, ctrMethodHandle.type()).getTarget());
+                            LambdaMetafactory
+                                .metafactory(LOOKUP, "apply", ResponseFunc5.METHOD_TYPE, ResponseFunc5.SIGNATURE,
+                                    ctrMethodHandle, ctrMethodHandle.type())
+                                .getTarget());
                     }
                 } catch (Throwable t) {
                     throw logger.logExceptionAsError(new RuntimeException(t));

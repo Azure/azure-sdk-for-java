@@ -21,7 +21,7 @@ import java.util.Objects;
  * <!-- end com.azure.core.amqp.models.AmqpAddress.createAndGet -->
  *
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-address-string">
- *      Address type Format.</a>
+ * Address type Format.</a>
  */
 public final class AmqpAddress {
 

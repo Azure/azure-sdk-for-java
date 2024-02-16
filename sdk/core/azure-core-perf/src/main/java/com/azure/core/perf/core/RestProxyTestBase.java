@@ -87,8 +87,10 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
             endpoint = "http://unused";
         }
         HttpClient httpClient = createHttpClient(options, mockResponseSupplier);
-        httpPipeline = new HttpPipelineBuilder().policies(createPipelinePolicies(options)).httpClient(httpClient)
-            .tracer(tracer).build();
+        httpPipeline = new HttpPipelineBuilder().policies(createPipelinePolicies(options))
+            .httpClient(httpClient)
+            .tracer(tracer)
+            .build();
 
         service = RestProxy.create(MyRestProxyService.class, httpPipeline);
     }
@@ -139,8 +141,9 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
             server.stubFor(any(urlPathMatching("/(RawData|UserDatabase|BinaryData).*")));
         } else {
             HttpResponse response = mockResponseSupplier.apply(null);
-            server.stubFor(any(urlPathMatching("/(RawData|UserDatabase|BinaryData).*")).willReturn(
-                aResponse().withBody(response.getBodyAsByteArray().block()).withStatus(response.getStatusCode())
+            server.stubFor(any(urlPathMatching("/(RawData|UserDatabase|BinaryData).*"))
+                .willReturn(aResponse().withBody(response.getBodyAsByteArray().block())
+                    .withStatus(response.getStatusCode())
                     .withHeader("Content-Type", response.getHeaderValue("Content-Type"))));
         }
 

@@ -18,11 +18,13 @@ public class ExponentialBackoffOptionsTest {
 
     @Test
     public void testBaseGreaterThanMaxDelay() {
-        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoffOptions()
-            .setBaseDelay(Duration.ofSeconds(1)).setMaxDelay(Duration.ofMillis(500)));
+        assertThrows(IllegalArgumentException.class,
+            () -> new ExponentialBackoffOptions().setBaseDelay(Duration.ofSeconds(1))
+                .setMaxDelay(Duration.ofMillis(500)));
 
-        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoffOptions()
-            .setMaxDelay(Duration.ofMillis(500)).setBaseDelay(Duration.ofSeconds(1)));
+        assertThrows(IllegalArgumentException.class,
+            () -> new ExponentialBackoffOptions().setMaxDelay(Duration.ofMillis(500))
+                .setBaseDelay(Duration.ofSeconds(1)));
     }
 
     @Test

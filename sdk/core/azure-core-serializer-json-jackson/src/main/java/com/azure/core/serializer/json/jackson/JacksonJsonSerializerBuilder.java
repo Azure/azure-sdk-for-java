@@ -36,7 +36,8 @@ public final class JacksonJsonSerializerBuilder {
      * @return A new instance of {@link JacksonJsonSerializer}.
      */
     public JacksonJsonSerializer build() {
-        return (objectMapper == null) ? new JacksonJsonSerializer(DEFAULT_MAPPER)
+        return (objectMapper == null)
+            ? new JacksonJsonSerializer(DEFAULT_MAPPER)
             : new JacksonJsonSerializer(objectMapper);
     }
 

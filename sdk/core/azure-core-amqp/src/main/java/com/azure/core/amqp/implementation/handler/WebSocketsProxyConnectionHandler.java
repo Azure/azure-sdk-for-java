@@ -152,8 +152,9 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         }
 
         final ErrorCondition errorCondition = transport.getCondition();
-        if (errorCondition == null || !(errorCondition.getCondition().equals(ConnectionError.FRAMING_ERROR)
-            || errorCondition.getCondition().equals(AmqpErrorCode.PROTON_IO_ERROR))) {
+        if (errorCondition == null
+            || !(errorCondition.getCondition().equals(ConnectionError.FRAMING_ERROR)
+                || errorCondition.getCondition().equals(AmqpErrorCode.PROTON_IO_ERROR))) {
             addErrorCondition(logger.atVerbose(), errorCondition)
                 .log("There is no error condition and these are not framing errors.");
             return;
@@ -189,8 +190,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         final URI url = createURI(fullyQualifiedNamespace, port);
         final InetSocketAddress address = new InetSocketAddress(hostNameParts[0], port);
 
-        logger.atError().log("Failed to connect to url: '{}', proxy host: '{}'", url, address.getHostString(),
-            ioException);
+        logger.atError()
+            .log("Failed to connect to url: '{}', proxy host: '{}'", url, address.getHostString(), ioException);
 
         final ProxySelector proxySelector = ProxySelector.getDefault();
         if (proxySelector != null) {
@@ -204,7 +205,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         // Checking that the proxy configuration is not null and not equal to the system defaults option.
         final ProxyImpl proxy = proxyOptions != null && !(proxyOptions == ProxyOptions.SYSTEM_DEFAULTS)
-            ? new ProxyImpl(getProtonConfiguration()) : new ProxyImpl();
+            ? new ProxyImpl(getProtonConfiguration())
+            : new ProxyImpl();
 
         final ProxyHandler proxyHandler = new ProxyHandlerImpl();
         proxy.configure(connectHostnameAndPort, null, proxyHandler, transport);
@@ -260,7 +262,10 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         // if the proxy can be translated to InetSocketAddress
         // only then - can we parse it to hostName and Port
         // which is required by qpid-proton-j library reactor.connectToHost() API
-        return proxies != null && !proxies.isEmpty() && proxies.get(0).type() == Proxy.Type.HTTP
-            && proxies.get(0).address() != null && proxies.get(0).address() instanceof InetSocketAddress;
+        return proxies != null
+            && !proxies.isEmpty()
+            && proxies.get(0).type() == Proxy.Type.HTTP
+            && proxies.get(0).address() != null
+            && proxies.get(0).address() instanceof InetSocketAddress;
     }
 }

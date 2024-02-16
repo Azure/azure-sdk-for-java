@@ -69,8 +69,10 @@ public class OkHttpAsyncClientProviderTests {
     public void optionsWithTimeouts() {
         long expectedTimeout = 15000;
         Duration timeout = Duration.ofMillis(expectedTimeout);
-        HttpClientOptions clientOptions = new HttpClientOptions().setConnectTimeout(timeout).setWriteTimeout(timeout)
-            .setResponseTimeout(timeout).setReadTimeout(timeout);
+        HttpClientOptions clientOptions = new HttpClientOptions().setConnectTimeout(timeout)
+            .setWriteTimeout(timeout)
+            .setResponseTimeout(timeout)
+            .setReadTimeout(timeout);
 
         OkHttpAsyncHttpClient httpClient
             = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider().createInstance(clientOptions);

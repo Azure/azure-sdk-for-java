@@ -53,8 +53,11 @@ public class HandlerTest {
     @Test
     public void initialHandlerState() {
         // Act & Assert
-        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.UNINITIALIZED).then(handler::close)
-            .expectNext(EndpointState.CLOSED).verifyComplete();
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(handler::close)
+            .expectNext(EndpointState.CLOSED)
+            .verifyComplete();
 
         assertEquals(TestHandler.CONNECTION_ID, handler.getConnectionId());
         assertEquals(TestHandler.HOSTNAME, handler.getHostname());
@@ -71,7 +74,9 @@ public class HandlerTest {
             handler.onNext(EndpointState.UNINITIALIZED);
             handler.onNext(EndpointState.UNINITIALIZED);
             handler.onNext(EndpointState.CLOSED);
-        }).expectNext(EndpointState.ACTIVE, EndpointState.UNINITIALIZED, EndpointState.CLOSED).then(handler::close)
+        })
+            .expectNext(EndpointState.ACTIVE, EndpointState.UNINITIALIZED, EndpointState.CLOSED)
+            .then(handler::close)
             .verifyComplete();
     }
 
@@ -92,8 +97,11 @@ public class HandlerTest {
         final Throwable exception = new AmqpException(false, "Some test message.", context);
 
         // Act & Assert
-        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.UNINITIALIZED)
-            .then(() -> handler.onError(exception)).expectErrorMatches(e -> e.equals(exception)).verify();
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onError(exception))
+            .expectErrorMatches(e -> e.equals(exception))
+            .verify();
     }
 
     @Test
@@ -109,16 +117,23 @@ public class HandlerTest {
             handler.onError(exception2);
         }).expectErrorMatches(e -> e.equals(exception)).verify();
 
-        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.UNINITIALIZED)
-            .expectErrorMatches(e -> e.equals(exception)).verify();
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .expectErrorMatches(e -> e.equals(exception))
+            .verify();
     }
 
     @Test
     public void completesOnce() {
         // Act & Assert
-        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.UNINITIALIZED)
-            .then(() -> handler.onNext(EndpointState.ACTIVE)).expectNext(EndpointState.ACTIVE)
-            .then(() -> handler.close()).expectNext(EndpointState.CLOSED).expectComplete().verify();
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onNext(EndpointState.ACTIVE))
+            .expectNext(EndpointState.ACTIVE)
+            .then(() -> handler.close())
+            .expectNext(EndpointState.CLOSED)
+            .expectComplete()
+            .verify();
 
         // The last state is always replayed before it is closed.
         StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.CLOSED).expectComplete().verify();

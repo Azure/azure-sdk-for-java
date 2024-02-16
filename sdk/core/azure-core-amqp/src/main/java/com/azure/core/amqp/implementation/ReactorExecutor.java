@@ -98,8 +98,8 @@ public class ReactorExecutor implements AsyncCloseable {
                 } catch (RejectedExecutionException exception) {
                     logger.warning("Scheduling reactor failed because the scheduler has been shut down.", exception);
 
-                    this.reactor.attachments().set(RejectedExecutionException.class, RejectedExecutionException.class,
-                        exception);
+                    this.reactor.attachments()
+                        .set(RejectedExecutionException.class, RejectedExecutionException.class, exception);
                 }
             }
         } catch (HandlerException handlerException) {
@@ -108,8 +108,10 @@ public class ReactorExecutor implements AsyncCloseable {
             logger.warning("Unhandled exception while processing events in reactor, report this error.",
                 handlerException);
 
-            final String message = !CoreUtils.isNullOrEmpty(cause.getMessage()) ? cause.getMessage()
-                : !CoreUtils.isNullOrEmpty(handlerException.getMessage()) ? handlerException.getMessage()
+            final String message = !CoreUtils.isNullOrEmpty(cause.getMessage())
+                ? cause.getMessage()
+                : !CoreUtils.isNullOrEmpty(handlerException.getMessage())
+                    ? handlerException.getMessage()
                     : "Reactor encountered unrecoverable error";
 
             final AmqpException exception;
@@ -159,8 +161,9 @@ public class ReactorExecutor implements AsyncCloseable {
 
                 reactor.stop();
             } catch (HandlerException e) {
-                logger.atWarning().log(() -> StringUtil.toStackTraceString(e,
-                    "scheduleCompletePendingTasks - exception occurred while  processing events."));
+                logger.atWarning()
+                    .log(() -> StringUtil.toStackTraceString(e,
+                        "scheduleCompletePendingTasks - exception occurred while  processing events."));
             } finally {
                 try {
                     reactor.free();

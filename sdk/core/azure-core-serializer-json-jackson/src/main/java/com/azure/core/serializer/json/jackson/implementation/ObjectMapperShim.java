@@ -347,7 +347,8 @@ public final class ObjectMapperShim {
             }
 
             final Type[] mapTypeArguments = TypeUtil.getTypeArguments(declaredFieldType);
-            if (mapTypeArguments.length != 2 || mapTypeArguments[0] != String.class
+            if (mapTypeArguments.length != 2
+                || mapTypeArguments[0] != String.class
                 || mapTypeArguments[1] != String.class) {
                 continue;
             }

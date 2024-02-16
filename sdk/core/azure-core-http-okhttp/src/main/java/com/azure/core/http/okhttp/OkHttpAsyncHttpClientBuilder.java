@@ -37,7 +37,7 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
  * <pre>
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
- *         .build&#40;&#41;;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
  *
@@ -55,10 +55,10 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * final String proxyHost = &quot;&lt;proxy-host&gt;&quot;; &#47;&#47; e.g. localhost
  * final int proxyPort = 9999; &#47;&#47; Proxy port
  * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
- *         new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
+ * new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
- *         .proxy&#40;proxyOptions&#41;
- *         .build&#40;&#41;;
+ * .proxy&#40;proxyOptions&#41;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions -->
  *
@@ -75,8 +75,8 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <pre>
  * final Duration connectionTimeout = Duration.ofSeconds&#40;250&#41;; &#47;&#47; connection timeout of 250 seconds
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
- *         .connectionTimeout&#40;connectionTimeout&#41;
- *         .build&#40;&#41;;
+ * .connectionTimeout&#40;connectionTimeout&#41;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#connectionTimeout -->
  *
@@ -87,7 +87,7 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
  * <pre>
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
- *         .build&#40;&#41;;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
  *
@@ -99,9 +99,9 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <pre>
  * &#47;&#47; Constructs an HttpClient that only supports HTTP&#47;2.
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;new OkHttpClient.Builder&#40;&#41;
- *     .protocols&#40;Collections.singletonList&#40;Protocol.H2_PRIOR_KNOWLEDGE&#41;&#41;
- *     .build&#40;&#41;&#41;
- *     .build&#40;&#41;;
+ * .protocols&#40;Collections.singletonList&#40;Protocol.H2_PRIOR_KNOWLEDGE&#41;&#41;
+ * .build&#40;&#41;&#41;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
  *

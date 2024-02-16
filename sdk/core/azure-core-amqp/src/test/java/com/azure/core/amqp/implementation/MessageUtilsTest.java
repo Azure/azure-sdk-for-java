@@ -190,21 +190,32 @@ public class MessageUtilsTest {
         final byte[] contents = "foo-bar".getBytes(StandardCharsets.UTF_8);
         final AmqpMessageBody body = AmqpMessageBody.fromData(contents);
         final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(body);
-        final AmqpMessageHeader header = expected.getHeader().setDurable(true).setDeliveryCount(17L)
-            .setPriority((short) 2).setFirstAcquirer(false).setTimeToLive(Duration.ofSeconds(10));
+        final AmqpMessageHeader header = expected.getHeader()
+            .setDurable(true)
+            .setDeliveryCount(17L)
+            .setPriority((short) 2)
+            .setFirstAcquirer(false)
+            .setTimeToLive(Duration.ofSeconds(10));
         final String messageId = "Test-message-id";
         final AmqpMessageId amqpMessageId = new AmqpMessageId(messageId);
         final AmqpMessageId correlationId = new AmqpMessageId("correlation-id-test");
         final AmqpAddress replyTo = new AmqpAddress("foo");
         final AmqpAddress to = new AmqpAddress("bar");
         final byte[] userId = "baz".getBytes(StandardCharsets.UTF_8);
-        final AmqpMessageProperties properties
-            = expected.getProperties().setAbsoluteExpiryTime(OffsetDateTime.parse("2021-02-04T10:15:30+00:00"))
-                .setContentEncoding("content-encoding-test").setContentType("content-type-test")
-                .setCorrelationId(correlationId).setCreationTime(OffsetDateTime.parse("2021-02-03T10:15:30+00:00"))
-                .setGroupId("group-id-test").setGroupSequence(22L).setMessageId(amqpMessageId)
-                .setReplyToGroupId("reply-to-group-id-test").setReplyTo(replyTo).setTo(to).setSubject("subject-item")
-                .setUserId(userId);
+        final AmqpMessageProperties properties = expected.getProperties()
+            .setAbsoluteExpiryTime(OffsetDateTime.parse("2021-02-04T10:15:30+00:00"))
+            .setContentEncoding("content-encoding-test")
+            .setContentType("content-type-test")
+            .setCorrelationId(correlationId)
+            .setCreationTime(OffsetDateTime.parse("2021-02-03T10:15:30+00:00"))
+            .setGroupId("group-id-test")
+            .setGroupSequence(22L)
+            .setMessageId(amqpMessageId)
+            .setReplyToGroupId("reply-to-group-id-test")
+            .setReplyTo(replyTo)
+            .setTo(to)
+            .setSubject("subject-item")
+            .setUserId(userId);
 
         final Map<String, Object> applicationProperties = new HashMap<>();
         applicationProperties.put("1", "one");
@@ -670,7 +681,8 @@ public class MessageUtilsTest {
         annotations.put("foo", 10);
         annotations.put("bar", "baz");
         final ModifiedDeliveryOutcome expected = new ModifiedDeliveryOutcome().setDeliveryFailed(true)
-            .setUndeliverableHere(true).setMessageAnnotations(annotations);
+            .setUndeliverableHere(true)
+            .setMessageAnnotations(annotations);
 
         // Act
         final org.apache.qpid.proton.amqp.transport.DeliveryState actual
@@ -728,7 +740,8 @@ public class MessageUtilsTest {
         annotations.put("foo", 10);
         annotations.put("bar", "baz");
         final ModifiedDeliveryOutcome expected = new ModifiedDeliveryOutcome().setDeliveryFailed(true)
-            .setUndeliverableHere(true).setMessageAnnotations(annotations);
+            .setUndeliverableHere(true)
+            .setMessageAnnotations(annotations);
 
         // Act
         final Outcome actual = MessageUtils.toProtonJOutcome(expected);

@@ -202,7 +202,8 @@ public final class CoreUtils {
             if (inputStream != null) {
                 Properties properties = new Properties();
                 properties.load(inputStream);
-                return Collections.unmodifiableMap(properties.entrySet().stream()
+                return Collections.unmodifiableMap(properties.entrySet()
+                    .stream()
                     .collect(Collectors.toMap(entry -> (String) entry.getKey(), entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
@@ -313,14 +314,16 @@ public final class CoreUtils {
         try {
             long timeoutMillis = Long.parseLong(environmentTimeout);
             if (timeoutMillis < 0) {
-                logger.atVerbose().addKeyValue(timeoutPropertyName, timeoutMillis)
+                logger.atVerbose()
+                    .addKeyValue(timeoutPropertyName, timeoutMillis)
                     .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout.");
                 return Duration.ZERO;
             }
 
             return Duration.ofMillis(timeoutMillis);
         } catch (NumberFormatException ex) {
-            logger.atInfo().addKeyValue(timeoutPropertyName, environmentTimeout)
+            logger.atInfo()
+                .addKeyValue(timeoutPropertyName, environmentTimeout)
                 .addKeyValue("defaultTimeout", defaultTimeout)
                 .log("Timeout is not valid number. Using default value.", ex);
 
@@ -520,7 +523,8 @@ public final class CoreUtils {
      * @return An {@link Iterator} over the query parameter key-value pairs.
      */
     public static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
-        return (CoreUtils.isNullOrEmpty(queryParameters)) ? Collections.emptyIterator()
+        return (CoreUtils.isNullOrEmpty(queryParameters))
+            ? Collections.emptyIterator()
             : new ImplUtils.QueryParameterIterator(queryParameters);
     }
 

@@ -168,7 +168,8 @@ public class OpenTelemetryHttpPolicyTests {
             createHttpPipeline(new OpenTelemetryTracer("test", null, null,
                 new OpenTelemetryTracingOptions()
                     .setOpenTelemetry(OpenTelemetrySdk.builder().setTracerProvider(providerWithSampler).build())))
-                        .send(request).block();
+                        .send(request)
+                        .block();
         }
         // Assert
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
@@ -247,7 +248,8 @@ public class OpenTelemetryHttpPolicyTests {
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
                 response.close();
-            }).verifyComplete();
+            })
+            .verifyComplete();
 
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
         assertEquals(2, exportedSpans.size());
@@ -285,13 +287,16 @@ public class OpenTelemetryHttpPolicyTests {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, statusCode))).tracer(azTracer).build();
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, statusCode)))
+            .tracer(azTracer)
+            .build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello")))
             .assertNext(response -> {
                 assertEquals(statusCode, response.getStatusCode());
                 response.close();
-            }).verifyComplete();
+            })
+            .verifyComplete();
 
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
         assertEquals(1, exportedSpans.size());
@@ -312,10 +317,13 @@ public class OpenTelemetryHttpPolicyTests {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(request -> Mono.error(new Exception("foo"))).tracer(azTracer).build();
+            .httpClient(request -> Mono.error(new Exception("foo")))
+            .tracer(azTracer)
+            .build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello")))
-            .expectErrorMessage("foo").verify();
+            .expectErrorMessage("foo")
+            .verify();
 
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
         assertEquals(1, exportedSpans.size());
@@ -362,7 +370,8 @@ public class OpenTelemetryHttpPolicyTests {
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
                 response.close();
-            }).verifyComplete();
+            })
+            .verifyComplete();
 
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
         assertEquals(2, exportedSpans.size());
@@ -386,12 +395,14 @@ public class OpenTelemetryHttpPolicyTests {
 
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(request -> Mono.just(new ThrowingHttpResponse(request, 200, 16, new IOException("boom"))))
-            .tracer(azTracer).build();
+            .tracer(azTracer)
+            .build();
 
         StepVerifier
             .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), Context.NONE)
                 .flatMap(response -> response.getBodyAsInputStream().doFinally(i -> response.close())))
-            .expectError(IOException.class).verify();
+            .expectError(IOException.class)
+            .verify();
 
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
         assertEquals(1, exportedSpans.size());
@@ -416,7 +427,8 @@ public class OpenTelemetryHttpPolicyTests {
 
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(request -> Mono.delay(Duration.ofSeconds(10)).map(l -> new MockHttpResponse(request, 200)))
-            .tracer(azTracer).build();
+            .tracer(azTracer)
+            .build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), Context.NONE).toFuture().cancel(true);
 
@@ -443,7 +455,9 @@ public class OpenTelemetryHttpPolicyTests {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(new SimpleMockHttpClient()).tracer(azTracer).build();
+            .httpClient(new SimpleMockHttpClient())
+            .tracer(azTracer)
+            .build();
     }
 
     public static Stream<Arguments> getStatusCodes() {

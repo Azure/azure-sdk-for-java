@@ -339,13 +339,15 @@ public class JacksonAdapter implements SerializerAdapter {
         return (T) useAccessHelper(() -> {
             if (encoding == SerializerEncoding.XML) {
                 Class<?> rawClass = TypeUtil.getRawClass(type);
-                return supportsXmlSerializable(rawClass) ? deserializeAsXmlSerializable(rawClass, bytes)
+                return supportsXmlSerializable(rawClass)
+                    ? deserializeAsXmlSerializable(rawClass, bytes)
                     : getXmlMapper().readValue(bytes, type);
             } else if (encoding == SerializerEncoding.TEXT) {
                 return deserializeText(CoreUtils.bomAwareToString(bytes, null), type);
             } else {
                 Class<?> rawClass = TypeUtil.getRawClass(type);
-                return supportsJsonSerializable(rawClass) ? deserializeAsJsonSerializable(rawClass, bytes)
+                return supportsJsonSerializable(rawClass)
+                    ? deserializeAsJsonSerializable(rawClass, bytes)
                     : mapper.readValue(bytes, type);
             }
         });

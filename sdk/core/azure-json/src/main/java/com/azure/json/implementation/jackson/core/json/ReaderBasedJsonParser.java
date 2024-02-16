@@ -1570,7 +1570,8 @@ public class ReaderBasedJsonParser extends ParserBase {
 
         // This is the place to do leading-zero check(s) too:
         int intLen = 0;
-        char c = (_inputPtr < _inputEnd) ? _inputBuffer[_inputPtr++]
+        char c = (_inputPtr < _inputEnd)
+            ? _inputBuffer[_inputPtr++]
             : getNextChar("No digit following minus sign", JsonToken.VALUE_NUMBER_INT);
         if (c == '0') {
             c = _verifyNoLeadingZeroes();
@@ -1637,7 +1638,8 @@ public class ReaderBasedJsonParser extends ParserBase {
             }
             outBuf[outPtr++] = c;
             // Not optional, can require that we get one more char
-            c = (_inputPtr < _inputEnd) ? _inputBuffer[_inputPtr++]
+            c = (_inputPtr < _inputEnd)
+                ? _inputBuffer[_inputPtr++]
                 : getNextChar("expected a digit for number exponent");
             // Sign indicator?
             if (c == '-' || c == '+') {
@@ -1647,7 +1649,8 @@ public class ReaderBasedJsonParser extends ParserBase {
                 }
                 outBuf[outPtr++] = c;
                 // Likewise, non optional:
-                c = (_inputPtr < _inputEnd) ? _inputBuffer[_inputPtr++]
+                c = (_inputPtr < _inputEnd)
+                    ? _inputBuffer[_inputPtr++]
                     : getNextChar("expected a digit for number exponent");
             }
 

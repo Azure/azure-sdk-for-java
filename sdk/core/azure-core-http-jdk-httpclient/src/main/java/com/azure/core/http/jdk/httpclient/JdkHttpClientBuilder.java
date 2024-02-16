@@ -163,7 +163,8 @@ public class JdkHttpClientBuilder {
         // Azure JDK http client supports HTTP 1.1 by default.
         httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
 
-        httpClientBuilder = (this.connectionTimeout != null) ? httpClientBuilder.connectTimeout(this.connectionTimeout)
+        httpClientBuilder = (this.connectionTimeout != null)
+            ? httpClientBuilder.connectTimeout(this.connectionTimeout)
             : httpClientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT);
 
         Configuration buildConfiguration

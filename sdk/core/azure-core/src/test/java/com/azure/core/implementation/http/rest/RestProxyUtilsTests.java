@@ -45,7 +45,8 @@ public class RestProxyUtilsTests {
         StepVerifier
             .create(RestProxyUtils.validateLengthAsync(httpRequest)
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody())))
-            .assertNext(bytes -> assertArraysEqual(EXPECTED, bytes)).verifyComplete();
+            .assertNext(bytes -> assertArraysEqual(EXPECTED, bytes))
+            .verifyComplete();
     }
 
     public static Stream<Arguments> expectedBodyLengthDataProvider() throws Exception {
@@ -99,10 +100,12 @@ public class RestProxyUtilsTests {
             = RestProxyUtils.validateLengthAsync(httpRequest).flatMapMany(HttpRequest::getBody);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
-            .assertNext(bytes -> assertArraysEqual(EXPECTED, bytes)).verifyComplete();
+            .assertNext(bytes -> assertArraysEqual(EXPECTED, bytes))
+            .verifyComplete();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
-            .assertNext(bytes -> assertArraysEqual(EXPECTED, bytes)).verifyComplete();
+            .assertNext(bytes -> assertArraysEqual(EXPECTED, bytes))
+            .verifyComplete();
     }
 
     private static Stream<Arguments> dataProvider(int contentLength) throws Exception {

@@ -66,10 +66,12 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
             .build();
 
         ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-        Flux<ByteBuffer> delayedFlux
-            = Flux.just(byteBuffer).map(ByteBuffer::duplicate).repeat(101).delayElements(Duration.ofMillis(10))
-                // append last element that takes a day to emit.
-                .concatWith(Flux.just(byteBuffer).map(ByteBuffer::duplicate).delayElements(Duration.ofDays(1)));
+        Flux<ByteBuffer> delayedFlux = Flux.just(byteBuffer)
+            .map(ByteBuffer::duplicate)
+            .repeat(101)
+            .delayElements(Duration.ofMillis(10))
+            // append last element that takes a day to emit.
+            .concatWith(Flux.just(byteBuffer).map(ByteBuffer::duplicate).delayElements(Duration.ofDays(1)));
         Mono<BinaryData> requestBodyMono = BinaryData.fromFlux(delayedFlux, null, false);
 
         StepVerifier.create(requestBodyMono.flatMap(data -> {

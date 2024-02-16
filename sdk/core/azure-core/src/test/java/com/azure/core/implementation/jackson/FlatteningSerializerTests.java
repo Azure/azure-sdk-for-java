@@ -552,7 +552,9 @@ public class FlatteningSerializerTests {
         assertNotNull(deserialized);
 
         VirtualMachineScaleSetNetworkConfiguration expectedConfig = virtualMachineScaleSet.getVirtualMachineProfile()
-            .getNetworkProfile().getNetworkInterfaceConfigurations().get(0);
+            .getNetworkProfile()
+            .getNetworkInterfaceConfigurations()
+            .get(0);
 
         VirtualMachineScaleSetNetworkConfiguration actualConfig
             = deserialized.getVirtualMachineProfile().getNetworkProfile().getNetworkInterfaceConfigurations().get(0);
@@ -612,7 +614,9 @@ public class FlatteningSerializerTests {
     @Test
     public void jsonFlattenOnPrimitiveType() {
         JsonFlattenOnPrimitiveType expected = new JsonFlattenOnPrimitiveType().setJsonFlattenBoolean(true)
-            .setJsonFlattenDecimal(1.25D).setJsonFlattenNumber(2).setJsonFlattenString("string");
+            .setJsonFlattenDecimal(1.25D)
+            .setJsonFlattenNumber(2)
+            .setJsonFlattenString("string");
 
         String expectedSerialization
             = "{\"jsonflatten\":{\"boolean\":true,\"decimal\":1.25,\"number\":2,\"string\":\"string\"}}";
@@ -646,7 +650,8 @@ public class FlatteningSerializerTests {
     @Test
     public void flattenedPropertiesAndJsonAnyGetter() {
         FlattenedPropertiesAndJsonAnyGetter expected = new FlattenedPropertiesAndJsonAnyGetter().setString("string")
-            .addAdditionalProperty("key1", "value1").addAdditionalProperty("key2", "value2");
+            .addAdditionalProperty("key1", "value1")
+            .addAdditionalProperty("key2", "value2");
 
         String expectedSerialization
             = "{\"flattened\":{\"string\":\"string\"},\"key1\":\"value1\",\"key2\":\"value2\"}";
@@ -700,9 +705,10 @@ public class FlatteningSerializerTests {
 
     @Test
     public void jsonFlattenRepeatedPropertyNameDeserialize() throws IOException {
-        SampleResource deserialized = JacksonAdapter.createDefaultSerializerAdapter().deserialize(
-            "{\"name\":\"...-01\",\"properties\":{\"registrationTtl\":\"10675199.02:48:05.4775807\",\"authorizationRules\":[]}}",
-            SampleResource.class, SerializerEncoding.JSON);
+        SampleResource deserialized = JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(
+                "{\"name\":\"...-01\",\"properties\":{\"registrationTtl\":\"10675199.02:48:05.4775807\",\"authorizationRules\":[]}}",
+                SampleResource.class, SerializerEncoding.JSON);
 
         assertEquals("10675199.02:48:05.4775807", deserialized.getRegistrationTtl());
         assertNull(deserialized.getNamePropertiesName());
@@ -712,8 +718,8 @@ public class FlatteningSerializerTests {
     @MethodSource("emptyDanglingNodeJsonSupplier")
     public void jsonFlattenEmptyDanglingNodesDeserialize(String json, Object expected) throws IOException {
         // test to verify null dangling nodes are still retained and set to null
-        FlattenDangling deserialized = JacksonAdapter.createDefaultSerializerAdapter().deserialize(json,
-            FlattenDangling.class, SerializerEncoding.JSON);
+        FlattenDangling deserialized = JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(json, FlattenDangling.class, SerializerEncoding.JSON);
 
         assertEquals(expected, deserialized.getFlattenedProperty());
     }

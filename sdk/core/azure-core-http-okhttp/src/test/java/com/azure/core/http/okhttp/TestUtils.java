@@ -27,7 +27,8 @@ public final class TestUtils {
         return new Dispatcher(Executors.newSingleThreadExecutor(r -> {
             Thread thread = new Thread(r, "AzureQuietDispatch-" + QUIET_DISPATCHER_THREAD.getAndIncrement());
             thread.setUncaughtExceptionHandler((t, e) -> {
-                if (e.getClass() == expectedErrorType && e.getMessage() != null
+                if (e.getClass() == expectedErrorType
+                    && e.getMessage() != null
                     && e.getMessage().contains(expectedErrorMessage)) {
                     return;
                 }

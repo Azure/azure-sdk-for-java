@@ -49,7 +49,8 @@ public final class BodyPublisherUtils {
 
         HttpRequest.BodyPublisher publisher;
         BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
-        if (bodyContent instanceof ByteArrayContent || bodyContent instanceof StringContent
+        if (bodyContent instanceof ByteArrayContent
+            || bodyContent instanceof StringContent
             || bodyContent instanceof SerializableContent) {
             // String and serializable content also uses ofByteArray as ofString is just a wrapper for this,
             // so we might as well own the handling.

@@ -99,7 +99,8 @@ public final class DefaultXmlReader extends XmlReader {
     @Override
     public XmlToken nextElement() throws XMLStreamException {
         int next = reader.next();
-        while (next != XMLStreamConstants.START_ELEMENT && next != XMLStreamConstants.END_ELEMENT
+        while (next != XMLStreamConstants.START_ELEMENT
+            && next != XMLStreamConstants.END_ELEMENT
             && next != XMLStreamConstants.END_DOCUMENT) {
             next = reader.next();
         }
@@ -134,8 +135,10 @@ public final class DefaultXmlReader extends XmlReader {
 
         // Continue reading until the next event is the end of the element or an exception state.
         while (nextEvent != XMLStreamConstants.END_ELEMENT) {
-            if (nextEvent == XMLStreamConstants.CHARACTERS || nextEvent == XMLStreamConstants.CDATA
-                || nextEvent == XMLStreamConstants.SPACE || nextEvent == XMLStreamConstants.ENTITY_REFERENCE) {
+            if (nextEvent == XMLStreamConstants.CHARACTERS
+                || nextEvent == XMLStreamConstants.CDATA
+                || nextEvent == XMLStreamConstants.SPACE
+                || nextEvent == XMLStreamConstants.ENTITY_REFERENCE) {
                 readCount++;
                 if (readCount == 1) {
                     firstRead = reader.getText();

@@ -42,21 +42,35 @@ public class ProxyOptions implements AutoCloseable {
 
     private static final ConfigurationProperty<ProxyAuthenticationType> AUTH_TYPE_PROPERTY
         = new ConfigurationPropertyBuilder<>(ConfigurationProperties.AMQP_PROXY_AUTHENTICATION_TYPE,
-            s -> ProxyAuthenticationType.valueOf(s)).shared(true).logValue(true)
-                .defaultValue(ProxyAuthenticationType.NONE).build();
+            s -> ProxyAuthenticationType.valueOf(s)).shared(true)
+                .logValue(true)
+                .defaultValue(ProxyAuthenticationType.NONE)
+                .build();
 
     private static final ConfigurationProperty<Proxy.Type> TYPE_PROPERTY
         = new ConfigurationPropertyBuilder<>(ConfigurationProperties.AMQP_PROXY_TYPE, s -> Proxy.Type.valueOf(s))
-            .shared(true).logValue(true).defaultValue(Proxy.Type.HTTP).build();
+            .shared(true)
+            .logValue(true)
+            .defaultValue(Proxy.Type.HTTP)
+            .build();
 
-    private static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder
-        .ofString(ConfigurationProperties.AMQP_PROXY_HOST).shared(true).logValue(true).build();
+    private static final ConfigurationProperty<String> HOST_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.AMQP_PROXY_HOST)
+            .shared(true)
+            .logValue(true)
+            .build();
 
-    private static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder
-        .ofInteger(ConfigurationProperties.AMQP_PROXY_PORT).shared(true).required(true).build();
+    private static final ConfigurationProperty<Integer> PORT_PROPERTY
+        = ConfigurationPropertyBuilder.ofInteger(ConfigurationProperties.AMQP_PROXY_PORT)
+            .shared(true)
+            .required(true)
+            .build();
 
-    private static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder
-        .ofString(ConfigurationProperties.AMQP_PROXY_USER).shared(true).logValue(true).build();
+    private static final ConfigurationProperty<String> USER_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.AMQP_PROXY_USER)
+            .shared(true)
+            .logValue(true)
+            .build();
 
     private static final ConfigurationProperty<String> PASSWORD_PROPERTY
         = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.AMQP_PROXY_PASSWORD).shared(true).build();

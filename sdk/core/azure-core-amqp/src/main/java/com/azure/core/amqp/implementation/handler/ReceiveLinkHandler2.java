@@ -113,8 +113,11 @@ public class ReceiveLinkHandler2 extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
-            logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, link.getName())
-                .addKeyValue("localSource", link.getSource()).log("onLinkLocalOpen");
+            logger.atVerbose()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(LINK_NAME_KEY, link.getName())
+                .addKeyValue("localSource", link.getSource())
+                .log("onLinkLocalOpen");
         }
     }
 
@@ -156,7 +159,9 @@ public class ReceiveLinkHandler2 extends LinkHandler {
         // Someone called receiver.close() to set the local link state to close. Since the link was never remotely
         // active, we complete getEndpointStates() ourselves.
         if (!isRemoteActive.get()) {
-            logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, linkName)
+            logger.atInfo()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(LINK_NAME_KEY, linkName)
                 .log("Receiver link was never active. Closing endpoint states");
 
             super.close();

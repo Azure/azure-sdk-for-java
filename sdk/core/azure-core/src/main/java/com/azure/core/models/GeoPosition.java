@@ -154,13 +154,15 @@ public final class GeoPosition implements JsonSerializable<GeoPosition> {
         }
 
         GeoPosition other = (GeoPosition) obj;
-        return Double.compare(longitude, other.longitude) == 0 && Double.compare(latitude, other.latitude) == 0
+        return Double.compare(longitude, other.longitude) == 0
+            && Double.compare(latitude, other.latitude) == 0
             && Objects.equals(altitude, other.altitude);
     }
 
     @Override
     public String toString() {
-        return (altitude != null) ? String.format("[%s, %s, %s]", longitude, latitude, altitude)
+        return (altitude != null)
+            ? String.format("[%s, %s, %s]", longitude, latitude, altitude)
             : String.format("[%s, %s]", longitude, latitude);
     }
 

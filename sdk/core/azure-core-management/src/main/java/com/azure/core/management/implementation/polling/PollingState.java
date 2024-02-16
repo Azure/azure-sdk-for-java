@@ -72,7 +72,9 @@ public final class PollingState {
     public static PollingState create(SerializerAdapter serializerAdapter, HttpRequest lroHttpRequest,
         int lroResponseStatusCode, HttpHeaders lroResponseHeaders, String lroResponseBody) {
         final HttpMethod httpMethod = lroHttpRequest.getHttpMethod();
-        if (httpMethod != HttpMethod.PUT && httpMethod != HttpMethod.PATCH && httpMethod != HttpMethod.POST
+        if (httpMethod != HttpMethod.PUT
+            && httpMethod != HttpMethod.PATCH
+            && httpMethod != HttpMethod.POST
             && httpMethod != HttpMethod.DELETE) {
             throw new IllegalArgumentException(
                 "Long-running-operation supported only" + " for PUT, PATCH, POST or DELETE verb.");
@@ -218,7 +220,8 @@ public final class PollingState {
      * @return the error describing failure of a long-running-operation that synchronously failed.
      */
     Error getSynchronouslyFailedLroError() {
-        return this.pollingType == PollingType.SYNCHRONOUSLY_FAILED_LRO_NO_POLL ? this.synchronouslyFailedLroData
+        return this.pollingType == PollingType.SYNCHRONOUSLY_FAILED_LRO_NO_POLL
+            ? this.synchronouslyFailedLroData
             : null;
     }
 
@@ -325,7 +328,8 @@ public final class PollingState {
      */
     private LongRunningOperationStatus toLongRunningOperationStatus(String value) {
         boolean isCompleted = ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)
-            || ProvisioningState.FAILED.equalsIgnoreCase(value) || ProvisioningState.CANCELED.equalsIgnoreCase(value);
+            || ProvisioningState.FAILED.equalsIgnoreCase(value)
+            || ProvisioningState.CANCELED.equalsIgnoreCase(value);
         if (isCompleted && ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
             return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
         } else if (isCompleted && ProvisioningState.FAILED.equalsIgnoreCase(value)) {

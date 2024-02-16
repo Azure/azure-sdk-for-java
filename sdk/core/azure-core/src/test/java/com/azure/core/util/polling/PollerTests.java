@@ -117,13 +117,15 @@ public class PollerTests {
             activationOperation, pollOperation, (ignored1, ignored2) -> null, ignored -> null);
 
         // Assert
-        StepVerifier.create(pollerFlux).expectSubscription()
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response0.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response1.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response3.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response4.getStatus())
-            .expectComplete().verify(STEPVERIFIER_TIMEOUT);
+            .expectComplete()
+            .verify(STEPVERIFIER_TIMEOUT);
     }
 
     @Test
@@ -142,10 +144,12 @@ public class PollerTests {
         PollerFlux<TestResponse, CertificateOutput> pollerFlux = create(Duration.ofMillis(10),
             activationOperationWithResponse, pollOperation, (ignored1, ignored2) -> null, ignored -> null);
 
-        StepVerifier.create(pollerFlux).expectSubscription()
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
             .expectNextMatches(
                 asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-            .expectComplete().verify(STEPVERIFIER_TIMEOUT);
+            .expectComplete()
+            .verify(STEPVERIFIER_TIMEOUT);
         assertEquals(1, activationCallCount[0]);
     }
 
@@ -216,12 +220,14 @@ public class PollerTests {
         PollerFlux<TestResponse, CertificateOutput> pollerFlux = create(Duration.ofMillis(10),
             activationOperationWithResponse, pollOperation, (ignored1, ignored2) -> null, ignored -> null);
 
-        StepVerifier.create(pollerFlux).expectSubscription()
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
             .assertNext(asyncPollResponse -> assertEquals(response0.getStatus(), asyncPollResponse.getStatus()))
             .assertNext(asyncPollResponse -> assertEquals(response1.getStatus(), asyncPollResponse.getStatus()))
             .assertNext(asyncPollResponse -> assertEquals(response2.getStatus(), asyncPollResponse.getStatus()))
             .assertNext(asyncPollResponse -> assertEquals(response3.getStatus(), asyncPollResponse.getStatus()))
-            .expectComplete().verify(STEPVERIFIER_TIMEOUT);
+            .expectComplete()
+            .verify(STEPVERIFIER_TIMEOUT);
         assertEquals(1, activationCallCount[0]);
     }
 
@@ -262,19 +268,23 @@ public class PollerTests {
         PollerFlux<TestResponse, CertificateOutput> pollerFlux = new PollerFlux<>(Duration.ofMillis(10),
             activationOperation, pollOperation, (ignored1, ignored2) -> null, ignored -> null);
 
-        StepVerifier.create(pollerFlux).expectSubscription()
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response0.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response1.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
-            .expectComplete().verify(STEPVERIFIER_TIMEOUT);
+            .expectComplete()
+            .verify(STEPVERIFIER_TIMEOUT);
 
         pollCallCount[0] = 0;
 
-        StepVerifier.create(pollerFlux).expectSubscription()
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response0.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response1.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
-            .expectComplete().verify(STEPVERIFIER_TIMEOUT);
+            .expectComplete()
+            .verify(STEPVERIFIER_TIMEOUT);
 
         assertEquals(1, activationCallCount[0]);
     }
@@ -377,11 +387,14 @@ public class PollerTests {
         AtomicReference<AsyncPollResponse<TestResponse, CertificateOutput>> terminalAsyncResponse
             = new AtomicReference<>();
         //
-        CertificateOutput lroResult = pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(
-            (Function<AsyncPollResponse<TestResponse, CertificateOutput>, Mono<CertificateOutput>>) asyncPollResponse -> {
-                terminalAsyncResponse.set(asyncPollResponse);
-                return asyncPollResponse.getFinalResult();
-            }).block();
+        CertificateOutput lroResult = pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
+            .last()
+            .flatMap(
+                (Function<AsyncPollResponse<TestResponse, CertificateOutput>, Mono<CertificateOutput>>) asyncPollResponse -> {
+                    terminalAsyncResponse.set(asyncPollResponse);
+                    return asyncPollResponse.getFinalResult();
+                })
+            .block();
 
         Assertions.assertNotNull(lroResult);
         Assertions.assertTrue(lroResult.getName().equalsIgnoreCase("LROFinalResult"));
@@ -416,10 +429,12 @@ public class PollerTests {
         PollerFlux<TestResponse, CertificateOutput> pollerFlux = new PollerFlux<>(Duration.ofMillis(10),
             activationOperation, pollOperation, (ignored1, ignored2) -> null, ignored -> null);
 
-        StepVerifier.create(pollerFlux).expectSubscription()
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == IN_PROGRESS)
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == IN_PROGRESS)
-            .expectErrorMessage("Polling operation failed!").verify(STEPVERIFIER_TIMEOUT);
+            .expectErrorMessage("Polling operation failed!")
+            .verify(STEPVERIFIER_TIMEOUT);
     }
 
     @Test
@@ -445,10 +460,12 @@ public class PollerTests {
         PollerFlux<TestResponse, CertificateOutput> pollerFlux = new PollerFlux<>(Duration.ofMillis(10),
             activationOperation, pollOperation, (ignored1, ignored2) -> null, ignored -> null);
 
-        StepVerifier.create(pollerFlux).expectSubscription()
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == IN_PROGRESS)
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == IN_PROGRESS)
-            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == FAILED).expectComplete()
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == FAILED)
+            .expectComplete()
             .verify(STEPVERIFIER_TIMEOUT);
     }
 
@@ -755,7 +772,10 @@ public class PollerTests {
             (context, response) -> Mono.just("Cancel"), context -> Mono.just("FinalResult"));
 
         pollerFlux.setPollInterval(Duration.ofMillis(200));
-        StepVerifier.create(pollerFlux.take(5)).thenAwait(Duration.ofSeconds(1)).expectNextCount(5).expectComplete()
+        StepVerifier.create(pollerFlux.take(5))
+            .thenAwait(Duration.ofSeconds(1))
+            .expectNextCount(5)
+            .expectComplete()
             .verify(STEPVERIFIER_TIMEOUT);
     }
 
@@ -766,15 +786,24 @@ public class PollerTests {
             context -> Mono.just(new PollResponse<>(IN_PROGRESS, "PollOperation")),
             (context, response) -> Mono.just("Cancel"), context -> Mono.just("FinalResult"));
 
-        StepVerifier.create(pollerFlux.take(5)).thenAwait(Duration.ofMillis(55)).expectNextCount(5).expectComplete()
+        StepVerifier.create(pollerFlux.take(5))
+            .thenAwait(Duration.ofMillis(55))
+            .expectNextCount(5)
+            .expectComplete()
             .verify(STEPVERIFIER_TIMEOUT);
 
         pollerFlux.setPollInterval(Duration.ofMillis(50));
-        StepVerifier.create(pollerFlux.take(5)).thenAwait(Duration.ofMillis(255)).expectNextCount(5).expectComplete()
+        StepVerifier.create(pollerFlux.take(5))
+            .thenAwait(Duration.ofMillis(255))
+            .expectNextCount(5)
+            .expectComplete()
             .verify(STEPVERIFIER_TIMEOUT);
 
         pollerFlux.setPollInterval(Duration.ofMillis(195));
-        StepVerifier.create(pollerFlux.take(5)).thenAwait(Duration.ofSeconds(1)).expectNextCount(5).expectComplete()
+        StepVerifier.create(pollerFlux.take(5))
+            .thenAwait(Duration.ofSeconds(1))
+            .expectNextCount(5)
+            .expectComplete()
             .verify(STEPVERIFIER_TIMEOUT);
     }
 }

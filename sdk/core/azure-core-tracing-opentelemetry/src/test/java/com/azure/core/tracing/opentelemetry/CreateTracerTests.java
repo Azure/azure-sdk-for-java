@@ -29,7 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CreateTracerTests {
     private final SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-        .addSpanProcessor(SimpleSpanProcessor.create(InMemorySpanExporter.create())).build();
+        .addSpanProcessor(SimpleSpanProcessor.create(InMemorySpanExporter.create()))
+        .build();
 
     private final OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
 

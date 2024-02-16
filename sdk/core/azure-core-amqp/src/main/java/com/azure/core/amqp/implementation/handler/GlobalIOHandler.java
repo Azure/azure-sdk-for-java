@@ -43,7 +43,8 @@ public class GlobalIOHandler extends IOHandler {
         final Transport transport = event.getTransport();
         final Connection connection = event.getConnection();
 
-        logger.atInfo().addKeyValue(HOSTNAME_KEY, connection != null ? connection.getHostname() : NOT_APPLICABLE)
+        logger.atInfo()
+            .addKeyValue(HOSTNAME_KEY, connection != null ? connection.getHostname() : NOT_APPLICABLE)
             .log("onTransportClosed");
 
         // connection.getTransport() returns null if the unbind is already done.

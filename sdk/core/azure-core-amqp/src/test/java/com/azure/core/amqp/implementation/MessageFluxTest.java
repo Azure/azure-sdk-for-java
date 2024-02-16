@@ -105,7 +105,9 @@ public class MessageFluxTest {
         when(receiver.getEndpointStates()).thenReturn(Flux.never());
         when(receiver.closeAsync()).thenReturn(Mono.empty());
 
-        StepVerifier.create(messageFlux).then(() -> upstream.next(receiver)).then(() -> upstream.complete())
+        StepVerifier.create(messageFlux)
+            .then(() -> upstream.next(receiver))
+            .then(() -> upstream.complete())
             .verifyComplete();
 
         verify(receiver).closeAsync();
@@ -124,7 +126,9 @@ public class MessageFluxTest {
         when(receiver.getEndpointStates()).thenReturn(Flux.never());
         when(receiver.closeAsync()).thenReturn(Mono.empty());
 
-        StepVerifier.create(messageFlux).then(() -> upstream.next(receiver)).then(() -> upstream.error(error))
+        StepVerifier.create(messageFlux)
+            .then(() -> upstream.next(receiver))
+            .then(() -> upstream.error(error))
             .verifyError();
 
         verify(receiver).closeAsync();
@@ -233,10 +237,19 @@ public class MessageFluxTest {
         when(receiver.receive()).thenReturn(receiverMessages.flux());
         when(receiver.closeAsync()).thenReturn(Mono.empty());
 
-        StepVerifier.create(messageFlux, 0).then(() -> upstream.next(receiver)).thenRequest(requests[0])
-            .expectNextCount(requests[0]).thenRequest(requests[1]).expectNextCount(requests[1]).thenRequest(requests[2])
-            .expectNextCount(requests[2]).thenRequest(requests[3] + 100) // last request, demanding more than available.
-            .expectNextCount(requests[3]).then(() -> upstream.complete()).thenConsumeWhile(m -> true).verifyComplete();
+        StepVerifier.create(messageFlux, 0)
+            .then(() -> upstream.next(receiver))
+            .thenRequest(requests[0])
+            .expectNextCount(requests[0])
+            .thenRequest(requests[1])
+            .expectNextCount(requests[1])
+            .thenRequest(requests[2])
+            .expectNextCount(requests[2])
+            .thenRequest(requests[3] + 100) // last request, demanding more than available.
+            .expectNextCount(requests[3])
+            .then(() -> upstream.complete())
+            .thenConsumeWhile(m -> true)
+            .verifyComplete();
     }
 
     @ParameterizedTest

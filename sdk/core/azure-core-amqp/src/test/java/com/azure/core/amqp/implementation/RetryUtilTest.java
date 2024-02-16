@@ -74,9 +74,11 @@ public class RetryUtilTest {
             = Flux.<AmqpTransportType>never().doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(neverFlux, options, timeoutMessage)).expectSubscription()
+        StepVerifier.create(RetryUtil.withRetry(neverFlux, options, timeoutMessage))
+            .expectSubscription()
             .thenAwait(totalWaitTime)
-            .expectErrorSatisfies(error -> assertTrue(error.getCause() instanceof TimeoutException)).verify();
+            .expectErrorSatisfies(error -> assertTrue(error.getCause() instanceof TimeoutException))
+            .verify();
 
         assertEquals(options.getMaxRetries() + 1, resubscribe.get());
     }
@@ -98,9 +100,11 @@ public class RetryUtilTest {
             = TestPublisher.<AmqpTransportType>create().mono().doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(neverFlux, options, timeoutMessage)).expectSubscription()
+        StepVerifier.create(RetryUtil.withRetry(neverFlux, options, timeoutMessage))
+            .expectSubscription()
             .thenAwait(totalWaitTime)
-            .expectErrorSatisfies(error -> assertTrue(error.getCause() instanceof TimeoutException)).verify();
+            .expectErrorSatisfies(error -> assertTrue(error.getCause() instanceof TimeoutException))
+            .verify();
 
         assertEquals(options.getMaxRetries() + 1, resubscribe.get());
     }
@@ -117,7 +121,9 @@ public class RetryUtilTest {
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofSeconds(30);
         final AmqpRetryOptions options = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
-            .setDelay(Duration.ofSeconds(1)).setMaxRetries(1).setTryTimeout(timeout);
+            .setDelay(Duration.ofSeconds(1))
+            .setMaxRetries(1)
+            .setTryTimeout(timeout);
         final AtomicBoolean wasSent = new AtomicBoolean();
 
         final Flux<Integer> stream = Flux.concat(Flux.just(0, 1), Flux.create(sink -> {
@@ -130,16 +136,25 @@ public class RetryUtilTest {
         }), Flux.just(3, 4));
 
         // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(stream, options, timeoutMessage)).expectNext(0, 1)
+        StepVerifier.create(RetryUtil.withRetry(stream, options, timeoutMessage))
+            .expectNext(0, 1)
             // AmqpException occurs and then we have the retry.
-            .expectNext(0, 1).expectNext(10).expectNext(3, 4).expectComplete().verify();
+            .expectNext(0, 1)
+            .expectNext(10)
+            .expectNext(3, 4)
+            .expectComplete()
+            .verify();
     }
 
     static Stream<AmqpRetryOptions> createRetry() {
         final AmqpRetryOptions fixed = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
-            .setDelay(Duration.ofSeconds(10)).setMaxRetries(2).setMaxDelay(Duration.ofSeconds(90));
+            .setDelay(Duration.ofSeconds(10))
+            .setMaxRetries(2)
+            .setMaxDelay(Duration.ofSeconds(90));
         final AmqpRetryOptions exponential = new AmqpRetryOptions().setMode(AmqpRetryMode.EXPONENTIAL)
-            .setDelay(Duration.ofSeconds(5)).setMaxRetries(5).setMaxDelay(Duration.ofSeconds(35));
+            .setDelay(Duration.ofSeconds(5))
+            .setMaxRetries(5)
+            .setMaxDelay(Duration.ofSeconds(35));
 
         return Stream.of(fixed, exponential);
     }

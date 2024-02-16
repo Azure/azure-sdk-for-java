@@ -164,18 +164,20 @@ public final class ReceiversPumpingScheduler implements Scheduler {
         // Note: It would be nice to read the custom pool size using
         // com.azure.core.util.Configuration.getGlobalConfiguration.
         // It requires adding the key to the azure-core known configuration properties, let's evaluate it separately.
-        final Optional<Integer> poolMaxSizeOverridden = Optional
-            .ofNullable(System.getProperty("com.azure.core.amqp.receiversPumpingThreadPoolMaxSize")).map(m -> {
-                try {
-                    return Integer.parseInt(m);
-                } catch (NumberFormatException ignored) {
-                    // Use poolMaxSizeDefault (the initialization log below hints the size is chosen).
-                    return null;
-                }
-            });
+        final Optional<Integer> poolMaxSizeOverridden
+            = Optional.ofNullable(System.getProperty("com.azure.core.amqp.receiversPumpingThreadPoolMaxSize"))
+                .map(m -> {
+                    try {
+                        return Integer.parseInt(m);
+                    } catch (NumberFormatException ignored) {
+                        // Use poolMaxSizeDefault (the initialization log below hints the size is chosen).
+                        return null;
+                    }
+                });
         final int poolMaxSize = poolMaxSizeOverridden.orElseGet(poolMaxSizeDefault);
         this.inner = Schedulers.newBoundedElastic(poolMaxSize, TASK_QUEUE_CAP, NAME, IDLE_TTL_SECONDS, true);
-        LOGGER.atVerbose().addKeyValue("maxThreads", poolMaxSize)
+        LOGGER.atVerbose()
+            .addKeyValue("maxThreads", poolMaxSize)
             .log("Initialized common thread pool for receivers pumping.");
     }
 

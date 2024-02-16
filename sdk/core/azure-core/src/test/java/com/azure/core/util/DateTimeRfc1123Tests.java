@@ -24,8 +24,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests {@link DateTimeRfc1123}.
  */
 public class DateTimeRfc1123Tests {
-    private static final DateTimeFormatter RFC1123_DATE_TIME_FORMATTER = DateTimeFormatter
-        .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneId.of("UTC")).withLocale(Locale.US);
+    private static final DateTimeFormatter RFC1123_DATE_TIME_FORMATTER
+        = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
+            .withZone(ZoneId.of("UTC"))
+            .withLocale(Locale.US);
     private static final String ZERO_PAD_DATE = "Wed, 01 Dec 2021 01:01:01 GMT";
 
     @Test

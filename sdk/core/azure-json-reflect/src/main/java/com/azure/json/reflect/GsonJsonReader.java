@@ -82,7 +82,8 @@ final class GsonJsonReader extends JsonReader {
             jsonReaderConstructor = (JsonReaderConstructor) LambdaMetafactory
                 .metafactory(lookup, "createJsonReader", methodType(JsonReaderConstructor.class),
                     methodType(Object.class, Reader.class), gsonReaderConstructor, gsonReaderConstructor.type())
-                .getTarget().invoke();
+                .getTarget()
+                .invoke();
 
             jsonReaderSetLenient
                 = createMetaFactory("setLenient", gsonJsonReaderClass, methodType(void.class, boolean.class),

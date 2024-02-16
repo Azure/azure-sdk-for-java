@@ -66,7 +66,10 @@ public class ResourceNamer {
     private String randomString(int length) {
         StringBuilder str = new StringBuilder();
         while (str.length() < length) {
-            str.append(CoreUtils.randomUuid().toString().replace("-", "").substring(0, Math.min(32, length))
+            str.append(CoreUtils.randomUuid()
+                .toString()
+                .replace("-", "")
+                .substring(0, Math.min(32, length))
                 .toLowerCase(LOCALE));
         }
         return str.toString();

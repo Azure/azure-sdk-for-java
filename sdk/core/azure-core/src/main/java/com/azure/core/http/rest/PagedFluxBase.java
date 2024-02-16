@@ -27,10 +27,10 @@ import java.util.function.Supplier;
  * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.items -->
  * <pre>
  * pagedFluxBase
- *     .log&#40;&#41;
- *     .subscribe&#40;item -&gt; System.out.println&#40;&quot;Processing item with value: &quot; + item&#41;,
- *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
- *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
+ * .log&#40;&#41;
+ * .subscribe&#40;item -&gt; System.out.println&#40;&quot;Processing item with value: &quot; + item&#41;,
+ * error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
+ * &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedfluxbase.items -->
  *
@@ -43,12 +43,13 @@ import java.util.function.Supplier;
  * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.pages -->
  * <pre>
  * pagedFluxBase
- *     .byPage&#40;&#41;
- *     .log&#40;&#41;
- *     .subscribe&#40;page -&gt; System.out.printf&#40;&quot;Processing page containing item values: %s%n&quot;,
- *         page.getElements&#40;&#41;.stream&#40;&#41;.map&#40;String::valueOf&#41;.collect&#40;Collectors.joining&#40;&quot;, &quot;&#41;&#41;&#41;,
- *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
- *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
+ * .byPage&#40;&#41;
+ * .log&#40;&#41;
+ * .subscribe&#40;page -&gt; System.out.printf&#40;&quot;Processing page containing item values: %s%n&quot;,
+ * page.getElements&#40;&#41;.stream&#40;&#41;.map&#40;String::valueOf&#41;.collect&#40;Collectors.joining&#40;&quot;,
+ * &quot;&#41;&#41;&#41;,
+ * error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
+ * &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedfluxbase.pages -->
  *
@@ -63,14 +64,15 @@ import java.util.function.Supplier;
  * <pre>
  * String continuationToken = getContinuationToken&#40;&#41;;
  * pagedFluxBase
- *     .byPage&#40;continuationToken&#41;
- *     .log&#40;&#41;
- *     .doOnSubscribe&#40;ignored -&gt; System.out.println&#40;
- *         &quot;Subscribed to paged flux processing pages starting from: &quot; + continuationToken&#41;&#41;
- *     .subscribe&#40;page -&gt; System.out.printf&#40;&quot;Processing page containing item values: %s%n&quot;,
- *         page.getElements&#40;&#41;.stream&#40;&#41;.map&#40;String::valueOf&#41;.collect&#40;Collectors.joining&#40;&quot;, &quot;&#41;&#41;&#41;,
- *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
- *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
+ * .byPage&#40;continuationToken&#41;
+ * .log&#40;&#41;
+ * .doOnSubscribe&#40;ignored -&gt; System.out.println&#40;
+ * &quot;Subscribed to paged flux processing pages starting from: &quot; + continuationToken&#41;&#41;
+ * .subscribe&#40;page -&gt; System.out.printf&#40;&quot;Processing page containing item values: %s%n&quot;,
+ * page.getElements&#40;&#41;.stream&#40;&#41;.map&#40;String::valueOf&#41;.collect&#40;Collectors.joining&#40;&quot;,
+ * &quot;&#41;&#41;&#41;,
+ * error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
+ * &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken -->
  *
@@ -129,7 +131,8 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever, Function<String, Mono<P>> nextPageRetriever) {
-        this(() -> (continuationToken, pageSize) -> continuationToken == null ? firstPageRetriever.get().flux()
+        this(() -> (continuationToken, pageSize) -> continuationToken == null
+            ? firstPageRetriever.get().flux()
             : nextPageRetriever.apply(continuationToken).flux(), true);
     }
 

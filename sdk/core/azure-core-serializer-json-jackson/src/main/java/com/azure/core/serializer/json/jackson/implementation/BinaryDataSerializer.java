@@ -44,8 +44,10 @@ final class BinaryDataSerializer extends JsonSerializer<BinaryData> {
         }
 
         BinaryDataContent content = BinaryDataHelper.getContent(value);
-        if (content instanceof ByteArrayContent || content instanceof FileContent
-            || content instanceof FluxByteBufferContent || content instanceof InputStreamContent) {
+        if (content instanceof ByteArrayContent
+            || content instanceof FileContent
+            || content instanceof FluxByteBufferContent
+            || content instanceof InputStreamContent) {
             gen.writeBinary(content.toBytes());
         } else if (content instanceof SerializableContent) {
             gen.writeRawValue(content.toString());

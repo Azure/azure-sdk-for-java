@@ -25,8 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * {@link JsonSerializable} within a {@link Gson} context.
  */
 public class JsonSerializableEndToEndTests {
-    private static final Gson GSON = new GsonBuilder()
-        .registerTypeAdapterFactory(GsonJsonProvider.getJsonSerializableTypeAdapterFactory()).create();
+    private static final Gson GSON
+        = new GsonBuilder().registerTypeAdapterFactory(GsonJsonProvider.getJsonSerializableTypeAdapterFactory())
+            .create();
 
     @Test
     public void serialization() {
@@ -100,8 +101,11 @@ public class JsonSerializableEndToEndTests {
 
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            return jsonWriter.writeStartObject().writeIntField("anInt", anInt).writeBooleanField("aBoolean", aBoolean)
-                .writeStringField("aString", aString).writeNumberField("aNullableDecimal", aNullableDecimal)
+            return jsonWriter.writeStartObject()
+                .writeIntField("anInt", anInt)
+                .writeBooleanField("aBoolean", aBoolean)
+                .writeStringField("aString", aString)
+                .writeNumberField("aNullableDecimal", aNullableDecimal)
                 .writeEndObject();
         }
 
@@ -153,7 +157,9 @@ public class JsonSerializableEndToEndTests {
             }
 
             GeneralProperties other = (GeneralProperties) obj;
-            return anInt == other.anInt && aBoolean == other.aBoolean && Objects.equals(aString, other.aString)
+            return anInt == other.anInt
+                && aBoolean == other.aBoolean
+                && Objects.equals(aString, other.aString)
                 && Objects.equals(aNullableDecimal, other.aNullableDecimal);
         }
     }

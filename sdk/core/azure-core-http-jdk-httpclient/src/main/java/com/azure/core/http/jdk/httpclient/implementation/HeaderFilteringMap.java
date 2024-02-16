@@ -49,7 +49,8 @@ final class HeaderFilteringMap extends AbstractMap<String, List<String>> {
     public void forEach(BiConsumer<? super String, ? super List<String>> action) {
         rawHeaders.forEach((headerName, header) -> {
             if (restrictedHeaders.contains(headerName)) {
-                logger.atWarning().addKeyValue("headerName", headerName)
+                logger.atWarning()
+                    .addKeyValue("headerName", headerName)
                     .log("The header is restricted by 'java.net.http.HttpClient' and will be ignored. To allow this "
                         + "header to be set on the request, configure 'jdk.httpclient.allowRestrictedHeaders' with the "
                         + "header added in the comma-separated list.");

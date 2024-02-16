@@ -23,8 +23,8 @@ import reactor.core.publisher.Mono;
  * <pre>
  * // Create ConfigurationClient for example
  * ConfigurationClient configurationClient = new ConfigurationClientBuilder()
- *       .connectionString("endpoint={endpoint_value};id={id_value};secret={secret_value}")
- *       .buildClient();
+ * .connectionString("endpoint={endpoint_value};id={id_value};secret={secret_value}")
+ * .buildClient();
  * // Add your headers
  * HttpHeaders headers = new HttpHeaders();
  * headers.put("my-header1", "my-header1-value");
@@ -32,8 +32,8 @@ import reactor.core.publisher.Mono;
  * headers.put("my-header3", "my-header3-value");
  * // Call API by passing headers in Context.
  * configurationClient.addConfigurationSettingWithResponse(
- *       new ConfigurationSetting().setKey("key").setValue("value"),
- *       new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
+ * new ConfigurationSetting().setKey("key").setValue("value"),
+ * new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
  * // Above three HttpHeader will be added in outgoing HttpRequest.
  * </pre>
  */

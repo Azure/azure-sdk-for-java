@@ -45,7 +45,8 @@ public class HttpPipelineTests {
                     // do nothing
                     return null;
                 }
-            }).build();
+            })
+            .build();
 
         assertEquals(3, pipeline.getPolicyCount());
         assertEquals(PortPolicy.class, pipeline.getPolicy(0).getClass());
@@ -64,7 +65,8 @@ public class HttpPipelineTests {
                     // do nothing
                     return null;
                 }
-            }).build();
+            })
+            .build();
 
         HttpPipelineCallContext context
             = new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET, createUrl("http://foo.com")));
@@ -155,7 +157,8 @@ public class HttpPipelineTests {
         };
 
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .policies((new UserAgentPolicy(expectedUserAgent))).build();
+            .policies((new UserAgentPolicy(expectedUserAgent)))
+            .build();
 
         final HttpResponse response
             = httpPipeline.sendSync(new HttpRequest(expectedHttpMethod, expectedUrl), Context.NONE);

@@ -98,8 +98,11 @@ public class JsonSerializableEndToEndTests {
 
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            return jsonWriter.writeStartObject().writeIntField("anInt", anInt).writeBooleanField("aBoolean", aBoolean)
-                .writeStringField("aString", aString).writeNumberField("aNullableDecimal", aNullableDecimal)
+            return jsonWriter.writeStartObject()
+                .writeIntField("anInt", anInt)
+                .writeBooleanField("aBoolean", aBoolean)
+                .writeStringField("aString", aString)
+                .writeNumberField("aNullableDecimal", aNullableDecimal)
                 .writeEndObject();
         }
 
@@ -151,7 +154,9 @@ public class JsonSerializableEndToEndTests {
             }
 
             GeneralProperties other = (GeneralProperties) obj;
-            return anInt == other.anInt && aBoolean == other.aBoolean && Objects.equals(aString, other.aString)
+            return anInt == other.anInt
+                && aBoolean == other.aBoolean
+                && Objects.equals(aString, other.aString)
                 && Objects.equals(aNullableDecimal, other.aNullableDecimal);
         }
     }

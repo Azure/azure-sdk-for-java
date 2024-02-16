@@ -16,10 +16,10 @@ import reactor.core.publisher.Mono;
  * of one transaction.
  *
  * @see <a href=
- *      "http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#choice-txn-capability-distributed-transactions">Distributed
- *      Transactions</a>
+ * "http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#choice-txn-capability-distributed-transactions">Distributed
+ * Transactions</a>
  * @see <a href=
- *      "https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-transactions">Transactions</a>
+ * "https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-transactions">Transactions</a>
  */
 public interface AmqpTransactionCoordinator {
 

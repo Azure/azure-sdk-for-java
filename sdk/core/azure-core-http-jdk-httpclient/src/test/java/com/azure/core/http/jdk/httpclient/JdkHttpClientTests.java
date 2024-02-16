@@ -107,13 +107,17 @@ public class JdkHttpClientTests {
         Mono<byte[]> response = getResponse("/short").cache().flatMap(HttpResponse::getBodyAsByteArray);
 
         // Subscription:1
-        StepVerifier.create(response).assertNext(Assertions::assertNotNull).expectComplete()
+        StepVerifier.create(response)
+            .assertNext(Assertions::assertNotNull)
+            .expectComplete()
             .verify(Duration.ofSeconds(20));
 
         // Subscription:2
         // Getting the bytes of an JDK HttpClient response closes the stream on first read.
         // Subsequent reads will return an IllegalStateException (from reactor) due to the stream being closed.
-        StepVerifier.create(response).expectNextCount(0).expectError(IllegalStateException.class)
+        StepVerifier.create(response)
+            .expectNextCount(0)
+            .expectError(IllegalStateException.class)
             .verify(Duration.ofSeconds(20));
 
     }
@@ -125,13 +129,17 @@ public class JdkHttpClientTests {
             Mono<byte[]> responseBody = response.getBodyAsByteArray();
 
             // Subscription:1
-            StepVerifier.create(responseBody).assertNext(Assertions::assertNotNull).expectComplete()
+            StepVerifier.create(responseBody)
+                .assertNext(Assertions::assertNotNull)
+                .expectComplete()
                 .verify(Duration.ofSeconds(20));
 
             // Subscription:2
             // Getting the bytes of an JDK HttpClient response closes the stream on first read.
             // Subsequent reads will return an IOException due to the stream being closed.
-            StepVerifier.create(responseBody).expectNextCount(0).expectError(IOException.class)
+            StepVerifier.create(responseBody)
+                .expectNextCount(0)
+                .expectError(IOException.class)
                 .verify(Duration.ofSeconds(20));
         }
     }
@@ -167,15 +175,22 @@ public class JdkHttpClientTests {
     @Test
     public void testFlowableBackpressure() {
         StepVerifier.create(getResponse("/long").flatMapMany(HttpResponse::getBody), EMPTY_INITIAL_REQUEST_OPTIONS)
-            .expectNextCount(0).thenRequest(1).expectNextCount(1).thenRequest(3).expectNextCount(3)
-            .thenRequest(Long.MAX_VALUE).thenConsumeWhile(ByteBuffer::hasRemaining).verifyComplete();
+            .expectNextCount(0)
+            .thenRequest(1)
+            .expectNextCount(1)
+            .thenRequest(3)
+            .expectNextCount(3)
+            .thenRequest(Long.MAX_VALUE)
+            .thenConsumeWhile(ByteBuffer::hasRemaining)
+            .verifyComplete();
     }
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = new JdkHttpClientProvider().createInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, "132").setBody(Flux.error(new RuntimeException("boo")));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, url("/shortPost")).setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
+                .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request)).expectErrorMessage("boo").verify();
     }
@@ -239,17 +254,20 @@ public class JdkHttpClientTests {
         InputStream requestBody = new ByteArrayInputStream(LONG_BODY, 1, 42);
         BinaryData body = BinaryData.fromStream(requestBody, 42L);
         HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPostWithBodyValidation"))
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, "42").setBody(body);
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, "42")
+            .setBody(body);
 
-        StepVerifier.create(client.send(request)).assertNext(r -> assertEquals(200, r.getStatusCode()))
+        StepVerifier.create(client.send(request))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
             .verifyComplete();
     }
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponseSync() {
         HttpClient client = new JdkHttpClientProvider().createInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, "132").setBody(Flux.error(new RuntimeException("boo")));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, url("/shortPost")).setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
+                .setBody(Flux.error(new RuntimeException("boo")));
 
         UncheckedIOException thrown
             = assertThrows(UncheckedIOException.class, () -> client.sendSync(request, Context.NONE));
@@ -263,7 +281,8 @@ public class JdkHttpClientTests {
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
             .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)))
-            .setBody(Flux.just(contentChunk).repeat(repetitions)
+            .setBody(Flux.just(contentChunk)
+                .repeat(repetitions)
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                 .concatWith(Flux.error(new RuntimeException("boo"))));
 
@@ -281,7 +300,8 @@ public class JdkHttpClientTests {
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
             .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)))
-            .setBody(Flux.just(contentChunk).repeat(repetitions)
+            .setBody(Flux.just(contentChunk)
+                .repeat(repetitions)
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                 .concatWith(Flux.error(new RuntimeException("boo"))));
 
@@ -313,7 +333,9 @@ public class JdkHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        ParallelFlux<byte[]> responses = Flux.range(1, numRequests).parallel().runOn(Schedulers.boundedElastic())
+        ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
+            .parallel()
+            .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> doRequest(client, "/long").flatMap(HttpResponse::getBodyAsByteArray));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
@@ -382,7 +404,8 @@ public class JdkHttpClientTests {
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new JdkHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> TestUtils.assertArraysEqual(expectedBody, bytes)).verifyComplete();
+            .assertNext(bytes -> TestUtils.assertArraysEqual(expectedBody, bytes))
+            .verifyComplete();
     }
 
     private static void checkBodyReceivedSync(byte[] expectedBody, String path) throws IOException {

@@ -162,8 +162,11 @@ public class ReceiverDeliveryHandlerTest {
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler();
         try {
-            StepVerifier.create(handler.getMessages()).then(() -> handler.onDelivery(delivery))
-                .then(() -> handler.close("")).expectNextCount(0).verifyComplete();
+            StepVerifier.create(handler.getMessages())
+                .then(() -> handler.onDelivery(delivery))
+                .then(() -> handler.close(""))
+                .expectNextCount(0)
+                .verifyComplete();
 
         } finally {
             handler.close("");
@@ -176,8 +179,11 @@ public class ReceiverDeliveryHandlerTest {
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler();
         try {
-            StepVerifier.create(handler.getMessages()).then(() -> handler.onDelivery(delivery))
-                .then(() -> handler.close("")).expectNextCount(0).verifyComplete();
+            StepVerifier.create(handler.getMessages())
+                .then(() -> handler.onDelivery(delivery))
+                .then(() -> handler.close(""))
+                .expectNextCount(0)
+                .verifyComplete();
         } finally {
             handler.close("");
         }
@@ -190,8 +196,11 @@ public class ReceiverDeliveryHandlerTest {
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler();
         try {
-            StepVerifier.create(handler.getMessages()).then(() -> handler.onDelivery(delivery))
-                .then(() -> handler.close("")).expectNextCount(0).verifyComplete();
+            StepVerifier.create(handler.getMessages())
+                .then(() -> handler.onDelivery(delivery))
+                .then(() -> handler.close(""))
+                .expectNextCount(0)
+                .verifyComplete();
 
             verify(delivery).disposition(argThat(deliveryState -> {
                 return deliveryState.getType() == DeliveryState.DeliveryStateType.Modified;
@@ -213,12 +222,15 @@ public class ReceiverDeliveryHandlerTest {
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler(includeDeliveryTag);
         try {
-            StepVerifier.create(handler.getMessages()).then(() -> handler.onDelivery(delivery))
-                .then(() -> handler.close("")).assertNext(message -> {
+            StepVerifier.create(handler.getMessages())
+                .then(() -> handler.onDelivery(delivery))
+                .then(() -> handler.close(""))
+                .assertNext(message -> {
                     Assertions.assertInstanceOf(MessageWithDeliveryTag.class, message);
                     final MessageWithDeliveryTag messageWithTag = (MessageWithDeliveryTag) message;
                     Assertions.assertEquals(DELIVERY_TAG_UUID, (messageWithTag.getDeliveryTag()));
-                }).verifyComplete();
+                })
+                .verifyComplete();
 
             verify(delivery).getTag();
         } finally {
@@ -237,10 +249,13 @@ public class ReceiverDeliveryHandlerTest {
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler(includeDeliveryTag);
         try {
-            StepVerifier.create(handler.getMessages()).then(() -> handler.onDelivery(delivery))
-                .then(() -> handler.close("")).assertNext(message -> {
+            StepVerifier.create(handler.getMessages())
+                .then(() -> handler.onDelivery(delivery))
+                .then(() -> handler.close(""))
+                .assertNext(message -> {
                     Assertions.assertFalse(message instanceof MessageWithDeliveryTag);
-                }).verifyComplete();
+                })
+                .verifyComplete();
 
             verify(delivery, never()).getTag();
         } finally {
@@ -256,8 +271,11 @@ public class ReceiverDeliveryHandlerTest {
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler(SETTLE_ON_DELIVERY);
         try {
-            StepVerifier.create(handler.getMessages()).then(() -> handler.onDelivery(delivery))
-                .then(() -> handler.close("")).expectNextCount(1).verifyComplete();
+            StepVerifier.create(handler.getMessages())
+                .then(() -> handler.onDelivery(delivery))
+                .then(() -> handler.close(""))
+                .expectNextCount(1)
+                .verifyComplete();
 
             verify(delivery, never()).disposition(any());
             verify(delivery).settle();
@@ -274,8 +292,11 @@ public class ReceiverDeliveryHandlerTest {
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler(ACCEPT_AND_SETTLE_ON_DELIVERY);
         try {
-            StepVerifier.create(handler.getMessages()).then(() -> handler.onDelivery(delivery))
-                .then(() -> handler.close("")).expectNextCount(1).verifyComplete();
+            StepVerifier.create(handler.getMessages())
+                .then(() -> handler.onDelivery(delivery))
+                .then(() -> handler.close(""))
+                .expectNextCount(1)
+                .verifyComplete();
 
             verify(delivery).disposition(eq(Accepted.getInstance()));
             verify(delivery).settle();
@@ -294,8 +315,11 @@ public class ReceiverDeliveryHandlerTest {
         try (ReceiverUnsettledDeliveries unsettledDeliveries = createUnsettledDeliveries()) {
             final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler(unsettledDeliveries);
             try {
-                StepVerifier.create(handler.getMessages()).then(() -> handler.onDelivery(delivery))
-                    .then(() -> handler.close("")).expectNextCount(1).verifyComplete();
+                StepVerifier.create(handler.getMessages())
+                    .then(() -> handler.onDelivery(delivery))
+                    .then(() -> handler.close(""))
+                    .expectNextCount(1)
+                    .verifyComplete();
 
                 verify(receiver).advance();
                 verify(delivery, never()).disposition(any());
@@ -321,15 +345,18 @@ public class ReceiverDeliveryHandlerTest {
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler();
         try {
-            StepVerifier.create(handler.getMessages()).then(() -> handler.onDelivery(delivery))
-                .then(() -> handler.close("")).assertNext(message -> {
+            StepVerifier.create(handler.getMessages())
+                .then(() -> handler.onDelivery(delivery))
+                .then(() -> handler.close(""))
+                .assertNext(message -> {
                     Assertions.assertFalse(message instanceof MessageWithDeliveryTag);
                     final Map<String, Object> applicationProperties = message.getApplicationProperties().getValue();
                     Assertions.assertTrue(applicationProperties.containsKey("status-code"));
                     Assertions.assertEquals(202, applicationProperties.get("status-code"));
                     Assertions.assertTrue(applicationProperties.containsKey("status-description"));
                     Assertions.assertEquals("Accepted", applicationProperties.get("status-description"));
-                }).verifyComplete();
+                })
+                .verifyComplete();
         } finally {
             handler.close("");
         }
@@ -354,8 +381,10 @@ public class ReceiverDeliveryHandlerTest {
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler();
         try {
-            StepVerifier.create(handler.getMessages()).then(() -> handler.onLinkError())
-                .then(() -> handler.onDelivery(delivery)).verifyErrorSatisfies(error -> {
+            StepVerifier.create(handler.getMessages())
+                .then(() -> handler.onLinkError())
+                .then(() -> handler.onDelivery(delivery))
+                .verifyErrorSatisfies(error -> {
                     Assertions.assertInstanceOf(IllegalStateException.class, error);
                     Assertions.assertNotNull(error.getCause());
                     Assertions.assertInstanceOf(IllegalStateException.class, error.getCause());
@@ -375,8 +404,10 @@ public class ReceiverDeliveryHandlerTest {
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler();
         try {
-            StepVerifier.create(handler.getMessages()).then(() -> handler.preClose())
-                .then(() -> handler.onDelivery(delivery)).verifyErrorSatisfies(error -> {
+            StepVerifier.create(handler.getMessages())
+                .then(() -> handler.preClose())
+                .then(() -> handler.onDelivery(delivery))
+                .verifyErrorSatisfies(error -> {
                     Assertions.assertInstanceOf(IllegalStateException.class, error);
                     Assertions.assertNotNull(error.getCause());
                     Assertions.assertInstanceOf(IllegalStateException.class, error.getCause());
@@ -411,7 +442,9 @@ public class ReceiverDeliveryHandlerTest {
     public void shouldCompleteOnClose() {
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler();
         try {
-            StepVerifier.create(handler.getMessages()).then(() -> handler.close("")).expectNextCount(0)
+            StepVerifier.create(handler.getMessages())
+                .then(() -> handler.close(""))
+                .expectNextCount(0)
                 .verifyComplete();
 
         } finally {

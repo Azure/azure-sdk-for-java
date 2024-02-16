@@ -80,16 +80,22 @@ public class ProxyOptionsTests {
     @Test
     public void noHostProperty() {
         Configuration configuration = new ConfigurationBuilder().putProperty("amqp.proxy.authentication-type", "BASIC")
-            .putProperty("amqp.proxy.type", "SOCKS").putProperty("amqp.proxy.port", "123")
-            .putProperty("amqp.proxy.username", "user").putProperty("amqp.proxy.password", "password").build();
+            .putProperty("amqp.proxy.type", "SOCKS")
+            .putProperty("amqp.proxy.port", "123")
+            .putProperty("amqp.proxy.username", "user")
+            .putProperty("amqp.proxy.password", "password")
+            .build();
         assertIsSystemDefaultProxy(ProxyOptions.fromConfiguration(configuration));
     }
 
     @Test
     public void noTypePropertyDefaultsToHttp() {
         Configuration configuration = new ConfigurationBuilder().putProperty("amqp.proxy.hostname", "localhost")
-            .putProperty("amqp.proxy.authentication-type", "BASIC").putProperty("amqp.proxy.port", "123")
-            .putProperty("amqp.proxy.username", "user").putProperty("amqp.proxy.password", "password").build();
+            .putProperty("amqp.proxy.authentication-type", "BASIC")
+            .putProperty("amqp.proxy.port", "123")
+            .putProperty("amqp.proxy.username", "user")
+            .putProperty("amqp.proxy.password", "password")
+            .build();
 
         ProxyOptions options = ProxyOptions.fromConfiguration(configuration);
         assertEquals(Proxy.Type.HTTP, options.getProxyAddress().type());
@@ -98,8 +104,11 @@ public class ProxyOptionsTests {
     @Test
     public void validProperties() {
         Configuration configuration = new ConfigurationBuilder().putProperty("amqp.proxy.hostname", "localhost")
-            .putProperty("amqp.proxy.port", "123").putProperty("amqp.proxy.type", "SOCKS")
-            .putProperty("amqp.proxy.username", "user").putProperty("amqp.proxy.password", "password").build();
+            .putProperty("amqp.proxy.port", "123")
+            .putProperty("amqp.proxy.type", "SOCKS")
+            .putProperty("amqp.proxy.username", "user")
+            .putProperty("amqp.proxy.password", "password")
+            .build();
 
         ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(configuration);
         assertNotNull(proxyOptions);
@@ -120,9 +129,12 @@ public class ProxyOptionsTests {
     @Test
     public void validGlobalAndLocalProperties() {
         Configuration configuration = new ConfigurationBuilder().putProperty("amqp.proxy.hostname", "localhost")
-            .putProperty("amqp.proxy.port", "123").putProperty("amqp.proxy.type", "SOCKS")
-            .putProperty("amqp.proxy.authentication-type", "DIGEST").putProperty("foo.amqp.proxy.username", "user")
-            .putProperty("foo.amqp.proxy.password", "password").buildSection("foo");
+            .putProperty("amqp.proxy.port", "123")
+            .putProperty("amqp.proxy.type", "SOCKS")
+            .putProperty("amqp.proxy.authentication-type", "DIGEST")
+            .putProperty("foo.amqp.proxy.username", "user")
+            .putProperty("foo.amqp.proxy.password", "password")
+            .buildSection("foo");
 
         ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(configuration);
         assertNotNull(proxyOptions);
@@ -145,7 +157,8 @@ public class ProxyOptionsTests {
     @ValueSource(strings = { "" })
     public void portNullAndEmpty(String port) {
         ConfigurationBuilder configBuilder = new ConfigurationBuilder().putProperty("amqp.proxy.hostname", "localhost")
-            .putProperty("amqp.proxy.authentication-type", "BASIC").putProperty("amqp.proxy.type", "SOCKS");
+            .putProperty("amqp.proxy.authentication-type", "BASIC")
+            .putProperty("amqp.proxy.type", "SOCKS");
 
         if (port != null) {
             configBuilder.putProperty("amqp.proxy.port", port);
@@ -158,8 +171,10 @@ public class ProxyOptionsTests {
     @ValueSource(strings = { "   ", "not-an-int" })
     public void invalidPortThrows(String port) {
         Configuration configuration = new ConfigurationBuilder().putProperty("amqp.proxy.hostname", "localhost")
-            .putProperty("amqp.proxy.port", port).putProperty("amqp.proxy.authentication-type", "BASIC")
-            .putProperty("amqp.proxy.type", "SOCKS").build();
+            .putProperty("amqp.proxy.port", port)
+            .putProperty("amqp.proxy.authentication-type", "BASIC")
+            .putProperty("amqp.proxy.type", "SOCKS")
+            .build();
 
         assertThrows(NumberFormatException.class, () -> ProxyOptions.fromConfiguration(configuration));
     }
@@ -168,8 +183,10 @@ public class ProxyOptionsTests {
     @ValueSource(strings = { "NONE", "BASIC", "DIGEST" })
     public void validAuthenticationTypes(String authType) {
         Configuration configuration = new ConfigurationBuilder().putProperty("amqp.proxy.hostname", "localhost")
-            .putProperty("amqp.proxy.port", "123").putProperty("amqp.proxy.authentication-type", authType)
-            .putProperty("amqp.proxy.type", "SOCKS").build();
+            .putProperty("amqp.proxy.port", "123")
+            .putProperty("amqp.proxy.authentication-type", authType)
+            .putProperty("amqp.proxy.type", "SOCKS")
+            .build();
 
         ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(configuration);
         assertEquals(authType, proxyOptions.getAuthentication().toString());
@@ -178,8 +195,10 @@ public class ProxyOptionsTests {
     @Test
     public void invalidAuthenticationType() {
         Configuration configuration = new ConfigurationBuilder().putProperty("amqp.proxy.hostname", "localhost")
-            .putProperty("amqp.proxy.port", "123").putProperty("amqp.proxy.authentication-type", "foo")
-            .putProperty("amqp.proxy.type", "SOCKS").build();
+            .putProperty("amqp.proxy.port", "123")
+            .putProperty("amqp.proxy.authentication-type", "foo")
+            .putProperty("amqp.proxy.type", "SOCKS")
+            .build();
 
         assertThrows(IllegalArgumentException.class, () -> ProxyOptions.fromConfiguration(configuration));
     }
@@ -188,7 +207,9 @@ public class ProxyOptionsTests {
     @ValueSource(strings = { "HTTP", "SOCKS" })
     public void validProxyTypes(String proxyType) {
         Configuration configuration = new ConfigurationBuilder().putProperty("amqp.proxy.hostname", "localhost")
-            .putProperty("amqp.proxy.port", "443").putProperty("amqp.proxy.type", proxyType).build();
+            .putProperty("amqp.proxy.port", "443")
+            .putProperty("amqp.proxy.type", proxyType)
+            .build();
 
         ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(configuration);
         assertEquals(proxyType, proxyOptions.getProxyAddress().type().toString());
@@ -198,7 +219,9 @@ public class ProxyOptionsTests {
     @ValueSource(strings = { "DIRECT", "foo" })
     public void invalidProxyTypes(String proxyType) {
         Configuration configuration = new ConfigurationBuilder().putProperty("amqp.proxy.hostname", "localhost")
-            .putProperty("amqp.proxy.port", "443").putProperty("amqp.proxy.type", proxyType).build();
+            .putProperty("amqp.proxy.port", "443")
+            .putProperty("amqp.proxy.type", proxyType)
+            .build();
 
         // direct is valid Proxy.Type, but it's not possible to create a Proxy with DIRECT type
         assertThrows(IllegalArgumentException.class, () -> ProxyOptions.fromConfiguration(configuration));
@@ -209,7 +232,8 @@ public class ProxyOptionsTests {
     public void testProxyOptionsFromEnvironmentConfiguration(String proxyConfiguration, boolean expectSystemDefault) {
         Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration)
-                .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, AUTH_TYPE).put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
+                .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, AUTH_TYPE)
+                .put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
                 .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD)).build();
 
         ProxyOptions proxyConfig = ProxyOptions.fromConfiguration(configuration);
@@ -229,7 +253,8 @@ public class ProxyOptionsTests {
     public void testNullProxyAddress() {
         Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource().put(JAVA_NET_USE_SYSTEM_PROXIES, "true")
-                .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, AUTH_TYPE).put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
+                .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, AUTH_TYPE)
+                .put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
                 .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD)).build();
 
         ProxyOptions proxyConfig = ProxyOptions.fromConfiguration(configuration);
@@ -239,12 +264,14 @@ public class ProxyOptionsTests {
     @Test
     public void mixedConfigurationExplicitWins() {
         Configuration configuration = new ConfigurationBuilder(
-            new TestConfigurationSource().put("amqp.proxy.hostname", "localhost").put("amqp.proxy.port", "4242")
+            new TestConfigurationSource().put("amqp.proxy.hostname", "localhost")
+                .put("amqp.proxy.port", "4242")
                 .put("amqp.proxy.authentication-type", "DIGEST"),
             EMPTY_SOURCE,
             new TestConfigurationSource().put(JAVA_NET_USE_SYSTEM_PROXIES, "true")
                 .put(Configuration.PROPERTY_HTTP_PROXY, PROXY_HOST)
-                .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, AUTH_TYPE).put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
+                .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, AUTH_TYPE)
+                .put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
                 .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD)).build();
 
         ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(configuration);
@@ -262,12 +289,13 @@ public class ProxyOptionsTests {
     @Test
     public void mixedConfigurationNoExplicitHost() {
         Configuration configuration = new ConfigurationBuilder(
-            new TestConfigurationSource().put("amqp.proxy.port", "4242").put("amqp.proxy.authentication-type",
-                "DIGEST"),
+            new TestConfigurationSource().put("amqp.proxy.port", "4242")
+                .put("amqp.proxy.authentication-type", "DIGEST"),
             EMPTY_SOURCE,
             new TestConfigurationSource().put(JAVA_NET_USE_SYSTEM_PROXIES, "true")
                 .put(Configuration.PROPERTY_HTTP_PROXY, "localhost:4242")
-                .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, "BASIC").put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
+                .put(ProxyOptions.PROXY_AUTHENTICATION_TYPE, "BASIC")
+                .put(ProxyOptions.PROXY_USERNAME, SOME_USERNAME)
                 .put(ProxyOptions.PROXY_PASSWORD, SOME_PASSWORD)).build();
 
         ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(configuration);

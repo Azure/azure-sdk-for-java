@@ -421,7 +421,8 @@ public abstract class TestBase implements BeforeEachCallback {
 
     private static HttpClient getTestProxyHttpClient() {
         return TEST_PROXY_HTTP_CLIENT.updateAndGet(httpClient -> httpClient == null
-            ? getHttpClients().findFirst().orElse(new HttpURLConnectionHttpClient()) : httpClient);
+            ? getHttpClients().findFirst().orElse(new HttpURLConnectionHttpClient())
+            : httpClient);
     }
 
     static String getTestName(Optional<Method> testMethod, String displayName, Optional<Class<?>> testClass) {
@@ -434,7 +435,8 @@ public abstract class TestBase implements BeforeEachCallback {
             fullyQualifiedTestName = className + "." + testName;
         }
 
-        return Objects.equals(displayName, testName) ? fullyQualifiedTestName
+        return Objects.equals(displayName, testName)
+            ? fullyQualifiedTestName
             : fullyQualifiedTestName + "(" + displayName + ")";
     }
 

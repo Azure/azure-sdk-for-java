@@ -178,8 +178,12 @@ public class LoggingTracerProvider implements TracerProvider {
         LoggingSpan(String name, SpanKind kind, String traceId, String parentSpanId) {
             this.traceId = traceId != null ? traceId : getRandomId(32);
             this.spanId = getRandomId(16);
-            this.log = LOGGER.atInfo().addKeyValue("traceId", this.traceId).addKeyValue("spanId", spanId)
-                .addKeyValue("parentSpanId", parentSpanId).addKeyValue("name", name).addKeyValue("kind", kind.name());
+            this.log = LOGGER.atInfo()
+                .addKeyValue("traceId", this.traceId)
+                .addKeyValue("spanId", spanId)
+                .addKeyValue("parentSpanId", parentSpanId)
+                .addKeyValue("name", name)
+                .addKeyValue("kind", kind.name());
 
             log.log("span created");
             this.enabled = true;

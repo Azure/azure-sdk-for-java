@@ -97,7 +97,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     private void setDefaultRecordingOptions() {
         HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/SetRecordingOptions")
-            .setBody("{\"HandleRedirects\": false}").setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+            .setBody("{\"HandleRedirects\": false}")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
         client.sendSync(request, Context.NONE).close();
     }
 
@@ -108,7 +109,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void stopRecording(Queue<String> variables) {
         HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/record/stop")
-            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json").setHeader(X_RECORDING_ID, xRecordingId)
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
+            .setHeader(X_RECORDING_ID, xRecordingId)
             .setBody(serializeVariables(variables));
 
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {

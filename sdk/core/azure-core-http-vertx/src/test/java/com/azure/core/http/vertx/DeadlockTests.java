@@ -35,8 +35,13 @@ public class DeadlockTests {
             .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody(), 32768)
                 .map(bytes -> Tuples.of(bytes, response.getStatusCode())));
 
-        List<Tuple2<byte[], Integer>> results = Flux.range(0, 100).parallel().runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> request).sequential().collectList().block();
+        List<Tuple2<byte[], Integer>> results = Flux.range(0, 100)
+            .parallel()
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(ignored -> request)
+            .sequential()
+            .collectList()
+            .block();
 
         for (Tuple2<byte[], Integer> result : results) {
             assertEquals(200, result.getT2());

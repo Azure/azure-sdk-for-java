@@ -186,7 +186,8 @@ public class HttpResponseBodyDecoderTests {
         StepVerifier
             .create(response.getBodyAsByteArray()
                 .mapNotNull(bytes -> HttpResponseBodyDecoder.decodeByteArray(bytes, response, ADAPTER, decodeData)))
-            .assertNext(actual -> assertEquals(expected, actual)).verifyComplete();
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
     }
 
     private static Stream<Arguments> decodableResponseSupplier() {
@@ -247,7 +248,8 @@ public class HttpResponseBodyDecoderTests {
                 assertEquals(2, decoded.size());
                 assertArraysEqual(base64Urls.get(0).decodedBytes(), decoded.get(0));
                 assertArraysEqual(base64Urls.get(1).decodedBytes(), decoded.get(1));
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     @SuppressWarnings("unchecked")
@@ -278,17 +280,18 @@ public class HttpResponseBodyDecoderTests {
                 Page<String> page = (Page<String>) actual;
                 assertFalse(page.getElements().iterator().hasNext());
                 assertNull(page.getContinuationToken());
-            }).verifyComplete();
+            })
+            .verifyComplete();
 
-        StepVerifier
-            .create(response.getBodyAsByteArray().mapNotNull(
-                body -> HttpResponseBodyDecoder.decodeByteArray(body, response, ADAPTER, itemPageDecodeData)))
+        StepVerifier.create(response.getBodyAsByteArray()
+            .mapNotNull(body -> HttpResponseBodyDecoder.decodeByteArray(body, response, ADAPTER, itemPageDecodeData)))
             .assertNext(actual -> {
                 assertTrue(actual instanceof Page);
                 Page<String> page = (Page<String>) actual;
                 assertFalse(page.getElements().iterator().hasNext());
                 assertNull(page.getContinuationToken());
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     @Test

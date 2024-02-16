@@ -285,8 +285,10 @@ public class JsonLocation implements java.io.Serializable {
             return false;
         }
 
-        return (_lineNr == otherLoc._lineNr) && (_columnNr == otherLoc._columnNr)
-            && (_totalChars == otherLoc._totalChars) && (_totalBytes == otherLoc._totalBytes);
+        return (_lineNr == otherLoc._lineNr)
+            && (_columnNr == otherLoc._columnNr)
+            && (_totalChars == otherLoc._totalChars)
+            && (_totalBytes == otherLoc._totalBytes);
     }
 
     @Override

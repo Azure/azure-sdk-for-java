@@ -195,8 +195,11 @@ public class HttpResponseDrainsBufferTests {
 
             sink.next(callCount);
             return callCount + 1;
-        }).concatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, URL)).flatMap(responseConsumer))
-            .parallel(10).runOn(Schedulers.boundedElastic()).then();
+        })
+            .concatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, URL)).flatMap(responseConsumer))
+            .parallel(10)
+            .runOn(Schedulers.boundedElastic())
+            .then();
 
         StepVerifier.create(requestMaker).verifyComplete();
 
@@ -219,8 +222,10 @@ public class HttpResponseDrainsBufferTests {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, URL))
             .flatMap(response -> Mono.fromRunnable(response::close).thenReturn(response))
-            .delayElement(Duration.ofSeconds(1)).flatMap(response -> Mono.fromRunnable(response::close))
-            .delayElement(Duration.ofSeconds(1)).then()).verifyComplete();
+            .delayElement(Duration.ofSeconds(1))
+            .flatMap(response -> Mono.fromRunnable(response::close))
+            .delayElement(Duration.ofSeconds(1))
+            .then()).verifyComplete();
     }
 
     private static final class TestResourceLeakDetectorFactory extends ResourceLeakDetectorFactory {

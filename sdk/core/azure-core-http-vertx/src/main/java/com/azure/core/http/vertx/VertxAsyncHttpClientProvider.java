@@ -58,8 +58,11 @@ public class VertxAsyncHttpClientProvider implements HttpClientProvider {
         }
 
         return new VertxAsyncHttpClientBuilder().proxy(clientOptions.getProxyOptions())
-            .configuration(clientOptions.getConfiguration()).connectTimeout(clientOptions.getConnectTimeout())
-            .idleTimeout(clientOptions.getConnectionIdleTimeout()).writeIdleTimeout(clientOptions.getWriteTimeout())
-            .readIdleTimeout(clientOptions.getReadTimeout()).build();
+            .configuration(clientOptions.getConfiguration())
+            .connectTimeout(clientOptions.getConnectTimeout())
+            .idleTimeout(clientOptions.getConnectionIdleTimeout())
+            .writeIdleTimeout(clientOptions.getWriteTimeout())
+            .readIdleTimeout(clientOptions.getReadTimeout())
+            .build();
     }
 }

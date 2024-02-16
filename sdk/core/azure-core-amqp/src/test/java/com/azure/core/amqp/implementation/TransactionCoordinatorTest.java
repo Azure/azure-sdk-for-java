@@ -67,8 +67,8 @@ public class TransactionCoordinatorTest {
 
         TransactionCoordinator transactionCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
 
-        doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(),
-            eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
+        doReturn(Mono.just(outcome)).when(sendLink)
+            .send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
         StepVerifier.create(transactionCoordinator.discharge(transaction, isCommit))
             .verifyError(IllegalArgumentException.class);
@@ -85,8 +85,8 @@ public class TransactionCoordinatorTest {
 
         TransactionCoordinator transactionCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
 
-        doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(),
-            eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
+        doReturn(Mono.just(outcome)).when(sendLink)
+            .send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
         StepVerifier.create(transactionCoordinator.discharge(transaction, isCommit)).verifyComplete();
 
@@ -99,8 +99,8 @@ public class TransactionCoordinatorTest {
 
         final TransactionCoordinator transactionCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
 
-        doReturn(Mono.just(outcome)).when(sendLink).send(any(byte[].class), anyInt(),
-            eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
+        doReturn(Mono.just(outcome)).when(sendLink)
+            .send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
         StepVerifier.create(transactionCoordinator.declare()).verifyError(IllegalArgumentException.class);
 
@@ -115,8 +115,8 @@ public class TransactionCoordinatorTest {
 
         TransactionCoordinator transactionCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
 
-        doReturn(Mono.just(transactionState)).when(sendLink).send(any(byte[].class), anyInt(),
-            eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
+        doReturn(Mono.just(transactionState)).when(sendLink)
+            .send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
 
         StepVerifier.create(transactionCoordinator.declare()).assertNext(actual -> {
             Assertions.assertNotNull(actual);

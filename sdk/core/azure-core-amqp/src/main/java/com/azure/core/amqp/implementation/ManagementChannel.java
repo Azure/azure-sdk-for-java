@@ -65,9 +65,9 @@ public class ManagementChannel implements AmqpManagementNode {
         return isAuthorized().then(createChannel.flatMap(channel -> {
             final Message protonJMessage = MessageUtils.toProtonJMessage(message);
 
-            return channel.sendWithAck(protonJMessage).handle(
-                (Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) -> handleResponse(responseMessage,
-                    sink, channel.getErrorContext()))
+            return channel.sendWithAck(protonJMessage)
+                .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) -> handleResponse(
+                    responseMessage, sink, channel.getErrorContext()))
                 .switchIfEmpty(errorIfEmpty(channel, null));
         }));
     }
@@ -143,8 +143,10 @@ public class ManagementChannel implements AmqpManagementNode {
     }
 
     private Mono<Void> isAuthorized() {
-        return tokenManager.getAuthorizationResults().next().switchIfEmpty(Mono.error(
-            () -> new AmqpException(false, "Did not get response from tokenManager: " + entityPath, getErrorContext())))
+        return tokenManager.getAuthorizationResults()
+            .next()
+            .switchIfEmpty(Mono.error(() -> new AmqpException(false,
+                "Did not get response from tokenManager: " + entityPath, getErrorContext())))
             .handle((response, sink) -> {
                 if (RequestResponseUtils.isSuccessful(response)) {
                     sink.complete();

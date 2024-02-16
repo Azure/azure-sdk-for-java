@@ -228,7 +228,10 @@ public class GeoSerializationTestHelpers {
             return;
         }
 
-        builder.append(",\"bbox\":[").append(boundingBox.getWest()).append(",").append(boundingBox.getSouth())
+        builder.append(",\"bbox\":[")
+            .append(boundingBox.getWest())
+            .append(",")
+            .append(boundingBox.getSouth())
             .append(",");
 
         Double minAltitude = boundingBox.getMinAltitude();
@@ -257,7 +260,9 @@ public class GeoSerializationTestHelpers {
                     builder.append(",");
                 }
 
-                builder.append("\"").append(property.getKey()).append("\":")
+                builder.append("\"")
+                    .append(property.getKey())
+                    .append("\":")
                     .append(MAPPER.writeValueAsString(property.getValue()));
             }
         } catch (JsonProcessingException ex) {

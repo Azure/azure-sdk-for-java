@@ -74,7 +74,9 @@ final class JacksonJsonReader extends JsonReader {
 
             // Get JsonParser.Feature enum value for allowing non-numeric numbers
             Class<?> jsonParserFeature = Arrays.stream(jacksonJsonParserClass.getDeclaredClasses())
-                .filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
+                .filter(c -> "Feature".equals(c.getSimpleName()))
+                .findAny()
+                .orElse(null);
             Class<?> jsonReadFeature = Class.forName("com.fasterxml.jackson.core.json.JsonReadFeature");
             MethodHandle jsonReadFeatureMappedFeature
                 = lookup.findVirtual(jsonReadFeature, "mappedFeature", methodType(jsonParserFeature));

@@ -278,7 +278,9 @@ public class FilteringParserDelegate extends JsonParserDelegate {
         if (!_allowMultipleMatches && (_currToken != null) && (_exposedContext == null)) {
             // if scalar, and scalar not present in obj/array and _inclusion == ONLY_INCLUDE_ALL
             // and INCLUDE_ALL matched once, return null
-            if (_currToken.isScalarValue() && !_headContext.isStartHandled() && _inclusion == Inclusion.ONLY_INCLUDE_ALL
+            if (_currToken.isScalarValue()
+                && !_headContext.isStartHandled()
+                && _inclusion == Inclusion.ONLY_INCLUDE_ALL
                 && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
                 return (_currToken = null);
             }

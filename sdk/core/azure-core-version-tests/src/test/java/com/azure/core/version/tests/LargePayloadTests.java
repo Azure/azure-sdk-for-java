@@ -47,16 +47,16 @@ public class LargePayloadTests {
 
     @Test
     public void largeJsonPayloadCore() {
-        assertDoesNotThrow(() -> JacksonAdapter.createDefaultSerializerAdapter().deserialize(LARGE_JSON, Object.class,
-            SerializerEncoding.JSON));
+        assertDoesNotThrow(() -> JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(LARGE_JSON, Object.class, SerializerEncoding.JSON));
     }
 
     @Test
     public void largeXmlPayloadCore() {
         // While it seems Jackson doesn't validate this, this test passes and can be a smoke test if that changes
         // in the future.
-        assertDoesNotThrow(() -> JacksonAdapter.createDefaultSerializerAdapter().deserialize(LARGE_XML, Object.class,
-            SerializerEncoding.XML));
+        assertDoesNotThrow(() -> JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(LARGE_XML, Object.class, SerializerEncoding.XML));
     }
 
     @Test
@@ -90,8 +90,9 @@ public class LargePayloadTests {
     @Test
     public void tooLargeJsonPayloadSerializerJackson() {
         assumeTrue(PackageVersion.VERSION.getMinorVersion() >= 15);
-        assertThrows(IOException.class, () -> com.azure.core.serializer.json.jackson.JacksonAdapter
-            .defaultSerializerAdapter().deserialize(TOO_LARGE_JSON, Object.class, SerializerEncoding.JSON));
+        assertThrows(IOException.class,
+            () -> com.azure.core.serializer.json.jackson.JacksonAdapter.defaultSerializerAdapter()
+                .deserialize(TOO_LARGE_JSON, Object.class, SerializerEncoding.JSON));
     }
 
     // It seems Jackson doesn't validate this in XML.

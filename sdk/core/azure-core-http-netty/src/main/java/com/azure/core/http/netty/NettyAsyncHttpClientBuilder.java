@@ -60,9 +60,9 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
- *     .port&#40;8080&#41;
- *     .wiretap&#40;true&#41;
- *     .build&#40;&#41;;
+ * .port&#40;8080&#41;
+ * .wiretap&#40;true&#41;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
@@ -78,9 +78,9 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
- *     .port&#40;8080&#41;
- *     .wiretap&#40;true&#41;
- *     .build&#40;&#41;;
+ * .port&#40;8080&#41;
+ * .wiretap&#40;true&#41;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
@@ -91,9 +91,9 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
- *     .port&#40;8080&#41;
- *     .wiretap&#40;true&#41;
- *     .build&#40;&#41;;
+ * .port&#40;8080&#41;
+ * .wiretap&#40;true&#41;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
@@ -105,8 +105,8 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <pre>
  * &#47;&#47; Constructs an HttpClient that only supports HTTP&#47;2.
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;reactor.netty.http.client.HttpClient.create&#40;&#41;
- *     .protocol&#40;HttpProtocol.H2&#41;&#41;
- *     .build&#40;&#41;;
+ * .protocol&#40;HttpProtocol.H2&#41;&#41;
+ * .build&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-useHttp2OnlyWithConfiguredNettyClient -->
  *
@@ -215,7 +215,8 @@ public class NettyAsyncHttpClientBuilder {
         // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
         // instead of overwritten.
         HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
-        nettyHttpClient = nettyHttpClient.port(port).wiretap(enableWiretap)
+        nettyHttpClient = nettyHttpClient.port(port)
+            .wiretap(enableWiretap)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                 (int) getTimeoutMillis(connectTimeout, DEFAULT_CONNECT_TIMEOUT))
             // TODO (alzimmer): What does validating HTTP response headers get us?
@@ -256,21 +257,25 @@ public class NettyAsyncHttpClientBuilder {
                  * before any request data is sent.
                  */
                 addProxyHandler = true;
-                Pattern nonProxyHostsPattern = CoreUtils.isNullOrEmpty(buildProxyOptions.getNonProxyHosts()) ? null
+                Pattern nonProxyHostsPattern = CoreUtils.isNullOrEmpty(buildProxyOptions.getNonProxyHosts())
+                    ? null
                     : Pattern.compile(buildProxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
 
                 nettyHttpClient = nettyHttpClient.doOnChannelInit((connectionObserver, channel, socketAddress) -> {
                     if (shouldApplyProxy(socketAddress, nonProxyHostsPattern)) {
-                        channel.pipeline().addFirst(NettyPipeline.ProxyHandler,
-                            new HttpProxyHandler(AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
-                                handler, proxyChallengeHolder));
+                        channel.pipeline()
+                            .addFirst(NettyPipeline.ProxyHandler,
+                                new HttpProxyHandler(AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
+                                    handler, proxyChallengeHolder));
                     }
                 });
             } else {
-                nettyHttpClient = nettyHttpClient.proxy(proxy -> proxy
-                    .type(toReactorNettyProxyType(buildProxyOptions.getType())).address(buildProxyOptions.getAddress())
-                    .username(buildProxyOptions.getUsername()).password(ignored -> buildProxyOptions.getPassword())
-                    .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
+                nettyHttpClient
+                    = nettyHttpClient.proxy(proxy -> proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
+                        .address(buildProxyOptions.getAddress())
+                        .username(buildProxyOptions.getUsername())
+                        .password(ignored -> buildProxyOptions.getPassword())
+                        .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
             }
 
             AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();

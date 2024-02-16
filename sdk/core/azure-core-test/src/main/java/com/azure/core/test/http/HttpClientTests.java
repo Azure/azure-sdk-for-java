@@ -575,7 +575,8 @@ public abstract class HttpClientTests {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, requestUrl, new HttpHeaders(), requestBody);
 
         StepVerifier.create(httpClient.send(request).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(responseBytes -> assertArraysEqual(expectedResponseBody, responseBytes)).verifyComplete();
+            .assertNext(responseBytes -> assertArraysEqual(expectedResponseBody, responseBytes))
+            .verifyComplete();
     }
 
     private static void canSendBinaryDataSync(URL requestUrl, BinaryData requestBody, HttpClient httpClient,
@@ -594,10 +595,12 @@ public abstract class HttpClientTests {
 
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
-            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set)).getContext();
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set))
+            .getContext();
 
         StepVerifier.create(httpClient.send(request, context).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(responseBytes -> assertArraysEqual(expectedResponseBody, responseBytes)).verifyComplete();
+            .assertNext(responseBytes -> assertArraysEqual(expectedResponseBody, responseBytes))
+            .verifyComplete();
 
         assertEquals(expectedResponseBody.length, progress.intValue());
     }
@@ -608,7 +611,8 @@ public abstract class HttpClientTests {
 
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
-            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set)).getContext();
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set))
+            .getContext();
 
         try (HttpResponse httpResponse = httpClient.sendSync(request, context)) {
             byte[] responseBytes = httpResponse.getBodyAsByteArray().block();
@@ -678,13 +682,16 @@ public abstract class HttpClientTests {
 
     private static Stream<Arguments> unknownLengthNoBufferFluxBinaryData() {
         return createBinaryDataTestSet(bytes -> BinaryData
-            .fromFlux(Flux.fromIterable(getFluxByteBuffers(bytes)).map(ByteBuffer::duplicate), null, false).block());
+            .fromFlux(Flux.fromIterable(getFluxByteBuffers(bytes)).map(ByteBuffer::duplicate), null, false)
+            .block());
     }
 
     private static Stream<Arguments> knownLengthNoBufferFluxBinaryData() {
         return createBinaryDataTestSet(
-            bytes -> BinaryData.fromFlux(Flux.fromIterable(getFluxByteBuffers(bytes)).map(ByteBuffer::duplicate),
-                (long) bytes.length, false).block());
+            bytes -> BinaryData
+                .fromFlux(Flux.fromIterable(getFluxByteBuffers(bytes)).map(ByteBuffer::duplicate), (long) bytes.length,
+                    false)
+                .block());
     }
 
     private static Stream<Arguments> unknownLengthNoBufferAsyncFluxBinaryData() {
@@ -856,7 +863,8 @@ public abstract class HttpClientTests {
     @Test
     public void asyncRequestWithByteArrayReturnType() {
         StepVerifier.create(createService(Service1.class).getByteArrayAsync(getRequestUri()))
-            .assertNext(bytes -> assertEquals(100, bytes.length)).verifyComplete();
+            .assertNext(bytes -> assertEquals(100, bytes.length))
+            .verifyComplete();
     }
 
     /**
@@ -865,7 +873,8 @@ public abstract class HttpClientTests {
     @Test
     public void getByteArrayAsyncWithNoExpectedResponses() {
         StepVerifier.create(createService(Service1.class).getByteArrayAsyncWithNoExpectedResponses(getRequestUri()))
-            .assertNext(bytes -> assertEquals(100, bytes.length)).verifyComplete();
+            .assertNext(bytes -> assertEquals(100, bytes.length))
+            .verifyComplete();
     }
 
     @Host("{scheme}://{hostName}")
@@ -899,7 +908,8 @@ public abstract class HttpClientTests {
     @Test
     public void asyncRequestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
         StepVerifier.create(createService(Service2.class).getByteArrayAsync(getRequestScheme(), "localhost", 100))
-            .assertNext(bytes -> assertEquals(100, bytes.length)).verifyComplete();
+            .assertNext(bytes -> assertEquals(100, bytes.length))
+            .verifyComplete();
     }
 
     /**
@@ -1066,7 +1076,8 @@ public abstract class HttpClientTests {
     @Test
     public void asyncGetRequestWithAnything() {
         StepVerifier.create(createService(Service5.class).getAnythingAsync(getRequestUri()))
-            .assertNext(json -> assertMatchWithHttpOrHttps("localhost/anything", json.url())).verifyComplete();
+            .assertNext(json -> assertMatchWithHttpOrHttps("localhost/anything", json.url()))
+            .verifyComplete();
     }
 
     @Host("{url}")
@@ -1127,7 +1138,8 @@ public abstract class HttpClientTests {
     @Test
     public void asyncGetRequestWithQueryParametersAndAnything() {
         StepVerifier.create(createService(Service6.class).getAnythingAsync(getRequestUri(), "A", 15))
-            .assertNext(json -> assertMatchWithHttpOrHttps("localhost/anything?a=A&b=15", json.url())).verifyComplete();
+            .assertNext(json -> assertMatchWithHttpOrHttps("localhost/anything?a=A&b=15", json.url()))
+            .verifyComplete();
     }
 
     /**
@@ -1193,7 +1205,8 @@ public abstract class HttpClientTests {
 
                 assertEquals("15", headers.getValue(HEADER_B));
                 assertArrayEquals(new String[] { "15" }, headers.getValues(HEADER_B));
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     /**
@@ -1246,7 +1259,8 @@ public abstract class HttpClientTests {
             .assertNext(json -> {
                 assertEquals(String.class, json.data().getClass());
                 assertEquals("I'm a post body!", json.data());
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     /**
@@ -1436,7 +1450,8 @@ public abstract class HttpClientTests {
                 assertEquals("test", json.data());
                 assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
                 assertEquals("4", json.getHeaderValue("Content-Length"));
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     /**
@@ -1448,8 +1463,9 @@ public abstract class HttpClientTests {
         Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8)));
         StepVerifier.create(createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 5L))
             .verifyErrorSatisfies(exception -> {
-                assertTrue(exception instanceof UnexpectedLengthException || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("less than"));
             });
     }
@@ -1463,8 +1479,9 @@ public abstract class HttpClientTests {
         Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8)));
         StepVerifier.create(createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 3L))
             .verifyErrorSatisfies(exception -> {
-                assertTrue(exception instanceof UnexpectedLengthException || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("more than"));
             });
     }
@@ -1484,7 +1501,8 @@ public abstract class HttpClientTests {
                 assertEquals("test", json.data());
                 assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
                 assertEquals("4", json.getHeaderValue("Content-Length"));
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     /**
@@ -1499,8 +1517,9 @@ public abstract class HttpClientTests {
             .create(bodyMono
                 .flatMap(body -> createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 5L)))
             .verifyErrorSatisfies(exception -> {
-                assertTrue(exception instanceof UnexpectedLengthException || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("less than"));
             });
     }
@@ -1517,8 +1536,9 @@ public abstract class HttpClientTests {
             .create(bodyMono
                 .flatMap(body -> createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 5L)))
             .verifyErrorSatisfies(exception -> {
-                assertTrue(exception instanceof UnexpectedLengthException || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("less than"));
             });
     }
@@ -1535,8 +1555,9 @@ public abstract class HttpClientTests {
             .create(bodyMono
                 .flatMap(body -> createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 3L)))
             .verifyErrorSatisfies(exception -> {
-                assertTrue(exception instanceof UnexpectedLengthException || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("more than"));
             });
     }
@@ -1550,8 +1571,9 @@ public abstract class HttpClientTests {
         BinaryData body = BinaryData.fromStream(new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8)));
         StepVerifier.create(createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 3L))
             .verifyErrorSatisfies(exception -> {
-                assertTrue(exception instanceof UnexpectedLengthException || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("more than"));
             });
     }
@@ -1773,7 +1795,8 @@ public abstract class HttpClientTests {
     @Test
     public void asyncHeadRequest() {
         StepVerifier.create(createService(Service10.class).headAsync(getRequestUri()))
-            .assertNext(response -> assertNull(response.getValue())).verifyComplete();
+            .assertNext(response -> assertNull(response.getValue()))
+            .verifyComplete();
     }
 
     /**
@@ -1782,7 +1805,8 @@ public abstract class HttpClientTests {
     @Test
     public void asyncHeadBooleanRequest() {
         StepVerifier.create(createService(Service10.class).headBooleanAsync(getRequestUri()))
-            .assertNext(Assertions::assertTrue).verifyComplete();
+            .assertNext(Assertions::assertTrue)
+            .verifyComplete();
     }
 
     /**
@@ -1863,7 +1887,8 @@ public abstract class HttpClientTests {
             .assertNext(json -> {
                 assertEquals(String.class, json.data().getClass());
                 assertEquals("body-contents", json.data());
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     @Host("{url}")
@@ -1982,7 +2007,8 @@ public abstract class HttpClientTests {
             .assertNext(json -> {
                 assertInstanceOf(String.class, json.data());
                 assertArraysEqual(expectedBytes, ((String) json.data()).getBytes(StandardCharsets.UTF_8));
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     @Host("{scheme}://{hostPart1}{hostPart2}")
@@ -2016,7 +2042,8 @@ public abstract class HttpClientTests {
     @Test
     public void asyncRequestWithMultipleHostParams() {
         StepVerifier.create(createService(Service17.class).getAsync(getRequestScheme(), "local", "host"))
-            .assertNext(json -> assertMatchWithHttpOrHttps("localhost/get", json.url())).verifyComplete();
+            .assertNext(json -> assertMatchWithHttpOrHttps("localhost/get", json.url()))
+            .verifyComplete();
     }
 
     @Host("{url}")
@@ -2802,11 +2829,12 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
     public void simpleDownloadTest(Context context) {
-        Mono<Tuple3<Integer, String, String>> downloadData = Mono.using(
-            () -> createService(DownloadService.class).getBytes(getRequestUri(), context),
-            response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(bytes -> Tuples
-                .of(bytes.length, response.getHeaders().getValue(HttpHeaderName.ETAG), MessageDigestUtils.md5(bytes))),
-            StreamResponse::close);
+        Mono<Tuple3<Integer, String, String>> downloadData
+            = Mono.using(() -> createService(DownloadService.class).getBytes(getRequestUri(), context),
+                response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                    .map(bytes -> Tuples.of(bytes.length, response.getHeaders().getValue(HttpHeaderName.ETAG),
+                        MessageDigestUtils.md5(bytes))),
+                StreamResponse::close);
 
         StepVerifier.create(downloadData).assertNext(tuple -> {
             assertEquals(30720, tuple.getT1().intValue());
@@ -2826,7 +2854,8 @@ public abstract class HttpClientTests {
             .create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
                 .flatMap(response -> Mono.using(() -> response,
                     r -> r.getValue().map(ByteBuffer::remaining).reduce(0, Integer::sum), StreamResponse::close)))
-            .assertNext(count -> assertEquals(30720, count)).verifyComplete();
+            .assertNext(count -> assertEquals(30720, count))
+            .verifyComplete();
 
         StepVerifier
             .create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
@@ -2834,7 +2863,8 @@ public abstract class HttpClientTests {
                     r -> Mono.zip(MessageDigestUtils.md5(r.getValue()),
                         Mono.just(r.getHeaders().getValue(HttpHeaderName.ETAG))),
                     StreamResponse::close)))
-            .assertNext(hashTuple -> assertEquals(hashTuple.getT2(), hashTuple.getT1())).verifyComplete();
+            .assertNext(hashTuple -> assertEquals(hashTuple.getT2(), hashTuple.getT1()))
+            .verifyComplete();
     }
 
     /**
@@ -2881,7 +2911,8 @@ public abstract class HttpClientTests {
     @MethodSource("downloadTestArgumentProvider")
     public void streamResponseCanTransferBodyAsync(Context context) throws IOException {
         StepVerifier.create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
-            .publishOn(Schedulers.boundedElastic()).map(streamResponse -> {
+            .publishOn(Schedulers.boundedElastic())
+            .map(streamResponse -> {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 try {
                     streamResponse.writeValueTo(Channels.newChannel(bos));
@@ -2912,7 +2943,8 @@ public abstract class HttpClientTests {
                 } catch (IOException e) {
                     throw Exceptions.propagate(e);
                 }
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     private static Stream<Arguments> downloadTestArgumentProvider() {
@@ -2926,8 +2958,8 @@ public abstract class HttpClientTests {
     @Test
     public void rawFluxDownloadTest() {
         StepVerifier.create(createService(DownloadService.class).getBytesFlux(getRequestUri())
-            .map(ByteBuffer::remaining).reduce(0, Integer::sum)).assertNext(count -> assertEquals(30720, count))
-            .verifyComplete();
+            .map(ByteBuffer::remaining)
+            .reduce(0, Integer::sum)).assertNext(count -> assertEquals(30720, count)).verifyComplete();
     }
 
     @Host("{url}")
@@ -2953,14 +2985,13 @@ public abstract class HttpClientTests {
         //
         // Order in which policies applied will be the order in which they added to builder
         //
-        final HttpPipeline httpPipeline
-            = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(new PortPolicy(getPort(), true),
-                    new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
-                .build();
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+            .policies(new PortPolicy(getPort(), true),
+                new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
+            .build();
         //
-        Response<HttpBinJson> response = RestProxy.create(FluxUploadService.class, httpPipeline).put(getRequestUri(),
-            stream, Files.size(filePath));
+        Response<HttpBinJson> response = RestProxy.create(FluxUploadService.class, httpPipeline)
+            .put(getRequestUri(), stream, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
     }
@@ -3003,11 +3034,10 @@ public abstract class HttpClientTests {
         //
         // Order in which policies applied will be the order in which they added to builder
         //
-        final HttpPipeline httpPipeline
-            = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(new PortPolicy(getPort(), true),
-                    new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
-                .build();
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+            .policies(new PortPolicy(getPort(), true),
+                new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
+            .build();
         //
         Response<HttpBinJson> response = RestProxy.create(BinaryDataUploadService.class, httpPipeline)
             .put(getServerUri(isSecure()), data, Files.size(filePath));

@@ -44,7 +44,8 @@ public final class OkHttpProxySelector extends ProxySelector {
          * proxy.
          */
         return (nonProxyHostsPattern == null || !nonProxyHostsPattern.matcher(uri.getHost()).matches())
-            ? Collections.singletonList(new Proxy(proxyType, getProxyAddress(proxyAddressSupplier))) : null;
+            ? Collections.singletonList(new Proxy(proxyType, getProxyAddress(proxyAddressSupplier)))
+            : null;
     }
 
     @Override
