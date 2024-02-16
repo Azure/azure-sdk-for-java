@@ -7,7 +7,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
-import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
@@ -85,8 +85,8 @@ public class PartitionBasedLoadBalancerTest {
     private static final boolean BATCH_RECEIVE_MODE = false;
     private static final PartitionContext PARTITION_CONTEXT = new PartitionContext(FQ_NAMESPACE, EVENT_HUB_NAME,
         CONSUMER_GROUP_NAME, "bazz");
-    private static final EventHubsTracer DEFAULT_TRACER =
-        new EventHubsTracer(null, FQ_NAMESPACE, EVENT_HUB_NAME);
+    private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsConsumerInstrumentation(null, null,
+        FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, false);
 
     private static final String OWNER_ID_1 = "owner1";
     private static final String OWNER_ID_2 = "owner2";
@@ -410,7 +410,7 @@ public class PartitionBasedLoadBalancerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, DEFAULT_TRACER, processorOptions);
+            () -> partitionProcessor, eventHubClientBuilder, DEFAULT_INSTRUMENTATION, processorOptions);
 
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner", TimeUnit.SECONDS.toSeconds(5),
@@ -443,7 +443,7 @@ public class PartitionBasedLoadBalancerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore, () -> partitionProcessor,
-            eventHubClientBuilder, DEFAULT_TRACER, processorOptions);
+            eventHubClientBuilder, DEFAULT_INSTRUMENTATION, processorOptions);
 
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner", TimeUnit.SECONDS.toSeconds(5),
@@ -510,7 +510,7 @@ public class PartitionBasedLoadBalancerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         final PartitionPumpManager partitionPumpManager = new PartitionPumpManager(mockCheckpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, DEFAULT_TRACER, processorOptions);
+            () -> partitionProcessor, eventHubClientBuilder, DEFAULT_INSTRUMENTATION, processorOptions);
 
         toClose.add(() -> partitionPumpManager.stopAllPartitionPumps().block());
         final PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(mockCheckpointStore,
@@ -552,7 +552,7 @@ public class PartitionBasedLoadBalancerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, DEFAULT_TRACER, processorOptions);
+            () -> partitionProcessor, eventHubClientBuilder, DEFAULT_INSTRUMENTATION, processorOptions);
 
         toClose.add(() -> partitionPumpManager.stopAllPartitionPumps().block());
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
@@ -834,7 +834,7 @@ public class PartitionBasedLoadBalancerTest {
                         eventProcessingErrorContext.getPartitionContext().getPartitionId(),
                         eventProcessingErrorContext.getThrowable());
                 }
-            }, eventHubClientBuilder, DEFAULT_TRACER, processorOptions);
+            }, eventHubClientBuilder, DEFAULT_INSTRUMENTATION, processorOptions);
 
 
         toClose.add(() -> pumpManager.stopAllPartitionPumps().block());

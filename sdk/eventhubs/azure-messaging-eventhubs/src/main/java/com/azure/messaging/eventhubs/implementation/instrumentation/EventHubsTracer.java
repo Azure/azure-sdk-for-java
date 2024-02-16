@@ -3,101 +3,91 @@
 
 package com.azure.messaging.eventhubs.implementation.instrumentation;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracingLink;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
-import reactor.core.publisher.Flux;
+import com.azure.messaging.eventhubs.models.EventBatchContext;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.DIAGNOSTIC_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_BATCH_MESSAGE_COUNT;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_TYPE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.TRACEPARENT_KEY;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.getErrorType;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.getOperationType;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.unwrap;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.EVENT;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
 
 public class EventHubsTracer {
     private static final AutoCloseable NOOP_AUTOCLOSEABLE = () -> {
     };
 
-    public static final String REACTOR_PARENT_TRACE_CONTEXT_KEY = "otel-context-key";
-    public static final String TRACEPARENT_KEY = "traceparent";
-    public static final String DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
-    public static final String MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME = "messaging.eventhubs.message.enqueued_time";
-    public static final String MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME = "messaging.batch.message_count";
-    private static final String MESSAGING_SYSTEM_ATTRIBUTE_NAME = "messaging.system";
-    private static final String MESSAGING_OPERATION_ATTRIBUTE_NAME = "messaging.operation";
     private static final TracingLink DUMMY_LINK = new TracingLink(Context.NONE);
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubsTracer.class);
 
     private static final boolean IS_TRACING_DISABLED = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED, false);
+
     protected final Tracer tracer;
     private final String fullyQualifiedName;
     private final String entityName;
+    private final String consumerGroup;
 
-    public EventHubsTracer(Tracer tracer, String fullyQualifiedName, String entityName) {
+    public EventHubsTracer(Tracer tracer, String fullyQualifiedName, String entityName, String consumerGroup) {
         this.tracer = IS_TRACING_DISABLED ? null : tracer;
         this.fullyQualifiedName = Objects.requireNonNull(fullyQualifiedName, "'fullyQualifiedName' cannot be null");
         this.entityName = Objects.requireNonNull(entityName, "'entityPath' cannot be null");
+        this.consumerGroup = DEFAULT_CONSUMER_GROUP_NAME.equalsIgnoreCase(consumerGroup) ? null : consumerGroup;
     }
 
     public boolean isEnabled() {
         return tracer != null && tracer.isEnabled();
     }
 
-    public Context startSpan(String spanName, StartSpanOptions startOptions, Context context) {
-        return isEnabled() ? tracer.start(spanName, startOptions, context) : context;
+    public Context startSpan(OperationName operationName, StartSpanOptions startOptions, Context context) {
+        return isEnabled() ? tracer.start(getSpanName(operationName), startOptions, context) : context;
     }
 
-    public <T> Mono<T> traceMono(Mono<T> publisher, String spanName) {
-        if (isEnabled()) {
-            return publisher
-                .doOnEach(signal -> {
-                    if (signal.isOnComplete() || signal.isOnError()) {
-                        Context span = signal.getContextView().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, Context.NONE);
-                        endSpan(signal.getThrowable(), span, null);
-                    }
-                })
-                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY,
-                    tracer.start(spanName, createStartOption(SpanKind.CLIENT, null), Context.NONE)));
+    public <T> Mono<T> traceMono(Mono<T> publisher, OperationName operationName, String partitionId) {
+        if (!isEnabled()) {
+            return publisher;
         }
 
-        return publisher;
-    }
-
-    public void endSpan(Throwable throwable, Context span, AutoCloseable scope) {
-        if (isEnabled()) {
-            String errorCondition = null;
-            if (throwable instanceof AmqpException) {
-                AmqpException exception = (AmqpException) throwable;
-                if (exception.getErrorCondition() != null) {
-                    errorCondition = exception.getErrorCondition().getErrorCondition();
-                }
-            }
-
-            try {
-                if (scope != null) {
-                    scope.close();
-                }
-            } catch (Exception e) {
-                LOGGER.warning("Can't close scope", e);
-            } finally {
-                tracer.end(errorCondition, throwable, span);
-            }
-        }
+        return Mono.using(
+                () -> new InstrumentationScope(this, null, null)
+                            .setSpan(tracer.start(getSpanName(operationName),
+                                    createStartOptions(SpanKind.CLIENT, operationName, partitionId),
+                                            Context.NONE)),
+                scope -> publisher
+                        .doOnError(scope::setError)
+                        .doOnCancel(scope::setCancelled)
+                        .contextWrite(c -> c.put(PARENT_TRACE_CONTEXT_KEY, scope.getSpan())),
+                InstrumentationScope::close);
     }
 
     /**
@@ -116,9 +106,9 @@ public class EventHubsTracer {
         }
 
         // Starting the span makes the sampling decision (nothing is logged at this time)
-        StartSpanOptions startOptions = createStartOption(SpanKind.PRODUCER, null);
+        StartSpanOptions startOptions = createStartOptions(SpanKind.PRODUCER, EVENT, null);
 
-        Context eventSpanContext = tracer.start("EventHubs.message", startOptions, eventContext);
+        Context eventSpanContext = tracer.start(getSpanName(EVENT), startOptions, eventContext);
 
         Exception exception = null;
         String error = null;
@@ -148,11 +138,20 @@ public class EventHubsTracer {
         }
     }
 
-    private static boolean canModifyApplicationProperties(Map<String, Object> applicationProperties) {
-        return applicationProperties != null && !applicationProperties.getClass().getSimpleName().equals("UnmodifiableMap");
+    public TracingLink createLink(Map<String, Object> applicationProperties, Instant enqueuedTime) {
+        return createLink(extractContext(applicationProperties), enqueuedTime);
     }
 
-    public TracingLink createLink(Map<String, Object> applicationProperties, Instant enqueuedTime, Context eventContext) {
+    private TracingLink createLink(Context linkContext, Instant enqueuedTime) {
+        Map<String, Object> linkAttributes = null;
+        if (enqueuedTime != null) {
+            linkAttributes = Collections.singletonMap(MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
+        }
+
+        return new TracingLink(linkContext, linkAttributes);
+    }
+
+    public TracingLink createProducerLink(Map<String, Object> applicationProperties, Context eventContext) {
         if (!tracer.isEnabled() || applicationProperties == null) {
             return DUMMY_LINK;
         }
@@ -169,15 +168,94 @@ public class EventHubsTracer {
             link = extractContext(applicationProperties);
         }
 
-        Map<String, Object> linkAttributes = null;
-        if (enqueuedTime != null) {
-            linkAttributes = Collections.singletonMap(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
-        }
-
-        return new TracingLink(link, linkAttributes);
+        return new TracingLink(link, null);
     }
 
-    public Context extractContext(Map<String, Object> applicationProperties) {
+    void endSpan(String errorType, Throwable throwable, Context context, AutoCloseable scope) {
+        if (isEnabled()) {
+            try {
+                if (scope != null) {
+                    scope.close();
+                }
+            } catch (Exception e) {
+                LOGGER.verbose("Can't close scope", e);
+            } finally {
+                tracer.end(errorType == null ? getErrorType(throwable) : errorType, unwrap(throwable), context);
+            }
+        }
+    }
+
+    AutoCloseable makeSpanCurrent(Context context) {
+        return isEnabled() ? tracer.makeSpanCurrent(context) : NOOP_AUTOCLOSEABLE;
+    }
+
+    Context startProcessSpan(Map<String, Object> applicationProperties, Instant enqueuedTime, String partitionId, Context parent) {
+        if (isEnabled()) {
+            Context remoteContext = extractContext(applicationProperties);
+            StartSpanOptions startOptions = createStartOptions(SpanKind.CONSUMER, PROCESS, partitionId)
+                .addLink(createLink(remoteContext, null))
+                .setRemoteParent(remoteContext);
+
+            // we could add these attributes only on sampled-in spans, but we don't have the API to check
+            if (enqueuedTime != null) {
+                startOptions.setAttribute(MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
+            }
+
+            return tracer.start(getSpanName(PROCESS), startOptions, parent);
+        }
+
+        return parent;
+    }
+
+    Context startProcessSpan(EventBatchContext batchContext, Context parent) {
+        if (isEnabled() && batchContext != null && !CoreUtils.isNullOrEmpty(batchContext.getEvents())) {
+            StartSpanOptions startOptions = createStartOptions(SpanKind.CONSUMER, PROCESS,
+                    batchContext.getPartitionContext().getPartitionId());
+            startOptions.setAttribute(MESSAGING_BATCH_MESSAGE_COUNT, batchContext.getEvents().size());
+
+            for (EventData event : batchContext.getEvents()) {
+                startOptions.addLink(createLink(event.getProperties(), event.getEnqueuedTime()));
+            }
+
+            return tracer.start(getSpanName(PROCESS), startOptions, parent);
+        }
+
+        return parent;
+    }
+
+    public StartSpanOptions createStartOptions(SpanKind kind, OperationName operationName, String partitionId) {
+        StartSpanOptions startOptions = new StartSpanOptions(kind)
+                .setAttribute(MESSAGING_SYSTEM, MESSAGING_SYSTEM_VALUE)
+                .setAttribute(MESSAGING_DESTINATION_NAME, entityName)
+                .setAttribute(SERVER_ADDRESS, fullyQualifiedName)
+                .setAttribute(MESSAGING_OPERATION_NAME, operationName.toString());
+
+        if (consumerGroup != null) {
+            startOptions.setAttribute(MESSAGING_CONSUMER_GROUP_NAME, consumerGroup);
+        }
+
+        if (partitionId != null) {
+            startOptions.setAttribute(MESSAGING_DESTINATION_PARTITION_ID, partitionId);
+        }
+
+        String operationType = getOperationType(operationName);
+        if (operationType != null) {
+            startOptions.setAttribute(MESSAGING_OPERATION_TYPE, operationType);
+        }
+
+        return startOptions;
+    }
+
+    private static String getTraceparent(Map<String, Object> applicationProperties) {
+        Object diagnosticId = applicationProperties.get(DIAGNOSTIC_ID_KEY);
+        if (diagnosticId == null) {
+            diagnosticId = applicationProperties.get(TRACEPARENT_KEY);
+        }
+
+        return diagnosticId == null ? null : diagnosticId.toString();
+    }
+
+    private Context extractContext(Map<String, Object> applicationProperties) {
         if (tracer.isEnabled() && applicationProperties != null) {
             return tracer.extractContext(key -> {
                 if (TRACEPARENT_KEY.equals(key)) {
@@ -195,99 +273,11 @@ public class EventHubsTracer {
         return Context.NONE;
     }
 
-    public AutoCloseable makeSpanCurrent(Context context) {
-        return isEnabled() ? tracer.makeSpanCurrent(context) : NOOP_AUTOCLOSEABLE;
+    private String getSpanName(OperationName operationName) {
+        return operationName.toString() + " " + entityName;
     }
 
-    public Context startProcessSpan(String name, EventData event, Context parent) {
-        if (isEnabled() && event != null) {
-            StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, OperationName.PROCESS)
-                .setRemoteParent(extractContext(event.getProperties()));
-
-            Instant enqueuedTime = event.getEnqueuedTime();
-            if (enqueuedTime != null) {
-                startOptions.setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
-            }
-
-            return tracer.start(name, startOptions, parent);
-        }
-
-        return parent;
-    }
-
-    public Context startProcessSpan(String name, List<EventData> events, Context parent) {
-        if (isEnabled() && events != null) {
-            StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, OperationName.PROCESS);
-            startOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, events.size());
-            for (EventData event : events) {
-                startOptions.addLink(createLink(event.getProperties(), event.getEnqueuedTime(), Context.NONE));
-            }
-
-            return tracer.start(name, startOptions, parent);
-        }
-
-        return parent;
-    }
-
-    public Flux<PartitionEvent> reportSyncReceiveSpan(String name, Instant startTime, Flux<PartitionEvent> events, Context parent) {
-        if (isEnabled() && events != null) {
-            final StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE)
-                .setStartTimestamp(startTime);
-
-            return events.doOnEach(signal -> {
-                if (signal.hasValue()) {
-                    EventData data = signal.get().getData();
-                    if (data != null) {
-                        startOptions.addLink(createLink(data.getProperties(), data.getEnqueuedTime(), Context.NONE));
-                    }
-                } else if (signal.isOnComplete() || signal.isOnError()) {
-                    int batchSize = startOptions.getLinks() == null ? 0 : startOptions.getLinks().size();
-                    startOptions.setAttribute(MESSAGING_BATCH_SIZE_ATTRIBUTE_NAME, batchSize);
-
-                    Context span = tracer.start(name, startOptions, parent);
-                    tracer.end(null, signal.getThrowable(), span);
-                }
-            });
-        }
-
-        return events;
-    }
-
-    private static String getTraceparent(Map<String, Object> applicationProperties) {
-        Object diagnosticId = applicationProperties.get(DIAGNOSTIC_ID_KEY);
-        if (diagnosticId == null) {
-            diagnosticId = applicationProperties.get(TRACEPARENT_KEY);
-        }
-
-        return diagnosticId == null ? null : diagnosticId.toString();
-    }
-
-    public StartSpanOptions createStartOption(SpanKind kind, OperationName operationName) {
-        StartSpanOptions startOptions =  new StartSpanOptions(kind)
-            .setAttribute(MESSAGING_SYSTEM_ATTRIBUTE_NAME, "eventhubs")
-            .setAttribute(ENTITY_PATH_KEY, entityName)
-            .setAttribute(HOST_NAME_KEY, fullyQualifiedName);
-
-        if (operationName != null) {
-            startOptions.setAttribute(MESSAGING_OPERATION_ATTRIBUTE_NAME, operationName.toString());
-        }
-
-        return startOptions;
-    }
-
-    public enum OperationName {
-        PUBLISH("publish"),
-        RECEIVE("receive"),
-        PROCESS("process");
-
-        private final String operationName;
-        OperationName(String operationName) {
-            this.operationName = operationName;
-        }
-
-        @Override
-        public String toString() {
-            return operationName;
-        }
+    private static boolean canModifyApplicationProperties(Map<String, Object> applicationProperties) {
+        return applicationProperties != null && !applicationProperties.getClass().getSimpleName().equals("UnmodifiableMap");
     }
 }

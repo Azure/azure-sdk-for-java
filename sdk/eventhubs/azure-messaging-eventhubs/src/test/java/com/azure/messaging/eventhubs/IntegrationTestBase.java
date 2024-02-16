@@ -52,7 +52,10 @@ public abstract class IntegrationTestBase extends TestBase {
     // Tests use timeouts of 20-60 seconds to verify something has happened
     // We need a short try timeout so that if transient issue happens we have a chance to retry it before overall test timeout.
     // This is a good idea to do in any production application as well - no point in waiting too long
-    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3));
+    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions()
+        .setTryTimeout(Duration.ofSeconds(3))
+        .setMaxDelay(Duration.ofSeconds(3))
+        .setMaxRetries(10);
 
     protected final ClientLogger logger;
 

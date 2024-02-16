@@ -3,13 +3,13 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessorException;
 import com.azure.messaging.eventhubs.implementation.ReactorShim;
-import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
+import com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationScope;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
@@ -64,7 +64,7 @@ class PartitionPumpManager {
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
     private final EventHubClientBuilder eventHubClientBuilder;
     private final int prefetch;
-    private final EventHubsTracer tracer;
+    private final EventHubsConsumerInstrumentation instrumentation;
     private final EventProcessorClientOptions options;
 
     /**
@@ -75,11 +75,11 @@ class PartitionPumpManager {
      * PartitionProcessor} when new partition pumps are started.
      * @param eventHubClientBuilder The client builder used to create new clients (and new connections) for each
      * partition processed by this {@link EventProcessorClient}.
-     * @param tracer Tracing helper.
+     * @param instrumentation Tracing and metrics helper.
      * @param options Configuration options.
      */
     PartitionPumpManager(CheckpointStore checkpointStore, Supplier<PartitionProcessor> partitionProcessorFactory,
-        EventHubClientBuilder eventHubClientBuilder, EventHubsTracer tracer, EventProcessorClientOptions options) {
+        EventHubClientBuilder eventHubClientBuilder, EventHubsConsumerInstrumentation instrumentation, EventProcessorClientOptions options) {
         this.checkpointStore = checkpointStore;
         this.partitionProcessorFactory = partitionProcessorFactory;
         this.eventHubClientBuilder = eventHubClientBuilder;
@@ -87,7 +87,7 @@ class PartitionPumpManager {
         this.prefetch = eventHubClientBuilder.getPrefetchCount() == null
             ? EventHubClientBuilder.DEFAULT_PREFETCH_COUNT
             : eventHubClientBuilder.getPrefetchCount();
-        this.tracer = tracer;
+        this.instrumentation = instrumentation;
     }
 
     /**
@@ -279,9 +279,7 @@ class PartitionPumpManager {
 
     private void processEvents(PartitionContext partitionContext, PartitionProcessor partitionProcessor,
         PartitionPump partitionPump, List<PartitionEvent> partitionEventBatch) {
-        Throwable exception = null;
-        Context span = null;
-        AutoCloseable scope = null;
+        InstrumentationScope scope = null;
 
         try {
             if (options.isBatchReceiveMode()) {
@@ -300,8 +298,7 @@ class PartitionPumpManager {
                 EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, eventDataList,
                     checkpointStore, enqueuedEventProperties);
 
-                span = tracer.startProcessSpan("EventHubs.process", eventDataList, Context.NONE);
-                scope = tracer.makeSpanCurrent(span);
+                scope = instrumentation.startProcess(eventBatchContext);
                 if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
                     LOGGER.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
@@ -329,18 +326,22 @@ class PartitionPumpManager {
 
                 EventContext eventContext = new EventContext(partitionContext, eventData, checkpointStore,
                     enqueuedEventProperties);
-                span = tracer.startProcessSpan("EventHubs.process", eventData, Context.NONE);
-                scope = tracer.makeSpanCurrent(span);
+
+                scope = instrumentation.startProcess(eventContext);
 
                 processEvent(partitionContext, partitionProcessor, eventContext);
             }
         } catch (Throwable throwable) {
-            exception = throwable;
+            if (scope != null) {
+                scope.setError(throwable);
+            }
             /* user code for event processing threw an exception - log and bubble up */
             throw LOGGER.logExceptionAsError(new PartitionProcessorException("Error in event processing callback",
                 throwable));
         } finally {
-            tracer.endSpan(exception, span, scope);
+            if (scope != null) {
+                scope.close();
+            }
         }
     }
 

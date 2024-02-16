@@ -5,9 +5,11 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
-import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
+import com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentedCheckpointStore;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import reactor.core.publisher.Flux;
@@ -108,7 +110,7 @@ public class EventProcessorClient {
      */
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder,
         Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
-        Consumer<ErrorContext> processError, Tracer tracer, EventProcessorClientOptions processorClientOptions) {
+        Consumer<ErrorContext> processError, Tracer tracer, Meter meter, EventProcessorClientOptions processorClientOptions) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         this.processorClientOptions = Objects.requireNonNull(processorClientOptions,
@@ -119,7 +121,6 @@ public class EventProcessorClient {
 
         final EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
 
-        this.checkpointStore = Objects.requireNonNull(checkpointStore, "checkpointStore cannot be null");
         this.identifier = eventHubAsyncClient.getIdentifier();
 
         Map<String, Object> loggingContext = new HashMap<>();
@@ -131,9 +132,14 @@ public class EventProcessorClient {
         this.consumerGroup = processorClientOptions.getConsumerGroup().toLowerCase(Locale.ROOT);
         this.loadBalancerUpdateInterval = processorClientOptions.getLoadBalancerUpdateInterval();
 
-        final EventHubsTracer eventHubsTracer = new EventHubsTracer(tracer, fullyQualifiedNamespace, eventHubName);
-        this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
-            eventHubClientBuilder, eventHubsTracer, processorClientOptions);
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(
+            tracer, meter, fullyQualifiedNamespace, eventHubName, consumerGroup, true);
+
+        Objects.requireNonNull(checkpointStore, "checkpointStore cannot be null");
+        this.checkpointStore = InstrumentedCheckpointStore.create(checkpointStore, instrumentation);
+
+        this.partitionPumpManager = new PartitionPumpManager(this.checkpointStore, partitionProcessorFactory,
+            eventHubClientBuilder, instrumentation, processorClientOptions);
 
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,

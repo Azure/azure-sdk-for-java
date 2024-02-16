@@ -40,6 +40,8 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNE
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNAL_TYPE_KEY;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_EVENT_HUB_PROPERTIES;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_PARTITION_PROPERTIES;
 
 /**
  * An <b>asynchronous</b> consumer responsible for reading {@link EventData} from either a specific Event Hub partition
@@ -308,7 +310,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     public Mono<EventHubProperties> getEventHubProperties() {
         return instrumentation.getTracer().traceMono(connectionProcessor.getManagementNodeWithRetries()
                 .flatMap(EventHubManagementNode::getEventHubProperties),
-            "EventHubs.getEventHubProperties");
+            GET_EVENT_HUB_PROPERTIES, null);
     }
 
     /**
@@ -341,7 +343,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
         return instrumentation.getTracer().traceMono(
             connectionProcessor.getManagementNodeWithRetries().flatMap(node -> node.getPartitionProperties(partitionId)),
-            "EventHubs.getPartitionProperties");
+            GET_PARTITION_PROPERTIES, partitionId);
     }
 
     /**
