@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.concurrent.RejectedExecutionException;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
+import static com.azure.core.amqp.implementation.ClientConstants.ERROR_DESCRIPTION_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KEY;
 
 /**
@@ -156,6 +157,11 @@ public class SessionHandler extends Handler {
     }
 
     private void onSessionTimeout() {
+        logger.atWarning()
+            .addKeyValue(SESSION_NAME_KEY, sessionName)
+            .addKeyValue(ERROR_DESCRIPTION_KEY, "timeout")
+            .log("onSessionTimeout");
+
         // It is supposed to close a local session to handle timeout exception.
         // However, closing the session can result in NPE because of proton-j bug (https://issues.apache
         // .org/jira/browse/PROTON-1939).

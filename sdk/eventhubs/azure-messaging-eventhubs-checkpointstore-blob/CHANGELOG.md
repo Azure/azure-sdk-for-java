@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Experimental checkpointing metrics are no longer reported by this package. They've been moved to `azure-messaging-eventhubs` package.
+
 ### Bugs Fixed
 
 ### Other Changes
