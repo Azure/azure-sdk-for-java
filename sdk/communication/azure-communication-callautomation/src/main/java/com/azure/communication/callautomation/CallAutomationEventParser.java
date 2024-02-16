@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.events.AddParticipantFailed;
 import com.azure.communication.callautomation.models.events.AddParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.AnswerFailed;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallDisconnected;
@@ -15,6 +16,7 @@ import com.azure.communication.callautomation.models.events.CancelAddParticipant
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
+import com.azure.communication.callautomation.models.events.CreateCallFailed;
 import com.azure.communication.callautomation.models.events.DialogCompleted;
 import com.azure.communication.callautomation.models.events.DialogConsent;
 import com.azure.communication.callautomation.models.events.DialogFailed;
@@ -181,6 +183,10 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, TranscriptionStopped.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionUpdated")) {
                 ret = mapper.convertValue(eventData, TranscriptionUpdated.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.AnswerFailed")) {
+                ret = mapper.convertValue(eventData, AnswerFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.CreateCallFailed")) {
+                ret = mapper.convertValue(eventData, CreateCallFailed.class);
             }
             return ret;
         } catch (RuntimeException e) {
