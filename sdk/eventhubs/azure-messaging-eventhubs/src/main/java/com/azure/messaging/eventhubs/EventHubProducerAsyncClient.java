@@ -617,7 +617,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             .publishOn(scheduler);
 
         // important to end spans after metrics are reported so metrics get relevant context for exemplars.
-        return instrumentation.onSendBatch(send, batch);
+        return instrumentation.sendBatch(send, batch);
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {

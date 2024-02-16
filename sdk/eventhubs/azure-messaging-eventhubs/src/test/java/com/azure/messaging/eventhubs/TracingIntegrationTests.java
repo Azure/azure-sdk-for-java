@@ -24,6 +24,7 @@ import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.LinkData;
+import io.opentelemetry.sdk.trace.data.SpanData;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -48,6 +49,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PUBLISH;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SETTLE;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -443,16 +445,23 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(1, processed.size());
         assertConsumerSpan(processed.get(0), receivedMessage.get());
         assertNull(processed.get(0).getAttribute(AttributeKey.stringKey("messaging.eventhubs.consumer.group")));
+
+        SpanContext parentSpanContext = currentInProcess.get().getSpanContext();
+        List<ReadableSpan> checkpointed = findSpans(spans, SETTLE)
+                .stream().filter(c -> c.getParentSpanContext().getSpanId()
+                        .equals(parentSpanContext.getSpanId())).collect(toList());
+        assertEquals(1, checkpointed.size());
+        assertCheckpointSpan(checkpointed.get(0), parentSpanContext);
     }
 
     @Test
     @SuppressWarnings("try")
     public void sendNotInstrumentedAndProcess() throws InterruptedException {
         EventHubProducerAsyncClient notInstrumentedProducer = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .eventHubName(getEventHubName())
-            .clientOptions(new ClientOptions().setTracingOptions(new TracingOptions().setEnabled(false)))
-            .buildAsyncProducerClient());
+                .connectionString(getConnectionString())
+                .eventHubName(getEventHubName())
+                .clientOptions(new ClientOptions().setTracingOptions(new TracingOptions().setEnabled(false)))
+                .buildAsyncProducerClient());
 
         EventData message1 = new EventData(CONTENTS_BYTES);
         EventData message2 = new EventData(CONTENTS_BYTES);
@@ -460,31 +469,31 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> hasOperationName(span, PROCESS) && !span.getParentSpanContext().isValid());
         StepVerifier.create(notInstrumentedProducer.send(Arrays.asList(message1, message2), new SendOptions().setPartitionId(PARTITION_ID)))
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
 
         assertNull(message1.getProperties().get("traceparent"));
         assertNull(message2.getProperties().get("traceparent"));
 
         Span test = GlobalOpenTelemetry.getTracer("test")
-            .spanBuilder("test")
-            .startSpan();
+                .spanBuilder("test")
+                .startSpan();
 
         try (Scope scope = test.makeCurrent()) {
             processor = new EventProcessorClientBuilder()
-                .connectionString(getConnectionString())
-                .eventHubName(getEventHubName())
-                .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
-                .consumerGroup("$Default")
-                .checkpointStore(new SampleCheckpointStore())
-                .processEvent(ec -> {
-                    if (!ec.getEventData().getProperties().containsKey("traceparent")) {
-                        received.add(ec.getEventData());
-                    }
-                    ec.updateCheckpoint();
-                })
-                .processError(e -> fail("unexpected error", e.getThrowable()))
-                .buildEventProcessorClient();
+                    .connectionString(getConnectionString())
+                    .eventHubName(getEventHubName())
+                    .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
+                    .consumerGroup("$Default")
+                    .checkpointStore(new SampleCheckpointStore())
+                    .processEvent(ec -> {
+                        if (!ec.getEventData().getProperties().containsKey("traceparent")) {
+                            received.add(ec.getEventData());
+                        }
+                        ec.updateCheckpoint();
+                    })
+                    .processError(e -> fail("unexpected error", e.getThrowable()))
+                    .buildEventProcessorClient();
 
             toClose((Closeable) () -> processor.stop());
             processor.start();
@@ -496,14 +505,21 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
         List<ReadableSpan> processed = findSpans(spans, PROCESS).stream()
-            .filter(s -> !s.getParentSpanContext().isValid())
-            .collect(toList());
+                .filter(s -> !s.getParentSpanContext().isValid())
+                .collect(toList());
         assertTrue(processed.size() >= 2);
         assertConsumerSpan(processed.get(0), received.get(0));
 
+        List<ReadableSpan> checkpointed = findSpans(spans, SETTLE).stream().toList();
         for (int i = 1; i < processed.size(); i++) {
             assertConsumerSpan(processed.get(i), received.get(i));
-            assertNotEquals(processed.get(0).getSpanContext().getTraceId(), processed.get(i).getSpanContext().getTraceId());
+            SpanContext parentSpanContext = processed.get(i).getSpanContext();
+            assertNotEquals(processed.get(0).getSpanContext().getTraceId(), parentSpanContext.getTraceId());
+            List<ReadableSpan> checkpointedChildren = checkpointed.stream()
+                    .filter(c -> c.getParentSpanContext().getSpanId().equals(parentSpanContext.getSpanId()))
+                    .collect(toList());
+            assertEquals(1, checkpointedChildren.size());
+            assertCheckpointSpan(checkpointedChildren.get(0), parentSpanContext);
         }
     }
 
@@ -558,6 +574,13 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(1, processed.size());
 
         assertConsumerSpan(processed.get(0), received.get(), StatusCode.UNSET);
+
+        SpanContext parentSpanContext = currentInProcess.get().getSpanContext();
+        List<ReadableSpan> checkpointed = findSpans(spans, SETTLE)
+                .stream().filter(c -> c.getParentSpanContext().getSpanId()
+                        .equals(parentSpanContext.getSpanId())).collect(toList());
+        assertEquals(1, checkpointed.size());
+        assertCheckpointSpan(checkpointed.get(0), parentSpanContext);
     }
 
     @Test
@@ -599,6 +622,13 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(1, processed.size());
         assertConsumerSpan(processed.get(0), received.get(), StatusCode.ERROR);
         assertEquals(RuntimeException.class.getName(), processed.get(0).getAttribute(AttributeKey.stringKey("error.type")));
+
+        SpanContext parentSpanContext = currentInProcess.get().getSpanContext();
+        List<ReadableSpan> checkpointed = findSpans(spans, SETTLE)
+                .stream().filter(c -> c.getParentSpanContext().getSpanId()
+                        .equals(parentSpanContext.getSpanId())).collect(toList());
+        assertEquals(1, checkpointed.size());
+        assertCheckpointSpan(checkpointed.get(0), parentSpanContext);
     }
 
     private void assertMessageSpan(ReadableSpan actual, EventData message) {
@@ -628,7 +658,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     private void assertSyncConsumerSpan(ReadableSpan actual, List<PartitionEvent> messages) {
-        assertEquals(SpanKind.CLIENT, actual.getKind());
+        assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
         List<LinkData> links = actual.toSpanData().getLinks();
         assertEquals("receive", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
@@ -646,16 +676,21 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     private void assertConsumerSpan(ReadableSpan actual, EventData message) {
+        SpanData spanData = actual.toSpanData();
         assertEquals(SpanKind.CONSUMER, actual.getKind());
-        assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
-        assertEquals(0, actual.toSpanData().getLinks().size());
+        assertEquals(StatusCode.UNSET, spanData.getStatus().getStatusCode());
         assertEquals("process", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
         assertEquals(PARTITION_ID, actual.getAttribute(AttributeKey.stringKey("messaging.eventhubs.destination.partition.id")));
 
         String messageTraceparent = (String) message.getProperties().get("traceparent");
         if (messageTraceparent == null) {
+            assertEquals(0, spanData.getLinks().size());
             assertFalse(actual.getParentSpanContext().isValid());
         } else {
+            assertEquals(1, spanData.getLinks().size());
+            LinkData link = spanData.getLinks().get(0);
+            assertEquals(actual.getSpanContext().getTraceId(), link.getSpanContext().getTraceId());
+            assertEquals(actual.getParentSpanContext().getSpanId(), link.getSpanContext().getSpanId());
             String parent = "00-" + actual.getSpanContext().getTraceId() + "-" + actual.getParentSpanContext().getSpanId() + "-01";
             assertEquals(messageTraceparent, parent);
         }
@@ -671,6 +706,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(status, actual.toSpanData().getStatus().getStatusCode());
         assertEquals("process", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        assertNotNull(actual.getAttribute(AttributeKey.stringKey("messaging.eventhubs.destination.partition.id")));
 
         List<EventData> receivedMessagesWithTraceContext = messages.stream().filter(m -> m.getProperties().containsKey("traceparent")).collect(toList());
         assertEquals(receivedMessagesWithTraceContext.size(), actual.toSpanData().getLinks().size());
@@ -688,6 +724,18 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             assertEquals(1, link.size());
             assertNotNull(link.get(0).getAttributes().get(AttributeKey.longKey("messaging.eventhubs.message.enqueued_time")));
         }
+    }
+
+    private void assertCheckpointSpan(ReadableSpan actual, SpanContext parent) {
+        assertEquals(SpanKind.INTERNAL, actual.getKind());
+        assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
+        assertEquals(OperationName.SETTLE.toString(), actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+
+        assertEquals(parent.getTraceId(), actual.getSpanContext().getTraceId());
+        assertEquals(parent.getSpanId(), actual.getParentSpanContext().getSpanId());
+
+        assertNull(actual.getAttribute(AttributeKey.stringKey("messaging.eventhubs.consumer.group")));
+        assertNotNull(actual.getAttribute(AttributeKey.stringKey("messaging.eventhubs.destination.partition.id")));
     }
 
     private List<ReadableSpan> findSpans(List<ReadableSpan> spans, OperationName operationName) {

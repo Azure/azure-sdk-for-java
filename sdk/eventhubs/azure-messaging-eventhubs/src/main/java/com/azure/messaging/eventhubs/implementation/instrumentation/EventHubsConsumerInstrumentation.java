@@ -13,10 +13,13 @@ import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 
 import java.time.Instant;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.util.tracing.SpanKind.CONSUMER;
@@ -26,7 +29,7 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Opera
 
 public class EventHubsConsumerInstrumentation {
     private static final Symbol ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL = Symbol.valueOf(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-    private static final InstrumentationScope EMPTY_CONTEXT = new InstrumentationScope(null, null);
+    private static final InstrumentationScope NOOP_SCOPE = new InstrumentationScope(null, null, (m, s) -> {});
     private final EventHubsTracer tracer;
     private final EventHubsMetricsProvider meter;
     private final boolean isSync;
@@ -40,24 +43,21 @@ public class EventHubsConsumerInstrumentation {
     public EventHubsTracer getTracer() {
         return tracer;
     }
-    public EventHubsMetricsProvider getMeter() {
-        return meter;
-    }
 
-    public InstrumentationScope createScope() {
-        return isEnabled() ? new InstrumentationScope(tracer, meter) : EMPTY_CONTEXT;
+    public InstrumentationScope createScope(BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback) {
+        return isEnabled() ? new InstrumentationScope(tracer, meter, reportMetricsCallback) : NOOP_SCOPE;
     }
 
     public InstrumentationScope startAsyncConsume(Message message, String partitionId) {
-        InstrumentationScope scope = createScope();
-        if (!scope.isEnabled()) {
-            return scope;
+        if (!isEnabled()) {
+            return NOOP_SCOPE;
         }
 
+        InstrumentationScope scope = createScope((m, s) -> m.reportProcess(1, partitionId, s));
         Instant enqueuedTime = MessageUtils.getEnqueuedTime(message.getMessageAnnotations().getValue(), ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL);
         if (!isSync) {
-            scope.recordStartTime()
-                    .setSpan(tracer.startProcessSpan(message.getApplicationProperties().getValue(),
+            ApplicationProperties properties = message.getApplicationProperties();
+            scope.setSpan(tracer.startProcessSpan(properties == null ? null : properties.getValue(),
                             enqueuedTime,
                             partitionId,
                             Context.NONE))
@@ -70,10 +70,6 @@ public class EventHubsConsumerInstrumentation {
         return scope;
     }
 
-    public void reportProcessMetrics(int batchSize, String partitionId, InstrumentationScope scope) {
-        meter.reportProcess(batchSize, partitionId, scope);
-    }
-
     public Flux<PartitionEvent> syncReceive(Flux<PartitionEvent> events, String partitionId) {
         if (!isEnabled()) {
             return events;
@@ -84,12 +80,11 @@ public class EventHubsConsumerInstrumentation {
 
         return Flux.using(
                 () ->  {
-                    InstrumentationScope scope = new InstrumentationScope(tracer, meter);
                     if (startOptions != null) {
-                        startOptions.setStartTimestamp(scope.getStartTime());
+                        startOptions.setStartTimestamp(Instant.now());
                     }
 
-                    return scope.recordStartTime();
+                    return createScope((m, s) -> meter.reportReceiveDuration(receivedCount[0], partitionId, s));
                 },
                 scope -> events
                         .doOnNext(partitionEvent -> {
@@ -108,32 +103,40 @@ public class EventHubsConsumerInstrumentation {
 
                         scope.setSpan(tracer.startSpan(RECEIVE, startOptions, Context.NONE));
                     }
-                    meter.reportReceiveDuration(receivedCount[0], partitionId, scope);
                     scope.close();
                 });
     }
 
-    public InstrumentationScope startProcess(EventBatchContext batchContext, InstrumentationScope scope) {
-        if (batchContext.getEvents().isEmpty() || !scope.isEnabled()) {
-            return scope;
+    public InstrumentationScope startProcess(EventBatchContext batchContext) {
+        if (batchContext.getEvents().isEmpty() || !isEnabled()) {
+            return NOOP_SCOPE;
         }
 
-        Context span = tracer.startProcessSpan(batchContext, Context.NONE);
-        return scope.setSpan(span)
+        InstrumentationScope scope = createScope((m, s) ->
+                m.reportProcess(batchContext.getEvents().size(), batchContext.getPartitionContext().getPartitionId(), s));
+
+        return scope
+                .setSpan(tracer.startProcessSpan(batchContext, Context.NONE))
                 .makeSpanCurrent();
     }
 
-    public InstrumentationScope startProcess(EventContext eventContext, InstrumentationScope ctx) {
+    public InstrumentationScope startProcess(EventContext eventContext) {
         EventData event = eventContext.getEventData();
-        if (event == null || !ctx.isEnabled()) {
-            return ctx;
+        if (event == null || !isEnabled()) {
+            return NOOP_SCOPE;
         }
 
+        InstrumentationScope scope = createScope((m, s) ->
+                m.reportProcess(1, eventContext.getPartitionContext().getPartitionId(), s));
+
         Context span = tracer.startProcessSpan(event.getProperties(),
-            event.getEnqueuedTime(),
-            eventContext.getPartitionContext().getPartitionId(),
-            Context.NONE);
-        return ctx.setSpan(span).makeSpanCurrent();
+                event.getEnqueuedTime(),
+                eventContext.getPartitionContext().getPartitionId(),
+                Context.NONE);
+
+        return scope
+                .setSpan(span)
+                .makeSpanCurrent();
     }
 
     boolean isEnabled() {

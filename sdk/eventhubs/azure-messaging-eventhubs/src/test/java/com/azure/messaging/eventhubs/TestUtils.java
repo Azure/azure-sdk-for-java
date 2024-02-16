@@ -11,6 +11,9 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.trace.StatusCode;
+import io.opentelemetry.sdk.trace.data.SpanData;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -189,6 +192,15 @@ public final class TestUtils {
         assertAllAttributes(hostname, entityName, null, null, null, attributes);
     }
 
+    public static Map<String, Object> attributesToMap(Attributes attributes) {
+        return attributes.asMap().entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().getKey(), e -> e.getValue()));
+    }
+
+    public static String getSpanName(OperationName operation, String eventHubName) {
+        return String.format("%s %s", eventHubName, operation);
+    }
+
     public static void assertAllAttributes(String hostname, String entityName, String partitionId, String consumerGroup, String errorType, Map<String, Object> attributes) {
         assertEquals(MESSAGING_SYSTEM_VALUE, attributes.get(MESSAGING_SYSTEM));
         assertEquals(hostname, attributes.get(SERVER_ADDRESS));
@@ -198,8 +210,13 @@ public final class TestUtils {
         assertEquals(errorType, attributes.get(ERROR_TYPE));
     }
 
-    public static String getSpanName(OperationName operation, String eventHubName) {
-        return String.format("%s %s", eventHubName, operation);
+    public static void assertSpanStatus(String description, SpanData span) {
+        if (description != null) {
+            assertEquals(StatusCode.ERROR, span.getStatus().getStatusCode());
+            assertEquals(description, span.getStatus().getDescription());
+        } else {
+            assertEquals(StatusCode.UNSET, span.getStatus().getStatusCode());
+        }
     }
 
     public static EventData createEventData(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset,

@@ -261,7 +261,7 @@ public class EventProcessorClientTest {
         final String expectedProcessSpanName = getSpanName(PROCESS, EVENT_HUB_NAME);
         when(tracer.start(eq(expectedProcessSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 0);
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 1);
                 return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
@@ -594,7 +594,7 @@ public class EventProcessorClientTest {
         final String expectedProcessSpanName = getSpanName(PROCESS, EVENT_HUB_NAME);
         when(tracer.start(eq(expectedProcessSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
             invocation -> {
-                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 0);
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 1);
                 return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
@@ -1050,8 +1050,12 @@ public class EventProcessorClientTest {
             assertNull(startOpts.getLinks());
         } else {
             assertEquals(linkCount, startOpts.getLinks().size());
-            for (TracingLink link : startOpts.getLinks()) {
-                assertTrue(link.getAttributes().containsKey(MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME));
+            if (linkCount == 1) {
+                assertTrue(startOpts.getAttributes().containsKey(MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME));
+            } else {
+                for (TracingLink link : startOpts.getLinks()) {
+                    assertTrue(link.getAttributes().containsKey(MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME));
+                }
             }
         }
     }

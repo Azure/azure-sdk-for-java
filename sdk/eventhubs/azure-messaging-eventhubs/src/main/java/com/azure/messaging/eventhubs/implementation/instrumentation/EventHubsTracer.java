@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
@@ -77,20 +78,18 @@ public class EventHubsTracer {
         }
 
         return Mono.using(
-                () -> new InstrumentationScope(this, null)
+                () -> new InstrumentationScope(this, null, null)
                             .setSpan(tracer.start(getSpanName(operationName),
                                             createStartOption(SpanKind.CLIENT, operationName, partitionId),
                                             Context.NONE)),
-                ctx -> publisher
-                        .doOnError(ctx::setError)
-                        .doOnCancel(ctx::setCancelled)
-                        .contextWrite(c -> c.put(PARENT_TRACE_CONTEXT_KEY, ctx.getSpan())),
-                ctx -> ctx.close());
+                scope -> publisher
+                        .doOnError(scope::setError)
+                        .doOnCancel(scope::setCancelled)
+                        .contextWrite(c -> c.put(PARENT_TRACE_CONTEXT_KEY, scope.getSpan())),
+                InstrumentationScope::close);
     }
 
     //TODO:
-    // test receive metrics
-    // test checkpoint metrics
     // changelog
     // run stress before/after
 
@@ -194,7 +193,7 @@ public class EventHubsTracer {
     }
 
     Context startProcessSpan(Map<String, Object> applicationProperties, Instant enqueuedTime, String partitionId, Context parent) {
-        if (isEnabled() && applicationProperties != null) {
+        if (isEnabled()) {
             Context remoteContext = extractContext(applicationProperties);
             StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, PROCESS, partitionId)
                 .addLink(createLink(remoteContext, null))

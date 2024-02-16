@@ -588,7 +588,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     throw logger.logExceptionAsError(Exceptions.propagate(
                         Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
                 } finally {
-                    instrumentation.reportProcessMetrics(1, partitionId, scope);
                     scope.close();
                 }
 

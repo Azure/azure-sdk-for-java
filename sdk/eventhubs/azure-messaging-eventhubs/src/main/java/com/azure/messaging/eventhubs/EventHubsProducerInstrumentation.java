@@ -15,6 +15,8 @@ import com.azure.messaging.eventhubs.implementation.instrumentation.OperationNam
 import reactor.core.publisher.Mono;
 
 
+import java.util.function.BiConsumer;
+
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_BATCH_MESSAGE_COUNT;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID;
 
@@ -26,20 +28,22 @@ class EventHubsProducerInstrumentation {
         this.meter = new EventHubsMetricsProvider(meter, fullyQualifiedName, entityName, null);
     }
 
-    <T> Mono<T> onSendBatch(Mono<T> publisher, EventDataBatch batch) {
+    <T> Mono<T> sendBatch(Mono<T> publisher, EventDataBatch batch) {
         if (!isEnabled()) {
             return publisher;
         }
 
+        BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback = (m, s) ->
+             m.reportBatchSend(batch.getCount(), batch.getPartitionId(), s);
+
+
         return Mono.using(
-                () -> new InstrumentationScope(tracer, meter).recordStartTime().setSpan(startPublishSpanWithLinks(batch, Context.NONE)),
-                ctx -> publisher
-                    .doOnError(ctx::setError)
-                    .doOnCancel(ctx::setCancelled),
-                ctx -> {
-                    meter.reportBatchSend(batch.getCount(), batch.getPartitionId(), ctx);
-                    ctx.close();
-                });
+                () -> new InstrumentationScope(tracer, meter, reportMetricsCallback)
+                        .setSpan(startPublishSpanWithLinks(batch, Context.NONE)),
+                scope -> publisher
+                    .doOnError(scope::setError)
+                    .doOnCancel(scope::setCancelled),
+                InstrumentationScope::close);
     }
 
     public EventHubsTracer getTracer() {

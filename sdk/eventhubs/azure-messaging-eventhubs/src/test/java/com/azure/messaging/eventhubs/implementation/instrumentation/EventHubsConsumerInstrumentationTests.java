@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs.implementation.instrumentation;
 
 import com.azure.core.amqp.AmqpMessageConstant;
@@ -17,16 +20,15 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.SampleCheckpointStore;
 import com.azure.messaging.eventhubs.TestSpanProcessor;
 import com.azure.messaging.eventhubs.TestUtils;
+import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
-import io.opentelemetry.api.GlobalOpenTelemetry;
+import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
-import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.LinkData;
@@ -55,19 +57,22 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.assertAllAttributes;
-import static com.azure.messaging.eventhubs.TestUtils.createEventData;
+import static com.azure.messaging.eventhubs.TestUtils.assertSpanStatus;
+import static com.azure.messaging.eventhubs.TestUtils.attributesToMap;
 import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SETTLE;
 import static io.opentelemetry.api.trace.SpanKind.CONSUMER;
+import static io.opentelemetry.api.trace.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventHubsConsumerInstrumentationTests {
@@ -86,8 +91,6 @@ public class EventHubsConsumerInstrumentationTests {
     private CheckpointStore checkpointStore;
     @BeforeEach
     public void setup(TestInfo testInfo) {
-        GlobalOpenTelemetry.resetForTest();
-
         spanProcessor = new TestSpanProcessor(FQDN, ENTITY_NAME, testInfo.getDisplayName());
         OpenTelemetry otel = OpenTelemetrySdk.builder()
                 .setTracerProvider(
@@ -105,7 +108,6 @@ public class EventHubsConsumerInstrumentationTests {
 
     @AfterEach
     public void teardown() {
-        GlobalOpenTelemetry.resetForTest();
         spanProcessor.shutdown();
         spanProcessor.close();
         meter.close();
@@ -285,8 +287,6 @@ public class EventHubsConsumerInstrumentationTests {
         assertReceiveSpan(expectedErrorType == null ? 1 : 0, partitionId, expectedErrorType, spanDescription);
     }
 
-
-
     @ParameterizedTest
     @MethodSource("syncReceiveErrors")
     @SuppressWarnings("try")
@@ -351,11 +351,9 @@ public class EventHubsConsumerInstrumentationTests {
                 FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
 
         String partitionId = "0";
-        try (InstrumentationScope scope = instrumentation.createScope().recordStartTime()) {
-            instrumentation.startProcess(createEventContext(Instant.now(), TRACEPARENT1, partitionId), scope);
+        try (InstrumentationScope scope = instrumentation.startProcess(createEventContext(Instant.now(), TRACEPARENT1, partitionId))) {
             scope.setError(error);
             Thread.sleep(200);
-            instrumentation.reportProcessMetrics(1, partitionId, scope);
         }
 
         assertProcessDuration(Duration.ofMillis(200), partitionId, expectedErrorType);
@@ -386,11 +384,9 @@ public class EventHubsConsumerInstrumentationTests {
         PartitionContext partitionContext = new PartitionContext(FQDN, ENTITY_NAME, CONSUMER_GROUP, partitionId);
         EventBatchContext batchContext = new EventBatchContext(partitionContext, events, checkpointStore, null);
 
-        try (InstrumentationScope scope = instrumentation.createScope().recordStartTime()) {
-            instrumentation.startProcess(batchContext, scope);
+        try (InstrumentationScope scope = instrumentation.startProcess(batchContext)) {
             scope.setError(error);
             Thread.sleep(200);
-            instrumentation.reportProcessMetrics(count, partitionId, scope);
         }
 
         assertProcessDuration(Duration.ofMillis(200), partitionId, expectedErrorType);
@@ -406,6 +402,62 @@ public class EventHubsConsumerInstrumentationTests {
             assertNotNull(link.getAttributes().get(AttributeKey.longKey("messaging.eventhubs.message.enqueued_time")));
         }
     }
+
+    public static Stream<Arguments> checkpointErrors() {
+        return Stream.of(
+                Arguments.of(false, null, null, null),
+                Arguments.of(true, null, "cancelled", "cancelled"),
+                Arguments.of(false, new RuntimeException("test"), RuntimeException.class.getName(), "test"),
+                Arguments.of(false, Exceptions.propagate(new RuntimeException("test")), RuntimeException.class.getName(), "test")
+        );
+    }
+
+    @Test
+    public void checkpointWithDisabledInstrumentation() {
+        CheckpointStore inner = new SampleCheckpointStore();
+
+        EventHubsConsumerInstrumentation disabled = new EventHubsConsumerInstrumentation(null, null,
+                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+
+        CheckpointStore instrumented = InstrumentedCheckpointStore.create(inner, disabled);
+        assertSame(instrumented, inner);
+    }
+
+    @ParameterizedTest
+    @MethodSource("checkpointErrors")
+    @SuppressWarnings("try")
+    public void checkpoint(boolean cancel, Throwable error, String expectedErrorType, String spanDescription) {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+
+        String partitionId = "0";
+
+        CheckpointStore sample = new SampleCheckpointStore();
+        CheckpointStore store = InstrumentedCheckpointStore.create(error == null ? sample : new ThrowingCheckpointStore(sample, error),
+                instrumentation);
+        Checkpoint checkpoint = new Checkpoint()
+                .setFullyQualifiedNamespace(FQDN)
+                .setEventHubName(ENTITY_NAME)
+                .setSequenceNumber(1L)
+                .setPartitionId(partitionId)
+                .setOffset(2L)
+                .setConsumerGroup(CONSUMER_GROUP);
+
+        StepVerifier.FirstStep<Void> stepVerifier =
+                StepVerifier.create(store.updateCheckpoint(checkpoint));
+
+        if (cancel) {
+            stepVerifier.thenCancel().verify();
+        } else if (error != null) {
+            stepVerifier.expectErrorMessage(error.getMessage()).verify();
+        } else {
+            stepVerifier.expectComplete().verify();
+        }
+
+        assertCheckpointDuration(partitionId, expectedErrorType);
+        assertCheckpointSpan(partitionId, expectedErrorType, spanDescription);
+    }
+
     private static Message createMessage(Instant enqueuedTime) {
         Message message = Message.Factory.create();
         message.setMessageAnnotations(new MessageAnnotations(Collections.singletonMap(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), enqueuedTime)));
@@ -442,20 +494,6 @@ public class EventHubsConsumerInstrumentationTests {
         return TestUtils.createEventData(annotatedMessage, 25L, 14L, enqueuedTime);
     }
 
-    private static Map<String, Object> attributesToMap(Attributes attributes) {
-        return attributes.asMap().entrySet().stream()
-                .collect(Collectors.toMap(e -> e.getKey().getKey(), e -> e.getValue()));
-    }
-
-    private void assertSpanStatus(String description, SpanData span) {
-        if (description != null) {
-            assertEquals(StatusCode.ERROR, span.getStatus().getStatusCode());
-            assertEquals(description, span.getStatus().getDescription());
-        } else {
-            assertEquals(StatusCode.UNSET, span.getStatus().getStatusCode());
-        }
-    }
-
     private SpanData assertReceiveSpan(int expectedBatchSize, String partitionId, String expectedErrorType, String spanDescription) {
         assertEquals(1, spanProcessor.getEndedSpans().size());
         SpanData span = spanProcessor.getEndedSpans().get(0).toSpanData();
@@ -480,6 +518,16 @@ public class EventHubsConsumerInstrumentationTests {
         return span;
     }
 
+    private SpanData assertCheckpointSpan(String partitionId, String expectedErrorType, String spanDescription) {
+        assertEquals(1, spanProcessor.getEndedSpans().size());
+        SpanData span = spanProcessor.getEndedSpans().get(0).toSpanData();
+        assertEquals(getSpanName(SETTLE, ENTITY_NAME), span.getName());
+        assertEquals(INTERNAL, span.getKind());
+        Map<String, Object> attributes = attributesToMap(span.getAttributes());
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, attributes);
+        assertSpanStatus(spanDescription, span);
+        return span;
+    }
 
     private void assertReceiveDuration(String partitionId, String expectedErrorType) {
         TestHistogram receiveDuration = meter.getHistograms().get("messaging.receive.duration");
@@ -500,6 +548,14 @@ public class EventHubsConsumerInstrumentationTests {
 
         assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
                 processDuration.getMeasurements().get(0).getAttributes());
+    }
+
+    private void assertCheckpointDuration(String partitionId, String expectedErrorType) {
+        TestHistogram settleDuration = meter.getHistograms().get("messaging.settle.duration");
+        assertNotNull(settleDuration);
+        assertEquals(1, settleDuration.getMeasurements().size());
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
+                settleDuration.getMeasurements().get(0).getAttributes());
     }
 
     private void assertReceivedCount(int count, String partitionId) {
@@ -524,5 +580,34 @@ public class EventHubsConsumerInstrumentationTests {
 
     private double getDoubleSeconds(Duration duration) {
         return duration.toNanos() / 1_000_000_000.0;
+    }
+
+    private static class ThrowingCheckpointStore implements CheckpointStore {
+        private final CheckpointStore inner;
+        private final Throwable exception;
+        public ThrowingCheckpointStore(CheckpointStore inner, Throwable exception) {
+            this.exception = exception;
+            this.inner = inner;
+        }
+
+        @Override
+        public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+            return inner.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup);
+        }
+
+        @Override
+        public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
+            return inner.claimOwnership(requestedPartitionOwnerships);
+        }
+
+        @Override
+        public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+            return inner.listCheckpoints(fullyQualifiedNamespace, eventHubName, consumerGroup);
+        }
+
+        @Override
+        public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
+            return Mono.defer(() -> Mono.error(exception));
+        }
     }
 }

@@ -6,6 +6,9 @@ package com.azure.messaging.eventhubs.implementation.instrumentation;
 import com.azure.core.util.Context;
 
 import java.time.Instant;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.CANCELLED_ERROR_TYPE_VALUE;
 
@@ -21,11 +24,18 @@ public final class InstrumentationScope implements AutoCloseable {
     private String errorType;
     private Context span = Context.NONE;
     private AutoCloseable spanScope;
+    private BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback;
 
-    public InstrumentationScope(EventHubsTracer tracer, EventHubsMetricsProvider meter) {
+    public InstrumentationScope(EventHubsTracer tracer,
+                                EventHubsMetricsProvider meter,
+                                BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback) {
         this.tracer = tracer;
         this.meter = meter;
         this.isEnabled = (tracer != null && tracer.isEnabled()) || (meter != null && meter.isEnabled());
+        if (meter != null && meter.isEnabled()) { // micro-optimization
+            this.startTime = Instant.now();
+        }
+        this.reportMetricsCallback = reportMetricsCallback;
     }
 
     public boolean isEnabled() {
@@ -39,11 +49,8 @@ public final class InstrumentationScope implements AutoCloseable {
         return this;
     }
 
-    public InstrumentationScope recordStartTime() {
-        if (meter != null && meter.isEnabled()) { // micro-optimization
-            this.startTime = Instant.now();
-        }
-
+    public InstrumentationScope setStartTime(Instant time) {
+        this.startTime = time;
         return this;
     }
 
@@ -89,6 +96,9 @@ public final class InstrumentationScope implements AutoCloseable {
 
     @Override
     public void close() {
+        if (meter != null && reportMetricsCallback != null) {
+            reportMetricsCallback.accept(meter, this);
+        }
         if (tracer != null) {
             tracer.endSpan(errorType, error, span, spanScope);
         }

@@ -17,12 +17,12 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Opera
 
 public final class InstrumentedCheckpointStore implements CheckpointStore {
     private final CheckpointStore checkpointStore;
+    private final EventHubsConsumerInstrumentation instrumentation;
     private final EventHubsTracer tracer;
-    private final EventHubsMetricsProvider meter;
-    private InstrumentedCheckpointStore(CheckpointStore checkpointStore, EventHubsTracer tracer, EventHubsMetricsProvider meter) {
+    private InstrumentedCheckpointStore(CheckpointStore checkpointStore, EventHubsConsumerInstrumentation instrumentation) {
         this.checkpointStore = checkpointStore;
-        this.tracer = tracer;
-        this.meter = meter;
+        this.instrumentation = instrumentation;
+        this.tracer = instrumentation.getTracer();
     }
 
     public static CheckpointStore create(CheckpointStore checkpointStore, EventHubsConsumerInstrumentation instrumentation) {
@@ -30,7 +30,7 @@ public final class InstrumentedCheckpointStore implements CheckpointStore {
             return checkpointStore;
         }
 
-        return new InstrumentedCheckpointStore(checkpointStore, instrumentation.getTracer(), instrumentation.getMeter());
+        return new InstrumentedCheckpointStore(checkpointStore, instrumentation);
     }
 
     @Override
@@ -51,16 +51,12 @@ public final class InstrumentedCheckpointStore implements CheckpointStore {
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
         return Mono.using(
-                () -> new InstrumentationScope(tracer, meter)
-                        .recordStartTime()
+                () -> instrumentation.createScope((m, s) -> m.reportCheckpoint(checkpoint, s))
                         .setSpan(startSpan(checkpoint.getPartitionId())),
                 scope -> checkpointStore.updateCheckpoint(checkpoint)
                         .doOnError(scope::setError)
                         .doOnCancel(scope::setCancelled),
-                scope -> {
-                    meter.reportCheckpoint(checkpoint, scope);
-                    scope.close();
-                });
+                InstrumentationScope::close);
     }
 
     private Context startSpan(String partitionId) {

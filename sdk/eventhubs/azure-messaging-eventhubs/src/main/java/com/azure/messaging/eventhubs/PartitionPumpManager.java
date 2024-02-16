@@ -272,7 +272,7 @@ class PartitionPumpManager {
 
     private void processEvents(PartitionContext partitionContext, PartitionProcessor partitionProcessor,
         PartitionPump partitionPump, List<PartitionEvent> partitionEventBatch) {
-        InstrumentationScope scope = instrumentation.createScope().recordStartTime();
+        InstrumentationScope scope = null;
 
         try {
             if (options.isBatchReceiveMode()) {
@@ -291,7 +291,7 @@ class PartitionPumpManager {
                 EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, eventDataList,
                     checkpointStore, enqueuedEventProperties);
 
-                instrumentation.startProcess(eventBatchContext, scope);
+                scope = instrumentation.startProcess(eventBatchContext);
                 if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
                     LOGGER.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
@@ -320,18 +320,19 @@ class PartitionPumpManager {
                 EventContext eventContext = new EventContext(partitionContext, eventData, checkpointStore,
                     enqueuedEventProperties);
 
-                instrumentation.startProcess(eventContext, scope);
+                scope = instrumentation.startProcess(eventContext);
 
                 processEvent(partitionContext, partitionProcessor, eventContext);
             }
         } catch (Throwable throwable) {
-            scope.setError(throwable);
+            if (scope != null) {
+                scope.setError(throwable);
+            }
             /* user code for event processing threw an exception - log and bubble up */
             throw LOGGER.logExceptionAsError(new PartitionProcessorException("Error in event processing callback",
                 throwable));
         } finally {
-            if (scope.isEnabled()) {
-                instrumentation.reportProcessMetrics(partitionEventBatch.size(), partitionContext.getPartitionId(), scope);
+            if (scope != null) {
                 scope.close();
             }
         }

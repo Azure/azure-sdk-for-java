@@ -3,12 +3,17 @@
 
 package com.azure.messaging.eventhubs.implementation.instrumentation;
 
+import com.azure.core.test.utils.metrics.TestCounter;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.Context;
+import com.azure.core.util.TelemetryAttributes;
+import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.tracing.Tracer;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiConsumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -24,10 +29,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class InstrumentationScopeTests {
+    private static final BiConsumer<EventHubsMetricsProvider, InstrumentationScope> NOOP_METRICS_CALLBACK = (m, s) -> {
+    };
+
+
     @Test
     public void disabledScope() {
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, null, "fullyQualifiedName", "entityName", "consumerGroup", true);
-        InstrumentationScope scope = instrumentation.createScope();
+        InstrumentationScope scope = instrumentation.createScope(null);
         assertNotNull(scope);
         assertFalse(scope.isEnabled());
         assertSame(Context.NONE, scope.getSpan());
@@ -38,7 +47,6 @@ public class InstrumentationScopeTests {
         scope.setError(new RuntimeException("test"));
         assertNull(scope.getError());
 
-        scope.recordStartTime();
         assertNull(scope.getStartTime());
 
         scope.close();
@@ -49,7 +57,7 @@ public class InstrumentationScopeTests {
         Tracer tracer = mock(Tracer.class);
         when(tracer.isEnabled()).thenReturn(true);
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, null, "fullyQualifiedName", "entityName", "consumerGroup", true);
-        InstrumentationScope scope = instrumentation.createScope();
+        InstrumentationScope scope = instrumentation.createScope(null);
         assertNotNull(scope);
         assertTrue(scope.isEnabled());
 
@@ -58,17 +66,38 @@ public class InstrumentationScopeTests {
     }
 
     @Test
-    public void enabledMetricsScope() {
+    public void enabledMetricsScopeNoCallback() {
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, new TestMeter(), "fullyQualifiedName", "entityName", "consumerGroup", true);
-        InstrumentationScope scope = instrumentation.createScope();
+        InstrumentationScope scope = instrumentation.createScope(null);
+        assertNotNull(scope);
+        assertNotNull(scope.getStartTime());
+        assertTrue(scope.isEnabled());
+        scope.close();
+    }
+
+    @Test
+    public void enabledMetricsScopeWithCallback() {
+        TestMeter meter = new TestMeter();
+        LongCounter counter = meter.createLongCounter("test.me.counter", null, null);
+        TelemetryAttributes attributes = meter.createAttributes(Collections.emptyMap());
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, meter, "fullyQualifiedName", "entityName", "consumerGroup", true);
+
+        InstrumentationScope scope = instrumentation.createScope((m, s) -> counter.add(1, attributes, s.getSpan()));
+        scope.setSpan(new Context("foo", "bar"));
         assertNotNull(scope);
         assertTrue(scope.isEnabled());
+        scope.close();
+
+        TestCounter testCounter = (TestCounter) counter;
+        assertEquals(1, testCounter.getMeasurements().size());
+        assertEquals(1L, testCounter.getMeasurements().get(0).getValue());
+        assertSame(scope.getSpan(), testCounter.getMeasurements().get(0).getContext());
     }
 
     @Test
     public void recordsStartTimeWhenMetricsEnabledScope() {
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, new TestMeter(), "fullyQualifiedName", "entityName", "consumerGroup", true);
-        InstrumentationScope scope = instrumentation.createScope().recordStartTime();
+        InstrumentationScope scope = instrumentation.createScope(null);
         assertNotNull(scope.getStartTime());
         scope.close();
     }
@@ -79,7 +108,7 @@ public class InstrumentationScopeTests {
         when(tracer.isEnabled()).thenReturn(true);
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, null, "fullyQualifiedName", "entityName", "consumerGroup", true);
 
-        InstrumentationScope scope = instrumentation.createScope();
+        InstrumentationScope scope = instrumentation.createScope(null);
         scope.close();
 
         verify(tracer).end(isNull(), isNull(), same(Context.NONE));
@@ -91,15 +120,17 @@ public class InstrumentationScopeTests {
         when(tracer.isEnabled()).thenReturn(true);
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, null, "fullyQualifiedName", "entityName", "consumerGroup", true);
 
-        AtomicBoolean closed = new AtomicBoolean();
-        when(tracer.makeSpanCurrent(any(Context.class))).thenReturn(() -> closed.set(true));
+        AtomicBoolean spanClosed = new AtomicBoolean();
+        when(tracer.makeSpanCurrent(any(Context.class))).thenReturn(() -> spanClosed.set(true));
 
-        InstrumentationScope scope = instrumentation.createScope()
+        AtomicBoolean metricCallbackCalled = new AtomicBoolean();
+        InstrumentationScope scope = instrumentation.createScope((m, s) -> metricCallbackCalled.set(true))
                 .makeSpanCurrent();
 
         scope.close();
 
-        assertTrue(closed.get());
+        assertTrue(spanClosed.get());
+        assertTrue(metricCallbackCalled.get());
         verify(tracer).end(isNull(), isNull(), same(Context.NONE));
     }
 
@@ -107,7 +138,7 @@ public class InstrumentationScopeTests {
     public void setError() {
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, new TestMeter(), "fullyQualifiedName", "entityName", "consumerGroup", true);
 
-        InstrumentationScope scope = instrumentation.createScope();
+        InstrumentationScope scope = instrumentation.createScope(null);
         Throwable error = new RuntimeException("test");
         scope.setError(error);
         assertSame(error, scope.getError());
@@ -118,7 +149,7 @@ public class InstrumentationScopeTests {
     public void setCancelled() {
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, new TestMeter(), "fullyQualifiedName", "entityName", "consumerGroup", true);
 
-        InstrumentationScope scope = instrumentation.createScope();
+        InstrumentationScope scope = instrumentation.createScope(null);
         scope.setCancelled();
         assertNull(scope.getError());
         assertEquals("cancelled", scope.getErrorType());

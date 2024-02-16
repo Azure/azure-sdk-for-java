@@ -52,7 +52,7 @@ public class EventHubsTracerTests {
 
     @ParameterizedTest
     @MethodSource("getAmqpException")
-    public void testSpanEndException(Exception amqpException, String expectedStatus) {
+    public void testSpanEndException(Exception amqpException, Exception cause, String expectedStatus) {
         Tracer inner = mock(Tracer.class);
         when(inner.isEnabled()).thenReturn(true);
 
@@ -60,16 +60,21 @@ public class EventHubsTracerTests {
 
         tracer.endSpan(null, amqpException, Context.NONE, null);
 
-        verify(inner, times(1)).end(eq(expectedStatus), eq(amqpException), same(Context.NONE));
+        verify(inner, times(1)).end(eq(expectedStatus), eq(cause), same(Context.NONE));
     }
 
     public static Stream<Arguments> getAmqpException() {
+        RuntimeException runtimeException = new RuntimeException("foo");
+        AmqpException amqpNoCauseNoCondition = new AmqpException(false, "foo", null, null);
+        AmqpException amqpNoCauseCondition = new AmqpException(false, AmqpErrorCondition.NOT_FOUND, "foo", null);
+        AmqpException amqpNoCauseConditionMessage = new AmqpException(false, AmqpErrorCondition.TIMEOUT_ERROR, "test", null);
+        AmqpException amqpCauseCondition = new AmqpException(false, AmqpErrorCondition.SERVER_BUSY_ERROR, null, runtimeException, null);
         return Stream.of(
-            Arguments.of(new RuntimeException("foo"), RuntimeException.class.getName()),
-            Arguments.of(Exceptions.propagate(new RuntimeException("foo")), RuntimeException.class.getName()),
-            Arguments.of(new AmqpException(false, "foo", null, null), AmqpException.class.getName()),
-            Arguments.of(new AmqpException(false, AmqpErrorCondition.NOT_FOUND, "foo", null), AmqpErrorCondition.NOT_FOUND.getErrorCondition()),
-            Arguments.of(new AmqpException(false, AmqpErrorCondition.TIMEOUT_ERROR, "", null), AmqpErrorCondition.TIMEOUT_ERROR.getErrorCondition()),
-            Arguments.of(new AmqpException(false, AmqpErrorCondition.SERVER_BUSY_ERROR, null, new RuntimeException("foo"), null), AmqpErrorCondition.SERVER_BUSY_ERROR.getErrorCondition()));
+            Arguments.of(runtimeException, runtimeException, RuntimeException.class.getName()),
+            Arguments.of(Exceptions.propagate(runtimeException), runtimeException, RuntimeException.class.getName()),
+            Arguments.of(amqpNoCauseNoCondition, amqpNoCauseNoCondition, AmqpException.class.getName()),
+            Arguments.of(amqpNoCauseCondition, amqpNoCauseCondition, amqpNoCauseCondition.getErrorCondition().getErrorCondition()),
+            Arguments.of(amqpNoCauseConditionMessage, amqpNoCauseConditionMessage, amqpNoCauseConditionMessage.getErrorCondition().getErrorCondition()),
+            Arguments.of(amqpCauseCondition, runtimeException, amqpCauseCondition.getErrorCondition().getErrorCondition()));
     }
 }
