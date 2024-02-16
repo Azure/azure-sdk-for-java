@@ -18,13 +18,13 @@ parameters:
     type: object
     default: []
   - name: Matrix
-    type: object
+    type: string
   - name: CloudConfig
     type: object
     default: {}
   - name: DependsOn
-    type: string
-    default: ''
+    type: object
+    default: []
   - name: UsePlatformContainer
     type: boolean
     default: false
@@ -50,7 +50,7 @@ parameters:
     type: string
 
 jobs:
-  - job: 'Test ${{ parameters.OSName }}'
+  - job: 'Test'
     dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
 
