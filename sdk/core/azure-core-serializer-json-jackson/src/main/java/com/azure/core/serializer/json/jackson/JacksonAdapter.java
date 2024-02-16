@@ -243,23 +243,20 @@ public final class JacksonAdapter implements SerializerAdapter {
 
         if (encoding == SerializerEncoding.XML) {
             Class<?> rawClass = TypeUtil.getRawClass(type);
-            return supportsXmlSerializable(rawClass)
-                ? (T) deserializeAsXmlSerializable(rawClass, bytes)
+            return supportsXmlSerializable(rawClass) ? (T) deserializeAsXmlSerializable(rawClass, bytes)
                 : getXmlMapper().readValue(bytes, type);
         } else if (encoding == SerializerEncoding.TEXT) {
             return (T) deserializeText(CoreUtils.bomAwareToString(bytes, null), type);
         } else {
             Class<?> rawClass = TypeUtil.getRawClass(type);
-            return supportsJsonSerializable(rawClass)
-                ? (T) deserializeAsJsonSerializable(rawClass, bytes)
+            return supportsJsonSerializable(rawClass) ? (T) deserializeAsJsonSerializable(rawClass, bytes)
                 : mapper.readValue(bytes, type);
         }
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserialize(InputStream inputStream, final Type type, SerializerEncoding encoding)
-        throws IOException {
+    public <T> T deserialize(InputStream inputStream, final Type type, SerializerEncoding encoding) throws IOException {
         if (inputStream == null) {
             return null;
         }
@@ -297,7 +294,7 @@ public final class JacksonAdapter implements SerializerAdapter {
         return outputStream.toByteArray();
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private static Object deserializeText(String value, Type type) throws IOException {
         if (type == String.class || type == CharSequence.class) {
             return value;

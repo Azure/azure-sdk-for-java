@@ -35,7 +35,9 @@ public final class TestProxyDownloader {
     private static final Path PROXY_PATH = Paths.get(System.getProperty("java.io.tmpdir"), "test-proxy");
 
     private static String testProxyTag;
-    private TestProxyDownloader() { }
+
+    private TestProxyDownloader() {
+    }
 
     /**
      * Reports the directory the test proxy was installed to.
@@ -62,27 +64,25 @@ public final class TestProxyDownloader {
         Path zipFile = getZipFileLocation(platformInfo.getExtension());
         if (Files.exists(PROXY_PATH)) {
             try {
-                Files.walk(PROXY_PATH)
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
+                Files.walk(PROXY_PATH).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
             } catch (IOException e) {
-                throw new RuntimeException(String.format("Could not delete old test proxy zip file %s", zipFile.toString()), e);
+                throw new RuntimeException(
+                    String.format("Could not delete old test proxy zip file %s", zipFile.toString()), e);
             }
         }
 
         try {
             if (platformInfo.extension.equals("tar.gz")) {
                 try (InputStream file = Files.newInputStream(zipFile);
-                     InputStream buffer = new BufferedInputStream(file);
-                     GZIPInputStream gzipInputStream = new GZIPInputStream(buffer);
-                     ArchiveInputStream archive = new TarArchiveInputStream(gzipInputStream)) {
+                    InputStream buffer = new BufferedInputStream(file);
+                    GZIPInputStream gzipInputStream = new GZIPInputStream(buffer);
+                    ArchiveInputStream archive = new TarArchiveInputStream(gzipInputStream)) {
                     decompress(archive);
                 }
             } else {
                 try (InputStream file = Files.newInputStream(zipFile);
-                     InputStream buffer = new BufferedInputStream(file);
-                     ArchiveInputStream archive = new ZipArchiveInputStream(buffer)) {
+                    InputStream buffer = new BufferedInputStream(file);
+                    ArchiveInputStream archive = new ZipArchiveInputStream(buffer)) {
                     decompress(archive);
                 }
             }
@@ -125,14 +125,12 @@ public final class TestProxyDownloader {
         return new File(PROXY_PATH.toFile(), entry.getName());
     }
 
-
     private static void downloadProxy(PlatformInfo platformInfo) {
         LOGGER.log(LogLevel.INFORMATIONAL, () -> "Downloading test proxy. This may take a few moments.");
 
         try {
             URL url = UrlBuilder.parse(getProxyDownloadUrl(platformInfo)).toUrl();
-            Files.copy(url.openStream(),
-                getZipFileLocation(platformInfo.getExtension()),
+            Files.copy(url.openStream(), getZipFileLocation(platformInfo.getExtension()),
                 StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException("Could not save test proxy download", e);
@@ -173,18 +171,15 @@ public final class TestProxyDownloader {
     }
 
     private static String getProxyDownloadUrl(PlatformInfo platformInfo) {
-        return String.format("https://github.com/Azure/azure-sdk-tools/releases/download/Azure.Sdk.Tools.TestProxy_%s/test-proxy-standalone-%s-%s.%s",
-            testProxyTag,
-            platformInfo.getPlatform(),
-            platformInfo.getArchitecture(),
-            platformInfo.getExtension());
+        return String.format(
+            "https://github.com/Azure/azure-sdk-tools/releases/download/Azure.Sdk.Tools.TestProxy_%s/test-proxy-standalone-%s-%s.%s",
+            testProxyTag, platformInfo.getPlatform(), platformInfo.getArchitecture(), platformInfo.getExtension());
     }
 
     private static class PlatformInfo {
         private final String platform;
         private final String extension;
         private final String architecture;
-
 
         PlatformInfo() {
             String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);

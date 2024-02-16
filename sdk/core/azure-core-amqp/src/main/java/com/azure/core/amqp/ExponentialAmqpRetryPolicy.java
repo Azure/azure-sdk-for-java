@@ -37,7 +37,7 @@ public class ExponentialAmqpRetryPolicy extends AmqpRetryPolicy {
      */
     @Override
     protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
-                                           ThreadLocalRandom random) {
+        ThreadLocalRandom random) {
         final double jitterSeconds = random.nextDouble() * baseJitter.getSeconds();
         final double nextRetrySeconds = Math.pow(retryFactor, (double) retryCount);
         final Double nextRetryNanos = (jitterSeconds + nextRetrySeconds) * NANOS_PER_SECOND;
@@ -62,8 +62,7 @@ public class ExponentialAmqpRetryPolicy extends AmqpRetryPolicy {
             return true;
         }
 
-        return obj instanceof ExponentialAmqpRetryPolicy
-            && super.equals(obj);
+        return obj instanceof ExponentialAmqpRetryPolicy && super.equals(obj);
     }
 
     private double computeRetryFactor() {

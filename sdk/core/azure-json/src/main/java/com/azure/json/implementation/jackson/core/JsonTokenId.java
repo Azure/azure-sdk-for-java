@@ -9,8 +9,7 @@ package com.azure.json.implementation.jackson.core;
  * 
  * @since 2.3
  */
-public interface JsonTokenId
-{
+public interface JsonTokenId {
     /**
      * Id used to represent {@link JsonToken#NOT_AVAILABLE}, used in
      * cases where a token may become available when more input

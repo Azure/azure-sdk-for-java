@@ -15,39 +15,38 @@ import com.azure.json.implementation.jackson.core.SerializableString;
  * Class is final for performance reasons and since this is not designed to
  * be extensible or customizable (customizations would occur in calling code)
  */
-public class SerializedString
-    implements SerializableString, java.io.Serializable
-{
+public class SerializedString implements SerializableString, java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final JsonStringEncoder JSON_ENCODER = JsonStringEncoder.getInstance();
-    
+
     protected final String _value;
 
-    /* 13-Dec-2010, tatu: Whether use volatile or not is actually an important
-     *   decision for multi-core use cases. Cost of volatility can be non-trivial
-     *   for heavy use cases, and serialized-string instances are accessed often.
-     *   Given that all code paths with common Jackson usage patterns go through
-     *   a few memory barriers (mostly with cache/reuse pool access) it seems safe
-     *   enough to omit volatiles here, given how simple lazy initialization is.
-     *   This can be compared to how {@link String#hashCode} works; lazily and
-     *   without synchronization or use of volatile keyword.
+    /*
+     * 13-Dec-2010, tatu: Whether use volatile or not is actually an important
+     * decision for multi-core use cases. Cost of volatility can be non-trivial
+     * for heavy use cases, and serialized-string instances are accessed often.
+     * Given that all code paths with common Jackson usage patterns go through
+     * a few memory barriers (mostly with cache/reuse pool access) it seems safe
+     * enough to omit volatiles here, given how simple lazy initialization is.
+     * This can be compared to how {@link String#hashCode} works; lazily and
+     * without synchronization or use of volatile keyword.
      *
-     *   Change to remove volatile was a request by implementors of a high-throughput
-     *   search framework; and they believed this is an important optimization for
-     *   heaviest, multi-core deployed use cases.
+     * Change to remove volatile was a request by implementors of a high-throughput
+     * search framework; and they believed this is an important optimization for
+     * heaviest, multi-core deployed use cases.
      */
     /*
      * 22-Sep-2013, tatu: FWIW, there have been no reports of problems in this
-     *   area, or anything pointing to it. So I think we are safe up to JDK7
-     *   and hopefully beyond.
+     * area, or anything pointing to it. So I think we are safe up to JDK7
+     * and hopefully beyond.
      */
-    
-    protected /*volatile*/ byte[] _quotedUTF8Ref;
 
-    protected /*volatile*/ byte[] _unquotedUTF8Ref;
+    protected /* volatile */ byte[] _quotedUTF8Ref;
 
-    protected /*volatile*/ char[] _quotedChars;
+    protected /* volatile */ byte[] _unquotedUTF8Ref;
+
+    protected /* volatile */ char[] _quotedChars;
 
     public SerializedString(String v) {
         if (v == null) {
@@ -55,11 +54,11 @@ public class SerializedString
         }
         _value = v;
     }
-    
+
     /*
-    /**********************************************************
-    /* Serializable overrides
-    /**********************************************************
+     * /**********************************************************
+     * /* Serializable overrides
+     * /**********************************************************
      */
 
     /**
@@ -83,19 +82,23 @@ public class SerializedString
     }
 
     /*
-    /**********************************************************
-    /* API
-    /**********************************************************
+     * /**********************************************************
+     * /* API
+     * /**********************************************************
      */
 
     @Override
-    public final String getValue() { return _value; }
-    
+    public final String getValue() {
+        return _value;
+    }
+
     /**
      * Returns length of the String as characters
      */
     @Override
-    public final int charLength() { return _value.length(); }
+    public final int charLength() {
+        return _value.length();
+    }
 
     /**
      * Accessor for accessing value that has been quoted (escaped) using JSON
@@ -138,9 +141,9 @@ public class SerializedString
     }
 
     /*
-    /**********************************************************
-    /* Additional 2.0 methods for appending/writing contents
-    /**********************************************************
+     * /**********************************************************
+     * /* Additional 2.0 methods for appending/writing contents
+     * /**********************************************************
      */
 
     @Override
@@ -178,7 +181,7 @@ public class SerializedString
         if ((offset + length) > buffer.length) {
             return -1;
         }
-        str.getChars(0,  length, buffer, offset);
+        str.getChars(0, length, buffer, offset);
         return length;
     }
 
@@ -247,21 +250,27 @@ public class SerializedString
     }
 
     /*
-    /**********************************************************
-    /* Standard method overrides
-    /**********************************************************
+     * /**********************************************************
+     * /* Standard method overrides
+     * /**********************************************************
      */
 
     @Override
-    public final String toString() { return _value; }
-    
+    public final String toString() {
+        return _value;
+    }
+
     @Override
-    public final int hashCode() { return _value.hashCode(); }
+    public final int hashCode() {
+        return _value.hashCode();
+    }
 
     @Override
     public final boolean equals(Object o) {
-        if (o == this) return true;
-        if (o == null || o.getClass() != getClass()) return false;
+        if (o == this)
+            return true;
+        if (o == null || o.getClass() != getClass())
+            return false;
         SerializedString other = (SerializedString) o;
         return _value.equals(other._value);
     }

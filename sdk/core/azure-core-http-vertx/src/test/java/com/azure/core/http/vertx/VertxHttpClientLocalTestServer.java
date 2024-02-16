@@ -126,8 +126,7 @@ public final class VertxHttpClientLocalTestServer {
         byte[] longBody = new byte[duplicateBytes.length * 100000];
 
         for (int i = 0; i < 100000; i++) {
-            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length,
-                duplicateBytes.length);
+            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
         }
 
         return longBody;

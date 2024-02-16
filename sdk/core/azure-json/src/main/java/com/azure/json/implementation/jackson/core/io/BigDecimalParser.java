@@ -13,15 +13,14 @@ import java.util.Arrays;
 /**
  * Helper class used to implement more optimized parsing of {@link BigDecimal} for REALLY
  * big values (over 500 characters)
- *<p>
+ * <p>
  * Based on ideas from this
  * <a href="https://github.com/eobermuhlner/big-math/commit/7a5419aac8b2adba2aa700ccf00197f97b2ad89f">this
  * git commit</a>.
  *
- * @since 2.13 
+ * @since 2.13
  */
-public final class BigDecimalParser
-{
+public final class BigDecimalParser {
     private final char[] chars;
 
     BigDecimalParser(char[] chars) {
@@ -34,7 +33,7 @@ public final class BigDecimalParser
 
     public static BigDecimal parse(char[] chars, int off, int len) {
         if (off > 0 || len != chars.length) {
-            chars = Arrays.copyOfRange(chars, off, off+len);
+            chars = Arrays.copyOfRange(chars, off, off + len);
         }
         return parse(chars);
     }
@@ -53,7 +52,7 @@ public final class BigDecimalParser
                 desc = "Not a valid number representation";
             }
             throw new NumberFormatException("Value \"" + new String(chars)
-                    + "\" can not be represented as `java.math.BigDecimal`, reason: " + desc);
+                + "\" can not be represented as `java.math.BigDecimal`, reason: " + desc);
         }
     }
 
@@ -70,52 +69,56 @@ public final class BigDecimalParser
         for (int i = 0; i < len; i++) {
             char c = chars[i];
             switch (c) {
-            case '+':
-                if (expIdx >= 0) {
-                    if (expHasSign) {
-                        throw new NumberFormatException("Multiple signs in exponent");
+                case '+':
+                    if (expIdx >= 0) {
+                        if (expHasSign) {
+                            throw new NumberFormatException("Multiple signs in exponent");
+                        }
+                        expHasSign = true;
+                    } else {
+                        if (numHasSign) {
+                            throw new NumberFormatException("Multiple signs in number");
+                        }
+                        numHasSign = true;
+                        numIdx = i + 1;
                     }
-                    expHasSign = true;
-                } else {
-                    if (numHasSign) {
-                        throw new NumberFormatException("Multiple signs in number");
+                    break;
+
+                case '-':
+                    if (expIdx >= 0) {
+                        if (expHasSign) {
+                            throw new NumberFormatException("Multiple signs in exponent");
+                        }
+                        expHasSign = true;
+                    } else {
+                        if (numHasSign) {
+                            throw new NumberFormatException("Multiple signs in number");
+                        }
+                        numHasSign = true;
+                        neg = true;
+                        numIdx = i + 1;
                     }
-                    numHasSign = true;
-                    numIdx = i + 1;
-                }
-                break;
-            case '-':
-                if (expIdx >= 0) {
-                    if (expHasSign) {
-                        throw new NumberFormatException("Multiple signs in exponent");
+                    break;
+
+                case 'e':
+                case 'E':
+                    if (expIdx >= 0) {
+                        throw new NumberFormatException("Multiple exponent markers");
                     }
-                    expHasSign = true;
-                } else {
-                    if (numHasSign) {
-                        throw new NumberFormatException("Multiple signs in number");
+                    expIdx = i;
+                    break;
+
+                case '.':
+                    if (dotIdx >= 0) {
+                        throw new NumberFormatException("Multiple decimal points");
                     }
-                    numHasSign = true;
-                    neg = true;
-                    numIdx = i + 1;
-                }
-                break;
-            case 'e':
-            case 'E':
-                if (expIdx >= 0) {
-                    throw new NumberFormatException("Multiple exponent markers");
-                }
-                expIdx = i;
-                break;
-            case '.':
-                if (dotIdx >= 0) {
-                    throw new NumberFormatException("Multiple decimal points");
-                }
-                dotIdx = i;
-                break;
-            default:
-                if (dotIdx >= 0 && expIdx == -1) {
-                    scale++;
-                }
+                    dotIdx = i;
+                    break;
+
+                default:
+                    if (dotIdx >= 0 && expIdx == -1) {
+                        scale++;
+                    }
             }
         }
 
@@ -159,7 +162,7 @@ public final class BigDecimalParser
         long adjScale = scale - exp;
         if (adjScale > Integer.MAX_VALUE || adjScale < Integer.MIN_VALUE) {
             throw new NumberFormatException(
-                    "Scale out of range: " + adjScale + " while adjusting scale " + scale + " to exponent " + exp);
+                "Scale out of range: " + adjScale + " while adjusting scale " + scale + " to exponent " + exp);
         }
 
         return (int) adjScale;

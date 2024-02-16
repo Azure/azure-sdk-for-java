@@ -104,15 +104,18 @@ final class ReceiverDeliveryHandler {
             case SETTLE_ON_DELIVERY:
                 handleSettleOnDelivery(delivery);
                 break;
+
             case ACCEPT_AND_SETTLE_ON_DELIVERY:
                 handleAcceptAndSettleOnDelivery(delivery);
                 break;
+
             case SETTLE_VIA_DISPOSITION:
                 handleSettleViaDisposition(delivery);
                 break;
+
             default:
-                throw logger.logExceptionAsError(
-                    new RuntimeException("settlingMode is not supported: " + settlingMode));
+                throw logger
+                    .logExceptionAsError(new RuntimeException("settlingMode is not supported: " + settlingMode));
         }
     }
 
@@ -322,9 +325,11 @@ final class ReceiverDeliveryHandler {
     private void handleDeliveryDecodeError(RuntimeException decodeError) {
         if (decodeError instanceof IllegalStateException && (isLinkTerminatedWithError.get() || isTerminated.get())) {
             // As part of ReactorReceiver.close(), it closes ReceiveLinkHandler and frees Receiver.
-            // This ReactorReceiver.close() operation will attempt to schedule ReceiveLinkHandler.close() and Receiver.free()
+            // This ReactorReceiver.close() operation will attempt to schedule ReceiveLinkHandler.close() and
+            // Receiver.free()
             // in the ProtonJ Reactor thread. If this scheduling fails, then the ReceiveLinkHandler.close() and
-            // Receiver.free() will be called from the thread that invoked ReactorReceiver.close(). Hence, it is possible
+            // Receiver.free() will be called from the thread that invoked ReactorReceiver.close(). Hence, it is
+            // possible
             // to race where the Delivery ProtonJ Reactor thread trying to decode may get released by Receiver.free(),
             // causing IllegalStateException on decode.
             //
@@ -389,8 +394,8 @@ final class ReceiverDeliveryHandler {
         }
 
         final ErrorCondition condition = link.getRemoteCondition();
-        final LoggingEventBuilder loggingEvent = addErrorCondition(logger.atVerbose(), condition).addKeyValue(
-            ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, receiveLinkName);
+        final LoggingEventBuilder loggingEvent = addErrorCondition(logger.atVerbose(), condition)
+            .addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, receiveLinkName);
         if (deliveryTag != null) {
             loggingEvent.addKeyValue(DELIVERY_TAG_KEY, deliveryTag);
         }
@@ -418,27 +423,35 @@ final class ReceiverDeliveryHandler {
                 case 0:
                     indexInReorderedBytes = 3;
                     break;
+
                 case 1:
                     indexInReorderedBytes = 2;
                     break;
+
                 case 2:
                     indexInReorderedBytes = 1;
                     break;
+
                 case 3:
                     indexInReorderedBytes = 0;
                     break;
+
                 case 4:
                     indexInReorderedBytes = 5;
                     break;
+
                 case 5:
                     indexInReorderedBytes = 4;
                     break;
+
                 case 6:
                     indexInReorderedBytes = 7;
                     break;
+
                 case 7:
                     indexInReorderedBytes = 6;
                     break;
+
                 default:
                     indexInReorderedBytes = i;
             }

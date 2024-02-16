@@ -11,11 +11,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Annotation given to some tests to skip recording request bodies when test run in Record mode and using Test Proxy.
- * <p>A common case for setting this is when the test has either
+ * <p>
+ * A common case for setting this is when the test has either
  * sensitive content that cannot be redacted or large request body content that does not need to be recorded.
  * </p>
  */
 @Retention(RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ ElementType.TYPE, ElementType.METHOD })
 public @interface RecordWithoutRequestBody {
 }

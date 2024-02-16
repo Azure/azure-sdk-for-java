@@ -28,7 +28,6 @@ public class BinaryDataSendTest extends RestProxyTestBase<CorePerfStressOptions>
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.fromSupplier(binaryDataSupplier)
-            .flatMap(data -> service.setBinaryData(endpoint, id, data, length));
+        return Mono.fromSupplier(binaryDataSupplier).flatMap(data -> service.setBinaryData(endpoint, id, data, length));
     }
 }

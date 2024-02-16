@@ -25,7 +25,7 @@ public class AmqpResponseCodeTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {-1, 42, 1024})
+    @ValueSource(ints = { -1, 42, 1024 })
     public void createFromInvalidInteger(int notDefined) {
         assertNull(AmqpResponseCode.fromValue(notDefined));
     }

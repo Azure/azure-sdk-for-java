@@ -21,10 +21,8 @@ final class SynchronouslyFailedLroData extends Error {
      * @param responseHeaders the http response headers of long-running init operation
      * @param lroResponseBody the http response body of long-running init operation
      */
-    SynchronouslyFailedLroData(String message,
-                               int lroResponseStatusCode,
-                               Map<String, String> responseHeaders,
-                               String lroResponseBody) {
+    SynchronouslyFailedLroData(String message, int lroResponseStatusCode, Map<String, String> responseHeaders,
+        String lroResponseBody) {
         super(message, lroResponseStatusCode, responseHeaders, lroResponseBody);
     }
 }

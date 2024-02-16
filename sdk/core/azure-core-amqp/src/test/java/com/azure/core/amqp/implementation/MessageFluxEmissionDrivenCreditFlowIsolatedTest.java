@@ -34,7 +34,8 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for credit flow using {@link EmissionDrivenCreditAccountingStrategy} strategy.
  * <p>
- * See <a href="https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
+ * See <a href=
+ * "https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
  * for why this test class needs to run in Isolated mode.
  * </p>
  */
@@ -66,7 +67,8 @@ public class MessageFluxEmissionDrivenCreditFlowIsolatedTest {
     public void initialFlowShouldBePrefetch() {
         final int prefetch = 100;
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
-        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, CreditFlowMode.EmissionDriven, retryPolicy);
+        final MessageFlux messageFlux
+            = new MessageFlux(upstream.flux(), prefetch, CreditFlowMode.EmissionDriven, retryPolicy);
 
         final ReactorReceiver receiver = mock(ReactorReceiver.class);
         when(receiver.receive()).thenReturn(Flux.never());
@@ -82,11 +84,8 @@ public class MessageFluxEmissionDrivenCreditFlowIsolatedTest {
         }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux)
-                .thenRequest(10)
-                .then(() -> upstream.next(receiver))
-                .then(() -> upstream.complete())
-                .verifyComplete();
+            verifier.create(() -> messageFlux).thenRequest(10).then(() -> upstream.next(receiver))
+                .then(() -> upstream.complete()).verifyComplete();
         }
 
         Assertions.assertEquals(prefetch, initialFlow.get());

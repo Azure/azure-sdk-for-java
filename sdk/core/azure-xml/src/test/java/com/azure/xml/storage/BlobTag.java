@@ -70,10 +70,8 @@ public class BlobTag implements XmlSerializable<BlobTag> {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        return xmlWriter.writeStartElement(getRootElementName(rootElementName, "Tag"))
-            .writeStringElement("Key", key)
-            .writeStringElement("Value", value)
-            .writeEndElement();
+        return xmlWriter.writeStartElement(getRootElementName(rootElementName, "Tag")).writeStringElement("Key", key)
+            .writeStringElement("Value", value).writeEndElement();
     }
 
     public static BlobTag fromXml(XmlReader xmlReader) throws XMLStreamException {

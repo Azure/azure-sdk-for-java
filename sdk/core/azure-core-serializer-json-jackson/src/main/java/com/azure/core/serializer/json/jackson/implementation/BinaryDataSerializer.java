@@ -52,8 +52,8 @@ final class BinaryDataSerializer extends JsonSerializer<BinaryData> {
         } else if (content instanceof StringContent) {
             gen.writeString(content.toString());
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "Unsupported BinaryData content type: " + content.getClass().getName()));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Unsupported BinaryData content type: " + content.getClass().getName()));
         }
     }
 }

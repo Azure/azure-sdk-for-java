@@ -191,13 +191,8 @@ public class NamespacePropertiesEntry implements XmlSerializable<NamespaceProper
                     }
                 }
 
-                return new NamespacePropertiesEntry()
-                    .setId(id)
-                    .setTitle(title)
-                    .setUpdated(updated)
-                    .setAuthor(author)
-                    .setLink(link)
-                    .setContent(content);
+                return new NamespacePropertiesEntry().setId(id).setTitle(title).setUpdated(updated).setAuthor(author)
+                    .setLink(link).setContent(content);
             });
     }
 }

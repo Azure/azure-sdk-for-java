@@ -75,8 +75,8 @@ public final class TestUtils {
      * @param actualOffset Starting offset to begin comparing in the actual array.
      * @param length Amount of bytes to compare.
      */
-    public static void assertArraysEqual(byte[] expected, int expectedOffset, byte[] actual,
-        int actualOffset, int length) {
+    public static void assertArraysEqual(byte[] expected, int expectedOffset, byte[] actual, int actualOffset,
+        int length) {
         // Use ByteBuffer comparison as it provides an optimized byte array comparison.
         // In Java 9+ there is Arrays.mismatch that provides this functionality directly, but Java 8 needs support.
         assertByteBuffersEqual(ByteBuffer.wrap(expected, expectedOffset, length),
@@ -147,7 +147,6 @@ public final class TestUtils {
             + "'/sdk/core/azure-core-test/src/test/resources/session-records').");
     }
 
-
     /**
      *  Returns a {@link java.net.URI} equivalent to this URL.
      * @param url the url to be converted to URI
@@ -184,8 +183,8 @@ public final class TestUtils {
             path = path.getParent();
         }
         if (path == null) {
-            throw new RuntimeException(String.format(
-                "Could not locate %s folder within repository %s", resolveFolder, repoName));
+            throw new RuntimeException(
+                String.format("Could not locate %s folder within repository %s", resolveFolder, repoName));
         }
         return path;
     }
@@ -248,13 +247,9 @@ public final class TestUtils {
      */
     public static HttpClient getFaultInjectingHttpClient(HttpClient clientToWrap, boolean useHttps, int successRate,
         int partialRate, int failureRate) {
-        if (successRate + partialRate + failureRate != 100
-            || successRate < 0 || partialRate < 0 || failureRate < 0) {
-            throw LOGGER.atError()
-                .addKeyValue("successRate", successRate)
-                .addKeyValue("partialRage", partialRate)
-                .addKeyValue("failureRate", failureRate)
-                .log(new IllegalStateException(
+        if (successRate + partialRate + failureRate != 100 || successRate < 0 || partialRate < 0 || failureRate < 0) {
+            throw LOGGER.atError().addKeyValue("successRate", successRate).addKeyValue("partialRage", partialRate)
+                .addKeyValue("failureRate", failureRate).log(new IllegalStateException(
                     "'successRate', 'partialRate', and 'failureRate' must add to 100 and no values can be negative."));
         }
 
@@ -286,14 +281,13 @@ public final class TestUtils {
             String faultType = faultInjectorHandling();
             request.setHeader(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType);
 
-            return wrappedHttpClient.send(request, context)
-                .map(response -> {
-                    HttpRequest request1 = response.getRequest();
-                    request1.getHeaders().remove(UPSTREAM_URI_HEADER);
-                    request1.setUrl(originalUrl);
+            return wrappedHttpClient.send(request, context).map(response -> {
+                HttpRequest request1 = response.getRequest();
+                request1.getHeaders().remove(UPSTREAM_URI_HEADER);
+                request1.setUrl(originalUrl);
 
-                    return response;
-                });
+                return response;
+            });
         }
 
         @Override
@@ -312,11 +306,8 @@ public final class TestUtils {
 
         private URL rewriteUrl(URL originalUrl) {
             try {
-                return UrlBuilder.parse(originalUrl)
-                    .setScheme(useHttps ? "https" : "http")
-                    .setHost("localhost")
-                    .setPort(useHttps ? 7778 : 7777)
-                    .toUrl();
+                return UrlBuilder.parse(originalUrl).setScheme(useHttps ? "https" : "http").setHost("localhost")
+                    .setPort(useHttps ? 7778 : 7777).toUrl();
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
             }

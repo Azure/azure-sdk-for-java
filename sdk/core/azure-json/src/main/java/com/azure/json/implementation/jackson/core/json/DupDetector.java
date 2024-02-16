@@ -18,8 +18,7 @@ import com.azure.json.implementation.jackson.core.*;
  * 
  * @since 2.3
  */
-public class DupDetector
-{
+public class DupDetector {
     /**
      * We need to store a back-reference here to parser/generator.
      */
@@ -28,7 +27,7 @@ public class DupDetector
     protected String _firstName;
 
     protected String _secondName;
-    
+
     /**
      * Lazily constructed set of names already seen within this context.
      */
@@ -45,7 +44,7 @@ public class DupDetector
     public static DupDetector rootDetector(JsonGenerator g) {
         return new DupDetector(g);
     }
-    
+
     public DupDetector child() {
         return new DupDetector(_source);
     }
@@ -59,7 +58,7 @@ public class DupDetector
     public JsonLocation findLocation() {
         // ugly but:
         if (_source instanceof JsonParser) {
-            return ((JsonParser)_source).getCurrentLocation();
+            return ((JsonParser) _source).getCurrentLocation();
         }
         // do generators have a way to provide Location? Apparently not...
         return null;
@@ -86,8 +85,7 @@ public class DupDetector
      * @throws JsonParseException to report possible operation problem (default implementation
      *    never throws it)
      */
-    public boolean isDup(String name) throws JsonParseException
-    {
+    public boolean isDup(String name) throws JsonParseException {
         if (_firstName == null) {
             _firstName = name;
             return false;

@@ -47,12 +47,14 @@ public class OpenTelemetryTracingBenchmark {
 
     @Benchmark
     public void noHttpTracing() {
-        NO_TRACING_PIPELINE.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), com.azure.core.util.Context.NONE);
+        NO_TRACING_PIPELINE.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"),
+            com.azure.core.util.Context.NONE);
     }
 
     @Benchmark
     public void disabledHttpTracing() {
-        DISABLED_TRACING_PIPELINE.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), com.azure.core.util.Context.NONE);
+        DISABLED_TRACING_PIPELINE.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"),
+            com.azure.core.util.Context.NONE);
     }
 
     @Benchmark
@@ -66,11 +68,8 @@ public class OpenTelemetryTracingBenchmark {
             HttpPolicyProviders.addAfterRetryPolicies(policies);
         }
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .tracer(tracer)
-            .build();
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200))).tracer(tracer).build();
     }
 
     private static Tracer configureTracer(boolean enabled) {
@@ -79,10 +78,8 @@ public class OpenTelemetryTracingBenchmark {
                 new OpenTelemetryTracingOptions().setEnabled(false));
         }
 
-        SdkTracerProvider provider = SdkTracerProvider.builder()
-            .setSampler(Sampler.traceIdRatioBased(0.01))
-            .addSpanProcessor(new NoopProcessor())
-            .build();
+        SdkTracerProvider provider = SdkTracerProvider.builder().setSampler(Sampler.traceIdRatioBased(0.01))
+            .addSpanProcessor(new NoopProcessor()).build();
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(provider).build();
         return new OpenTelemetryTracer("benchmark", null, null,

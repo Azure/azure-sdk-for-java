@@ -176,8 +176,8 @@ public abstract class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code elementWriterFunc} is null.
      * @throws IOException If the JSON array fails to be written, either the start or end array or an element write.
      */
-    public final <T> JsonWriter writeArray(T[] array,
-        WriteValueCallback<JsonWriter, T> elementWriterFunc) throws IOException {
+    public final <T> JsonWriter writeArray(T[] array, WriteValueCallback<JsonWriter, T> elementWriterFunc)
+        throws IOException {
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
         if (array == null) {
@@ -206,8 +206,8 @@ public abstract class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code elementWriterFunc} is null.
      * @throws IOException If the JSON array fails to be written, either the start or end array or an element write.
      */
-    public final <T> JsonWriter writeArray(Iterable<T> array,
-        WriteValueCallback<JsonWriter, T> elementWriterFunc) throws IOException {
+    public final <T> JsonWriter writeArray(Iterable<T> array, WriteValueCallback<JsonWriter, T> elementWriterFunc)
+        throws IOException {
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
         if (array == null) {
@@ -251,8 +251,8 @@ public abstract class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code valueWriterFunc} is null.
      * @throws IOException If the JSON map fails to be written, either the start or end object or a key or value write.
      */
-    public final <T> JsonWriter writeMap(Map<String, T> map,
-        WriteValueCallback<JsonWriter, T> valueWriterFunc) throws IOException {
+    public final <T> JsonWriter writeMap(Map<String, T> map, WriteValueCallback<JsonWriter, T> valueWriterFunc)
+        throws IOException {
         Objects.requireNonNull(valueWriterFunc, "'valueWriterFunc' cannot be null.");
 
         if (map == null) {

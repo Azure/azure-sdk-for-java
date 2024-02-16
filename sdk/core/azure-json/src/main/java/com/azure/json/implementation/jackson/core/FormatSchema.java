@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -24,8 +25,7 @@ package com.azure.json.implementation.jackson.core;
  * used for tagging "some kind of schema" -- instead of passing opaque
  * {@link java.lang.Object} -- for documentation purposes.
  */
-public interface FormatSchema
-{
+public interface FormatSchema {
     /**
      * Method that can be used to get an identifier that can be used for diagnostics
      * purposes, to indicate what kind of data format this schema is used for: typically

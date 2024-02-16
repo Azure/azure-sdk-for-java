@@ -28,7 +28,8 @@ public final class AzureEnvironment {
     /**
      * Provides the settings for authentication with Azure.
      */
-    public static final AzureEnvironment AZURE = new AzureEnvironment(new HashMap<String, String>() {{
+    public static final AzureEnvironment AZURE = new AzureEnvironment(new HashMap<String, String>() {
+        {
             put("portalUrl", "https://portal.azure.com");
             put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkId=254432");
             put("managementEndpointUrl", "https://management.core.windows.net/");
@@ -49,12 +50,14 @@ public final class AzureEnvironment {
             put("azureLogAnalyticsResourceId", "https://api.loganalytics.io/");
             put("azureApplicationInsightsResourceId", "https://api.applicationinsights.io/");
             put("managedHsmDnsSuffix", ".managedhsm.azure.net");
-        }});
+        }
+    });
 
     /**
      * Provides the settings for authentication with Azure China.
      */
-    public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(new HashMap<String, String>() {{
+    public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(new HashMap<String, String>() {
+        {
             put("portalUrl", "https://portal.azure.cn");
             put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkID=301774");
             put("managementEndpointUrl", "https://management.core.chinacloudapi.cn/");
@@ -75,12 +78,14 @@ public final class AzureEnvironment {
             put("azureLogAnalyticsResourceId", "N/A");
             put("azureApplicationInsightsResourceId", "N/A");
             put("managedHsmDnsSuffix", ".managedhsm.azure.cn");
-        }});
+        }
+    });
 
     /**
      * Provides the settings for authentication with Azure US Government.
      */
-    public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(new HashMap<String, String>() {{
+    public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(new HashMap<String, String>() {
+        {
             put("portalUrl", "https://portal.azure.us");
             put("publishingProfileUrl", "https://manage.windowsazure.us/publishsettings/index");
             put("managementEndpointUrl", "https://management.core.usgovcloudapi.net/");
@@ -101,7 +106,8 @@ public final class AzureEnvironment {
             put("azureLogAnalyticsResourceId", "https://api.loganalytics.us/");
             put("azureApplicationInsightsResourceId", "N/A");
             put("managedHsmDnsSuffix", ".managedhsm.usgovcloudapi.net");
-        }});
+        }
+    });
 
     /**
      * Provides the settings for authentication with Azure Germany.
@@ -112,7 +118,8 @@ public final class AzureEnvironment {
      * with {@link AzureEnvironment#AZURE}.
      */
     @Deprecated
-    public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(new HashMap<String, String>() {{
+    public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(new HashMap<String, String>() {
+        {
             put("portalUrl", "https://portal.microsoftazure.de");
             put("publishingProfileUrl", "https://manage.microsoftazure.de/publishsettings/index");
             put("managementEndpointUrl", "https://management.core.cloudapi.de/");
@@ -133,7 +140,8 @@ public final class AzureEnvironment {
             put("azureLogAnalyticsResourceId", "N/A");
             put("azureApplicationInsightsResourceId", "N/A");
             put("managedHsmDnsSuffix", "N/A");
-        }});
+        }
+    });
 
     /**
      * Gets the entirety of the endpoints associated with the current environment.

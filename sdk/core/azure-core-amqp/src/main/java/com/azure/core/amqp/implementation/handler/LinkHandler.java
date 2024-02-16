@@ -53,10 +53,8 @@ abstract class LinkHandler extends Handler {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getCondition();
 
-        addErrorCondition(logger.atVerbose(), condition)
-            .addKeyValue(LINK_NAME_KEY, link.getName())
-            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-            .log("onLinkLocalClose");
+        addErrorCondition(logger.atVerbose(), condition).addKeyValue(LINK_NAME_KEY, link.getName())
+            .addKeyValue(ENTITY_PATH_KEY, entityPath).log("onLinkLocalClose");
     }
 
     @Override
@@ -71,12 +69,8 @@ abstract class LinkHandler extends Handler {
 
     @Override
     public void onLinkFinal(Event event) {
-        final String linkName = event != null && event.getLink() != null
-            ? event.getLink().getName()
-            : NOT_APPLICABLE;
-        logger.atInfo()
-            .addKeyValue(LINK_NAME_KEY, linkName)
-            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+        final String linkName = event != null && event.getLink() != null ? event.getLink().getName() : NOT_APPLICABLE;
+        logger.atInfo().addKeyValue(LINK_NAME_KEY, linkName).addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("onLinkFinal");
 
         // Be explicit about wanting to call Handler.close(). When we receive onLinkFinal, the service and proton-j are
@@ -103,17 +97,12 @@ abstract class LinkHandler extends Handler {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getRemoteCondition();
 
-        addErrorCondition(logger.atInfo(), condition)
-            .addKeyValue(LINK_NAME_KEY, link.getName())
-            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-            .log(eventName);
+        addErrorCondition(logger.atInfo(), condition).addKeyValue(LINK_NAME_KEY, link.getName())
+            .addKeyValue(ENTITY_PATH_KEY, entityPath).log(eventName);
 
         if (link.getLocalState() != EndpointState.CLOSED) {
-            logger.atInfo()
-                .addKeyValue(LINK_NAME_KEY, link.getName())
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue("state", link.getLocalState())
-                .log("Local link state is not closed.");
+            logger.atInfo().addKeyValue(LINK_NAME_KEY, link.getName()).addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue("state", link.getLocalState()).log("Local link state is not closed.");
 
             link.setCondition(condition);
             link.close();

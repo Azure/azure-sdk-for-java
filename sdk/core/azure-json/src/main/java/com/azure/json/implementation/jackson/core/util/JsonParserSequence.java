@@ -14,8 +14,7 @@ import com.azure.json.implementation.jackson.core.*;
  * Fairly simple use of {@link JsonParserDelegate}: only need
  * to override {@link #nextToken} to handle transition
  */
-public class JsonParserSequence extends JsonParserDelegate
-{
+public class JsonParserSequence extends JsonParserDelegate {
     /**
      * Parsers other than the first one (which is initially assigned
      * as delegate)
@@ -62,8 +61,7 @@ public class JsonParserSequence extends JsonParserDelegate
     }
 
     // @since 2.8
-    protected JsonParserSequence(boolean checkForExistingToken, JsonParser[] parsers)
-    {
+    protected JsonParserSequence(boolean checkForExistingToken, JsonParser[] parsers) {
         super(parsers[0]);
         _checkForExistingToken = checkForExistingToken;
         _hasToken = checkForExistingToken && delegate.hasCurrentToken();
@@ -87,12 +85,10 @@ public class JsonParserSequence extends JsonParserDelegate
      *
      * @return Sequence instance constructed
      */
-    public static JsonParserSequence createFlattened(boolean checkForExistingToken,
-            JsonParser first, JsonParser second)
-    {
+    public static JsonParserSequence createFlattened(boolean checkForExistingToken, JsonParser first,
+        JsonParser second) {
         if (!(first instanceof JsonParserSequence || second instanceof JsonParserSequence)) {
-            return new JsonParserSequence(checkForExistingToken,
-                    new JsonParser[] { first, second });
+            return new JsonParserSequence(checkForExistingToken, new JsonParser[] { first, second });
         }
         ArrayList<JsonParser> p = new ArrayList<JsonParser>();
         if (first instanceof JsonParserSequence) {
@@ -105,19 +101,17 @@ public class JsonParserSequence extends JsonParserDelegate
         } else {
             p.add(second);
         }
-        return new JsonParserSequence(checkForExistingToken,
-                p.toArray(new JsonParser[p.size()]));
+        return new JsonParserSequence(checkForExistingToken, p.toArray(new JsonParser[p.size()]));
     }
 
     @Deprecated // since 2.8
     public static JsonParserSequence createFlattened(JsonParser first, JsonParser second) {
         return createFlattened(false, first, second);
     }
-    
+
     @SuppressWarnings("resource")
-    protected void addFlattenedActiveParsers(List<JsonParser> listToAddIn)
-    {
-        for (int i = _nextParserIndex-1, len = _parsers.length; i < len; ++i) {
+    protected void addFlattenedActiveParsers(List<JsonParser> listToAddIn) {
+        for (int i = _nextParserIndex - 1, len = _parsers.length; i < len; ++i) {
             JsonParser p = _parsers[i];
             if (p instanceof JsonParserSequence) {
                 ((JsonParserSequence) p).addFlattenedActiveParsers(listToAddIn);
@@ -128,26 +122,27 @@ public class JsonParserSequence extends JsonParserDelegate
     }
 
     /*
-    /*******************************************************
-    /* Overridden methods, needed: cases where default
-    /* delegation does not work
-    /*******************************************************
+     * /*******************************************************
+     * /* Overridden methods, needed: cases where default
+     * /* delegation does not work
+     * /*******************************************************
      */
 
     @Override
     public void close() throws IOException {
-        do { delegate.close(); } while (switchToNext());
+        do {
+            delegate.close();
+        } while (switchToNext());
     }
 
     @Override
-    public JsonToken nextToken() throws IOException
-    {
+    public JsonToken nextToken() throws IOException {
         if (delegate == null) {
             return null;
         }
         if (_hasToken) {
             _hasToken = false;
-           return delegate.currentToken();
+            return delegate.currentToken();
         }
         JsonToken t = delegate.nextToken();
         if (t == null) {
@@ -162,10 +157,8 @@ public class JsonParserSequence extends JsonParserDelegate
      * state correct here.
      */
     @Override
-    public JsonParser skipChildren() throws IOException
-    {
-        if ((delegate.currentToken() != JsonToken.START_OBJECT)
-            && (delegate.currentToken() != JsonToken.START_ARRAY)) {
+    public JsonParser skipChildren() throws IOException {
+        if ((delegate.currentToken() != JsonToken.START_OBJECT) && (delegate.currentToken() != JsonToken.START_ARRAY)) {
             return this;
         }
         int open = 1;
@@ -188,9 +181,9 @@ public class JsonParserSequence extends JsonParserDelegate
     }
 
     /*
-    /*******************************************************
-    /* Additional extended API
-    /*******************************************************
+     * /*******************************************************
+     * /* Additional extended API
+     * /*******************************************************
      */
 
     /**
@@ -205,9 +198,9 @@ public class JsonParserSequence extends JsonParserDelegate
     }
 
     /*
-    /*******************************************************
-    /* Helper methods
-    /*******************************************************
+     * /*******************************************************
+     * /* Helper methods
+     * /*******************************************************
      */
 
     /**
@@ -219,8 +212,7 @@ public class JsonParserSequence extends JsonParserDelegate
      *
      * @since 2.8
      */
-    protected boolean switchToNext()
-    {
+    protected boolean switchToNext() {
         if (_nextParserIndex < _parsers.length) {
             delegate = _parsers[_nextParserIndex++];
             return true;
@@ -228,8 +220,7 @@ public class JsonParserSequence extends JsonParserDelegate
         return false;
     }
 
-    protected JsonToken switchAndReturnNext() throws IOException
-    {
+    protected JsonToken switchAndReturnNext() throws IOException {
         while (_nextParserIndex < _parsers.length) {
             delegate = _parsers[_nextParserIndex++];
             if (_checkForExistingToken && delegate.hasCurrentToken()) {

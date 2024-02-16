@@ -60,34 +60,27 @@ public final class MockProxyServer implements Closeable {
     public MockProxyServer(String username, String password) {
         this.requiresAuthentication = !CoreUtils.isNullOrEmpty(username);
 
-        this.expectedAuthenticationValue = this.requiresAuthentication
-            ? new AuthorizationChallengeHandler(username, password).handleBasic()
-            : null;
+        this.expectedAuthenticationValue
+            = this.requiresAuthentication ? new AuthorizationChallengeHandler(username, password).handleBasic() : null;
 
-        this.disposableServer = HttpServer.create()
-            .host("localhost")
-            .observe((connection, newState) -> {
-                if (newState == ConnectionObserver.State.RELEASED) {
-                    isAuthenticated.remove(connection.channel().remoteAddress());
-                }
-            })
-            .handle((request, response) -> {
-                if (requiresAuthentication) {
-                    if (isAuthenticated.contains(request.remoteAddress())) {
-                        return forwardProxiedRequest(request, response);
-                    } else if (hasRequiredAuthentication(request.requestHeaders())) {
-                        isAuthenticated.add(request.remoteAddress());
-                        return response.status(200).send();
-                    } else {
-                        return response.status(407)
-                            .header(PROXY_AUTHENTICATE, "basic")
-                            .send();
-                    }
-                } else {
+        this.disposableServer = HttpServer.create().host("localhost").observe((connection, newState) -> {
+            if (newState == ConnectionObserver.State.RELEASED) {
+                isAuthenticated.remove(connection.channel().remoteAddress());
+            }
+        }).handle((request, response) -> {
+            if (requiresAuthentication) {
+                if (isAuthenticated.contains(request.remoteAddress())) {
+                    return forwardProxiedRequest(request, response);
+                } else if (hasRequiredAuthentication(request.requestHeaders())) {
+                    isAuthenticated.add(request.remoteAddress());
                     return response.status(200).send();
+                } else {
+                    return response.status(407).header(PROXY_AUTHENTICATE, "basic").send();
                 }
-            })
-            .bindNow();
+            } else {
+                return response.status(200).send();
+            }
+        }).bindNow();
     }
 
     /**
@@ -117,18 +110,14 @@ public final class MockProxyServer implements Closeable {
         HttpMethod httpMethod = HttpMethod.valueOf(request.method().name());
         URL url;
         try {
-            url = new UrlBuilder().setScheme("http")
-                .setHost(request.requestHeaders().get("host"))
-                .setPath(request.fullPath())
-                .toUrl();
+            url = new UrlBuilder().setScheme("http").setHost(request.requestHeaders().get("host"))
+                .setPath(request.fullPath()).toUrl();
         } catch (MalformedURLException ex) {
             throw new RuntimeException(ex);
         }
         com.azure.core.http.HttpHeaders headers = new NettyToAzureCoreHttpHeadersWrapper(request.requestHeaders());
 
         return FORWARDING_CLIENT.send(new HttpRequest(httpMethod, url, headers, request.receive().asByteBuffer()))
-            .flatMap(res -> response.status(res.getStatusCode())
-                .sendByteArray(res.getBodyAsByteArray())
-                .then());
+            .flatMap(res -> response.status(res.getStatusCode()).sendByteArray(res.getBodyAsByteArray()).then());
     }
 }

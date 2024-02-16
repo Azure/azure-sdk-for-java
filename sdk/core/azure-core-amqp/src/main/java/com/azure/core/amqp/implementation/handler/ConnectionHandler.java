@@ -64,7 +64,7 @@ public class ConnectionHandler extends Handler {
      */
     @Deprecated
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
-                             SslPeerDetails peerDetails) {
+        SslPeerDetails peerDetails) {
         this(connectionId, connectionOptions, peerDetails,
             new AmqpMetricsProvider(null, connectionOptions.getFullyQualifiedNamespace(), null));
     }
@@ -93,9 +93,8 @@ public class ConnectionHandler extends Handler {
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
         final ClientOptions clientOptions = connectionOptions.getClientOptions();
-        final String applicationId = !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())
-            ? clientOptions.getApplicationId()
-            : null;
+        final String applicationId
+            = !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId()) ? clientOptions.getApplicationId() : null;
         final String userAgent = UserAgentUtil.toUserAgentString(applicationId, connectionOptions.getProduct(),
             connectionOptions.getClientVersion(), null);
 
@@ -156,7 +155,8 @@ public class ConnectionHandler extends Handler {
             try {
                 defaultSslContext = SSLContext.getDefault();
             } catch (NoSuchAlgorithmException e) {
-                throw logger.logExceptionAsError(new RuntimeException("Default SSL algorithm not found in JRE. Please check your JRE setup.", e));
+                throw logger.logExceptionAsError(
+                    new RuntimeException("Default SSL algorithm not found in JRE. Please check your JRE setup.", e));
             }
         }
 
@@ -177,8 +177,8 @@ public class ConnectionHandler extends Handler {
             logger.warning("'{}' is not secure.", verifyMode);
             sslDomain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
         } else {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "verifyMode is not supported: " + verifyMode));
+            throw logger
+                .logExceptionAsError(new UnsupportedOperationException("verifyMode is not supported: " + verifyMode));
         }
 
         transport.ssl(sslDomain);
@@ -186,8 +186,7 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionInit(Event event) {
-        logger.atInfo()
-            .addKeyValue(HOSTNAME_KEY, getHostname())
+        logger.atInfo().addKeyValue(HOSTNAME_KEY, getHostname())
             .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, connectionOptions.getFullyQualifiedNamespace())
             .log("onConnectionInit");
 
@@ -214,8 +213,7 @@ public class ConnectionHandler extends Handler {
     public void onConnectionBound(Event event) {
         final Transport transport = event.getTransport();
 
-        logger.atInfo()
-            .addKeyValue(HOSTNAME_KEY, getHostname())
+        logger.atInfo().addKeyValue(HOSTNAME_KEY, getHostname())
             .addKeyValue("peerDetails", () -> peerDetails.getHostname() + ":" + peerDetails.getPort())
             .log("onConnectionBound");
 
@@ -230,10 +228,8 @@ public class ConnectionHandler extends Handler {
     @Override
     public void onConnectionUnbound(Event event) {
         final Connection connection = event.getConnection();
-        logger.atInfo()
-            .addKeyValue(HOSTNAME_KEY, connection.getHostname())
-            .addKeyValue("state", connection.getLocalState())
-            .addKeyValue("remoteState", connection.getRemoteState())
+        logger.atInfo().addKeyValue(HOSTNAME_KEY, connection.getHostname())
+            .addKeyValue("state", connection.getLocalState()).addKeyValue("remoteState", connection.getRemoteState())
             .log("onConnectionUnbound");
 
         // if failure happened while establishing transport - nothing to free up.
@@ -290,10 +286,8 @@ public class ConnectionHandler extends Handler {
     public void onConnectionRemoteOpen(Event event) {
         final Connection connection = event.getConnection();
 
-        logger.atInfo()
-            .addKeyValue(HOSTNAME_KEY, connection.getHostname())
-            .addKeyValue("remoteContainer", connection.getRemoteContainer())
-            .log("onConnectionRemoteOpen");
+        logger.atInfo().addKeyValue(HOSTNAME_KEY, connection.getHostname())
+            .addKeyValue("remoteContainer", connection.getRemoteContainer()).log("onConnectionRemoteOpen");
 
         onNext(connection.getRemoteState());
     }
@@ -355,7 +349,8 @@ public class ConnectionHandler extends Handler {
         }
 
         if (condition == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
+            throw logger
+                .logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
         }
 
         // if the remote-peer abruptly closes the connection without issuing close frame issue one
@@ -366,8 +361,6 @@ public class ConnectionHandler extends Handler {
     }
 
     private void logErrorCondition(String eventName, Connection connection, ErrorCondition error) {
-        addErrorCondition(logger.atInfo(), error)
-            .addKeyValue(HOSTNAME_KEY, connection.getHostname())
-            .log(eventName);
+        addErrorCondition(logger.atInfo(), error).addKeyValue(HOSTNAME_KEY, connection.getHostname()).log(eventName);
     }
 }

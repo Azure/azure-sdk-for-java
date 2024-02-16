@@ -36,9 +36,7 @@ class OpenTelemetryMeter implements Meter {
         }
 
         this.isEnabled = (options == null || options.isEnabled()) && otelProvider != MeterProvider.noop();
-        this.meter = otelProvider.meterBuilder(libraryName)
-            .setInstrumentationVersion(libraryVersion)
-            .build();
+        this.meter = otelProvider.meterBuilder(libraryName).setInstrumentationVersion(libraryVersion).build();
     }
 
     /**
@@ -54,8 +52,7 @@ class OpenTelemetryMeter implements Meter {
             return OpenTelemetryDoubleHistogram.NOOP;
         }
 
-        DoubleHistogramBuilder otelMetricBuilder = meter.histogramBuilder(name)
-            .setDescription(description);
+        DoubleHistogramBuilder otelMetricBuilder = meter.histogramBuilder(name).setDescription(description);
         if (!CoreUtils.isNullOrEmpty(unit)) {
             otelMetricBuilder.setUnit(unit);
         }
@@ -76,8 +73,7 @@ class OpenTelemetryMeter implements Meter {
             return NOOP_COUNTER;
         }
 
-        LongCounterBuilder otelMetricBuilder = meter.counterBuilder(name)
-            .setDescription(description);
+        LongCounterBuilder otelMetricBuilder = meter.counterBuilder(name).setDescription(description);
 
         if (!CoreUtils.isNullOrEmpty(unit)) {
             otelMetricBuilder.setUnit(unit);
@@ -99,8 +95,7 @@ class OpenTelemetryMeter implements Meter {
             return NOOP_COUNTER;
         }
 
-        LongUpDownCounterBuilder otelMetricBuilder = meter.upDownCounterBuilder(name)
-            .setDescription(description);
+        LongUpDownCounterBuilder otelMetricBuilder = meter.upDownCounterBuilder(name).setDescription(description);
 
         if (!CoreUtils.isNullOrEmpty(unit)) {
             otelMetricBuilder.setUnit(unit);
@@ -122,9 +117,7 @@ class OpenTelemetryMeter implements Meter {
             return OpenTelemetryLongGauge.NOOP;
         }
 
-        LongGaugeBuilder otelMetricBuilder = meter.gaugeBuilder(name)
-            .setDescription(description)
-            .ofLongs();
+        LongGaugeBuilder otelMetricBuilder = meter.gaugeBuilder(name).setDescription(description).ofLongs();
 
         if (!CoreUtils.isNullOrEmpty(unit)) {
             otelMetricBuilder.setUnit(unit);
@@ -149,7 +142,6 @@ class OpenTelemetryMeter implements Meter {
     @Override
     public void close() {
     }
-
 
     private static final LongCounter NOOP_COUNTER = new LongCounter() {
         @Override

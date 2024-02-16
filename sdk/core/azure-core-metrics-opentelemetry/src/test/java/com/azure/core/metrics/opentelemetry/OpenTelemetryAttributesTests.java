@@ -31,7 +31,8 @@ public class OpenTelemetryAttributesTests {
 
     @Test
     public void addAttribute() {
-        TelemetryAttributes attributeCollection = METER.createAttributes(new HashMap<String, Object>() {{
+        TelemetryAttributes attributeCollection = METER.createAttributes(new HashMap<String, Object>() {
+            {
                 put("string", "string-value");
                 put("long", 42L);
                 put("boolean", true);
@@ -41,7 +42,8 @@ public class OpenTelemetryAttributesTests {
                 put("byte", (byte) 2);
                 put("int", 3);
                 put("unknown", this); // will be ignored
-            }});
+            }
+        });
 
         assertEquals(OpenTelemetryAttributes.class, attributeCollection.getClass());
         Attributes attributes = ((OpenTelemetryAttributes) attributeCollection).get();
@@ -60,7 +62,8 @@ public class OpenTelemetryAttributesTests {
 
     @Test
     public void attributeMappings() {
-        TelemetryAttributes attributeCollection = METER.createAttributes(new HashMap<String, Object>() {{
+        TelemetryAttributes attributeCollection = METER.createAttributes(new HashMap<String, Object>() {
+            {
                 put("foobar", "value");
                 put("hostName", "host");
                 put("entityName", "entity");
@@ -74,7 +77,8 @@ public class OpenTelemetryAttributesTests {
                 put("consumerGroup", "$Default");
                 put("subscriptionName", "/foo/subscriptions/bar");
                 put("dispositionStatus", "abandon");
-            }});
+            }
+        });
 
         assertEquals(OpenTelemetryAttributes.class, attributeCollection.getClass());
         Attributes attributes = ((OpenTelemetryAttributes) attributeCollection).get();
@@ -90,13 +94,15 @@ public class OpenTelemetryAttributesTests {
         assertEquals("no_content", attributes.get(AttributeKey.stringKey("amqp.status_code")));
         assertEquals(42, attributes.get(AttributeKey.longKey("messaging.eventhubs.partition_id")));
         assertEquals("error", attributes.get(AttributeKey.stringKey("error.type")));
-        assertEquals("/foo/subscriptions/bar", attributes.get(AttributeKey.stringKey("messaging.servicebus.subscription_name")));
+        assertEquals("/foo/subscriptions/bar",
+            attributes.get(AttributeKey.stringKey("messaging.servicebus.subscription_name")));
         assertEquals("abandon", attributes.get(AttributeKey.stringKey("messaging.servicebus.disposition_status")));
     }
 
     @Test
     public void attributeLongMappings() {
-        TelemetryAttributes attributeCollection = METER.createAttributes(Collections.singletonMap("errorCondition", 42));
+        TelemetryAttributes attributeCollection
+            = METER.createAttributes(Collections.singletonMap("errorCondition", 42));
 
         assertEquals(OpenTelemetryAttributes.class, attributeCollection.getClass());
         Attributes attributes = ((OpenTelemetryAttributes) attributeCollection).get();
@@ -108,7 +114,8 @@ public class OpenTelemetryAttributesTests {
     @Test
     public void addAttributeInvalid() {
         assertThrows(NullPointerException.class, () -> METER.createAttributes(null));
-        assertThrows(NullPointerException.class, () -> METER.createAttributes(Collections.singletonMap("string", null)));
+        assertThrows(NullPointerException.class,
+            () -> METER.createAttributes(Collections.singletonMap("string", null)));
         assertThrows(NullPointerException.class, () -> METER.createAttributes(Collections.singletonMap(null, "foo")));
         assertThrows(NullPointerException.class, () -> METER.createAttributes(Collections.singletonMap(null, 42L)));
         assertThrows(NullPointerException.class, () -> METER.createAttributes(Collections.singletonMap(null, false)));

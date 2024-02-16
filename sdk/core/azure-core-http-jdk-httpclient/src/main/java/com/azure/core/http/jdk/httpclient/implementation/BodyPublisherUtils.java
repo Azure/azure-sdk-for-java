@@ -49,8 +49,7 @@ public final class BodyPublisherUtils {
 
         HttpRequest.BodyPublisher publisher;
         BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
-        if (bodyContent instanceof ByteArrayContent
-            || bodyContent instanceof StringContent
+        if (bodyContent instanceof ByteArrayContent || bodyContent instanceof StringContent
             || bodyContent instanceof SerializableContent) {
             // String and serializable content also uses ofByteArray as ofString is just a wrapper for this,
             // so we might as well own the handling.
@@ -62,8 +61,8 @@ public final class BodyPublisherUtils {
                 publisher = fromPublisher(JdkFlowAdapter.publisherToFlowPublisher(request.getBody()));
             }
 
-            publisher = toBodyPublisherWithLength(publisher, request.getHeaders()
-                .getValue(HttpHeaderName.CONTENT_LENGTH));
+            publisher
+                = toBodyPublisherWithLength(publisher, request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
         }
 
         return getPublisherWithReporter(publisher, progressReporter);
@@ -98,6 +97,7 @@ public final class BodyPublisherUtils {
 
         private final HttpRequest.BodyPublisher downstream;
         private final ProgressReporter progressReporter;
+
         CountingPublisher(HttpRequest.BodyPublisher downstream, ProgressReporter progressReporter) {
             this.downstream = downstream;
             this.progressReporter = progressReporter;
@@ -117,6 +117,7 @@ public final class BodyPublisherUtils {
     private static class CountingSubscriber implements Flow.Subscriber<ByteBuffer> {
         private final Flow.Subscriber<? super ByteBuffer> downstream;
         private final ProgressReporter progressReporter;
+
         CountingSubscriber(Flow.Subscriber<? super ByteBuffer> downstream, ProgressReporter progressReporter) {
             this.downstream = downstream;
             this.progressReporter = progressReporter;

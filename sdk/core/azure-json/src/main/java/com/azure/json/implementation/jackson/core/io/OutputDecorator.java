@@ -10,8 +10,7 @@ import java.io.*;
  * processing during write operations.
  */
 @SuppressWarnings("serial")
-public abstract class OutputDecorator
-    implements java.io.Serializable // since 2.1
+public abstract class OutputDecorator implements java.io.Serializable // since 2.1
 {
     /**
      * Method called by {@link com.azure.json.implementation.jackson.core.JsonFactory} instance when

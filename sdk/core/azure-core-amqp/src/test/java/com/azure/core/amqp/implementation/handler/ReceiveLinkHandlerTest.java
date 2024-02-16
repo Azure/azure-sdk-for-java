@@ -42,7 +42,8 @@ public class ReceiveLinkHandlerTest {
     @Mock
     private Source source;
 
-    private final ReceiveLinkHandler handler = new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH, null);
+    private final ReceiveLinkHandler handler
+        = new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH, null);
 
     private AutoCloseable mocksCloseable;
 
@@ -71,13 +72,10 @@ public class ReceiveLinkHandlerTest {
     public void onRemoteOpen() {
         when(receiver.getRemoteSource()).thenReturn(source);
 
-        StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.UNINITIALIZED)
-            .then(() -> handler.onLinkRemoteOpen(event))
-            .expectNext(EndpointState.ACTIVE)
+        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onLinkRemoteOpen(event)).expectNext(EndpointState.ACTIVE)
             .then(() -> handler.onLinkRemoteOpen(event)) // We only expect the active state to be emitted once.
-            .thenCancel()
-            .verify(VERIFY_TIMEOUT);
+            .thenCancel().verify(VERIFY_TIMEOUT);
 
         assertEquals(LINK_NAME, handler.getLinkName());
     }
@@ -89,14 +87,10 @@ public class ReceiveLinkHandlerTest {
     public void onRemoteClose() {
         when(receiver.getLocalState()).thenReturn(EndpointState.CLOSED);
 
-        StepVerifier.create(handler.getDeliveredMessages())
-            .then(() -> handler.onLinkRemoteClose(event))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(handler.getDeliveredMessages()).then(() -> handler.onLinkRemoteClose(event))
+            .expectComplete().verify(VERIFY_TIMEOUT);
 
-        StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.CLOSED)
-            .expectComplete()
+        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.CLOSED).expectComplete()
             .verify(VERIFY_TIMEOUT);
 
         assertEquals(LINK_NAME, handler.getLinkName());
@@ -112,15 +106,10 @@ public class ReceiveLinkHandlerTest {
         when(delivery.getLink()).thenReturn(receiver);
         when(delivery.isPartial()).thenReturn(true);
 
-        StepVerifier.create(handler.getDeliveredMessages())
-            .then(() -> handler.onDelivery(event))
-            .expectNoEvent(Duration.ofSeconds(1))
-            .thenCancel()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(handler.getDeliveredMessages()).then(() -> handler.onDelivery(event))
+            .expectNoEvent(Duration.ofSeconds(1)).thenCancel().verify(VERIFY_TIMEOUT);
 
-        StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.ACTIVE)
-            .thenCancel()
+        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.ACTIVE).thenCancel()
             .verify(VERIFY_TIMEOUT);
     }
 
@@ -140,16 +129,10 @@ public class ReceiveLinkHandlerTest {
 
         when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
-        StepVerifier.create(handler.getDeliveredMessages())
-            .then(() -> handler.onDelivery(event))
-            .expectNext(delivery)
-            .then(() -> handler.onLinkRemoteClose(closeEvent))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(handler.getDeliveredMessages()).then(() -> handler.onDelivery(event)).expectNext(delivery)
+            .then(() -> handler.onLinkRemoteClose(closeEvent)).expectComplete().verify(VERIFY_TIMEOUT);
 
-        StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.CLOSED)
-            .expectComplete()
+        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.CLOSED).expectComplete()
             .verify(VERIFY_TIMEOUT);
     }
 
@@ -169,11 +152,8 @@ public class ReceiveLinkHandlerTest {
 
         when(receiver.getLocalState()).thenReturn(EndpointState.CLOSED);
 
-        StepVerifier.create(handler.getDeliveredMessages())
-            .then(() -> handler.onDelivery(event))
-            .expectNoEvent(Duration.ofSeconds(1))
-            .thenCancel()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(handler.getDeliveredMessages()).then(() -> handler.onDelivery(event))
+            .expectNoEvent(Duration.ofSeconds(1)).thenCancel().verify(VERIFY_TIMEOUT);
 
         verify(delivery).disposition(argThat(state -> state.getType() == DeliveryState.DeliveryStateType.Modified));
         verify(delivery).settle();
@@ -201,18 +181,13 @@ public class ReceiveLinkHandlerTest {
     @Test
     public void close() {
         // Act & Assert
-        StepVerifier.create(handler.getDeliveredMessages())
-            .then(() -> handler.close())
-            .expectComplete()
+        StepVerifier.create(handler.getDeliveredMessages()).then(() -> handler.close()).expectComplete()
             .verify(VERIFY_TIMEOUT);
 
         // The only thing we should be doing here is emitting a close state. We are waiting for
         // the remote close event.
-        StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.CLOSED)
-            .expectNoEvent(Duration.ofMillis(500))
-            .thenCancel()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.CLOSED)
+            .expectNoEvent(Duration.ofMillis(500)).thenCancel().verify(VERIFY_TIMEOUT);
 
         assertEquals(LINK_NAME, handler.getLinkName());
     }
@@ -224,15 +199,10 @@ public class ReceiveLinkHandlerTest {
     public void onLinkLocalCloseNotRemoteOpened() {
         when(receiver.getLocalState()).thenReturn(EndpointState.CLOSED);
 
-        StepVerifier.create(handler.getEndpointStates())
-            .then(() -> handler.onLinkLocalClose(event))
-            .expectNext(EndpointState.UNINITIALIZED, EndpointState.CLOSED)
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(handler.getEndpointStates()).then(() -> handler.onLinkLocalClose(event))
+            .expectNext(EndpointState.UNINITIALIZED, EndpointState.CLOSED).expectComplete().verify(VERIFY_TIMEOUT);
 
-        StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.CLOSED)
-            .expectComplete()
+        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.CLOSED).expectComplete()
             .verify(VERIFY_TIMEOUT);
     }
 
@@ -255,14 +225,10 @@ public class ReceiveLinkHandlerTest {
         when(remoteClosedReceiver.getLocalState()).thenReturn(EndpointState.CLOSED);
         when(remoteClosedReceiver.getRemoteState()).thenReturn(EndpointState.CLOSED);
 
-        StepVerifier.create(handler.getEndpointStates())
-            .then(() -> handler.onLinkRemoteOpen(event))
+        StepVerifier.create(handler.getEndpointStates()).then(() -> handler.onLinkRemoteOpen(event))
             .expectNext(EndpointState.UNINITIALIZED, EndpointState.ACTIVE)
-            .then(() -> handler.onLinkLocalClose(closeEvent))
-            .expectNoEvent(Duration.ofMillis(500))
-            .then(() -> handler.onLinkRemoteClose(remoteCloseEvent))
-            .expectNext(EndpointState.CLOSED)
-            .expectComplete()
+            .then(() -> handler.onLinkLocalClose(closeEvent)).expectNoEvent(Duration.ofMillis(500))
+            .then(() -> handler.onLinkRemoteClose(remoteCloseEvent)).expectNext(EndpointState.CLOSED).expectComplete()
             .verify(VERIFY_TIMEOUT);
     }
 }

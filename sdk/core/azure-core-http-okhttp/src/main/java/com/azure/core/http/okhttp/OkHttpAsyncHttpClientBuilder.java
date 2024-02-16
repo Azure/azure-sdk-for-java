@@ -30,7 +30,9 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * Use {@link com.azure.core.http.HttpClient#sendSync(HttpRequest, Context)} to send the provided request
  * synchronously with contextual information.
  *
- * <p><strong>Building a new HttpClient instance</strong></p>
+ * <p>
+ * <strong>Building a new HttpClient instance</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
  * <pre>
@@ -39,10 +41,14 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * </pre>
  * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
  *
- * <p><strong>Building a new HttpClient instance using http proxy.</strong></p>
+ * <p>
+ * <strong>Building a new HttpClient instance using http proxy.</strong>
+ * </p>
  *
- * <p>Configuring the OkHttp client with a proxy is relevant when your application needs to communicate with Azure
- * services through a proxy server.</p>
+ * <p>
+ * Configuring the OkHttp client with a proxy is relevant when your application needs to communicate with Azure
+ * services through a proxy server.
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions -->
  * <pre>
@@ -56,10 +62,14 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * </pre>
  * <!-- end com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions -->
  *
- * <p><strong>Building a new HttpClient instance with connection timeout.</strong></p>
+ * <p>
+ * <strong>Building a new HttpClient instance with connection timeout.</strong>
+ * </p>
  *
- * <p>Setting a reasonable connection timeout is particularly important in scenarios where network conditions might
- * be unpredictable or where the server may not be responsive.</p>
+ * <p>
+ * Setting a reasonable connection timeout is particularly important in scenarios where network conditions might
+ * be unpredictable or where the server may not be responsive.
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#connectionTimeout -->
  * <pre>
@@ -70,7 +80,9 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * </pre>
  * <!-- end com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#connectionTimeout -->
  *
- * <p><strong>Building a new HttpClient instance with HTTP/2 Support.</strong></p>
+ * <p>
+ * <strong>Building a new HttpClient instance with HTTP/2 Support.</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
  * <pre>
@@ -79,7 +91,9 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * </pre>
  * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
  *
- * <p>It is also possible to create a OkHttp HttpClient that only supports HTTP/2.</p>
+ * <p>
+ * It is also possible to create a OkHttp HttpClient that only supports HTTP/2.
+ * </p>
  *
  * <!-- src_embed readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
  * <pre>
@@ -89,7 +103,7 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  *     .build&#40;&#41;&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end readme-sample-useHttp2OnlyWithConfiguredOkHttpClient  -->
+ * <!-- end readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
  *
  * @see HttpClient
  * @see OkHttpAsyncHttpClient
@@ -332,9 +346,8 @@ public class OkHttpAsyncHttpClientBuilder {
      * @return A new OkHttp-backed {@link com.azure.core.http.HttpClient} instance.
      */
     public HttpClient build() {
-        OkHttpClient.Builder httpClientBuilder = this.okHttpClient == null
-            ? new OkHttpClient.Builder()
-            : this.okHttpClient.newBuilder();
+        OkHttpClient.Builder httpClientBuilder
+            = this.okHttpClient == null ? new OkHttpClient.Builder() : this.okHttpClient.newBuilder();
 
         // Add each interceptor that has been added.
         for (Interceptor interceptor : this.networkInterceptors) {
@@ -342,8 +355,7 @@ public class OkHttpAsyncHttpClientBuilder {
         }
 
         // Configure operation timeouts.
-        httpClientBuilder = httpClientBuilder
-            .connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT))
+        httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT))
             .writeTimeout(getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT))
             .readTimeout(getTimeout(readTimeout, DEFAULT_READ_TIMEOUT));
 
@@ -362,23 +374,20 @@ public class OkHttpAsyncHttpClientBuilder {
             httpClientBuilder = httpClientBuilder.dispatcher(dispatcher);
         }
 
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
-        ProxyOptions buildProxyOptions = (proxyOptions == null)
-            ? ProxyOptions.fromConfiguration(buildConfiguration, true)
-            : proxyOptions;
+        ProxyOptions buildProxyOptions
+            = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
         if (buildProxyOptions != null) {
-            httpClientBuilder = httpClientBuilder.proxySelector(new OkHttpProxySelector(
-                buildProxyOptions.getType().toProxyType(),
-                buildProxyOptions::getAddress,
-                buildProxyOptions.getNonProxyHosts()));
+            httpClientBuilder
+                = httpClientBuilder.proxySelector(new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(),
+                    buildProxyOptions::getAddress, buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
-                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(buildProxyOptions.getUsername(),
-                    buildProxyOptions.getPassword());
+                ProxyAuthenticator proxyAuthenticator
+                    = new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword());
 
                 httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
                     .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());
@@ -411,7 +420,7 @@ public class OkHttpAsyncHttpClientBuilder {
         // Return the maximum of the timeout period and the minimum allowed timeout period.
         if (configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0) {
             return MINIMUM_TIMEOUT;
-        } else  {
+        } else {
             return configuredTimeout;
         }
     }

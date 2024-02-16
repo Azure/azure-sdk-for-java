@@ -12,7 +12,8 @@ import java.util.Objects;
 /**
  * Resolves and provides {@link Meter} implementation.
  * <p>
- * This class is intended to be used by Azure client libraries and provides abstraction over different metrics implementations.
+ * This class is intended to be used by Azure client libraries and provides abstraction over different metrics
+ * implementations.
  * Application developers should use metrics implementations such as OpenTelemetry or Micrometer directly.
  */
 public final class OpenTelemetryMeterProvider implements MeterProvider {

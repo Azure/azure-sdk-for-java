@@ -11,8 +11,7 @@ package com.azure.json.implementation.jackson.core;
  *
  * @since 2.12
  */
-public abstract class JacksonException extends java.io.IOException
-{
+public abstract class JacksonException extends java.io.IOException {
     private final static long serialVersionUID = 123; // eclipse complains otherwise
 
     protected JacksonException(String msg) {
@@ -26,17 +25,19 @@ public abstract class JacksonException extends java.io.IOException
     protected JacksonException(String msg, Throwable rootCause) {
         super(msg, rootCause);
         // 23-Sep-2020, tatu: before 2.12, had null checks for some reason...
-        //   But I don't think that is actually required; Javadocs for
-        //   `java.lang.Throwable` constructor claim {@code null} is fine.
-/*        if (rootCause != null) {
-            initCause(rootCause);
-        }*/
+        // But I don't think that is actually required; Javadocs for
+        // `java.lang.Throwable` constructor claim {@code null} is fine.
+        /*
+         * if (rootCause != null) {
+         * initCause(rootCause);
+         * }
+         */
     }
 
     /*
-    /**********************************************************************
-    /* Extended API
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Extended API
+     * /**********************************************************************
      */
 
     /**

@@ -100,18 +100,15 @@ public class JacksonJsonProvider implements JsonProvider {
      * {@link JsonSerializable} types.
      */
     public static Module getJsonSerializableDatabindModule() {
-        return new SimpleModule()
-            .setDeserializerModifier(new BeanDeserializerModifier() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
-                    JsonDeserializer<?> deserializer) {
-                    return (JsonSerializable.class.isAssignableFrom(beanDesc.getBeanClass()))
-                        ? new JsonSerializableDeserializer(
-                        (Class<? extends JsonSerializable<?>>) beanDesc.getBeanClass())
-                        : deserializer;
-                }
-            })
-            .addSerializer(JsonSerializable.class, new JsonSerializableSerializer());
+        return new SimpleModule().setDeserializerModifier(new BeanDeserializerModifier() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
+                JsonDeserializer<?> deserializer) {
+                return (JsonSerializable.class.isAssignableFrom(beanDesc.getBeanClass()))
+                    ? new JsonSerializableDeserializer((Class<? extends JsonSerializable<?>>) beanDesc.getBeanClass())
+                    : deserializer;
+            }
+        }).addSerializer(JsonSerializable.class, new JsonSerializableSerializer());
     }
 }

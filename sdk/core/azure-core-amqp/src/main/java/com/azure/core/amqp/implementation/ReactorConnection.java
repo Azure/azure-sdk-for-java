@@ -110,9 +110,9 @@ public class ReactorConnection implements AmqpConnection {
      * @param isV2 (temporary) flag to use either v1 or v2 receiver.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
-        ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider, TokenManagerProvider tokenManagerProvider,
-        MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
-        ReceiverSettleMode receiverSettleMode, boolean isV2) {
+        ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+        SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode, boolean isV2) {
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
@@ -120,8 +120,8 @@ public class ReactorConnection implements AmqpConnection {
         this.logger = new ClientLogger(ReactorConnection.class, createContextWithConnectionId(connectionId));
         this.handlerProvider = handlerProvider;
         this.linkProvider = linkProvider;
-        this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
-            "'tokenManagerProvider' cannot be null.");
+        this.tokenManagerProvider
+            = Objects.requireNonNull(tokenManagerProvider, "'tokenManagerProvider' cannot be null.");
         this.messageSerializer = messageSerializer;
         this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions);
 
@@ -131,57 +131,47 @@ public class ReactorConnection implements AmqpConnection {
         this.receiverSettleMode = receiverSettleMode;
         this.isV2 = isV2;
 
-        this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)
-            .flatMap(reactorConnection -> {
-                final Mono<AmqpEndpointState> activeEndpoint = getEndpointStates()
-                    .filter(state -> state == AmqpEndpointState.ACTIVE)
-                    .next()
-                    .timeout(operationTimeout, Mono.error(() -> {
-                        AmqpException exception = new AmqpException(true, TIMEOUT_ERROR,
-                            String.format("Connection '%s' not active within the timout: %s.", connectionId, operationTimeout),
-                            handler.getErrorContext());
-                        if (!isV2) {
-                            // this is temp patch to make v1 stack retry on timeout.
-                            // V2 stack does connection management differently via ReactorConnectionCache
-                            // and does not need to call into handler here
-                            handler.onError(exception);
-                        }
-                        return exception;
-                    }));
-                return activeEndpoint.thenReturn(reactorConnection);
-            })
-            .doOnError(error -> {
-                if (isDisposed.getAndSet(true)) {
-                    logger.verbose("Connection was already disposed: Error occurred while connection was starting.", error);
-                } else {
-                    closeAsync(new AmqpShutdownSignal(false, false,
-                        "Error occurred while connection was starting. Error: " + error)).subscribe();
-                }
-            });
+        this.connectionMono = Mono.fromCallable(this::getOrCreateConnection).flatMap(reactorConnection -> {
+            final Mono<AmqpEndpointState> activeEndpoint = getEndpointStates()
+                .filter(state -> state == AmqpEndpointState.ACTIVE).next().timeout(operationTimeout, Mono.error(() -> {
+                    AmqpException exception = new AmqpException(true, TIMEOUT_ERROR, String
+                        .format("Connection '%s' not active within the timout: %s.", connectionId, operationTimeout),
+                        handler.getErrorContext());
+                    if (!isV2) {
+                        // this is temp patch to make v1 stack retry on timeout.
+                        // V2 stack does connection management differently via ReactorConnectionCache
+                        // and does not need to call into handler here
+                        handler.onError(exception);
+                    }
+                    return exception;
+                }));
+            return activeEndpoint.thenReturn(reactorConnection);
+        }).doOnError(error -> {
+            if (isDisposed.getAndSet(true)) {
+                logger.verbose("Connection was already disposed: Error occurred while connection was starting.", error);
+            } else {
+                closeAsync(new AmqpShutdownSignal(false, false,
+                    "Error occurred while connection was starting. Error: " + error)).subscribe();
+            }
+        });
 
-        this.endpointStates = this.handler.getEndpointStates()
-            .takeUntilOther(shutdownSignalSink.asMono())
-            .map(state -> {
-                logger.atVerbose()
-                    .addKeyValue("state", state)
-                    .log("getConnectionState");
+        this.endpointStates
+            = this.handler.getEndpointStates().takeUntilOther(shutdownSignalSink.asMono()).map(state -> {
+                logger.atVerbose().addKeyValue("state", state).log("getConnectionState");
                 return AmqpEndpointStateUtil.getConnectionState(state);
-            })
-            .onErrorResume(error -> {
+            }).onErrorResume(error -> {
                 if (!isDisposed.getAndSet(true)) {
                     logger.verbose("Disposing of active sessions due to error.");
                     return closeAsync(new AmqpShutdownSignal(false, false, error.getMessage())).then(Mono.error(error));
                 } else {
                     return Mono.error(error);
                 }
-            })
-            .doOnComplete(() -> {
+            }).doOnComplete(() -> {
                 if (!isDisposed.getAndSet(true)) {
                     logger.verbose("Disposing of active sessions due to connection close.");
                     closeAsync(new AmqpShutdownSignal(false, false, "Connection handler closed.")).subscribe();
                 }
-            })
-            .cache(1);
+            }).cache(1);
 
         this.subscriptions = Disposables.composite(this.endpointStates.subscribe());
     }
@@ -192,21 +182,18 @@ public class ReactorConnection implements AmqpConnection {
      * @return the {@link Mono} that completes once the broker connection is established and active.
      */
     public Mono<ReactorConnection> connectAndAwaitToActive() {
-        return this.connectionMono
-            .handle((c, sink) -> {
-                if (isDisposed()) {
-                    // Today 'connectionMono' emits QPID-connection even if the endpoint terminated with
-                    // 'completion' without ever emitting any state. (Had it emitted a state and never
-                    // emitted 'active', then timeout-error would have happened, then 'handle' won't be
-                    // running, same with endpoint terminating with any error).
-                    sink.error(new AmqpException(true,
-                        String.format("Connection '%s' completed without being active.", connectionId),
-                        null));
-                } else {
-                    sink.complete();
-                }
-            })
-            .thenReturn(this);
+        return this.connectionMono.handle((c, sink) -> {
+            if (isDisposed()) {
+                // Today 'connectionMono' emits QPID-connection even if the endpoint terminated with
+                // 'completion' without ever emitting any state. (Had it emitted a state and never
+                // emitted 'active', then timeout-error would have happened, then 'handle' won't be
+                // running, same with endpoint terminating with any error).
+                sink.error(new AmqpException(true,
+                    String.format("Connection '%s' completed without being active.", connectionId), null));
+            } else {
+                sink.complete();
+            }
+        }).thenReturn(this);
     }
 
     /**
@@ -232,8 +219,8 @@ public class ReactorConnection implements AmqpConnection {
     public Mono<AmqpManagementNode> getManagementNode(String entityPath) {
         return Mono.defer(() -> {
             if (isDisposed()) {
-                return monoError(logger.atError().addKeyValue(ENTITY_PATH_KEY, entityPath),
-                    Exceptions.propagate(new IllegalStateException("Connection is disposed. Cannot get management instance.")));
+                return monoError(logger.atError().addKeyValue(ENTITY_PATH_KEY, entityPath), Exceptions
+                    .propagate(new IllegalStateException("Connection is disposed. Cannot get management instance.")));
             }
 
             final AmqpManagementNode existing = managementNodes.get(entityPath);
@@ -243,7 +230,7 @@ public class ReactorConnection implements AmqpConnection {
 
             final TokenManager tokenManager = new AzureTokenManagerProvider(connectionOptions.getAuthorizationType(),
                 connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getAuthorizationScope())
-                .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
+                    .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
 
             return tokenManager.authorize().thenReturn(managementNodes.compute(entityPath, (key, current) -> {
                 if (current != null) {
@@ -258,14 +245,11 @@ public class ReactorConnection implements AmqpConnection {
                 final String linkName = entityPath + "-" + MANAGEMENT_LINK_NAME;
                 final String address = entityPath + "/" + MANAGEMENT_ADDRESS;
 
-                logger.atInfo()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(LINK_NAME_KEY, linkName)
-                    .addKeyValue("address", address)
-                    .log("Creating management node.");
+                logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, linkName)
+                    .addKeyValue("address", address).log("Creating management node.");
 
-                final AmqpChannelProcessor<RequestResponseChannel> requestResponseChannel =
-                    createRequestResponseChannel(sessionName, linkName, address);
+                final AmqpChannelProcessor<RequestResponseChannel> requestResponseChannel
+                    = createRequestResponseChannel(sessionName, linkName, address);
                 return new ManagementChannel(requestResponseChannel, getFullyQualifiedNamespace(), entityPath,
                     tokenManager);
             }));
@@ -322,40 +306,37 @@ public class ReactorConnection implements AmqpConnection {
 
                 BaseHandler.setHandler(session, sessionHandler);
                 final AmqpSession amqpSession = createSession(key, session, sessionHandler);
-                final Disposable subscription = amqpSession.getEndpointStates()
-                    .subscribe(state -> {
-                    }, error -> {
-                        // If we were already disposing of the connection, the session would be removed.
-                        if (isDisposed.get()) {
-                            return;
-                        }
+                final Disposable subscription = amqpSession.getEndpointStates().subscribe(state -> {
+                }, error -> {
+                    // If we were already disposing of the connection, the session would be removed.
+                    if (isDisposed.get()) {
+                        return;
+                    }
 
-                        logger.atInfo()
-                            .addKeyValue(SESSION_NAME_KEY, sessionName)
-                            .log("Error occurred. Removing and disposing session", error);
-                        removeSession(key);
-                    }, () -> {
-                        // If we were already disposing of the connection, the session would be removed.
-                        if (isDisposed.get()) {
-                            return;
-                        }
+                    logger.atInfo().addKeyValue(SESSION_NAME_KEY, sessionName)
+                        .log("Error occurred. Removing and disposing session", error);
+                    removeSession(key);
+                }, () -> {
+                    // If we were already disposing of the connection, the session would be removed.
+                    if (isDisposed.get()) {
+                        return;
+                    }
 
-                        logger.atVerbose()
-                            .addKeyValue(SESSION_NAME_KEY, sessionName)
-                            .log("Complete. Removing and disposing session.");
-                        removeSession(key);
-                    });
+                    logger.atVerbose().addKeyValue(SESSION_NAME_KEY, sessionName)
+                        .log("Complete. Removing and disposing session.");
+                    removeSession(key);
+                });
 
                 return new SessionSubscription(amqpSession, subscription);
             });
         }).flatMap(sessionSubscription -> {
             final Mono<AmqpEndpointState> activeSession = sessionSubscription.getSession().getEndpointStates()
-                .filter(state -> state == AmqpEndpointState.ACTIVE)
-                .next()
-                .timeout(retryPolicy.getRetryOptions().getTryTimeout(), Mono.error(() -> new AmqpException(true,
-                    TIMEOUT_ERROR, String.format(
-                        "connectionId[%s] sessionName[%s] Timeout waiting for session to be active.", connectionId,
-                    sessionName), handler.getErrorContext())))
+                .filter(state -> state == AmqpEndpointState.ACTIVE).next()
+                .timeout(retryPolicy.getRetryOptions().getTryTimeout(),
+                    Mono.error(() -> new AmqpException(true, TIMEOUT_ERROR,
+                        String.format("connectionId[%s] sessionName[%s] Timeout waiting for session to be active.",
+                            connectionId, sessionName),
+                        handler.getErrorContext())))
                 .doOnError(error -> {
                     // Clean up the subscription if there was an error waiting for the session to become active.
 
@@ -384,9 +365,8 @@ public class ReactorConnection implements AmqpConnection {
      * @return A new instance of AMQP session.
      */
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new ReactorSession(this, session, handler, sessionName, reactorProvider,
-            handlerProvider, linkProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
-            connectionOptions.getRetry());
+        return new ReactorSession(this, session, handler, sessionName, reactorProvider, handlerProvider, linkProvider,
+            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, connectionOptions.getRetry());
     }
 
     /**
@@ -448,15 +428,13 @@ public class ReactorConnection implements AmqpConnection {
 
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
 
-        final Flux<RequestResponseChannel> createChannel = createSession(sessionName)
-            .cast(ReactorSession.class)
+        final Flux<RequestResponseChannel> createChannel = createSession(sessionName).cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(), linkName,
                 entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
-                messageSerializer, senderSettleMode, receiverSettleMode, handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath), isV2))
+                messageSerializer, senderSettleMode, receiverSettleMode,
+                handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath), isV2))
             .doOnNext(e -> {
-                logger.atInfo()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(LINK_NAME_KEY, linkName)
+                logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, linkName)
                     .log("Emitting new response channel.");
             })
             // Create channel only when connection is active, to avoid repeatedly requesting and closing channels
@@ -466,20 +444,21 @@ public class ReactorConnection implements AmqpConnection {
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
 
-        return createChannel
-            .subscribeWith(new AmqpChannelProcessor<>(getFullyQualifiedNamespace(), channel -> channel.getEndpointStates(), retryPolicy, loggingContext));
+        return createChannel.subscribeWith(new AmqpChannelProcessor<>(getFullyQualifiedNamespace(),
+            channel -> channel.getEndpointStates(), retryPolicy, loggingContext));
     }
 
     // Note: The V1 'createRequestResponseChannel(...)' internal API will be removed once entirely on the V2 stack.
-    Mono<RequestResponseChannel> newRequestResponseChannel(String sessionName, String linksNamePrefix, String entityPath) {
+    Mono<RequestResponseChannel> newRequestResponseChannel(String sessionName, String linksNamePrefix,
+        String entityPath) {
         assert isV2;
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
 
-        return createSession(sessionName)
-            .cast(ReactorSession.class)
-            .map(reactorSession -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(), linksNamePrefix,
-                entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
-                messageSerializer, senderSettleMode, receiverSettleMode, handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath), isV2));
+        return createSession(sessionName).cast(ReactorSession.class)
+            .map(reactorSession -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(),
+                linksNamePrefix, entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider,
+                reactorProvider, messageSerializer, senderSettleMode, receiverSettleMode,
+                handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath), isV2));
     }
 
     @Override
@@ -504,8 +483,7 @@ public class ReactorConnection implements AmqpConnection {
 
         if (result.isFailure()) {
             // It's possible that another one was already emitted, so it's all good.
-            addShutdownSignal(logger.atInfo(), shutdownSignal)
-                .addKeyValue(EMIT_RESULT_KEY, result)
+            addShutdownSignal(logger.atInfo(), shutdownSignal).addKeyValue(EMIT_RESULT_KEY, result)
                 .log("Unable to emit shutdown signal.");
         }
 
@@ -516,8 +494,8 @@ public class ReactorConnection implements AmqpConnection {
             cbsCloseOperation = Mono.empty();
         }
 
-        final Mono<Void> managementNodeCloseOperations = Mono.when(
-            Flux.fromStream(managementNodes.values().stream()).flatMap(node -> node.closeAsync()));
+        final Mono<Void> managementNodeCloseOperations
+            = Mono.when(Flux.fromStream(managementNodes.values().stream()).flatMap(node -> node.closeAsync()));
 
         final Mono<Void> closeReactor = Mono.fromRunnable(() -> {
             logger.verbose("Scheduling closeConnection work.");
@@ -541,27 +519,21 @@ public class ReactorConnection implements AmqpConnection {
             }
         });
 
-        return Mono.whenDelayError(
-                cbsCloseOperation.doFinally(signalType ->
-                    logger.atVerbose()
-                        .addKeyValue(SIGNAL_TYPE_KEY, signalType)
-                        .log("Closed CBS node.")),
-                managementNodeCloseOperations.doFinally(signalType ->
-                    logger.atVerbose()
-                        .addKeyValue(SIGNAL_TYPE_KEY, signalType)
-                        .log("Closed management nodes.")))
-            .then(closeReactor.doFinally(signalType ->
-                logger.atVerbose()
-                    .addKeyValue(SIGNAL_TYPE_KEY, signalType)
-                    .log("Closed reactor dispatcher.")))
+        return Mono
+            .whenDelayError(
+                cbsCloseOperation.doFinally(
+                    signalType -> logger.atVerbose().addKeyValue(SIGNAL_TYPE_KEY, signalType).log("Closed CBS node.")),
+                managementNodeCloseOperations.doFinally(signalType -> logger.atVerbose()
+                    .addKeyValue(SIGNAL_TYPE_KEY, signalType).log("Closed management nodes.")))
+            .then(closeReactor.doFinally(signalType -> logger.atVerbose().addKeyValue(SIGNAL_TYPE_KEY, signalType)
+                .log("Closed reactor dispatcher.")))
             .then(isClosedMono.asMono());
     }
 
     private synchronized void closeConnectionWork() {
         if (connection == null) {
             isClosedMono.emitEmpty((signalType, emitResult) -> {
-                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
-                    .log("Unable to complete closeMono.");
+                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult).log("Unable to complete closeMono.");
 
                 return false;
             });
@@ -585,14 +557,11 @@ public class ReactorConnection implements AmqpConnection {
         }) : Mono.empty();
 
         // Close all the children and the ReactorExecutor.
-        final Mono<Void> closeSessionAndExecutorMono = Mono.when(closingSessions)
-            .timeout(operationTimeout)
-            .onErrorResume(error -> {
+        final Mono<Void> closeSessionAndExecutorMono
+            = Mono.when(closingSessions).timeout(operationTimeout).onErrorResume(error -> {
                 logger.info("Timed out waiting for all sessions to close.");
                 return Mono.empty();
-            })
-            .then(closedExecutor)
-            .then(Mono.fromRunnable(() -> {
+            }).then(closedExecutor).then(Mono.fromRunnable(() -> {
                 isClosedMono.emitEmpty((signalType, result) -> {
                     addSignalTypeAndResult(logger.atWarning(), signalType, result)
                         .log("Unable to emit connection closed signal.");
@@ -609,10 +578,8 @@ public class ReactorConnection implements AmqpConnection {
         if (cbsChannel == null) {
             logger.info("Setting CBS channel.");
             cbsChannelProcessor = createRequestResponseChannel(CBS_SESSION_NAME, CBS_LINK_NAME, CBS_ADDRESS);
-            cbsChannel = new ClaimsBasedSecurityChannel(
-                cbsChannelProcessor,
-                connectionOptions.getTokenCredential(), connectionOptions.getAuthorizationType(),
-                connectionOptions.getRetry());
+            cbsChannel = new ClaimsBasedSecurityChannel(cbsChannelProcessor, connectionOptions.getTokenCredential(),
+                connectionOptions.getAuthorizationType(), connectionOptions.getRetry());
         }
 
         return cbsChannel;
@@ -620,10 +587,8 @@ public class ReactorConnection implements AmqpConnection {
 
     private synchronized Connection getOrCreateConnection() throws IOException {
         if (connection == null) {
-            logger.atInfo()
-                .addKeyValue(HOSTNAME_KEY, handler.getHostname())
-                .addKeyValue("port", handler.getProtocolPort())
-                .log("Creating and starting connection.");
+            logger.atInfo().addKeyValue(HOSTNAME_KEY, handler.getHostname())
+                .addKeyValue("port", handler.getProtocolPort()).log("Creating and starting connection.");
 
             final Reactor reactor = reactorProvider.createReactor(connectionId, handler.getMaxFrameSize());
             connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
@@ -643,16 +608,13 @@ public class ReactorConnection implements AmqpConnection {
 
             // We shouldn't need to add a timeout to this operation because executorCloseMono schedules its last
             // remaining work after OperationTimeout has elapsed and closes afterwards.
-            reactorProvider.getReactorDispatcher().getShutdownSignal()
-                .flatMap(signal -> {
-                    reactorExceptionHandler.onConnectionShutdown(signal);
-                    return executorCloseMono;
-                })
-                .onErrorResume(error -> {
-                    reactorExceptionHandler.onConnectionError(error);
-                    return executorCloseMono;
-                })
-                .subscribe();
+            reactorProvider.getReactorDispatcher().getShutdownSignal().flatMap(signal -> {
+                reactorExceptionHandler.onConnectionShutdown(signal);
+                return executorCloseMono;
+            }).onErrorResume(error -> {
+                reactorExceptionHandler.onConnectionError(error);
+                return executorCloseMono;
+            }).subscribe();
 
             reactorExecutor.start();
         }
@@ -670,18 +632,14 @@ public class ReactorConnection implements AmqpConnection {
 
         @Override
         public void onConnectionError(Throwable exception) {
-            logger.atInfo()
-                .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, getFullyQualifiedNamespace())
+            logger.atInfo().addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, getFullyQualifiedNamespace())
                 .log("onConnectionError, Starting new reactor", exception);
 
             if (!isDisposed.getAndSet(true)) {
-                logger.atVerbose()
-                    .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, getFullyQualifiedNamespace())
+                logger.atVerbose().addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, getFullyQualifiedNamespace())
                     .log("onReactorError: Disposing.");
 
-                closeAsync(new AmqpShutdownSignal(false, false,
-                    "onReactorError: " + exception.toString()))
-                    .subscribe();
+                closeAsync(new AmqpShutdownSignal(false, false, "onReactorError: " + exception.toString())).subscribe();
             }
         }
 
@@ -692,8 +650,7 @@ public class ReactorConnection implements AmqpConnection {
                 .log("onConnectionShutdown. Shutting down.");
 
             if (!isDisposed.getAndSet(true)) {
-                logger.atVerbose()
-                    .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, getFullyQualifiedNamespace())
+                logger.atVerbose().addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, getFullyQualifiedNamespace())
                     .log("onConnectionShutdown: disposing.");
 
                 closeAsync(shutdownSignal).subscribe();
@@ -721,8 +678,7 @@ public class ReactorConnection implements AmqpConnection {
             }
 
             if (session instanceof ReactorSession) {
-                ((ReactorSession) session).closeAsync("Closing session.", null, true)
-                    .subscribe();
+                ((ReactorSession) session).closeAsync("Closing session.", null, true).subscribe();
             } else {
                 session.dispose();
             }

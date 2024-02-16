@@ -20,8 +20,8 @@ import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fro
 public final class JdkHttpResponseAsync extends JdkHttpResponseBase {
     private final Flux<ByteBuffer> contentFlux;
     private volatile int disposed = 0;
-    private static final AtomicIntegerFieldUpdater<JdkHttpResponseAsync> DISPOSED_UPDATER =
-        AtomicIntegerFieldUpdater.newUpdater(JdkHttpResponseAsync.class, "disposed");
+    private static final AtomicIntegerFieldUpdater<JdkHttpResponseAsync> DISPOSED_UPDATER
+        = AtomicIntegerFieldUpdater.newUpdater(JdkHttpResponseAsync.class, "disposed");
 
     /**
      * Creates an instance of {@link JdkHttpResponseAsync}.

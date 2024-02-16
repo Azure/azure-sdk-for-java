@@ -46,7 +46,8 @@ public class TestContextManager {
      * present on test class.
      * @param testClassPath the test class path
      */
-    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy, boolean recordWithoutRequestBodyClassAnnotation, Path testClassPath) {
+    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy,
+        boolean recordWithoutRequestBodyClassAnnotation, Path testClassPath) {
         this.testName = testMethod.getName();
         this.className = testMethod.getDeclaringClass().getSimpleName();
         this.testMode = testMode;
@@ -93,14 +94,10 @@ public class TestContextManager {
      * @return The playback record name.
      */
     public String getTestPlaybackRecordingName() {
-        StringBuilder builder = new StringBuilder(className)
-            .append(".")
-            .append(testName);
+        StringBuilder builder = new StringBuilder(className).append(".").append(testName);
 
         if (testIteration != null) {
-            builder.append("[")
-                .append(testIteration)
-                .append("]");
+            builder.append("[").append(testIteration).append("]");
         }
 
         return builder.toString();

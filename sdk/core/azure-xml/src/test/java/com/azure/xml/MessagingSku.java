@@ -4,9 +4,7 @@
 package com.azure.xml;
 
 public enum MessagingSku {
-    BASIC("Basic"),
-    STANDARD("Standard"),
-    PREMIUM("Premium");
+    BASIC("Basic"), STANDARD("Standard"), PREMIUM("Premium");
 
     private final String sku;
 
@@ -20,13 +18,19 @@ public enum MessagingSku {
         }
 
         switch (sku) {
-            case "Basic": return BASIC;
-            case "Standard": return STANDARD;
-            case "Premium": return PREMIUM;
-            default: return null;
+            case "Basic":
+                return BASIC;
+
+            case "Standard":
+                return STANDARD;
+
+            case "Premium":
+                return PREMIUM;
+
+            default:
+                return null;
         }
     }
-
 
     @Override
     public String toString() {

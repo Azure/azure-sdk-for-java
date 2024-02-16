@@ -25,8 +25,8 @@ final class VertxAsyncClientTestHelper {
     @SuppressWarnings({ "unchecked", "removal" })
     static Predicate<SocketAddress> getVertxInternalProxyFilter(HttpClientImpl client) {
         try {
-            return (Predicate<SocketAddress>) java.security.AccessController.doPrivileged(
-                (java.security.PrivilegedExceptionAction<Object>) () -> {
+            return (Predicate<SocketAddress>) java.security.AccessController
+                .doPrivileged((java.security.PrivilegedExceptionAction<Object>) () -> {
                     Field field = HttpClientBase.class.getDeclaredField("proxyFilter");
                     field.setAccessible(true);
                     return field.get(client);

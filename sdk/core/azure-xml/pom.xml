@@ -58,6 +58,7 @@
 
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <developers>

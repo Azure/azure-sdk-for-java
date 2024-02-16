@@ -1,8 +1,7 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.io;
 
-public final class NumberOutput
-{
+public final class NumberOutput {
     private static int MILLION = 1000000;
     private static int BILLION = 1000000000;
     private static long BILLION_L = 1000000000L;
@@ -28,26 +27,22 @@ public final class NumberOutput
         for (int i1 = 0; i1 < 10; ++i1) {
             for (int i2 = 0; i2 < 10; ++i2) {
                 for (int i3 = 0; i3 < 10; ++i3) {
-                    int enc = ((i1 + '0') << 16)
-                            | ((i2 + '0') << 8)
-                            | (i3 + '0');
+                    int enc = ((i1 + '0') << 16) | ((i2 + '0') << 8) | (i3 + '0');
                     TRIPLET_TO_CHARS[fullIx++] = enc;
                 }
             }
         }
     }
 
-    private final static String[] sSmallIntStrs = new String[] {
-        "0","1","2","3","4","5","6","7","8","9","10"
-    };
-    private final static String[] sSmallIntStrs2 = new String[] {
-        "-1","-2","-3","-4","-5","-6","-7","-8","-9","-10"
-    };
+    private final static String[] sSmallIntStrs
+        = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
+    private final static String[] sSmallIntStrs2
+        = new String[] { "-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10" };
 
     /*
-    /**********************************************************
-    /* Efficient serialization methods using raw buffers
-    /**********************************************************
+     * /**********************************************************
+     * /* Efficient serialization methods using raw buffers
+     * /**********************************************************
      */
 
     /**
@@ -63,8 +58,7 @@ public final class NumberOutput
      *
      * @return Offset within buffer after outputting {@code int}
      */
-    public static int outputInt(int v, char[] b, int off)
-    {
+    public static int outputInt(int v, char[] b, int off) {
         if (v < 0) {
             if (v == Integer.MIN_VALUE) {
                 // Special case: no matching positive value within range;
@@ -79,7 +73,7 @@ public final class NumberOutput
             if (v < 1000) {
                 if (v < 10) {
                     b[off] = (char) ('0' + v);
-                    return off+1;
+                    return off + 1;
                 }
                 return _leading3(v, b, off);
             }
@@ -91,7 +85,8 @@ public final class NumberOutput
         }
 
         // ok, all 3 triplets included
-        /* Let's first hand possible billions separately before
+        /*
+         * Let's first hand possible billions separately before
          * handling 3 triplets. This is possible since we know we
          * can have at most '2' as billion count.
          */
@@ -110,14 +105,13 @@ public final class NumberOutput
         v = newValue;
         newValue /= 1000;
         int thousands = (v - (newValue * 1000));
-        
+
         off = _leading3(newValue, b, off);
         off = _full3(thousands, b, off);
         return _full3(ones, b, off);
     }
 
-    public static int outputInt(int v, byte[] b, int off)
-    {
+    public static int outputInt(int v, byte[] b, int off) {
         if (v < 0) {
             if (v == Integer.MIN_VALUE) {
                 return _outputSmallestI(b, off);
@@ -174,8 +168,7 @@ public final class NumberOutput
      *
      * @return Offset within buffer after outputting {@code long}
      */
-    public static int outputLong(long v, char[] b, int off)
-    {
+    public static int outputLong(long v, char[] b, int off) {
         // First: does it actually fit in an int?
         if (v < 0L) {
             if (v > MIN_INT_AS_LONG) {
@@ -209,8 +202,7 @@ public final class NumberOutput
         return _outputFullBillion((int) v, b, off);
     }
 
-    public static int outputLong(long v, byte[] b, int off)
-    {
+    public static int outputLong(long v, byte[] b, int off) {
         if (v < 0L) {
             if (v > MIN_INT_AS_LONG) {
                 return outputInt((int) v, b, off);
@@ -244,16 +236,16 @@ public final class NumberOutput
     }
 
     /*
-    /**********************************************************
-    /* Convenience serialization methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Convenience serialization methods
+     * /**********************************************************
      */
 
-    /* !!! 05-Aug-2008, tatus: Any ways to further optimize
-     *   these? (or need: only called by diagnostics methods?)
+    /*
+     * !!! 05-Aug-2008, tatus: Any ways to further optimize
+     * these? (or need: only called by diagnostics methods?)
      */
-    public static String toString(int v)
-    {
+    public static String toString(int v) {
         // Lookup table for small values
         if (v < sSmallIntStrs.length) {
             if (v >= 0) {
@@ -284,9 +276,9 @@ public final class NumberOutput
     }
 
     /*
-    /**********************************************************
-    /* Other convenience methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Other convenience methods
+     * /**********************************************************
      */
 
     /**
@@ -320,13 +312,12 @@ public final class NumberOutput
     }
 
     /*
-    /**********************************************************
-    /* Internal helper methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal helper methods
+     * /**********************************************************
      */
 
-    private static int _outputUptoBillion(int v, char[] b, int off)
-    {
+    private static int _outputUptoBillion(int v, char[] b, int off) {
         if (v < MILLION) { // at most 2 triplets...
             if (v < 1000) {
                 return _leading3(v, b, off);
@@ -354,9 +345,8 @@ public final class NumberOutput
 
         return off;
     }
-    
-    private static int _outputFullBillion(int v, char[] b, int off)
-    {
+
+    private static int _outputFullBillion(int v, char[] b, int off) {
         int thousands = v / 1000;
         int ones = (v - (thousands * 1000)); // == value % 1000
         int millions = thousands / 1000;
@@ -379,9 +369,8 @@ public final class NumberOutput
 
         return off;
     }
-    
-    private static int _outputUptoBillion(int v, byte[] b, int off)
-    {
+
+    private static int _outputUptoBillion(int v, byte[] b, int off) {
         if (v < MILLION) { // at most 2 triplets...
             if (v < 1000) {
                 return _leading3(v, b, off);
@@ -410,8 +399,7 @@ public final class NumberOutput
         return off;
     }
 
-    private static int _outputFullBillion(int v, byte[] b, int off)
-    {
+    private static int _outputFullBillion(int v, byte[] b, int off) {
         int thousands = v / 1000;
         int ones = (v - (thousands * 1000)); // == value % 1000
         int millions = thousands / 1000;
@@ -435,8 +423,7 @@ public final class NumberOutput
         return off;
     }
 
-    private static int _outputUptoMillion(char[] b, int off, int thousands, int ones)
-    {
+    private static int _outputUptoMillion(char[] b, int off, int thousands, int ones) {
         int enc = TRIPLET_TO_CHARS[thousands];
         if (thousands > 9) {
             if (thousands > 99) {
@@ -453,8 +440,7 @@ public final class NumberOutput
         return off;
     }
 
-    private static int _outputUptoMillion(byte[] b, int off, int thousands, int ones)
-    {
+    private static int _outputUptoMillion(byte[] b, int off, int thousands, int ones) {
         int enc = TRIPLET_TO_CHARS[thousands];
         if (thousands > 9) {
             if (thousands > 99) {
@@ -470,9 +456,8 @@ public final class NumberOutput
         b[off++] = (byte) enc;
         return off;
     }
-    
-    private static int _leading3(int t, char[] b, int off)
-    {
+
+    private static int _leading3(int t, char[] b, int off) {
         int enc = TRIPLET_TO_CHARS[t];
         if (t > 9) {
             if (t > 99) {
@@ -484,8 +469,7 @@ public final class NumberOutput
         return off;
     }
 
-    private static int _leading3(int t, byte[] b, int off)
-    {
+    private static int _leading3(int t, byte[] b, int off) {
         int enc = TRIPLET_TO_CHARS[t];
         if (t > 9) {
             if (t > 99) {
@@ -497,8 +481,7 @@ public final class NumberOutput
         return off;
     }
 
-    private static int _full3(int t, char[] b, int off)
-    {
+    private static int _full3(int t, char[] b, int off) {
         int enc = TRIPLET_TO_CHARS[t];
         b[off++] = (char) (enc >> 16);
         b[off++] = (char) ((enc >> 8) & 0x7F);
@@ -506,8 +489,7 @@ public final class NumberOutput
         return off;
     }
 
-    private static int _full3(int t, byte[] b, int off)
-    {
+    private static int _full3(int t, byte[] b, int off) {
         int enc = TRIPLET_TO_CHARS[t];
         b[off++] = (byte) (enc >> 16);
         b[off++] = (byte) (enc >> 8);
@@ -517,15 +499,13 @@ public final class NumberOutput
 
     // // // Special cases for where we can not flip the sign bit
 
-    private static int _outputSmallestL(char[] b, int off)
-    {
+    private static int _outputSmallestL(char[] b, int off) {
         int len = SMALLEST_LONG.length();
         SMALLEST_LONG.getChars(0, len, b, off);
         return (off + len);
     }
 
-    private static int _outputSmallestL(byte[] b, int off)
-    {
+    private static int _outputSmallestL(byte[] b, int off) {
         int len = SMALLEST_LONG.length();
         for (int i = 0; i < len; ++i) {
             b[off++] = (byte) SMALLEST_LONG.charAt(i);
@@ -533,15 +513,13 @@ public final class NumberOutput
         return off;
     }
 
-    private static int _outputSmallestI(char[] b, int off)
-    {
+    private static int _outputSmallestI(char[] b, int off) {
         int len = SMALLEST_INT.length();
         SMALLEST_INT.getChars(0, len, b, off);
         return (off + len);
     }
 
-    private static int _outputSmallestI(byte[] b, int off)
-    {
+    private static int _outputSmallestI(byte[] b, int off) {
         int len = SMALLEST_INT.length();
         for (int i = 0; i < len; ++i) {
             b[off++] = (byte) SMALLEST_INT.charAt(i);

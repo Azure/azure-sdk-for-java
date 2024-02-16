@@ -1172,11 +1172,10 @@ public class BlobItemPropertiesInternal implements XmlSerializable<BlobItemPrope
                 } else if ("LastAccessTime".equals(elementName)) {
                     deserialized.lastAccessedOn = reader.getNullableElement(DateTimeRfc1123::fromString);
                 } else if ("ImmutabilityPolicyUntilDate".equals(elementName)) {
-                    deserialized.immutabilityPolicyExpiresOn =
-                        reader.getNullableElement(DateTimeRfc1123::fromString);
+                    deserialized.immutabilityPolicyExpiresOn = reader.getNullableElement(DateTimeRfc1123::fromString);
                 } else if ("ImmutabilityPolicyMode".equals(elementName)) {
-                    deserialized.immutabilityPolicyMode =
-                        reader.getNullableElement(BlobImmutabilityPolicyMode::fromString);
+                    deserialized.immutabilityPolicyMode
+                        = reader.getNullableElement(BlobImmutabilityPolicyMode::fromString);
                 } else if ("LegalHold".equals(elementName)) {
                     deserialized.legalHold = reader.getNullableElement(Boolean::parseBoolean);
                 } else {

@@ -12,7 +12,8 @@ import java.util.Objects;
 /**
  * Resolves and provides {@link Tracer} implementation.
  * <p>
- * This class is intended to be used by Azure client libraries and provides abstraction over possible tracing implementations.
+ * This class is intended to be used by Azure client libraries and provides abstraction over possible tracing
+ * implementations.
  * Application developers should use tracing libraries such as OpenTelemetry or Spring tracing.
  */
 public final class OpenTelemetryTracerProvider implements TracerProvider {

@@ -13,12 +13,11 @@ import com.azure.json.implementation.jackson.core.util.TextBuffer;
  *<p>
  * NOTE: non-final since 2.4, to allow sub-classing.
  */
-public class IOContext
-{
+public class IOContext {
     /*
-    /**********************************************************************
-    /* Configuration
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Configuration
+     * /**********************************************************************
      */
 
     /**
@@ -51,9 +50,9 @@ public class IOContext
     protected final boolean _managedResource;
 
     /*
-    /**********************************************************************
-    /* Buffer handling, recycling
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Buffer handling, recycling
+     * /**********************************************************************
      */
 
     /**
@@ -72,7 +71,7 @@ public class IOContext
      * encoding-related buffering.
      */
     protected byte[] _writeEncodingBuffer;
-    
+
     /**
      * Reference to the buffer allocated for temporary use with
      * base64 encoding or decoding.
@@ -102,9 +101,9 @@ public class IOContext
     protected char[] _nameCopyBuffer;
 
     /*
-    /**********************************************************************
-    /* Life-cycle
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Life-cycle
+     * /**********************************************************************
      */
 
     /**
@@ -116,8 +115,7 @@ public class IOContext
      *
      * @since 2.13
      */
-    public IOContext(BufferRecycler br, ContentReference contentRef, boolean managedResource)
-    {
+    public IOContext(BufferRecycler br, ContentReference contentRef, boolean managedResource) {
         _bufferRecycler = br;
         _contentReference = contentRef;
         _sourceRef = contentRef.getRawContent();
@@ -139,13 +137,18 @@ public class IOContext
     }
 
     /*
-    /**********************************************************************
-    /* Public API, accessors
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, accessors
+     * /**********************************************************************
      */
 
-    public JsonEncoding getEncoding() { return _encoding; }
-    public boolean isResourceManaged() { return _managedResource; }
+    public JsonEncoding getEncoding() {
+        return _encoding;
+    }
+
+    public boolean isResourceManaged() {
+        return _managedResource;
+    }
 
     /**
      * Accessor for getting (some) information about input source, mostly
@@ -164,12 +167,14 @@ public class IOContext
      * @return "Raw" source reference
      */
     @Deprecated
-    public Object getSourceReference() { return _sourceRef; }
+    public Object getSourceReference() {
+        return _sourceRef;
+    }
 
     /*
-    /**********************************************************************
-    /* Public API, buffer management
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, buffer management
+     * /**********************************************************************
      */
 
     public TextBuffer constructTextBuffer() {
@@ -229,7 +234,8 @@ public class IOContext
      */
     public byte[] allocWriteEncodingBuffer(int minSize) {
         _verifyAlloc(_writeEncodingBuffer);
-        return (_writeEncodingBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, minSize));
+        return (_writeEncodingBuffer
+            = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, minSize));
     }
 
     /**
@@ -259,7 +265,7 @@ public class IOContext
         _verifyAlloc(_base64Buffer);
         return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, minSize));
     }
-    
+
     public char[] allocTokenBuffer() {
         _verifyAlloc(_tokenCBuffer);
         return (_tokenCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER));
@@ -270,7 +276,7 @@ public class IOContext
         _verifyAlloc(_tokenCBuffer);
         return (_tokenCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER, minSize));
     }
-    
+
     public char[] allocConcatBuffer() {
         _verifyAlloc(_concatCBuffer);
         return (_concatCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_CONCAT_BUFFER));
@@ -314,7 +320,7 @@ public class IOContext
             _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, buf);
         }
     }
-    
+
     public void releaseTokenBuffer(char[] buf) {
         if (buf != null) {
             _verifyRelease(buf, _tokenCBuffer);
@@ -342,23 +348,29 @@ public class IOContext
     }
 
     /*
-    /**********************************************************************
-    /* Internal helpers
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Internal helpers
+     * /**********************************************************************
      */
 
     protected final void _verifyAlloc(Object buffer) {
-        if (buffer != null) { throw new IllegalStateException("Trying to call same allocXxx() method second time"); }
+        if (buffer != null) {
+            throw new IllegalStateException("Trying to call same allocXxx() method second time");
+        }
     }
 
     protected final void _verifyRelease(byte[] toRelease, byte[] src) {
         // 07-Mar-2016, tatu: As per [core#255], only prevent shrinking of buffer
-        if ((toRelease != src) && (toRelease.length < src.length)) { throw wrongBuf(); }
+        if ((toRelease != src) && (toRelease.length < src.length)) {
+            throw wrongBuf();
+        }
     }
 
     protected final void _verifyRelease(char[] toRelease, char[] src) {
         // 07-Mar-2016, tatu: As per [core#255], only prevent shrinking of buffer
-        if ((toRelease != src) && (toRelease.length < src.length)) { throw wrongBuf(); }
+        if ((toRelease != src) && (toRelease.length < src.length)) {
+            throw wrongBuf();
+        }
     }
 
     private IllegalArgumentException wrongBuf() {

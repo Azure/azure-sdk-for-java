@@ -6,9 +6,8 @@ package com.azure.json.implementation.jackson.core.sym;
  * that consists of 9 to 12 bytes. It's the longest special purpose
  * implementaion; longer ones are expressed using {@link NameN}.
  */
-public final class Name3 extends Name
-{
-    private final int q1,  q2, q3;
+public final class Name3 extends Name {
+    private final int q1, q2, q3;
 
     Name3(String name, int hash, int i1, int i2, int i3) {
         super(name, hash);
@@ -19,11 +18,15 @@ public final class Name3 extends Name
 
     // Implies quad length == 1, never matches
     @Override
-    public boolean equals(int quad) { return false; }
+    public boolean equals(int quad) {
+        return false;
+    }
 
     // Implies quad length == 2, never matches
     @Override
-    public boolean equals(int quad1, int quad2) { return false; }
+    public boolean equals(int quad1, int quad2) {
+        return false;
+    }
 
     @Override
     public boolean equals(int quad1, int quad2, int quad3) {

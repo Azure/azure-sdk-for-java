@@ -13,8 +13,7 @@ import com.azure.json.implementation.jackson.core.io.JsonStringEncoder;
  *
  * @since 2.9.2
  */
-public class BufferRecyclers
-{
+public class BufferRecyclers {
     /**
      * System property that is checked to see if recycled buffers (see {@link BufferRecycler})
      * should be tracked, for purpose of forcing release of all such buffers, typically
@@ -26,9 +25,9 @@ public class BufferRecyclers
         = "com.azure.json.implementation.jackson.core.util.BufferRecyclers.trackReusableBuffers";
 
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
 
     /**
@@ -39,15 +38,16 @@ public class BufferRecyclers
         boolean trackReusableBuffers = false;
         try {
             trackReusableBuffers = "true".equals(System.getProperty(SYSTEM_PROPERTY_TRACK_REUSABLE_BUFFERS));
-        } catch (SecurityException e) { }
+        } catch (SecurityException e) {
+        }
 
         _bufferRecyclerTracker = trackReusableBuffers ? ThreadLocalBufferManager.instance() : null;
     }
 
     /*
-    /**********************************************************
-    /* BufferRecyclers for parsers, generators
-    /**********************************************************
+     * /**********************************************************
+     * /* BufferRecyclers for parsers, generators
+     * /**********************************************************
      */
 
     /**
@@ -63,8 +63,7 @@ public class BufferRecyclers
      *
      * @return {@link BufferRecycler} to use
      */
-    public static BufferRecycler getBufferRecycler()
-    {
+    public static BufferRecycler getBufferRecycler() {
         SoftReference<BufferRecycler> ref = _recyclerRef.get();
         BufferRecycler br = (ref == null) ? null : ref.get();
 
@@ -101,10 +100,10 @@ public class BufferRecyclers
     }
 
     /*
-    /**********************************************************************
-    /* Obsolete things re-introduced in 2.12.5 after accidental direct
-    /* removal from 2.10.0
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Obsolete things re-introduced in 2.12.5 after accidental direct
+     * /* removal from 2.10.0
+     * /**********************************************************************
      */
 
     /**

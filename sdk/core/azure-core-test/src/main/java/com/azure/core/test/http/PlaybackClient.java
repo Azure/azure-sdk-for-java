@@ -30,8 +30,8 @@ import java.util.regex.Pattern;
 public final class PlaybackClient implements HttpClient {
     private static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
     private static final String X_MS_ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
-    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256_HEADER =
-        HttpHeaderName.fromString(X_MS_ENCRYPTION_KEY_SHA256);
+    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256_HEADER
+        = HttpHeaderName.fromString(X_MS_ENCRYPTION_KEY_SHA256);
 
     // Pattern that matches all '//' in a URL that aren't prefixed by 'http:' or 'https:'.
     private static final Pattern DOUBLE_SLASH_CLEANER = Pattern.compile("(?<!https?:)//");
@@ -138,9 +138,8 @@ public final class PlaybackClient implements HttpClient {
              * in a drastically smaller size on disk. In addition to a smaller size on disk, loading the body when it
              * is Base64 encoded is much faster as it doesn't require string splitting.
              */
-            if (contentType != null
-                && (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
-                    || "avro/binary".equalsIgnoreCase(contentType))) {
+            if (contentType != null && (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
+                || "avro/binary".equalsIgnoreCase(contentType))) {
                 if (rawBody.startsWith("[") && rawBody.endsWith("]")) {
                     /*
                      * Body is encoded using the old Arrays.toString() format. Remove the leading '[' and trailing ']'

@@ -11,9 +11,7 @@ import com.azure.json.implementation.jackson.core.*;
  *
  * @since 2.13
  */
-public abstract class StreamWriteException
-    extends JsonProcessingException
-{
+public abstract class StreamWriteException extends JsonProcessingException {
     private final static long serialVersionUID = 2L;
 
     protected transient JsonGenerator _processor;
@@ -44,5 +42,7 @@ public abstract class StreamWriteException
     public abstract StreamWriteException withGenerator(JsonGenerator g);
 
     @Override
-    public JsonGenerator getProcessor() { return _processor; }
+    public JsonGenerator getProcessor() {
+        return _processor;
+    }
 }

@@ -8,8 +8,7 @@ package com.azure.json.implementation.jackson.core.sym;
  *
  * @author Tatu Saloranta
  */
-public abstract class Name
-{
+public abstract class Name {
     protected final String _name;
 
     protected final int _hashCode;
@@ -19,12 +18,14 @@ public abstract class Name
         _hashCode = hashCode;
     }
 
-    public String getName() { return _name; }
+    public String getName() {
+        return _name;
+    }
 
     /*
-    /**********************************************************
-    /* Methods for package/core parser
-    /**********************************************************
+     * /**********************************************************
+     * /* Methods for package/core parser
+     * /**********************************************************
      */
 
     public abstract boolean equals(int q1);
@@ -36,16 +37,23 @@ public abstract class Name
     public abstract boolean equals(int[] quads, int qlen);
 
     /*
-    /**********************************************************
-    /* Overridden standard methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Overridden standard methods
+     * /**********************************************************
      */
 
-    @Override public String toString() { return _name; }
+    @Override
+    public String toString() {
+        return _name;
+    }
 
-    @Override public final int hashCode() { return _hashCode; }
+    @Override
+    public final int hashCode() {
+        return _hashCode;
+    }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         // Canonical instances, can usually just do identity comparison
         return (o == this);
     }

@@ -41,9 +41,13 @@ import java.io.UncheckedIOException;
  * class can be achieved by using the {@link OkHttpAsyncHttpClientBuilder} class, which offers OkHttp-specific API for
  * features such as {@link OkHttpAsyncHttpClientBuilder#proxy(ProxyOptions) setProxy configuration}, and much more.
  *
- * <p><strong>Sample: Construct OkHttpAsyncHttpClient with Default Configuration</strong></p>
+ * <p>
+ * <strong>Sample: Construct OkHttpAsyncHttpClient with Default Configuration</strong>
+ * </p>
  *
- * <p>The following code sample demonstrates the creation of a OkHttp HttpClient that uses port 80 and has no proxy.</p>
+ * <p>
+ * The following code sample demonstrates the creation of a OkHttp HttpClient that uses port 80 and has no proxy.
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
  * <pre>
@@ -52,7 +56,9 @@ import java.io.UncheckedIOException;
  * </pre>
  * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
  *
- * <p>For more ways to instantiate OkHttpAsyncHttpClient, refer to {@link OkHttpAsyncHttpClientBuilder}.</p>
+ * <p>
+ * For more ways to instantiate OkHttpAsyncHttpClient, refer to {@link OkHttpAsyncHttpClientBuilder}.
+ * </p>
  *
  * @see com.azure.core.http.okhttp
  * @see OkHttpAsyncHttpClientBuilder
@@ -93,24 +99,23 @@ class OkHttpAsyncHttpClient implements HttpClient {
             // The blocking behavior toOkHttpRequest(r).subscribe call:
             //
             // The okhttp3.Request emitted by toOkHttpRequest(r) is chained from the body of request Flux<ByteBuffer>:
-            //   1. If Flux<ByteBuffer> synchronous and send(r) caller does not apply subscribeOn then
-            //      subscribe block on caller thread.
-            //   2. If Flux<ByteBuffer> synchronous and send(r) caller apply subscribeOn then
-            //      does not block caller thread but block on scheduler thread.
-            //   3. If Flux<ByteBuffer> asynchronous then subscribe does not block caller thread
-            //      but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
+            // 1. If Flux<ByteBuffer> synchronous and send(r) caller does not apply subscribeOn then
+            // subscribe block on caller thread.
+            // 2. If Flux<ByteBuffer> synchronous and send(r) caller apply subscribeOn then
+            // does not block caller thread but block on scheduler thread.
+            // 3. If Flux<ByteBuffer> asynchronous then subscribe does not block caller thread
+            // but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
             //
-            Mono.fromCallable(() -> toOkHttpRequest(request, progressReporter))
-                .subscribe(okHttpRequest -> {
-                    try {
-                        Call call = httpClient.newCall(okHttpRequest);
-                        call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse, ignoreResponseBody,
-                            eagerlyConvertHeaders));
-                        sink.onCancel(call::cancel);
-                    } catch (Exception ex) {
-                        sink.error(ex);
-                    }
-                }, sink::error);
+            Mono.fromCallable(() -> toOkHttpRequest(request, progressReporter)).subscribe(okHttpRequest -> {
+                try {
+                    Call call = httpClient.newCall(okHttpRequest);
+                    call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse, ignoreResponseBody,
+                        eagerlyConvertHeaders));
+                    sink.onCancel(call::cancel);
+                } catch (Exception ex) {
+                    sink.error(ex);
+                }
+            }, sink::error);
         }));
     }
 
@@ -140,8 +145,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @return the okhttp request
      */
     private okhttp3.Request toOkHttpRequest(HttpRequest request, ProgressReporter progressReporter) {
-        Request.Builder requestBuilder = new Request.Builder()
-            .url(request.getUrl());
+        Request.Builder requestBuilder = new Request.Builder().url(request.getUrl());
 
         if (request.getHeaders() != null) {
             for (HttpHeader hdr : request.getHeaders()) {
@@ -161,8 +165,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         if (progressReporter != null) {
             okHttpRequestBody = new OkHttpProgressReportingRequestBody(okHttpRequestBody, progressReporter);
         }
-        return requestBuilder.method(request.getHttpMethod().toString(), okHttpRequestBody)
-            .build();
+        return requestBuilder.method(request.getHttpMethod().toString(), okHttpRequestBody).build();
     }
 
     /**
@@ -186,8 +189,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
         if (content instanceof FluxByteBufferContent) {
             // The OkHttpFluxRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
             // TODO (alzimmer): Is this still required? Specifically find out if the timeout is needed.
-            return new OkHttpFluxRequestBody(
-                content, effectiveContentLength, mediaType, httpClient.callTimeoutMillis());
+            return new OkHttpFluxRequestBody(content, effectiveContentLength, mediaType,
+                httpClient.callTimeoutMillis());
         } else {
             // Default is to use a generic BinaryData RequestBody.
             return new BinaryDataRequestBody(bodyContent, mediaType, effectiveContentLength);
@@ -211,18 +214,18 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static HttpResponse toHttpResponse(HttpRequest request, okhttp3.Response response,
         boolean eagerlyReadResponse, boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
         // For now, eagerlyReadResponse and ignoreResponseBody works the same.
-//        if (ignoreResponseBody) {
-//            ResponseBody body = response.body();
-//            if (body != null) {
-//                if (body.contentLength() > 0) {
-//                    LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
-//                        + "Response body will be ignored as directed.");
-//                }
-//                body.close();
-//            }
-//
-//            return new OkHttpAsyncBufferedResponse(response, request, EMPTY_BODY, eagerlyConvertHeaders);
-//        }
+        // if (ignoreResponseBody) {
+        // ResponseBody body = response.body();
+        // if (body != null) {
+        // if (body.contentLength() > 0) {
+        // LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
+        // + "Response body will be ignored as directed.");
+        // }
+        // body.close();
+        // }
+        //
+        // return new OkHttpAsyncBufferedResponse(response, request, EMPTY_BODY, eagerlyConvertHeaders);
+        // }
 
         /*
          * Use a buffered response when we are eagerly reading the response from the network and the body isn't
@@ -270,8 +273,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
         @Override
         public void onResponse(okhttp3.Call call, okhttp3.Response response) {
             try {
-                sink.success(toHttpResponse(request, response, eagerlyReadResponse, ignoreResponseBody,
-                    eagerlyConvertHeaders));
+                sink.success(
+                    toHttpResponse(request, response, eagerlyReadResponse, ignoreResponseBody, eagerlyConvertHeaders));
             } catch (IOException ex) {
                 // Reading the body bytes may cause an IOException, if it happens propagate it.
                 sink.error(ex);

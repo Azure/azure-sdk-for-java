@@ -11,15 +11,14 @@ import com.azure.json.implementation.jackson.core.*;
  * given an ordered set of {@link JsonFactory} instances to use for actual low-level
  * detection.
  */
-public class DataFormatDetector
-{
+public class DataFormatDetector {
     /**
      * By default we will look ahead at most 64 bytes; in most cases,
      * much less (4 bytes or so) is needed, but we will allow bit more
      * leniency to support data formats that need more complex heuristics.
      */
     public final static int DEFAULT_MAX_INPUT_LOOKAHEAD = 64;
-    
+
     /**
      * Ordered list of factories which both represent data formats to
      * detect (in precedence order, starting with highest) and are used
@@ -48,24 +47,23 @@ public class DataFormatDetector
      * Default value is {@link #DEFAULT_MAX_INPUT_LOOKAHEAD}.
      */
     protected final int _maxInputLookahead;
-    
+
     /*
-    /**********************************************************
-    /* Construction
-    /**********************************************************
+     * /**********************************************************
+     * /* Construction
+     * /**********************************************************
      */
-    
+
     public DataFormatDetector(JsonFactory... detectors) {
-        this(detectors, MatchStrength.SOLID_MATCH, MatchStrength.WEAK_MATCH,
-            DEFAULT_MAX_INPUT_LOOKAHEAD);
+        this(detectors, MatchStrength.SOLID_MATCH, MatchStrength.WEAK_MATCH, DEFAULT_MAX_INPUT_LOOKAHEAD);
     }
 
     public DataFormatDetector(Collection<JsonFactory> detectors) {
         this(detectors.toArray(new JsonFactory[0]));
     }
 
-    private DataFormatDetector(JsonFactory[] detectors,
-            MatchStrength optMatch, MatchStrength minMatch, int maxInputLookahead) {
+    private DataFormatDetector(JsonFactory[] detectors, MatchStrength optMatch, MatchStrength minMatch,
+        int maxInputLookahead) {
         _detectors = detectors;
         _optimalMatch = optMatch;
         _minimalMatch = minMatch;
@@ -87,6 +85,7 @@ public class DataFormatDetector
         }
         return new DataFormatDetector(_detectors, optMatch, _minimalMatch, _maxInputLookahead);
     }
+
     /**
      * Method that will return a detector instance that uses given
      * minimal match level; match that may be returned unless a stronger match
@@ -119,9 +118,9 @@ public class DataFormatDetector
     }
 
     /*
-    /**********************************************************
-    /* Public API
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API
+     * /**********************************************************
      */
 
     /**
@@ -173,14 +172,15 @@ public class DataFormatDetector
     public DataFormatMatcher findFormat(byte[] fullInputData, int offset, int len) throws IOException {
         return _findFormat(new InputAccessor.Std(fullInputData, offset, len));
     }
-    
+
     /*
-    /**********************************************************
-    /* Overrides
-    /**********************************************************
+     * /**********************************************************
+     * /* Overrides
+     * /**********************************************************
      */
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append('[');
         final int len = _detectors.length;
@@ -194,11 +194,11 @@ public class DataFormatDetector
         sb.append(']');
         return sb.toString();
     }
-    
+
     /*
-    /**********************************************************
-    /* Internal methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal methods
+     * /**********************************************************
      */
 
     private DataFormatMatcher _findFormat(InputAccessor.Std acc) throws IOException {

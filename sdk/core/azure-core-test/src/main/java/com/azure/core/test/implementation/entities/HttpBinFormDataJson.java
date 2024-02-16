@@ -80,6 +80,7 @@ public class HttpBinFormDataJson {
         SMALL("small"), MEDIUM("medium"), LARGE("large");
 
         private String value;
+
         PizzaSize(String value) {
             this.value = value;
         }
@@ -195,4 +196,3 @@ public class HttpBinFormDataJson {
         }
     }
 }
-

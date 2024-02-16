@@ -159,8 +159,7 @@ public class MockHttpResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString() {
-        return (bodyBytes == null)
-            ? Mono.empty()
+        return (bodyBytes == null) ? Mono.empty()
             : Mono.just(CoreUtils.bomAwareToString(bodyBytes, getHeaderValue("Content-Type")));
     }
 
@@ -168,9 +167,7 @@ public class MockHttpResponse extends HttpResponse {
     public Mono<String> getBodyAsString(Charset charset) {
         Objects.requireNonNull(charset, "'charset' cannot be null.");
 
-        return bodyBytes == null
-                ? Mono.empty()
-                : Mono.just(new String(bodyBytes, charset));
+        return bodyBytes == null ? Mono.empty() : Mono.just(new String(bodyBytes, charset));
     }
 
     /**

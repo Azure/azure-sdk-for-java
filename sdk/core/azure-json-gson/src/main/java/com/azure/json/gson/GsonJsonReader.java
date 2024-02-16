@@ -42,8 +42,8 @@ public final class GsonJsonReader extends JsonReader {
      */
     static JsonReader fromBytes(byte[] json, JsonOptions options) {
         Objects.requireNonNull(json, "'json' cannot be null.");
-        return new GsonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8),
-            true, json, null, options);
+        return new GsonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8), true,
+            json, null, options);
     }
 
     /**
@@ -280,22 +280,28 @@ public final class GsonJsonReader extends JsonReader {
         switch (token) {
             case BEGIN_OBJECT:
                 return JsonToken.START_OBJECT;
+
             case END_OBJECT:
                 return JsonToken.END_OBJECT;
 
             case BEGIN_ARRAY:
                 return JsonToken.START_ARRAY;
+
             case END_ARRAY:
                 return JsonToken.END_ARRAY;
 
             case NAME:
                 return JsonToken.FIELD_NAME;
+
             case STRING:
                 return JsonToken.STRING;
+
             case NUMBER:
                 return JsonToken.NUMBER;
+
             case BOOLEAN:
                 return JsonToken.BOOLEAN;
+
             case NULL:
                 return JsonToken.NULL;
 

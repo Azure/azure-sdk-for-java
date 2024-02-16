@@ -11,29 +11,28 @@ import com.azure.json.implementation.jackson.core.*;
  * 
  * @since 2.6
  */
-public class TokenFilterContext extends JsonStreamContext
-{
+public class TokenFilterContext extends JsonStreamContext {
     /**
      * Parent context for this context; null for root context.
      */
     protected final TokenFilterContext _parent;
 
     /*
-    /**********************************************************
-    /* Simple instance reuse slots; speed up things
-    /* a bit (10-15%) for docs with lots of small
-    /* arrays/objects
-    /**********************************************************
+     * /**********************************************************
+     * /* Simple instance reuse slots; speed up things
+     * /* a bit (10-15%) for docs with lots of small
+     * /* arrays/objects
+     * /**********************************************************
      */
 
     protected TokenFilterContext _child;
 
     /*
-    /**********************************************************
-    /* Location/state information
-    /**********************************************************
+     * /**********************************************************
+     * /* Location/state information
+     * /**********************************************************
      */
-    
+
     /**
      * Name of the field of which value is to be parsed; only
      * used for OBJECT contexts
@@ -59,16 +58,14 @@ public class TokenFilterContext extends JsonStreamContext
      * included leaf is to be exposed.
      */
     protected boolean _needToHandleName;
-    
+
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
 
-    protected TokenFilterContext(int type, TokenFilterContext parent,
-            TokenFilter filter, boolean startHandled)
-    {
+    protected TokenFilterContext(int type, TokenFilterContext parent, TokenFilter filter, boolean startHandled) {
         super();
         _type = type;
         _parent = parent;
@@ -78,9 +75,7 @@ public class TokenFilterContext extends JsonStreamContext
         _needToHandleName = false;
     }
 
-    protected TokenFilterContext reset(int type,
-            TokenFilter filter, boolean startWritten)
-    {
+    protected TokenFilterContext reset(int type, TokenFilter filter, boolean startWritten) {
         _type = type;
         _filter = filter;
         _index = -1;
@@ -91,9 +86,9 @@ public class TokenFilterContext extends JsonStreamContext
     }
 
     /*
-    /**********************************************************
-    /* Factory methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Factory methods
+     * /**********************************************************
      */
 
     public static TokenFilterContext createRootContext(TokenFilter filter) {
@@ -120,11 +115,11 @@ public class TokenFilterContext extends JsonStreamContext
     }
 
     /*
-    /**********************************************************
-    /* State changes
-    /**********************************************************
+     * /**********************************************************
+     * /* State changes
+     * /**********************************************************
      */
-    
+
     public TokenFilter setFieldName(String name) throws JsonProcessingException {
         _currentName = name;
         _needToHandleName = true;
@@ -161,8 +156,7 @@ public class TokenFilterContext extends JsonStreamContext
      * @throws IOException If there is a problem writing property name (typically
      *   thrown by {@code JsonGenerator})
      */
-    public void ensureFieldNameWritten(JsonGenerator gen) throws IOException
-    {
+    public void ensureFieldNameWritten(JsonGenerator gen) throws IOException {
         if (_needToHandleName) {
             _needToHandleName = false;
             gen.writeFieldName(_currentName);
@@ -178,8 +172,7 @@ public class TokenFilterContext extends JsonStreamContext
      * @throws IOException If there is a problem writing property name (typically
      *   thrown by {@code JsonGenerator})
      */
-    public void writePath(JsonGenerator gen) throws IOException
-    {
+    public void writePath(JsonGenerator gen) throws IOException {
         if ((_filter == null) || (_filter == TokenFilter.INCLUDE_ALL)) {
             return;
         }
@@ -202,8 +195,7 @@ public class TokenFilterContext extends JsonStreamContext
         }
     }
 
-    private void _writePath(JsonGenerator gen) throws IOException
-    {
+    private void _writePath(JsonGenerator gen) throws IOException {
         if ((_filter == null) || (_filter == TokenFilter.INCLUDE_ALL)) {
             return;
         }
@@ -230,8 +222,7 @@ public class TokenFilterContext extends JsonStreamContext
         }
     }
 
-    public TokenFilterContext closeArray(JsonGenerator gen) throws IOException
-    {
+    public TokenFilterContext closeArray(JsonGenerator gen) throws IOException {
         if (_startHandled) {
             gen.writeEndArray();
         }
@@ -241,8 +232,7 @@ public class TokenFilterContext extends JsonStreamContext
         return _parent;
     }
 
-    public TokenFilterContext closeObject(JsonGenerator gen) throws IOException
-    {
+    public TokenFilterContext closeObject(JsonGenerator gen) throws IOException {
         if (_startHandled) {
             gen.writeEndObject();
         }
@@ -251,7 +241,7 @@ public class TokenFilterContext extends JsonStreamContext
         }
         return _parent;
     }
-    
+
     public void skipParentChecks() {
         _filter = null;
         for (TokenFilterContext ctxt = _parent; ctxt != null; ctxt = ctxt._parent) {
@@ -260,24 +250,43 @@ public class TokenFilterContext extends JsonStreamContext
     }
 
     /*
-    /**********************************************************
-    /* Accessors, mutators
-    /**********************************************************
+     * /**********************************************************
+     * /* Accessors, mutators
+     * /**********************************************************
      */
 
     @Override
-    public Object getCurrentValue() { return null; }
+    public Object getCurrentValue() {
+        return null;
+    }
 
     @Override
-    public void setCurrentValue(Object v) { }
+    public void setCurrentValue(Object v) {
+    }
 
-    @Override public final TokenFilterContext getParent() { return _parent; }
-    @Override public final String getCurrentName() { return _currentName; }
+    @Override
+    public final TokenFilterContext getParent() {
+        return _parent;
+    }
+
+    @Override
+    public final String getCurrentName() {
+        return _currentName;
+    }
+
     // @since 2.9
-    @Override public boolean hasCurrentName() { return _currentName != null; }
+    @Override
+    public boolean hasCurrentName() {
+        return _currentName != null;
+    }
 
-    public TokenFilter getFilter() { return _filter; }
-    public boolean isStartHandled() { return _startHandled; }
+    public TokenFilter getFilter() {
+        return _filter;
+    }
+
+    public boolean isStartHandled() {
+        return _startHandled;
+    }
 
     public JsonToken nextTokenToRead() {
         if (!_startHandled) {
@@ -311,7 +320,7 @@ public class TokenFilterContext extends JsonStreamContext
         // should never occur but...
         return null;
     }
-    
+
     // // // Internally used abstract methods
 
     protected void appendDesc(StringBuilder sb) {
@@ -343,7 +352,8 @@ public class TokenFilterContext extends JsonStreamContext
 
     // Overridden to provide developer writeable "JsonPath" representation
     // of the context.
-    @Override public String toString() {
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder(64);
         appendDesc(sb);
         return sb.toString();

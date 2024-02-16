@@ -17,6 +17,7 @@ import reactor.core.scheduler.Scheduler;
  *
  * Under normal execution, the provider provides the actual links, but when running under unit test scenarios,
  * the provider enables tests to inject mock links.
+ * 
  * @see ReactorProvider
  * @see ReactorHandlerProvider
  * @see AmqpMetricsProvider
@@ -59,10 +60,10 @@ public class AmqpLinkProvider {
      * @return An Amqp Link.
      */
     public AmqpReceiveLink createReceiveLink(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions,
-        AmqpMetricsProvider metricsProvider) {
-        return new ReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(handler), tokenManager, dispatcher, retryOptions,
-            metricsProvider);
+        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+        AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
+        return new ReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(handler),
+            tokenManager, dispatcher, retryOptions, metricsProvider);
     }
 
     // Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack

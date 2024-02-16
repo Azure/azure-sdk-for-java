@@ -69,8 +69,8 @@ public class ReactorExecutorTest {
     @Test
     public void startsOnce() {
         // Arrange
-        final ReactorExecutor executor = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler,
-            TIMEOUT, HOSTNAME);
+        final ReactorExecutor executor
+            = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler, TIMEOUT, HOSTNAME);
 
         doAnswer(invocation -> {
             return null;
@@ -98,25 +98,21 @@ public class ReactorExecutorTest {
         // Scheduling pending work adds the timeout. So we'll give at most timeout *2.
         final Duration timeout = TIMEOUT.plus(TIMEOUT);
 
-        final ReactorExecutor executor = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler,
-            TIMEOUT, HOSTNAME);
+        final ReactorExecutor executor
+            = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler, TIMEOUT, HOSTNAME);
 
         doAnswer(invocation -> {
             return null;
         }).when(scheduler).schedule(any(Runnable.class));
 
         // Act & Verify
-        StepVerifier.create(executor.closeAsync())
-            .expectComplete()
-            .verify(timeout);
+        StepVerifier.create(executor.closeAsync()).expectComplete().verify(timeout);
 
         // Verify that it returns the same completed result.
-        StepVerifier.create(executor.closeAsync())
-            .expectComplete()
-            .verify(timeout);
+        StepVerifier.create(executor.closeAsync()).expectComplete().verify(timeout);
 
-        verify(exceptionHandler).onConnectionShutdown(
-            argThat(shutdown -> !shutdown.isTransient() && shutdown.isInitiatedByClient()));
+        verify(exceptionHandler)
+            .onConnectionShutdown(argThat(shutdown -> !shutdown.isTransient() && shutdown.isInitiatedByClient()));
     }
 
     /**
@@ -128,8 +124,8 @@ public class ReactorExecutorTest {
         // Scheduling pending work adds the timeout. So we'll give at most timeout *2.
         final Duration timeout = TIMEOUT.plus(TIMEOUT);
 
-        final ReactorExecutor executor = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler,
-            TIMEOUT, HOSTNAME);
+        final ReactorExecutor executor
+            = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler, TIMEOUT, HOSTNAME);
         final AtomicInteger timesInvoked = new AtomicInteger();
 
         doAnswer(invocation -> {
@@ -142,9 +138,7 @@ public class ReactorExecutorTest {
             return null;
         }).when(scheduler).schedule(any(Runnable.class));
 
-        StepVerifier.create(executor.closeAsync())
-            .expectComplete()
-            .verify(timeout);
+        StepVerifier.create(executor.closeAsync()).expectComplete().verify(timeout);
 
         // Act
         executor.start();
@@ -155,8 +149,8 @@ public class ReactorExecutorTest {
         verify(reactor, never()).start();
         verify(reactor, never()).process();
 
-        verify(exceptionHandler).onConnectionShutdown(
-            argThat(shutdown -> !shutdown.isTransient() && shutdown.isInitiatedByClient()));
+        verify(exceptionHandler)
+            .onConnectionShutdown(argThat(shutdown -> !shutdown.isTransient() && shutdown.isInitiatedByClient()));
     }
 
     /**
@@ -165,8 +159,8 @@ public class ReactorExecutorTest {
     @Test
     public void reschedulesSuccessfullyThenStops() throws InterruptedException {
         // Arrange
-        final ReactorExecutor executor = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler,
-            TIMEOUT, HOSTNAME);
+        final ReactorExecutor executor
+            = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler, TIMEOUT, HOSTNAME);
         final Semaphore semaphore = new Semaphore(1);
         semaphore.acquire();
 
@@ -185,8 +179,7 @@ public class ReactorExecutorTest {
         }).when(scheduler).schedule(any(Runnable.class), eq(TIMEOUT.toMillis()), eq(TimeUnit.MILLISECONDS));
 
         final AtomicInteger timesProcessed = new AtomicInteger();
-        doAnswer(invocation -> timesProcessed.getAndIncrement() < 1)
-            .when(reactor).process();
+        doAnswer(invocation -> timesProcessed.getAndIncrement() < 1).when(reactor).process();
 
         // Act
         executor.start();
@@ -216,13 +209,13 @@ public class ReactorExecutorTest {
     @Test
     public void closesOnHandlerException() throws InterruptedException {
         // Arrange
-        final ReactorExecutor executor = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler,
-            TIMEOUT, HOSTNAME);
+        final ReactorExecutor executor
+            = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler, TIMEOUT, HOSTNAME);
         final Semaphore semaphore = new Semaphore(1);
         semaphore.acquire();
 
-        final HandlerException exception = new HandlerException(mock(Handler.class),
-            new UnsupportedOperationException("test-exception"));
+        final HandlerException exception
+            = new HandlerException(mock(Handler.class), new UnsupportedOperationException("test-exception"));
 
         doAnswer(invocation -> {
             final Runnable work = invocation.getArgument(0);
@@ -280,8 +273,8 @@ public class ReactorExecutorTest {
         final Record record = mock(Record.class);
         when(reactor.attachments()).thenReturn(record);
 
-        final ReactorExecutor executor = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler,
-            TIMEOUT, HOSTNAME);
+        final ReactorExecutor executor
+            = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler, TIMEOUT, HOSTNAME);
 
         final Semaphore semaphore = new Semaphore(1);
         semaphore.acquire();
@@ -307,8 +300,7 @@ public class ReactorExecutorTest {
         }).when(scheduler).schedule(any(Runnable.class), eq(TIMEOUT.toMillis()), eq(TimeUnit.MILLISECONDS));
 
         final AtomicInteger timesProcessed = new AtomicInteger();
-        doAnswer(invocation -> timesProcessed.getAndIncrement() == 0)
-            .when(reactor).process();
+        doAnswer(invocation -> timesProcessed.getAndIncrement() == 0).when(reactor).process();
 
         // Act
         executor.start();
@@ -336,8 +328,8 @@ public class ReactorExecutorTest {
     @Test
     public void reschedulesSuccessfullyButFailsSchedulingClosingTasks() throws InterruptedException {
         // Arrange
-        final ReactorExecutor executor = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler,
-            TIMEOUT, HOSTNAME);
+        final ReactorExecutor executor
+            = new ReactorExecutor(reactor, scheduler, CONNECTION_ID, exceptionHandler, TIMEOUT, HOSTNAME);
         final Semaphore semaphore = new Semaphore(1);
         semaphore.acquire();
 
@@ -355,8 +347,7 @@ public class ReactorExecutorTest {
         }).when(scheduler).schedule(any(Runnable.class), eq(TIMEOUT.toMillis()), eq(TimeUnit.MILLISECONDS));
 
         final AtomicInteger timesProcessed = new AtomicInteger();
-        doAnswer(invocation -> timesProcessed.getAndIncrement() < 1)
-            .when(reactor).process();
+        doAnswer(invocation -> timesProcessed.getAndIncrement() < 1).when(reactor).process();
 
         // Act
         executor.start();

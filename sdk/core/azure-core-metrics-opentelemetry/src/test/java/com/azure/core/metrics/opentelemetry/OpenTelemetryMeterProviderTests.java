@@ -24,7 +24,8 @@ public class OpenTelemetryMeterProviderTests {
 
     @Test
     public void invalidParams() {
-        assertThrows(NullPointerException.class, () -> MeterProvider.getDefaultProvider().createMeter(null, null, null));
+        assertThrows(NullPointerException.class,
+            () -> MeterProvider.getDefaultProvider().createMeter(null, null, null));
     }
 
     @Test

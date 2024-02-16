@@ -9,8 +9,7 @@ import com.azure.json.implementation.jackson.core.JsonFactory;
  * Interface used to expose beginning of a data file to data format
  * detection code.
  */
-public interface InputAccessor
-{
+public interface InputAccessor {
     /**
      * Method to call to check if more input is available.
      * Since this may result in more content to be read (at least
@@ -39,17 +38,16 @@ public interface InputAccessor
     void reset();
 
     /*
-    /**********************************************************
-    /* Standard implementation
-    /**********************************************************
+     * /**********************************************************
+     * /* Standard implementation
+     * /**********************************************************
      */
 
     /**
      * Basic implementation that reads data from given
      * {@link InputStream} and buffers it as necessary.
      */
-    class Std implements InputAccessor
-    {
+    class Std implements InputAccessor {
         protected final InputStream _in;
 
         protected final byte[] _buffer;
@@ -60,7 +58,7 @@ public interface InputAccessor
          * End of valid bytes in the buffer (points to one past last valid)
          */
         protected int _bufferedEnd;
-        
+
         /**
          * Pointer to next available buffered byte in {@link #_buffer}.
          */
@@ -68,8 +66,7 @@ public interface InputAccessor
 
         // Constructor used when content to check is available via
         // input stream and must be read.
-        public Std(InputStream in, byte[] buffer)
-        {
+        public Std(InputStream in, byte[] buffer) {
             _in = in;
             _buffer = buffer;
             _bufferedStart = 0;
@@ -85,18 +82,16 @@ public interface InputAccessor
 
         // Constructor used when the full input (or at least enough leading bytes
         // of full input) is available.
-        public Std(byte[] inputDocument, int start, int len)
-        {
+        public Std(byte[] inputDocument, int start, int len) {
             _in = null;
             _buffer = inputDocument;
             _ptr = start;
             _bufferedStart = start;
-            _bufferedEnd = start+len;
+            _bufferedEnd = start + len;
         }
-        
+
         @Override
-        public boolean hasMoreBytes() throws IOException
-        {
+        public boolean hasMoreBytes() throws IOException {
             if (_ptr < _bufferedEnd) { // already got more
                 return true;
             }
@@ -116,12 +111,12 @@ public interface InputAccessor
         }
 
         @Override
-        public byte nextByte() throws IOException
-        {
+        public byte nextByte() throws IOException {
             // should we just try loading more automatically?
             if (_ptr >= _bufferedEnd) {
                 if (!hasMoreBytes()) {
-                    throw new EOFException("Failed auto-detect: could not read more than "+_ptr+" bytes (max buffer size: "+_buffer.length+")");
+                    throw new EOFException("Failed auto-detect: could not read more than " + _ptr
+                        + " bytes (max buffer size: " + _buffer.length + ")");
                 }
             }
             return _buffer[_ptr++];
@@ -133,15 +128,14 @@ public interface InputAccessor
         }
 
         /*
-        /**********************************************************
-        /* Extended API for DataFormatDetector/Matcher
-        /**********************************************************
+         * /**********************************************************
+         * /* Extended API for DataFormatDetector/Matcher
+         * /**********************************************************
          */
 
-        public DataFormatMatcher createMatcher(JsonFactory match, MatchStrength matchStrength)
-        {
-            return new DataFormatMatcher(_in, _buffer, _bufferedStart, (_bufferedEnd - _bufferedStart),
-                    match, matchStrength);
+        public DataFormatMatcher createMatcher(JsonFactory match, MatchStrength matchStrength) {
+            return new DataFormatMatcher(_in, _buffer, _bufferedStart, (_bufferedEnd - _bufferedStart), match,
+                matchStrength);
         }
     }
 }

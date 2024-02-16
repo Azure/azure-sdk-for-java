@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// based on https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation-api/src/main/java/io/opentelemetry/instrumentation/api/instrumenter/DefaultErrorCauseExtractor.java
+// based on
+// https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation-api/src/main/java/io/opentelemetry/instrumentation/api/instrumenter/DefaultErrorCauseExtractor.java
 package com.azure.core.tracing.opentelemetry;
 
 import reactor.core.Exceptions;
@@ -26,11 +27,9 @@ final class ExceptionUtils {
     public static Throwable unwrapError(Throwable error) {
         error = Exceptions.unwrap(error);
         if (error != null && error.getCause() != null
-            && (error instanceof UncheckedIOException
-            || error instanceof ExecutionException
-            || isInstanceOfCompletionException(error)
-            || error instanceof InvocationTargetException
-            || error instanceof UndeclaredThrowableException)) {
+            && (error instanceof UncheckedIOException || error instanceof ExecutionException
+                || isInstanceOfCompletionException(error) || error instanceof InvocationTargetException
+                || error instanceof UndeclaredThrowableException)) {
             return unwrapError(error.getCause());
         }
         return error;

@@ -37,7 +37,8 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for credit flow using {@link RequestDrivenCreditAccountingStrategy} strategy.
  * <p>
- * See <a href="https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
+ * See <a href=
+ * "https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
  * for why this test class needs to run in Isolated mode.
  * </p>
  */
@@ -69,7 +70,8 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
     public void initialFlowShouldBeSumOfRequestAndPrefetch() {
         final int prefetch = 100;
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
-        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, CreditFlowMode.RequestDriven, retryPolicy);
+        final MessageFlux messageFlux
+            = new MessageFlux(upstream.flux(), prefetch, CreditFlowMode.RequestDriven, retryPolicy);
 
         final ReactorReceiver receiver = mock(ReactorReceiver.class);
         when(receiver.receive()).thenReturn(Flux.never());
@@ -85,11 +87,8 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
         }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux)
-                .thenRequest(10)
-                .then(() -> upstream.next(receiver))
-                .then(() -> upstream.complete())
-                .verifyComplete();
+            verifier.create(() -> messageFlux).thenRequest(10).then(() -> upstream.next(receiver))
+                .then(() -> upstream.complete()).verifyComplete();
         }
 
         Assertions.assertEquals(prefetch + 10, initialFlow.get());
@@ -102,7 +101,8 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
     public void shouldSendFlowWhenRequestAccumulatedEqualsPrefetch() {
         final int prefetch = 100;
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
-        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, CreditFlowMode.RequestDriven, retryPolicy);
+        final MessageFlux messageFlux
+            = new MessageFlux(upstream.flux(), prefetch, CreditFlowMode.RequestDriven, retryPolicy);
 
         final ReactorReceiver receiver = mock(ReactorReceiver.class);
         when(receiver.receive()).thenReturn(Flux.never());
@@ -126,17 +126,16 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
         }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux)
-                .then(() -> upstream.next(receiver))
-                .thenRequest(10)    // 10  -  0  + 100  = 110 [accumulatedRequest_110 >= 100]
-                .thenAwait()
-                .thenRequest(20)    // 30  - 110 + 100  = 20  [accumulatedRequest_20  <  100]
-                .thenRequest(20)    // 50  - 130 + 100  = 20  [accumulatedRequest_40  <  100]
-                .thenRequest(20)    // 70  - 150 + 100  = 20  [accumulatedRequest_60  <  100]
-                .thenRequest(20)    // 90  - 170 + 100  = 20  [accumulatedRequest_80  <  100]
-                .thenRequest(20)    // 110 - 190 + 100 =  20  [accumulatedRequest_100 >= 100]
-                .then(() -> upstream.complete())
-                .verifyComplete();
+            verifier.create(() -> messageFlux).then(() -> upstream.next(receiver)).thenRequest(10)    // 10 - 0 + 100 =
+                                                                                                      // 110
+                                                                                                      // [accumulatedRequest_110
+                                                                                                      // >= 100]
+                .thenAwait().thenRequest(20)    // 30 - 110 + 100 = 20 [accumulatedRequest_20 < 100]
+                .thenRequest(20)    // 50 - 130 + 100 = 20 [accumulatedRequest_40 < 100]
+                .thenRequest(20)    // 70 - 150 + 100 = 20 [accumulatedRequest_60 < 100]
+                .thenRequest(20)    // 90 - 170 + 100 = 20 [accumulatedRequest_80 < 100]
+                .thenRequest(20)    // 110 - 190 + 100 = 20 [accumulatedRequest_100 >= 100]
+                .then(() -> upstream.complete()).verifyComplete();
         }
 
         Assertions.assertEquals(2, flowCalls.get());
@@ -151,7 +150,8 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
     public void shouldSendFlowWhenRequestAccumulatedGreaterThanPrefetch() {
         final int prefetch = 100;
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
-        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, CreditFlowMode.RequestDriven, retryPolicy);
+        final MessageFlux messageFlux
+            = new MessageFlux(upstream.flux(), prefetch, CreditFlowMode.RequestDriven, retryPolicy);
 
         final ReactorReceiver receiver = mock(ReactorReceiver.class);
         when(receiver.receive()).thenReturn(Flux.never());
@@ -175,17 +175,16 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
         }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux)
-                .then(() -> upstream.next(receiver))
-                .thenRequest(10)    // 10 -  0  + 100  = 110 [accumulatedRequest_110 >= 100]
-                .thenAwait()
-                .thenRequest(20)    // 30  - 110 + 100 =  20 [accumulatedRequest_20  <  100]
-                .thenRequest(20)    // 50  - 130 + 100 =  20 [accumulatedRequest_40  <  100]
-                .thenRequest(20)    // 70  - 150 + 100 =  20 [accumulatedRequest_60  <  100]
-                .thenRequest(20)    // 90  - 170 + 100 =  20 [accumulatedRequest_80  <  100]
-                .thenRequest(30)    // 120 - 190 + 100 =  30 [accumulatedRequest_110 >= 100]
-                .then(() -> upstream.complete())
-                .verifyComplete();
+            verifier.create(() -> messageFlux).then(() -> upstream.next(receiver)).thenRequest(10)    // 10 - 0 + 100 =
+                                                                                                      // 110
+                                                                                                      // [accumulatedRequest_110
+                                                                                                      // >= 100]
+                .thenAwait().thenRequest(20)    // 30 - 110 + 100 = 20 [accumulatedRequest_20 < 100]
+                .thenRequest(20)    // 50 - 130 + 100 = 20 [accumulatedRequest_40 < 100]
+                .thenRequest(20)    // 70 - 150 + 100 = 20 [accumulatedRequest_60 < 100]
+                .thenRequest(20)    // 90 - 170 + 100 = 20 [accumulatedRequest_80 < 100]
+                .thenRequest(30)    // 120 - 190 + 100 = 30 [accumulatedRequest_110 >= 100]
+                .then(() -> upstream.complete()).verifyComplete();
         }
 
         Assertions.assertEquals(2, flowCalls.get());
@@ -200,7 +199,8 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
     public void shouldSendFlowOnRequestWhenNoPrefetch() {
         final int prefetch = 0;
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
-        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, CreditFlowMode.RequestDriven, retryPolicy);
+        final MessageFlux messageFlux
+            = new MessageFlux(upstream.flux(), prefetch, CreditFlowMode.RequestDriven, retryPolicy);
 
         final ReactorReceiver receiver = mock(ReactorReceiver.class);
         when(receiver.receive()).thenReturn(Flux.never());
@@ -230,15 +230,13 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
         }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux)
-                .then(() -> upstream.next(receiver))
-                .thenRequest(10)   //  10  - 0 + 0  = 10 [accumulatedRequest_10 >= 0]
-                .thenAwait()
-                .thenRequest(20)   //  30  - 10 + 0 = 20 [accumulatedRequest_20 >= 0]
-                .thenRequest(30)   //  60  - 30 + 0 = 30 [accumulatedRequest_30 >= 0]
-                .thenRequest(40)   //  100 - 60 + 0 = 40 [accumulatedRequest_40 >= 0]
-                .then(() -> upstream.complete())
-                .verifyComplete();
+            verifier.create(() -> messageFlux).then(() -> upstream.next(receiver)).thenRequest(10)   // 10 - 0 + 0 = 10
+                                                                                                     // [accumulatedRequest_10
+                                                                                                     // >= 0]
+                .thenAwait().thenRequest(20)   // 30 - 10 + 0 = 20 [accumulatedRequest_20 >= 0]
+                .thenRequest(30)   // 60 - 30 + 0 = 30 [accumulatedRequest_30 >= 0]
+                .thenRequest(40)   // 100 - 60 + 0 = 40 [accumulatedRequest_40 >= 0]
+                .then(() -> upstream.complete()).verifyComplete();
         }
 
         Assertions.assertEquals(4, flowCalls.get());
@@ -255,7 +253,8 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
     public void shouldBoundUnboundedRequest() {
         final int prefetch = 0;
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
-        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, CreditFlowMode.RequestDriven, retryPolicy);
+        final MessageFlux messageFlux
+            = new MessageFlux(upstream.flux(), prefetch, CreditFlowMode.RequestDriven, retryPolicy);
 
         final ReactorReceiver receiver = mock(ReactorReceiver.class);
         final Message message = mock(Message.class);
@@ -273,17 +272,13 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
         }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux)
-                .then(() -> upstream.next(receiver))
-                //  Unbounded-Request: (Combined with no Prefetch) Switches to a mode where initially one message is requested,
-                //  the arrival then the emission of resulting message trigger request for next message and so on...
-                .thenRequest(Long.MAX_VALUE)
-                .thenAwait()
-                //  Any requests post Unbounded-Request are ignored.
-                .thenRequest(10)
-                .thenRequest(20)
-                .then(() -> upstream.complete())
-                .thenConsumeWhile(__ -> true)
+            verifier.create(() -> messageFlux).then(() -> upstream.next(receiver))
+                // Unbounded-Request: (Combined with no Prefetch) Switches to a mode where initially one message is
+                // requested,
+                // the arrival then the emission of resulting message trigger request for next message and so on...
+                .thenRequest(Long.MAX_VALUE).thenAwait()
+                // Any requests post Unbounded-Request are ignored.
+                .thenRequest(10).thenRequest(20).then(() -> upstream.complete()).thenConsumeWhile(__ -> true)
                 .verifyComplete();
         }
 

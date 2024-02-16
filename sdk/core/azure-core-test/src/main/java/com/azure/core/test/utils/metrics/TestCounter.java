@@ -21,6 +21,7 @@ public class TestCounter implements LongCounter {
     TestCounter(boolean isEnabled) {
         this.isEnabled = isEnabled;
     }
+
     @Override
     public void add(long value, TelemetryAttributes attributes, Context context) {
         if (isEnabled) {

@@ -49,20 +49,23 @@ public final class ConsumerFactory {
     }
 
     AmqpReceiveLink createConsumer(AmqpConnection amqpConnection, String linkName, String entityPath, Receiver receiver,
-        TokenManager tokenManager, ReactorProvider reactorProvider,
-        ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider, AmqpRetryOptions retryOptions) {
+        TokenManager tokenManager, ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+        AmqpLinkProvider linkProvider, AmqpRetryOptions retryOptions) {
         final String connectionId = amqpConnection.getId();
         final String hostname = amqpConnection.getFullyQualifiedNamespace();
-        final AmqpMetricsProvider metricsProvider = handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath);
+        final AmqpMetricsProvider metricsProvider
+            = handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath);
         if (isV2) {
-            final ReceiveLinkHandler2 handler = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName, entityPath,
-                settleMode, includeDeliveryTagInMessage, reactorProvider.getReactorDispatcher(), retryOptions);
+            final ReceiveLinkHandler2 handler
+                = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName, entityPath, settleMode,
+                    includeDeliveryTagInMessage, reactorProvider.getReactorDispatcher(), retryOptions);
             BaseHandler.setHandler(receiver, handler);
             receiver.open();
             return linkProvider.createReceiveLink(amqpConnection, entityPath, receiver, handler, tokenManager,
                 reactorProvider.getReactorDispatcher(), retryOptions, metricsProvider);
         } else {
-            final ReceiveLinkHandler handler = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName, entityPath);
+            final ReceiveLinkHandler handler
+                = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName, entityPath);
             BaseHandler.setHandler(receiver, handler);
             receiver.open();
             return linkProvider.createReceiveLink(amqpConnection, entityPath, receiver, handler, tokenManager,

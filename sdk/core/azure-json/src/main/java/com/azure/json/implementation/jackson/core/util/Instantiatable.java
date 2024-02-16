@@ -14,8 +14,7 @@ package com.azure.json.implementation.jackson.core.util;
  * 
  * @since 2.1
  */
-public interface Instantiatable<T>
-{
+public interface Instantiatable<T> {
     /**
      * Method called to ensure that we have a non-blueprint object to use;
      * it is either this object (if stateless), or a newly created object

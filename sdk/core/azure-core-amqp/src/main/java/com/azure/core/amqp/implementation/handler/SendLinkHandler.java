@@ -117,10 +117,8 @@ public class SendLinkHandler extends LinkHandler {
 
         creditProcessor.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
         deliveryProcessor.emitComplete((signalType, emitResult) -> {
-            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                .addKeyValue(LINK_NAME_KEY, linkName)
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .log("Unable to emit complete on deliverySink.");
+            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult).addKeyValue(LINK_NAME_KEY, linkName)
+                .addKeyValue(ENTITY_PATH_KEY, entityPath).log("Unable to emit complete on deliverySink.");
             return false;
         });
 
@@ -131,11 +129,8 @@ public class SendLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Sender) {
-            logger.atVerbose()
-                .addKeyValue(LINK_NAME_KEY, link.getName())
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue("localTarget", link.getTarget())
-                .log("onLinkLocalOpen");
+            logger.atVerbose().addKeyValue(LINK_NAME_KEY, link.getName()).addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue("localTarget", link.getTarget()).log("onLinkLocalOpen");
         }
     }
 
@@ -146,9 +141,8 @@ public class SendLinkHandler extends LinkHandler {
             return;
         }
 
-        LoggingEventBuilder logBuilder = logger.atInfo()
-            .addKeyValue(LINK_NAME_KEY, link.getName())
-            .addKeyValue(ENTITY_PATH_KEY, entityPath);
+        LoggingEventBuilder logBuilder
+            = logger.atInfo().addKeyValue(LINK_NAME_KEY, link.getName()).addKeyValue(ENTITY_PATH_KEY, entityPath);
 
         if (link.getRemoteTarget() != null) {
             logBuilder.addKeyValue("remoteTarget", link.getRemoteTarget());
@@ -157,8 +151,7 @@ public class SendLinkHandler extends LinkHandler {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
-            logBuilder.addKeyValue("remoteTarget", NOT_APPLICABLE)
-                .addKeyValue("action", "waitingForError");
+            logBuilder.addKeyValue("remoteTarget", NOT_APPLICABLE).addKeyValue("action", "waitingForError");
         }
         logBuilder.log("onLinkRemoteOpen");
     }
@@ -172,19 +165,13 @@ public class SendLinkHandler extends LinkHandler {
         final Sender sender = event.getSender();
         final int credits = sender.getRemoteCredit();
         creditProcessor.emitNext(credits, (signalType, emitResult) -> {
-            logger.atVerbose()
-                .addKeyValue(LINK_NAME_KEY, linkName)
-                .addKeyValue(EMIT_RESULT_KEY, emitResult)
-                .addKeyValue("credits", credits)
-                .log("Unable to emit credits.");
+            logger.atVerbose().addKeyValue(LINK_NAME_KEY, linkName).addKeyValue(EMIT_RESULT_KEY, emitResult)
+                .addKeyValue("credits", credits).log("Unable to emit credits.");
             return false;
         });
 
-        logger.atVerbose()
-            .addKeyValue(LINK_NAME_KEY, linkName)
-            .addKeyValue("unsettled", sender.getUnsettled())
-            .addKeyValue("credits", credits)
-            .log("onLinkFlow.");
+        logger.atVerbose().addKeyValue(LINK_NAME_KEY, linkName).addKeyValue("unsettled", sender.getUnsettled())
+            .addKeyValue("credits", credits).log("onLinkFlow.");
     }
 
     @Override
@@ -194,9 +181,7 @@ public class SendLinkHandler extends LinkHandler {
         // Someone called sender.close() to set the local link state to close. Since the link was never remotely
         // active, we complete getEndpointStates() ourselves.
         if (!isRemoteActive.get()) {
-            logger.atInfo()
-                .addKeyValue(LINK_NAME_KEY, getLinkName())
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            logger.atInfo().addKeyValue(LINK_NAME_KEY, getLinkName()).addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("Sender link was never active. Closing endpoint states.");
 
             super.close();
@@ -211,21 +196,15 @@ public class SendLinkHandler extends LinkHandler {
             final Sender sender = (Sender) delivery.getLink();
             final String deliveryTag = new String(delivery.getTag(), StandardCharsets.UTF_8);
 
-            logger.atVerbose()
-                .addKeyValue(LINK_NAME_KEY, getLinkName())
-                .addKeyValue("unsettled", sender.getUnsettled())
+            logger.atVerbose().addKeyValue(LINK_NAME_KEY, getLinkName()).addKeyValue("unsettled", sender.getUnsettled())
                 .addKeyValue("credit", sender.getRemoteCredit())
                 .addKeyValue(DELIVERY_STATE_KEY, delivery.getRemoteState())
-                .addKeyValue("delivery.isBuffered", delivery.isBuffered())
-                .addKeyValue("delivery.id", deliveryTag)
+                .addKeyValue("delivery.isBuffered", delivery.isBuffered()).addKeyValue("delivery.id", deliveryTag)
                 .log("onDelivery");
 
             deliveryProcessor.emitNext(delivery, (signalType, emitResult) -> {
-                logger.atWarning()
-                    .addKeyValue(LINK_NAME_KEY, getLinkName())
-                    .addKeyValue(EMIT_RESULT_KEY, emitResult)
-                    .addKeyValue("delivery.id", deliveryTag)
-                    .log("Unable to emit delivery.");
+                logger.atWarning().addKeyValue(LINK_NAME_KEY, getLinkName()).addKeyValue(EMIT_RESULT_KEY, emitResult)
+                    .addKeyValue("delivery.id", deliveryTag).log("Unable to emit delivery.");
 
                 return emitResult == Sinks.EmitResult.FAIL_OVERFLOW;
             });

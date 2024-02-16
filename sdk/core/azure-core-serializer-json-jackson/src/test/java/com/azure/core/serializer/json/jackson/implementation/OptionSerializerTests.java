@@ -55,11 +55,13 @@ public class OptionSerializerTests {
 
     @Test
     public void canSerializeRawType() throws IOException {
-        @SuppressWarnings("rawtypes") final Option rawOption = Option.of(new RawModel().setName("test"));
+        @SuppressWarnings("rawtypes")
+        final Option rawOption = Option.of(new RawModel().setName("test"));
         String serialized = MAPPER.writeValueAsString(rawOption);
         Assertions.assertEquals("{\"name\":\"test\"}", serialized);
 
-        @SuppressWarnings("rawtypes") final Option rawOption1 = Option.of("test");
+        @SuppressWarnings("rawtypes")
+        final Option rawOption1 = Option.of("test");
         String serialized1 = MAPPER.writeValueAsString(rawOption1);
         Assertions.assertEquals("\"test\"", serialized1);
     }

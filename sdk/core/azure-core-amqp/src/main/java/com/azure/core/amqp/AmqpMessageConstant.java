@@ -11,7 +11,7 @@ import java.util.Objects;
  * Reserved well-known constants from AMQP protocol.
  *
  * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-properties">
- * AMQP 1.0: Messaging Properties</a>
+ *      AMQP 1.0: Messaging Properties</a>
  */
 public enum AmqpMessageConstant {
     /**
@@ -127,7 +127,6 @@ public enum AmqpMessageConstant {
      * The state of message.
      */
     MESSAGE_STATE_ANNOTATION_NAME("x-opt-message-state");
-
 
     private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;

@@ -14,8 +14,7 @@ import com.azure.json.implementation.jackson.core.JsonParser;
  *
  * @since 2.6
  */
-public class TokenFilter
-{
+public class TokenFilter {
 
     /**
      * Enumeration that controls how TokenFilter return values are interpreted.
@@ -56,12 +55,13 @@ public class TokenFilter
 
     // Life-cycle
 
-    protected TokenFilter() { }
+    protected TokenFilter() {
+    }
 
     /*
-    /**********************************************************
-    /* API, structured values
-    /**********************************************************
+     * /**********************************************************
+     * /* API, structured values
+     * /**********************************************************
      */
 
     /**
@@ -124,7 +124,8 @@ public class TokenFilter
      * in cases where filter other that {@link #INCLUDE_ALL} was returned.
      * This occurs when {@link JsonGenerator#writeEndObject()} is called.
      */
-    public void filterFinishObject() { }
+    public void filterFinishObject() {
+    }
 
     /**
      * Method called to indicate that output of non-filtered Array (one that may
@@ -132,12 +133,13 @@ public class TokenFilter
      * in cases where filter other that {@link #INCLUDE_ALL} was returned.
      * This occurs when {@link JsonGenerator#writeEndArray()} is called.
      */
-    public void filterFinishArray() { }
+    public void filterFinishArray() {
+    }
 
     /*
-    /**********************************************************
-    /* API, properties/elements
-    /**********************************************************
+     * /**********************************************************
+     * /* API, properties/elements
+     * /**********************************************************
      */
 
     /**
@@ -225,9 +227,9 @@ public class TokenFilter
     }
 
     /*
-    /**********************************************************
-    /* API, scalar values (being read)
-    /**********************************************************
+     * /**********************************************************
+     * /* API, scalar values (being read)
+     * /**********************************************************
      */
 
     /**
@@ -250,9 +252,9 @@ public class TokenFilter
     }
 
     /*
-    /**********************************************************
-    /* API, scalar values (being written)
-    /**********************************************************
+     * /**********************************************************
+     * /* API, scalar values (being written)
+     * /**********************************************************
      */
 
     /**
@@ -365,7 +367,7 @@ public class TokenFilter
     public boolean includeNumber(double value) {
         return _includeScalar();
     }
-    
+
     /**
      * Call made to verify whether leaf-level
      * {@link BigDecimal} value
@@ -419,7 +421,7 @@ public class TokenFilter
     public boolean includeRawValue() {
         return _includeScalar();
     }
-    
+
     /**
      * Call made to verify whether leaf-level
      * embedded (Opaque) value
@@ -434,9 +436,9 @@ public class TokenFilter
     }
 
     /*
-    /**********************************************************
-    /* Overrides
-    /**********************************************************
+     * /**********************************************************
+     * /* Overrides
+     * /**********************************************************
      */
 
     @Override
@@ -448,11 +450,11 @@ public class TokenFilter
     }
 
     /*
-    /**********************************************************
-    /* Other methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Other methods
+     * /**********************************************************
      */
-    
+
     /**
      * Overridable default implementation delegated to all scalar value
      * inclusion check methods.

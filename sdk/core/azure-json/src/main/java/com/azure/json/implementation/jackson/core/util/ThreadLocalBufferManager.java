@@ -18,8 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @since 2.9.6
  */
-class ThreadLocalBufferManager
-{
+class ThreadLocalBufferManager {
     /**
      * A lock to make sure releaseBuffers is only executed by one thread at a time
      * since it iterates over and modifies the allSoftBufRecyclers.
@@ -36,7 +35,7 @@ class ThreadLocalBufferManager
      * {@code hashCode()} implementations defined so that they use object identity, so
      * we do not need to use something like {@link IdentityHashMap}
      */
-    private final Map<SoftReference<BufferRecycler>,Boolean> _trackedRecyclers
+    private final Map<SoftReference<BufferRecycler>, Boolean> _trackedRecyclers
         = new ConcurrentHashMap<SoftReference<BufferRecycler>, Boolean>();
 
     /**
@@ -46,9 +45,9 @@ class ThreadLocalBufferManager
     private final ReferenceQueue<BufferRecycler> _refQueue = new ReferenceQueue<BufferRecycler>();
 
     /*
-    /**********************************************************
-    /* Public API
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API
+     * /**********************************************************
      */
 
     /**
@@ -73,7 +72,7 @@ class ThreadLocalBufferManager
                 ref.clear(); // possibly already cleared by gc, nothing happens in that case
                 ++count;
             }
-            _trackedRecyclers.clear(); //release cleared SoftRefs
+            _trackedRecyclers.clear(); // release cleared SoftRefs
             return count;
         }
     }
@@ -89,9 +88,9 @@ class ThreadLocalBufferManager
     }
 
     /*
-    /**********************************************************
-    /* Internal methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal methods
+     * /**********************************************************
      */
 
     /**

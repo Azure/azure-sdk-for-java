@@ -64,21 +64,17 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldGetConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // The request (subscription) for connection should get a connection.
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
-                .expectNextMatches(con -> {
+            StepVerifier.create(connectionMono, 0).thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE)).expectNextMatches(con -> {
                     connectionSupplier.assertConnection(con);
                     Assertions.assertFalse(con.isDisposed());
                     return true;
-                })
-                .expectComplete()
-                .verify(VERIFY_TIMEOUT);
+                }).expectComplete().verify(VERIFY_TIMEOUT);
             // Assert that there was only one connection supplied.
             connectionSupplier.assertInvocationCount(1);
         } finally {
@@ -90,36 +86,28 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldCacheConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // The first request (subscription) for connection populates the cache.
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
-                .expectNextMatches(con -> {
+            StepVerifier.create(connectionMono, 0).thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE)).expectNextMatches(con -> {
                     connectionSupplier.assertConnection(con);
                     Assertions.assertFalse(con.isDisposed());
                     // Store the connection to assert that the same is returned for later connection request.
                     c[0] = con;
                     return true;
-                })
-                .expectComplete()
-                .verify(VERIFY_TIMEOUT);
+                }).expectComplete().verify(VERIFY_TIMEOUT);
             connectionSupplier.assertInvocationCount(1);
 
             // Later a second connection request (Subscription) must be served from the cache.
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .expectNextMatches(con -> {
-                    // Assert the second subscription got the same connection (cached) as first subscription.
-                    Assertions.assertEquals(c[0], con);
-                    return true;
-                })
-                .expectComplete()
-                .verify(VERIFY_TIMEOUT);
+            StepVerifier.create(connectionMono, 0).thenRequest(1).expectNextMatches(con -> {
+                // Assert the second subscription got the same connection (cached) as first subscription.
+                Assertions.assertEquals(c[0], con);
+                return true;
+            }).expectComplete().verify(VERIFY_TIMEOUT);
 
             // Assert that there was only one connection supplied.
             connectionSupplier.assertInvocationCount(1);
@@ -132,42 +120,34 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldRefreshCacheOnCompletionOfCachedConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // The first request (subscription) for connection populates the cache.
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
-                .expectNextMatches(con -> {
+            StepVerifier.create(connectionMono, 0).thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE)).expectNextMatches(con -> {
                     connectionSupplier.assertConnection(con);
                     Assertions.assertFalse(con.isDisposed());
                     // Store the connection to assert that once it's closed later connection request
                     // gets a (new) different connection.
                     c[0] = con;
                     return true;
-                })
-                .expectComplete()
-                .verify(VERIFY_TIMEOUT);
+                }).expectComplete().verify(VERIFY_TIMEOUT);
             connectionSupplier.assertInvocationCount(1);
 
             // Close the cached connection by completing connection endpoint.
             connectionSupplier.completeEndpointState();
 
             // A new request (subscription) for connection should refresh cache.
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
-                .expectNextMatches(con -> {
+            StepVerifier.create(connectionMono, 0).thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE)).expectNextMatches(con -> {
                     Assertions.assertFalse(con.isDisposed());
                     // Assert the second subscription got a new connection as a result of cache refresh.
                     Assertions.assertNotEquals(c[0], con);
                     return true;
-                })
-                .expectComplete()
-                .verify(VERIFY_TIMEOUT);
+                }).expectComplete().verify(VERIFY_TIMEOUT);
 
             // Assert that total two connections were supplied.
             connectionSupplier.assertInvocationCount(2);
@@ -180,43 +160,35 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldRefreshCacheOnErrorInCachedConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // The first request (subscription) for connection populates the cache.
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
-                .expectNextMatches(con -> {
+            StepVerifier.create(connectionMono, 0).thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE)).expectNextMatches(con -> {
                     connectionSupplier.assertConnection(con);
                     Assertions.assertFalse(con.isDisposed());
                     // Store the connection to assert that once it's closed, later connection request
                     // gets a (new) different connection.
                     c[0] = con;
                     return true;
-                })
-                .expectComplete()
-                .verify(VERIFY_TIMEOUT);
+                }).expectComplete().verify(VERIFY_TIMEOUT);
             connectionSupplier.assertInvocationCount(1);
 
             // Close the cached connection by error-ing connection endpoint.
             connectionSupplier.errorEndpointState(new RuntimeException("connection dropped"));
 
             // A new request (subscription) for connection should refresh cache.
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
-                .expectNextMatches(con -> {
+            StepVerifier.create(connectionMono, 0).thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE)).expectNextMatches(con -> {
                     connectionSupplier.assertConnection(con);
                     Assertions.assertFalse(con.isDisposed());
                     // Assert the second subscription got a new connection as a result of cache refresh.
                     Assertions.assertNotEquals(c[0], con);
                     return true;
-                })
-                .expectComplete()
-                .verify(VERIFY_TIMEOUT);
+                }).expectComplete().verify(VERIFY_TIMEOUT);
 
             // Assert that total two connections were supplied.
             connectionSupplier.assertInvocationCount(2);
@@ -229,32 +201,25 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldBubbleUpNonRetriableError() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         final Throwable nonRetriableError = new Throwable("non-retriable");
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // The first request (subscription) fails with non-retriable error.
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .then(() -> connectionSupplier.errorEndpointState(nonRetriableError))
-                .expectErrorSatisfies(e -> {
+            StepVerifier.create(connectionMono, 0).thenRequest(1)
+                .then(() -> connectionSupplier.errorEndpointState(nonRetriableError)).expectErrorSatisfies(e -> {
                     Assertions.assertEquals(nonRetriableError, e);
-                })
-                .verify(VERIFY_TIMEOUT);
+                }).verify(VERIFY_TIMEOUT);
             connectionSupplier.assertInvocationCount(1);
 
             // A new request (subscription) for connection should obtain a connection refreshing cache.
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
-                .expectNextMatches(con -> {
+            StepVerifier.create(connectionMono, 0).thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE)).expectNextMatches(con -> {
                     Assertions.assertFalse(con.isDisposed());
                     connectionSupplier.assertConnection(con);
                     return true;
-                })
-                .expectComplete()
-                .verify(VERIFY_TIMEOUT);
+                }).expectComplete().verify(VERIFY_TIMEOUT);
 
             // Assert that total two connections were supplied.
             connectionSupplier.assertInvocationCount(2);
@@ -267,22 +232,18 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldDisposeConnectionUponTermination() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         final ReactorConnection[] c = new ReactorConnection[1];
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
-                .expectNextMatches(con -> {
+            StepVerifier.create(connectionMono, 0).thenRequest(1)
+                .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE)).expectNextMatches(con -> {
                     connectionSupplier.assertConnection(con);
                     Assertions.assertFalse(con.isDisposed());
                     c[0] = con;
                     return true;
-                })
-                .expectComplete()
-                .verify(VERIFY_TIMEOUT);
+                }).expectComplete().verify(VERIFY_TIMEOUT);
             connectionSupplier.assertInvocationCount(1);
             Assertions.assertFalse(c[0].isDisposed());
         } finally {
@@ -301,22 +262,19 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldNotProvideConnectionAfterTermination() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         // Terminating the recovery support.
         connectionCache.dispose();
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // Attempt to obtain a connection post the termination of recovery support will fail.
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .expectErrorSatisfies(e -> {
-                    Assertions.assertTrue(e instanceof AmqpException);
-                    final AmqpException amqpException = (AmqpException) e;
-                    Assertions.assertFalse(amqpException.isTransient());
-                    Assertions.assertEquals("Connection recovery support is terminated.", amqpException.getMessage());
-                })
-                .verify(VERIFY_TIMEOUT);
+            StepVerifier.create(connectionMono, 0).thenRequest(1).expectErrorSatisfies(e -> {
+                Assertions.assertTrue(e instanceof AmqpException);
+                final AmqpException amqpException = (AmqpException) e;
+                Assertions.assertFalse(amqpException.isTransient());
+                Assertions.assertEquals("Connection recovery support is terminated.", amqpException.getMessage());
+            }).verify(VERIFY_TIMEOUT);
             connectionSupplier.assertInvocationCount(0);
         } finally {
             connectionSupplier.dispose();
@@ -357,8 +315,7 @@ public class ReactorConnectionCacheTest {
             }
 
             invocationCount++;
-            currentConnectionStates = Sinks.many().replay()
-                .latestOrDefault(EndpointState.UNINITIALIZED);
+            currentConnectionStates = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
             currentConnection = createMockConnection(String.valueOf(invocationCount),
                 currentConnectionStates.asFlux().distinctUntilChanged());
             if (connectionsStateQueue != null) {
@@ -439,10 +396,9 @@ public class ReactorConnectionCacheTest {
             final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
             when(handlerProvider.createConnectionHandler(anyString(), any())).thenReturn(connectionHandler);
 
-            final ReactorConnection connection = new ReactorConnection(id, connectionOptions,
-                reactorProvider, handlerProvider, mock(AmqpLinkProvider.class),
-                mock(TokenManagerProvider.class), mock(MessageSerializer.class),
-                SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true);
+            final ReactorConnection connection = new ReactorConnection(id, connectionOptions, reactorProvider,
+                handlerProvider, mock(AmqpLinkProvider.class), mock(TokenManagerProvider.class),
+                mock(MessageSerializer.class), SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true);
             return connection;
         }
     }
@@ -489,7 +445,7 @@ public class ReactorConnectionCacheTest {
                 sink.emitNext(state, Sinks.EmitFailureHandler.FAIL_FAST);
             }
             // else if (never) {
-            //   NOP (the sink never emits).
+            // NOP (the sink never emits).
             // }
         }
     }

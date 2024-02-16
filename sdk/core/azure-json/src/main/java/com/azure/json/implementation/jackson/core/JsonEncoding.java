@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -18,20 +19,18 @@ package com.azure.json.implementation.jackson.core;
  */
 public enum JsonEncoding {
     UTF8("UTF-8", false, 8), // N/A for big-endian, really
-        UTF16_BE("UTF-16BE", true, 16),
-        UTF16_LE("UTF-16LE", false, 16),
-        UTF32_BE("UTF-32BE", true, 32),
-        UTF32_LE("UTF-32LE", false, 32)
-        ;
-    
+    UTF16_BE("UTF-16BE", true, 16),
+    UTF16_LE("UTF-16LE", false, 16),
+    UTF32_BE("UTF-32BE", true, 32),
+    UTF32_LE("UTF-32LE", false, 32);
+
     private final String _javaName;
 
     private final boolean _bigEndian;
 
     private final int _bits;
-    
-    JsonEncoding(String javaName, boolean bigEndian, int bits)
-    {
+
+    JsonEncoding(String javaName, boolean bigEndian, int bits) {
         _javaName = javaName;
         _bigEndian = bigEndian;
         _bits = bits;
@@ -42,7 +41,9 @@ public enum JsonEncoding {
      *
      * @return Matching encoding name that JDK will support.
      */
-    public String getJavaName() { return _javaName; }
+    public String getJavaName() {
+        return _javaName;
+    }
 
     /**
      * Whether encoding is big-endian (if encoding supports such
@@ -52,7 +53,11 @@ public enum JsonEncoding {
      * @return True for big-endian encodings; false for little-endian
      *   (or if not applicable)
      */
-    public boolean isBigEndian() { return _bigEndian; }
+    public boolean isBigEndian() {
+        return _bigEndian;
+    }
 
-    public int bits() { return _bits; }
+    public int bits() {
+        return _bits;
+    }
 }

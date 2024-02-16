@@ -23,7 +23,8 @@ public class ResponseErrorDeserializerTests {
 
     @ParameterizedTest
     @MethodSource("deserializeResponseErrorSupplier")
-    public void deserializeJson(String responseWithError, String expectedCode, String expectedMessage) throws IOException {
+    public void deserializeJson(String responseWithError, String expectedCode, String expectedMessage)
+        throws IOException {
         ResponseError deserialize = MAPPER.deserialize(responseWithError, ResponseError.class, SerializerEncoding.JSON);
         assertEquals(expectedCode, deserialize.getCode());
         assertEquals(expectedMessage, deserialize.getMessage());

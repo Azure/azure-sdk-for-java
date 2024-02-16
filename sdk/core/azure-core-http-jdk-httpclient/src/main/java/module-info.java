@@ -7,8 +7,7 @@ module com.azure.core.http.jdk.httpclient {
 
     exports com.azure.core.http.jdk.httpclient;
 
-    provides com.azure.core.http.HttpClientProvider
-        with com.azure.core.http.jdk.httpclient.JdkHttpClientProvider;
+    provides com.azure.core.http.HttpClientProvider with com.azure.core.http.jdk.httpclient.JdkHttpClientProvider;
 
     uses com.azure.core.http.HttpClientProvider;
 }

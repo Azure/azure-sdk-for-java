@@ -357,8 +357,7 @@ public abstract class JsonReader implements Closeable {
 
         JsonToken token = currentToken();
 
-        boolean canRead = (token == JsonToken.START_OBJECT)
-            || (canStartAtArray && token == JsonToken.START_ARRAY)
+        boolean canRead = (token == JsonToken.START_OBJECT) || (canStartAtArray && token == JsonToken.START_ARRAY)
             || (canStartAtFieldName && token == JsonToken.FIELD_NAME);
 
         // Not a valid starting point.
@@ -397,8 +396,7 @@ public abstract class JsonReader implements Closeable {
             // 1. If the previous token was a struct start token it should never be followed by ','.
             // 2. If the current token is a struct end a ',' should never occur between it and the previous token.
             // 3. If the previous token was a field name a ',' should never occur after it.
-            if (!(isStartArrayOrObject(previousToken)
-                || isEndArrayOrObject(token)
+            if (!(isStartArrayOrObject(previousToken) || isEndArrayOrObject(token)
                 || previousToken == JsonToken.FIELD_NAME)) {
                 buffer.append(',');
             }
@@ -418,7 +416,7 @@ public abstract class JsonReader implements Closeable {
      */
     private void appendJson(StringBuilder buffer, JsonToken token) throws IOException {
         // TODO (alzimmer): Think of making this a protected method. This will allow for optimizations such as where
-        //  Jackson can read text directly into a StringBuilder which removes a String copy.
+        // Jackson can read text directly into a StringBuilder which removes a String copy.
         if (token == JsonToken.FIELD_NAME) {
             buffer.append("\"");
             ENCODER.quoteAsString(getFieldName(), buffer);
@@ -605,9 +603,8 @@ public abstract class JsonReader implements Closeable {
         } else if (token == JsonToken.NUMBER) {
             String numberText = getText();
 
-            if ("INF".equals(numberText) || "Infinity".equals(numberText)
-                || "-INF".equals(numberText) || "-Infinity".equals(numberText)
-                || "NaN".equals(numberText)) {
+            if ("INF".equals(numberText) || "Infinity".equals(numberText) || "-INF".equals(numberText)
+                || "-Infinity".equals(numberText) || "NaN".equals(numberText)) {
                 // Return special Double values as text as not all implementations of JsonReader may be able to handle
                 // them as Doubles when parsing generically.
                 return numberText;

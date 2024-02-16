@@ -56,6 +56,7 @@
     </javadoc.excludePackageNames>
 
     <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <developers>

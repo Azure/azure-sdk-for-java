@@ -29,13 +29,11 @@ public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTest
 
     static {
         try {
-            SslContext sslContext = SslContextBuilder.forClient()
-                .trustManager(InsecureTrustManagerFactory.INSTANCE)
-                .build();
+            SslContext sslContext
+                = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
 
-            reactor.netty.http.client.HttpClient nettyHttpClient =
-                reactor.netty.http.client.HttpClient.create()
-                    .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+            reactor.netty.http.client.HttpClient nettyHttpClient = reactor.netty.http.client.HttpClient.create()
+                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
 
             HTTP_CLIENT_INSTANCE = new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
         } catch (SSLException e) {

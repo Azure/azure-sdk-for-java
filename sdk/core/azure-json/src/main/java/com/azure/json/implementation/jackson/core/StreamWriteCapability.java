@@ -12,9 +12,7 @@ import com.azure.json.implementation.jackson.core.util.JacksonFeature;
  *
  * @since 2.12
  */
-public enum StreamWriteCapability
-    implements JacksonFeature
-{
+public enum StreamWriteCapability implements JacksonFeature {
     /**
      * Capability that indicates that the data format is able to express binary
      * data natively, without using textual encoding like Base64.
@@ -32,8 +30,7 @@ public enum StreamWriteCapability
      * Capability is currently enabled for most textual formats and none of binary
      * formats.
      */
-    CAN_WRITE_FORMATTED_NUMBERS(false)
-    ;
+    CAN_WRITE_FORMATTED_NUMBERS(false);
 
     /**
      * Whether feature is enabled or disabled by default.
@@ -48,9 +45,17 @@ public enum StreamWriteCapability
     }
 
     @Override
-    public boolean enabledByDefault() { return _defaultState; }
+    public boolean enabledByDefault() {
+        return _defaultState;
+    }
+
     @Override
-    public boolean enabledIn(int flags) { return (flags & _mask) != 0; }
+    public boolean enabledIn(int flags) {
+        return (flags & _mask) != 0;
+    }
+
     @Override
-    public int getMask() { return _mask; }
+    public int getMask() {
+        return _mask;
+    }
 }

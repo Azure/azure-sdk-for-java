@@ -14,6 +14,7 @@ public final class AzureJacksonAdapter extends JacksonAdapter {
      * Creates an instance of the Azure flavored Jackson adapter.
      */
     public AzureJacksonAdapter() {
-        super((outerMapper, innerMapper) -> outerMapper.registerModule(ManagementErrorDeserializer.getModule(innerMapper)));
+        super((outerMapper, innerMapper) -> outerMapper
+            .registerModule(ManagementErrorDeserializer.getModule(innerMapper)));
     }
 }

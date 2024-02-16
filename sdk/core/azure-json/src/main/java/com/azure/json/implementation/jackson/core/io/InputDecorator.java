@@ -9,11 +9,10 @@ import java.io.*;
  * reader) around original input source, and apply additional
  * processing during read operations.
  */
-public abstract class InputDecorator
-    implements java.io.Serializable // since 2.1
+public abstract class InputDecorator implements java.io.Serializable // since 2.1
 {
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * Method called by {@link com.azure.json.implementation.jackson.core.JsonFactory} instance when
      * creating parser given an {@link InputStream}, when this decorator
@@ -30,8 +29,7 @@ public abstract class InputDecorator
      *
      * @throws IOException if construction of {@link InputStream} fails
      */
-    public abstract InputStream decorate(IOContext ctxt, InputStream in)
-        throws IOException;
+    public abstract InputStream decorate(IOContext ctxt, InputStream in) throws IOException;
 
     /**
      * Method called by {@link com.azure.json.implementation.jackson.core.JsonFactory} instance when
@@ -52,8 +50,7 @@ public abstract class InputDecorator
      *
      * @throws IOException if construction of {@link InputStream} fails
      */
-    public abstract InputStream decorate(IOContext ctxt, byte[] src, int offset, int length)
-        throws IOException;
+    public abstract InputStream decorate(IOContext ctxt, byte[] src, int offset, int length) throws IOException;
 
     /**
      * Method called by {@link com.azure.json.implementation.jackson.core.JsonFactory} instance when
@@ -75,8 +72,7 @@ public abstract class InputDecorator
      *
      * @since 2.8
      */
-    public DataInput decorate(IOContext ctxt, DataInput input)
-        throws IOException {
+    public DataInput decorate(IOContext ctxt, DataInput input) throws IOException {
         throw new UnsupportedOperationException();
     }
 

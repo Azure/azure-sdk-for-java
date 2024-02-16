@@ -17,6 +17,10 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-perf;current} -->
   <packaging>jar</packaging>
 
+  <properties>
+    <spotless.skip>false</spotless.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

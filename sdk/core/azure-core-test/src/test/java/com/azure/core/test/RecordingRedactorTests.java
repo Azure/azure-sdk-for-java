@@ -28,8 +28,7 @@ public class RecordingRedactorTests {
 
     // Non-sensitive content data, keep the content as it is
     private static final String NON_SENSITIVE_DATA_CONTENT = "\"Response\" : {\n"
-        + "      \"Body\" : \"{\"a\":\"a\",\"expirationDateTimeTicks\":637270217074441783}\",\n"
-        + "    },";
+        + "      \"Body\" : \"{\"a\":\"a\",\"expirationDateTimeTicks\":637270217074441783}\",\n" + "    },";
 
     // Access token value pair at Body
     private static final String ACCESS_TOKEN_FIRST_PAIR = "\"Response\" : {\n"
@@ -40,21 +39,17 @@ public class RecordingRedactorTests {
         + "    },";
 
     // Access token pair at the end of Body
-    private static final String ACCESS_TOKEN_LAST_PAIR = "\"Response\" : {\n"
-        + "      \"Body\" : \"{\"accessToken\":\"sensitiveData\"}\",\n"
-        + "    },";
-    private static final String EXPECTED_ACCESS_TOKEN_LAST_PAIR_REDACTED = "\"Response\" : {\n"
-        + "      \"Body\" : \"{\"accessToken\":\"REDACTED\"}\",\n"
-        + "    },";
+    private static final String ACCESS_TOKEN_LAST_PAIR
+        = "\"Response\" : {\n" + "      \"Body\" : \"{\"accessToken\":\"sensitiveData\"}\",\n" + "    },";
+    private static final String EXPECTED_ACCESS_TOKEN_LAST_PAIR_REDACTED
+        = "\"Response\" : {\n" + "      \"Body\" : \"{\"accessToken\":\"REDACTED\"}\",\n" + "    },";
 
     // User delegation key: <Value> XML tag
     private static final String USER_DELEGATION_KEY_FOR_VALUE_RESPONSE = "\"Response\" : {\n"
-        + "   \"Body\" : <UserDelegationKey><Value>sensitiveInformation=</Value></UserDelegationKey>\",\n"
-        + "    },";
+        + "   \"Body\" : <UserDelegationKey><Value>sensitiveInformation=</Value></UserDelegationKey>\",\n" + "    },";
 
     private static final String EXPECTED_USER_DELEGATION_KEY_FOR_VALUE_RESPONSE_REDACTED = "\"Response\" : {\n"
-        + "   \"Body\" : <UserDelegationKey><Value>UkVEQUNURUQ=</Value></UserDelegationKey>\",\n"
-        + "    },";
+        + "   \"Body\" : <UserDelegationKey><Value>UkVEQUNURUQ=</Value></UserDelegationKey>\",\n" + "    },";
 
     // User delegation key: <SignedOid> XML tag
     private static final String USER_DELEGATION_KEY_FOR_SIGNED_OID_RESPONSE = "\"Response\" : {\n"
@@ -91,17 +86,17 @@ public class RecordingRedactorTests {
     private static final String REDACTED_APPLICATION_ID_RESPONSE_BODY = "\"dataSourceParameter\":{\"query"
         + "\":\"select * from adsample2 where Timestamp = @StartTime\";\"applicationId\":\"REDACTED\"}";
 
-    private static final String API_ID_RESPONSE_BODY = "\"dataSourceParameter\":{\"apiKey\":\"api_key"
-        + "\",;\"applicationId\":\"APP_INSIGHT_APP_ID\"}";
+    private static final String API_ID_RESPONSE_BODY
+        = "\"dataSourceParameter\":{\"apiKey\":\"api_key" + "\",;\"applicationId\":\"APP_INSIGHT_APP_ID\"}";
 
-    private static final String REDACTED_API_ID_RESPONSE_BODY = "\"dataSourceParameter\":{\"apiKey\":\"REDACTED"
-        + "\",;\"applicationId\":\"REDACTED\"}";
+    private static final String REDACTED_API_ID_RESPONSE_BODY
+        = "\"dataSourceParameter\":{\"apiKey\":\"REDACTED" + "\",;\"applicationId\":\"REDACTED\"}";
 
-    private static final String HTTP_URL_RESPONSE_BODY = "\"dataSourceParameter\":{\"httpMethod\":\"GET\","
-        + "\"url\":\"http://url\"}";
+    private static final String HTTP_URL_RESPONSE_BODY
+        = "\"dataSourceParameter\":{\"httpMethod\":\"GET\"," + "\"url\":\"http://url\"}";
 
-    private static final String REDACTED_HTTP_URL_RESPONSE_BODY = "\"dataSourceParameter\":{\"httpMethod\":\"GET\","
-        + "\"url\":\"REDACTED\"}";;
+    private static final String REDACTED_HTTP_URL_RESPONSE_BODY
+        = "\"dataSourceParameter\":{\"httpMethod\":\"GET\"," + "\"url\":\"REDACTED\"}";;
 
     private static final String HOST_RESPONSE_BODY = "\"dataSourceParameter\":{\"port\":\"9200\","
         + "\"query\":\"select * from adsample2 where Timestamp = @StartTime\",\"host\":\"host.azure.com\"}";
@@ -118,20 +113,20 @@ public class RecordingRedactorTests {
     private static final String ACCOUNT_KEY_RESPONSE_BODY = "\"dataSourceParameter\":{\"fileSystemName"
         + "\":\"adsample\",\"accountKey\":\"Pi5n+zrzyZZEtSjFoamPe622ZsmwiOZzdPvRKpvmuzxSC+tA==\"}";
 
-    private static final String REDACTED_ACCOUNT_KEY_RESPONSE_BODY = "\"dataSourceParameter\":{\"fileSystemName"
-        + "\":\"adsample\",\"accountKey\":\"REDACTED\"}";
+    private static final String REDACTED_ACCOUNT_KEY_RESPONSE_BODY
+        = "\"dataSourceParameter\":{\"fileSystemName" + "\":\"adsample\",\"accountKey\":\"REDACTED\"}";
 
-    private static final String AUTH_HEADER_RESPONSE_BODY = "\"dataSourceParameter\":"
-        + "{\"authHeader\":\"XYZ\",\"port\":\"9200\"";
+    private static final String AUTH_HEADER_RESPONSE_BODY
+        = "\"dataSourceParameter\":" + "{\"authHeader\":\"XYZ\",\"port\":\"9200\"";
 
-    private static final String REDACTED_AUTH_HEADER_RESPONSE_BODY = "\"dataSourceParameter\":"
-        + "{\"authHeader\":\"REDACTED\",\"port\":\"9200\"";
+    private static final String REDACTED_AUTH_HEADER_RESPONSE_BODY
+        = "\"dataSourceParameter\":" + "{\"authHeader\":\"REDACTED\",\"port\":\"9200\"";
 
-    private static final String EMPTY_KEY_RESPONSE_BODY = "\"dataSourceParameter\":"
-        + "{\"username\":\"\",\"port\":\"9200\"";
+    private static final String EMPTY_KEY_RESPONSE_BODY
+        = "\"dataSourceParameter\":" + "{\"username\":\"\",\"port\":\"9200\"";
 
-    private static final String REDACTED_EMPTY_KEY_RESPONSE_BODY = "\"dataSourceParameter\":"
-        + "{\"username\":\"\",\"port\":\"9200\"";
+    private static final String REDACTED_EMPTY_KEY_RESPONSE_BODY
+        = "\"dataSourceParameter\":" + "{\"username\":\"\",\"port\":\"9200\"";
 
     private static final String PII_RESPONSE_DATA = "\"name\":\"Foo\", \"ssn\":\"123-45-6789\"";
     private static final String REDACTED_PII_RESPONSE_DATA = "\"name\":\"Foo\", \"ssn\":\"REDACTED\"";
@@ -150,7 +145,8 @@ public class RecordingRedactorTests {
      */
     @Test
     public void replaceUserDelegationKeyForSignedOidTag() {
-        assertFalse(new RecordingRedactor().redact(USER_DELEGATION_KEY_FOR_SIGNED_OID_RESPONSE).contains(DUMMY_SENSITIVE_INFORMATION));
+        assertFalse(new RecordingRedactor().redact(USER_DELEGATION_KEY_FOR_SIGNED_OID_RESPONSE)
+            .contains(DUMMY_SENSITIVE_INFORMATION));
     }
 
     /**
@@ -158,7 +154,8 @@ public class RecordingRedactorTests {
      */
     @Test
     public void replaceUserDelegationKeyForSignedTidTag() {
-        assertFalse(new RecordingRedactor().redact(USER_DELEGATION_KEY_FOR_SIGNED_TID_RESPONSE).contains(DUMMY_SENSITIVE_INFORMATION));
+        assertFalse(new RecordingRedactor().redact(USER_DELEGATION_KEY_FOR_SIGNED_TID_RESPONSE)
+            .contains(DUMMY_SENSITIVE_INFORMATION));
     }
 
     @Test
@@ -181,8 +178,7 @@ public class RecordingRedactorTests {
     }
 
     private static Stream<Arguments> sensitiveDataSupplier() {
-        return Stream.of(
-            Arguments.of(NON_SENSITIVE_DATA_CONTENT, NON_SENSITIVE_DATA_CONTENT),
+        return Stream.of(Arguments.of(NON_SENSITIVE_DATA_CONTENT, NON_SENSITIVE_DATA_CONTENT),
             Arguments.of(API_ID_RESPONSE_BODY, REDACTED_API_ID_RESPONSE_BODY),
             Arguments.of(AUTH_HEADER_RESPONSE_BODY, REDACTED_AUTH_HEADER_RESPONSE_BODY),
             Arguments.of(ACCOUNT_NAME_RESPONSE_BODY, REDACTED_ACCOUNT_NAME_RESPONSE_BODY),
@@ -193,14 +189,13 @@ public class RecordingRedactorTests {
             Arguments.of(CONNECTION_STRING_RESPONSE_BODY, REDACTED_CONNECTION_STRING_RESPONSE),
             Arguments.of(HTTP_URL_RESPONSE_BODY, REDACTED_HTTP_URL_RESPONSE_BODY),
             Arguments.of(HOST_RESPONSE_BODY, REDACTED_HOST_RESPONSE_BODY),
-            Arguments.of(USER_DELEGATION_KEY_FOR_VALUE_RESPONSE, EXPECTED_USER_DELEGATION_KEY_FOR_VALUE_RESPONSE_REDACTED),
+            Arguments.of(USER_DELEGATION_KEY_FOR_VALUE_RESPONSE,
+                EXPECTED_USER_DELEGATION_KEY_FOR_VALUE_RESPONSE_REDACTED),
             Arguments.of(PASSWORD_RESPONSE_BODY, REDACTED_PASSWORD_RESPONSE_BODY),
             Arguments.of(USERNAME_RESPONSE_BODY, REDACTED_USERNAME_RESPONSE),
             Arguments.of(REDACTED_EMPTY_KEY_RESPONSE_BODY, EMPTY_KEY_RESPONSE_BODY),
-            Arguments.of(NON_SENSITIVE_DATA_CONTENT, NON_SENSITIVE_DATA_CONTENT)
-        );
+            Arguments.of(NON_SENSITIVE_DATA_CONTENT, NON_SENSITIVE_DATA_CONTENT));
     }
-
 
     /**
      * Verify if the value in the json key {@code httpUrl}  is redacted successfully.

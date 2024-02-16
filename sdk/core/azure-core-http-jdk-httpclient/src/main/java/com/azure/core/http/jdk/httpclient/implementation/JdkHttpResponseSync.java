@@ -34,8 +34,8 @@ public final class JdkHttpResponseSync extends JdkHttpResponseBase {
     private byte[] bodyBytes;
 
     private volatile int disposed = 0;
-    private static final AtomicIntegerFieldUpdater<JdkHttpResponseSync> DISPOSED_UPDATER =
-        AtomicIntegerFieldUpdater.newUpdater(JdkHttpResponseSync.class, "disposed");
+    private static final AtomicIntegerFieldUpdater<JdkHttpResponseSync> DISPOSED_UPDATER
+        = AtomicIntegerFieldUpdater.newUpdater(JdkHttpResponseSync.class, "disposed");
 
     /**
      * Creates an instance of {@link JdkHttpResponseSync}.

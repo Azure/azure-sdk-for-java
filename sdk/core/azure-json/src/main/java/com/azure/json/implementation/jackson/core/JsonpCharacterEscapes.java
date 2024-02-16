@@ -13,8 +13,7 @@ import com.azure.json.implementation.jackson.core.io.SerializedString;
  *
  * @since 2.8
  */
-public class JsonpCharacterEscapes extends CharacterEscapes
-{
+public class JsonpCharacterEscapes extends CharacterEscapes {
     private static final long serialVersionUID = 1L;
 
     private static final int[] asciiEscapes = CharacterEscapes.standardAsciiEscapesForJSON();
@@ -28,15 +27,16 @@ public class JsonpCharacterEscapes extends CharacterEscapes
     }
 
     @Override
-    public SerializableString getEscapeSequence(int ch)
-    {
+    public SerializableString getEscapeSequence(int ch) {
         switch (ch) {
-        case 0x2028:
-            return escapeFor2028;
-        case 0x2029:
-            return escapeFor2029;
-        default:
-            return null;
+            case 0x2028:
+                return escapeFor2028;
+
+            case 0x2029:
+                return escapeFor2029;
+
+            default:
+                return null;
         }
     }
 

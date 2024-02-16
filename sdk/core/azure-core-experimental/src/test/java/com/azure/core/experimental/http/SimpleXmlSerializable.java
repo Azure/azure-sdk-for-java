@@ -21,8 +21,7 @@ public final class SimpleXmlSerializable implements XmlSerializable<SimpleXmlSer
     private final double aDecimalAsAttribute;
     private final String aString;
 
-    public SimpleXmlSerializable(boolean aBooleanAsAttribute, int anInt, double aDecimalAsAttribute,
-        String aString) {
+    public SimpleXmlSerializable(boolean aBooleanAsAttribute, int anInt, double aDecimalAsAttribute, String aString) {
         this.aBooleanAsAttribute = aBooleanAsAttribute;
         this.anInt = anInt;
         this.aDecimalAsAttribute = aDecimalAsAttribute;
@@ -112,9 +111,7 @@ public final class SimpleXmlSerializable implements XmlSerializable<SimpleXmlSer
 
         SimpleXmlSerializable other = (SimpleXmlSerializable) obj;
 
-        return aBooleanAsAttribute == other.aBooleanAsAttribute
-            && anInt == other.anInt
-            && aDecimalAsAttribute == other.aDecimalAsAttribute
-            && Objects.equals(aString, other.aString);
+        return aBooleanAsAttribute == other.aBooleanAsAttribute && anInt == other.anInt
+            && aDecimalAsAttribute == other.aDecimalAsAttribute && Objects.equals(aString, other.aString);
     }
 }

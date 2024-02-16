@@ -7,7 +7,8 @@ import java.util.List;
 
 /**
  * This matcher exposes the default matcher in a customizable way.
- * Currently, this includes ignoring/excluding headers, comparing request bodies and ignoring query params or query params ordering.
+ * Currently, this includes ignoring/excluding headers, comparing request bodies and ignoring query params or query
+ * params ordering.
  */
 public class CustomMatcher extends TestProxyRequestMatcher {
     private List<String> excludedHeaders;
@@ -47,7 +48,6 @@ public class CustomMatcher extends TestProxyRequestMatcher {
         return this;
     }
 
-
     /**
      * Gets the list of headers that should be ignored during matching.
      * The header values won't be matched, but the presence of these headers will be taken into account while matching.
@@ -57,7 +57,6 @@ public class CustomMatcher extends TestProxyRequestMatcher {
     public List<String> getHeadersKeyOnlyMatch() {
         return headersKeyOnlyMatch;
     }
-
 
     /**
      * Sets the list of headers that should be ignored during matching.

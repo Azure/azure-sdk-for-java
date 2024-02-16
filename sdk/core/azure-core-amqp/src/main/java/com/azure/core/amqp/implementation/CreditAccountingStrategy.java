@@ -32,7 +32,8 @@ abstract class CreditAccountingStrategy {
      * @param prefetch the prefetch configured.
      * @param logger the logger.
      */
-    protected CreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
+    protected CreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch,
+        ClientLogger logger) {
         this.receiver = receiver;
         this.subscription = subscription;
         this.prefetch = prefetch;
@@ -67,10 +68,8 @@ abstract class CreditAccountingStrategy {
     }
 
     private void log(String message, RuntimeException e) {
-        logger.atInfo()
-            .addKeyValue(CONNECTION_ID_KEY, receiver.getConnectionId())
-            .addKeyValue(LINK_NAME_KEY, receiver.getLinkName())
-            .addKeyValue(ENTITY_PATH_KEY, receiver.getEntityPath())
+        logger.atInfo().addKeyValue(CONNECTION_ID_KEY, receiver.getConnectionId())
+            .addKeyValue(LINK_NAME_KEY, receiver.getLinkName()).addKeyValue(ENTITY_PATH_KEY, receiver.getEntityPath())
             .log(message, e);
     }
 }

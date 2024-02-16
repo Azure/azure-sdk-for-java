@@ -16,8 +16,8 @@ import java.util.regex.Pattern;
  */
 public final class ExceptionUtil {
     private static final String AMQP_REQUEST_FAILED_ERROR = "status-code: %s, status-description: %s";
-    private static final Pattern ENTITY_NOT_FOUND_PATTERN =
-        Pattern.compile("The messaging entity .* could not be found");
+    private static final Pattern ENTITY_NOT_FOUND_PATTERN
+        = Pattern.compile("The messaging entity .* could not be found");
 
     /**
      * Creates an {@link AmqpException} or Exception based on the {@code errorCondition} from the AMQP request.
@@ -38,8 +38,8 @@ public final class ExceptionUtil {
 
         final AmqpErrorCondition condition = AmqpErrorCondition.fromString(errorCondition);
         if (condition == null) {
-            return new AmqpException(false, String.format("errorCondition[%s]. description[%s]",
-                errorCondition, description), errorContext);
+            return new AmqpException(false,
+                String.format("errorCondition[%s]. description[%s]", errorCondition, description), errorContext);
         }
 
         boolean isTransient;
@@ -53,6 +53,7 @@ public final class ExceptionUtil {
             case PROTON_IO:
                 isTransient = true;
                 break;
+
             case ENTITY_DISABLED_ERROR:
             case LINK_STOLEN:
             case UNAUTHORIZED_ACCESS:
@@ -71,15 +72,19 @@ public final class ExceptionUtil {
             case SESSION_NOT_FOUND:
                 isTransient = false;
                 break;
+
             case NOT_IMPLEMENTED:
             case NOT_ALLOWED:
                 return new UnsupportedOperationException(description);
+
             case NOT_FOUND:
                 return distinguishNotFound(description, errorContext);
+
             default:
-                return new AmqpException(false, condition, String.format("errorCondition[%s]. description[%s] "
-                        + "Condition could not be mapped to a transient condition.",
-                    errorCondition, description), errorContext);
+                return new AmqpException(false, condition,
+                    String.format("errorCondition[%s]. description[%s] "
+                        + "Condition could not be mapped to a transient condition.", errorCondition, description),
+                    errorContext);
         }
 
         return new AmqpException(isTransient, condition, description, errorContext);
@@ -106,12 +111,16 @@ public final class ExceptionUtil {
         switch (amqpResponseCode) {
             case BAD_REQUEST:
                 return new IllegalArgumentException(message);
+
             case NOT_FOUND:
                 return distinguishNotFound(statusDescription, errorContext);
+
             case FORBIDDEN:
                 return new AmqpException(false, AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED, message, errorContext);
+
             case UNAUTHORIZED:
                 return new AmqpException(false, AmqpErrorCondition.UNAUTHORIZED_ACCESS, message, errorContext);
+
             default:
                 return new AmqpException(true, message, errorContext);
         }
@@ -123,8 +132,7 @@ public final class ExceptionUtil {
             return new AmqpException(false, AmqpErrorCondition.NOT_FOUND, message, errorContext);
         } else {
             return new AmqpException(true, AmqpErrorCondition.NOT_FOUND,
-                String.format(AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message),
-                errorContext);
+                String.format(AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message), errorContext);
         }
     }
 }

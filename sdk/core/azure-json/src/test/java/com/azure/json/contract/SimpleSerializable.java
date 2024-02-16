@@ -107,9 +107,7 @@ public final class SimpleSerializable implements JsonSerializable<SimpleSerializ
 
         SimpleSerializable other = (SimpleSerializable) obj;
 
-        return aBoolean == other.aBoolean
-            && anInt == other.anInt
-            && aDecimal == other.aDecimal
+        return aBoolean == other.aBoolean && anInt == other.anInt && aDecimal == other.aDecimal
             && Objects.equals(aString, other.aString);
     }
 }

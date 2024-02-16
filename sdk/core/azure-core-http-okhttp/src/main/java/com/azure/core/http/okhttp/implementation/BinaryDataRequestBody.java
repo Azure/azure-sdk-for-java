@@ -22,8 +22,8 @@ public class BinaryDataRequestBody extends RequestBody {
     private final long effectiveContentLength;
 
     private volatile int bodySent = 0;
-    private static final AtomicIntegerFieldUpdater<BinaryDataRequestBody> BODY_SENT_UPDATER =
-        AtomicIntegerFieldUpdater.newUpdater(BinaryDataRequestBody.class, "bodySent");
+    private static final AtomicIntegerFieldUpdater<BinaryDataRequestBody> BODY_SENT_UPDATER
+        = AtomicIntegerFieldUpdater.newUpdater(BinaryDataRequestBody.class, "bodySent");
 
     /**
      * Creates a new instance of the BinaryDataRequestBody class.

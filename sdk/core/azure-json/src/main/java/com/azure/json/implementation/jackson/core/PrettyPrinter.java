@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -24,8 +25,7 @@ import com.azure.json.implementation.jackson.core.util.Separators;
  * state corruption.
  * Stateless implementations need not do this; but those are less common.
  */
-public interface PrettyPrinter
-{
+public interface PrettyPrinter {
     /**
      * @since 2.9
      */
@@ -39,11 +39,11 @@ public interface PrettyPrinter
     public final static SerializedString DEFAULT_ROOT_VALUE_SEPARATOR = new SerializedString(" ");
 
     /*
-    /**********************************************************
-    /* First methods that act both as events, and expect
-    /* output for correct functioning (i.e something gets
-    /* output even when not pretty-printing)
-    /**********************************************************
+     * /**********************************************************
+     * /* First methods that act both as events, and expect
+     * /* output for correct functioning (i.e something gets
+     * /* output even when not pretty-printing)
+     * /**********************************************************
      */
 
     // // // Root-level handling:
@@ -189,10 +189,10 @@ public interface PrettyPrinter
     void writeArrayValueSeparator(JsonGenerator gen) throws IOException;
 
     /*
-    /**********************************************************
-    /* Then events that by default do not produce any output but that are
-    /* often overridden to add white space in pretty-printing mode
-    /**********************************************************
+     * /**********************************************************
+     * /* Then events that by default do not produce any output but that are
+     * /* often overridden to add white space in pretty-printing mode
+     * /**********************************************************
      */
 
     /**
@@ -226,4 +226,3 @@ public interface PrettyPrinter
      */
     void beforeObjectEntries(JsonGenerator gen) throws IOException;
 }
-

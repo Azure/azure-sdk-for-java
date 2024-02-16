@@ -14,12 +14,11 @@ import com.azure.json.implementation.jackson.core.util.TextBuffer;
  * Reason is that conversion method results are expected to be cached so that
  * these methods will not be hot spots during normal operation.
  */
-public final class JsonStringEncoder
-{
+public final class JsonStringEncoder {
     /*
-    /**********************************************************************
-    /* Constants
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Constants
+     * /**********************************************************************
      */
 
     private final static char[] HC = CharTypes.copyHexChars();
@@ -32,8 +31,8 @@ public final class JsonStringEncoder
     private final static int SURR2_LAST = 0xDFFF;
 
     // 18-Aug-2021, tatu: [core#712] Change to more dynamic allocation; try
-    //    to estimate ok initial encoding buffer, switch to segmented for
-    //    possible (but rare) big content
+    // to estimate ok initial encoding buffer, switch to segmented for
+    // possible (but rare) big content
 
     final static int MIN_CHAR_BUFFER_SIZE = 16;
     final static int MAX_CHAR_BUFFER_SIZE = 32000; // use segments beyond
@@ -41,15 +40,16 @@ public final class JsonStringEncoder
     final static int MAX_BYTE_BUFFER_SIZE = 32000; // use segments beyond
 
     /*
-    /**********************************************************************
-    /* Construction, instance access
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Construction, instance access
+     * /**********************************************************************
      */
 
     // Since 2.10 we have stateless singleton and NO fancy ThreadLocal/SofRef caching!!!
     private final static JsonStringEncoder instance = new JsonStringEncoder();
-    
-    public JsonStringEncoder() { }
+
+    public JsonStringEncoder() {
+    }
 
     /**
      * Factory method for getting an instance; this is either recycled per-thread instance,
@@ -62,9 +62,9 @@ public final class JsonStringEncoder
     }
 
     /*
-    /**********************************************************************
-    /* Public API
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API
+     * /**********************************************************************
      */
 
     /**
@@ -75,8 +75,7 @@ public final class JsonStringEncoder
      *
      * @return JSON-escaped String matching {@code input}
      */
-    public char[] quoteAsString(String input)
-    {
+    public char[] quoteAsString(String input) {
         final int inputLen = input.length();
         char[] outputBuffer = new char[_initialCharBufSize(inputLen)];
         final int[] escCodes = CharTypes.get7BitOutputEscapes();
@@ -86,10 +85,8 @@ public final class JsonStringEncoder
         int outPtr = 0;
         char[] qbuf = null;
 
-        outer:
-        while (inPtr < inputLen) {
-            tight_loop:
-            while (true) {
+        outer: while (inPtr < inputLen) {
+            tight_loop: while (true) {
                 char c = input.charAt(inPtr);
                 if (c < escCodeCount && escCodes[c] != 0) {
                     break tight_loop;
@@ -106,16 +103,13 @@ public final class JsonStringEncoder
                     break outer;
                 }
             }
-            // something to escape; 2 or 6-char variant? 
+            // something to escape; 2 or 6-char variant?
             if (qbuf == null) {
                 qbuf = _qbuf();
             }
             char d = input.charAt(inPtr++);
             int escCode = escCodes[d];
-            int length = (escCode < 0)
-                    ? _appendNumeric(d, qbuf)
-                    : _appendNamed(escCode, qbuf);
-                    ;
+            int length = (escCode < 0) ? _appendNumeric(d, qbuf) : _appendNamed(escCode, qbuf);;
             if ((outPtr + length) > outputBuffer.length) {
                 int first = outputBuffer.length - outPtr;
                 if (first > 0) {
@@ -150,8 +144,7 @@ public final class JsonStringEncoder
      *
      * @since 2.10
      */
-    public char[] quoteAsString(CharSequence input)
-    {
+    public char[] quoteAsString(CharSequence input) {
         // 15-Aug-2019, tatu: Optimize common case as JIT can't get rid of overhead otherwise
         if (input instanceof String) {
             return quoteAsString((String) input);
@@ -166,11 +159,9 @@ public final class JsonStringEncoder
         int inPtr = 0;
         int outPtr = 0;
         char[] qbuf = null;
- 
-        outer:
-        while (inPtr < inputLen) {
-            tight_loop:
-            while (true) {
+
+        outer: while (inPtr < inputLen) {
+            tight_loop: while (true) {
                 char c = input.charAt(inPtr);
                 if (c < escCodeCount && escCodes[c] != 0) {
                     break tight_loop;
@@ -187,16 +178,13 @@ public final class JsonStringEncoder
                     break outer;
                 }
             }
-            // something to escape; 2 or 6-char variant? 
+            // something to escape; 2 or 6-char variant?
             if (qbuf == null) {
                 qbuf = _qbuf();
             }
             char d = input.charAt(inPtr++);
             int escCode = escCodes[d];
-            int length = (escCode < 0)
-                    ? _appendNumeric(d, qbuf)
-                    : _appendNamed(escCode, qbuf);
-                    ;
+            int length = (escCode < 0) ? _appendNumeric(d, qbuf) : _appendNamed(escCode, qbuf);;
             if ((outPtr + length) > outputBuffer.length) {
                 int first = outputBuffer.length - outPtr;
                 if (first > 0) {
@@ -232,18 +220,15 @@ public final class JsonStringEncoder
      *
      * @since 2.8
      */
-    public void quoteAsString(CharSequence input, StringBuilder output)
-    {
+    public void quoteAsString(CharSequence input, StringBuilder output) {
         final int[] escCodes = CharTypes.get7BitOutputEscapes();
         final int escCodeCount = escCodes.length;
         int inPtr = 0;
         final int inputLen = input.length();
         char[] qbuf = null;
 
-        outer:
-        while (inPtr < inputLen) {
-            tight_loop:
-            while (true) {
+        outer: while (inPtr < inputLen) {
+            tight_loop: while (true) {
                 char c = input.charAt(inPtr);
                 if (c < escCodeCount && escCodes[c] != 0) {
                     break tight_loop;
@@ -259,9 +244,7 @@ public final class JsonStringEncoder
             }
             char d = input.charAt(inPtr++);
             int escCode = escCodes[d];
-            int length = (escCode < 0)
-                    ? _appendNumeric(d, qbuf)
-                    : _appendNamed(escCode, qbuf);
+            int length = (escCode < 0) ? _appendNumeric(d, qbuf) : _appendNamed(escCode, qbuf);
             output.append(qbuf, 0, length);
         }
     }
@@ -276,16 +259,14 @@ public final class JsonStringEncoder
      * @return UTF-8 encoded bytes of JSON-escaped {@code text}
      */
     @SuppressWarnings("resource")
-    public byte[] quoteAsUTF8(String text)
-    {
+    public byte[] quoteAsUTF8(String text) {
         int inputPtr = 0;
         int inputEnd = text.length();
         int outputPtr = 0;
         byte[] outputBuffer = new byte[_initialByteBufSize(inputEnd)];
         ByteArrayBuilder bb = null;
-        
-        main:
-        while (inputPtr < inputEnd) {
+
+        main: while (inputPtr < inputEnd) {
             final int[] escCodes = CharTypes.get7BitOutputEscapes();
 
             inner_loop: // ASCII and escapes
@@ -382,8 +363,7 @@ public final class JsonStringEncoder
      * @return UTF-8 encoded bytes of {@code text} (without any escaping)
      */
     @SuppressWarnings("resource")
-    public byte[] encodeAsUTF8(String text)
-    {
+    public byte[] encodeAsUTF8(String text) {
         int inputPtr = 0;
         int inputEnd = text.length();
         int outputPtr = 0;
@@ -391,8 +371,7 @@ public final class JsonStringEncoder
         int outputEnd = outputBuffer.length;
         ByteArrayBuilder bb = null;
 
-        main_loop:
-        while (inputPtr < inputEnd) {
+        main_loop: while (inputPtr < inputEnd) {
             int c = text.charAt(inputPtr++);
 
             // first tight loop for ascii
@@ -483,8 +462,7 @@ public final class JsonStringEncoder
      * @since 2.11
      */
     @SuppressWarnings("resource")
-    public byte[] encodeAsUTF8(CharSequence text)
-    {
+    public byte[] encodeAsUTF8(CharSequence text) {
         int inputPtr = 0;
         int inputEnd = text.length();
         int outputPtr = 0;
@@ -492,8 +470,7 @@ public final class JsonStringEncoder
         int outputEnd = outputBuffer.length;
         ByteArrayBuilder bb = null;
 
-        main_loop:
-        while (inputPtr < inputEnd) {
+        main_loop: while (inputPtr < inputEnd) {
             int c = text.charAt(inputPtr++);
 
             // first tight loop for ascii
@@ -575,9 +552,9 @@ public final class JsonStringEncoder
     }
 
     /*
-    /**********************************************************************
-    /* Internal methods
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Internal methods
+     * /**********************************************************************
      */
 
     private char[] _qbuf() {
@@ -601,8 +578,7 @@ public final class JsonStringEncoder
         return 2;
     }
 
-    private int _appendByte(int ch, int esc, ByteArrayBuilder bb, int ptr)
-    {
+    private int _appendByte(int ch, int esc, ByteArrayBuilder bb, int ptr) {
         bb.setCurrentSegmentLength(ptr);
         bb.append('\\');
         if (esc < 0) { // standard escape
@@ -627,7 +603,8 @@ public final class JsonStringEncoder
     private static int _convert(int p1, int p2) {
         // Ok, then, is the second part valid?
         if (p2 < SURR2_FIRST || p2 > SURR2_LAST) {
-            throw new IllegalArgumentException("Broken surrogate pair: first char 0x"+Integer.toHexString(p1)+", second 0x"+Integer.toHexString(p2)+"; illegal combination");
+            throw new IllegalArgumentException("Broken surrogate pair: first char 0x" + Integer.toHexString(p1)
+                + ", second 0x" + Integer.toHexString(p2) + "; illegal combination");
         }
         return 0x10000 + ((p1 - SURR1_FIRST) << 10) + (p2 - SURR2_FIRST);
     }
@@ -640,8 +617,7 @@ public final class JsonStringEncoder
     static int _initialCharBufSize(int strLen) {
         // char->char won't expand but we need to give some room for escaping
         // like 1/8 (12.5% expansion) but cap addition to something modest
-        final int estimated = Math.max(MIN_CHAR_BUFFER_SIZE,
-                strLen + Math.min(6 + (strLen >> 3), 1000));
+        final int estimated = Math.max(MIN_CHAR_BUFFER_SIZE, strLen + Math.min(6 + (strLen >> 3), 1000));
         return Math.min(estimated, MAX_CHAR_BUFFER_SIZE);
     }
 
@@ -649,7 +625,7 @@ public final class JsonStringEncoder
     static int _initialByteBufSize(int strLen) {
         // char->byte for UTF-8 can expand size by x3 itself, and escaping
         // more... but let's use lower factor of 1.5
-        final int doubled = Math.max(MIN_BYTE_BUFFER_SIZE, strLen + 6 + (strLen>>1));
+        final int doubled = Math.max(MIN_BYTE_BUFFER_SIZE, strLen + 6 + (strLen >> 1));
         // but use upper bound for humongous cases (segmented)
         return Math.min(doubled, MAX_BYTE_BUFFER_SIZE);
     }

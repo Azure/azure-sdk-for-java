@@ -37,9 +37,7 @@ public class SignedIdentifier implements XmlSerializable<SignedIdentifier> {
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
         return xmlWriter.writeStartElement(getRootElementName(rootElementName, "SignedIdentifier"))
-            .writeStringElement("Id", id)
-            .writeXml(accessPolicy)
-            .writeEndElement();
+            .writeStringElement("Id", id).writeXml(accessPolicy).writeEndElement();
     }
 
     public static SignedIdentifier fromXml(XmlReader xmlReader) throws XMLStreamException {

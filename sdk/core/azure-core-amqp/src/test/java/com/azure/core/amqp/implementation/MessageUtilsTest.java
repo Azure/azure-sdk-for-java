@@ -76,8 +76,7 @@ public class MessageUtilsTest {
      * @return Stream of arguments.
      */
     public static Stream<Arguments> getProtonJOutcomesAndDeliveryStates() {
-        return Stream.of(
-            Arguments.of(Accepted.getInstance(), new DeliveryOutcome(DeliveryState.ACCEPTED)),
+        return Stream.of(Arguments.of(Accepted.getInstance(), new DeliveryOutcome(DeliveryState.ACCEPTED)),
             Arguments.of(Released.getInstance(), new DeliveryOutcome(DeliveryState.RELEASED)));
     }
 
@@ -88,14 +87,10 @@ public class MessageUtilsTest {
      */
     public static Stream<Arguments> getDeliveryStatesToTest() {
         return Stream.of(
-            Arguments.arguments(DeliveryState.ACCEPTED, Accepted.getInstance(),
-                DeliveryStateType.Accepted),
-            Arguments.arguments(DeliveryState.RELEASED, Released.getInstance(),
-                DeliveryStateType.Released),
-            Arguments.arguments(DeliveryState.MODIFIED, new Modified(),
-                DeliveryStateType.Modified),
-            Arguments.arguments(DeliveryState.REJECTED, new Rejected(),
-                DeliveryStateType.Rejected));
+            Arguments.arguments(DeliveryState.ACCEPTED, Accepted.getInstance(), DeliveryStateType.Accepted),
+            Arguments.arguments(DeliveryState.RELEASED, Released.getInstance(), DeliveryStateType.Released),
+            Arguments.arguments(DeliveryState.MODIFIED, new Modified(), DeliveryStateType.Modified),
+            Arguments.arguments(DeliveryState.REJECTED, new Rejected(), DeliveryStateType.Rejected));
     }
 
     /**
@@ -195,38 +190,27 @@ public class MessageUtilsTest {
         final byte[] contents = "foo-bar".getBytes(StandardCharsets.UTF_8);
         final AmqpMessageBody body = AmqpMessageBody.fromData(contents);
         final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(body);
-        final AmqpMessageHeader header = expected.getHeader().setDurable(true)
-            .setDeliveryCount(17L)
-            .setPriority((short) 2)
-            .setFirstAcquirer(false)
-            .setTimeToLive(Duration.ofSeconds(10));
+        final AmqpMessageHeader header = expected.getHeader().setDurable(true).setDeliveryCount(17L)
+            .setPriority((short) 2).setFirstAcquirer(false).setTimeToLive(Duration.ofSeconds(10));
         final String messageId = "Test-message-id";
         final AmqpMessageId amqpMessageId = new AmqpMessageId(messageId);
         final AmqpMessageId correlationId = new AmqpMessageId("correlation-id-test");
         final AmqpAddress replyTo = new AmqpAddress("foo");
         final AmqpAddress to = new AmqpAddress("bar");
         final byte[] userId = "baz".getBytes(StandardCharsets.UTF_8);
-        final AmqpMessageProperties properties = expected.getProperties()
-            .setAbsoluteExpiryTime(OffsetDateTime.parse("2021-02-04T10:15:30+00:00"))
-            .setContentEncoding("content-encoding-test")
-            .setContentType("content-type-test")
-            .setCorrelationId(correlationId)
-            .setCreationTime(OffsetDateTime.parse("2021-02-03T10:15:30+00:00"))
-            .setGroupId("group-id-test")
-            .setGroupSequence(22L)
-            .setMessageId(amqpMessageId)
-            .setReplyToGroupId("reply-to-group-id-test")
-            .setReplyTo(replyTo)
-            .setTo(to)
-            .setSubject("subject-item")
-            .setUserId(userId);
+        final AmqpMessageProperties properties
+            = expected.getProperties().setAbsoluteExpiryTime(OffsetDateTime.parse("2021-02-04T10:15:30+00:00"))
+                .setContentEncoding("content-encoding-test").setContentType("content-type-test")
+                .setCorrelationId(correlationId).setCreationTime(OffsetDateTime.parse("2021-02-03T10:15:30+00:00"))
+                .setGroupId("group-id-test").setGroupSequence(22L).setMessageId(amqpMessageId)
+                .setReplyToGroupId("reply-to-group-id-test").setReplyTo(replyTo).setTo(to).setSubject("subject-item")
+                .setUserId(userId);
 
         final Map<String, Object> applicationProperties = new HashMap<>();
         applicationProperties.put("1", "one");
         applicationProperties.put("two", 2);
 
-        applicationProperties.forEach((key, value) ->
-            expected.getApplicationProperties().put(key, value));
+        applicationProperties.forEach((key, value) -> expected.getApplicationProperties().put(key, value));
 
         final Map<String, Object> deliveryAnnotations = new HashMap<>();
         deliveryAnnotations.put("delivery1", 1);
@@ -305,8 +289,8 @@ public class MessageUtilsTest {
         modified.setMessageAnnotations(messageAnnotations);
 
         // Act
-        final DeliveryOutcome actual = MessageUtils.toDeliveryOutcome(
-            (org.apache.qpid.proton.amqp.transport.DeliveryState) modified);
+        final DeliveryOutcome actual
+            = MessageUtils.toDeliveryOutcome((org.apache.qpid.proton.amqp.transport.DeliveryState) modified);
 
         // Assert
         assertTrue(actual instanceof ModifiedDeliveryOutcome);
@@ -320,8 +304,8 @@ public class MessageUtilsTest {
     @Test
     public void toDeliveryOutcomeFromModifiedDeliveryStateNotSameClass() {
         // Arrange
-        final org.apache.qpid.proton.amqp.transport.DeliveryState state =
-            mock(org.apache.qpid.proton.amqp.transport.DeliveryState.class);
+        final org.apache.qpid.proton.amqp.transport.DeliveryState state
+            = mock(org.apache.qpid.proton.amqp.transport.DeliveryState.class);
 
         when(state.getType()).thenReturn(DeliveryStateType.Modified);
 
@@ -346,16 +330,16 @@ public class MessageUtilsTest {
         final AmqpErrorCondition error = AmqpErrorCondition.INTERNAL_ERROR;
         final String errorDescription = "test: " + error.getErrorCondition();
 
-        final ErrorCondition errorCondition = new ErrorCondition(Symbol.getSymbol(error.getErrorCondition()),
-            errorDescription);
+        final ErrorCondition errorCondition
+            = new ErrorCondition(Symbol.getSymbol(error.getErrorCondition()), errorDescription);
         errorCondition.setInfo(errorInfo);
 
         final Rejected rejected = new Rejected();
         rejected.setError(errorCondition);
 
         // Act
-        final DeliveryOutcome actual = MessageUtils.toDeliveryOutcome(
-            (org.apache.qpid.proton.amqp.transport.DeliveryState) rejected);
+        final DeliveryOutcome actual
+            = MessageUtils.toDeliveryOutcome((org.apache.qpid.proton.amqp.transport.DeliveryState) rejected);
 
         // Assert
         assertTrue(actual instanceof RejectedDeliveryOutcome);
@@ -369,8 +353,8 @@ public class MessageUtilsTest {
     @Test
     public void toDeliveryOutcomeFromRejectedDeliveryStateNotSameClass() {
         // Arrange
-        final org.apache.qpid.proton.amqp.transport.DeliveryState state =
-            mock(org.apache.qpid.proton.amqp.transport.DeliveryState.class);
+        final org.apache.qpid.proton.amqp.transport.DeliveryState state
+            = mock(org.apache.qpid.proton.amqp.transport.DeliveryState.class);
 
         when(state.getType()).thenReturn(DeliveryStateType.Rejected);
 
@@ -393,8 +377,8 @@ public class MessageUtilsTest {
         declared.setTxnId(binary);
 
         // Act
-        final DeliveryOutcome actual = MessageUtils.toDeliveryOutcome(
-            (org.apache.qpid.proton.amqp.transport.DeliveryState) declared);
+        final DeliveryOutcome actual
+            = MessageUtils.toDeliveryOutcome((org.apache.qpid.proton.amqp.transport.DeliveryState) declared);
 
         // Assert
         assertTrue(actual instanceof TransactionalDeliveryOutcome);
@@ -415,8 +399,8 @@ public class MessageUtilsTest {
         final Declared declared = new Declared();
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> MessageUtils.toDeliveryOutcome(
-            (org.apache.qpid.proton.amqp.transport.DeliveryState) declared));
+        assertThrows(IllegalArgumentException.class,
+            () -> MessageUtils.toDeliveryOutcome((org.apache.qpid.proton.amqp.transport.DeliveryState) declared));
     }
 
     /**
@@ -425,8 +409,8 @@ public class MessageUtilsTest {
     @Test
     public void toDeliveryOutcomeDeclaredDeliveryStateNotSameClass() {
         // Arrange
-        final org.apache.qpid.proton.amqp.transport.DeliveryState deliveryState = mock(
-            org.apache.qpid.proton.amqp.transport.DeliveryState.class);
+        final org.apache.qpid.proton.amqp.transport.DeliveryState deliveryState
+            = mock(org.apache.qpid.proton.amqp.transport.DeliveryState.class);
 
         when(deliveryState.getType()).thenReturn(DeliveryStateType.Declared);
 
@@ -513,8 +497,8 @@ public class MessageUtilsTest {
     @Test
     public void toDeliveryOutcomeTransactionDeliveryStateNotSameClass() {
         // Arrange
-        final org.apache.qpid.proton.amqp.transport.DeliveryState deliveryState = mock(
-            org.apache.qpid.proton.amqp.transport.DeliveryState.class);
+        final org.apache.qpid.proton.amqp.transport.DeliveryState deliveryState
+            = mock(org.apache.qpid.proton.amqp.transport.DeliveryState.class);
 
         when(deliveryState.getType()).thenReturn(DeliveryStateType.Transactional);
 
@@ -577,8 +561,8 @@ public class MessageUtilsTest {
         final AmqpErrorCondition error = AmqpErrorCondition.INTERNAL_ERROR;
         final String errorDescription = "test: " + error.getErrorCondition();
 
-        final ErrorCondition errorCondition = new ErrorCondition(Symbol.getSymbol(error.getErrorCondition()),
-            errorDescription);
+        final ErrorCondition errorCondition
+            = new ErrorCondition(Symbol.getSymbol(error.getErrorCondition()), errorDescription);
         errorCondition.setInfo(errorInfo);
 
         final Rejected rejected = new Rejected();
@@ -593,8 +577,7 @@ public class MessageUtilsTest {
         final RejectedDeliveryOutcome actualOutcome = (RejectedDeliveryOutcome) actual;
         assertEquals(DeliveryState.REJECTED, actualOutcome.getDeliveryState());
         assertEquals(error, actualOutcome.getErrorCondition());
-        assertEquals(actualOutcome.getErrorCondition().getErrorCondition(),
-            actualOutcome.getErrorDescription());
+        assertEquals(actualOutcome.getErrorCondition().getErrorCondition(), actualOutcome.getErrorDescription());
         assertSymbolMap(errorInfo, actualOutcome.getErrorInfo());
     }
 
@@ -620,8 +603,7 @@ public class MessageUtilsTest {
     @MethodSource("getDeliveryStatesToTest")
     @ParameterizedTest
     public void toProtonJDeliveryState(DeliveryState deliveryState,
-        org.apache.qpid.proton.amqp.transport.DeliveryState expected,
-        DeliveryStateType expectedType) {
+        org.apache.qpid.proton.amqp.transport.DeliveryState expected, DeliveryStateType expectedType) {
 
         // Arrange
         final DeliveryOutcome outcome = new DeliveryOutcome(deliveryState);
@@ -668,8 +650,7 @@ public class MessageUtilsTest {
         final Map<String, Object> errorInfo = new HashMap<>();
         errorInfo.put("foo", 10);
         errorInfo.put("bar", "baz");
-        final RejectedDeliveryOutcome expected = new RejectedDeliveryOutcome(condition)
-            .setErrorInfo(errorInfo);
+        final RejectedDeliveryOutcome expected = new RejectedDeliveryOutcome(condition).setErrorInfo(errorInfo);
 
         // Act
         org.apache.qpid.proton.amqp.transport.DeliveryState actual = MessageUtils.toProtonJDeliveryState(expected);
@@ -688,12 +669,12 @@ public class MessageUtilsTest {
         final Map<String, Object> annotations = new HashMap<>();
         annotations.put("foo", 10);
         annotations.put("bar", "baz");
-        final ModifiedDeliveryOutcome expected = new ModifiedDeliveryOutcome()
-            .setDeliveryFailed(true).setUndeliverableHere(true)
-            .setMessageAnnotations(annotations);
+        final ModifiedDeliveryOutcome expected = new ModifiedDeliveryOutcome().setDeliveryFailed(true)
+            .setUndeliverableHere(true).setMessageAnnotations(annotations);
 
         // Act
-        final org.apache.qpid.proton.amqp.transport.DeliveryState actual = MessageUtils.toProtonJDeliveryState(expected);
+        final org.apache.qpid.proton.amqp.transport.DeliveryState actual
+            = MessageUtils.toProtonJDeliveryState(expected);
 
         // Assert
         assertTrue(actual instanceof Modified);
@@ -709,8 +690,7 @@ public class MessageUtilsTest {
      */
     @MethodSource("getDeliveryStatesToTest")
     @ParameterizedTest
-    public void toProtonJOutcome(DeliveryState deliveryState, Outcome expected,
-        DeliveryStateType expectedType) {
+    public void toProtonJOutcome(DeliveryState deliveryState, Outcome expected, DeliveryStateType expectedType) {
         // Arrange
         final DeliveryOutcome outcome = new DeliveryOutcome(deliveryState);
 
@@ -747,9 +727,8 @@ public class MessageUtilsTest {
         final Map<String, Object> annotations = new HashMap<>();
         annotations.put("foo", 10);
         annotations.put("bar", "baz");
-        final ModifiedDeliveryOutcome expected = new ModifiedDeliveryOutcome()
-            .setDeliveryFailed(true).setUndeliverableHere(true)
-            .setMessageAnnotations(annotations);
+        final ModifiedDeliveryOutcome expected = new ModifiedDeliveryOutcome().setDeliveryFailed(true)
+            .setUndeliverableHere(true).setMessageAnnotations(annotations);
 
         // Act
         final Outcome actual = MessageUtils.toProtonJOutcome(expected);
@@ -769,8 +748,7 @@ public class MessageUtilsTest {
         final Map<String, Object> errorInfo = new HashMap<>();
         errorInfo.put("foo", 10);
         errorInfo.put("bar", "baz");
-        final RejectedDeliveryOutcome expected = new RejectedDeliveryOutcome(condition)
-            .setErrorInfo(errorInfo);
+        final RejectedDeliveryOutcome expected = new RejectedDeliveryOutcome(condition).setErrorInfo(errorInfo);
 
         // Act
         final Outcome actual = MessageUtils.toProtonJOutcome(expected);
@@ -808,7 +786,8 @@ public class MessageUtilsTest {
         assertNotNull(protonJRejected.getError());
         assertEquals(expectedCondition.getErrorCondition(), protonJRejected.getError().getCondition().toString());
 
-        @SuppressWarnings("unchecked") final Map<Symbol, Object> actualMap = protonJRejected.getError().getInfo();
+        @SuppressWarnings("unchecked")
+        final Map<Symbol, Object> actualMap = protonJRejected.getError().getInfo();
         assertSymbolMap(actualMap, rejected.getErrorInfo());
     }
 
@@ -822,7 +801,8 @@ public class MessageUtilsTest {
         assertEquals(modified.isDeliveryFailed(), protonJModified.getDeliveryFailed());
         assertEquals(modified.isUndeliverableHere(), protonJModified.getUndeliverableHere());
 
-        @SuppressWarnings("unchecked") final Map<Symbol, Object> actualMap = protonJModified.getMessageAnnotations();
+        @SuppressWarnings("unchecked")
+        final Map<Symbol, Object> actualMap = protonJModified.getMessageAnnotations();
         assertSymbolMap(actualMap, modified.getMessageAnnotations());
     }
 

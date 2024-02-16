@@ -88,8 +88,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
             final List<Proxy> proxies = proxySelector.select(serviceUri);
             if (!isProxyAddressLegal(proxies)) {
-                final String formatted = String.format("No proxy address found for: '%s'. Available: %s.",
-                    serviceUri, proxies.stream().map(Proxy::toString).collect(Collectors.joining(", ")));
+                final String formatted = String.format("No proxy address found for: '%s'. Available: %s.", serviceUri,
+                    proxies.stream().map(Proxy::toString).collect(Collectors.joining(", ")));
 
                 throw logger.logExceptionAsError(new IllegalStateException(formatted));
             }
@@ -189,7 +189,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         final URI url = createURI(fullyQualifiedNamespace, port);
         final InetSocketAddress address = new InetSocketAddress(hostNameParts[0], port);
 
-        logger.atError().log("Failed to connect to url: '{}', proxy host: '{}'", url, address.getHostString(), ioException);
+        logger.atError().log("Failed to connect to url: '{}', proxy host: '{}'", url, address.getHostString(),
+            ioException);
 
         final ProxySelector proxySelector = ProxySelector.getDefault();
         if (proxySelector != null) {
@@ -202,46 +203,44 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         super.addTransportLayers(event, transport);
 
         // Checking that the proxy configuration is not null and not equal to the system defaults option.
-        final ProxyImpl proxy = proxyOptions != null
-            && !(proxyOptions == ProxyOptions.SYSTEM_DEFAULTS)
-            ? new ProxyImpl(getProtonConfiguration())
-            : new ProxyImpl();
+        final ProxyImpl proxy = proxyOptions != null && !(proxyOptions == ProxyOptions.SYSTEM_DEFAULTS)
+            ? new ProxyImpl(getProtonConfiguration()) : new ProxyImpl();
 
         final ProxyHandler proxyHandler = new ProxyHandlerImpl();
         proxy.configure(connectHostnameAndPort, null, proxyHandler, transport);
 
         transport.addTransportLayer(proxy);
 
-        logger.atInfo()
-            .addKeyValue(HOSTNAME_KEY, connectHostnameAndPort)
-            .log("addProxyHandshake");
+        logger.atInfo().addKeyValue(HOSTNAME_KEY, connectHostnameAndPort).log("addProxyHandshake");
     }
 
     private com.microsoft.azure.proton.transport.proxy.ProxyConfiguration getProtonConfiguration() {
-        final com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType type =
-            getProtonAuthType(proxyOptions.getAuthentication());
-        final String username = proxyOptions.hasUserDefinedCredentials()
-            ? proxyOptions.getCredential().getUserName()
-            : null;
-        final String password = proxyOptions.hasUserDefinedCredentials()
-            ? new String(proxyOptions.getCredential().getPassword())
-            : null;
+        final com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType type
+            = getProtonAuthType(proxyOptions.getAuthentication());
+        final String username
+            = proxyOptions.hasUserDefinedCredentials() ? proxyOptions.getCredential().getUserName() : null;
+        final String password
+            = proxyOptions.hasUserDefinedCredentials() ? new String(proxyOptions.getCredential().getPassword()) : null;
 
-        return new com.microsoft.azure.proton.transport.proxy.ProxyConfiguration(type,
-            proxyOptions.getProxyAddress(), username, password);
+        return new com.microsoft.azure.proton.transport.proxy.ProxyConfiguration(type, proxyOptions.getProxyAddress(),
+            username, password);
     }
 
-    private com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType getProtonAuthType(
-        ProxyAuthenticationType type) {
+    private com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType
+        getProtonAuthType(ProxyAuthenticationType type) {
         switch (type) {
             case DIGEST:
                 return com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType.DIGEST;
+
             case BASIC:
                 return com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType.BASIC;
+
             case NONE:
                 return com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType.NONE;
+
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format("This authentication type is unknown: %s", type.name())));
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    String.format("This authentication type is unknown: %s", type.name())));
         }
     }
 
@@ -261,10 +260,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         // if the proxy can be translated to InetSocketAddress
         // only then - can we parse it to hostName and Port
         // which is required by qpid-proton-j library reactor.connectToHost() API
-        return proxies != null
-            && !proxies.isEmpty()
-            && proxies.get(0).type() == Proxy.Type.HTTP
-            && proxies.get(0).address() != null
-            && proxies.get(0).address() instanceof InetSocketAddress;
+        return proxies != null && !proxies.isEmpty() && proxies.get(0).type() == Proxy.Type.HTTP
+            && proxies.get(0).address() != null && proxies.get(0).address() instanceof InetSocketAddress;
     }
 }

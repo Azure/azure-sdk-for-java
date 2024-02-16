@@ -13,7 +13,6 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 
-
 class GsonJsonProvider implements JsonProvider {
     static final boolean INITIALIZED = GsonJsonReader.INITIALIZED && GsonJsonWriter.INITIALIZED;
 

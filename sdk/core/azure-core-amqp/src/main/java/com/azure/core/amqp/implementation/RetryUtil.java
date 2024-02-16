@@ -44,8 +44,10 @@ public final class RetryUtil {
         switch (options.getMode()) {
             case FIXED:
                 return new FixedAmqpRetryPolicy(options);
+
             case EXPONENTIAL:
                 return new ExponentialAmqpRetryPolicy(options);
+
             default:
                 throw new IllegalArgumentException(
                     String.format(Locale.ROOT, "Mode is not supported: %s", options.getMode()));
@@ -67,12 +69,11 @@ public final class RetryUtil {
      *     Otherwise, propagates a {@link TimeoutException}.
      */
     public static <T> Mono<T> withRetry(Mono<T> source, AmqpRetryOptions retryOptions, String errorMessage,
-                                        boolean allowsLongOperation) {
+        boolean allowsLongOperation) {
         if (!allowsLongOperation) {
             source = source.timeout(retryOptions.getTryTimeout());
         }
-        return source.retryWhen(createRetry(retryOptions))
-            .doOnError(error -> LOGGER.error(errorMessage, error));
+        return source.retryWhen(createRetry(retryOptions)).doOnError(error -> LOGGER.error(errorMessage, error));
     }
 
     /**
@@ -86,8 +87,7 @@ public final class RetryUtil {
      *     Otherwise, propagates a {@link TimeoutException}.
      */
     public static <T> Flux<T> withRetry(Flux<T> source, AmqpRetryOptions retryOptions, String timeoutMessage) {
-        return source.timeout(retryOptions.getTryTimeout())
-            .retryWhen(createRetry(retryOptions))
+        return source.timeout(retryOptions.getTryTimeout()).retryWhen(createRetry(retryOptions))
             .doOnError(error -> LOGGER.error(timeoutMessage, error));
     }
 
@@ -112,17 +112,18 @@ public final class RetryUtil {
             case FIXED:
                 retrySpec = Retry.fixedDelay(options.getMaxRetries(), delay);
                 break;
+
             case EXPONENTIAL:
                 retrySpec = Retry.backoff(options.getMaxRetries(), delay);
                 break;
+
             default:
                 LOGGER.warning("Unknown: '{}'. Using exponential delay. Delay: {}. Max Delay: {}. Max Retries: {}.",
                     options.getMode(), options.getDelay(), options.getMaxDelay(), options.getMaxRetries());
                 retrySpec = Retry.backoff(options.getMaxRetries(), delay);
                 break;
         }
-        return retrySpec.jitter(JITTER_FACTOR)
-            .maxBackoff(options.getMaxDelay())
+        return retrySpec.jitter(JITTER_FACTOR).maxBackoff(options.getMaxDelay())
             .filter(error -> error instanceof TimeoutException
                 || (error instanceof AmqpException && ((AmqpException) error).isTransient()));
     }

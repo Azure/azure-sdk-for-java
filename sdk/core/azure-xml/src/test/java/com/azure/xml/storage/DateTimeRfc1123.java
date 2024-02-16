@@ -72,8 +72,7 @@ public final class DateTimeRfc1123 {
      */
     private static OffsetDateTime parse(final String date) {
         try {
-            return OffsetDateTime.of(
-                parseInt(date, 12, 16),  // year
+            return OffsetDateTime.of(parseInt(date, 12, 16),  // year
                 parseMonth(date, 8), // month
                 parseInt(date, 5, 7),    // dayOfMonth
                 parseInt(date, 17, 19),  // hour
@@ -126,35 +125,64 @@ public final class DateTimeRfc1123 {
             case 'J':
                 // Jan, Jun, Jul
                 switch (date.charAt(beginIndex + 1)) {
-                    case 'a': return 1; // Jan
+                    case 'a':
+                        return 1; // Jan
+
                     case 'u':
                         switch (date.charAt(beginIndex + 2)) {
-                            case 'n': return 6; // Jun
-                            case 'l': return 7; // Jul
-                            default: throw new IllegalArgumentException("Unknown month " + date);
+                            case 'n':
+                                return 6; // Jun
+
+                            case 'l':
+                                return 7; // Jul
+
+                            default:
+                                throw new IllegalArgumentException("Unknown month " + date);
                         }
-                    default: throw new IllegalArgumentException("Unknown month " + date);
+                    default:
+                        throw new IllegalArgumentException("Unknown month " + date);
                 }
-            case 'F': return 2; // Feb
+            case 'F':
+                return 2; // Feb
+
             case 'M':
                 // Mar, May
                 switch (date.charAt(beginIndex + 2)) {
-                    case 'r': return 3; // Mar
-                    case 'y': return 5; // May
-                    default: throw new IllegalArgumentException("Unknown month " + date);
+                    case 'r':
+                        return 3; // Mar
+
+                    case 'y':
+                        return 5; // May
+
+                    default:
+                        throw new IllegalArgumentException("Unknown month " + date);
                 }
             case 'A':
                 // Apr, Aug
                 switch (date.charAt(beginIndex + 2)) {
-                    case 'r': return 4; // Apr
-                    case 'g': return 8; // Aug
-                    default: throw new IllegalArgumentException("Unknown month " + date);
+                    case 'r':
+                        return 4; // Apr
+
+                    case 'g':
+                        return 8; // Aug
+
+                    default:
+                        throw new IllegalArgumentException("Unknown month " + date);
                 }
-            case 'S': return 9; //Sep
-            case 'O': return 10; // Oct
-            case 'N': return 11; // Nov
-            case 'D': return 12; // Dec
-            default: throw new IllegalArgumentException("Unknown month " + date);
+            case 'S':
+                return 9; // Sep
+
+            case 'O':
+                return 10; // Oct
+
+            case 'N':
+                return 11; // Nov
+
+            case 'D':
+                return 12; // Dec
+
+            default:
+                throw new IllegalArgumentException("Unknown month " + date);
         }
     }
 
@@ -174,33 +202,92 @@ public final class DateTimeRfc1123 {
 
         final DayOfWeek dayOfWeek = dateTime.getDayOfWeek();
         switch (dayOfWeek) {
-            case MONDAY: sb.append("Mon, "); break;
-            case TUESDAY: sb.append("Tue, "); break;
-            case WEDNESDAY: sb.append("Wed, "); break;
-            case THURSDAY: sb.append("Thu, "); break;
-            case FRIDAY: sb.append("Fri, "); break;
-            case SATURDAY: sb.append("Sat, "); break;
-            case SUNDAY: sb.append("Sun, "); break;
-            default: throw new IllegalArgumentException("Unknown day of week " + dayOfWeek);
+            case MONDAY:
+                sb.append("Mon, ");
+                break;
+
+            case TUESDAY:
+                sb.append("Tue, ");
+                break;
+
+            case WEDNESDAY:
+                sb.append("Wed, ");
+                break;
+
+            case THURSDAY:
+                sb.append("Thu, ");
+                break;
+
+            case FRIDAY:
+                sb.append("Fri, ");
+                break;
+
+            case SATURDAY:
+                sb.append("Sat, ");
+                break;
+
+            case SUNDAY:
+                sb.append("Sun, ");
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown day of week " + dayOfWeek);
         }
 
         zeroPad(dateTime.getDayOfMonth(), sb);
 
         final Month month = dateTime.getMonth();
         switch (month) {
-            case JANUARY: sb.append(" Jan "); break;
-            case FEBRUARY: sb.append(" Feb "); break;
-            case MARCH: sb.append(" Mar "); break;
-            case APRIL: sb.append(" Apr "); break;
-            case MAY: sb.append(" May "); break;
-            case JUNE: sb.append(" Jun "); break;
-            case JULY: sb.append(" Jul "); break;
-            case AUGUST: sb.append(" Aug "); break;
-            case SEPTEMBER: sb.append(" Sep "); break;
-            case OCTOBER: sb.append(" Oct "); break;
-            case NOVEMBER: sb.append(" Nov "); break;
-            case DECEMBER: sb.append(" Dec "); break;
-            default: throw new IllegalArgumentException("Unknown month " + month);
+            case JANUARY:
+                sb.append(" Jan ");
+                break;
+
+            case FEBRUARY:
+                sb.append(" Feb ");
+                break;
+
+            case MARCH:
+                sb.append(" Mar ");
+                break;
+
+            case APRIL:
+                sb.append(" Apr ");
+                break;
+
+            case MAY:
+                sb.append(" May ");
+                break;
+
+            case JUNE:
+                sb.append(" Jun ");
+                break;
+
+            case JULY:
+                sb.append(" Jul ");
+                break;
+
+            case AUGUST:
+                sb.append(" Aug ");
+                break;
+
+            case SEPTEMBER:
+                sb.append(" Sep ");
+                break;
+
+            case OCTOBER:
+                sb.append(" Oct ");
+                break;
+
+            case NOVEMBER:
+                sb.append(" Nov ");
+                break;
+
+            case DECEMBER:
+                sb.append(" Dec ");
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown month " + month);
         }
 
         sb.append(dateTime.getYear());

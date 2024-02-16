@@ -30,7 +30,6 @@ import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 
-
 /**
  * Handler that receives events from its corresponding {@link Receiver}. Handlers must be associated to a
  * {@link Receiver} to receive its events.
@@ -119,11 +118,8 @@ public class ReceiveLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
-            logger.atVerbose()
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue(LINK_NAME_KEY, link.getName())
-                .addKeyValue("localSource", link.getSource())
-                .log("onLinkLocalOpen");
+            logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, link.getName())
+                .addKeyValue("localSource", link.getSource()).log("onLinkLocalOpen");
         }
     }
 
@@ -134,9 +130,8 @@ public class ReceiveLinkHandler extends LinkHandler {
             return;
         }
 
-        LoggingEventBuilder logBuilder =  logger.atInfo()
-            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-            .addKeyValue(LINK_NAME_KEY, link.getName());
+        LoggingEventBuilder logBuilder
+            = logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, link.getName());
 
         if (link.getRemoteSource() != null) {
             logBuilder.addKeyValue("remoteSource", link.getRemoteSource());
@@ -145,8 +140,7 @@ public class ReceiveLinkHandler extends LinkHandler {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
-            logBuilder
-                .addKeyValue("action", "waitingForError");
+            logBuilder.addKeyValue("action", "waitingForError");
         }
 
         logBuilder.log("onLinkRemoteOpen");
@@ -173,17 +167,14 @@ public class ReceiveLinkHandler extends LinkHandler {
             if (wasSettled) {
                 if (link != null) {
                     addErrorCondition(logger.atInfo(), link.getRemoteCondition())
-                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                        .addKeyValue(LINK_NAME_KEY, linkName)
+                        .addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, linkName)
                         .addKeyValue("updatedLinkCredit", link.getCredit())
                         .addKeyValue("remoteCredit", link.getRemoteCredit())
                         .addKeyValue("delivery.isSettled", delivery.isSettled())
                         .log("onDelivery. Was already settled.");
                 } else {
-                    logger.atWarning()
-                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                        .addKeyValue("delivery.isSettled", delivery.isSettled())
-                        .log("Settled delivery with no link.");
+                    logger.atWarning().addKeyValue(ENTITY_PATH_KEY, entityPath)
+                        .addKeyValue("delivery.isSettled", delivery.isSettled()).log("Settled delivery with no link.");
                 }
             } else {
                 if (link.getLocalState() == EndpointState.CLOSED) {
@@ -197,11 +188,8 @@ public class ReceiveLinkHandler extends LinkHandler {
                 } else {
                     queuedDeliveries.add(delivery);
                     deliveries.emitNext(delivery, (signalType, emitResult) -> {
-                        logger.atWarning()
-                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                            .addKeyValue(LINK_NAME_KEY, linkName)
-                            .addKeyValue(EMIT_RESULT_KEY, emitResult)
-                            .log("Could not emit delivery. {}", delivery);
+                        logger.atWarning().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, linkName)
+                            .addKeyValue(EMIT_RESULT_KEY, emitResult).log("Could not emit delivery. {}", delivery);
 
                         if (emitResult == Sinks.EmitResult.FAIL_OVERFLOW
                             && link.getLocalState() != EndpointState.CLOSED) {
@@ -220,13 +208,10 @@ public class ReceiveLinkHandler extends LinkHandler {
 
         if (link != null) {
             final ErrorCondition condition = link.getRemoteCondition();
-            addErrorCondition(logger.atVerbose(), condition)
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue(LINK_NAME_KEY, linkName)
-                .addKeyValue("updatedLinkCredit", link.getCredit())
+            addErrorCondition(logger.atVerbose(), condition).addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(LINK_NAME_KEY, linkName).addKeyValue("updatedLinkCredit", link.getCredit())
                 .addKeyValue("remoteCredit", link.getRemoteCredit())
-                .addKeyValue("delivery.isPartial", delivery.isPartial())
-                .addKeyValue("delivery.isSettled", wasSettled)
+                .addKeyValue("delivery.isPartial", delivery.isPartial()).addKeyValue("delivery.isSettled", wasSettled)
                 .log("onDelivery.");
         }
     }
@@ -238,9 +223,7 @@ public class ReceiveLinkHandler extends LinkHandler {
         // Someone called receiver.close() to set the local link state to close. Since the link was never remotely
         // active, we complete getEndpointStates() ourselves.
         if (!isRemoteActive.get()) {
-            logger.atInfo()
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue(LINK_NAME_KEY, linkName)
+            logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, linkName)
                 .log("Receiver link was never active. Closing endpoint states");
 
             super.close();
@@ -270,9 +253,7 @@ public class ReceiveLinkHandler extends LinkHandler {
      */
     private void clearAndCompleteDeliveries(String errorMessage) {
         deliveries.emitComplete((signalType, emitResult) -> {
-            logger.atVerbose()
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue(LINK_NAME_KEY, linkName)
+            logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, linkName)
                 .log(errorMessage);
             return false;
         });

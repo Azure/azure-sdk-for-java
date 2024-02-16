@@ -31,13 +31,12 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
      * @param activeDirectoryScope Scope used to access AD resources for the Azure service.
      */
     public AzureTokenManagerProvider(CbsAuthorizationType authorizationType, String fullyQualifiedNamespace,
-                                     String activeDirectoryScope) {
-        this.activeDirectoryScope = Objects.requireNonNull(activeDirectoryScope,
-            "'activeDirectoryScope' cannot be null.");
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null.");
-        this.authorizationType = Objects.requireNonNull(authorizationType,
-            "'authorizationType' cannot be null.");
+        String activeDirectoryScope) {
+        this.activeDirectoryScope
+            = Objects.requireNonNull(activeDirectoryScope, "'activeDirectoryScope' cannot be null.");
+        this.fullyQualifiedNamespace
+            = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
+        this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' cannot be null.");
     }
 
     /**
@@ -48,9 +47,7 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
         final String scopes = getScopesFromResource(resource);
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
 
-        LOGGER.atVerbose()
-            .addKeyValue("audience", tokenAudience)
-            .addKeyValue("resource", resource)
+        LOGGER.atVerbose().addKeyValue("audience", tokenAudience).addKeyValue("resource", resource)
             .log("Creating new token manager.");
 
         return new ActiveClientTokenManager(cbsNodeMono, tokenAudience, scopes);

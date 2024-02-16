@@ -85,12 +85,12 @@ class JdkHttpClient implements HttpClient {
         java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request, context);
         try {
             // For now, eagerlyReadResponse and ignoreResponseBody works the same.
-//            if (ignoreResponseBody) {
-//                java.net.http.HttpResponse<Void> jdKResponse = jdkHttpClient.send(jdkRequest,
-//                    responseInfo -> new BodyIgnoringSubscriber(LOGGER));
-//                return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
-//                    fromJdkHttpHeaders(jdKResponse.headers()), IGNORED_BODY);
-//            }
+            // if (ignoreResponseBody) {
+            // java.net.http.HttpResponse<Void> jdKResponse = jdkHttpClient.send(jdkRequest,
+            // responseInfo -> new BodyIgnoringSubscriber(LOGGER));
+            // return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
+            // fromJdkHttpHeaders(jdKResponse.headers()), IGNORED_BODY);
+            // }
 
             if (eagerlyReadResponse || ignoreResponseBody) {
                 java.net.http.HttpResponse<byte[]> jdKResponse = jdkHttpClient.send(jdkRequest, ofByteArray());

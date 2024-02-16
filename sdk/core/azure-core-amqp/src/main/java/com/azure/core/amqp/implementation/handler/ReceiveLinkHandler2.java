@@ -30,7 +30,8 @@ import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
  * Handler that receives events from its corresponding {@link Receiver}. Handlers must be associated to a
  * {@link Receiver} to receive its events.
  *
- * Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack is removed.
+ * Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack is
+ * removed.
  *
  * @see BaseHandler#setHandler(Extendable, Handler)
  * @see Receiver
@@ -62,14 +63,14 @@ public class ReceiveLinkHandler2 extends LinkHandler {
      * @param metricsProvider The AMQP metrics provider.
      */
     public ReceiveLinkHandler2(String connectionId, String hostname, String linkName, String entityPath,
-        DeliverySettleMode settlingMode, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions, boolean includeDeliveryTagInMessage,
-        AmqpMetricsProvider metricsProvider) {
+        DeliverySettleMode settlingMode, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions,
+        boolean includeDeliveryTagInMessage, AmqpMetricsProvider metricsProvider) {
         super(connectionId, hostname, entityPath, metricsProvider);
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
-        this.unsettledDeliveries = new ReceiverUnsettledDeliveries(hostname, entityPath, linkName, dispatcher, retryOptions, super.logger);
-        this.deliveryHandler = new ReceiverDeliveryHandler(entityPath, linkName,
-            settlingMode, unsettledDeliveries,
+        this.unsettledDeliveries
+            = new ReceiverUnsettledDeliveries(hostname, entityPath, linkName, dispatcher, retryOptions, super.logger);
+        this.deliveryHandler = new ReceiverDeliveryHandler(entityPath, linkName, settlingMode, unsettledDeliveries,
             includeDeliveryTagInMessage, super.logger);
     }
 
@@ -112,11 +113,8 @@ public class ReceiveLinkHandler2 extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
-            logger.atVerbose()
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue(LINK_NAME_KEY, link.getName())
-                .addKeyValue("localSource", link.getSource())
-                .log("onLinkLocalOpen");
+            logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, link.getName())
+                .addKeyValue("localSource", link.getSource()).log("onLinkLocalOpen");
         }
     }
 
@@ -127,9 +125,8 @@ public class ReceiveLinkHandler2 extends LinkHandler {
             return;
         }
 
-        LoggingEventBuilder logBuilder = logger.atInfo()
-            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-            .addKeyValue(LINK_NAME_KEY, link.getName());
+        LoggingEventBuilder logBuilder
+            = logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, link.getName());
 
         if (link.getRemoteSource() != null) {
             logBuilder.addKeyValue("remoteSource", link.getRemoteSource());
@@ -138,8 +135,7 @@ public class ReceiveLinkHandler2 extends LinkHandler {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
-            logBuilder
-                .addKeyValue("action", "waitingForError");
+            logBuilder.addKeyValue("action", "waitingForError");
         }
 
         logBuilder.log("onLinkRemoteOpen");
@@ -160,9 +156,7 @@ public class ReceiveLinkHandler2 extends LinkHandler {
         // Someone called receiver.close() to set the local link state to close. Since the link was never remotely
         // active, we complete getEndpointStates() ourselves.
         if (!isRemoteActive.get()) {
-            logger.atInfo()
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue(LINK_NAME_KEY, linkName)
+            logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, linkName)
                 .log("Receiver link was never active. Closing endpoint states");
 
             super.close();

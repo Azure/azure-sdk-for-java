@@ -194,8 +194,7 @@ public class AmqpRetryOptions {
 
         final AmqpRetryOptions other = (AmqpRetryOptions) obj;
 
-        return this.getMaxRetries() == other.getMaxRetries()
-            && this.getMode() == other.getMode()
+        return this.getMaxRetries() == other.getMaxRetries() && this.getMode() == other.getMode()
             && Objects.equals(this.getMaxDelay(), other.getMaxDelay())
             && Objects.equals(this.getDelay(), other.getDelay())
             && Objects.equals(this.getTryTimeout(), other.getTryTimeout());

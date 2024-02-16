@@ -207,16 +207,19 @@ public final class DefaultJsonReader extends JsonReader {
         switch (nextToken) {
             case START_OBJECT:
                 return JsonToken.START_OBJECT;
+
             case END_OBJECT:
                 return JsonToken.END_OBJECT;
 
             case START_ARRAY:
                 return JsonToken.START_ARRAY;
+
             case END_ARRAY:
                 return JsonToken.END_ARRAY;
 
             case FIELD_NAME:
                 return JsonToken.FIELD_NAME;
+
             case VALUE_STRING:
                 return JsonToken.STRING;
 

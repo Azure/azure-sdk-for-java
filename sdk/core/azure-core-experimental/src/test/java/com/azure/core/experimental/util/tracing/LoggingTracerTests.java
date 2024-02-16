@@ -73,16 +73,17 @@ public class LoggingTracerTests {
         Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, null,
             new LoggingTracerProvider.LoggingTracingOptions());
 
-        TracingLink link1 = new TracingLink(new Context("traceId", "00000000000000000000000000000001").addData("spanId", "0000000000000001"),
+        TracingLink link1 = new TracingLink(
+            new Context("traceId", "00000000000000000000000000000001").addData("spanId", "0000000000000001"),
             Collections.singletonMap("foo", "bar"));
-        TracingLink link2 = new TracingLink(new Context("traceId", "20000000000000000000000000000000").addData("spanId", "2000000000000000"));
+        TracingLink link2 = new TracingLink(
+            new Context("traceId", "20000000000000000000000000000000").addData("spanId", "2000000000000000"));
 
         StartSpanOptions startOptions = new StartSpanOptions(SpanKind.CONSUMER)
-            .setStartTimestamp(Instant.ofEpochSecond(42))
-            .addLink(link1)
-            .addLink(link2);
+            .setStartTimestamp(Instant.ofEpochSecond(42)).addLink(link1).addLink(link2);
 
-        LoggingTracerProvider.LoggingSpan parent = new LoggingTracerProvider.LoggingSpan("parent", SpanKind.SERVER, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "bbbbbbbbbbbbbbbb");
+        LoggingTracerProvider.LoggingSpan parent = new LoggingTracerProvider.LoggingSpan("parent", SpanKind.SERVER,
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "bbbbbbbbbbbbbbbb");
         Context spanCtx = tracer.start("test", startOptions, new Context("span", parent));
         Object span = spanCtx.getData("span").get();
         assertInstanceOf(LoggingTracerProvider.LoggingSpan.class, span);

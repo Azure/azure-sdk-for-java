@@ -39,6 +39,7 @@ public final class RequestResponseChannelClosedException extends IllegalStateExc
      */
     public RequestResponseChannelClosedException(String connectionId, EndpointState sendLinkState,
         EndpointState receiveLinkState) {
-        super(DISPOSED + " ConnectionId:" + connectionId + " LinkState:(" + sendLinkState + "," + receiveLinkState + ")");
+        super(
+            DISPOSED + " ConnectionId:" + connectionId + " LinkState:(" + sendLinkState + "," + receiveLinkState + ")");
     }
 }

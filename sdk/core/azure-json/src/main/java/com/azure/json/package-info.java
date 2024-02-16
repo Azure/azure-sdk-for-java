@@ -2,16 +2,19 @@
 // Licensed under the MIT License.
 
 /**
- * <p>The Azure JSON library provides interfaces for stream-style JSON reading and writing. Stream-style reading and
+ * <p>
+ * The Azure JSON library provides interfaces for stream-style JSON reading and writing. Stream-style reading and
  * writing has the type itself define how to read JSON to create an instance of itself and how it writes out to JSON.
  * Azure JSON also allows for external implementations for JSON reading and writing by offering a
  * <a href="https://docs.oracle.com/javase/tutorial/sound/SPI-intro.html">service provider interface</a> to load
  * implementations from the classpath. However, if one is not found, the Azure JSON library provides a default
- * implementation.</p>
+ * implementation.
+ * </p>
  *
  * <h2>Getting Started</h2>
  *
- * <p>{@link com.azure.json.JsonSerializable} is the base of Azure JSON: it's the interface that types implement to
+ * <p>
+ * {@link com.azure.json.JsonSerializable} is the base of Azure JSON: it's the interface that types implement to
  * provide stream-style JSON reading and writing functionality. The interface has a single implementable method
  * {@link com.azure.json.JsonSerializable#toJson(com.azure.json.JsonWriter) toJson(JsonWriter)} that defines how the
  * object is written as JSON, to the {@link com.azure.json.JsonWriter}, and a static method
@@ -21,9 +24,12 @@
  * throws an {@link java.lang.UnsupportedOperationException} if the static method isn't hidden (a static method with the
  * same definition) by the type implementing {@link com.azure.json.JsonSerializable}. Given that the type itself manages
  * JSON serialization the type can be fluent, immutable, or a mix of fluent and immutable, it doesn't matter as all
- * logic is self-encapsulated.</p>
+ * logic is self-encapsulated.
+ * </p>
  *
- * <p><strong>Sample: All JsonSerializable fields are optional</strong></p>
+ * <p>
+ * <strong>Sample: All JsonSerializable fields are optional</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.json.JsonSerializable.ComputerMemory -->
  * <pre>
@@ -139,7 +145,9 @@
  * </pre>
  * <!-- end com.azure.json.JsonSerializable.ComputerMemory -->
  *
- * <p><strong>Sample: All JsonSerializable fields are required</strong></p>
+ * <p>
+ * <strong>Sample: All JsonSerializable fields are required</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.json.JsonSerializable.ComputerProcessor -->
  * <pre>
@@ -253,7 +261,9 @@
  * </pre>
  * <!-- end com.azure.json.JsonSerializable.ComputerProcessor -->
  *
- * <p><strong>Sample: JsonSerializable contains required and optional fields</strong></p>
+ * <p>
+ * <strong>Sample: JsonSerializable contains required and optional fields</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.json.JsonSerializable.VmStatistics -->
  * <pre>
@@ -381,7 +391,8 @@
  *
  * <h2>Reading and Writing JSON</h2>
  *
- * <p>{@link com.azure.json.JsonReader} contains APIs and logic for parsing JSON. The type is abstract and consists of
+ * <p>
+ * {@link com.azure.json.JsonReader} contains APIs and logic for parsing JSON. The type is abstract and consists of
  * both abstract methods for an implementation to implement as well as final method for commonly shared logic that
  * builds on the abstract methods. Similarly, {@link com.azure.json.JsonWriter} contains APIs and logic for writing
  * JSON, and as with {@link com.azure.json.JsonReader}, it contains both abstract methods for implementations to
@@ -389,10 +400,12 @@
  * {@link java.io.Closeable} and should be used in try-with-resources blocks to ensure any resources created by
  * the implementations are cleaned up once JSON reading or writing is complete. Both types are used by the
  * {@link com.azure.json.JsonProvider} service provider interface which is used to create instances of
- * {@link com.azure.json.JsonReader} and {@link com.azure.json.JsonWriter} implementations.</p>
+ * {@link com.azure.json.JsonReader} and {@link com.azure.json.JsonWriter} implementations.
+ * </p>
  *
  *
- * <p>{@link com.azure.json.JsonProviders} is a utility class that handles finding {@link com.azure.json.JsonProvider}
+ * <p>
+ * {@link com.azure.json.JsonProviders} is a utility class that handles finding {@link com.azure.json.JsonProvider}
  * implementations on the classpath and should be the default way to create instances of
  * {@link com.azure.json.JsonReader} and {@link com.azure.json.JsonWriter}. As mentioned earlier, the Azure JSON
  * package provides a default implementation allowing for the library to be used stand-alone.
@@ -401,7 +414,9 @@
  * from {@link java.io.OutputStream} and {@link java.io.Writer} sources. No matter the source the functionality will be
  * the same, the options exist to provide the best convenience and performance by reducing type translations.
  *
- * <p><strong>Sample: Reading a JSON byte[]</strong></p>
+ * <p>
+ * <strong>Sample: Reading a JSON byte[]</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.json.JsonReader.readJsonByteArray -->
  * <pre>
@@ -415,7 +430,9 @@
  * </pre>
  * <!-- end com.azure.json.JsonReader.readJsonByteArray -->
  *
- * <p><strong>Sample: Reading a JSON String</strong></p>
+ * <p>
+ * <strong>Sample: Reading a JSON String</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.json.JsonReader.readJsonString -->
  * <pre>
@@ -428,7 +445,9 @@
  * </pre>
  * <!-- end com.azure.json.JsonReader.readJsonString -->
  *
- * <p><strong>Sample: Reading a JSON InputStream</strong></p>
+ * <p>
+ * <strong>Sample: Reading a JSON InputStream</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.json.JsonReader.readJsonInputStream -->
  * <pre>
@@ -446,7 +465,9 @@
  * </pre>
  * <!-- end com.azure.json.JsonReader.readJsonInputStream -->
  *
- * <p><strong>Sample: Reading a JSON Reader</strong></p>
+ * <p>
+ * <strong>Sample: Reading a JSON Reader</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.json.JsonReader.readJsonReader -->
  * <pre>
@@ -462,7 +483,9 @@
  * </pre>
  * <!-- end com.azure.json.JsonReader.readJsonReader -->
  *
- * <p><strong>Sample: Writing to a JSON OutputStream</strong></p>
+ * <p>
+ * <strong>Sample: Writing to a JSON OutputStream</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.json.JsonWriter.writeJsonOutputStream -->
  * <pre>
@@ -494,7 +517,9 @@
  * </pre>
  * <!-- end com.azure.json.JsonWriter.writeJsonOutputStream -->
  *
- * <p><strong>Sample: Writing to a JSON Writer</strong></p>
+ * <p>
+ * <strong>Sample: Writing to a JSON Writer</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.json.JsonWriter.writeJsonWriter -->
  * <pre>

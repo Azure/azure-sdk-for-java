@@ -9,8 +9,7 @@ import java.io.*;
  *
  * @since 2.8
  */
-public class DataOutputAsStream extends OutputStream
-{
+public class DataOutputAsStream extends OutputStream {
     protected final DataOutput _output;
 
     public DataOutputAsStream(DataOutput out) {
@@ -36,10 +35,10 @@ public class DataOutputAsStream extends OutputStream
     // These are no-ops, base class impl works fine
 
     /*
-    @Override
-    public void flush() throws IOException { }
-
-    @Override
-    public void close() throws IOException { }
-    */
+     * @Override
+     * public void flush() throws IOException { }
+     * 
+     * @Override
+     * public void close() throws IOException { }
+     */
 }

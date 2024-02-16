@@ -23,9 +23,7 @@ import com.azure.json.implementation.jackson.core.PrettyPrinter;
  * a stateless implementation; that is, a single instance can be
  * shared between threads.
  */
-public class MinimalPrettyPrinter
-    implements PrettyPrinter, java.io.Serializable
-{
+public class MinimalPrettyPrinter implements PrettyPrinter, java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     protected String _rootValueSeparator;
@@ -36,9 +34,9 @@ public class MinimalPrettyPrinter
     protected Separators _separators;
 
     /*
-    /**********************************************************
-    /* Life-cycle, construction, configuration
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle, construction, configuration
+     * /**********************************************************
      */
 
     public MinimalPrettyPrinter() {
@@ -67,28 +65,25 @@ public class MinimalPrettyPrinter
     }
 
     /*
-    /**********************************************************
-    /* PrettyPrinter impl
-    /**********************************************************
+     * /**********************************************************
+     * /* PrettyPrinter impl
+     * /**********************************************************
      */
 
     @Override
-    public void writeRootValueSeparator(JsonGenerator g) throws IOException
-    {
+    public void writeRootValueSeparator(JsonGenerator g) throws IOException {
         if (_rootValueSeparator != null) {
             g.writeRaw(_rootValueSeparator);
         }
     }
 
     @Override
-    public void writeStartObject(JsonGenerator g) throws IOException
-    {
+    public void writeStartObject(JsonGenerator g) throws IOException {
         g.writeRaw('{');
     }
-    
+
     @Override
-    public void beforeObjectEntries(JsonGenerator g) throws IOException
-    {
+    public void beforeObjectEntries(JsonGenerator g) throws IOException {
         // nothing special, since no indentation is added
     }
 
@@ -100,11 +95,10 @@ public class MinimalPrettyPrinter
      * colon to separate the two, without additional spaces.
      */
     @Override
-    public void writeObjectFieldValueSeparator(JsonGenerator g) throws IOException
-    {
+    public void writeObjectFieldValueSeparator(JsonGenerator g) throws IOException {
         g.writeRaw(_separators.getObjectFieldValueSeparator());
     }
-    
+
     /**
      * Method called after an object entry (field:value) has been completely
      * output, and before another value is to be output.
@@ -113,26 +107,22 @@ public class MinimalPrettyPrinter
      * comma to separate the two.
      */
     @Override
-    public void writeObjectEntrySeparator(JsonGenerator g) throws IOException
-    {
+    public void writeObjectEntrySeparator(JsonGenerator g) throws IOException {
         g.writeRaw(_separators.getObjectEntrySeparator());
     }
 
     @Override
-    public void writeEndObject(JsonGenerator g, int nrOfEntries) throws IOException
-    {
+    public void writeEndObject(JsonGenerator g, int nrOfEntries) throws IOException {
         g.writeRaw('}');
     }
-    
+
     @Override
-    public void writeStartArray(JsonGenerator g) throws IOException
-    {
+    public void writeStartArray(JsonGenerator g) throws IOException {
         g.writeRaw('[');
     }
-    
+
     @Override
-    public void beforeArrayValues(JsonGenerator g) throws IOException
-    {
+    public void beforeArrayValues(JsonGenerator g) throws IOException {
         // nothing special, since no indentation is added
     }
 
@@ -144,14 +134,12 @@ public class MinimalPrettyPrinter
      * comma to separate values.
      */
     @Override
-    public void writeArrayValueSeparator(JsonGenerator g) throws IOException
-    {
+    public void writeArrayValueSeparator(JsonGenerator g) throws IOException {
         g.writeRaw(_separators.getArrayValueSeparator());
     }
-    
+
     @Override
-    public void writeEndArray(JsonGenerator g, int nrOfValues) throws IOException
-    {
+    public void writeEndArray(JsonGenerator g, int nrOfValues) throws IOException {
         g.writeRaw(']');
     }
 }

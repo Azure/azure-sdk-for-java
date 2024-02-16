@@ -12,12 +12,11 @@ package com.azure.json.implementation.jackson.core.type;
  * 
  * @since 2.0
  */
-public abstract class ResolvedType
-{
+public abstract class ResolvedType {
     /*
-    /**********************************************************
-    /* Public API, simple property accessors
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, simple property accessors
+     * /**********************************************************
      */
 
     /**
@@ -28,7 +27,7 @@ public abstract class ResolvedType
     public abstract boolean hasRawClass(Class<?> clz);
 
     public abstract boolean isAbstract();
-    
+
     public abstract boolean isConcrete();
 
     public abstract boolean isThrowable();
@@ -65,11 +64,11 @@ public abstract class ResolvedType
     public abstract boolean isMapLikeType();
 
     /*
-    /**********************************************************
-    /* Public API, type parameter access
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, type parameter access
+     * /**********************************************************
      */
-    
+
     /**
      * Method that can be used to find out if the type directly declares generic
      * parameters (for its direct super-class and/or super-interfaces).
@@ -115,7 +114,7 @@ public abstract class ResolvedType
      * @since 2.6
      */
     public abstract ResolvedType getReferencedType();
-    
+
     /**
      * Method for checking how many contained types this type
      * has. Contained types are usually generic types, so that
@@ -135,7 +134,7 @@ public abstract class ResolvedType
      *    exists (no exception thrown)
      */
     public abstract ResolvedType containedType(int index);
-    
+
     /**
      * Method for accessing name of type variable in indicated
      * position. If no name is bound, will use placeholders (derived
@@ -150,9 +149,9 @@ public abstract class ResolvedType
     public abstract String containedTypeName(int index);
 
     /*
-    /**********************************************************
-    /* Public API, other
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, other
+     * /**********************************************************
      */
 
     /**

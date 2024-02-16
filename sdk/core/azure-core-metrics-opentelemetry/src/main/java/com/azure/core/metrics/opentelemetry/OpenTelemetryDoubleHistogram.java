@@ -23,6 +23,7 @@ class OpenTelemetryDoubleHistogram implements DoubleHistogram {
     };
 
     private final io.opentelemetry.api.metrics.DoubleHistogram histogram;
+
     OpenTelemetryDoubleHistogram(io.opentelemetry.api.metrics.DoubleHistogram histogram) {
         this.histogram = histogram;
     }
@@ -32,7 +33,8 @@ class OpenTelemetryDoubleHistogram implements DoubleHistogram {
      */
     @Override
     public void record(double value, TelemetryAttributes attributes, Context context) {
-        histogram.record(value, OpenTelemetryUtils.getAttributes(attributes), OpenTelemetryUtils.getTraceContextOrCurrent(context));
+        histogram.record(value, OpenTelemetryUtils.getAttributes(attributes),
+            OpenTelemetryUtils.getTraceContextOrCurrent(context));
     }
 
     /**

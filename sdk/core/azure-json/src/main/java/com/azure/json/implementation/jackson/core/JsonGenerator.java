@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -28,9 +29,7 @@ import static com.azure.json.implementation.jackson.core.JsonTokenId.*;
  *
  * @author Tatu Saloranta
  */
-public abstract class JsonGenerator
-    implements Closeable, Flushable, Versioned
-{
+public abstract class JsonGenerator implements Closeable, Flushable, Versioned {
     /**
      * Default set of {@link StreamWriteCapability}ies that may be used as
      * basis for format-specific readers (or as bogus instance if non-null
@@ -106,7 +105,7 @@ public abstract class JsonGenerator
         FLUSH_PASSED_TO_STREAM(true),
 
         // // Quoting-related features
-        
+
         /**
          * Feature that determines whether JSON Object field names are
          * quoted using double-quotes, as specified by JSON specification
@@ -135,7 +134,7 @@ public abstract class JsonGenerator
          *
          * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonWriteFeature#WRITE_NAN_AS_STRINGS} instead
          */
-         @Deprecated
+        @Deprecated
         QUOTE_NON_NUMERIC_NUMBERS(true),
 
         // // Character escaping features
@@ -219,7 +218,7 @@ public abstract class JsonGenerator
          * @since 2.3
          */
         STRICT_DUPLICATE_DETECTION(false),
-        
+
         /**
          * Feature that determines what to do if the underlying data format requires knowledge
          * of all properties to output, and if no definition is found for a property that
@@ -240,20 +239,18 @@ public abstract class JsonGenerator
          *
          * @since 2.5
          */
-        IGNORE_UNKNOWN(false),
-        ;
+        IGNORE_UNKNOWN(false),;
 
         private final boolean _defaultState;
         private final int _mask;
-        
+
         /**
          * Method that calculates bit set (flags) of all features that
          * are enabled by default.
          *
          * @return Bit field of the features that are enabled by default
          */
-        public static int collectDefaults()
-        {
+        public static int collectDefaults() {
             int flags = 0;
             for (Feature f : values()) {
                 if (f.enabledByDefault()) {
@@ -262,24 +259,30 @@ public abstract class JsonGenerator
             }
             return flags;
         }
-        
+
         private Feature(boolean defaultState) {
             _defaultState = defaultState;
             _mask = (1 << ordinal());
         }
 
-        public boolean enabledByDefault() { return _defaultState; }
+        public boolean enabledByDefault() {
+            return _defaultState;
+        }
 
         // @since 2.3
-        public boolean enabledIn(int flags) { return (flags & _mask) != 0; }
+        public boolean enabledIn(int flags) {
+            return (flags & _mask) != 0;
+        }
 
-        public int getMask() { return _mask; }
+        public int getMask() {
+            return _mask;
+        }
     }
 
     /*
-    /**********************************************************************
-    /* Configuration
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Configuration
+     * /**********************************************************************
      */
 
     /**
@@ -290,12 +293,13 @@ public abstract class JsonGenerator
     protected PrettyPrinter _cfgPrettyPrinter;
 
     /*
-    /**********************************************************************
-    /* Construction, initialization
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Construction, initialization
+     * /**********************************************************************
      */
-    
-    protected JsonGenerator() { }
+
+    protected JsonGenerator() {
+    }
 
     /**
      * Method that can be called to set or reset the object to
@@ -327,9 +331,9 @@ public abstract class JsonGenerator
     public abstract Version version();
 
     /*
-    /**********************************************************************
-    /* Public API, state, output configuration access
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, state, output configuration access
+     * /**********************************************************************
      */
 
     /**
@@ -423,9 +427,9 @@ public abstract class JsonGenerator
     }
 
     /*
-    /**********************************************************************
-    /* Public API, Feature configuration
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, Feature configuration
+     * /**********************************************************************
      */
 
     /**
@@ -458,7 +462,10 @@ public abstract class JsonGenerator
      * @return This generator, to allow call chaining
      */
     public final JsonGenerator configure(Feature f, boolean state) {
-        if (state) enable(f); else disable(f);
+        if (state)
+            enable(f);
+        else
+            disable(f);
         return this;
     }
 
@@ -545,7 +552,7 @@ public abstract class JsonGenerator
     public int getFormatFeatures() {
         return 0;
     }
-    
+
     /**
      * Bulk set method for (re)setting states of {@link FormatFeature}s,
      * by specifying values (set / clear) along with a mask, to determine
@@ -563,15 +570,15 @@ public abstract class JsonGenerator
      */
     public JsonGenerator overrideFormatFeatures(int values, int mask) {
         // 08-Oct-2018, tatu: For 2.10 we actually do get `JsonWriteFeature`s, although they
-        //    are (for 2.x only, not for 3.x) mapper to legacy settings. So do not throw exception:
-//        throw new IllegalArgumentException("No FormatFeatures defined for generator of type "+getClass().getName());
+        // are (for 2.x only, not for 3.x) mapper to legacy settings. So do not throw exception:
+        // throw new IllegalArgumentException("No FormatFeatures defined for generator of type "+getClass().getName());
         return this;
     }
 
     /*
-    /**********************************************************************
-    /* Public API, Schema configuration
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, Schema configuration
+     * /**********************************************************************
      */
 
     /**
@@ -591,8 +598,7 @@ public abstract class JsonGenerator
      */
     public void setSchema(FormatSchema schema) {
         throw new UnsupportedOperationException(String.format(
-                "Generator of type %s does not support schema of type '%s'",
-                getClass().getName(), schema.getSchemaType()));
+            "Generator of type %s does not support schema of type '%s'", getClass().getName(), schema.getSchemaType()));
     }
 
     /**
@@ -601,13 +607,15 @@ public abstract class JsonGenerator
      *
      * @return Schema in use by this generator, if any; {@code null} if none
      */
-    public FormatSchema getSchema() { return null; }
+    public FormatSchema getSchema() {
+        return null;
+    }
 
     /*
-    /**********************************************************************
-    /* Public API, other configuration
-    /**********************************************************************
-      */
+     * /**********************************************************************
+     * /* Public API, other configuration
+     * /**********************************************************************
+     */
 
     /**
      * Method for setting a custom pretty printer, which is usually
@@ -636,7 +644,7 @@ public abstract class JsonGenerator
     public PrettyPrinter getPrettyPrinter() {
         return _cfgPrettyPrinter;
     }
-    
+
     /**
      * Convenience method for enabling pretty-printing using
      * the default pretty printer
@@ -669,7 +677,9 @@ public abstract class JsonGenerator
      *
      * @return This generator, to allow call chaining
      */
-    public JsonGenerator setHighestNonEscapedChar(int charCode) { return this; }
+    public JsonGenerator setHighestNonEscapedChar(int charCode) {
+        return this;
+    }
 
     /**
      * Accessor method for testing what is the highest unescaped character
@@ -683,7 +693,9 @@ public abstract class JsonGenerator
      * @return Currently active limitation for highest non-escaped character,
      *   if defined; or 0 to indicate no additional escaping is performed.
      */
-    public int getHighestEscapedChar() { return 0; }
+    public int getHighestEscapedChar() {
+        return 0;
+    }
 
     /**
      * Method for accessing custom escapes factory uses for {@link JsonGenerator}s
@@ -691,7 +703,9 @@ public abstract class JsonGenerator
      *
      * @return {@link CharacterEscapes} configured for this generator, if any; {@code null} if none
      */
-    public CharacterEscapes getCharacterEscapes() { return null; }
+    public CharacterEscapes getCharacterEscapes() {
+        return null;
+    }
 
     /**
      * Method for defining custom escapes factory uses for {@link JsonGenerator}s
@@ -703,7 +717,9 @@ public abstract class JsonGenerator
      *
      * @return This generator, to allow call chaining
      */
-    public JsonGenerator setCharacterEscapes(CharacterEscapes esc) { return this; }
+    public JsonGenerator setCharacterEscapes(CharacterEscapes esc) {
+        return this;
+    }
 
     /**
      * Method that allows overriding String used for separating root-level
@@ -721,9 +737,9 @@ public abstract class JsonGenerator
     }
 
     /*
-    /**********************************************************************
-    /* Public API, output state access
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, output state access
+     * /**********************************************************************
      */
 
     /**
@@ -749,9 +765,9 @@ public abstract class JsonGenerator
     }
 
     /*
-    /**********************************************************************
-    /* Public API, capability introspection methods
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, capability introspection methods
+     * /**********************************************************************
      */
 
     /**
@@ -762,8 +778,10 @@ public abstract class JsonGenerator
      * 
      * @return True if this generator can use given schema; false if not
      */
-    public boolean canUseSchema(FormatSchema schema) { return false; }
-    
+    public boolean canUseSchema(FormatSchema schema) {
+        return false;
+    }
+
     /**
      * Introspection method that may be called to see if the underlying
      * data format supports some kind of Object Ids natively (many do not;
@@ -782,7 +800,9 @@ public abstract class JsonGenerator
      *
      * @since 2.3
      */
-    public boolean canWriteObjectId() { return false; }
+    public boolean canWriteObjectId() {
+        return false;
+    }
 
     /**
      * Introspection method that may be called to see if the underlying
@@ -802,7 +822,9 @@ public abstract class JsonGenerator
      *
      * @since 2.3
      */
-    public boolean canWriteTypeId() { return false; }
+    public boolean canWriteTypeId() {
+        return false;
+    }
 
     /**
      * Introspection method that may be called to see if the underlying
@@ -819,8 +841,10 @@ public abstract class JsonGenerator
      *
      * @since 2.3
      */
-    public boolean canWriteBinaryNatively() { return false; }
-    
+    public boolean canWriteBinaryNatively() {
+        return false;
+    }
+
     /**
      * Introspection method to call to check whether it is ok to omit
      * writing of Object fields or not. Most formats do allow omission,
@@ -832,7 +856,9 @@ public abstract class JsonGenerator
      *
      * @since 2.3
      */
-    public boolean canOmitFields() { return true; }
+    public boolean canOmitFields() {
+        return true;
+    }
 
     /**
      * Introspection method to call to check whether it is possible
@@ -851,7 +877,9 @@ public abstract class JsonGenerator
      *
      * @since 2.8
      */
-    public boolean canWriteFormattedNumbers() { return false; }
+    public boolean canWriteFormattedNumbers() {
+        return false;
+    }
 
     /**
      * Accessor for getting metadata on capabilities of this generator, based on
@@ -866,9 +894,9 @@ public abstract class JsonGenerator
     }
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, structural
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, structural
+     * /**********************************************************************
      */
 
     /**
@@ -997,8 +1025,7 @@ public abstract class JsonGenerator
      *
      * @since 2.8
      */
-    public void writeStartObject(Object forValue) throws IOException
-    {
+    public void writeStartObject(Object forValue) throws IOException {
         writeStartObject();
         setCurrentValue(forValue);
     }
@@ -1028,8 +1055,7 @@ public abstract class JsonGenerator
      *
      * @since 2.10
      */
-    public void writeStartObject(Object forValue, int size) throws IOException
-    {
+    public void writeStartObject(Object forValue, int size) throws IOException {
         writeStartObject();
         setCurrentValue(forValue);
     }
@@ -1103,9 +1129,9 @@ public abstract class JsonGenerator
     }
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, scalar arrays (2.8)
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, scalar arrays (2.8)
+     * /**********************************************************************
      */
 
     /**
@@ -1122,14 +1148,13 @@ public abstract class JsonGenerator
      *
      * @since 2.8
      */
-    public void writeArray(int[] array, int offset, int length) throws IOException
-    {
+    public void writeArray(int[] array, int offset, int length) throws IOException {
         if (array == null) {
             throw new IllegalArgumentException("null array");
         }
         _verifyOffsets(array.length, offset, length);
         writeStartArray(array, length);
-        for (int i = offset, end = offset+length; i < end; ++i) {
+        for (int i = offset, end = offset + length; i < end; ++i) {
             writeNumber(array[i]);
         }
         writeEndArray();
@@ -1149,14 +1174,13 @@ public abstract class JsonGenerator
      *
      * @since 2.8
      */
-    public void writeArray(long[] array, int offset, int length) throws IOException
-    {
+    public void writeArray(long[] array, int offset, int length) throws IOException {
         if (array == null) {
             throw new IllegalArgumentException("null array");
         }
         _verifyOffsets(array.length, offset, length);
         writeStartArray(array, length);
-        for (int i = offset, end = offset+length; i < end; ++i) {
+        for (int i = offset, end = offset + length; i < end; ++i) {
             writeNumber(array[i]);
         }
         writeEndArray();
@@ -1176,14 +1200,13 @@ public abstract class JsonGenerator
      *
      * @since 2.8
      */
-    public void writeArray(double[] array, int offset, int length) throws IOException
-    {
+    public void writeArray(double[] array, int offset, int length) throws IOException {
         if (array == null) {
             throw new IllegalArgumentException("null array");
         }
         _verifyOffsets(array.length, offset, length);
         writeStartArray(array, length);
-        for (int i = offset, end = offset+length; i < end; ++i) {
+        for (int i = offset, end = offset + length; i < end; ++i) {
             writeNumber(array[i]);
         }
         writeEndArray();
@@ -1203,23 +1226,22 @@ public abstract class JsonGenerator
      *
      * @since 2.11
      */
-    public void writeArray(String[] array, int offset, int length) throws IOException
-    {
+    public void writeArray(String[] array, int offset, int length) throws IOException {
         if (array == null) {
             throw new IllegalArgumentException("null array");
         }
         _verifyOffsets(array.length, offset, length);
         writeStartArray(array, length);
-        for (int i = offset, end = offset+length; i < end; ++i) {
+        for (int i = offset, end = offset + length; i < end; ++i) {
             writeString(array[i]);
         }
         writeEndArray();
     }
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, text/String values
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, text/String values
+     * /**********************************************************************
      */
 
     /**
@@ -1318,8 +1340,7 @@ public abstract class JsonGenerator
      * @throws IOException if there is either an underlying I/O problem or encoding
      *    issue at format layer
      */
-    public abstract void writeRawUTF8String(byte[] buffer, int offset, int len)
-        throws IOException;
+    public abstract void writeRawUTF8String(byte[] buffer, int offset, int len) throws IOException;
 
     /**
      * Method similar to {@link #writeString(String)} but that takes as its input
@@ -1346,13 +1367,12 @@ public abstract class JsonGenerator
      * @throws IOException if there is either an underlying I/O problem or encoding
      *    issue at format layer
      */
-    public abstract void writeUTF8String(byte[] buffer, int offset, int len)
-        throws IOException;
+    public abstract void writeUTF8String(byte[] buffer, int offset, int len) throws IOException;
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, binary/raw content
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, binary/raw content
+     * /**********************************************************************
      */
 
     /**
@@ -1457,7 +1477,7 @@ public abstract class JsonGenerator
      * @throws IOException if there is either an underlying I/O problem or encoding
      *    issue at format layer
      */
-//    public abstract void writeRaw(SerializableString raw) throws IOException;
+    // public abstract void writeRaw(SerializableString raw) throws IOException;
     public void writeRaw(SerializableString raw) throws IOException {
         writeRaw(raw.getValue());
     }
@@ -1524,8 +1544,7 @@ public abstract class JsonGenerator
      * @throws IOException if there is either an underlying I/O problem or encoding
      *    issue at format layer
      */
-    public abstract void writeBinary(Base64Variant bv,
-            byte[] data, int offset, int len) throws IOException;
+    public abstract void writeBinary(Base64Variant bv, byte[] data, int offset, int len) throws IOException;
 
     /**
      * Similar to {@link #writeBinary(Base64Variant,byte[],int,int)},
@@ -1576,11 +1595,10 @@ public abstract class JsonGenerator
      * @throws IOException if there is either an underlying I/O problem or encoding
      *    issue at format layer
      */
-    public int writeBinary(InputStream data, int dataLength)
-        throws IOException {
+    public int writeBinary(InputStream data, int dataLength) throws IOException {
         return writeBinary(Base64Variants.getDefaultVariant(), data, dataLength);
     }
-    
+
     /**
      * Method similar to {@link #writeBinary(Base64Variant,byte[],int,int)},
      * but where input is provided through a stream, allowing for incremental
@@ -1603,13 +1621,12 @@ public abstract class JsonGenerator
      * @throws IOException if there is either an underlying I/O problem or encoding
      *    issue at format layer
      */
-    public abstract int writeBinary(Base64Variant bv,
-            InputStream data, int dataLength) throws IOException;
+    public abstract int writeBinary(Base64Variant bv, InputStream data, int dataLength) throws IOException;
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, numeric
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, numeric
+     * /**********************************************************************
      */
 
     /**
@@ -1626,7 +1643,9 @@ public abstract class JsonGenerator
      *
      * @since 2.2
      */
-    public void writeNumber(short v) throws IOException { writeNumber((int) v); }
+    public void writeNumber(short v) throws IOException {
+        writeNumber((int) v);
+    }
 
     /**
      * Method for outputting given value as JSON number.
@@ -1757,11 +1776,11 @@ public abstract class JsonGenerator
     }
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, other value types
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, other value types
+     * /**********************************************************************
      */
-    
+
     /**
      * Method for outputting literal JSON boolean value (one of
      * Strings 'true' and 'false').
@@ -1814,15 +1833,14 @@ public abstract class JsonGenerator
             writeBinary((byte[]) object);
             return;
         }
-        throw new JsonGenerationException("No native support for writing embedded objects of type "
-                +object.getClass().getName(),
-                this);
+        throw new JsonGenerationException(
+            "No native support for writing embedded objects of type " + object.getClass().getName(), this);
     }
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, Native Ids (type, object)
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, Native Ids (type, object)
+     * /**********************************************************************
      */
 
     /**
@@ -1866,7 +1884,7 @@ public abstract class JsonGenerator
     public void writeObjectRef(Object referenced) throws IOException {
         throw new JsonGenerationException("No native support for writing Object Ids", this);
     }
-    
+
     /**
      * Method that can be called to output so-called native Type Id.
      * Note that it may only be called after ensuring this is legal
@@ -1913,8 +1931,7 @@ public abstract class JsonGenerator
      *
      * @since 2.9
      */
-    public WritableTypeId writeTypePrefix(WritableTypeId typeIdDef) throws IOException
-    {
+    public WritableTypeId writeTypePrefix(WritableTypeId typeIdDef) throws IOException {
         Object id = typeIdDef.id;
 
         final JsonToken valueShape = typeIdDef.valueShape;
@@ -1930,36 +1947,38 @@ public abstract class JsonGenerator
 
             Inclusion incl = typeIdDef.include;
             // first: can not output "as property" if value not Object; if so, must do "as array"
-            if ((valueShape != JsonToken.START_OBJECT)
-                    && incl.requiresObjectContext()) {
+            if ((valueShape != JsonToken.START_OBJECT) && incl.requiresObjectContext()) {
                 typeIdDef.include = incl = WritableTypeId.Inclusion.WRAPPER_ARRAY;
             }
-            
-            switch (incl) {
-            case PARENT_PROPERTY:
-                // nothing to do here, as it has to be written in suffix...
-                break;
-            case PAYLOAD_PROPERTY:
-                // only output as native type id; otherwise caller must handle using some
-                // other mechanism, so...
-                break;
-            case METADATA_PROPERTY:
-                // must have Object context by now, so simply write as field name
-                // Note, too, that it's bit tricky, since we must print START_OBJECT that is part
-                // of value first -- and then NOT output it later on: hence return "early"
-                writeStartObject(typeIdDef.forValue);
-                writeStringField(typeIdDef.asProperty, idStr);
-                return typeIdDef;
 
-            case WRAPPER_OBJECT:
-                // NOTE: this is wrapper, not directly related to value to output, so don't pass
-                writeStartObject();
-                writeFieldName(idStr);
-                break;
-            case WRAPPER_ARRAY:
-            default: // should never occur but translate as "as-array"
-                writeStartArray(); // wrapper, not actual array object to write
-                writeString(idStr);
+            switch (incl) {
+                case PARENT_PROPERTY:
+                    // nothing to do here, as it has to be written in suffix...
+                    break;
+
+                case PAYLOAD_PROPERTY:
+                    // only output as native type id; otherwise caller must handle using some
+                    // other mechanism, so...
+                    break;
+
+                case METADATA_PROPERTY:
+                    // must have Object context by now, so simply write as field name
+                    // Note, too, that it's bit tricky, since we must print START_OBJECT that is part
+                    // of value first -- and then NOT output it later on: hence return "early"
+                    writeStartObject(typeIdDef.forValue);
+                    writeStringField(typeIdDef.asProperty, idStr);
+                    return typeIdDef;
+
+                case WRAPPER_OBJECT:
+                    // NOTE: this is wrapper, not directly related to value to output, so don't pass
+                    writeStartObject();
+                    writeFieldName(idStr);
+                    break;
+
+                case WRAPPER_ARRAY:
+                default: // should never occur but translate as "as-array"
+                    writeStartArray(); // wrapper, not actual array object to write
+                    writeString(idStr);
             }
         }
         // and finally possible start marker for value itself:
@@ -1989,8 +2008,7 @@ public abstract class JsonGenerator
      *
      * @since 2.9
      */
-    public WritableTypeId writeTypeSuffix(WritableTypeId typeIdDef) throws IOException
-    {
+    public WritableTypeId writeTypeSuffix(WritableTypeId typeIdDef) throws IOException {
         final JsonToken valueShape = typeIdDef.valueShape;
         // First: does value need closing?
         if (valueShape == JsonToken.START_OBJECT) {
@@ -2001,34 +2019,37 @@ public abstract class JsonGenerator
 
         if (typeIdDef.wrapperWritten) {
             switch (typeIdDef.include) {
-            case WRAPPER_ARRAY:
-                writeEndArray();
-                break;
-            case PARENT_PROPERTY:
+                case WRAPPER_ARRAY:
+                    writeEndArray();
+                    break;
+
+                case PARENT_PROPERTY:
                 // unusually, need to output AFTER value. And no real wrapper...
                 {
                     Object id = typeIdDef.id;
                     String idStr = (id instanceof String) ? (String) id : String.valueOf(id);
                     writeStringField(typeIdDef.asProperty, idStr);
                 }
-                break;
-            case METADATA_PROPERTY:
-            case PAYLOAD_PROPERTY:
-                // no actual wrapper; included within Object itself
-                break;
-            case WRAPPER_OBJECT:
-            default: // should never occur but...
-                writeEndObject();
-                break;
+                    break;
+
+                case METADATA_PROPERTY:
+                case PAYLOAD_PROPERTY:
+                    // no actual wrapper; included within Object itself
+                    break;
+
+                case WRAPPER_OBJECT:
+                default: // should never occur but...
+                    writeEndObject();
+                    break;
             }
         }
         return typeIdDef;
     }
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, serializing Java objects
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, serializing Java objects
+     * /**********************************************************************
      */
 
     /**
@@ -2080,14 +2101,14 @@ public abstract class JsonGenerator
     public abstract void writeTree(TreeNode rootNode) throws IOException;
 
     /*
-    /**********************************************************************
-    /* Public API, convenience field write methods
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, convenience field write methods
+     * /**********************************************************************
      */
 
     // 04-Oct-2019, tatu: Reminder: these could be defined final to
-    //    remember NOT to override in delegating sub-classes -- but
-    //    not final in 2.x to reduce compatibility issues
+    // remember NOT to override in delegating sub-classes -- but
+    // not final in 2.x to reduce compatibility issues
 
     /**
      * Convenience method for outputting a field entry ("member")
@@ -2387,7 +2408,7 @@ public abstract class JsonGenerator
     }
 
     // // // But this method does need to be delegate so...
-    
+
     /**
      * Method called to indicate that a property in this position was
      * skipped. It is usually only called for generators that return
@@ -2402,12 +2423,13 @@ public abstract class JsonGenerator
      * 
      * @since 2.3
      */
-    public void writeOmittedField(String fieldName) throws IOException { }
+    public void writeOmittedField(String fieldName) throws IOException {
+    }
 
     /*
-    /**********************************************************************
-    /* Public API, copy-through methods
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, copy-through methods
+     * /**********************************************************************
      */
 
     /**
@@ -2425,74 +2447,84 @@ public abstract class JsonGenerator
      * @throws IOException if there is either an underlying I/O problem or encoding
      *    issue at format layer
      */
-    public void copyCurrentEvent(JsonParser p) throws IOException
-    {
+    public void copyCurrentEvent(JsonParser p) throws IOException {
         JsonToken t = p.currentToken();
         final int token = (t == null) ? ID_NOT_AVAILABLE : t.id();
         switch (token) {
-        case ID_NOT_AVAILABLE:
-            _reportError("No current event to copy");
-            break; // never gets here
-        case ID_START_OBJECT:
-            writeStartObject();
-            break;
-        case ID_END_OBJECT:
-            writeEndObject();
-            break;
-        case ID_START_ARRAY:
-            writeStartArray();
-            break;
-        case ID_END_ARRAY:
-            writeEndArray();
-            break;
-        case ID_FIELD_NAME:
-            writeFieldName(p.getCurrentName());
-            break;
-        case ID_STRING:
-            if (p.hasTextCharacters()) {
-                writeString(p.getTextCharacters(), p.getTextOffset(), p.getTextLength());
-            } else {
-                writeString(p.getText());
+            case ID_NOT_AVAILABLE:
+                _reportError("No current event to copy");
+                break; // never gets here
+
+            case ID_START_OBJECT:
+                writeStartObject();
+                break;
+
+            case ID_END_OBJECT:
+                writeEndObject();
+                break;
+
+            case ID_START_ARRAY:
+                writeStartArray();
+                break;
+
+            case ID_END_ARRAY:
+                writeEndArray();
+                break;
+
+            case ID_FIELD_NAME:
+                writeFieldName(p.getCurrentName());
+                break;
+
+            case ID_STRING:
+                if (p.hasTextCharacters()) {
+                    writeString(p.getTextCharacters(), p.getTextOffset(), p.getTextLength());
+                } else {
+                    writeString(p.getText());
+                }
+                break;
+
+            case ID_NUMBER_INT: {
+                NumberType n = p.getNumberType();
+                if (n == NumberType.INT) {
+                    writeNumber(p.getIntValue());
+                } else if (n == NumberType.BIG_INTEGER) {
+                    writeNumber(p.getBigIntegerValue());
+                } else {
+                    writeNumber(p.getLongValue());
+                }
+                break;
             }
-            break;
-        case ID_NUMBER_INT:
-        {
-            NumberType n = p.getNumberType();
-            if (n == NumberType.INT) {
-                writeNumber(p.getIntValue());
-            } else if (n == NumberType.BIG_INTEGER) {
-                writeNumber(p.getBigIntegerValue());
-            } else {
-                writeNumber(p.getLongValue());
+
+            case ID_NUMBER_FLOAT: {
+                NumberType n = p.getNumberType();
+                if (n == NumberType.BIG_DECIMAL) {
+                    writeNumber(p.getDecimalValue());
+                } else if (n == NumberType.FLOAT) {
+                    writeNumber(p.getFloatValue());
+                } else {
+                    writeNumber(p.getDoubleValue());
+                }
+                break;
             }
-            break;
-        }
-        case ID_NUMBER_FLOAT:
-        {
-            NumberType n = p.getNumberType();
-            if (n == NumberType.BIG_DECIMAL) {
-                writeNumber(p.getDecimalValue());
-            } else if (n == NumberType.FLOAT) {
-                writeNumber(p.getFloatValue());
-            } else {
-                writeNumber(p.getDoubleValue());
-            }
-            break;
-        }
-        case ID_TRUE:
-            writeBoolean(true);
-            break;
-        case ID_FALSE:
-            writeBoolean(false);
-            break;
-        case ID_NULL:
-            writeNull();
-            break;
-        case ID_EMBEDDED_OBJECT:
-            writeObject(p.getEmbeddedObject());
-            break;
-        default:
-            throw new IllegalStateException("Internal error: unknown current token, "+t);
+
+            case ID_TRUE:
+                writeBoolean(true);
+                break;
+
+            case ID_FALSE:
+                writeBoolean(false);
+                break;
+
+            case ID_NULL:
+                writeNull();
+                break;
+
+            case ID_EMBEDDED_OBJECT:
+                writeObject(p.getEmbeddedObject());
+                break;
+
+            default:
+                throw new IllegalStateException("Internal error: unknown current token, " + t);
         }
     }
 
@@ -2531,8 +2563,7 @@ public abstract class JsonGenerator
      * @throws IOException if there is either an underlying I/O problem or encoding
      *    issue at format layer
      */
-    public void copyCurrentStructure(JsonParser p) throws IOException
-    {
+    public void copyCurrentStructure(JsonParser p) throws IOException {
         JsonToken t = p.currentToken();
         // Let's handle field-name separately first
         int id = (t == null) ? ID_NOT_AVAILABLE : t.id();
@@ -2543,109 +2574,115 @@ public abstract class JsonGenerator
             // fall-through to copy the associated value
         }
         switch (id) {
-        case ID_START_OBJECT:
-            writeStartObject();
-            _copyCurrentContents(p);
-            return;
-        case ID_START_ARRAY:
-            writeStartArray();
-            _copyCurrentContents(p);
-            return;
+            case ID_START_OBJECT:
+                writeStartObject();
+                _copyCurrentContents(p);
+                return;
 
-        default:
-            copyCurrentEvent(p);
+            case ID_START_ARRAY:
+                writeStartArray();
+                _copyCurrentContents(p);
+                return;
+
+            default:
+                copyCurrentEvent(p);
         }
     }
 
     // @since 2.10
-    protected void _copyCurrentContents(JsonParser p) throws IOException
-    {
+    protected void _copyCurrentContents(JsonParser p) throws IOException {
         int depth = 1;
         JsonToken t;
 
         // Mostly copied from `copyCurrentEvent()`, but with added nesting counts
         while ((t = p.nextToken()) != null) {
             switch (t.id()) {
-            case ID_FIELD_NAME:
-                writeFieldName(p.getCurrentName());
-                break;
+                case ID_FIELD_NAME:
+                    writeFieldName(p.getCurrentName());
+                    break;
 
-            case ID_START_ARRAY:
-                writeStartArray();
-                ++depth;
-                break;
+                case ID_START_ARRAY:
+                    writeStartArray();
+                    ++depth;
+                    break;
 
-            case ID_START_OBJECT:
-                writeStartObject();
-                ++depth;
-                break;
+                case ID_START_OBJECT:
+                    writeStartObject();
+                    ++depth;
+                    break;
 
-            case ID_END_ARRAY:
-                writeEndArray();
-                if (--depth == 0) {
-                    return;
-                }
-                break;
-            case ID_END_OBJECT:
-                writeEndObject();
-                if (--depth == 0) {
-                    return;
-                }
-                break;
+                case ID_END_ARRAY:
+                    writeEndArray();
+                    if (--depth == 0) {
+                        return;
+                    }
+                    break;
 
-            case ID_STRING:
-                if (p.hasTextCharacters()) {
-                    writeString(p.getTextCharacters(), p.getTextOffset(), p.getTextLength());
-                } else {
-                    writeString(p.getText());
+                case ID_END_OBJECT:
+                    writeEndObject();
+                    if (--depth == 0) {
+                        return;
+                    }
+                    break;
+
+                case ID_STRING:
+                    if (p.hasTextCharacters()) {
+                        writeString(p.getTextCharacters(), p.getTextOffset(), p.getTextLength());
+                    } else {
+                        writeString(p.getText());
+                    }
+                    break;
+
+                case ID_NUMBER_INT: {
+                    NumberType n = p.getNumberType();
+                    if (n == NumberType.INT) {
+                        writeNumber(p.getIntValue());
+                    } else if (n == NumberType.BIG_INTEGER) {
+                        writeNumber(p.getBigIntegerValue());
+                    } else {
+                        writeNumber(p.getLongValue());
+                    }
+                    break;
                 }
-                break;
-            case ID_NUMBER_INT:
-            {
-                NumberType n = p.getNumberType();
-                if (n == NumberType.INT) {
-                    writeNumber(p.getIntValue());
-                } else if (n == NumberType.BIG_INTEGER) {
-                    writeNumber(p.getBigIntegerValue());
-                } else {
-                    writeNumber(p.getLongValue());
+
+                case ID_NUMBER_FLOAT: {
+                    NumberType n = p.getNumberType();
+                    if (n == NumberType.BIG_DECIMAL) {
+                        writeNumber(p.getDecimalValue());
+                    } else if (n == NumberType.FLOAT) {
+                        writeNumber(p.getFloatValue());
+                    } else {
+                        writeNumber(p.getDoubleValue());
+                    }
+                    break;
                 }
-                break;
-            }
-            case ID_NUMBER_FLOAT:
-            {
-                NumberType n = p.getNumberType();
-                if (n == NumberType.BIG_DECIMAL) {
-                    writeNumber(p.getDecimalValue());
-                } else if (n == NumberType.FLOAT) {
-                    writeNumber(p.getFloatValue());
-                } else {
-                    writeNumber(p.getDoubleValue());
-                }
-                break;
-            }
-            case ID_TRUE:
-                writeBoolean(true);
-                break;
-            case ID_FALSE:
-                writeBoolean(false);
-                break;
-            case ID_NULL:
-                writeNull();
-                break;
-            case ID_EMBEDDED_OBJECT:
-                writeObject(p.getEmbeddedObject());
-                break;
-            default:
-                throw new IllegalStateException("Internal error: unknown current token, "+t);
+
+                case ID_TRUE:
+                    writeBoolean(true);
+                    break;
+
+                case ID_FALSE:
+                    writeBoolean(false);
+                    break;
+
+                case ID_NULL:
+                    writeNull();
+                    break;
+
+                case ID_EMBEDDED_OBJECT:
+                    writeObject(p.getEmbeddedObject());
+                    break;
+
+                default:
+                    throw new IllegalStateException("Internal error: unknown current token, " + t);
             }
         }
     }
 
     /*
-    /**********************************************************************
-    /* Public API, buffer handling
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, buffer handling
+     * /**********************************************************************
      */
 
     /**
@@ -2668,9 +2705,9 @@ public abstract class JsonGenerator
     public abstract boolean isClosed();
 
     /*
-    /**********************************************************************
-    /* Closeable implementation
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Closeable implementation
+     * /**********************************************************************
      */
 
     /**
@@ -2691,9 +2728,9 @@ public abstract class JsonGenerator
     public abstract void close() throws IOException;
 
     /*
-    /**********************************************************************
-    /* Helper methods for sub-classes
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Helper methods for sub-classes
+     * /**********************************************************************
      */
 
     /**
@@ -2711,19 +2748,20 @@ public abstract class JsonGenerator
         throw new JsonGenerationException(msg, this);
     }
 
-    protected final void _throwInternal() { VersionUtil.throwInternal(); }
+    protected final void _throwInternal() {
+        VersionUtil.throwInternal();
+    }
 
     protected void _reportUnsupportedOperation() {
-        throw new UnsupportedOperationException("Operation not supported by generator of type "+getClass().getName());
+        throw new UnsupportedOperationException("Operation not supported by generator of type " + getClass().getName());
     }
 
     // @since 2.8
-    protected final void _verifyOffsets(int arrayLength, int offset, int length)
-    {
+    protected final void _verifyOffsets(int arrayLength, int offset, int length) {
         if ((offset < 0) || (offset + length) > arrayLength) {
-            throw new IllegalArgumentException(String.format(
-                    "invalid argument(s) (offset=%d, length=%d) for input array of %d element",
-                    offset, length, arrayLength));
+            throw new IllegalArgumentException(
+                String.format("invalid argument(s) (offset=%d, length=%d) for input array of %d element", offset,
+                    length, arrayLength));
         }
     }
 
@@ -2737,11 +2775,10 @@ public abstract class JsonGenerator
      * @throws IOException if there is either an underlying I/O problem or encoding
      *    issue at format layer
      */
-    protected void _writeSimpleObject(Object value) throws IOException
-    {
+    protected void _writeSimpleObject(Object value) throws IOException {
         // 31-Dec-2009, tatu: Actually, we could just handle some basic
-        //    types even without codec. This can improve interoperability,
-        //    and specifically help with TokenBuffer.
+        // types even without codec. This can improve interoperability,
+        // and specifically help with TokenBuffer.
         if (value == null) {
             writeNull();
             return;
@@ -2777,7 +2814,7 @@ public abstract class JsonGenerator
                 writeNumber((BigDecimal) n);
                 return;
 
-            // then Atomic types
+                // then Atomic types
             } else if (n instanceof AtomicInteger) {
                 writeNumber(((AtomicInteger) n).get());
                 return;
@@ -2795,7 +2832,8 @@ public abstract class JsonGenerator
             writeBoolean(((AtomicBoolean) value).get());
             return;
         }
-        throw new IllegalStateException("No ObjectCodec defined for the generator, can only serialize simple wrapper types (type passed "
-                +value.getClass().getName()+")");
-    }    
+        throw new IllegalStateException(
+            "No ObjectCodec defined for the generator, can only serialize simple wrapper types (type passed "
+                + value.getClass().getName() + ")");
+    }
 }

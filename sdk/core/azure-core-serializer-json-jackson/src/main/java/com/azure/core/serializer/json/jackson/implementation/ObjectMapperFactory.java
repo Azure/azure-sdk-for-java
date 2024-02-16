@@ -38,10 +38,9 @@ final class ObjectMapperFactory {
     }
 
     public ObjectMapper createJsonMapper(ObjectMapper innerMapper) {
-        ObjectMapper flatteningMapper = attemptJackson215Mutation(initializeMapperBuilder(JsonMapper.builder())
-            .addModule(FlatteningSerializer.getModule(innerMapper))
-            .addModule(FlatteningDeserializer.getModule(innerMapper))
-            .build());
+        ObjectMapper flatteningMapper = attemptJackson215Mutation(
+            initializeMapperBuilder(JsonMapper.builder()).addModule(FlatteningSerializer.getModule(innerMapper))
+                .addModule(FlatteningDeserializer.getModule(innerMapper)).build());
 
         return attemptJackson215Mutation(initializeMapperBuilder(JsonMapper.builder())
             // Order matters: must register in reverse order of hierarchy
@@ -49,8 +48,7 @@ final class ObjectMapperFactory {
             .addModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
             .addModule(FlatteningSerializer.getModule(innerMapper))
             .addModule(FlatteningDeserializer.getModule(innerMapper))
-            .addModule(JacksonJsonProvider.getJsonSerializableDatabindModule())
-            .build());
+            .addModule(JacksonJsonProvider.getJsonSerializableDatabindModule()).build());
     }
 
     public ObjectMapper createSimpleMapper() {
@@ -58,10 +56,9 @@ final class ObjectMapperFactory {
     }
 
     public ObjectMapper createHeaderMapper() {
-        return attemptJackson215Mutation(initializeMapperBuilder(JsonMapper.builder())
-            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
-            .addModule(JacksonJsonProvider.getJsonSerializableDatabindModule())
-            .build());
+        return attemptJackson215Mutation(
+            initializeMapperBuilder(JsonMapper.builder()).enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+                .addModule(JacksonJsonProvider.getJsonSerializableDatabindModule()).build());
     }
 
     private ObjectMapper attemptJackson215Mutation(ObjectMapper objectMapper) {
@@ -86,21 +83,14 @@ final class ObjectMapperFactory {
         mapper.enable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
             .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
             .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            .serializationInclusion(JsonInclude.Include.NON_NULL)
-            .addModule(new JavaTimeModule())
-            .addModule(BinaryDataSerializer.getModule())
-            .addModule(BinaryDataDeserializer.getModule())
-            .addModule(ByteArraySerializer.getModule())
-            .addModule(Base64UrlSerializer.getModule())
-            .addModule(DateTimeSerializer.getModule())
-            .addModule(DateTimeDeserializer.getModule())
-            .addModule(DateTimeRfc1123Serializer.getModule())
-            .addModule(DurationSerializer.getModule())
-            .addModule(HttpHeadersSerializer.getModule())
-            .addModule(GeoJsonSerializer.getModule())
+            .serializationInclusion(JsonInclude.Include.NON_NULL).addModule(new JavaTimeModule())
+            .addModule(BinaryDataSerializer.getModule()).addModule(BinaryDataDeserializer.getModule())
+            .addModule(ByteArraySerializer.getModule()).addModule(Base64UrlSerializer.getModule())
+            .addModule(DateTimeSerializer.getModule()).addModule(DateTimeDeserializer.getModule())
+            .addModule(DateTimeRfc1123Serializer.getModule()).addModule(DurationSerializer.getModule())
+            .addModule(HttpHeadersSerializer.getModule()).addModule(GeoJsonSerializer.getModule())
             .addModule(GeoJsonDeserializer.getModule())
             .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)

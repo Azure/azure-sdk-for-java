@@ -37,7 +37,6 @@ import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersReques
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
-
 /**
  * A {@link HttpPipelinePolicy} for redirecting traffic through the test proxy for recording.
  */
@@ -76,9 +75,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     public void startRecording(File recordFile, Path testClassPath) {
         try {
             String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
-            HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/record/start")
-                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
-                    SerializerEncoding.JSON))
+            HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/record/start").setBody(SERIALIZER
+                .serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath), SerializerEncoding.JSON))
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
 
             try (HttpResponse response = client.sendSync(request, Context.NONE)) {
@@ -99,8 +97,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     private void setDefaultRecordingOptions() {
         HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/SetRecordingOptions")
-            .setBody("{\"HandleRedirects\": false}")
-            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+            .setBody("{\"HandleRedirects\": false}").setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
         client.sendSync(request, Context.NONE).close();
     }
 
@@ -111,8 +108,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void stopRecording(Queue<String> variables) {
         HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/record/stop")
-            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
-            .setHeader(X_RECORDING_ID, xRecordingId)
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json").setHeader(X_RECORDING_ID, xRecordingId)
             .setBody(serializeVariables(variables));
 
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
@@ -133,8 +129,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
             return "{}";
         }
 
-        StringBuilder builder = new StringBuilder()
-            .append('{');
+        StringBuilder builder = new StringBuilder().append('{');
 
         int count = 0;
         for (String variable : variables) {
@@ -161,7 +156,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @param context The request context.
      */
     private void beforeSendingRequest(HttpPipelineCallContext context) {
-        TestProxyUtils.changeHeaders(context.getHttpRequest(), proxyUrl, xRecordingId, RECORD_MODE, skipRecordingRequestBody);
+        TestProxyUtils.changeHeaders(context.getHttpRequest(), proxyUrl, xRecordingId, RECORD_MODE,
+            skipRecordingRequestBody);
     }
 
     /**
@@ -184,13 +180,10 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return Mono.fromCallable(
-                () -> {
-                    beforeSendingRequest(context);
-                    return next;
-                })
-            .flatMap(ignored -> next.process())
-            .map(this::afterReceivedResponse);
+        return Mono.fromCallable(() -> {
+            beforeSendingRequest(context);
+            return next;
+        }).flatMap(ignored -> next.process()).map(this::afterReceivedResponse);
     }
 
     /**
@@ -199,8 +192,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
         if (isRecording()) {
-            HttpRequest request = createAddSanitizersRequest(sanitizers, proxyUrl)
-                .setHeader(X_RECORDING_ID, xRecordingId);
+            HttpRequest request
+                = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
 
             client.sendSync(request, Context.NONE).close();
         } else {
@@ -228,4 +221,3 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         }
     }
 }
-
