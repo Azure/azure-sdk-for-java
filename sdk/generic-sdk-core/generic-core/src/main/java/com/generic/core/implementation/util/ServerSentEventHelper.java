@@ -35,7 +35,7 @@ public final class ServerSentEventHelper {
         void setData(ServerSentEvent serverSentEvent, List<String> data);
         void setComment(ServerSentEvent serverSentEvent, String comment);
         void setRetryAfter(ServerSentEvent serverSentEvent, Duration retryAfter);
-
+        Duration getRetryAfter(ServerSentEvent serverSentEvent);
     }
 
     public static void setId(ServerSentEvent serverSentEvent, Long id) {
@@ -56,6 +56,10 @@ public final class ServerSentEventHelper {
 
     public static void setRetryAfter(ServerSentEvent serverSentEvent, Duration retryAfter) {
         accessor.setRetryAfter(serverSentEvent, retryAfter);
+    }
+
+    public static Duration getRetryAfter(ServerSentEvent serverSentEvent) {
+        return accessor.getRetryAfter(serverSentEvent);
     }
 }
 

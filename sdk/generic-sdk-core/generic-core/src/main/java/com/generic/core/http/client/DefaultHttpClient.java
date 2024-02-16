@@ -267,7 +267,7 @@ class DefaultHttpClient implements HttpClient {
             }
             listener.onClose();
         } catch (IOException e) {
-            return new RetrySSEResult(e, event != null ? event.getId() : -1, event != null ? event.getRetryAfter() : null);
+            return new RetrySSEResult(e, event != null ? event.getId() : -1, event != null ? ServerSentEventHelper.getRetryAfter(event) : null);
         }
         return null;
     }

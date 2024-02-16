@@ -73,7 +73,7 @@ public final class ServerSentEvent {
      *
      * @return reconnection delay in milliseconds or 0 if no value has been set.
      */
-    public Duration getRetryAfter() {
+    private Duration getRetryAfter() {
         return this.retryAfter;
     }
 
@@ -142,6 +142,11 @@ public final class ServerSentEvent {
             @Override
             public void setRetryAfter(ServerSentEvent serverSentEvent, Duration retryAfter) {
                 serverSentEvent.setRetryAfter(retryAfter);
+            }
+
+            @Override
+            public Duration getRetryAfter(ServerSentEvent serverSentEvent) {
+                return serverSentEvent.getRetryAfter();
             }
         });
     }

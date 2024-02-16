@@ -330,7 +330,6 @@ public class DefaultHttpClientTest {
                 public void onEvent(ServerSentEvent sse) throws IOException {
                     if (++i[0] == 1) {
                         assertEquals("test stream", sse.getComment());
-                        assertEquals(Duration.ofMillis(100L), sse.getRetryAfter());
                         assertEquals("first event", sse.getData().get(0));
                         assertEquals(1, sse.getId());
                         throw new IOException("test exception");
@@ -346,6 +345,9 @@ public class DefaultHttpClientTest {
 
                 @Override
                 public boolean shouldRetry(Throwable throwable, Duration retryAfter, long lastEventId) {
+                    assertEquals("test exception", throwable.getMessage());
+                    assertEquals(100, retryAfter.toMillis());
+                    assertEquals(1, lastEventId);
                     return true;
                 }
             });
