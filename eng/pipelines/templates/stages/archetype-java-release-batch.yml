@@ -60,9 +60,10 @@ stages:
                     Artifacts: ${{parameters.Artifacts}}
                     ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
 
-                - publish: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
-                  artifact: ${{parameters.ArtifactName}}-signed
-                  displayName: 'Store signed packages in ${{parameters.ArtifactName}}-signed artifact'
+                - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                  parameters:
+                    ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}'
+                    ArtifactName: '${{parameters.ArtifactName}}-signed'
 
   # We generate two interdependent stages for each artifact listed in the ci.yml file, creates the release
   # in GitHub. The Release stage publishes to Maven Central. Both stages require approval since they
