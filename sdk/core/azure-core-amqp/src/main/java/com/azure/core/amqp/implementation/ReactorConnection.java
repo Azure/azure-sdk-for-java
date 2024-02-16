@@ -13,13 +13,11 @@ import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
-import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
-import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.Disposable;
@@ -38,6 +36,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.core.amqp.exception.AmqpErrorCondition.TIMEOUT_ERROR;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addShutdownSignal;
@@ -65,7 +65,7 @@ public class ReactorConnection implements AmqpConnection {
     private static final String MANAGEMENT_LINK_NAME = "mgmt";
 
     private final ClientLogger logger;
-    private final ConcurrentMap<String, SessionSubscription> sessionMap = new ConcurrentHashMap<>();
+    private final SessionCache sessionCache;
     private final ConcurrentHashMap<String, AmqpManagementNode> managementNodes = new ConcurrentHashMap<>();
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -184,6 +184,9 @@ public class ReactorConnection implements AmqpConnection {
             .cache(1);
 
         this.subscriptions = Disposables.composite(this.endpointStates.subscribe());
+
+        this.sessionCache = new SessionCache(handler.getHostname(), connectionId, handlerProvider, reactorProvider,
+            operationTimeout, this::createSession, this::isDisposed, logger);
     }
 
     /**
@@ -314,56 +317,18 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
-        return connectionMono.flatMap(connection -> {
-            return Mono.<SessionSubscription>create(sink -> {
-                try {
-                    reactorProvider.getReactorDispatcher().invoke(() -> {
-                        final SessionSubscription sessionSubscription =
-                            sessionMap.computeIfAbsent(sessionName, key -> createSessionSubscription(key));
-
-                        sink.success(sessionSubscription);
-                    });
-                } catch (IOException | RejectedExecutionException e) {
-                    sink.error(e);
-                }
-            });
-        }).flatMap(sessionSubscription -> {
-            final Mono<AmqpEndpointState> activeSession = sessionSubscription.getSession().getEndpointStates()
-                .filter(state -> state == AmqpEndpointState.ACTIVE)
-                .next()
-                .timeout(retryPolicy.getRetryOptions().getTryTimeout(),
-                    Mono.error(() -> {
-                        final String message = String.format(
-                            "connectionId[%s] sessionName[%s] Timeout waiting for session to be active.",
-                            connectionId, sessionName);
-                        return new AmqpException(true, TIMEOUT_ERROR, message, handler.getErrorContext());
-                    }))
-                .doOnError(error -> {
-                    if (!(error instanceof AmqpException)) {
-                        return;
-                    }
-                    // Clean up the subscription if there was an error while waiting for session to active.
-                    final AmqpException amqpException = (AmqpException) error;
-                    if (amqpException.getErrorCondition() == TIMEOUT_ERROR) {
-                        removeSession(sessionName);
-                    }
-                });
-
-            return activeSession.thenReturn(sessionSubscription.getSession());
-        });
+        return sessionCache.get(connectionMono, sessionName);
     }
 
     /**
      * Creates a new AMQP session with the given parameters.
      *
-     * @param sessionName Name of the AMQP session.
-     * @param session The reactor session associated with this session.
-     * @param handler Session handler for the reactor session.
+     * @param protonSession the QPid session.
      *
      * @return A new instance of AMQP session.
      */
-    protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new ReactorSession(this, session, handler, sessionName, reactorProvider,
+    protected ReactorSession createSession(ProtonSession protonSession) {
+        return new ReactorSession(this, protonSession, reactorProvider,
             handlerProvider, linkProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
             connectionOptions.getRetry());
     }
@@ -373,16 +338,7 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public boolean removeSession(String sessionName) {
-        if (sessionName == null) {
-            return false;
-        }
-
-        final SessionSubscription removed = sessionMap.remove(sessionName);
-        if (removed != null) {
-            removed.dispose();
-        }
-
-        return removed != null;
+        return sessionCache.remove(sessionName);
     }
 
     @Override
@@ -430,7 +386,7 @@ public class ReactorConnection implements AmqpConnection {
         final Flux<RequestResponseChannel> createChannel = createSession(sessionName)
             .cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(), linkName,
-                entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
+                entityPath, reactorSession.session("request response channel"), connectionOptions.getRetry(), handlerProvider, reactorProvider,
                 messageSerializer, senderSettleMode, receiverSettleMode, handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath), isV2))
             .doOnNext(e -> {
                 logger.atInfo()
@@ -457,7 +413,7 @@ public class ReactorConnection implements AmqpConnection {
         return createSession(sessionName)
             .cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(), linksNamePrefix,
-                entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
+                entityPath, reactorSession.session("request response channel"), connectionOptions.getRetry(), handlerProvider, reactorProvider,
                 messageSerializer, senderSettleMode, receiverSettleMode, handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath), isV2));
     }
 
@@ -536,38 +492,6 @@ public class ReactorConnection implements AmqpConnection {
             .then(isClosedMono.asMono());
     }
 
-    /**
-     * NOTE: Invoke inside reactor dispatcher thread.
-     */
-    SessionSubscription createSessionSubscription(String sessionName) {
-        final SessionHandler sessionHandler = handlerProvider.createSessionHandler(connectionId,
-            getFullyQualifiedNamespace(), sessionName, connectionOptions.getRetry().getTryTimeout());
-        final Session session = connection.session();
-
-        BaseHandler.setHandler(session, sessionHandler);
-        final AmqpSession amqpSession = createSession(sessionName, session, sessionHandler);
-        final Disposable subscription = amqpSession.getEndpointStates()
-            .subscribe(state -> {
-            }, error -> {
-                // If we were already disposing of the connection, the session would be removed.
-                if (isDisposed.get()) {
-                    return;
-                }
-                logger.atInfo()
-                    .addKeyValue(SESSION_NAME_KEY, sessionName)
-                    .log("Removing session terminated with error.", error);
-                removeSession(sessionName);
-            }, () -> {
-                // If we were already disposing of the connection, the session would be removed.
-                if (isDisposed.get()) {
-                    return;
-                }
-                removeSession(sessionName);
-            });
-
-        return new SessionSubscription(amqpSession, subscription);
-    }
-
     private synchronized void closeConnectionWork() {
         if (connection == null) {
             isClosedMono.emitEmpty((signalType, emitResult) -> {
@@ -583,9 +507,6 @@ public class ReactorConnection implements AmqpConnection {
         connection.close();
         handler.close();
 
-        final ArrayList<Mono<Void>> closingSessions = new ArrayList<>();
-        sessionMap.values().forEach(link -> closingSessions.add(link.isClosed()));
-
         // We shouldn't need to add a timeout to this operation because executorCloseMono schedules its last
         // remaining work after OperationTimeout has elapsed and closes afterwards.
         final Mono<Void> closedExecutor = reactorExecutor != null ? Mono.defer(() -> {
@@ -596,7 +517,7 @@ public class ReactorConnection implements AmqpConnection {
         }) : Mono.empty();
 
         // Close all the children and the ReactorExecutor.
-        final Mono<Void> closeSessionAndExecutorMono = Mono.when(closingSessions)
+        final Mono<Void> closeSessionAndExecutorMono = Mono.when(sessionCache.close())
             .timeout(operationTimeout)
             .onErrorResume(error -> {
                 logger.info("Timed out waiting for all sessions to close.");
@@ -712,40 +633,122 @@ public class ReactorConnection implements AmqpConnection {
         }
     }
 
-    private static final class SessionSubscription {
-        private final AtomicBoolean isDisposed = new AtomicBoolean();
-        private final AmqpSession session;
-        private final Disposable subscription;
+    private static final class SessionCache {
+        private final ConcurrentMap<String, Entry> entries = new ConcurrentHashMap<>();
+        private final String fullyQualifiedNamespace;
+        private final String connectionId;
+        private final ReactorHandlerProvider handlerProvider;
+        private final ReactorProvider reactorProvider;
+        private final Duration openTimeout;
+        private final Function<ProtonSession, ReactorSession> loader;
+        private final Supplier<Boolean> isConnectionDisposed;
+        private final ClientLogger logger;
 
-        private SessionSubscription(AmqpSession session, Disposable subscription) {
-            this.session = session;
-            this.subscription = subscription;
+        SessionCache(String fullyQualifiedNamespace, String connectionId, ReactorHandlerProvider handlerProvider,
+            ReactorProvider reactorProvider, Duration openTimeout,
+            Function<ProtonSession, ReactorSession> loader, Supplier<Boolean> isConnectionDisposed,
+            ClientLogger logger) {
+            this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+            this.connectionId = connectionId;
+            this.handlerProvider = handlerProvider;
+            this.reactorProvider = reactorProvider;
+            this.openTimeout = openTimeout;
+            this.loader = loader;
+            this.isConnectionDisposed = isConnectionDisposed;
+            this.logger = logger;
         }
 
-        private AmqpSession getSession() {
-            return session;
+        Mono<AmqpSession> get(Mono<Connection> connectionMono, String name) {
+            return connectionMono.map(connection -> {
+                final Entry cached = entries.computeIfAbsent(name, sessionName -> load(connection, sessionName));
+                return cached;
+            }).flatMap(cached -> {
+                return cached.ensureOpened()
+                    .doOnError(error -> {
+                        if (!(error instanceof AmqpException)) {
+                            return;
+                        }
+                        // Clean up the subscription if there was an error while waiting for session to active.
+                        final AmqpException amqpException = (AmqpException) error;
+                        if (amqpException.getErrorCondition() == TIMEOUT_ERROR) {
+                            remove(name);
+                        }
+                    });
+            });
         }
 
-        private void dispose() {
-            if (isDisposed.getAndSet(true)) {
-                return;
+        boolean remove(String name) {
+            if (name == null) {
+                return false;
+            }
+            final Entry removed = entries.remove(name);
+            if (removed != null) {
+                removed.dispose();
+            }
+            return removed != null;
+        }
+
+        Mono<Void> close() {
+            final ArrayList<Mono<Void>> closing = new ArrayList<>(entries.size());
+            for (Entry entry : entries.values()) {
+                closing.add(entry.isClosed());
+            }
+            return Mono.when(closing);
+        }
+
+        private Entry load(Connection connection, String name) {
+            final ProtonSession protonSession = createProtonSession(connection, name);
+            final ReactorSession session = loader.apply(protonSession);
+            final Disposable disposable = session.getEndpointStates()
+                .subscribe(state -> {
+                }, error -> {
+                    // If connection is already disposing of, the session would be removed.
+                    if (isConnectionDisposed.get()) {
+                        return;
+                    }
+                    logger.atInfo()
+                        .addKeyValue(SESSION_NAME_KEY, name)
+                        .log("Removing session terminated with error.", error);
+                    remove(name);
+                }, () -> {
+                    if (isConnectionDisposed.get()) {
+                        return;
+                    }
+                    remove(name);
+                });
+            return new Entry(session, disposable);
+        }
+
+        private ProtonSession createProtonSession(Connection connection, String name) {
+            return new ProtonSession(fullyQualifiedNamespace, connectionId, connection,
+                handlerProvider, reactorProvider, name, openTimeout, logger);
+        }
+
+        private static final class Entry extends AtomicBoolean {
+            private final ReactorSession session;
+            private final Disposable disposable;
+
+            private Entry(ReactorSession session, Disposable disposable) {
+                super(false);
+                this.session = session;
+                this.disposable = disposable;
             }
 
-            if (session instanceof ReactorSession) {
-                ((ReactorSession) session).closeAsync("Closing session.", null, true)
+            private Mono<AmqpSession> ensureOpened() {
+                return session.open().thenReturn(session);
+            }
+
+            private Mono<Void> isClosed() {
+                return session.isClosed();
+            }
+
+            private void dispose() {
+                if (super.getAndSet(true)) {
+                    return;
+                }
+                session.closeAsync("closing session.", null, true)
                     .subscribe();
-            } else {
-                session.dispose();
-            }
-
-            subscription.dispose();
-        }
-
-        private Mono<Void> isClosed() {
-            if (session instanceof ReactorSession) {
-                return ((ReactorSession) session).isClosed();
-            } else {
-                return Mono.empty();
+                disposable.dispose();
             }
         }
     }
