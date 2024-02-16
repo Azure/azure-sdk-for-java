@@ -51,7 +51,8 @@ parameters:
 
 jobs:
   - job: 'Test'
-    dependsOn: ${{ parameters.DependsOn }}
+    dependsOn: 
+      - ${{ parameters.DependsOn }}
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
 
     strategy:
