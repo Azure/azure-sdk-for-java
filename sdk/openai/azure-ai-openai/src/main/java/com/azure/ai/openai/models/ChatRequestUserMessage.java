@@ -82,7 +82,8 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      *
      * @return the content value.
      */
-    private BinaryData getContent() {
+    @Generated
+    public BinaryData getContent() {
         return this.content;
     }
 
