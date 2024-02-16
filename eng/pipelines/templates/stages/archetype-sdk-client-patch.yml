@@ -43,7 +43,9 @@ stages:
           value: 'packages'
 
       pool:
-        name: azsdk-pool-mms-ubuntu-2004-general
+        name: azsdk-pool-mms-ubuntu-2004-1es-pt
+        vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+        os: linux
 
       steps:
         # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
@@ -183,8 +185,9 @@ stages:
         - template: /eng/pipelines/templates/variables/globals.yml
 
       pool:
-        name: azsdk-pool-mms-ubuntu-2004-general
-        vmImage: MMSUbuntu20.04
+        name: azsdk-pool-mms-ubuntu-2004-1es-pt
+        vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+        os: linux
 
       steps:
         - task: UsePythonVersion@0

@@ -17,8 +17,9 @@ jobs:
       - template: /eng/pipelines/templates/variables/globals.yml
 
     pool:
-      name: azsdk-pool-mms-ubuntu-2004-general
-      vmImage: MMSUbuntu20.04
+      name: azsdk-pool-mms-ubuntu-2004-1es-pt
+      vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+      os: linux
 
     strategy:
       matrix:
