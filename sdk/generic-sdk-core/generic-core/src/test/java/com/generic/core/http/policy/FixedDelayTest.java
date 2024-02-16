@@ -18,12 +18,7 @@ public class FixedDelayTest {
 
     @Test
     public void testNullDelay() {
-        assertThrows(NullPointerException.class, () -> new FixedDelay(3, null));
-    }
-
-    @Test
-    public void testNegativeMaxRetries() {
-        assertThrows(IllegalArgumentException.class, () -> new FixedDelay(-1, Duration.ofSeconds(1)));
+        assertThrows(NullPointerException.class, () -> new FixedDelay(null));
     }
 
     @Test
@@ -33,23 +28,19 @@ public class FixedDelayTest {
 
     @Test
     public void testZeroDelay() {
-        FixedDelay fixedDelay = new FixedDelay(3, Duration.ofSeconds(0));
-        assertEquals(fixedDelay.getMaxRetries(), 3);
+        FixedDelay fixedDelay = new FixedDelay(Duration.ofSeconds(0));
         assertEquals(fixedDelay.calculateRetryDelay(2).toMillis(), 0);
     }
 
     @Test
     public void testFixedDelay() {
-        FixedDelay fixedDelay = new FixedDelay(3, Duration.ofSeconds(1));
-        assertEquals(fixedDelay.getMaxRetries(), 3);
+        FixedDelay fixedDelay = new FixedDelay(Duration.ofSeconds(1));
         assertEquals(fixedDelay.calculateRetryDelay(2).toMillis(), 1000);
     }
 
     @Test
     public void testFixedDelayOptions() {
-        RetryPolicy.FixedDelayOptions fixedDelayOptions = new RetryPolicy.FixedDelayOptions(3, Duration.ofSeconds(1));
-        FixedDelay fixedDelay = new FixedDelay(fixedDelayOptions);
-        assertEquals(fixedDelay.getMaxRetries(), 3);
+        FixedDelay fixedDelay = new FixedDelay(Duration.ofSeconds(1));
         assertEquals(fixedDelay.calculateRetryDelay(2).toMillis(), 1000);
     }
 }
