@@ -5,8 +5,11 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -30,7 +33,15 @@ import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATI
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.ERROR_TYPE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_CONSUMER_GROUP;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Contains helper methods for working with AMQP messages
@@ -172,6 +183,36 @@ public final class TestUtils {
 
         return event.getProperties() != null && event.getProperties().containsKey(MESSAGE_ID)
             && expectedValue.equals(event.getProperties().get(MESSAGE_ID));
+    }
+
+    public static void assertAttributes(String hostname, String entityName, Map<String, Object> attributes) {
+        assertAllAttributes(hostname, entityName, null, null, null, attributes);
+    }
+
+    public static void assertAllAttributes(String hostname, String entityName, String partitionId, String consumerGroup, String errorType, Map<String, Object> attributes) {
+        assertEquals(MESSAGING_SYSTEM_VALUE, attributes.get(MESSAGING_SYSTEM));
+        assertEquals(hostname, attributes.get(SERVER_ADDRESS));
+        assertEquals(entityName, attributes.get(MESSAGING_DESTINATION_NAME));
+        assertEquals(partitionId, attributes.get(MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID));
+        assertEquals(consumerGroup, attributes.get(MESSAGING_EVENTHUBS_CONSUMER_GROUP));
+        assertEquals(errorType, attributes.get(ERROR_TYPE));
+    }
+
+    public static String getSpanName(OperationName operation, String eventHubName) {
+        return String.format("%s %s", eventHubName, operation);
+    }
+
+    public static EventData createEventData(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset,
+                                                                   long sequenceNumber, Instant enqueuedTime) {
+        amqpAnnotatedMessage.getMessageAnnotations()
+                .put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
+        amqpAnnotatedMessage.getMessageAnnotations()
+                .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+        amqpAnnotatedMessage.getMessageAnnotations()
+                .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
+
+        SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime, sequenceNumber, null);
+        return new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
     }
 
     private TestUtils() {

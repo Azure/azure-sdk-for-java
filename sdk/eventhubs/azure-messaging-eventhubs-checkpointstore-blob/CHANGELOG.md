@@ -5,6 +5,8 @@
 ### Features Added
 
 ### Breaking Changes
+- 
+- Checkpointing metrics are now reported by `azure-messaging-eventhubs` package.
 
 ### Bugs Fixed
 

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.Exceptions;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
@@ -30,8 +31,8 @@ public class EventHubsTracerTests {
         Tracer inner = mock(Tracer.class);
         when(inner.isEnabled()).thenReturn(true);
 
-        EventHubsTracer tracer = new EventHubsTracer(inner, "fqdn", "entityPath");
-        tracer.endSpan(null, Context.NONE, null);
+        EventHubsTracer tracer = new EventHubsTracer(inner, "fqdn", "entityPath", null);
+        tracer.endSpan(null, null, Context.NONE, null);
 
         verify(inner, times(1)).end(isNull(), isNull(), same(Context.NONE));
     }
@@ -41,9 +42,9 @@ public class EventHubsTracerTests {
         Tracer inner = mock(Tracer.class);
         when(inner.isEnabled()).thenReturn(true);
 
-        EventHubsTracer tracer = new EventHubsTracer(inner, "fqdn", "entityPath");
+        EventHubsTracer tracer = new EventHubsTracer(inner, "fqdn", "entityPath", null);
         AtomicBoolean closed = new AtomicBoolean();
-        tracer.endSpan(null, Context.NONE, () -> closed.set(true));
+        tracer.endSpan(null, null, Context.NONE, () -> closed.set(true));
 
         verify(inner, times(1)).end(isNull(), isNull(), same(Context.NONE));
         assertTrue(closed.get());
@@ -55,17 +56,18 @@ public class EventHubsTracerTests {
         Tracer inner = mock(Tracer.class);
         when(inner.isEnabled()).thenReturn(true);
 
-        EventHubsTracer tracer = new EventHubsTracer(inner, "fqdn", "entityPath");
+        EventHubsTracer tracer = new EventHubsTracer(inner, "fqdn", "entityPath", null);
 
-        tracer.endSpan(amqpException, Context.NONE, null);
+        tracer.endSpan(null, amqpException, Context.NONE, null);
 
         verify(inner, times(1)).end(eq(expectedStatus), eq(amqpException), same(Context.NONE));
     }
 
     public static Stream<Arguments> getAmqpException() {
         return Stream.of(
-            Arguments.of(new RuntimeException("foo"), null),
-            Arguments.of(new AmqpException(false, "foo", null, null), null),
+            Arguments.of(new RuntimeException("foo"), RuntimeException.class.getName()),
+            Arguments.of(Exceptions.propagate(new RuntimeException("foo")), RuntimeException.class.getName()),
+            Arguments.of(new AmqpException(false, "foo", null, null), AmqpException.class.getName()),
             Arguments.of(new AmqpException(false, AmqpErrorCondition.NOT_FOUND, "foo", null), AmqpErrorCondition.NOT_FOUND.getErrorCondition()),
             Arguments.of(new AmqpException(false, AmqpErrorCondition.TIMEOUT_ERROR, "", null), AmqpErrorCondition.TIMEOUT_ERROR.getErrorCondition()),
             Arguments.of(new AmqpException(false, AmqpErrorCondition.SERVER_BUSY_ERROR, null, new RuntimeException("foo"), null), AmqpErrorCondition.SERVER_BUSY_ERROR.getErrorCondition()));

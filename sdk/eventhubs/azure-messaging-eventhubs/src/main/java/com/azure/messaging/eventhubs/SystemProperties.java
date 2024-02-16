@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  *
  * @see <a href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/eventhub/Azure.Messaging.EventHubs/src/Amqp/AmqpSystemProperties.cs">AmqpSystemProperties</a>
  */
-final class SystemProperties implements Map<String, Object> {
+public final class SystemProperties implements Map<String, Object> {
     private static final ClientLogger LOGGER = new ClientLogger(SystemProperties.class);
     private final Long offset;
     private final String partitionKey;

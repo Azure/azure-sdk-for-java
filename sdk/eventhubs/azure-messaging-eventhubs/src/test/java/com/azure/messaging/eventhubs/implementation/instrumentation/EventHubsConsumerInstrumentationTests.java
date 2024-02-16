@@ -1,0 +1,528 @@
+package com.azure.messaging.eventhubs.implementation.instrumentation;
+
+import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.test.utils.metrics.TestCounter;
+import com.azure.core.test.utils.metrics.TestHistogram;
+import com.azure.core.test.utils.metrics.TestMeter;
+import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
+import com.azure.core.util.TracingOptions;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
+import com.azure.messaging.eventhubs.CheckpointStore;
+import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.SampleCheckpointStore;
+import com.azure.messaging.eventhubs.TestSpanProcessor;
+import com.azure.messaging.eventhubs.TestUtils;
+import com.azure.messaging.eventhubs.models.EventBatchContext;
+import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.data.LinkData;
+import io.opentelemetry.sdk.trace.data.SpanData;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.message.Message;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.TestUtils.assertAllAttributes;
+import static com.azure.messaging.eventhubs.TestUtils.createEventData;
+import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
+import static io.opentelemetry.api.trace.SpanKind.CONSUMER;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class EventHubsConsumerInstrumentationTests {
+    private static final String FQDN = "fqdn";
+    private static final String ENTITY_NAME = "entityName";
+    private static final String CONSUMER_GROUP = "consumerGroup";
+    private static final String TRACEPARENT1 = "00-1123456789abcdef0123456789abcdef-0123456789abcdef-01";
+    private static final String TRACEID1 = TRACEPARENT1.substring(3, 35);
+    private static final String SPANID1 = TRACEPARENT1.substring(36, 52);
+    private static final String TRACEPARENT2 = "00-2123456789abcdef0123456789abcdef-0123456789abcdef-01";
+    private static final String TRACEPARENT3 = "00-3123456789abcdef0123456789abcdef-0123456789abcdef-01";
+    private Tracer tracer;
+    private TestMeter meter;
+    private TestSpanProcessor spanProcessor;
+
+    private CheckpointStore checkpointStore;
+    @BeforeEach
+    public void setup(TestInfo testInfo) {
+        GlobalOpenTelemetry.resetForTest();
+
+        spanProcessor = new TestSpanProcessor(FQDN, ENTITY_NAME, testInfo.getDisplayName());
+        OpenTelemetry otel = OpenTelemetrySdk.builder()
+                .setTracerProvider(
+                        SdkTracerProvider.builder()
+                                .addSpanProcessor(spanProcessor)
+                                .build())
+                .build();
+
+        TracingOptions tracingOptions = new OpenTelemetryTracingOptions().setOpenTelemetry(otel);
+        tracer = TracerProvider.getDefaultProvider()
+                .createTracer("test", null, "Microsoft.EventHub", tracingOptions);
+        meter = new TestMeter();
+        checkpointStore = new SampleCheckpointStore();
+    }
+
+    @AfterEach
+    public void teardown() {
+        GlobalOpenTelemetry.resetForTest();
+        spanProcessor.shutdown();
+        spanProcessor.close();
+        meter.close();
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    @SuppressWarnings("try")
+    public void startAsyncConsumeDisabledInstrumentation(boolean sync) {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, null,
+                FQDN, ENTITY_NAME, CONSUMER_GROUP, sync);
+
+        try (InstrumentationScope scope =
+                     instrumentation.startAsyncConsume(createMessage(Instant.now()), "0")) {
+        }
+
+        TestHistogram lag = meter.getHistograms().get("messaging.eventhubs.consumer.lag");
+        assertNull(lag);
+        assertEquals(0, spanProcessor.getEndedSpans().size());
+    }
+
+    @Test
+    @SuppressWarnings("try")
+    public void startAsyncConsumeSyncReportsLag() {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+                FQDN, ENTITY_NAME, CONSUMER_GROUP, true);
+
+        int measurements = 3;
+        Integer[] lags = new Integer[]{ -10, 0, 10};
+        Integer[] expectedLags = new Integer[]{ 10, 0, 0 };
+        String[] partitionIds = new String[]{"1", "2", "3"};
+
+        for (int i = 0; i < measurements; i++) {
+            try (InstrumentationScope scope =
+                         instrumentation.startAsyncConsume(createMessage(Instant.now().plusSeconds(lags[i])), partitionIds[i])) {
+                // lag is reported about received message and don't need to report processing errors
+                // so those will be ignored
+                if (i == 0) {
+                    scope.setCancelled();
+                } else if (i == 1) {
+                    scope.setError(new RuntimeException("error"));
+                }
+            }
+        }
+
+        TestHistogram lag = meter.getHistograms().get("messaging.eventhubs.consumer.lag");
+        assertNotNull(lag);
+        assertEquals(measurements, lag.getMeasurements().size());
+        for (int i = 0; i < measurements; i++) {
+            assertEquals(expectedLags[i], lag.getMeasurements().get(i).getValue(), 10);
+            assertAllAttributes(FQDN, ENTITY_NAME, partitionIds[i], CONSUMER_GROUP, null,
+                    lag.getMeasurements().get(i).getAttributes());
+        }
+
+        // sync consumer reports spans in different instrumentation point
+        assertEquals(0, spanProcessor.getEndedSpans().size());
+    }
+
+    @Test
+    @SuppressWarnings("try")
+    public void startAsyncConsumeAsyncReportsLagAndSpans() {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+
+        int measurements = 3;
+        Integer[] lags = new Integer[]{ -10, 0, 10};
+        String[] partitionIds = new String[]{"1", "2", "3"};
+        String[] expectedErrors = new String[3];
+        for (int i = 0; i < measurements; i++) {
+            try (InstrumentationScope scope =
+                         instrumentation.startAsyncConsume(createMessage(Instant.now().plusSeconds(lags[i])), partitionIds[i])) {
+                // lag is reported about received message and don't need to report processing errors
+                // so those will be ignored on lag, but will be reflected on processing spans
+                if (i == 0) {
+                    expectedErrors[i] = "cancelled";
+                    scope.setCancelled();
+                } else if (i == 1) {
+                    expectedErrors[i] = RuntimeException.class.getName();
+                    scope.setError(new RuntimeException("test"));
+                }
+
+                assertTrue(scope.getStartTime().toEpochMilli() <= Instant.now().toEpochMilli());
+                assertTrue(Span.current().getSpanContext().isValid());
+            }
+        }
+
+        assertEquals(measurements, spanProcessor.getEndedSpans().size());
+        for (int i = 0; i < measurements; i++) {
+            SpanData span = spanProcessor.getEndedSpans().get(i).toSpanData();
+            assertEquals(getSpanName(PROCESS, ENTITY_NAME), span.getName());
+            Map<String, Object> attributes = attributesToMap(span.getAttributes());
+            assertAllAttributes(FQDN, ENTITY_NAME, partitionIds[i], CONSUMER_GROUP, expectedErrors[i], attributes);
+            assertNotNull(attributes.get("messaging.eventhubs.message.enqueued_time"));
+            assertSpanStatus(i == 0 ? "cancelled" : i == 1 ? "test" : null, span);
+        }
+    }
+
+    @Test
+    @SuppressWarnings("try")
+    public void asyncConsumerSpansHaveLinks() throws InterruptedException {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+
+        Instant enqueuedTime = Instant.now();
+        Message message = createMessage(enqueuedTime, TRACEPARENT1);
+        int durationMillis = 100;
+        try (InstrumentationScope scope = instrumentation.startAsyncConsume(message, "0")) {
+            Thread.sleep(100);
+            assertEquals(TRACEID1, Span.current().getSpanContext().getTraceId());
+        }
+
+        // async consumer should report spans
+        assertEquals(1, spanProcessor.getEndedSpans().size());
+        SpanData span = spanProcessor.getEndedSpans().get(0).toSpanData();
+        assertEquals(getSpanName(PROCESS, ENTITY_NAME), span.getName());
+        assertEquals(CONSUMER, span.getKind());
+        assertEquals(SPANID1, span.getParentSpanId());
+        assertTrue(span.getEndEpochNanos() - span.getStartEpochNanos() >= durationMillis * 1_000_000);
+
+        Map<String, Object> attributes = attributesToMap(span.getAttributes());
+        assertAllAttributes(FQDN, ENTITY_NAME, "0", CONSUMER_GROUP, null, attributes);
+        assertEquals(enqueuedTime.getEpochSecond(), attributes.get("messaging.eventhubs.message.enqueued_time"));
+
+        assertTrue(span.getLinks().get(0).getSpanContext().isValid());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    @SuppressWarnings("try")
+    public void syncReceiveDisabledInstrumentation(boolean sync) {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(null, null,
+                FQDN, ENTITY_NAME, CONSUMER_GROUP, sync);
+
+        Flux<PartitionEvent> events = Flux.just(createPartitionEvent(Instant.now(), null, "0"));
+        instrumentation.syncReceive(events, "0");
+
+        TestHistogram lag = meter.getHistograms().get("messaging.eventhubs.consumer.lag");
+        assertNull(lag);
+        assertEquals(0, spanProcessor.getEndedSpans().size());
+    }
+
+    public static Stream<Arguments> syncReceiveErrors() {
+        return Stream.of(
+                Arguments.of(false, null, null, null),
+                Arguments.of(true, null, "cancelled", "cancelled"),
+                Arguments.of(false, new RuntimeException("test"), RuntimeException.class.getName(), "test"),
+                Arguments.of(false, Exceptions.propagate(new RuntimeException("test")), RuntimeException.class.getName(), "test")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("syncReceiveErrors")
+    @SuppressWarnings("try")
+    public void syncReceiveOneEvent(boolean cancel, Throwable error, String expectedErrorType, String spanDescription) {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+
+        String partitionId = "0";
+        Flux<PartitionEvent> events = Flux.just(createPartitionEvent(Instant.now(), null, partitionId))
+                .flatMap(e -> error == null ? Mono.just(e) : Mono.error(error));
+
+        StepVerifier.Step<PartitionEvent> stepVerifier = StepVerifier.create(instrumentation.syncReceive(events, partitionId));
+
+        if (cancel) {
+            stepVerifier.thenCancel().verify();
+        } else if (error != null) {
+            stepVerifier.expectErrorMessage(error.getMessage()).verify();
+        } else {
+            stepVerifier
+                    .expectNextCount(1)
+                    .expectComplete()
+                    .verify();
+        }
+
+        assertReceiveDuration(partitionId, expectedErrorType);
+        assertReceivedCount(expectedErrorType == null ? 1 : 0, partitionId);
+        assertReceiveSpan(expectedErrorType == null ? 1 : 0, partitionId, expectedErrorType, spanDescription);
+    }
+
+
+
+    @ParameterizedTest
+    @MethodSource("syncReceiveErrors")
+    @SuppressWarnings("try")
+    public void syncReceiveBatchEvent(boolean cancel, Throwable error, String expectedErrorType, String spanDescription) {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+
+        String partitionId = "1";
+
+        int count = 3;
+        Flux<PartitionEvent> events = Flux.just(
+                createPartitionEvent(Instant.now(), TRACEPARENT1, partitionId),
+                createPartitionEvent(Instant.now(), TRACEPARENT2, partitionId),
+                createPartitionEvent(Instant.now(), TRACEPARENT3, partitionId));
+
+        if (error != null) {
+            events = events.concatWith(Mono.error(error));
+        }
+
+        StepVerifier.Step<PartitionEvent> stepVerifier = StepVerifier.create(instrumentation.syncReceive(events, partitionId))
+                .expectNextCount(count);
+
+        if (cancel) {
+            stepVerifier
+                    .thenCancel().verify();
+        } else if (error != null) {
+            stepVerifier
+                    .expectErrorMessage(error.getMessage())
+                    .verify();
+        } else {
+            stepVerifier
+                    .expectComplete()
+                    .verify();
+        }
+
+        assertReceiveDuration(partitionId, expectedErrorType);
+        assertReceivedCount(count, partitionId);
+        SpanData span = assertReceiveSpan(count, partitionId, expectedErrorType, spanDescription);
+        assertEquals(count, span.getLinks().size());
+        for (int j = 0; j < count; j++) {
+            LinkData link = span.getLinks().get(j);
+            assertTrue(link.getSpanContext().isValid());
+            assertNotNull(link.getAttributes().get(AttributeKey.longKey("messaging.eventhubs.message.enqueued_time")));
+        }
+    }
+
+    public static Stream<Arguments> processErrors() {
+        AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.SERVER_BUSY_ERROR, null, new RuntimeException("test"), null);
+        return Stream.of(
+                Arguments.of(null, null, null),
+                Arguments.of(new RuntimeException("test"), RuntimeException.class.getName(), "test"),
+                Arguments.of(amqpException, amqpException.getErrorCondition().getErrorCondition(), "test"),
+                Arguments.of(Exceptions.propagate(new RuntimeException("test")), RuntimeException.class.getName(), "test")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("processErrors")
+    @SuppressWarnings("try")
+    public void processOneEvent(Throwable error, String expectedErrorType, String spanDescription) throws InterruptedException {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+
+        String partitionId = "0";
+        try (InstrumentationScope scope = instrumentation.createScope().recordStartTime()) {
+            instrumentation.startProcess(createEventContext(Instant.now(), TRACEPARENT1, partitionId), scope);
+            scope.setError(error);
+            Thread.sleep(200);
+            instrumentation.reportProcessMetrics(1, partitionId, scope);
+        }
+
+        assertProcessDuration(Duration.ofMillis(200), partitionId, expectedErrorType);
+        assertProcessCount(1, partitionId, expectedErrorType);
+        SpanData span = assertProcessSpan(partitionId, expectedErrorType, spanDescription);
+        assertNull(span.getAttributes().get(AttributeKey.longKey("messaging.batch.message_count")));
+        assertNotNull(span.getAttributes().get(AttributeKey.longKey("messaging.eventhubs.message.enqueued_time")));
+
+        assertEquals(1, span.getLinks().size());
+        LinkData link = span.getLinks().get(0);
+        assertTrue(link.getSpanContext().isValid());
+    }
+
+    @ParameterizedTest
+    @MethodSource("processErrors")
+    @SuppressWarnings("try")
+    public void processBatch(Throwable error, String expectedErrorType, String spanDescription) throws InterruptedException {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+
+        String partitionId = "1";
+
+        int count = 3;
+        List<EventData> events = Arrays.asList(
+                createEventData(Instant.now(), TRACEPARENT1),
+                createEventData(Instant.now(), TRACEPARENT2),
+                createEventData(Instant.now(), TRACEPARENT3));
+        PartitionContext partitionContext = new PartitionContext(FQDN, ENTITY_NAME, CONSUMER_GROUP, partitionId);
+        EventBatchContext batchContext = new EventBatchContext(partitionContext, events, checkpointStore, null);
+
+        try (InstrumentationScope scope = instrumentation.createScope().recordStartTime()) {
+            instrumentation.startProcess(batchContext, scope);
+            scope.setError(error);
+            Thread.sleep(200);
+            instrumentation.reportProcessMetrics(count, partitionId, scope);
+        }
+
+        assertProcessDuration(Duration.ofMillis(200), partitionId, expectedErrorType);
+        assertProcessCount(3, partitionId, expectedErrorType);
+        SpanData span = assertProcessSpan(partitionId, expectedErrorType, spanDescription);
+        assertEquals(count, span.getAttributes().get(AttributeKey.longKey("messaging.batch.message_count")));
+        assertNull(span.getAttributes().get(AttributeKey.longKey("messaging.eventhubs.message.enqueued_time")));
+
+        assertEquals(count, span.getLinks().size());
+        for (int j = 0; j < count; j++) {
+            LinkData link = span.getLinks().get(j);
+            assertTrue(link.getSpanContext().isValid());
+            assertNotNull(link.getAttributes().get(AttributeKey.longKey("messaging.eventhubs.message.enqueued_time")));
+        }
+    }
+    private static Message createMessage(Instant enqueuedTime) {
+        Message message = Message.Factory.create();
+        message.setMessageAnnotations(new MessageAnnotations(Collections.singletonMap(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), enqueuedTime)));
+        message.setApplicationProperties(new ApplicationProperties(Collections.emptyMap()));
+        return message;
+    }
+
+    private static Message createMessage(Instant enqueuedTime, String traceparent) {
+        Message message = Message.Factory.create();
+        message.setMessageAnnotations(new MessageAnnotations(Collections.singletonMap(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), enqueuedTime)));
+        message.setApplicationProperties(new ApplicationProperties(Collections.singletonMap("traceparent", traceparent)));
+        return message;
+    }
+
+    private static PartitionEvent createPartitionEvent(Instant enqueuedTime, String traceparent, String partitionId) {
+        PartitionContext context = new PartitionContext(FQDN, ENTITY_NAME, CONSUMER_GROUP, partitionId);
+
+        EventData data = createEventData(enqueuedTime, traceparent);
+        return new PartitionEvent(context, data, null);
+    }
+
+    private EventContext createEventContext(Instant enqueuedTime, String traceparent, String partitionId) {
+        PartitionContext context = new PartitionContext(FQDN, ENTITY_NAME, CONSUMER_GROUP, partitionId);
+
+        EventData data = createEventData(enqueuedTime, traceparent);
+        return new EventContext(context, data, checkpointStore, null);
+    }
+
+    private static EventData createEventData(Instant enqueuedTime, String traceparent) {
+        AmqpAnnotatedMessage annotatedMessage = new AmqpAnnotatedMessage(
+                AmqpMessageBody.fromData("foo".getBytes(StandardCharsets.UTF_8)));
+        annotatedMessage.getApplicationProperties().put("traceparent", traceparent);
+        annotatedMessage.getMessageAnnotations().put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
+        return TestUtils.createEventData(annotatedMessage, 25L, 14L, enqueuedTime);
+    }
+
+    private static Map<String, Object> attributesToMap(Attributes attributes) {
+        return attributes.asMap().entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().getKey(), e -> e.getValue()));
+    }
+
+    private void assertSpanStatus(String description, SpanData span) {
+        if (description != null) {
+            assertEquals(StatusCode.ERROR, span.getStatus().getStatusCode());
+            assertEquals(description, span.getStatus().getDescription());
+        } else {
+            assertEquals(StatusCode.UNSET, span.getStatus().getStatusCode());
+        }
+    }
+
+    private SpanData assertReceiveSpan(int expectedBatchSize, String partitionId, String expectedErrorType, String spanDescription) {
+        assertEquals(1, spanProcessor.getEndedSpans().size());
+        SpanData span = spanProcessor.getEndedSpans().get(0).toSpanData();
+        assertEquals(getSpanName(RECEIVE, ENTITY_NAME), span.getName());
+        assertEquals(CONSUMER, span.getKind());
+        Map<String, Object> attributes = attributesToMap(span.getAttributes());
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, attributes);
+        assertSpanStatus(spanDescription, span);
+
+        assertEquals((long)expectedBatchSize, attributes.get("messaging.batch.message_count"));
+        return span;
+    }
+
+    private SpanData assertProcessSpan(String partitionId, String expectedErrorType, String spanDescription) {
+        assertEquals(1, spanProcessor.getEndedSpans().size());
+        SpanData span = spanProcessor.getEndedSpans().get(0).toSpanData();
+        assertEquals(getSpanName(PROCESS, ENTITY_NAME), span.getName());
+        assertEquals(CONSUMER, span.getKind());
+        Map<String, Object> attributes = attributesToMap(span.getAttributes());
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, attributes);
+        assertSpanStatus(spanDescription, span);
+        return span;
+    }
+
+
+    private void assertReceiveDuration(String partitionId, String expectedErrorType) {
+        TestHistogram receiveDuration = meter.getHistograms().get("messaging.receive.duration");
+        assertNotNull(receiveDuration);
+        assertEquals(1, receiveDuration.getMeasurements().size());
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
+                receiveDuration.getMeasurements().get(0).getAttributes());
+    }
+
+    private void assertProcessDuration(Duration duration, String partitionId, String expectedErrorType) {
+        TestHistogram processDuration = meter.getHistograms().get("messaging.process.duration");
+        assertNotNull(processDuration);
+        assertEquals(1, processDuration.getMeasurements().size());
+        if (duration != null) {
+            double sec = getDoubleSeconds(duration);
+            assertEquals(sec, processDuration.getMeasurements().get(0).getValue(), sec);
+        }
+
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
+                processDuration.getMeasurements().get(0).getAttributes());
+    }
+
+    private void assertReceivedCount(int count, String partitionId) {
+        TestCounter receiveCounter = meter.getCounters().get("messaging.receive.messages");
+        assertNotNull(receiveCounter);
+        assertEquals(count > 0 ? 1 : 0, receiveCounter.getMeasurements().size());
+        if (count > 0) {
+            assertEquals(Long.valueOf(count), receiveCounter.getMeasurements().get(0).getValue());
+            assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, null,
+                    receiveCounter.getMeasurements().get(0).getAttributes());
+        }
+    }
+
+    private void assertProcessCount(int count, String partitionId, String expectedErrorType) {
+        TestCounter processCounter = meter.getCounters().get("messaging.process.messages");
+        assertNotNull(processCounter);
+        assertEquals(1, processCounter.getMeasurements().size());
+        assertEquals(Long.valueOf(count), processCounter.getMeasurements().get(0).getValue());
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
+                processCounter.getMeasurements().get(0).getAttributes());
+    }
+
+    private double getDoubleSeconds(Duration duration) {
+        return duration.toNanos() / 1_000_000_000.0;
+    }
+}
