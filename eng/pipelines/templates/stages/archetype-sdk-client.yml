@@ -120,7 +120,9 @@ stages:
         ${{ else }}:
           JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
 
-  - ${{ parameters.AdditionalStagesAfterBuild }}
+
+  - ${{ if parameters.AdditionalStagesAfterBuild }}:
+    - ${{ parameters.AdditionalStagesAfterBuild }}
 
   - ${{ if and(eq(variables['System.TeamProject'], 'internal'), ne(variables['Build.Reason'],'IndividualCI')) }}:
     - ${{ parameters.LiveTestStages }}
@@ -168,4 +170,3 @@ stages:
           ArtifactName: packages
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
           UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
-
