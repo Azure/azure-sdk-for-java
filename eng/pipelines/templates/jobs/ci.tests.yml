@@ -50,7 +50,7 @@ parameters:
     type: string
 
 jobs:
-  - job: 'Test'
+  - job: 'Test ${{ parameters.OSName }}'
     dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
 
