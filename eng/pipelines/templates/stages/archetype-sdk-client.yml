@@ -107,7 +107,7 @@ extends:
     stages:
       - stage: Build
         jobs:
-          - template: /eng/pipelines/templates/jobs/ci.yml
+          - template: /eng/pipelines/templates/jobs/ci.yml@self
             parameters:
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
               TestPipeline: ${{ parameters.TestPipeline }}
@@ -150,7 +150,7 @@ extends:
                 JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
 
         variables:
-          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/globals.yml@self
 
       - ${{ if parameters.AdditionalStagesAfterBuild }}:
           - ${{ parameters.AdditionalStagesAfterBuild }}
@@ -162,7 +162,7 @@ extends:
       # The tests-weekly check needs to be done so we don't create signing/release tasks for manual weekly-test runs
       - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
           - ${{ if eq(parameters.EnableBatchRelease, 'true') }}:
-              - template: archetype-java-release-batch.yml
+              - template: archetype-java-release-batch.yml@self
                 parameters:
                   DependsOn:
                     - Build
@@ -190,7 +190,7 @@ extends:
                   ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
                     Environment: 'MavenBreakGlassApprovers'
           - ${{ else }}:
-              - template: archetype-java-release.yml
+              - template: archetype-java-release.yml@self
                 parameters:
                   DependsOn:
                     - Build
