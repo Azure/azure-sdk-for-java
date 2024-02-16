@@ -37,8 +37,9 @@ stages:
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
         pool:
-          name: azsdk-pool-mms-ubuntu-2004-general
-          vmImage: MMSUbuntu20.04
+          name: azsdk-pool-mms-ubuntu-2004-1es-pt
+          vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+          os: linux
         strategy:
           runOnce:
             deploy:
@@ -76,8 +77,9 @@ stages:
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
-            name: azsdk-pool-mms-win-2022-general
-            vmImage: windows-2022
+            name: azsdk-pool-mms-win-2022-1es-pt
+            vmImage: azsdk-pool-mms-win-2022-1espt
+            os: windows
           strategy:
             runOnce:
               deploy:
@@ -107,8 +109,9 @@ stages:
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
-            name: azsdk-pool-mms-win-2022-general
-            vmImage: windows-2022
+            name: azsdk-pool-mms-win-2022-1es-pt
+            vmImage: azsdk-pool-mms-win-2022-1espt
+            os: windows
           strategy:
             runOnce:
               deploy:
@@ -172,8 +175,9 @@ stages:
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
-            name: azsdk-pool-mms-win-2022-general
-            vmImage: windows-2022
+            name: azsdk-pool-mms-win-2022-1es-pt
+            vmImage: azsdk-pool-mms-win-2022-1espt
+            os: windows
           strategy:
             runOnce:
               deploy:
@@ -224,8 +228,9 @@ stages:
           dependsOn: PublishPackage
 
           pool:
-            name: azsdk-pool-mms-ubuntu-2004-general
-            vmImage: MMSUbuntu20.04
+            name: azsdk-pool-mms-ubuntu-2004-1es-pt
+            vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+            os: linux
 
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
@@ -283,8 +288,9 @@ stages:
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
-            name: azsdk-pool-mms-win-2022-general
-            vmImage: windows-2022
+            name: azsdk-pool-mms-win-2022-1es-pt
+            vmImage: azsdk-pool-mms-win-2022-1espt
+            os: windows
           strategy:
             runOnce:
               deploy:

@@ -1,7 +1,10 @@
 jobs:
   - job: CreateDocIndex
     pool:
-      name: azsdk-pool-mms-win-2022-general
+      name: azsdk-pool-mms-win-2022-1es-pt
+      vmImage: azsdk-pool-mms-win-2022-1espt
+      os: windows
+
     steps:
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.9'
