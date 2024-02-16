@@ -138,7 +138,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
                     && code != HttpURLConnection.HTTP_VERSION));
             } else {
-                return requestRetryCondition.getThrowable() instanceof Exception;
+                return requestRetryCondition.getException() instanceof Exception;
             }
         }
     }
@@ -244,7 +244,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
         // Unwrap the throwable.
         Throwable causalThrowable = exception.getCause();
-        RequestRetryCondition requestRetryCondition = new RequestRetryCondition(null, causalThrowable, tryCount,
+        RequestRetryCondition requestRetryCondition = new RequestRetryCondition(null, exception, tryCount,
             retriedExceptions);
 
         // Check all causal exceptions in the exception chain.

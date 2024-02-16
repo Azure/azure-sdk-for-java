@@ -13,22 +13,22 @@ import java.util.List;
  */
 public final class RequestRetryCondition {
     private final HttpResponse response;
-    private final Throwable throwable;
+    private final Exception exception;
     private final int tryCount;
-    private final List<Throwable> retriedExceptions;
+    private final List<Exception> retriedExceptions;
 
     /**
      * Creates a new ShouldRetryInfo object.
      *
      * @param response The HTTP response of the request that failed.
-     * @param throwable The throwable of the request that failed.
+     * @param exception The exception of the request that failed.
      * @param tryCount The number of tries that have been attempted.
      * @param retriedExceptions The list of exceptions that have been encountered during retries.
      */
-    RequestRetryCondition(HttpResponse response, Throwable throwable, int tryCount,
+    RequestRetryCondition(HttpResponse response, Exception exception, int tryCount,
                           List<Exception> retriedExceptions) {
         this.response = response;
-        this.throwable = throwable;
+        this.exception = exception;
         this.tryCount = tryCount;
         this.retriedExceptions = retriedExceptions == null
             ? Collections.emptyList() : Collections.unmodifiableList(retriedExceptions);
@@ -46,14 +46,12 @@ public final class RequestRetryCondition {
     }
 
     /**
-     * Gets the throwable of the request that failed.
-     * <p>
-     * This may be null if the request failed with a response and no throwable was received.
+     * Gets the exception of the request that failed.
      *
      * @return The throwable of the request that failed.
      */
-    public Throwable getThrowable() {
-        return throwable;
+    public Exception getException() {
+        return exception;
     }
 
     /**
@@ -66,11 +64,11 @@ public final class RequestRetryCondition {
     }
 
     /**
-     * Gets the unmodifiable list of throwables that have been encountered during retries.
+     * Gets the unmodifiable list of exceptions that have been encountered during retries.
      *
-     * @return The unmodifiable list of throwables that have been encountered during retries.
+     * @return The unmodifiable list of exceptions that have been encountered during retries.
      */
-    public List<Throwable> getRetriedThrowables() {
+    public List<Exception> getRetriedExceptions() {
         return retriedExceptions;
     }
 }

@@ -344,7 +344,7 @@ public class RetryPolicyTests {
     public void retryOptionsCanConfigureThrowableRetryLogic() {
         // Fixed delay retry options which only retries IOException-based exceptions.
         RetryOptions retryOptions = new RetryOptions(1, Duration.ofMillis(1))
-            .setShouldRetryCondition(retryInfo -> retryInfo.getThrowable() instanceof TimeoutException);
+            .setShouldRetryCondition(retryInfo -> retryInfo.getException() instanceof TimeoutException);
 
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
