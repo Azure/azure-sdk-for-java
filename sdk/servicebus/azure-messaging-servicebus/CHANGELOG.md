@@ -1,16 +1,10 @@
 # Release History
 
-## 7.16.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 7.15.1 (2024-02-16)
 
 ### Bugs Fixed
 
 - Redesigned the synchronous to asynchronous receive layer to generalize it and fixed edge cases losing termination signals. ([38705](https://github.com/Azure/azure-sdk-for-java/pull/38705))
-### Other Changes
-
 ## 7.15.0 (2024-01-18)
 
 ### Features Added
