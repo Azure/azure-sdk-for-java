@@ -20,8 +20,8 @@
     {
       "Agent": {
         "ubuntu-20.04_TestFromSource": {
-          "OSVmImage": "MMSUbuntu20.04",
-          "Pool": "azsdk-pool-mms-ubuntu-2004-general",
+          "OSVmImage": "env:LINUXVMIMAGE",
+          "Pool": "env:LINUXPOOL",
           "TestGoals": "surefire:test",
           "TestFromSource": true
         }
@@ -34,8 +34,8 @@
     {
       "Agent": {
         "ubuntu-20.04_TestFromSource": {
-          "OSVmImage": "MMSUbuntu20.04",
-          "Pool": "azsdk-pool-mms-ubuntu-2004-general",
+          "OSVmImage": "env:LINUXVMIMAGE",
+          "Pool": "env:LINUXPOOL",
           "TestGoals": "surefire:test",
           "TestFromSource": true
         }

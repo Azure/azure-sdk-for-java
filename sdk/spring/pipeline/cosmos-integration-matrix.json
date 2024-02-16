@@ -4,7 +4,7 @@
       "Session_Integration": {
         "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session' }",
         "ProfileFlag": "-P integration-test-azure",
-        "Pool": "azsdk-pool-mms-ubuntu-2004-general",
+        "Pool": "env:LINUXPOOL",
         "OSVmImage": "MMSUbuntu2004"
       }
     },
