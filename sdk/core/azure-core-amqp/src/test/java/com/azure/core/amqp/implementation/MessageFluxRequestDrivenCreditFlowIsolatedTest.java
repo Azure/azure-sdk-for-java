@@ -132,9 +132,9 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
             verifier.create(() -> messageFlux)
                 .then(() -> upstream.next(receiver))
                 .thenRequest(10)    // 10 - 0 + 100 =
-                                    // 110
-                                    // [accumulatedRequest_110
-                                    // >= 100]
+                // 110
+                // [accumulatedRequest_110
+                // >= 100]
                 .thenAwait()
                 .thenRequest(20)    // 30 - 110 + 100 = 20 [accumulatedRequest_20 < 100]
                 .thenRequest(20)    // 50 - 130 + 100 = 20 [accumulatedRequest_40 < 100]
@@ -185,9 +185,9 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
             verifier.create(() -> messageFlux)
                 .then(() -> upstream.next(receiver))
                 .thenRequest(10)    // 10 - 0 + 100 =
-                                    // 110
-                                    // [accumulatedRequest_110
-                                    // >= 100]
+                // 110
+                // [accumulatedRequest_110
+                // >= 100]
                 .thenAwait()
                 .thenRequest(20)    // 30 - 110 + 100 = 20 [accumulatedRequest_20 < 100]
                 .thenRequest(20)    // 50 - 130 + 100 = 20 [accumulatedRequest_40 < 100]
@@ -244,8 +244,8 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
             verifier.create(() -> messageFlux)
                 .then(() -> upstream.next(receiver))
                 .thenRequest(10)   // 10 - 0 + 0 = 10
-                                   // [accumulatedRequest_10
-                                   // >= 0]
+                // [accumulatedRequest_10
+                // >= 0]
                 .thenAwait()
                 .thenRequest(20)   // 30 - 10 + 0 = 20 [accumulatedRequest_20 >= 0]
                 .thenRequest(30)   // 60 - 30 + 0 = 30 [accumulatedRequest_30 >= 0]

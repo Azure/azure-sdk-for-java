@@ -69,10 +69,9 @@ import java.util.stream.Collectors;
  * <!-- src_embed com.azure.core.experimental.http.dynamicrequest.getrequest -->
  * <pre>
  * DynamicResponse response = dynamicRequest
- * .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&#47;&#123;petId&#125;&quot;&#41; &#47;&#47; may
- * already be set if request is created from a client
- * .setPathParam&#40;&quot;petId&quot;, &quot;2343245&quot;&#41;
- * .send&#40;&#41;; &#47;&#47; makes the service call
+ *     .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&#47;&#123;petId&#125;&quot;&#41; &#47;&#47; may already be set if request is created from a client
+ *     .setPathParam&#40;&quot;petId&quot;, &quot;2343245&quot;&#41;
+ *     .send&#40;&#41;; &#47;&#47; makes the service call
  * </pre>
  * <!-- end com.azure.core.experimental.http.dynamicrequest.getrequest -->
  *
@@ -111,30 +110,29 @@ import java.util.stream.Collectors;
  * <!-- src_embed com.azure.core.experimental.http.dynamicrequest.createjsonrequest -->
  * <pre>
  * JsonArray photoUrls = Json.createArrayBuilder&#40;&#41;
- * .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;
- * .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet2&quot;&#41;
- * .build&#40;&#41;;
+ *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;
+ *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet2&quot;&#41;
+ *     .build&#40;&#41;;
  *
  * JsonArray tags = Json.createArrayBuilder&#40;&#41;
- * .add&#40;Json.createObjectBuilder&#40;&#41;
- * .add&#40;&quot;id&quot;, 0&#41;
- * .add&#40;&quot;name&quot;, &quot;Labrador&quot;&#41;
- * .build&#40;&#41;&#41;
- * .add&#40;Json.createObjectBuilder&#40;&#41;
- * .add&#40;&quot;id&quot;, 1&#41;
- * .add&#40;&quot;name&quot;, &quot;2021&quot;&#41;
- * .build&#40;&#41;&#41;
- * .build&#40;&#41;;
+ *     .add&#40;Json.createObjectBuilder&#40;&#41;
+ *         .add&#40;&quot;id&quot;, 0&#41;
+ *         .add&#40;&quot;name&quot;, &quot;Labrador&quot;&#41;
+ *         .build&#40;&#41;&#41;
+ *     .add&#40;Json.createObjectBuilder&#40;&#41;
+ *         .add&#40;&quot;id&quot;, 1&#41;
+ *         .add&#40;&quot;name&quot;, &quot;2021&quot;&#41;
+ *         .build&#40;&#41;&#41;
+ *     .build&#40;&#41;;
  *
  * JsonObject requestBody = Json.createObjectBuilder&#40;&#41;
- * .add&#40;&quot;id&quot;, 0&#41;
- * .add&#40;&quot;name&quot;, &quot;foo&quot;&#41;
- * .add&#40;&quot;status&quot;, &quot;available&quot;&#41;
- * .add&#40;&quot;category&quot;, Json.createObjectBuilder&#40;&#41;.add&#40;&quot;id&quot;,
- * 0&#41;.add&#40;&quot;name&quot;, &quot;dog&quot;&#41;&#41;
- * .add&#40;&quot;photoUrls&quot;, photoUrls&#41;
- * .add&#40;&quot;tags&quot;, tags&#41;
- * .build&#40;&#41;;
+ *     .add&#40;&quot;id&quot;, 0&#41;
+ *     .add&#40;&quot;name&quot;, &quot;foo&quot;&#41;
+ *     .add&#40;&quot;status&quot;, &quot;available&quot;&#41;
+ *     .add&#40;&quot;category&quot;, Json.createObjectBuilder&#40;&#41;.add&#40;&quot;id&quot;, 0&#41;.add&#40;&quot;name&quot;, &quot;dog&quot;&#41;&#41;
+ *     .add&#40;&quot;photoUrls&quot;, photoUrls&#41;
+ *     .add&#40;&quot;tags&quot;, tags&#41;
+ *     .build&#40;&#41;;
  *
  * String requestBodyStr = requestBody.toString&#40;&#41;;
  * </pre>
@@ -145,11 +143,10 @@ import java.util.stream.Collectors;
  * <!-- src_embed com.azure.core.experimental.http.dynamicrequest.postrequest -->
  * <pre>
  * DynamicResponse response = dynamicRequest
- * .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41; &#47;&#47; may already be set if request is
- * created from a client
- * .addHeader&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;
- * .setBody&#40;requestBodyStr&#41;
- * .send&#40;&#41;; &#47;&#47; makes the service call
+ *     .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41; &#47;&#47; may already be set if request is created from a client
+ *     .addHeader&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;
+ *     .setBody&#40;requestBodyStr&#41;
+ *     .send&#40;&#41;; &#47;&#47; makes the service call
  * </pre>
  * <!-- end com.azure.core.experimental.http.dynamicrequest.postrequest -->
  */

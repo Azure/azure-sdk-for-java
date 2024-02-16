@@ -52,7 +52,7 @@ import java.io.UncheckedIOException;
  * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
  * <pre>
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
- * .build&#40;&#41;;
+ *         .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
  *

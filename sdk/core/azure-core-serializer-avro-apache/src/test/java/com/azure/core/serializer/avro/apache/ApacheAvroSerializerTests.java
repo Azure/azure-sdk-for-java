@@ -342,8 +342,8 @@ public class ApacheAvroSerializerTests {
         };
 
         HandOfCards royalFlushHand = new HandOfCards(Arrays.asList(new PlayingCard(false, 10, PlayingCardSuit.SPADES), // 10
-                                                                                                                       // of
-                                                                                                                       // Spades
+            // of
+            // Spades
             new PlayingCard(true, 11, PlayingCardSuit.SPADES), // Jack of Spades
             new PlayingCard(true, 12, PlayingCardSuit.SPADES), // Queen of Spades
             new PlayingCard(true, 13, PlayingCardSuit.SPADES), // King of Spaces

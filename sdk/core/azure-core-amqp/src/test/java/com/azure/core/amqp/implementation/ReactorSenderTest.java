@@ -265,14 +265,14 @@ public class ReactorSenderTest {
         // Act
         StepVerifier.create(reactorSender.send(message, transactionalState))
             .expectError(AmqpException.class) // Because
-                                              // we did
-                                              // not
-                                              // process
-                                              // a
-                                              // "delivered
-                                              // message",
-                                              // it'll
-                                              // timeout.
+            // we did
+            // not
+            // process
+            // a
+            // "delivered
+            // message",
+            // it'll
+            // timeout.
             .verify(VERIFY_TIMEOUT);
 
         // Assert

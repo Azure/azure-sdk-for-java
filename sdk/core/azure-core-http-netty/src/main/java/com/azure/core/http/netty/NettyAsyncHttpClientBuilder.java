@@ -60,9 +60,9 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
- * .port&#40;8080&#41;
- * .wiretap&#40;true&#41;
- * .build&#40;&#41;;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
@@ -78,9 +78,9 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
- * .port&#40;8080&#41;
- * .wiretap&#40;true&#41;
- * .build&#40;&#41;;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
@@ -91,9 +91,9 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
- * .port&#40;8080&#41;
- * .wiretap&#40;true&#41;
- * .build&#40;&#41;;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
@@ -105,8 +105,8 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * <pre>
  * &#47;&#47; Constructs an HttpClient that only supports HTTP&#47;2.
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;reactor.netty.http.client.HttpClient.create&#40;&#41;
- * .protocol&#40;HttpProtocol.H2&#41;&#41;
- * .build&#40;&#41;;
+ *     .protocol&#40;HttpProtocol.H2&#41;&#41;
+ *     .build&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-useHttp2OnlyWithConfiguredNettyClient -->
  *

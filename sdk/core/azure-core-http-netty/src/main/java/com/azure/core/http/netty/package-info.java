@@ -46,9 +46,8 @@
  * <!-- src_embed readme-sample-createProxyClient -->
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
- * .proxy&#40;new ProxyOptions&#40;ProxyOptions.Type.HTTP, new InetSocketAddress&#40;&quot;&lt;proxy-host&gt;&quot;,
- * 8888&#41;&#41;&#41;
- * .build&#40;&#41;;
+ *     .proxy&#40;new ProxyOptions&#40;ProxyOptions.Type.HTTP, new InetSocketAddress&#40;&quot;&lt;proxy-host&gt;&quot;, 8888&#41;&#41;&#41;
+ *     .build&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-createProxyClient -->
  *
@@ -63,11 +62,10 @@
  *
  * <!-- src_embed readme-sample-useHttp2WithConfiguredNettyClient -->
  * <pre>
- * &#47;&#47; Constructs an HttpClient that supports both HTTP&#47;1.1 and HTTP&#47;2 with HTTP&#47;2 being the
- * preferred protocol.
+ * &#47;&#47; Constructs an HttpClient that supports both HTTP&#47;1.1 and HTTP&#47;2 with HTTP&#47;2 being the preferred protocol.
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;reactor.netty.http.client.HttpClient.create&#40;&#41;
- * .protocol&#40;HttpProtocol.HTTP11, HttpProtocol.H2&#41;&#41;
- * .build&#40;&#41;;
+ *     .protocol&#40;HttpProtocol.HTTP11, HttpProtocol.H2&#41;&#41;
+ *     .build&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-useHttp2WithConfiguredNettyClient -->
  *
@@ -79,8 +77,8 @@
  * <pre>
  * &#47;&#47; Constructs an HttpClient that only supports HTTP&#47;2.
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;reactor.netty.http.client.HttpClient.create&#40;&#41;
- * .protocol&#40;HttpProtocol.H2&#41;&#41;
- * .build&#40;&#41;;
+ *     .protocol&#40;HttpProtocol.H2&#41;&#41;
+ *     .build&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-useHttp2OnlyWithConfiguredNettyClient -->
  *
@@ -104,17 +102,13 @@
  * <!-- src_embed readme-sample-customMaxChunkSize -->
  * <pre>
  * &#47;&#47; Constructs an HttpClient with a modified max chunk size.
- * &#47;&#47; Max chunk size modifies the maximum size of ByteBufs returned by Netty &#40;later converted to
- * ByteBuffer&#41;.
- * &#47;&#47; Changing the chunk size can positively impact performance of APIs such as Storage's download to file
- * methods
- * &#47;&#47; provided in azure-storage-blob, azure-storage-file-datalake, and azure-storage-file-shares &#40;32KB -
- * 64KB have
+ * &#47;&#47; Max chunk size modifies the maximum size of ByteBufs returned by Netty &#40;later converted to ByteBuffer&#41;.
+ * &#47;&#47; Changing the chunk size can positively impact performance of APIs such as Storage's download to file methods
+ * &#47;&#47; provided in azure-storage-blob, azure-storage-file-datalake, and azure-storage-file-shares &#40;32KB - 64KB have
  * &#47;&#47; shown the most consistent improvement&#41;.
  * HttpClient httpClient = new NettyAsyncHttpClientBuilder&#40;reactor.netty.http.client.HttpClient.create&#40;&#41;
- * .httpResponseDecoder&#40;httpResponseDecoderSpec -&gt; httpResponseDecoderSpec.maxChunkSize&#40;64 *
- * 1024&#41;&#41;&#41;
- * .build&#40;&#41;;
+ *     .httpResponseDecoder&#40;httpResponseDecoderSpec -&gt; httpResponseDecoderSpec.maxChunkSize&#40;64 * 1024&#41;&#41;&#41;
+ *     .build&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-customMaxChunkSize -->
  *

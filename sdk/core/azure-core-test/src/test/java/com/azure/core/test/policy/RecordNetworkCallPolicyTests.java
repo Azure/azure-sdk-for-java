@@ -66,11 +66,11 @@ public class RecordNetworkCallPolicyTests {
     private static Stream<Arguments> sigValueIsRedactedSupplier() {
         return Stream.of(Arguments.of("https://azure.com", "https://REDACTED.com"), // No sig should result in no sig
             Arguments.of("https://azure.com?sig", "https://REDACTED.com?sig=REDACTED"), // Empty sig should result in
-                                                                                        // redacted sig
+            // redacted sig
             Arguments.of("https://azure.com?sig=", "https://REDACTED.com?sig=REDACTED"), // Empty sig should result in
-                                                                                         // redacted sig
+            // redacted sig
             Arguments.of("https://azure.com?sig=fake", "https://REDACTED.com?sig=REDACTED") // sig should result in
-                                                                                            // redacted sig
+                                                                                           // redacted sig
         );
     }
 }

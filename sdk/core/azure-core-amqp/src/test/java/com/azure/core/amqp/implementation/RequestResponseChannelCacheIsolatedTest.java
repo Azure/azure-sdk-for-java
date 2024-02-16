@@ -247,8 +247,8 @@ public class RequestResponseChannelCacheIsolatedTest {
                 verifier.create(() -> channelMono)
                     .thenRequest(1)
                     .thenAwait(OPERATION_TIMEOUT.minusSeconds(2)) // OPERATION_TIMEOUT
-                                                                  // == 3
-                                                                  // seconds
+                    // == 3
+                    // seconds
                     .thenCancel()
                     .verify();
                 // Assert that the cancel while waiting for channel to active will close the channel.

@@ -28,10 +28,10 @@ import java.util.stream.Collectors;
  * <pre>
  * &#47;&#47; Subscribe to process one item at a time
  * pagedFlux
- * .log&#40;&#41;
- * .subscribe&#40;item -&gt; System.out.println&#40;&quot;Processing item with value: &quot; + item&#41;,
- * error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
- * &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
+ *     .log&#40;&#41;
+ *     .subscribe&#40;item -&gt; System.out.println&#40;&quot;Processing item with value: &quot; + item&#41;,
+ *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
+ *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedflux.items -->
  *
@@ -45,13 +45,12 @@ import java.util.stream.Collectors;
  * <pre>
  * &#47;&#47; Subscribe to process one page at a time from the beginning
  * pagedFlux
- * .byPage&#40;&#41;
- * .log&#40;&#41;
- * .subscribe&#40;page -&gt; System.out.printf&#40;&quot;Processing page containing item values: %s%n&quot;,
- * page.getElements&#40;&#41;.stream&#40;&#41;.map&#40;String::valueOf&#41;.collect&#40;Collectors.joining&#40;&quot;,
- * &quot;&#41;&#41;&#41;,
- * error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
- * &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
+ *     .byPage&#40;&#41;
+ *     .log&#40;&#41;
+ *     .subscribe&#40;page -&gt; System.out.printf&#40;&quot;Processing page containing item values: %s%n&quot;,
+ *         page.getElements&#40;&#41;.stream&#40;&#41;.map&#40;String::valueOf&#41;.collect&#40;Collectors.joining&#40;&quot;, &quot;&#41;&#41;&#41;,
+ *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
+ *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedflux.pages -->
  *
@@ -68,15 +67,14 @@ import java.util.stream.Collectors;
  * &#47;&#47; a continuation token
  * String continuationToken = getContinuationToken&#40;&#41;;
  * pagedFlux
- * .byPage&#40;continuationToken&#41;
- * .log&#40;&#41;
- * .doOnSubscribe&#40;ignored -&gt; System.out.println&#40;
- * &quot;Subscribed to paged flux processing pages starting from: &quot; + continuationToken&#41;&#41;
- * .subscribe&#40;page -&gt; System.out.printf&#40;&quot;Processing page containing item values: %s%n&quot;,
- * page.getElements&#40;&#41;.stream&#40;&#41;.map&#40;String::valueOf&#41;.collect&#40;Collectors.joining&#40;&quot;,
- * &quot;&#41;&#41;&#41;,
- * error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
- * &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
+ *     .byPage&#40;continuationToken&#41;
+ *     .log&#40;&#41;
+ *     .doOnSubscribe&#40;ignored -&gt; System.out.println&#40;
+ *         &quot;Subscribed to paged flux processing pages starting from: &quot; + continuationToken&#41;&#41;
+ *     .subscribe&#40;page -&gt; System.out.printf&#40;&quot;Processing page containing item values: %s%n&quot;,
+ *         page.getElements&#40;&#41;.stream&#40;&#41;.map&#40;String::valueOf&#41;.collect&#40;Collectors.joining&#40;&quot;, &quot;&#41;&#41;&#41;,
+ *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
+ *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedflux.pagesWithContinuationToken -->
  *

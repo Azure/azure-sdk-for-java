@@ -77,9 +77,9 @@ import java.util.function.BiFunction;
  * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
  * <pre>
  * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
- * .port&#40;8080&#41;
- * .wiretap&#40;true&#41;
- * .build&#40;&#41;;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
@@ -388,8 +388,8 @@ class NettyAsyncHttpClient implements HttpClient {
             default:
                 throw LOGGER
                     .logExceptionAsError(new IllegalStateException("Unknown HttpMethod '" + azureHttpMethod + "'.")); // Should
-                                                                                                                      // never
-                                                                                                                      // happen
+                                                                                                                                 // never
+                                                                                                                                 // happen
         }
     }
 }

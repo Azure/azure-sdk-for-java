@@ -113,8 +113,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream -->
  * <pre>
- * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some
- * Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+ * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
  * BinaryData binaryData = BinaryData.fromStream&#40;inputStream&#41;;
  * System.out.println&#40;binaryData&#41;;
  * </pre>
@@ -149,11 +148,11 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromFlux&#40;dataFlux&#41;;
  *
  * Disposable subscriber = binaryDataMono
- * .map&#40;binaryData -&gt; &#123;
- * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
- * return true;
- * &#125;&#41;
- * .subscribe&#40;&#41;;
+ *     .map&#40;binaryData -&gt; &#123;
+ *         System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+ *         return true;
+ *     &#125;&#41;
+ *     .subscribe&#40;&#41;;
  *
  * &#47;&#47; So that your program wait for above subscribe to complete.
  * TimeUnit.SECONDS.sleep&#40;5&#41;;
@@ -167,8 +166,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
  * <pre>
- * BinaryData binaryData = BinaryData.fromFile&#40;new
- * File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
+ * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
  * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
  * </pre>
  * <!-- end com.azure.core.util.BinaryData.fromFile -->

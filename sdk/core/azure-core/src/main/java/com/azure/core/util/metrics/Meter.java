@@ -25,14 +25,13 @@ import java.util.Map;
  * &#47;&#47; Meter and instruments should be created along with service client instance and retained for the client
  * &#47;&#47; lifetime for optimal performance
  * Meter meter = meterProvider
- * .createMeter&#40;&quot;azure-core&quot;, &quot;1.0.0&quot;, new MetricsOptions&#40;&#41;&#41;;
+ *     .createMeter&#40;&quot;azure-core&quot;, &quot;1.0.0&quot;, new MetricsOptions&#40;&#41;&#41;;
  *
  * DoubleHistogram amqpLinkDuration = meter
- * .createDoubleHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;,
- * &quot;ms&quot;&#41;;
+ *     .createDoubleHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
  *
  * TelemetryAttributes attributes = defaultMeter.createAttributes&#40;
- * Collections.singletonMap&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;&#41;;
+ *     Collections.singletonMap&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;&#41;;
  *
  * &#47;&#47; when measured operation starts, record the measurement
  * Instant start = Instant.now&#40;&#41;;
@@ -41,8 +40,7 @@ import java.util.Map;
  *
  * &#47;&#47; optionally check if meter is operational for the best performance
  * if &#40;amqpLinkDuration.isEnabled&#40;&#41;&#41; &#123;
- * amqpLinkDuration.record&#40;Instant.now&#40;&#41;.toEpochMilli&#40;&#41; - start.toEpochMilli&#40;&#41;, attributes,
- * currentContext&#41;;
+ *     amqpLinkDuration.record&#40;Instant.now&#40;&#41;.toEpochMilli&#40;&#41; - start.toEpochMilli&#40;&#41;, attributes, currentContext&#41;;
  * &#125;
  * </pre>
  * <!-- end com.azure.core.util.metrics.Meter.doubleHistogram -->

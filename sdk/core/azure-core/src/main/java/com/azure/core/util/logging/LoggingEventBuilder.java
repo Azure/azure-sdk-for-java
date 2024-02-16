@@ -34,10 +34,10 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  * <!-- src_embed com.azure.core.util.logging.loggingeventbuilder -->
  * <pre>
  * logger.atInfo&#40;&#41;
- * .addKeyValue&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
- * .addKeyValue&#40;&quot;key2&quot;, true&#41;
- * .addKeyValue&#40;&quot;key3&quot;, &#40;&#41; -&gt; getName&#40;&#41;&#41;
- * .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+ *     .addKeyValue&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+ *     .addKeyValue&#40;&quot;key2&quot;, true&#41;
+ *     .addKeyValue&#40;&quot;key3&quot;, &#40;&#41; -&gt; getName&#40;&#41;&#41;
+ *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
  * </pre>
  * <!-- end com.azure.core.util.logging.loggingeventbuilder -->
  */

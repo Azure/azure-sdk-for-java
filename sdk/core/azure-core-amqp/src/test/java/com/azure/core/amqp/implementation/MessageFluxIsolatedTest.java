@@ -114,9 +114,9 @@ public class MessageFluxIsolatedTest {
                 .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
                 .then(secondReceiverFacade.emit())
                 .then(() -> firstReceiverFacade.assertNoPendingSubscriptionsToMessages()) // Subscription made to the
-                                                                                          // 1st receiver should not be
-                                                                                          // leaked when switching to
-                                                                                          // 2nd.
+                // 1st receiver should not be
+                // leaked when switching to
+                // 2nd.
                 .then(() -> upstream.complete())
                 .verifyComplete();
         }

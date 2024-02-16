@@ -77,8 +77,8 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
 
         Integer poolSize = clientOptions.getMaximumConnectionPoolSize();
         int maximumConnectionPoolSize = (poolSize != null && poolSize > 0) ? poolSize : 5; // By default, OkHttp uses a
-                                                                                           // maximum idle connection
-                                                                                           // count of 5.
+                                                                                          // maximum idle connection
+                                                                                          // count of 5.
 
         ConnectionPool connectionPool = new ConnectionPool(maximumConnectionPoolSize,
             clientOptions.getConnectionIdleTimeout().toMillis(), TimeUnit.MILLISECONDS);

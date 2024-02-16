@@ -21,10 +21,10 @@ import reactor.core.publisher.Mono;
  * <pre>
  * NetworkResource resource = new NetworkResource&#40;&#41;;
  * resource.longRunningDownload&#40;&quot;https:&#47;&#47;longdownload.com&quot;&#41;
- * .subscribe&#40;
- * byteBuffer -&gt; System.out.println&#40;&quot;Buffer received: &quot; + byteBuffer&#41;,
- * error -&gt; System.err.printf&#40;&quot;Error occurred while downloading: %s%n&quot;, error&#41;,
- * &#40;&#41; -&gt; System.out.println&#40;&quot;Completed download operation.&quot;&#41;&#41;;
+ *     .subscribe&#40;
+ *         byteBuffer -&gt; System.out.println&#40;&quot;Buffer received: &quot; + byteBuffer&#41;,
+ *         error -&gt; System.err.printf&#40;&quot;Error occurred while downloading: %s%n&quot;, error&#41;,
+ *         &#40;&#41; -&gt; System.out.println&#40;&quot;Completed download operation.&quot;&#41;&#41;;
  *
  * System.out.println&#40;&quot;Press enter to stop downloading.&quot;&#41;;
  * System.in.read&#40;&#41;;

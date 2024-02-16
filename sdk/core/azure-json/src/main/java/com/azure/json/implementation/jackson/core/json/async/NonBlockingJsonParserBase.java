@@ -337,7 +337,7 @@ public abstract class NonBlockingJsonParserBase extends ParserBase {
         // Since we track CR and LF separately, max should gives us right answer
         int row = Math.max(_currInputRow, _currInputRowAlt);
         return new JsonLocation(_contentReference(), _currInputProcessed + (_inputPtr - _currBufferStart), -1L, // bytes,
-                                                                                                                // chars
+            // chars
             row, col);
     }
 

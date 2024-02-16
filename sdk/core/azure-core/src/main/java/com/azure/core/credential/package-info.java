@@ -70,7 +70,7 @@
  * <!-- src_embed com.azure.core.credential.azureSasCredential -->
  * <pre>
  * AzureSasCredential azureSasCredential =
- * new AzureSasCredential&#40;&quot;AZURE-SERVICE-SAS-KEY&quot;&#41;;
+ *     new AzureSasCredential&#40;&quot;AZURE-SERVICE-SAS-KEY&quot;&#41;;
  * </pre>
  * <!-- end com.azure.core.credential.azureSasCredential -->
  *

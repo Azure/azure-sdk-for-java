@@ -25,10 +25,9 @@ import java.util.stream.Stream;
  * <pre>
  * &#47;&#47; process the streamByPage
  * pagedIterableResponse.streamByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
- * System.out.printf&#40;&quot;Response headers are %s. Url %s and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
- * resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
- * resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %d %n&quot;,
- * value&#41;&#41;;
+ *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
+ *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
+ *     resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %d %n&quot;, value&#41;&#41;;
  * &#125;&#41;;
  *
  * </pre>
@@ -42,10 +41,9 @@ import java.util.stream.Stream;
  * <pre>
  * &#47;&#47; process the iterableByPage
  * pagedIterableResponse.iterableByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
- * System.out.printf&#40;&quot;Response headers are %s. Url %s and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
- * resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
- * resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %d %n&quot;,
- * value&#41;&#41;;
+ *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
+ *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
+ *     resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %d %n&quot;, value&#41;&#41;;
  * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.iterableByPage -->
@@ -58,10 +56,9 @@ import java.util.stream.Stream;
  * <pre>
  * &#47;&#47; iterate over each page
  * for &#40;PagedResponse&lt;Integer&gt; resp : pagedIterableResponse.iterableByPage&#40;&#41;&#41; &#123;
- * System.out.printf&#40;&quot;Response headers are %s. Url %s and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
- * resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
- * resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %d %n&quot;,
- * value&#41;&#41;;
+ *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
+ *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
+ *     resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %d %n&quot;, value&#41;&#41;;
  * &#125;
  * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.iterableByPage.while -->
@@ -74,10 +71,9 @@ import java.util.stream.Stream;
  * <pre>
  * String continuationToken = getContinuationToken&#40;&#41;;
  * pagedIterable
- * .iterableByPage&#40;continuationToken&#41;
- * .forEach&#40;page -&gt; System.out.printf&#40;&quot;Processing page containing item values: %s%n&quot;,
- * page.getElements&#40;&#41;.stream&#40;&#41;.map&#40;String::valueOf&#41;.collect&#40;Collectors.joining&#40;&quot;,
- * &quot;&#41;&#41;&#41;&#41;;
+ *     .iterableByPage&#40;continuationToken&#41;
+ *     .forEach&#40;page -&gt; System.out.printf&#40;&quot;Processing page containing item values: %s%n&quot;,
+ *         page.getElements&#40;&#41;.stream&#40;&#41;.map&#40;String::valueOf&#41;.collect&#40;Collectors.joining&#40;&quot;, &quot;&#41;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.pagesWithContinuationToken -->
  *

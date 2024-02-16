@@ -102,7 +102,7 @@ public class ConnectionStringProperties {
         boolean includesSharedAccessSignature = sharedAccessSignature != null;
         if (endpoint == null
             || (includesSharedKey && includesSharedAccessSignature) // includes both SAS and key or
-                                                                    // value
+                                                                                        // value
             || (!hasSharedKeyAndValue && !includesSharedAccessSignature)) { // invalid key, value and SAS
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(ERROR_MESSAGE_FORMAT));
         }

@@ -29,21 +29,20 @@ import java.util.Objects;
  * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
  *
  * switch &#40;bodyType&#41; &#123;
- * case DATA:
- * byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
- * System.out.println&#40;new String&#40;payload&#41;&#41;;
- * break;
- * case SEQUENCE:
- * List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
- * sequenceData.forEach&#40;System.out::println&#41;;
- * break;
- * case VALUE:
- * amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
- * System.out.println&#40;amqpValue&#41;;
- * break;
- * default:
- * throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;,
- * bodyType&#41;&#41;;
+ *     case DATA:
+ *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+ *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+ *         break;
+ *     case SEQUENCE:
+ *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+ *         sequenceData.forEach&#40;System.out::println&#41;;
+ *         break;
+ *     case VALUE:
+ *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+ *         System.out.println&#40;amqpValue&#41;;
+ *         break;
+ *     default:
+ *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
  * &#125;
  * </pre>
  * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->

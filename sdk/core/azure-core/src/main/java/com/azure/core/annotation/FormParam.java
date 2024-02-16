@@ -19,10 +19,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <!-- src_embed com.azure.core.annotation.FormParam.class -->
  * <pre>
  * &#64;Post&#40;&quot;spellcheck&quot;&#41;
- * Mono&lt;Response&lt;ResponseBody&gt;&gt; spellChecker&#40;&#64;HeaderParam&#40;&quot;X-BingApis-SDK&quot;&#41; String
- * xBingApisSDK,
- * &#64;QueryParam&#40;&quot;UserId&quot;&#41; String userId,
- * &#64;FormParam&#40;&quot;Text&quot;&#41; String text&#41;;
+ * Mono&lt;Response&lt;ResponseBody&gt;&gt; spellChecker&#40;&#64;HeaderParam&#40;&quot;X-BingApis-SDK&quot;&#41; String xBingApisSDK,
+ *     &#64;QueryParam&#40;&quot;UserId&quot;&#41; String userId,
+ *     &#64;FormParam&#40;&quot;Text&quot;&#41; String text&#41;;
  * </pre>
  * <!-- end com.azure.core.annotation.FormParam.class -->
  *

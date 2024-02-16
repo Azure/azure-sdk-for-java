@@ -24,13 +24,12 @@ import java.util.function.Function;
  * <!-- src_embed com.azure.core.util.Configuration -->
  * <pre>
  * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
- * .root&#40;&quot;azure.sdk&quot;&#41;
- * .buildSection&#40;&quot;client-name&quot;&#41;;
+ *     .root&#40;&quot;azure.sdk&quot;&#41;
+ *     .buildSection&#40;&quot;client-name&quot;&#41;;
  *
- * ConfigurationProperty&lt;String&gt; proxyHostnameProperty =
- * ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
- * .shared&#40;true&#41;
- * .build&#40;&#41;;
+ * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+ *     .shared&#40;true&#41;
+ *     .build&#40;&#41;;
  * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
  * </pre>
  * <!-- end com.azure.core.util.Configuration -->
