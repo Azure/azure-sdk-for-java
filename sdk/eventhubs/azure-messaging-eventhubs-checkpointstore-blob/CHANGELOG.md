@@ -2,6 +2,12 @@
 
 ## 1.19.1 (2024-02-16)
 
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.18.0` to version `5.18.1`.
+
 ## 1.19.0 (2024-01-19)
 
 ### Other Changes
