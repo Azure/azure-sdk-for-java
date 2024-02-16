@@ -6,24 +6,32 @@ package com.generic.core.http.client;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.models.ServerSentEvent;
+import com.generic.core.http.models.ServerSentEventListener;
+import com.generic.core.implementation.http.ContentType;
+import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.shared.LocalTestServer;
 
+import org.eclipse.jetty.server.Response;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.servlet.ServletException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,7 +43,11 @@ import java.util.concurrent.TimeUnit;
 import static com.generic.core.util.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class DefaultHttpClientTest {
@@ -43,6 +55,7 @@ public class DefaultHttpClientTest {
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     private static final byte[] LONG_BODY = createLongBody();
     private static LocalTestServer server;
+    private static final String SSE_RESPONSE = "/serversentevent";
 
     @BeforeAll
     public static void startTestServer() {
@@ -50,6 +63,7 @@ public class DefaultHttpClientTest {
             String path = req.getServletPath();
             boolean get = "GET".equalsIgnoreCase(req.getMethod());
             boolean post = "POST".equalsIgnoreCase(req.getMethod());
+            boolean put = "PUT".equalsIgnoreCase(req.getMethod());
 
             if (get && "/short".equals(path)) {
                 resp.setContentType("application/octet-stream");
@@ -78,12 +92,66 @@ public class DefaultHttpClientTest {
                 resp.setContentLength(0);
             } else if (get && "/connectionClose".equals(path)) {
                 resp.getHttpChannel().getConnection().close();
+            }  else if (get && SSE_RESPONSE.equals(path)) {
+                if (req.getHeader("Last-Event-Id") != null) {
+                    sendSSELastEventIdResponse(resp);
+                } else {
+                    sendSSEResponseWithRetry(resp);
+                }
+            }  else if (post && SSE_RESPONSE.equals(path)) {
+                sendSSEResponseWithDataOnly(resp);
+            } else if (put && SSE_RESPONSE.equals(path)) {
+                resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
+                resp.setStatus(200);
+                resp.getOutputStream().write(("msg hello world \n\n").getBytes());
+                resp.flushBuffer();
             } else {
                 throw new ServletException("Unexpected request " + req.getMethod() + " " + path);
             }
         });
 
         server.start();
+    }
+
+    private static void sendSSEResponseWithDataOnly(Response resp) throws IOException {
+            resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
+            resp.getOutputStream().write(("data: YHOO\n" +
+                            "data: +2\n" +
+                            "data: 10\n"+
+                            "\n").getBytes());
+            resp.flushBuffer();
+        }
+
+    private static String addServerSentEventWithRetry() {
+        return ": test stream\n" +
+            "data: first event\n" +
+            "id: 1\n" +
+            "retry: 100\n\n" +
+            "data: This is the second message, it\n" +
+            "data: has two lines.\n" +
+            "id: 2\n\n" +
+            "data:  third event";
+    }
+
+    private static void sendSSEResponseWithRetry(Response resp)
+        throws IOException {
+        resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
+        resp.getOutputStream().write(addServerSentEventWithRetry().getBytes());
+        resp.flushBuffer();
+    }
+
+    private static String addServerSentEventLast() {
+        return "data: This is the second message, it\n" +
+            "data: has two lines.\n" +
+            "id: 2\n\n" +
+            "data:  third event";
+    }
+
+    private static void sendSSELastEventIdResponse(Response resp)
+        throws IOException {
+        resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
+        resp.getOutputStream().write(addServerSentEventLast().getBytes());
+        resp.flushBuffer();
     }
 
     @AfterAll
@@ -192,6 +260,113 @@ public class DefaultHttpClientTest {
         }
     }
 
+    @Test
+    public void canReceiveServerSentEvents() {
+        final int[] i = {0};
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, SSE_RESPONSE))
+            .setServerSentEventListener(sse -> {
+                String expected;
+                Long id;
+                if (i[0] == 0) {
+                    expected = "first event";
+                    id = 1L;
+                    Assertions.assertEquals("test stream", sse.getComment());
+                } else {
+                    expected = "This is the second message, it";
+                    String line2 = "has two lines.";;
+                    id = 2L;
+                    Assertions.assertEquals(line2, sse.getData().get(1));
+                }
+                Assertions.assertEquals(expected, sse.getData().get(0));
+                Assertions.assertEquals(id, sse.getId());
+                if (++i[0] > 2) {
+                    assertFalse(true, "Should not have received more than two messages.");
+                }
+            });
+
+        createHttpClient().send(request);
+        assertEquals(2, i[0]);
+    }
+
+    /**
+     * Tests that eagerly converting implementation HTTP headers to azure-core Headers is done.
+     */
+    @Test
+    public void canRecognizeServerSentEvent() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, SSE_RESPONSE)).setBody(requestBody);
+        request.getMetadata().setEagerlyConvertHeaders(false);
+        List<String> expected = Arrays.asList("YHOO", "+2", "10");
+        createHttpClient().send(request.setServerSentEventListener(sse -> assertEquals(expected, sse.getData())));
+    }
+
+    @Test
+    public void onErrorServerSentEvents() {
+        final int[] i = {0};
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, SSE_RESPONSE))
+            .setServerSentEventListener(new ServerSentEventListener() {
+                @Override
+                public void onEvent(ServerSentEvent sse) throws IOException {
+                    throw new IOException("test exception");
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    assertEquals("test exception", throwable.getMessage());
+                    i[0]++;
+                }
+            });
+
+        createHttpClient().send(request);
+        assertEquals(1, i[0]);
+    }
+
+    @Test
+    public void onRetryWithLastEventIdReceiveServerSentEvents() {
+        final int[] i = {0};
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, SSE_RESPONSE))
+            .setServerSentEventListener(new ServerSentEventListener() {
+                @Override
+                public void onEvent(ServerSentEvent sse) throws IOException {
+                    if (++i[0] == 1) {
+                        assertEquals("test stream", sse.getComment());
+                        assertEquals("first event", sse.getData().get(0));
+                        assertEquals(1, sse.getId());
+                        throw new IOException("test exception");
+                    } else {
+                        assertTimeout(Duration.ofMillis(100L), () -> assertEquals(2, sse.getId()));
+                        assertEquals("This is the second message, it", sse.getData().get(0));
+                        assertEquals("has two lines.", sse.getData().get(1));
+                    }
+                    if (++i[0] > 3) {
+                        fail("Should not have received more than two messages.");
+                    }
+                }
+
+                @Override
+                public boolean shouldRetry(Throwable throwable, Duration retryAfter, long lastEventId) {
+                    assertEquals("test exception", throwable.getMessage());
+                    assertEquals(100, retryAfter.toMillis());
+                    assertEquals(1, lastEventId);
+                    return true;
+                }
+            });
+
+        createHttpClient().send(request);
+        assertEquals(3, i[0]);
+    }
+
+    /**
+     * Test throws IllegalArgumentException for invalid data stream.
+     */
+    @Test
+    public void throwsIllegalArgumentExceptionForInvalidSSEData() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, url(server, SSE_RESPONSE)).setBody(requestBody);
+
+        assertThrows(IllegalArgumentException.class, () -> createHttpClient().send(request.setServerSentEventListener(sse -> {})));
+    }
+
     private static HttpResponse getResponse(HttpClient client, String path, Context context) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         request.getMetadata().setContext(context);
@@ -229,5 +404,9 @@ public class DefaultHttpClientTest {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
 
         return client.send(request);
+    }
+
+    private HttpClient createHttpClient() {
+        return new DefaultHttpClientBuilder().build();
     }
 }

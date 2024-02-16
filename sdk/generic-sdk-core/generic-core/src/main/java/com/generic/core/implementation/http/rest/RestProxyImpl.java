@@ -7,12 +7,12 @@ import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.models.BinaryData;
-import com.generic.core.http.models.RequestOptions;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonSerializable;
 
@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 import static com.generic.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
 
 public class RestProxyImpl extends RestProxyBase {
+
     /**
      * Create a RestProxy.
      *
