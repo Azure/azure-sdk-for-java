@@ -101,7 +101,9 @@ class PollingUtil {
                 .concatMap(currentPollResponse -> {
                     cxt.setLatestResponse(currentPollResponse);
                     return Mono.just(new AsyncPollResponse<>(cxt, cancelOperation, fetchResultOperation));
-                }), cxt -> { });
+                }),
+            cxt -> {
+            });
     }
 
     /**

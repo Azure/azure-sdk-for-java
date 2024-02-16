@@ -80,7 +80,6 @@ public class GeoPositionTests {
 
             // Other is the same value.
             Arguments.of(pikePlacePosition, PIKES_PLACE_POSITION.get(), true),
-            Arguments.of(mtRainierPosition, MT_RAINIER_POSITION.get(), true)
-        );
+            Arguments.of(mtRainierPosition, MT_RAINIER_POSITION.get(), true));
     }
 }

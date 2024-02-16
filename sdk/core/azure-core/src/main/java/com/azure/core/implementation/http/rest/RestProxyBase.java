@@ -52,12 +52,12 @@ import static com.azure.core.util.FluxUtil.monoError;
  * The base REST proxy implementation.
  */
 public abstract class RestProxyBase {
-    static final String MUST_IMPLEMENT_PAGE_ERROR =
-        "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class;
+    static final String MUST_IMPLEMENT_PAGE_ERROR
+        = "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class;
 
     static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
-    private static final ResponseExceptionConstructorCache RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE =
-        new ResponseExceptionConstructorCache();
+    private static final ResponseExceptionConstructorCache RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE
+        = new ResponseExceptionConstructorCache();
 
     // RestProxy is a commonly used class, use a static logger.
     static final ClientLogger LOGGER = new ClientLogger(RestProxyBase.class);
@@ -173,7 +173,7 @@ public abstract class RestProxyBase {
      * @throws RuntimeException If the response type is a PagedResponse and the bodyAsObject is not an instance of
      * Page.
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
         Object bodyAsObject) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
@@ -203,8 +203,8 @@ public abstract class RestProxyBase {
             } else if (bodyAsObject == null) {
                 return cls.cast(new PagedResponseBase<>(request, statusCode, headers, null, null, decodedHeaders));
             } else {
-                return cls.cast(new PagedResponseBase<>(request, statusCode, headers, (Page<?>) bodyAsObject,
-                    decodedHeaders));
+                return cls.cast(
+                    new PagedResponseBase<>(request, statusCode, headers, (Page<?>) bodyAsObject, decodedHeaders));
             }
         }
 
@@ -292,8 +292,8 @@ public abstract class RestProxyBase {
         methodParser.setEncodedQueryParameters(args, urlBuilder, serializer);
 
         final URL url = urlBuilder.toUrl();
-        final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url),
-            methodParser, serializerAdapter, isAsync, args);
+        final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url), methodParser,
+            serializerAdapter, isAsync, args);
 
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
@@ -363,9 +363,8 @@ public abstract class RestProxyBase {
      */
     public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation exception,
         HttpResponse httpResponse, byte[] responseContent, Object responseDecodedContent) {
-        StringBuilder exceptionMessage = new StringBuilder("Status code ")
-            .append(httpResponse.getStatusCode())
-            .append(", ");
+        StringBuilder exceptionMessage
+            = new StringBuilder("Status code ").append(httpResponse.getStatusCode()).append(", ");
 
         final String contentType = httpResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
@@ -380,8 +379,7 @@ public abstract class RestProxyBase {
         // If the decoded response content is on of these exception types there was a failure in creating the actual
         // exception body type. In this case return an HttpResponseException to maintain the exception having a
         // reference to the HttpResponse and information about what caused the deserialization failure.
-        if (responseDecodedContent instanceof IOException
-            || responseDecodedContent instanceof MalformedValueException
+        if (responseDecodedContent instanceof IOException || responseDecodedContent instanceof MalformedValueException
             || responseDecodedContent instanceof IllegalStateException) {
             return new HttpResponseException(exceptionMessage.toString(), httpResponse,
                 (Throwable) responseDecodedContent);
@@ -407,17 +405,16 @@ public abstract class RestProxyBase {
             // Finally, if the HttpResponseException subclass doesn't exist in azure-core, use reflection to create a
             // new instance of it.
             try {
-                ReflectiveInvoker reflectiveInvoker = RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE.get(exceptionType,
-                    exception.getExceptionBodyType());
-                return ResponseExceptionConstructorCache.invoke(reflectiveInvoker, exceptionMessage.toString(), httpResponse,
-                    responseDecodedContent);
+                ReflectiveInvoker reflectiveInvoker
+                    = RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE.get(exceptionType, exception.getExceptionBodyType());
+                return ResponseExceptionConstructorCache.invoke(reflectiveInvoker, exceptionMessage.toString(),
+                    httpResponse, responseDecodedContent);
             } catch (RuntimeException e) {
                 // And if reflection fails, return an HttpResponseException.
-                exceptionMessage.append(". An instance of ")
-                    .append(exceptionType.getCanonicalName())
+                exceptionMessage.append(". An instance of ").append(exceptionType.getCanonicalName())
                     .append(" couldn't be created.");
-                HttpResponseException exception1 = new HttpResponseException(exceptionMessage.toString(), httpResponse,
-                    responseDecodedContent);
+                HttpResponseException exception1
+                    = new HttpResponseException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
                 exception1.addSuppressed(e);
                 return exception1;
             }
@@ -466,4 +463,3 @@ public abstract class RestProxyBase {
         return ReflectionSerializable.serializeXmlSerializableToByteBuffer(bodyContent);
     }
 }
-

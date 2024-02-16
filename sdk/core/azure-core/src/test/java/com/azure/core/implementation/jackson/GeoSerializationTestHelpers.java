@@ -180,10 +180,7 @@ public class GeoSerializationTestHelpers {
     }
 
     private static void addPosition(GeoPosition position, StringBuilder builder) {
-        builder.append("[")
-            .append(position.getLongitude())
-            .append(",")
-            .append(position.getLatitude());
+        builder.append("[").append(position.getLongitude()).append(",").append(position.getLatitude());
 
         Double altitude = position.getAltitude();
         if (altitude != null) {
@@ -231,10 +228,7 @@ public class GeoSerializationTestHelpers {
             return;
         }
 
-        builder.append(",\"bbox\":[")
-            .append(boundingBox.getWest())
-            .append(",")
-            .append(boundingBox.getSouth())
+        builder.append(",\"bbox\":[").append(boundingBox.getWest()).append(",").append(boundingBox.getSouth())
             .append(",");
 
         Double minAltitude = boundingBox.getMinAltitude();
@@ -242,9 +236,7 @@ public class GeoSerializationTestHelpers {
             builder.append(minAltitude).append(",");
         }
 
-        builder.append(boundingBox.getEast())
-            .append(",")
-            .append(boundingBox.getNorth());
+        builder.append(boundingBox.getEast()).append(",").append(boundingBox.getNorth());
 
         Double maxAltitude = boundingBox.getMaxAltitude();
         if (maxAltitude != null) {
@@ -265,9 +257,7 @@ public class GeoSerializationTestHelpers {
                     builder.append(",");
                 }
 
-                builder.append("\"")
-                    .append(property.getKey())
-                    .append("\":")
+                builder.append("\"").append(property.getKey()).append("\":")
                     .append(MAPPER.writeValueAsString(property.getValue()));
             }
         } catch (JsonProcessingException ex) {

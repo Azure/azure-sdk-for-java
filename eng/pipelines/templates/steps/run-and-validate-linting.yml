@@ -84,7 +84,10 @@ steps:
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
   - task: Maven@3
-    displayName: 'Run Javadoc'
+    ${{ if ne(parameters.SDKType, 'client') }}:
+      displayName: 'Run Javadoc and Spotless'
+    ${{ else }}:
+      displayName: 'Run Javadoc'
     inputs:
       mavenPomFile: pom.xml
       options: '$(DefaultOptions) --no-transfer-progress ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
@@ -96,6 +99,6 @@ steps:
       ${{ if ne(parameters.SDKType, 'client') }}:
         goals: 'javadoc:jar'
       ${{ else }}:
-        goals: 'javadoc:jar codesnippet:verify-codesnippet'
+        goals: 'javadoc:jar codesnippet:verify-codesnippet spotless:check'
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))

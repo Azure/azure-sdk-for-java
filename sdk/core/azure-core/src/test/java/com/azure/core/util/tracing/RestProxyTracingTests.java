@@ -48,19 +48,15 @@ public class RestProxyTracingTests {
     void beforeEach() {
         tracer = new TestTracer();
         HttpClient client = new SimpleMockHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new InstrumentationPolicy())
-            .httpClient(client)
-            .tracer(tracer)
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new InstrumentationPolicy()).httpClient(client).tracer(tracer).build();
 
         testInterface = RestProxy.create(TestInterface.class, pipeline);
     }
 
     @SyncAsyncTest
     public void restProxySuccess() throws Exception {
-        SyncAsyncExtension.execute(
-            () -> testInterface.testMethodReturnsMonoVoidSync(),
+        SyncAsyncExtension.execute(() -> testInterface.testMethodReturnsMonoVoidSync(),
             () -> testInterface.testMethodReturnsMonoVoid().block());
 
         assertEquals(2, tracer.getSpans().size());
@@ -75,9 +71,7 @@ public class RestProxyTracingTests {
 
     @Test
     public void restProxyCancelAsync() {
-        testInterface.testMethodDelays()
-            .timeout(Duration.ofMillis(10))
-            .toFuture().cancel(true);
+        testInterface.testMethodDelays().timeout(Duration.ofMillis(10)).toFuture().cancel(true);
 
         assertEquals(2, tracer.getSpans().size());
         Span restProxy = tracer.getSpans().get(0);
@@ -95,9 +89,8 @@ public class RestProxyTracingTests {
 
     @Test
     public void restProxyThrows() {
-        StepVerifier.create(testInterface.testMethodThrows())
-            .consumeErrorWith((ex) -> { })
-            .verify();
+        StepVerifier.create(testInterface.testMethodThrows()).consumeErrorWith((ex) -> {
+        }).verify();
 
         assertEquals(2, tracer.getSpans().size());
         Span restProxy = tracer.getSpans().get(0);
@@ -241,23 +234,23 @@ public class RestProxyTracingTests {
     @ServiceInterface(name = "myService")
     interface TestInterface {
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Void> testMethodReturnsMonoVoid();
 
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Response<Void> testMethodReturnsMonoVoidSync();
 
         @Post("my/url/path")
-        @ExpectedResponses({500})
+        @ExpectedResponses({ 500 })
         Mono<Void> testMethodThrows();
 
         @Post("my/url/path")
-        @ExpectedResponses({500})
+        @ExpectedResponses({ 500 })
         Response<Void> testMethodThrowsSync();
 
         @Put("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Void> testMethodDelays();
     }
 }

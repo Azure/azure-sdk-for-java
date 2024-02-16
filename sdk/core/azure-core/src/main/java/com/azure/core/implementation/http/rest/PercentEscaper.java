@@ -118,7 +118,7 @@ public final class PercentEscaper {
                  * 2. Shift right 4 times to move to the next hex quad bits.
                  * 3. Mask with bits 11 and then bitwise or with bits 1000 to get the leading hex in the second byte.
                  * 4. Shift right 2 times to move to the next hex quad bits.
-                 *   a. This is only shifted twice since the bits 10 are the encoded value but not in the code point.
+                 * a. This is only shifted twice since the bits 10 are the encoded value but not in the code point.
                  * 5. Mask with bits 1111 to get the second hex character in the first byte.
                  * 6. Shift right 4 times to move to the next hex quad bits.
                  * 7. Bitwise or with bits 1100 to get the leading hex character.
@@ -148,7 +148,7 @@ public final class PercentEscaper {
                  * 2. Shift right 4 times to move to the next hex quad bits.
                  * 3. Mask with bits 11 and then bitwise or with bits 1000 to get the leading hex in the third byte.
                  * 4. Shift right 2 times to move to the next hex quad bits.
-                 *   a. This is only shifted twice since the bits 10 are the encoded value but not in the code point.
+                 * a. This is only shifted twice since the bits 10 are the encoded value but not in the code point.
                  * 5. Repeat steps 1-4 to convert the second byte.
                  * 6. Mask with bits 1111 to get the second hex character in the first byte.
                  *
@@ -184,7 +184,7 @@ public final class PercentEscaper {
                  * 2. Shift right 4 times to move to the next hex quad bits.
                  * 3. Mask with bits 11 and then bitwise or with bits 1000 to get the leading hex in the fourth byte.
                  * 4. Shift right 2 times to move to the next hex quad bits.
-                 *   a. This is only shifted twice since the bits 10 are the encoded value but not in the code point.
+                 * a. This is only shifted twice since the bits 10 are the encoded value but not in the code point.
                  * 5. Repeat steps 1-4 to convert the second and third bytes.
                  * 6. Mask with bits 111 to get the second hex character in the first byte.
                  *
@@ -243,8 +243,8 @@ public final class PercentEscaper {
         } else if (Character.isHighSurrogate(char1)) {
             // High surrogates will occur first in the string.
             if (index == end) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "String contains trailing high surrogate without paired low surrogate."));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("String contains trailing high surrogate without paired low surrogate."));
             }
 
             char char2 = original.charAt(index);
@@ -252,11 +252,11 @@ public final class PercentEscaper {
                 return Character.toCodePoint(char1, char2);
             }
 
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "String contains high surrogate without trailing low surrogate."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("String contains high surrogate without trailing low surrogate."));
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "String contains low surrogate without leading high surrogate."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("String contains low surrogate without leading high surrogate."));
         }
     }
 }

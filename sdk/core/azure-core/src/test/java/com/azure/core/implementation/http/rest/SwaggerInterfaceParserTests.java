@@ -53,7 +53,7 @@ public class SwaggerInterfaceParserTests {
     @ServiceInterface(name = "myService")
     interface TestInterface4 {
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void testMethod4();
     }
 

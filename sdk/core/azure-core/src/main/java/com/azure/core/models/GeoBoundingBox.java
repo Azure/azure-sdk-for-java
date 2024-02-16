@@ -60,8 +60,8 @@ public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
     /*
      * This constructor allows the one above to require both min altitude and max altitude to be non-null.
      */
-    private GeoBoundingBox(double west, double south, double east, double north, Double minAltitude,
-        Double maxAltitude, String ignored) {
+    private GeoBoundingBox(double west, double south, double east, double north, Double minAltitude, Double maxAltitude,
+        String ignored) {
         this.west = west;
         this.south = south;
         this.east = east;
@@ -140,12 +140,9 @@ public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
         }
 
         GeoBoundingBox other = (GeoBoundingBox) obj;
-        return Double.compare(west, other.west) == 0
-            && Double.compare(south, other.south) == 0
-            && Double.compare(east, other.east) == 0
-            && Double.compare(north, other.north) == 0
-            && Objects.equals(minAltitude, other.minAltitude)
-            && Objects.equals(maxAltitude, other.maxAltitude);
+        return Double.compare(west, other.west) == 0 && Double.compare(south, other.south) == 0
+            && Double.compare(east, other.east) == 0 && Double.compare(north, other.north) == 0
+            && Objects.equals(minAltitude, other.minAltitude) && Objects.equals(maxAltitude, other.maxAltitude);
     }
 
     /**
@@ -161,16 +158,22 @@ public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
             switch (i) {
                 case 0:
                     return west;
+
                 case 1:
                     return south;
+
                 case 2:
                     return minAltitude;
+
                 case 3:
                     return east;
+
                 case 4:
                     return north;
+
                 case 5:
                     return maxAltitude;
+
                 default:
                     throw LOGGER.logExceptionAsWarning(new IndexOutOfBoundsException("Index out of range: " + i));
             }
@@ -178,12 +181,16 @@ public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
             switch (i) {
                 case 0:
                     return west;
+
                 case 1:
                     return south;
+
                 case 2:
                     return east;
+
                 case 3:
                     return north;
+
                 default:
                     throw LOGGER.logExceptionAsWarning(new IndexOutOfBoundsException("Index out of range: " + i));
             }
@@ -199,16 +206,13 @@ public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartArray()
-            .writeDouble(west)
-            .writeDouble(south);
+        jsonWriter.writeStartArray().writeDouble(west).writeDouble(south);
 
         if (minAltitude != null) {
             jsonWriter.writeDouble(minAltitude);
         }
 
-        jsonWriter.writeDouble(east)
-            .writeDouble(north);
+        jsonWriter.writeDouble(east).writeDouble(north);
 
         if (maxAltitude != null) {
             jsonWriter.writeDouble(maxAltitude);
@@ -240,8 +244,8 @@ public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
 
         int coordinateCount = coordinates.size();
         if (coordinateCount != 4 && coordinateCount != 6) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "Only 2 or 3 dimension bounding boxes are supported."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("Only 2 or 3 dimension bounding boxes are supported."));
         }
 
         double west = coordinates.get(0).doubleValue();

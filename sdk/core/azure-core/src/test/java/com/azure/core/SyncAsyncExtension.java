@@ -69,18 +69,15 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
 
     @Override
     public boolean supportsTestTemplate(ExtensionContext extensionContext) {
-        return extensionContext.getTestMethod()
-            .map(method -> method.getAnnotation(SyncAsyncTest.class) != null)
+        return extensionContext.getTestMethod().map(method -> method.getAnnotation(SyncAsyncTest.class) != null)
             .orElse(false);
     }
 
     @Override
-    public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
-        ExtensionContext extensionContext) {
-        return Stream.of(
-            new SyncAsyncTestTemplateInvocationContext(true),
-            new SyncAsyncTestTemplateInvocationContext(false)
-        );
+    public Stream<TestTemplateInvocationContext>
+        provideTestTemplateInvocationContexts(ExtensionContext extensionContext) {
+        return Stream.of(new SyncAsyncTestTemplateInvocationContext(true),
+            new SyncAsyncTestTemplateInvocationContext(false));
     }
 
     private static final class SyncAsyncTestTemplateInvocationContext implements TestTemplateInvocationContext {
@@ -101,8 +98,7 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
         }
     }
 
-    static final class SyncAsyncTestInterceptor
-        implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
+    static final class SyncAsyncTestInterceptor implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
         private final boolean isSync;
 
         private SyncAsyncTestInterceptor(boolean isSync) {

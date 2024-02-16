@@ -33,7 +33,7 @@ final class DateTimeRfc1123Serializer extends JsonSerializer<DateTimeRfc1123> {
         if (provider.isEnabled(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)) {
             jgen.writeNumber(value.getDateTime().toInstant().toEpochMilli());
         } else {
-            jgen.writeString(value.toString()); //Use the default toString as it is RFC1123.
+            jgen.writeString(value.toString()); // Use the default toString as it is RFC1123.
         }
     }
 }

@@ -14,6 +14,7 @@ import java.util.function.Function;
 
 /**
  * Helper class that unifies SPI instances creation.
+ * 
  * @param <TProvider> Service Provider interface.
  * @param <TInstance> Service interface type.
  */
@@ -104,8 +105,8 @@ public final class Providers<TProvider, TInstance> {
                 return fallbackInstance;
             }
         } else {
-            implementationName = selectedImplementation == null
-                ? defaultImplementation : selectedImplementation.getName();
+            implementationName
+                = selectedImplementation == null ? defaultImplementation : selectedImplementation.getName();
             provider = availableProviders.get(implementationName);
             if (provider == null) {
                 // no fallback here - user requested specific implementation, and it was not found

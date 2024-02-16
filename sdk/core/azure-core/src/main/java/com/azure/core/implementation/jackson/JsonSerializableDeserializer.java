@@ -22,17 +22,16 @@ import java.io.IOException;
 final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializable<?>> {
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializableDeserializer.class);
 
-    private static final Module MODULE = new SimpleModule()
-        .setDeserializerModifier(new BeanDeserializerModifier() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
-                JsonDeserializer<?> deserializer) {
-                return (JsonSerializable.class.isAssignableFrom(beanDesc.getBeanClass()))
-                    ? new JsonSerializableDeserializer((Class<? extends JsonSerializable<?>>) beanDesc.getBeanClass())
-                    : deserializer;
-            }
-        });
+    private static final Module MODULE = new SimpleModule().setDeserializerModifier(new BeanDeserializerModifier() {
+        @SuppressWarnings("unchecked")
+        @Override
+        public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
+            JsonDeserializer<?> deserializer) {
+            return (JsonSerializable.class.isAssignableFrom(beanDesc.getBeanClass()))
+                ? new JsonSerializableDeserializer((Class<? extends JsonSerializable<?>>) beanDesc.getBeanClass())
+                : deserializer;
+        }
+    });
 
     private final Class<? extends JsonSerializable<?>> jsonSerializableType;
     private final ReflectiveInvoker readJson;
@@ -54,8 +53,8 @@ final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializab
     JsonSerializableDeserializer(Class<? extends JsonSerializable<?>> jsonSerializableType) {
         this.jsonSerializableType = jsonSerializableType;
         try {
-            this.readJson = ReflectionUtils.getMethodInvoker(jsonSerializableType, jsonSerializableType
-                .getDeclaredMethod("fromJson", JsonReader.class));
+            this.readJson = ReflectionUtils.getMethodInvoker(jsonSerializableType,
+                jsonSerializableType.getDeclaredMethod("fromJson", JsonReader.class));
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }

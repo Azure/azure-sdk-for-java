@@ -65,8 +65,8 @@ public final class HttpResponseBodyDecoder {
                 }
 
                 return deserializeBody(body,
-                    decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
-                    null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
+                    decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(), null,
+                    serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
             } catch (IOException | MalformedValueException | IllegalStateException ex) {
                 // MalformedValueException is thrown by Jackson, IllegalStateException is thrown by the TEXT
                 // serialization encoding handler, and IOException can be thrown by both Jackson and TEXT.
@@ -90,9 +90,9 @@ public final class HttpResponseBodyDecoder {
                     return null;
                 }
 
-                return deserializeBody(bodyAsByteArray,
-                    extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
-                    serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
+                return deserializeBody(bodyAsByteArray, extractEntityTypeFromReturnType(decodeData),
+                    decodeData.getReturnValueWireType(), serializer,
+                    SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
             } catch (MalformedValueException e) {
                 throw new HttpResponseException("HTTP response has a malformed body.", httpResponse, e);
             } catch (IOException e) {
@@ -150,9 +150,8 @@ public final class HttpResponseBodyDecoder {
             return deserialize(value, resultType, serializer, encoding);
         } else if (TypeUtil.isTypeOrSubTypeOf(wireType, Page.class)) {
             // If the type is the 'Page' interface [@ReturnValueWireType(Page.class)] we will use the 'ItemPage' class.
-            Type wireResponseType = (wireType == Page.class)
-                ? TypeUtil.createParameterizedType(ItemPage.class, resultType)
-                : wireType;
+            Type wireResponseType
+                = (wireType == Page.class) ? TypeUtil.createParameterizedType(ItemPage.class, resultType) : wireType;
 
             return deserialize(value, wireResponseType, serializer, encoding);
         } else {
@@ -211,8 +210,8 @@ public final class HttpResponseBodyDecoder {
             final Type resultValueType = typeArguments[1];
             final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
 
-            return TypeUtil.createParameterizedType(((ParameterizedType) resultType).getRawType(),
-                typeArguments[0], wireResponseValueType);
+            return TypeUtil.createParameterizedType(((ParameterizedType) resultType).getRawType(), typeArguments[0],
+                wireResponseValueType);
         }
 
         return resultType;
@@ -227,9 +226,7 @@ public final class HttpResponseBodyDecoder {
      * @param wireType the {@code java.lang.reflect.Type} of the wireResponse
      * @return converted object
      */
-    private static Object convertToResultType(final Object wireResponse,
-        final Type resultType,
-        final Type wireType) {
+    private static Object convertToResultType(final Object wireResponse, final Type resultType, final Type wireType) {
         if (resultType == byte[].class) {
             if (wireType == Base64Url.class) {
                 return ((Base64Url) wireResponse).decodedBytes();
@@ -241,13 +238,13 @@ public final class HttpResponseBodyDecoder {
         } else if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
             final Type resultElementType = TypeUtil.getTypeArgument(resultType);
 
-            @SuppressWarnings("unchecked") final List<Object> wireResponseList = (List<Object>) wireResponse;
+            @SuppressWarnings("unchecked")
+            final List<Object> wireResponseList = (List<Object>) wireResponse;
 
             final int wireResponseListSize = wireResponseList.size();
             for (int i = 0; i < wireResponseListSize; ++i) {
                 final Object wireResponseElement = wireResponseList.get(i);
-                final Object resultElement =
-                    convertToResultType(wireResponseElement, resultElementType, wireType);
+                final Object resultElement = convertToResultType(wireResponseElement, resultElementType, wireType);
                 if (wireResponseElement != resultElement) {
                     wireResponseList.set(i, resultElement);
                 }
@@ -257,8 +254,8 @@ public final class HttpResponseBodyDecoder {
         } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class)) {
             final Type resultValueType = TypeUtil.getTypeArguments(resultType)[1];
 
-            @SuppressWarnings("unchecked") final Map<String, Object> wireResponseMap =
-                (Map<String, Object>) wireResponse;
+            @SuppressWarnings("unchecked")
+            final Map<String, Object> wireResponseMap = (Map<String, Object>) wireResponse;
 
             final Set<Map.Entry<String, Object>> wireResponseEntries = wireResponseMap.entrySet();
             for (Map.Entry<String, Object> wireResponseEntry : wireResponseEntries) {
@@ -313,4 +310,3 @@ public final class HttpResponseBodyDecoder {
         Objects.requireNonNull(httpResponse.getRequest().getHttpMethod());
     }
 }
-

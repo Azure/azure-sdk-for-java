@@ -96,8 +96,8 @@ public abstract class HttpResponse implements Closeable {
             return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body));
         } else {
             try {
-                return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body,
-                    Long.parseLong(contentLength)));
+                return BinaryDataHelper
+                    .createBinaryData(new FluxByteBufferContent(body, Long.parseLong(contentLength)));
             } catch (NumberFormatException ignored) {
                 // Using Content-Length is speculative, so if it's not a number, we'll just return the stream.
                 return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body));

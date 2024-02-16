@@ -72,8 +72,7 @@ public class FixedDelay implements RetryStrategy {
 
     @Override
     public boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
-        return shouldRetryCondition == null
-            ? RetryStrategy.super.shouldRetryCondition(requestRetryCondition)
+        return shouldRetryCondition == null ? RetryStrategy.super.shouldRetryCondition(requestRetryCondition)
             : shouldRetryCondition.test(requestRetryCondition);
     }
 }

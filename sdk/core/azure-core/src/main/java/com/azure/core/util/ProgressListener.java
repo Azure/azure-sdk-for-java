@@ -8,7 +8,9 @@ package com.azure.core.util;
  * The {@link #handleProgress(long)} method will be called periodically with the total progress accumulated
  * at the given point of time.
  *
- * <p><strong>Code samples</strong></p>
+ * <p>
+ * <strong>Code samples</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.ProgressReportingE2ESample -->
  * <pre>

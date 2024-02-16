@@ -23,9 +23,13 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  * This class provides fluent API to write logs using {@link ClientLogger} and
  * enrich them with additional context.
  *
- * <p><strong>Code samples</strong></p>
+ * <p>
+ * <strong>Code samples</strong>
+ * </p>
  *
- * <p>Logging event with context.</p>
+ * <p>
+ * Logging event with context.
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.logging.loggingeventbuilder -->
  * <pre>
@@ -281,8 +285,8 @@ public final class LoggingEventBuilder {
             message = "";
         }
 
-        StringBuilder sb = new StringBuilder(20 + (context == null ? 0 : context.size()) * 20 + message.length()
-            + globalContextCached.length());
+        StringBuilder sb = new StringBuilder(
+            20 + (context == null ? 0 : context.size()) * 20 + message.length() + globalContextCached.length());
         // message must be first for log parsing tooling to work, key also works as a
         // marker for Azure SDK logs so we'll write it even if there is no message
         sb.append(AZURE_SDK_LOG_MESSAGE_JSON_START);
@@ -329,6 +333,7 @@ public final class LoggingEventBuilder {
      * Performs the logging.
      *
      * @param format format-able message.
+     * 
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(LogLevel logLevel, String format, Object... args) {
@@ -361,15 +366,19 @@ public final class LoggingEventBuilder {
             case VERBOSE:
                 logger.debug(message, throwable);
                 break;
+
             case INFORMATIONAL:
                 logger.info(message, throwable);
                 break;
+
             case WARNING:
                 logger.warn(message, throwable);
                 break;
+
             case ERROR:
                 logger.error(message, throwable);
                 break;
+
             default:
                 // Don't do anything, this state shouldn't be possible.
                 break;

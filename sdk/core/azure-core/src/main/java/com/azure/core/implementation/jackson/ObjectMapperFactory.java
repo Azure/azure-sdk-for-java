@@ -33,8 +33,8 @@ final class ObjectMapperFactory {
     private static final boolean USE_ACCESS_HELPER;
 
     static {
-        USE_ACCESS_HELPER = Boolean.parseBoolean(Configuration.getGlobalConfiguration()
-            .get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
+        USE_ACCESS_HELPER = Boolean
+            .parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
     }
 
     ObjectMapperFactory() {
@@ -42,24 +42,21 @@ final class ObjectMapperFactory {
             && com.fasterxml.jackson.core.json.PackageVersion.VERSION.getMinorVersion() >= 15;
     }
 
-    public  static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
+    public static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
 
     public ObjectMapper createJsonMapper(ObjectMapper innerMapper) {
-        ObjectMapper flatteningMapper = attemptJackson215Mutation(initializeMapperBuilder(JsonMapper.builder())
-            .addModule(FlatteningSerializer.getModule(innerMapper))
-            .addModule(FlatteningDeserializer.getModule(innerMapper))
-            .build());
+        ObjectMapper flatteningMapper = attemptJackson215Mutation(
+            initializeMapperBuilder(JsonMapper.builder()).addModule(FlatteningSerializer.getModule(innerMapper))
+                .addModule(FlatteningDeserializer.getModule(innerMapper)).build());
 
         return attemptJackson215Mutation(initializeMapperBuilder(JsonMapper.builder())
             // Order matters: must register in reverse order of hierarchy
             .addModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
             .addModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
             .addModule(FlatteningSerializer.getModule(innerMapper))
-            .addModule(FlatteningDeserializer.getModule(innerMapper))
-            .addModule(JsonSerializableSerializer.getModule())
+            .addModule(FlatteningDeserializer.getModule(innerMapper)).addModule(JsonSerializableSerializer.getModule())
             .addModule(JsonSerializableDeserializer.getModule())
-            .addModule(ResponseErrorDeserializer.getModule(innerMapper))
-            .build());
+            .addModule(ResponseErrorDeserializer.getModule(innerMapper)).build());
     }
 
     public ObjectMapper createXmlMapper() {
@@ -80,10 +77,8 @@ final class ObjectMapperFactory {
 
     public ObjectMapper createHeaderMapper() {
         return attemptJackson215Mutation(initializeMapperBuilder(JsonMapper.builder())
-            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
-            .addModule(JsonSerializableSerializer.getModule())
-            .addModule(JsonSerializableDeserializer.getModule())
-            .build());
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES).addModule(JsonSerializableSerializer.getModule())
+            .addModule(JsonSerializableDeserializer.getModule()).build());
     }
 
     @SuppressWarnings("removal")
@@ -92,8 +87,9 @@ final class ObjectMapperFactory {
             try {
                 if (USE_ACCESS_HELPER) {
                     try {
-                        return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<ObjectMapper>)
-                            () -> JacksonDatabind215.mutateStreamReadConstraints(objectMapper));
+                        return java.security.AccessController
+                            .doPrivileged((PrivilegedExceptionAction<ObjectMapper>) () -> JacksonDatabind215
+                                .mutateStreamReadConstraints(objectMapper));
                     } catch (PrivilegedActionException ex) {
                         final Throwable cause = ex.getCause();
                         if (cause instanceof Error) {
@@ -125,21 +121,14 @@ final class ObjectMapperFactory {
         mapper.enable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
             .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
             .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            .serializationInclusion(JsonInclude.Include.NON_NULL)
-            .addModule(new JavaTimeModule())
-            .addModule(BinaryDataSerializer.getModule())
-            .addModule(BinaryDataDeserializer.getModule())
-            .addModule(ByteArraySerializer.getModule())
-            .addModule(Base64UrlSerializer.getModule())
-            .addModule(DateTimeSerializer.getModule())
-            .addModule(DateTimeDeserializer.getModule())
-            .addModule(DateTimeRfc1123Serializer.getModule())
-            .addModule(DurationSerializer.getModule())
-            .addModule(HttpHeadersSerializer.getModule())
-            .addModule(GeoJsonSerializer.getModule())
+            .serializationInclusion(JsonInclude.Include.NON_NULL).addModule(new JavaTimeModule())
+            .addModule(BinaryDataSerializer.getModule()).addModule(BinaryDataDeserializer.getModule())
+            .addModule(ByteArraySerializer.getModule()).addModule(Base64UrlSerializer.getModule())
+            .addModule(DateTimeSerializer.getModule()).addModule(DateTimeDeserializer.getModule())
+            .addModule(DateTimeRfc1123Serializer.getModule()).addModule(DurationSerializer.getModule())
+            .addModule(HttpHeadersSerializer.getModule()).addModule(GeoJsonSerializer.getModule())
             .addModule(GeoJsonDeserializer.getModule())
             .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)

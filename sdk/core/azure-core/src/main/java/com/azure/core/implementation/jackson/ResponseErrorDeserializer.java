@@ -56,9 +56,8 @@ final class ResponseErrorDeserializer extends StdDeserializer<Object> {
         SimpleModule module = new SimpleModule();
         module.setDeserializerModifier(new BeanDeserializerModifier() {
             @Override
-            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config,
-                                                          BeanDescription beanDesc,
-                                                          JsonDeserializer<?> deserializer) {
+            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
+                JsonDeserializer<?> deserializer) {
                 if (ResponseError.class.isAssignableFrom(beanDesc.getBeanClass())) {
                     return new ResponseErrorDeserializer(beanDesc.getBeanClass(), mapper);
                 } else {
