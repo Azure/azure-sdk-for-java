@@ -103,6 +103,9 @@ extends:
         scanFolder: $(Build.SourcesDirectory)/credscan.tsv
         toolVersion: 2.3.12.23
         baselineFiles: $(Build.SourcesDirectory)/eng/java.gdnbaselines
+      sourceRepositoriesToScan:
+        exclude:
+          - repository: azure-sdk-build-tools
 
     stages:
       - stage: Build
