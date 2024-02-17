@@ -46,7 +46,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.3.18</version>
+  <version>12.3.19</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

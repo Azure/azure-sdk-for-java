@@ -60,7 +60,7 @@ Add the following Maven dependency:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-mixedreality-remoterendering</artifactId>
-    <version>1.1.25</version>
+    <version>1.1.26</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
