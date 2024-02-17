@@ -7,8 +7,8 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -51,7 +51,7 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
             .buildEncryptedBlobClient();
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @Test
     public void encryptedBlobOutputStreamNotANoop() throws IOException {
         byte[] data = getRandomByteArray(10 * Constants.MB);
@@ -66,7 +66,7 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
         assertFalse(Arrays.equals(data, os.toByteArray()));
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @Test
     public void encryptedBlobOutputStream() throws IOException {
         byte[] data = getRandomByteArray(10 * Constants.MB);
@@ -78,7 +78,7 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
         assertArrayEquals(data, convertInputStreamToByteArray(bec.openInputStream(), 10 * Constants.MB));
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @Test
     public void encryptedBlobOutputStreamDefaultNoOverwrite() throws IOException {
         byte[] data = getRandomByteArray(10 * Constants.MB);
@@ -90,7 +90,7 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
         assertThrows(IllegalArgumentException.class, bec::getBlobOutputStream);
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @Test
     public void encryptedBlobOutputStreamDefaultNoOverwriteInterrupted() throws IOException {
         byte[] data = getRandomByteArray(10 * Constants.MB);
@@ -108,7 +108,7 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
         assertEquals(BlobErrorCode.BLOB_ALREADY_EXISTS, ((BlobStorageException) e.getCause()).getErrorCode());
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.specialized.cryptography.BlobCryptographyTestBase#liveOnly")
     @Test
     public void encryptedBlobOutputStreamOverwrite() throws IOException {
         byte[] randomData = getRandomByteArray(10 * Constants.MB);
