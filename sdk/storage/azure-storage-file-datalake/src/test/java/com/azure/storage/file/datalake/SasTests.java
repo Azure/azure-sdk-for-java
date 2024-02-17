@@ -11,7 +11,6 @@ import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.models.AccessControlType;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
@@ -29,6 +28,7 @@ import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.sas.PathSasPermission;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -118,7 +118,7 @@ public class SasTests extends DataLakeTestBase {
         assertEquals(DATA.getDefaultText(), os.toString());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void directorySasPermission() {
         String pathName = generatePathName();
@@ -145,7 +145,7 @@ public class SasTests extends DataLakeTestBase {
         assertDoesNotThrow(() -> client.createSubdirectory(generatePathName()));
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void directorySasPermissionFail() {
         String pathName = generatePathName();
@@ -235,7 +235,7 @@ public class SasTests extends DataLakeTestBase {
         assertEquals(DATA.getDefaultText(), os.toString());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void directoryUserDelegation() {
         String pathName = generatePathName();
@@ -299,7 +299,7 @@ public class SasTests extends DataLakeTestBase {
         assertDoesNotThrow(() -> client.listPaths().iterator().hasNext());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void fileUserDelegationSAOID() {
         String saoid = testResourceNamer.randomUuid();
@@ -346,7 +346,7 @@ public class SasTests extends DataLakeTestBase {
         assertEquals(saoid, accessControl.getOwner());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void fileUserDelegationSUOID() {
         String suoid = testResourceNamer.randomUuid();
@@ -431,7 +431,7 @@ public class SasTests extends DataLakeTestBase {
         assertTrue(sasWithPermissions.contains("scid=" + cid));
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void fileSystemUserDelegationCorrelationIdError() {
         FileSystemSasPermission permissions = new FileSystemSasPermission().setListPermission(true);
@@ -545,7 +545,7 @@ public class SasTests extends DataLakeTestBase {
      values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of
      individual parts later.
      */
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @ParameterizedTest
     @MethodSource("sasImplUtilStringToSignSupplier")
     public void sasImplUtilStringToSign(OffsetDateTime startTime, String identifier, SasIpRange ipRange,
@@ -597,7 +597,7 @@ public class SasTests extends DataLakeTestBase {
         );
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @ParameterizedTest
     @MethodSource("sasImplUtilStringToSignUserDelegationKeySupplier")
     public void sasImplUtilStringToSignUserDelegationKey(OffsetDateTime startTime, String keyOid, String keyTid,

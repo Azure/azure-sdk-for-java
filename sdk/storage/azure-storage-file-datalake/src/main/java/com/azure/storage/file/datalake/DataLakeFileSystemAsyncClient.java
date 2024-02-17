@@ -25,6 +25,7 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -983,7 +984,7 @@ public class DataLakeFileSystemAsyncClient {
      * String umask = &quot;umask&quot;;
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
-     * String leaseId = CoreUtils.randomUuid&#40;&#41;.toString&#40;&#41;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
      * Integer duration = 15;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
@@ -1342,7 +1343,7 @@ public class DataLakeFileSystemAsyncClient {
      * String umask = &quot;umask&quot;;
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
-     * String leaseId = CoreUtils.randomUuid&#40;&#41;.toString&#40;&#41;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
      * Integer duration = 15;
      *
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
@@ -1658,7 +1659,7 @@ public class DataLakeFileSystemAsyncClient {
             .pipeline(blobDataLakeStorageFs.getHttpPipeline())
             .url(blobUrl)
             .fileSystem(blobDataLakeStorageFs.getFileSystem())
-            .path(deletedPath)
+            .path(Utility.urlDecode(deletedPath))
             .version(serviceVersion.getVersion())
             .buildClient();
 

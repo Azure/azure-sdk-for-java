@@ -10,7 +10,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.Utility;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -36,6 +36,7 @@ import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptio
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -45,7 +46,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
@@ -708,7 +708,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
             null, null, null, Context.NONE).getStatusCode());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createFileOptionsWithACL() {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
@@ -721,7 +721,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertEquals(pathAccessControlEntries.get(1), acl.get(1)); // testing if group is set the same
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createFileOptionsWithOwnerAndGroup() {
         String ownerName = testResourceNamer.randomUuid();
@@ -809,7 +809,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertEquals(PathPermissions.parseSymbolic("rwx-w----").toString(), acl.getPermissions().toString());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createFileOptionsWithLeaseId() {
         String leaseId = CoreUtils.randomUuid().toString();
@@ -829,7 +829,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
             () -> dataLakeFileSystemClient.createFileWithResponse(generatePathName(), options, null, null));
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createFileOptionsWithLeaseDuration() {
         String leaseId = CoreUtils.randomUuid().toString();
@@ -847,7 +847,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertEquals(LeaseDurationType.FIXED, fileProps.getLeaseDuration());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @ParameterizedTest
     @MethodSource("createFileOptionsWithTimeExpiresOnAbsoluteAndNeverExpireSupplier")
     public void createFileOptionsWithTimeExpiresOnAbsoluteAndNeverExpire(DataLakePathScheduleDeletionOptions deletionOptions) {
@@ -859,7 +859,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         return Stream.of(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)), null);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createFileOptionsWithTimeToExpireRelativeToNow() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
@@ -940,7 +940,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
             .getStatusCode());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsFileOptionsWithACL() {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
@@ -953,7 +953,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertEquals(pathAccessControlEntries.get(1), acl.get(1)); // testing if group is set the same
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsFileOptionsWithOwnerAndGroup() {
         String ownerName = testResourceNamer.randomUuid();
@@ -1031,7 +1031,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertEquals(PathPermissions.parseSymbolic("rwx-w----").toString(), acl.getPermissions().toString());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsFileOptionsWithLeaseId() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
@@ -1052,7 +1052,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
             dataLakeFileSystemClient.createFileIfNotExistsWithResponse(generatePathName(), options, null, null));
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsFileOptionsWithLeaseDuration() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setLeaseDuration(15)
@@ -1070,7 +1070,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @ParameterizedTest
     @MethodSource("createIfNotExistsFileOptionsWithTimeExpiresOnAbsoluteAndNeverExpireSupplier")
     public void createIfNotExistsFileOptionsWithTimeExpiresOnAbsoluteAndNeverExpire(DataLakePathScheduleDeletionOptions deletionOptions) {
@@ -1084,7 +1084,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         return Stream.of(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)), null);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsFileOptionsWithTimeToExpireRelativeToNow() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
@@ -1340,7 +1340,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
             null, null, null, null, Context.NONE).getStatusCode());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createDirOptionsWithACL() {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
@@ -1353,7 +1353,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertEquals(pathAccessControlEntries.get(1), acl.get(1)); // testing if group is set the same
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createDirOptionsWithOwnerAndGroup() {
         String ownerName = testResourceNamer.randomUuid();
@@ -1547,7 +1547,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
             null, Context.NONE).getStatusCode());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsDirOptionsWithACL() {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
@@ -1560,7 +1560,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertEquals(pathAccessControlEntries.get(1), acl.get(1)); // testing if group is set the same
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsDirOptionsWithOwnerAndGroup() {
         String ownerName = testResourceNamer.randomUuid();
@@ -1870,7 +1870,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertFalse(response.hasNext());
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void listPathsExpiryAndCreation() {
         String dirName = generatePathName();
@@ -1992,38 +1992,6 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertFalse(response.hasNext());
     }
 
-    @Test
-    public void listPathsCreationTimeParse() {
-        // this test is ensuring that we're handling the date format that the service returns for the creation time
-        // it can be returned in two formats: RFC 1123 date string or Windows file time
-        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
-        dataLakeFileSystemClient.getFileClient(generatePathName()).create();
-        ListPathsOptions options = new ListPathsOptions().setRecursive(true);
-
-        // assert that NumberFormatException is not thrown
-        assertDoesNotThrow(() -> dataLakeFileSystemClient.listPaths(options, null));
-    }
-
-    @ParameterizedTest
-    @MethodSource("creationTimeDateParseSupplier")
-    public void creationTimeDateParse(String dateString, OffsetDateTime expectedDateTime) {
-        OffsetDateTime dateTime = Transforms.parseWindowsFileTimeOrDateString(dateString);
-        assertEquals(expectedDateTime, dateTime);
-    }
-
-    private static Stream<Arguments> creationTimeDateParseSupplier() {
-        return Stream.of(
-            Arguments.of("133349422459014187", OffsetDateTime.parse("2023-07-27T14:37:25.901Z")),
-            Arguments.of("Wed, 29 Nov 2023 03:08:19 GMT", OffsetDateTime.parse("Wed, 29 Nov 2023 03:08:19 GMT", DateTimeFormatter.RFC_1123_DATE_TIME)),
-            Arguments.of(null, null)
-        );
-    }
-
-    @Test
-    public void creationTimeDateParseBadData() {
-        assertThrows(RuntimeException.class, () -> Transforms.parseWindowsFileTimeOrDateString("bad date string"));
-    }
-
     @ParameterizedTest
     @ValueSource(strings = {"%E4%B8%AD%E6%96%87", "az%5B%5D", "hello%20world", "hello%26world",
         "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%3F%23%5B%5D"})
@@ -2046,10 +2014,10 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
         Iterator<PathItem> paths = dataLakeFileSystemClient.listPaths().iterator();
 
-        assertEquals(name + "dir1", paths.next().getName());
-        assertEquals(name + "dir2", paths.next().getName());
-        assertEquals(name + "file1", paths.next().getName());
-        assertEquals(name + "file2", paths.next().getName());
+        assertEquals(Utility.urlDecode(name) + "dir1", paths.next().getName());
+        assertEquals(Utility.urlDecode(name) + "dir2", paths.next().getName());
+        assertEquals(Utility.urlDecode(name) + "file1", paths.next().getName());
+        assertEquals(Utility.urlDecode(name) + "file2", paths.next().getName());
     }
 
     @ParameterizedTest
