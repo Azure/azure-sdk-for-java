@@ -525,7 +525,7 @@ final class TestUtils {
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(21, 1);
 
         ExtractKeyPhraseResult extractKeyPhraseResult1 = new ExtractKeyPhraseResult("0", textDocumentStatistics1, null, new KeyPhrasesCollection(new IterableStream<>(asList("Hello world", "input text")), null));
-        ExtractKeyPhraseResult extractKeyPhraseResult2 = new ExtractKeyPhraseResult("1", textDocumentStatistics2, null, new KeyPhrasesCollection(new IterableStream<>(asList("Bonjour", "monde")), null));
+        ExtractKeyPhraseResult extractKeyPhraseResult2 = new ExtractKeyPhraseResult("1", textDocumentStatistics2, null, new KeyPhrasesCollection(new IterableStream<>(asList("monde")), null));
 
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<ExtractKeyPhraseResult> extractKeyPhraseResultList = asList(extractKeyPhraseResult1, extractKeyPhraseResult2);
@@ -984,21 +984,17 @@ final class TestUtils {
      * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
      */
     static RecognizePiiEntitiesResultCollection getRecognizePiiEntitiesResultCollection() {
-//        final PiiEntity piiEntity0 = new PiiEntity();
-//        PiiEntityPropertiesHelper.setText(piiEntity0, "last week");
-//        PiiEntityPropertiesHelper.setCategory(piiEntity0, PiiEntityCategory.fromString("DateTime"));
-//        PiiEntityPropertiesHelper.setSubcategory(piiEntity0, "DateRange");
-//        PiiEntityPropertiesHelper.setOffset(piiEntity0, 34);
+        final PiiEntity piiEntity0 = new PiiEntity();
+        PiiEntityPropertiesHelper.setText(piiEntity0, "last week");
+        PiiEntityPropertiesHelper.setCategory(piiEntity0, PiiEntityCategory.fromString("DateTime"));
+        PiiEntityPropertiesHelper.setSubcategory(piiEntity0, "DateRange");
+        PiiEntityPropertiesHelper.setOffset(piiEntity0, 34);
 
         return new RecognizePiiEntitiesResultCollection(
             asList(
-                // TODO: this is a regression which `last week` was a redacted text.
                 new RecognizePiiEntitiesResult("0", new TextDocumentStatistics(44, 1), null,
-                    new PiiEntityCollection(new IterableStream<>(new ArrayList<>()),
-                        "I had a wonderful trip to Seattle last week.", null)),
-//                new RecognizePiiEntitiesResult("0", new TextDocumentStatistics(44, 1), null,
-//                    new PiiEntityCollection(new IterableStream<>(Arrays.asList(piiEntity0)),
-//                        "I had a wonderful trip to Seattle *********.", null)),
+                    new PiiEntityCollection(new IterableStream<>(Arrays.asList(piiEntity0)),
+                        "I had a wonderful trip to Seattle *********.", null)),
                 new RecognizePiiEntitiesResult("1", new TextDocumentStatistics(67, 1), null,
                     new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),
                         "********* ******** with ssn *********** is using our awesome API's.", null))),

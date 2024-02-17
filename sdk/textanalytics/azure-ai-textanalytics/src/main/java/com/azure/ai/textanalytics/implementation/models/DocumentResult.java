@@ -5,29 +5,28 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The DocumentResult model. */
 @Fluent
-public class DocumentResult implements JsonSerializable<DocumentResult> {
+public class DocumentResult {
     /*
      * Unique, non-empty document identifier.
      */
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Warnings encountered while processing document.
      */
+    @JsonProperty(value = "warnings", required = true)
     private List<DocumentWarning> warnings;
 
     /*
      * if showStats=true was specified in the request this field will contain information about the document payload.
      */
+    @JsonProperty(value = "statistics")
     private DocumentStatistics statistics;
 
     /** Creates an instance of DocumentResult class. */
@@ -93,48 +92,5 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
     public DocumentResult setStatistics(DocumentStatistics statistics) {
         this.statistics = statistics;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("statistics", this.statistics);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DocumentResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentResult if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DocumentResult.
-     */
-    public static DocumentResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DocumentResult deserializedDocumentResult = new DocumentResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("id".equals(fieldName)) {
-                            deserializedDocumentResult.id = reader.getString();
-                        } else if ("warnings".equals(fieldName)) {
-                            List<DocumentWarning> warnings =
-                                    reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
-                            deserializedDocumentResult.warnings = warnings;
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedDocumentResult.statistics = DocumentStatistics.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedDocumentResult;
-                });
     }
 }

@@ -5,19 +5,20 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 /** The KeyPhraseExtractionLROResult model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("KeyPhraseExtractionLROResults")
 @Fluent
 public final class KeyPhraseExtractionLROResult extends AnalyzeTextLROResult {
     /*
      * The results property.
      */
+    @JsonProperty(value = "results", required = true)
     private KeyPhraseResult results;
 
     /** Creates an instance of KeyPhraseExtractionLROResult class. */
@@ -62,63 +63,5 @@ public final class KeyPhraseExtractionLROResult extends AnalyzeTextLROResult {
     public KeyPhraseExtractionLROResult setStatus(State status) {
         super.setStatus(status);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField(
-                "kind", Objects.toString(AnalyzeTextLROResultsKind.KEY_PHRASE_EXTRACTION_LRORESULTS, null));
-        jsonWriter.writeStringField("lastUpdateDateTime", Objects.toString(getLastUpdateDateTime(), null));
-        jsonWriter.writeStringField("status", Objects.toString(getStatus(), null));
-        jsonWriter.writeStringField("taskName", getTaskName());
-        jsonWriter.writeJsonField("results", this.results);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of KeyPhraseExtractionLROResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of KeyPhraseExtractionLROResult if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the KeyPhraseExtractionLROResult.
-     */
-    public static KeyPhraseExtractionLROResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyPhraseExtractionLROResult deserializedKeyPhraseExtractionLROResult =
-                            new KeyPhraseExtractionLROResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!"KeyPhraseExtractionLROResults".equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'KeyPhraseExtractionLROResults'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("lastUpdateDateTime".equals(fieldName)) {
-                            deserializedKeyPhraseExtractionLROResult.setLastUpdateDateTime(
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                        } else if ("status".equals(fieldName)) {
-                            deserializedKeyPhraseExtractionLROResult.setStatus(State.fromString(reader.getString()));
-                        } else if ("taskName".equals(fieldName)) {
-                            deserializedKeyPhraseExtractionLROResult.setTaskName(reader.getString());
-                        } else if ("results".equals(fieldName)) {
-                            deserializedKeyPhraseExtractionLROResult.results = KeyPhraseResult.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedKeyPhraseExtractionLROResult;
-                });
     }
 }

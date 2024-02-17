@@ -5,28 +5,27 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The LanguageInput model. */
 @Fluent
-public final class LanguageInput implements JsonSerializable<LanguageInput> {
+public final class LanguageInput {
     /*
      * Unique, non-empty document identifier.
      */
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The text property.
      */
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * The countryHint property.
      */
+    @JsonProperty(value = "countryHint")
     private String countryHint;
 
     /** Creates an instance of LanguageInput class. */
@@ -90,46 +89,5 @@ public final class LanguageInput implements JsonSerializable<LanguageInput> {
     public LanguageInput setCountryHint(String countryHint) {
         this.countryHint = countryHint;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("countryHint", this.countryHint);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of LanguageInput from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of LanguageInput if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the LanguageInput.
-     */
-    public static LanguageInput fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    LanguageInput deserializedLanguageInput = new LanguageInput();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("id".equals(fieldName)) {
-                            deserializedLanguageInput.id = reader.getString();
-                        } else if ("text".equals(fieldName)) {
-                            deserializedLanguageInput.text = reader.getString();
-                        } else if ("countryHint".equals(fieldName)) {
-                            deserializedLanguageInput.countryHint = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedLanguageInput;
-                });
     }
 }

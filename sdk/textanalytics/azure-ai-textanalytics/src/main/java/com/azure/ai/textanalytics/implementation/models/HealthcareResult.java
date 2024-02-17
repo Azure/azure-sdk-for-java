@@ -5,10 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The HealthcareResult model. */
@@ -17,6 +14,7 @@ public final class HealthcareResult extends PreBuiltResult {
     /*
      * The documents property.
      */
+    @JsonProperty(value = "documents", required = true)
     private List<HealthcareResultDocumentsItem> documents;
 
     /** Creates an instance of HealthcareResult class. */
@@ -61,52 +59,5 @@ public final class HealthcareResult extends PreBuiltResult {
     public HealthcareResult setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("errors", getErrors(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("modelVersion", getModelVersion());
-        jsonWriter.writeJsonField("statistics", getStatistics());
-        jsonWriter.writeArrayField("documents", this.documents, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of HealthcareResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of HealthcareResult if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the HealthcareResult.
-     */
-    public static HealthcareResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    HealthcareResult deserializedHealthcareResult = new HealthcareResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("errors".equals(fieldName)) {
-                            List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
-                            deserializedHealthcareResult.setErrors(errors);
-                        } else if ("modelVersion".equals(fieldName)) {
-                            deserializedHealthcareResult.setModelVersion(reader.getString());
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedHealthcareResult.setStatistics(RequestStatistics.fromJson(reader));
-                        } else if ("documents".equals(fieldName)) {
-                            List<HealthcareResultDocumentsItem> documents =
-                                    reader.readArray(reader1 -> HealthcareResultDocumentsItem.fromJson(reader1));
-                            deserializedHealthcareResult.documents = documents;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedHealthcareResult;
-                });
     }
 }

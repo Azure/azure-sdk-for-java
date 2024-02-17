@@ -5,34 +5,34 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ExtractedSummarySentence model. */
 @Fluent
-public final class ExtractedSummarySentence implements JsonSerializable<ExtractedSummarySentence> {
+public final class ExtractedSummarySentence {
     /*
      * The extracted sentence text.
      */
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * A double value representing the relevance of the sentence within the summary. Higher values indicate higher
      * importance.
      */
+    @JsonProperty(value = "rankScore", required = true)
     private double rankScore;
 
     /*
      * The sentence offset from the start of the document, based on the value of the parameter StringIndexType.
      */
+    @JsonProperty(value = "offset", required = true)
     private int offset;
 
     /*
      * The length of the sentence.
      */
+    @JsonProperty(value = "length", required = true)
     private int length;
 
     /** Creates an instance of ExtractedSummarySentence class. */
@@ -120,49 +120,5 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
     public ExtractedSummarySentence setLength(int length) {
         this.length = length;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeDoubleField("rankScore", this.rankScore);
-        jsonWriter.writeIntField("offset", this.offset);
-        jsonWriter.writeIntField("length", this.length);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ExtractedSummarySentence from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ExtractedSummarySentence if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ExtractedSummarySentence.
-     */
-    public static ExtractedSummarySentence fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ExtractedSummarySentence deserializedExtractedSummarySentence = new ExtractedSummarySentence();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("text".equals(fieldName)) {
-                            deserializedExtractedSummarySentence.text = reader.getString();
-                        } else if ("rankScore".equals(fieldName)) {
-                            deserializedExtractedSummarySentence.rankScore = reader.getDouble();
-                        } else if ("offset".equals(fieldName)) {
-                            deserializedExtractedSummarySentence.offset = reader.getInt();
-                        } else if ("length".equals(fieldName)) {
-                            deserializedExtractedSummarySentence.length = reader.getInt();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedExtractedSummarySentence;
-                });
     }
 }

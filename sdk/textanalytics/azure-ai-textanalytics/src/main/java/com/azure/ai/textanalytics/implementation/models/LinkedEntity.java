@@ -5,49 +5,52 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The LinkedEntity model. */
 @Fluent
-public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
+public final class LinkedEntity {
     /*
      * Entity Linking formal name.
      */
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * List of instances this entity appears in the text.
      */
+    @JsonProperty(value = "matches", required = true)
     private List<Match> matches;
 
     /*
      * Language used in the data source.
      */
+    @JsonProperty(value = "language", required = true)
     private String language;
 
     /*
      * Unique identifier of the recognized entity from the data source.
      */
+    @JsonProperty(value = "id")
     private String id;
 
     /*
      * URL for the entity's page from the data source.
      */
+    @JsonProperty(value = "url", required = true)
     private String url;
 
     /*
      * Data source used to extract entity linking, such as Wiki/Bing etc.
      */
+    @JsonProperty(value = "dataSource", required = true)
     private String dataSource;
 
     /*
      * Bing Entity Search API unique identifier of the recognized entity.
      */
+    @JsonProperty(value = "bingId")
     private String bingId;
 
     /** Creates an instance of LinkedEntity class. */
@@ -191,59 +194,5 @@ public final class LinkedEntity implements JsonSerializable<LinkedEntity> {
     public LinkedEntity setBingId(String bingId) {
         this.bingId = bingId;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeArrayField("matches", this.matches, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("language", this.language);
-        jsonWriter.writeStringField("url", this.url);
-        jsonWriter.writeStringField("dataSource", this.dataSource);
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("bingId", this.bingId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of LinkedEntity from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of LinkedEntity if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the LinkedEntity.
-     */
-    public static LinkedEntity fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    LinkedEntity deserializedLinkedEntity = new LinkedEntity();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("name".equals(fieldName)) {
-                            deserializedLinkedEntity.name = reader.getString();
-                        } else if ("matches".equals(fieldName)) {
-                            List<Match> matches = reader.readArray(reader1 -> Match.fromJson(reader1));
-                            deserializedLinkedEntity.matches = matches;
-                        } else if ("language".equals(fieldName)) {
-                            deserializedLinkedEntity.language = reader.getString();
-                        } else if ("url".equals(fieldName)) {
-                            deserializedLinkedEntity.url = reader.getString();
-                        } else if ("dataSource".equals(fieldName)) {
-                            deserializedLinkedEntity.dataSource = reader.getString();
-                        } else if ("id".equals(fieldName)) {
-                            deserializedLinkedEntity.id = reader.getString();
-                        } else if ("bingId".equals(fieldName)) {
-                            deserializedLinkedEntity.bingId = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedLinkedEntity;
-                });
     }
 }
