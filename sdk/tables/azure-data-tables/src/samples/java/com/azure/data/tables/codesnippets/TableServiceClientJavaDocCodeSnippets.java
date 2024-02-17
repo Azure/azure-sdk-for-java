@@ -28,7 +28,7 @@ public class TableServiceClientJavaDocCodeSnippets {
      *
      * @return An instance of {@link TableServiceClient}.
      */
-    public TableServiceClient createClient() {
+    public TableServiceClient createAsyncClient() {
         // BEGIN: com.azure.data.tables.tableServiceClient.instantiation
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
             .endpoint("https://myvault.azure.net/")
@@ -40,41 +40,11 @@ public class TableServiceClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for creating a {@link TableServiceClient} using a connection string.
-     *
-     * @return An instance of {@link TableServiceClient}.
-     */
-    public TableServiceClient createClientWithConnectionString() {
-        // BEGIN: com.azure.data.tables.tableServiceClient.connectionstring.instantiation
-        TableServiceClient tableServiceClient = new TableServiceClientBuilder()
-            .connectionString("connectionstring")
-            .buildClient();
-        // END: com.azure.data.tables.tableServiceClient.connectionstring.instantiation
-
-        return tableServiceClient;
-    }
-
-    /**
-     * Generates code samples for using {@link TableServiceClient#getTableClient(String)}.
-     */
-    public void getTableClient() {
-        TableServiceClient tableServiceClient = createClient();
-
-        // BEGIN: com.azure.data.tables.tableServiceClient.getTableClient#String
-        TableClient tableClient = tableServiceClient.getTableClient("myTable");
-
-        System.out.printf("Table with name '%s' was retrieved.", tableClient.getTableName());
-        // END: com.azure.data.tables.tableServiceClient.getTableClient#String
-    }
-
-
-
-    /**
      * Generates code samples for using {@link TableServiceClient#createTable(String)} and
      * {@link TableServiceClient#createTableWithResponse(String, Duration, Context)}.
      */
     public void createTable() {
-        TableServiceClient tableServiceClient = createClient();
+        TableServiceClient tableServiceClient = createAsyncClient();
 
         // BEGIN: com.azure.data.tables.tableServiceClient.createTable#String
         TableClient tableClient = tableServiceClient.createTable("myTable");
@@ -96,7 +66,7 @@ public class TableServiceClientJavaDocCodeSnippets {
      * {@link TableServiceClient#createTableIfNotExistsWithResponse(String, Duration, Context)}.
      */
     public void createTableIfNotExists() {
-        TableServiceClient tableServiceClient = createClient();
+        TableServiceClient tableServiceClient = createAsyncClient();
 
         // BEGIN: com.azure.data.tables.tableServiceClient.createTableIfNotExists#String
         TableClient tableClient = tableServiceClient.createTableIfNotExists("myTable");
@@ -119,20 +89,24 @@ public class TableServiceClientJavaDocCodeSnippets {
      * {@link TableServiceClient#deleteTableWithResponse(String, Duration, Context)}.
      */
     public void deleteTable() {
-        TableServiceClient tableServiceClient = createClient();
+        TableServiceClient tableServiceClient = createAsyncClient();
 
         // BEGIN: com.azure.data.tables.tableServiceClient.deleteTable#String
-        tableServiceClient.deleteTable("myTable");
+        String tableName = "myTable";
 
-        System.out.printf("Table with name '%s' was deleted.", "myTable");
+        tableServiceClient.deleteTable(tableName);
+
+        System.out.printf("Table with name '%s' was deleted.", tableName);
         // END: com.azure.data.tables.tableServiceClient.deleteTable#String
 
         // BEGIN: com.azure.data.tables.tableServiceClient.deleteTableWithResponse#String-Duration-Context
-        Response<Void> response = tableServiceClient.deleteTableWithResponse("myTable", Duration.ofSeconds(5),
+        String myTableName = "myTable";
+
+        Response<Void> response = tableServiceClient.deleteTableWithResponse(myTableName, Duration.ofSeconds(5),
             new Context("key1", "value1"));
 
         System.out.printf("Response successful with status code: %d. Table with name '%s' was deleted.",
-            response.getStatusCode(), "myTable");
+            response.getStatusCode(), myTableName);
         // END: com.azure.data.tables.tableServiceClient.deleteTableWithResponse#String-Duration-Context
     }
 
@@ -141,7 +115,7 @@ public class TableServiceClientJavaDocCodeSnippets {
      * {@link TableServiceClient#listTables(ListTablesOptions, Duration, Context)}.
      */
     public void listTables() {
-        TableServiceClient tableServiceClient = createClient();
+        TableServiceClient tableServiceClient = createAsyncClient();
 
         // BEGIN: com.azure.data.tables.tableServiceClient.listTables
         PagedIterable<TableItem> tableItems = tableServiceClient.listTables();
@@ -166,7 +140,7 @@ public class TableServiceClientJavaDocCodeSnippets {
      * {@link TableServiceClient#getPropertiesWithResponse(Duration, Context)}.
      */
     public void getProperties() {
-        TableServiceClient tableServiceClient = createClient();
+        TableServiceClient tableServiceClient = createAsyncClient();
 
         // BEGIN: com.azure.data.tables.tableServiceClient.getProperties
         TableServiceProperties properties = tableServiceClient.getProperties();
@@ -187,7 +161,7 @@ public class TableServiceClientJavaDocCodeSnippets {
      * {@link TableServiceClient#setPropertiesWithResponse(TableServiceProperties, Duration, Context)}.
      */
     public void setProperties() {
-        TableServiceClient tableServiceClient = createClient();
+        TableServiceClient tableServiceClient = createAsyncClient();
 
         // BEGIN: com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties
         TableServiceProperties properties = new TableServiceProperties()
@@ -207,7 +181,7 @@ public class TableServiceClientJavaDocCodeSnippets {
 
         tableServiceClient.setProperties(properties);
 
-        System.out.printf("Set service properties successfully.");
+        System.out.print("Set service properties successfully.");
         // END: com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties
 
         // BEGIN: com.azure.data.tables.tableServiceClient.setPropertiesWithResponse#TableServiceProperties-Duration-Context
@@ -238,7 +212,7 @@ public class TableServiceClientJavaDocCodeSnippets {
      * {@link TableServiceClient#getStatisticsWithResponse(Duration, Context)}.
      */
     public void getStatistics() {
-        TableServiceClient tableServiceClient = createClient();
+        TableServiceClient tableServiceClient = createAsyncClient();
 
         // BEGIN: com.azure.data.tables.tableServiceClient.getStatistics
         TableServiceStatistics statistics = tableServiceClient.getStatistics();

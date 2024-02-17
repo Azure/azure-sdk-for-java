@@ -3,7 +3,6 @@
 package com.azure.data.tables.codesnippets;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.data.tables.TableAsyncClient;
 import com.azure.data.tables.TableServiceAsyncClient;
 import com.azure.data.tables.TableServiceClientBuilder;
 import com.azure.data.tables.models.ListTablesOptions;
@@ -34,21 +33,6 @@ public class TableServiceAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for creating a {@link TableServiceAsyncClient} using a connection string.
-     *
-     * @return An instance of {@link TableServiceAsyncClient}.
-     */
-    public TableServiceAsyncClient createAsyncWithConnectionString() {
-        // BEGIN: com.azure.data.tables.tableServiceAsyncClient.instantiation.connectionstring
-        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
-            .connectionString("connectionstring")
-            .buildAsyncClient();
-        // END: com.azure.data.tables.tableServiceAsyncClient.instantiation.connectionstring
-
-        return tableServiceAsyncClient;
-    }
-
-    /**
      * Generates code samples for using {@link TableServiceAsyncClient#createTable(String)} and
      * {@link TableServiceAsyncClient#createTableWithResponse(String)}.
      */
@@ -70,21 +54,6 @@ public class TableServiceAsyncClientJavaDocCodeSnippets {
                     response.getStatusCode(), response.getValue().getTableName()));
         // END: com.azure.data.tables.tableServiceAsyncClient.createTableWithResponse#String
     }
-
-    /**
-     * Generates code samples for using {@link TableServiceAsyncClient#getTableClient(String)}
-     */
-    public void getTableClient() {
-        TableServiceAsyncClient tableServiceAsyncClient = createAsyncClient();
-
-        // BEGIN: com.azure.data.tables.tableServiceAsyncClient.getTableClient#String
-        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableClient("myTable");
-
-        System.out.printf("Table with name '%s' was retrieved.", tableAsyncClient.getTableName());
-        // END: com.azure.data.tables.tableServiceAsyncClient.getTableClient#String
-    }
-
-
 
     /**
      * Generates code samples for using {@link TableServiceAsyncClient#createTableIfNotExists(String)} and
@@ -117,18 +86,22 @@ public class TableServiceAsyncClientJavaDocCodeSnippets {
         TableServiceAsyncClient tableServiceAsyncClient = createAsyncClient();
 
         // BEGIN: com.azure.data.tables.tableServiceAsyncClient.deleteTable#String
-        tableServiceAsyncClient.deleteTable("myTable")
+        String tableName = "myTable";
+
+        tableServiceAsyncClient.deleteTable(tableName)
             .contextWrite(Context.of("key1", "value1", "key2", "value2"))
             .subscribe(unused ->
-                System.out.printf("Table with name '%s' was deleted.", "myTable"));
+                System.out.printf("Table with name '%s' was deleted.", tableName));
         // END: com.azure.data.tables.tableServiceAsyncClient.deleteTable#String
 
         // BEGIN: com.azure.data.tables.tableServiceAsyncClient.deleteTableWithResponse#String
-        tableServiceAsyncClient.deleteTableWithResponse("myTable")
+        String myTableName = "myTable";
+
+        tableServiceAsyncClient.deleteTableWithResponse(myTableName)
             .contextWrite(Context.of("key1", "value1", "key2", "value2"))
             .subscribe(response ->
                 System.out.printf("Response successful with status code: %d. Table with name '%s' was deleted.",
-                    response.getStatusCode(), "myTable"));
+                    response.getStatusCode(), myTableName));
         // END: com.azure.data.tables.tableServiceAsyncClient.deleteTableWithResponse#String
     }
 
@@ -145,8 +118,10 @@ public class TableServiceAsyncClientJavaDocCodeSnippets {
         // END: com.azure.data.tables.tableServiceAsyncClient.listTables
 
         // BEGIN: com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions
-        tableServiceAsyncClient.listTables(new ListTablesOptions().setFilter("TableName eq 'myTable'")).
-            subscribe(tableItem -> System.out.printf("Retrieved table with name '%s'.%n", tableItem.getName()));
+        ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq 'myTable'");
+
+        tableServiceAsyncClient.listTables(options).subscribe(tableItem ->
+            System.out.printf("Retrieved table with name '%s'.%n", tableItem.getName()));
         // END: com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions
     }
 

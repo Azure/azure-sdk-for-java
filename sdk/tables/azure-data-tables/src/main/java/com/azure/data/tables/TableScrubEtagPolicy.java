@@ -23,14 +23,6 @@ import java.nio.charset.Charset;
 public final class TableScrubEtagPolicy implements HttpPipelinePolicy {
     private static final String ETAG = "eTag";
 
-    // empty constructor necessary due to Javadoc warnings
-    /**
-     * Creates a {@link TableScrubEtagPolicy}.
-     */
-    public TableScrubEtagPolicy() {
-
-    }
-
     /**
      * Wraps any potential error responses from the service and applies post processing of the response's eTag header to
      * standardize the value.
