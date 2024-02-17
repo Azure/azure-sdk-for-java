@@ -138,7 +138,6 @@ public final class JobRouterAdministrationAsyncClient {
     Mono<Response<BinaryData>> upsertDistributionPolicyWithResponse(String distributionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
         // Convenience API is not generated, as operation 'upsertDistributionPolicy' is 'application/merge-patch+json'
-        // and stream-style-serialization is not enabled
         return this.serviceClient.upsertDistributionPolicyWithResponseAsync(distributionPolicyId, resource,
             requestOptions);
     }
@@ -314,9 +313,9 @@ public final class JobRouterAdministrationAsyncClient {
             = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(),
             BinaryData.fromObject(distributionPolicy), requestOptions)
-            .map(response -> new SimpleResponse<DistributionPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), DistributionPolicyConstructorProxy
-                    .create(response.getValue().toObject(DistributionPolicyInternal.class))));
+                .map(response -> new SimpleResponse<DistributionPolicy>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), DistributionPolicyConstructorProxy
+                        .create(response.getValue().toObject(DistributionPolicyInternal.class))));
     }
 
     /**
@@ -521,7 +520,6 @@ public final class JobRouterAdministrationAsyncClient {
     Mono<Response<BinaryData>> upsertClassificationPolicyWithResponse(String classificationPolicyId,
         BinaryData resource, RequestOptions requestOptions) {
         // Convenience API is not generated, as operation 'upsertClassificationPolicy' is 'application/merge-patch+json'
-        // and stream-style-serialization is not enabled
         return this.serviceClient.upsertClassificationPolicyWithResponseAsync(classificationPolicyId, resource,
             requestOptions);
     }
@@ -717,9 +715,9 @@ public final class JobRouterAdministrationAsyncClient {
             .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
         return upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getClassificationPolicyId(),
             BinaryData.fromObject(classificationPolicy), requestOptions)
-            .map(response -> new SimpleResponse<ClassificationPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), ClassificationPolicyConstructorProxy
-                    .create(response.getValue().toObject(ClassificationPolicyInternal.class))));
+                .map(response -> new SimpleResponse<ClassificationPolicy>(response.getRequest(),
+                    response.getStatusCode(), response.getHeaders(), ClassificationPolicyConstructorProxy
+                        .create(response.getValue().toObject(ClassificationPolicyInternal.class))));
     }
 
     /**
@@ -938,8 +936,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertExceptionPolicyWithResponse(String exceptionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertExceptionPolicy' is 'application/merge-patch+json' and
-        // stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertExceptionPolicy' is 'application/merge-patch+json'
         return this.serviceClient.upsertExceptionPolicyWithResponseAsync(exceptionPolicyId, resource, requestOptions);
     }
 
@@ -1129,9 +1126,9 @@ public final class JobRouterAdministrationAsyncClient {
             = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
             BinaryData.fromObject(exceptionPolicy), requestOptions)
-            .map(response -> new SimpleResponse<ExceptionPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                ExceptionPolicyConstructorProxy.create(response.getValue().toObject(ExceptionPolicyInternal.class))));
+                .map(response -> new SimpleResponse<ExceptionPolicy>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), ExceptionPolicyConstructorProxy
+                        .create(response.getValue().toObject(ExceptionPolicyInternal.class))));
     }
 
     /**
@@ -1331,8 +1328,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertQueueWithResponse(String queueId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertQueue' is 'application/merge-patch+json' and
-        // stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertQueue' is 'application/merge-patch+json'
         return this.serviceClient.upsertQueueWithResponseAsync(queueId, resource, requestOptions);
     }
 
