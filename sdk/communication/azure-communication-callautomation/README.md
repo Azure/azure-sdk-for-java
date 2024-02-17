@@ -21,7 +21,7 @@ This package contains a Java SDK for Azure Communication Call Automation Service
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callautomation</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,54 +41,7 @@ This is the restart of Call Automation Service. It is renamed to Call Automation
 
 ## Examples
 
-### Handle Mid-Connection events with CallAutomation's EventProcessor
-To easily handle mid-connection events, Call Automation's SDK provides easier way to handle these events.
-Take a look at `CallAutomationEventProcessor`. This will ensure correlation between call and events more easily.
-```Java
-@RestController
-public class ActionController {
-    // Controller implementation...
-
-    @RequestMapping(value = "/api/events", method = POST)
-    public ResponseEntity<?> handleCallEvents(@RequestBody String requestBody) {
-        try {
-            CallAutomationAsyncClient client = getCallAutomationAsyncClient();
-            client.getEventProcessor().processEvents(requestBody);
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-}
-```
-`processEvents` is required for EventProcessor to work.
-After event is being consumed by EventProcessor, you can start using its feature.
-
-See below for example: where you are making a call with `CreateCall`, and wait for `CallConnected` event of the call.
-
-```Java
-public class commandClass {
-    // Class implementation...
-
-    public void createCallCommand() {
-        CallAutomationAsyncClient client = getCallAutomationAsyncClient(); // Should be the same instance as the one used in the example above.
-        String callbackUrl = "<YOUR_CALL_BACK_URL>";
-        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier("<TARGET_USER_ID>"));
-        CreateCallResult result = client.createCall(callInvite, callbackUrl).block();
-
-        try {
-            // This will wait until CallConnected event is arrived or Timesout!
-            CreateCallEventResult eventResult = result.waitForEventProcessorAsync(Duration.ofSeconds(30)).block();
-            CallConnected returnedEvent = eventResult.successResult();
-        } catch (Exception e) {
-            // Timeout exception happend!
-            // Call likely was never answered.
-        }
-    }
-}
-```
-If timeout was not set when calling "waitForEventProcessorAsync", the default timeout is 4 minutes.
+To be determined.
 
 ## Troubleshooting
 
@@ -107,7 +60,6 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 ## Next steps
-
 - [Call Automation Overview][overview]
 - [Incoming Call Concept][incomingcall]
 - [Build a customer interaction workflow using Call Automation][build1]

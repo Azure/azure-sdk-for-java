@@ -16,6 +16,9 @@ public final class FileSourceInternal {
     @JsonProperty(value = "uri", required = true)
     private String uri;
 
+    /** Creates an instance of FileSourceInternal class. */
+    public FileSourceInternal() {}
+
     /**
      * Get the uri property: Uri for the audio file to be played.
      *
