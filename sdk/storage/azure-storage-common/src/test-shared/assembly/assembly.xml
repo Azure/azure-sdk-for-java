@@ -14,6 +14,7 @@
       <includes>
         <include>com/azure/storage/common/test/shared/**/*</include>
         <include>simplelogger.properties</include>
+        <include>SpockConfig.groovy</include>
       </includes>
       <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>
