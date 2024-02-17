@@ -11,6 +11,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,7 +38,7 @@ final class BlobBatchOperationInfo {
      */
     BlobBatchOperationInfo() {
         this.contentId = new AtomicInteger();
-        this.batchBoundary = "batch_" + CoreUtils.randomUuid();
+        this.batchBoundary = "batch_" + UUID.randomUUID();
         this.contentType = "multipart/mixed; boundary=" + batchBoundary;
         this.batchOperations = new ConcurrentLinkedQueue<>();
         this.batchOperationResponseMap = new ConcurrentHashMap<>();

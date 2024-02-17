@@ -25,9 +25,9 @@ import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.SasProtocol;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -115,7 +115,7 @@ public class BatchApiTests extends BlobBatchTestBase {
         assertEquals(200, response2.getStatusCode());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("setTierRehydratePrioritySupplier")
     public void setTierRehydratePriority(RehydratePriority rehydratePriority) {
@@ -140,7 +140,7 @@ public class BatchApiTests extends BlobBatchTestBase {
         return Stream.of(RehydratePriority.STANDARD, RehydratePriority.HIGH);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("setTierAcSupplier")
     public void setTierAc(String leaseId, String tags) {
@@ -600,7 +600,7 @@ public class BatchApiTests extends BlobBatchTestBase {
         assertEquals(2, getIterableSize(ex.getBatchExceptions()));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @DisabledIf("olderThan20200612ServiceVersion")
     // Container scoped batch
     @Test
     public void setTierAllSucceedContainerScoped() {
@@ -621,7 +621,7 @@ public class BatchApiTests extends BlobBatchTestBase {
         assertEquals(200, response2.getStatusCode());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @DisabledIf("olderThan20200612ServiceVersion")
     @Test
     public void deleteBlobAllSucceedContainerScoped() {
         String containerName = generateContainerName();
@@ -641,7 +641,7 @@ public class BatchApiTests extends BlobBatchTestBase {
         assertEquals(202, response2.getStatusCode());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @DisabledIf("olderThan20200612ServiceVersion")
     @Test
     public void bulkDeleteBlobsContainerScoped() {
         String containerName = generateContainerName();
@@ -660,7 +660,7 @@ public class BatchApiTests extends BlobBatchTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @DisabledIf("olderThan20200612ServiceVersion")
     @Test
     public void bulkSetAccessTierContainerScoped() {
         String containerName = generateContainerName();
@@ -718,7 +718,7 @@ public class BatchApiTests extends BlobBatchTestBase {
         assertThrows(BlobStorageException.class, () -> batchClient.submitBatch(batch));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @DisabledIf("olderThan20200612ServiceVersion")
     @Test
     public void submitBatchWithContainerSasCredentials() {
         String containerName = generateContainerName();
@@ -762,7 +762,7 @@ public class BatchApiTests extends BlobBatchTestBase {
         assertEquals(202, response2.getStatusCode());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @DisabledIf("olderThan20200612ServiceVersion")
     @Test
     public void submitBatchWithContainerSasCredentialsError() {
         String containerName = generateContainerName();
@@ -798,5 +798,22 @@ public class BatchApiTests extends BlobBatchTestBase {
         BlobBatchStorageException ex = assertThrows(BlobBatchStorageException.class,
             () -> batchClient.submitBatch(batch));
         assertEquals(2, getIterableSize(ex.getBatchExceptions()));
+    }
+
+    private static boolean olderThan20191212ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2019_12_12);
+    }
+
+    private static boolean olderThan20200612ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2020_06_12);
+    }
+
+    private static boolean olderThan(BlobServiceVersion targetVersion) {
+        String targetServiceVersionFromEnvironment = ENVIRONMENT.getServiceVersion();
+        BlobServiceVersion version = (targetServiceVersionFromEnvironment != null)
+            ? Enum.valueOf(BlobServiceVersion.class, targetServiceVersionFromEnvironment)
+            : BlobServiceVersion.getLatest();
+
+        return version.ordinal() < targetVersion.ordinal();
     }
 }
