@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkRowItem}
-import com.azure.cosmos.models.{CosmosItemIdentity, CosmosQueryRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
+import com.azure.cosmos.models.{CosmosItemIdentity, CosmosQueryRequestOptions, CosmosReadManyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
 import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
@@ -34,13 +34,10 @@ private[spark] case class ItemsPartitionReaderWithReadMany
 
   private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  private val queryOptions = ImplementationBridgeHelpers
-    .CosmosQueryRequestOptionsHelper
-    .getCosmosQueryRequestOptionsAccessor
-    .disallowQueryPlanRetrieval(new CosmosQueryRequestOptions())
+  private val readManyOptions = new CosmosReadManyRequestOptions()
 
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-  ThroughputControlHelper.populateThroughputControlGroupName(queryOptions, readConfig.throughputControlConfig)
+  ThroughputControlHelper.populateThroughputControlGroupName(readManyOptions, readConfig.throughputControlConfig)
 
   private val operationContext = {
     assert(taskContext != null)
@@ -60,8 +57,8 @@ private[spark] case class ItemsPartitionReaderWithReadMany
       val ctxAndListener = new OperationContextAndListenerTuple(operationContext, listener)
 
       ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper
-        .getCosmosQueryRequestOptionsAccessor
-        .setOperationContext(queryOptions, ctxAndListener)
+        .getCosmosQueryRequestOptionsBaseAccessor
+        .setOperationContext(readManyOptions, ctxAndListener)
 
       Some(ctxAndListener)
     } else {
@@ -123,7 +120,7 @@ private[spark] case class ItemsPartitionReaderWithReadMany
     .CosmosQueryRequestOptionsHelper
     .getCosmosQueryRequestOptionsAccessor
     .setItemFactoryMethod(
-      queryOptions,
+      readManyOptions,
       jsonNode => {
         val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
         val idValue = objectNode.get(IdAttributeName).asText()
@@ -162,7 +159,7 @@ private[spark] case class ItemsPartitionReaderWithReadMany
   private lazy val iterator = new TransientIOErrorsRetryingReadManyIterator[SparkRowItem](
     cosmosAsyncContainer,
     readManyFilters,
-    queryOptions,
+    readManyOptions,
     readConfig.maxItemCount,
     operationContextAndListenerTuple,
     classOf[SparkRowItem])

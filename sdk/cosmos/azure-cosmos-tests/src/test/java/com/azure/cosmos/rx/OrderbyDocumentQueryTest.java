@@ -196,8 +196,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         String query = String.format("SELECT value r.propInt FROM r where r.propInt != null ORDER BY r.propInt %s", sortOrder);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor()
+            .CosmosQueryRequestOptionsBaseHelper
+            .getCosmosQueryRequestOptionsBaseAccessor()
             // Custom Factory Method will always get the ObjectNode - so if VALUE function is used
             // the value needs to be extracted manually. This is intentional right now
             // to allow late-binding the decision whether we really want to surface JsonNode or ObjectNode to

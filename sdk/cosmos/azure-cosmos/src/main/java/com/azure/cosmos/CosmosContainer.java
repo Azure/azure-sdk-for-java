@@ -23,6 +23,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -471,7 +472,7 @@ public class CosmosContainer {
         List<CosmosItemIdentity> itemIdentityList,
         Class<T> classType) {
 
-        return this.readMany(itemIdentityList, null, classType);
+        return this.readMany(itemIdentityList, (CosmosReadManyRequestOptions)null, classType);
     }
 
     /**
@@ -505,6 +506,40 @@ public class CosmosContainer {
             this.asyncContainer.readMany(
                 itemIdentityList,
                 sessionToken,
+                classType));
+    }
+
+    /**
+     * Reads many documents.
+     * Useful for reading many documents with a particular id and partition key in a single request.
+     * If any document from the list is missing, no exception will be thrown.
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readMany -->
+     * <pre>
+     * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;&#41;;
+     *
+     * FeedResponse&lt;Passenger&gt; passengerFeedResponse = cosmosContainer.readMany&#40;itemIdentityList, Passenger.class&#41;;
+     * for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *     System.out.println&#40;passenger&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.readMany -->
+     * @param <T> the type parameter
+     * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
+     * @param options the optional request options
+     * @param classType   class type
+     * @return a Mono with feed response of cosmos items
+     */
+    public <T> FeedResponse<T> readMany(
+        List<CosmosItemIdentity> itemIdentityList,
+        CosmosReadManyRequestOptions options,
+        Class<T> classType) {
+
+        return this.blockFeedResponse(
+            this.asyncContainer.readMany(
+                itemIdentityList,
+                options,
                 classType));
     }
 

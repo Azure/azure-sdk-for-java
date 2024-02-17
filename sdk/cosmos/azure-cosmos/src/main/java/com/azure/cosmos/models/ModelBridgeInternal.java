@@ -917,6 +917,7 @@ public final class ModelBridgeInternal {
         CosmosItemRequestOptions.initialize();
         CosmosItemResponse.initialize();
         CosmosPatchOperations.initialize();
+        CosmosQueryRequestOptionsBase.initialize();
         CosmosQueryRequestOptions.initialize();
         FeedResponse.initialize();
         PartitionKey.initialize();

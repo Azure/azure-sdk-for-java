@@ -28,10 +28,9 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 class QueryPlanRetriever {
-
     private final static
-    ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.CosmosQueryRequestOptionsBaseAccessor qryOptBaseAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.getCosmosQueryRequestOptionsBaseAccessor();
 
     private static final String TRUE = "True";
     private static final String SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
@@ -79,7 +78,7 @@ class QueryPlanRetriever {
         queryPlanRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
         CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig =
-            qryOptAccessor.getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions);
+            qryOptBaseAccessor.getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions);
         if (end2EndConfig != null) {
             queryPlanRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(end2EndConfig);
         }
