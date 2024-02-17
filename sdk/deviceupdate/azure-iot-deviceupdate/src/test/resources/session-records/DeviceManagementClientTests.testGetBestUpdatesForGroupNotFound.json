@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/management/groups/foo/bestUpdates?api-version=2022-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.4 (1.8.0_342; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e22c1e69-f335-47fc-9a1e-9e07a845697d"
+    },
+    "Response" : {
+      "content-length" : "183",
+      "traceparent" : "00-18de850787c48242ac8e91ab4550b4df-a61fdce1917dbe4b-00",
+      "mise-correlation-id" : "d9fc5a05-a98a-4687-83ca-a90388d6b1c8",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Body" : "{\r\n  \"type\": \"https://tools.ietf.org/html/rfc7231#section-6.5.4\",\r\n  \"title\": \"Not Found\",\r\n  \"status\": 404,\r\n  \"traceId\": \"00-18de850787c48242ac8e91ab4550b4df-c1b612c91af1dd4a-00\"\r\n}",
+      "Date" : "Wed, 31 Aug 2022 20:16:24 GMT",
+      "Content-Type" : "application/problem+json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
