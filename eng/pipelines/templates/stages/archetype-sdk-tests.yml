@@ -107,6 +107,9 @@ parameters:
 - name: UseHttpFaultInjector
   type: boolean
   default: false
+- name: CalledFromClient
+  type: boolean
+  default: false
 
 stages:
 - ${{ each cloud in parameters.CloudConfig }}:
@@ -122,6 +125,9 @@ stages:
               - '!sdk/**/test-recordings/*'
               - '!sdk/**/session-records/*'
             JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
+            OsVmImage: azsdk-pool-mms-ubuntu-2004-1espt
+            Pool: azsdk-pool-mms-ubuntu-2004-1es-pt
+            Os: linux
             AdditionalParameters:
               PreSteps:
                 - ${{ parameters.PlatformPreSteps }}
