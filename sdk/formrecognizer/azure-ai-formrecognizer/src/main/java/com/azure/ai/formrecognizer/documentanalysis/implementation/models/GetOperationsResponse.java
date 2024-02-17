@@ -4,41 +4,39 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * List Operations response object.
- */
-@Fluent
-public final class GetOperationsResponse implements JsonSerializable<GetOperationsResponse> {
+/** List Operations response object. */
+@Immutable
+public final class GetOperationsResponse {
     /*
      * List of operations.
      */
-    private final List<OperationSummary> value;
+    @JsonProperty(value = "value", required = true)
+    private List<OperationSummary> value;
 
     /*
      * Link to the next page of operations.
      */
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
      * Creates an instance of GetOperationsResponse class.
-     * 
+     *
      * @param value the value value to set.
      */
-    public GetOperationsResponse(List<OperationSummary> value) {
+    @JsonCreator
+    private GetOperationsResponse(@JsonProperty(value = "value", required = true) List<OperationSummary> value) {
         this.value = value;
     }
 
     /**
      * Get the value property: List of operations.
-     * 
+     *
      * @return the value value.
      */
     public List<OperationSummary> getValue() {
@@ -47,66 +45,10 @@ public final class GetOperationsResponse implements JsonSerializable<GetOperatio
 
     /**
      * Get the nextLink property: Link to the next page of operations.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: Link to the next page of operations.
-     * 
-     * @param nextLink the nextLink value to set.
-     * @return the GetOperationsResponse object itself.
-     */
-    public GetOperationsResponse setNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("nextLink", this.nextLink);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of GetOperationsResponse from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of GetOperationsResponse if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the GetOperationsResponse.
-     */
-    public static GetOperationsResponse fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean valueFound = false;
-            List<OperationSummary> value = null;
-            String nextLink = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("value".equals(fieldName)) {
-                    value = reader.readArray(reader1 -> OperationSummary.fromJson(reader1));
-                    valueFound = true;
-                } else if ("nextLink".equals(fieldName)) {
-                    nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (valueFound) {
-                GetOperationsResponse deserializedGetOperationsResponse = new GetOperationsResponse(value);
-                deserializedGetOperationsResponse.nextLink = nextLink;
-
-                return deserializedGetOperationsResponse;
-            }
-            throw new IllegalStateException("Missing required property: value");
-        });
     }
 }

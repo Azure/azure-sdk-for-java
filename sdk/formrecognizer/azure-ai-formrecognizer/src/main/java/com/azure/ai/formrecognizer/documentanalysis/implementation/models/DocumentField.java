@@ -4,129 +4,143 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-/**
- * An object representing the content and location of a field value.
- */
-@Fluent
-public final class DocumentField implements JsonSerializable<DocumentField> {
+/** An object representing the content and location of a field value. */
+@Immutable
+public final class DocumentField {
     /*
      * Data type of the field value.
      */
-    private final DocumentFieldType type;
+    @JsonProperty(value = "type", required = true)
+    private DocumentFieldType type;
 
     /*
      * String value.
      */
+    @JsonProperty(value = "valueString")
     private String valueString;
 
     /*
      * Date value in YYYY-MM-DD format (ISO 8601).
      */
+    @JsonProperty(value = "valueDate")
     private LocalDate valueDate;
 
     /*
      * Time value in hh:mm:ss format (ISO 8601).
      */
+    @JsonProperty(value = "valueTime")
     private String valueTime;
 
     /*
      * Phone number value in E.164 format (ex. +19876543210).
      */
+    @JsonProperty(value = "valuePhoneNumber")
     private String valuePhoneNumber;
 
     /*
      * Floating point value.
      */
+    @JsonProperty(value = "valueNumber")
     private Float valueNumber;
 
     /*
      * Integer value.
      */
+    @JsonProperty(value = "valueInteger")
     private Long valueInteger;
 
     /*
      * Selection mark value.
      */
+    @JsonProperty(value = "valueSelectionMark")
     private SelectionMarkState valueSelectionMark;
 
     /*
      * Presence of signature.
      */
+    @JsonProperty(value = "valueSignature")
     private DocumentSignatureType valueSignature;
 
     /*
      * 3-letter country code value (ISO 3166-1 alpha-3).
      */
+    @JsonProperty(value = "valueCountryRegion")
     private String valueCountryRegion;
 
     /*
      * Array of field values.
      */
+    @JsonProperty(value = "valueArray")
     private List<DocumentField> valueArray;
 
     /*
      * Dictionary of named field values.
      */
+    @JsonProperty(value = "valueObject")
     private Map<String, DocumentField> valueObject;
 
     /*
      * Currency value.
      */
+    @JsonProperty(value = "valueCurrency")
     private CurrencyValue valueCurrency;
 
     /*
      * Address value.
      */
+    @JsonProperty(value = "valueAddress")
     private AddressValue valueAddress;
 
     /*
      * Boolean value.
      */
+    @JsonProperty(value = "valueBoolean")
     private Boolean valueBoolean;
 
     /*
      * Field content.
      */
+    @JsonProperty(value = "content")
     private String content;
 
     /*
      * Bounding regions covering the field.
      */
+    @JsonProperty(value = "boundingRegions")
     private List<BoundingRegion> boundingRegions;
 
     /*
      * Location of the field in the reading order concatenated content.
      */
+    @JsonProperty(value = "spans")
     private List<DocumentSpan> spans;
 
     /*
      * Confidence of correctly extracting the field.
      */
+    @JsonProperty(value = "confidence")
     private Float confidence;
 
     /**
      * Creates an instance of DocumentField class.
-     * 
+     *
      * @param type the type value to set.
      */
-    public DocumentField(DocumentFieldType type) {
+    @JsonCreator
+    private DocumentField(@JsonProperty(value = "type", required = true) DocumentFieldType type) {
         this.type = type;
     }
 
     /**
      * Get the type property: Data type of the field value.
-     * 
+     *
      * @return the type value.
      */
     public DocumentFieldType getType() {
@@ -135,7 +149,7 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
 
     /**
      * Get the valueString property: String value.
-     * 
+     *
      * @return the valueString value.
      */
     public String getValueString() {
@@ -143,19 +157,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueString property: String value.
-     * 
-     * @param valueString the valueString value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueString(String valueString) {
-        this.valueString = valueString;
-        return this;
-    }
-
-    /**
      * Get the valueDate property: Date value in YYYY-MM-DD format (ISO 8601).
-     * 
+     *
      * @return the valueDate value.
      */
     public LocalDate getValueDate() {
@@ -163,19 +166,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueDate property: Date value in YYYY-MM-DD format (ISO 8601).
-     * 
-     * @param valueDate the valueDate value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueDate(LocalDate valueDate) {
-        this.valueDate = valueDate;
-        return this;
-    }
-
-    /**
      * Get the valueTime property: Time value in hh:mm:ss format (ISO 8601).
-     * 
+     *
      * @return the valueTime value.
      */
     public String getValueTime() {
@@ -183,19 +175,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueTime property: Time value in hh:mm:ss format (ISO 8601).
-     * 
-     * @param valueTime the valueTime value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueTime(String valueTime) {
-        this.valueTime = valueTime;
-        return this;
-    }
-
-    /**
      * Get the valuePhoneNumber property: Phone number value in E.164 format (ex. +19876543210).
-     * 
+     *
      * @return the valuePhoneNumber value.
      */
     public String getValuePhoneNumber() {
@@ -203,19 +184,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valuePhoneNumber property: Phone number value in E.164 format (ex. +19876543210).
-     * 
-     * @param valuePhoneNumber the valuePhoneNumber value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValuePhoneNumber(String valuePhoneNumber) {
-        this.valuePhoneNumber = valuePhoneNumber;
-        return this;
-    }
-
-    /**
      * Get the valueNumber property: Floating point value.
-     * 
+     *
      * @return the valueNumber value.
      */
     public Float getValueNumber() {
@@ -223,19 +193,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueNumber property: Floating point value.
-     * 
-     * @param valueNumber the valueNumber value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueNumber(Float valueNumber) {
-        this.valueNumber = valueNumber;
-        return this;
-    }
-
-    /**
      * Get the valueInteger property: Integer value.
-     * 
+     *
      * @return the valueInteger value.
      */
     public Long getValueInteger() {
@@ -243,19 +202,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueInteger property: Integer value.
-     * 
-     * @param valueInteger the valueInteger value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueInteger(Long valueInteger) {
-        this.valueInteger = valueInteger;
-        return this;
-    }
-
-    /**
      * Get the valueSelectionMark property: Selection mark value.
-     * 
+     *
      * @return the valueSelectionMark value.
      */
     public SelectionMarkState getValueSelectionMark() {
@@ -263,19 +211,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueSelectionMark property: Selection mark value.
-     * 
-     * @param valueSelectionMark the valueSelectionMark value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueSelectionMark(SelectionMarkState valueSelectionMark) {
-        this.valueSelectionMark = valueSelectionMark;
-        return this;
-    }
-
-    /**
      * Get the valueSignature property: Presence of signature.
-     * 
+     *
      * @return the valueSignature value.
      */
     public DocumentSignatureType getValueSignature() {
@@ -283,19 +220,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueSignature property: Presence of signature.
-     * 
-     * @param valueSignature the valueSignature value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueSignature(DocumentSignatureType valueSignature) {
-        this.valueSignature = valueSignature;
-        return this;
-    }
-
-    /**
      * Get the valueCountryRegion property: 3-letter country code value (ISO 3166-1 alpha-3).
-     * 
+     *
      * @return the valueCountryRegion value.
      */
     public String getValueCountryRegion() {
@@ -303,19 +229,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueCountryRegion property: 3-letter country code value (ISO 3166-1 alpha-3).
-     * 
-     * @param valueCountryRegion the valueCountryRegion value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueCountryRegion(String valueCountryRegion) {
-        this.valueCountryRegion = valueCountryRegion;
-        return this;
-    }
-
-    /**
      * Get the valueArray property: Array of field values.
-     * 
+     *
      * @return the valueArray value.
      */
     public List<DocumentField> getValueArray() {
@@ -323,19 +238,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueArray property: Array of field values.
-     * 
-     * @param valueArray the valueArray value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueArray(List<DocumentField> valueArray) {
-        this.valueArray = valueArray;
-        return this;
-    }
-
-    /**
      * Get the valueObject property: Dictionary of named field values.
-     * 
+     *
      * @return the valueObject value.
      */
     public Map<String, DocumentField> getValueObject() {
@@ -343,19 +247,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueObject property: Dictionary of named field values.
-     * 
-     * @param valueObject the valueObject value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueObject(Map<String, DocumentField> valueObject) {
-        this.valueObject = valueObject;
-        return this;
-    }
-
-    /**
      * Get the valueCurrency property: Currency value.
-     * 
+     *
      * @return the valueCurrency value.
      */
     public CurrencyValue getValueCurrency() {
@@ -363,19 +256,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueCurrency property: Currency value.
-     * 
-     * @param valueCurrency the valueCurrency value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueCurrency(CurrencyValue valueCurrency) {
-        this.valueCurrency = valueCurrency;
-        return this;
-    }
-
-    /**
      * Get the valueAddress property: Address value.
-     * 
+     *
      * @return the valueAddress value.
      */
     public AddressValue getValueAddress() {
@@ -383,19 +265,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueAddress property: Address value.
-     * 
-     * @param valueAddress the valueAddress value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueAddress(AddressValue valueAddress) {
-        this.valueAddress = valueAddress;
-        return this;
-    }
-
-    /**
      * Get the valueBoolean property: Boolean value.
-     * 
+     *
      * @return the valueBoolean value.
      */
     public Boolean isValueBoolean() {
@@ -403,19 +274,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the valueBoolean property: Boolean value.
-     * 
-     * @param valueBoolean the valueBoolean value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setValueBoolean(Boolean valueBoolean) {
-        this.valueBoolean = valueBoolean;
-        return this;
-    }
-
-    /**
      * Get the content property: Field content.
-     * 
+     *
      * @return the content value.
      */
     public String getContent() {
@@ -423,19 +283,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the content property: Field content.
-     * 
-     * @param content the content value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setContent(String content) {
-        this.content = content;
-        return this;
-    }
-
-    /**
      * Get the boundingRegions property: Bounding regions covering the field.
-     * 
+     *
      * @return the boundingRegions value.
      */
     public List<BoundingRegion> getBoundingRegions() {
@@ -443,19 +292,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the boundingRegions property: Bounding regions covering the field.
-     * 
-     * @param boundingRegions the boundingRegions value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setBoundingRegions(List<BoundingRegion> boundingRegions) {
-        this.boundingRegions = boundingRegions;
-        return this;
-    }
-
-    /**
      * Get the spans property: Location of the field in the reading order concatenated content.
-     * 
+     *
      * @return the spans value.
      */
     public List<DocumentSpan> getSpans() {
@@ -463,166 +301,11 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Set the spans property: Location of the field in the reading order concatenated content.
-     * 
-     * @param spans the spans value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setSpans(List<DocumentSpan> spans) {
-        this.spans = spans;
-        return this;
-    }
-
-    /**
      * Get the confidence property: Confidence of correctly extracting the field.
-     * 
+     *
      * @return the confidence value.
      */
     public Float getConfidence() {
         return this.confidence;
-    }
-
-    /**
-     * Set the confidence property: Confidence of correctly extracting the field.
-     * 
-     * @param confidence the confidence value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setConfidence(Float confidence) {
-        this.confidence = confidence;
-        return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("valueString", this.valueString);
-        jsonWriter.writeStringField("valueDate", Objects.toString(this.valueDate, null));
-        jsonWriter.writeStringField("valueTime", this.valueTime);
-        jsonWriter.writeStringField("valuePhoneNumber", this.valuePhoneNumber);
-        jsonWriter.writeNumberField("valueNumber", this.valueNumber);
-        jsonWriter.writeNumberField("valueInteger", this.valueInteger);
-        jsonWriter.writeStringField("valueSelectionMark",
-            this.valueSelectionMark == null ? null : this.valueSelectionMark.toString());
-        jsonWriter.writeStringField("valueSignature",
-            this.valueSignature == null ? null : this.valueSignature.toString());
-        jsonWriter.writeStringField("valueCountryRegion", this.valueCountryRegion);
-        jsonWriter.writeArrayField("valueArray", this.valueArray, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("valueObject", this.valueObject, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("valueCurrency", this.valueCurrency);
-        jsonWriter.writeJsonField("valueAddress", this.valueAddress);
-        jsonWriter.writeBooleanField("valueBoolean", this.valueBoolean);
-        jsonWriter.writeStringField("content", this.content);
-        jsonWriter.writeArrayField("boundingRegions", this.boundingRegions,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("spans", this.spans, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeNumberField("confidence", this.confidence);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DocumentField from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentField if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DocumentField.
-     */
-    public static DocumentField fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean typeFound = false;
-            DocumentFieldType type = null;
-            String valueString = null;
-            LocalDate valueDate = null;
-            String valueTime = null;
-            String valuePhoneNumber = null;
-            Float valueNumber = null;
-            Long valueInteger = null;
-            SelectionMarkState valueSelectionMark = null;
-            DocumentSignatureType valueSignature = null;
-            String valueCountryRegion = null;
-            List<DocumentField> valueArray = null;
-            Map<String, DocumentField> valueObject = null;
-            CurrencyValue valueCurrency = null;
-            AddressValue valueAddress = null;
-            Boolean valueBoolean = null;
-            String content = null;
-            List<BoundingRegion> boundingRegions = null;
-            List<DocumentSpan> spans = null;
-            Float confidence = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("type".equals(fieldName)) {
-                    type = DocumentFieldType.fromString(reader.getString());
-                    typeFound = true;
-                } else if ("valueString".equals(fieldName)) {
-                    valueString = reader.getString();
-                } else if ("valueDate".equals(fieldName)) {
-                    valueDate = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
-                } else if ("valueTime".equals(fieldName)) {
-                    valueTime = reader.getString();
-                } else if ("valuePhoneNumber".equals(fieldName)) {
-                    valuePhoneNumber = reader.getString();
-                } else if ("valueNumber".equals(fieldName)) {
-                    valueNumber = reader.getNullable(JsonReader::getFloat);
-                } else if ("valueInteger".equals(fieldName)) {
-                    valueInteger = reader.getNullable(JsonReader::getLong);
-                } else if ("valueSelectionMark".equals(fieldName)) {
-                    valueSelectionMark = SelectionMarkState.fromString(reader.getString());
-                } else if ("valueSignature".equals(fieldName)) {
-                    valueSignature = DocumentSignatureType.fromString(reader.getString());
-                } else if ("valueCountryRegion".equals(fieldName)) {
-                    valueCountryRegion = reader.getString();
-                } else if ("valueArray".equals(fieldName)) {
-                    valueArray = reader.readArray(reader1 -> DocumentField.fromJson(reader1));
-                } else if ("valueObject".equals(fieldName)) {
-                    valueObject = reader.readMap(reader1 -> DocumentField.fromJson(reader1));
-                } else if ("valueCurrency".equals(fieldName)) {
-                    valueCurrency = CurrencyValue.fromJson(reader);
-                } else if ("valueAddress".equals(fieldName)) {
-                    valueAddress = AddressValue.fromJson(reader);
-                } else if ("valueBoolean".equals(fieldName)) {
-                    valueBoolean = reader.getNullable(JsonReader::getBoolean);
-                } else if ("content".equals(fieldName)) {
-                    content = reader.getString();
-                } else if ("boundingRegions".equals(fieldName)) {
-                    boundingRegions = reader.readArray(reader1 -> BoundingRegion.fromJson(reader1));
-                } else if ("spans".equals(fieldName)) {
-                    spans = reader.readArray(reader1 -> DocumentSpan.fromJson(reader1));
-                } else if ("confidence".equals(fieldName)) {
-                    confidence = reader.getNullable(JsonReader::getFloat);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (typeFound) {
-                DocumentField deserializedDocumentField = new DocumentField(type);
-                deserializedDocumentField.valueString = valueString;
-                deserializedDocumentField.valueDate = valueDate;
-                deserializedDocumentField.valueTime = valueTime;
-                deserializedDocumentField.valuePhoneNumber = valuePhoneNumber;
-                deserializedDocumentField.valueNumber = valueNumber;
-                deserializedDocumentField.valueInteger = valueInteger;
-                deserializedDocumentField.valueSelectionMark = valueSelectionMark;
-                deserializedDocumentField.valueSignature = valueSignature;
-                deserializedDocumentField.valueCountryRegion = valueCountryRegion;
-                deserializedDocumentField.valueArray = valueArray;
-                deserializedDocumentField.valueObject = valueObject;
-                deserializedDocumentField.valueCurrency = valueCurrency;
-                deserializedDocumentField.valueAddress = valueAddress;
-                deserializedDocumentField.valueBoolean = valueBoolean;
-                deserializedDocumentField.content = content;
-                deserializedDocumentField.boundingRegions = boundingRegions;
-                deserializedDocumentField.spans = spans;
-                deserializedDocumentField.confidence = confidence;
-
-                return deserializedDocumentField;
-            }
-            throw new IllegalStateException("Missing required property: type");
-        });
     }
 }

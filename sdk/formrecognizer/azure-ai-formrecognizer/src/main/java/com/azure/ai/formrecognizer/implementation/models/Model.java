@@ -5,47 +5,42 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response to the get custom model operation.
- */
+/** Response to the get custom model operation. */
 @Fluent
-public final class Model implements JsonSerializable<Model> {
+public final class Model {
     /*
      * Basic custom model information.
      */
+    @JsonProperty(value = "modelInfo", required = true)
     private ModelInfo modelInfo;
 
     /*
      * Keys extracted by the custom model.
      */
+    @JsonProperty(value = "keys")
     private KeysResult keys;
 
     /*
      * Training result for custom model.
      */
+    @JsonProperty(value = "trainResult")
     private TrainResult trainResult;
 
     /*
      * Training result for composed model.
      */
+    @JsonProperty(value = "composedTrainResults")
     private List<TrainResult> composedTrainResults;
 
-    /**
-     * Creates an instance of Model class.
-     */
-    public Model() {
-    }
+    /** Creates an instance of Model class. */
+    public Model() {}
 
     /**
      * Get the modelInfo property: Basic custom model information.
-     * 
+     *
      * @return the modelInfo value.
      */
     public ModelInfo getModelInfo() {
@@ -54,7 +49,7 @@ public final class Model implements JsonSerializable<Model> {
 
     /**
      * Set the modelInfo property: Basic custom model information.
-     * 
+     *
      * @param modelInfo the modelInfo value to set.
      * @return the Model object itself.
      */
@@ -65,7 +60,7 @@ public final class Model implements JsonSerializable<Model> {
 
     /**
      * Get the keys property: Keys extracted by the custom model.
-     * 
+     *
      * @return the keys value.
      */
     public KeysResult getKeys() {
@@ -74,7 +69,7 @@ public final class Model implements JsonSerializable<Model> {
 
     /**
      * Set the keys property: Keys extracted by the custom model.
-     * 
+     *
      * @param keys the keys value to set.
      * @return the Model object itself.
      */
@@ -85,7 +80,7 @@ public final class Model implements JsonSerializable<Model> {
 
     /**
      * Get the trainResult property: Training result for custom model.
-     * 
+     *
      * @return the trainResult value.
      */
     public TrainResult getTrainResult() {
@@ -94,7 +89,7 @@ public final class Model implements JsonSerializable<Model> {
 
     /**
      * Set the trainResult property: Training result for custom model.
-     * 
+     *
      * @param trainResult the trainResult value to set.
      * @return the Model object itself.
      */
@@ -105,7 +100,7 @@ public final class Model implements JsonSerializable<Model> {
 
     /**
      * Get the composedTrainResults property: Training result for composed model.
-     * 
+     *
      * @return the composedTrainResults value.
      */
     public List<TrainResult> getComposedTrainResults() {
@@ -114,57 +109,12 @@ public final class Model implements JsonSerializable<Model> {
 
     /**
      * Set the composedTrainResults property: Training result for composed model.
-     * 
+     *
      * @param composedTrainResults the composedTrainResults value to set.
      * @return the Model object itself.
      */
     public Model setComposedTrainResults(List<TrainResult> composedTrainResults) {
         this.composedTrainResults = composedTrainResults;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("modelInfo", this.modelInfo);
-        jsonWriter.writeJsonField("keys", this.keys);
-        jsonWriter.writeJsonField("trainResult", this.trainResult);
-        jsonWriter.writeArrayField("composedTrainResults", this.composedTrainResults,
-            (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Model from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Model if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Model.
-     */
-    public static Model fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            Model deserializedModel = new Model();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("modelInfo".equals(fieldName)) {
-                    deserializedModel.modelInfo = ModelInfo.fromJson(reader);
-                } else if ("keys".equals(fieldName)) {
-                    deserializedModel.keys = KeysResult.fromJson(reader);
-                } else if ("trainResult".equals(fieldName)) {
-                    deserializedModel.trainResult = TrainResult.fromJson(reader);
-                } else if ("composedTrainResults".equals(fieldName)) {
-                    List<TrainResult> composedTrainResults = reader.readArray(reader1 -> TrainResult.fromJson(reader1));
-                    deserializedModel.composedTrainResults = composedTrainResults;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedModel;
-        });
     }
 }

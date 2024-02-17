@@ -831,17 +831,6 @@ public class Transforms {
         return innerTags;
     }
 
-    public static List<DocumentClassifierDetails> fromInnerCDocumentClassifierDetails(
-        List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails> details) {
-        List<DocumentClassifierDetails> converted = new ArrayList<>(details.size());
-        for (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails detail
-            : details) {
-            converted.add(fromInnerDocumentClassifierDetails(detail));
-        }
-
-        return converted;
-    }
-
     public static DocumentClassifierDetails fromInnerDocumentClassifierDetails(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails inner) {
         DocumentClassifierDetails classifierDetails = new DocumentClassifierDetails();
         DocumentClassifierDetailsHelper.setClassifierId(classifierDetails, inner.getClassifierId());

@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.training;
 import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.Constants;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
+import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
@@ -190,8 +191,13 @@ public final class FormTrainingClientBuilder implements
                 httpClient);
         }
 
-        return new FormTrainingAsyncClient(new FormRecognizerClientImpl(pipeline, endpoint,
-            serviceVersion.getVersion()), serviceVersion);
+        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
+            .endpoint(endpoint)
+            .apiVersion(serviceVersion.getVersion())
+            .pipeline(pipeline)
+            .buildClient();
+
+        return new FormTrainingAsyncClient(formRecognizerAPI, serviceVersion);
     }
 
     /**

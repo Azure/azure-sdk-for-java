@@ -4,38 +4,27 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
-/**
- * Content type for upload.
- */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Content type for upload. */
 public enum ContentType {
-    /**
-     * Content Type 'application/pdf'.
-     */
+    /** Enum value application/pdf. */
     APPLICATION_PDF("application/pdf"),
 
-    /**
-     * Content Type 'image/bmp'.
-     */
+    /** Enum value image/bmp. */
     IMAGE_BMP("image/bmp"),
 
-    /**
-     * Content Type 'image/jpeg'.
-     */
+    /** Enum value image/jpeg. */
     IMAGE_JPEG("image/jpeg"),
 
-    /**
-     * Content Type 'image/png'.
-     */
+    /** Enum value image/png. */
     IMAGE_PNG("image/png"),
 
-    /**
-     * Content Type 'image/tiff'.
-     */
+    /** Enum value image/tiff. */
     IMAGE_TIFF("image/tiff");
 
-    /**
-     * The actual serialized value for a ContentType instance.
-     */
+    /** The actual serialized value for a ContentType instance. */
     private final String value;
 
     ContentType(String value) {
@@ -44,10 +33,11 @@ public enum ContentType {
 
     /**
      * Parses a serialized value to a ContentType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed ContentType object, or null if unable to parse.
      */
+    @JsonCreator
     public static ContentType fromString(String value) {
         if (value == null) {
             return null;
@@ -61,9 +51,8 @@ public enum ContentType {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

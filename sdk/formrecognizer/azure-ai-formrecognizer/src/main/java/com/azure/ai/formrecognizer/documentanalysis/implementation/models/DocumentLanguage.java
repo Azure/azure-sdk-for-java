@@ -5,43 +5,44 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * An object representing the detected language for a given text span.
- */
+/** An object representing the detected language for a given text span. */
 @Immutable
-public final class DocumentLanguage implements JsonSerializable<DocumentLanguage> {
+public final class DocumentLanguage {
     /*
-     * Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47 language tag (ex.
+     * Detected language.  Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47 language tag (ex.
      * "zh-Hans").
      */
-    private final String locale;
+    @JsonProperty(value = "locale", required = true)
+    private String locale;
 
     /*
      * Location of the text elements in the concatenated content the language applies to.
      */
-    private final List<DocumentSpan> spans;
+    @JsonProperty(value = "spans", required = true)
+    private List<DocumentSpan> spans;
 
     /*
      * Confidence of correctly identifying the language.
      */
-    private final float confidence;
+    @JsonProperty(value = "confidence", required = true)
+    private float confidence;
 
     /**
      * Creates an instance of DocumentLanguage class.
-     * 
+     *
      * @param locale the locale value to set.
      * @param spans the spans value to set.
      * @param confidence the confidence value to set.
      */
-    public DocumentLanguage(String locale, List<DocumentSpan> spans, float confidence) {
+    @JsonCreator
+    private DocumentLanguage(
+            @JsonProperty(value = "locale", required = true) String locale,
+            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans,
+            @JsonProperty(value = "confidence", required = true) float confidence) {
         this.locale = locale;
         this.spans = spans;
         this.confidence = confidence;
@@ -50,7 +51,7 @@ public final class DocumentLanguage implements JsonSerializable<DocumentLanguage
     /**
      * Get the locale property: Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47
      * language tag (ex. "zh-Hans").
-     * 
+     *
      * @return the locale value.
      */
     public String getLocale() {
@@ -59,7 +60,7 @@ public final class DocumentLanguage implements JsonSerializable<DocumentLanguage
 
     /**
      * Get the spans property: Location of the text elements in the concatenated content the language applies to.
-     * 
+     *
      * @return the spans value.
      */
     public List<DocumentSpan> getSpans() {
@@ -68,72 +69,10 @@ public final class DocumentLanguage implements JsonSerializable<DocumentLanguage
 
     /**
      * Get the confidence property: Confidence of correctly identifying the language.
-     * 
+     *
      * @return the confidence value.
      */
     public float getConfidence() {
         return this.confidence;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("locale", this.locale);
-        jsonWriter.writeArrayField("spans", this.spans, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeFloatField("confidence", this.confidence);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DocumentLanguage from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentLanguage if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DocumentLanguage.
-     */
-    public static DocumentLanguage fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean localeFound = false;
-            String locale = null;
-            boolean spansFound = false;
-            List<DocumentSpan> spans = null;
-            boolean confidenceFound = false;
-            float confidence = 0.0f;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("locale".equals(fieldName)) {
-                    locale = reader.getString();
-                    localeFound = true;
-                } else if ("spans".equals(fieldName)) {
-                    spans = reader.readArray(reader1 -> DocumentSpan.fromJson(reader1));
-                    spansFound = true;
-                } else if ("confidence".equals(fieldName)) {
-                    confidence = reader.getFloat();
-                    confidenceFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (localeFound && spansFound && confidenceFound) {
-                return new DocumentLanguage(locale, spans, confidence);
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!localeFound) {
-                missingProperties.add("locale");
-            }
-            if (!spansFound) {
-                missingProperties.add("spans");
-            }
-            if (!confidenceFound) {
-                missingProperties.add("confidence");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
     }
 }

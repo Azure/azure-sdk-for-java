@@ -5,54 +5,45 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Type of operation.
- */
+/** Type of operation. */
 public final class OperationKind extends ExpandableStringEnum<OperationKind> {
-    /**
-     * Build a new custom document model.
-     */
+    /** Static value documentModelBuild for OperationKind. */
     public static final OperationKind DOCUMENT_MODEL_BUILD = fromString("documentModelBuild");
 
-    /**
-     * Compose a new custom document model from existing models.
-     */
+    /** Static value documentModelCompose for OperationKind. */
     public static final OperationKind DOCUMENT_MODEL_COMPOSE = fromString("documentModelCompose");
 
-    /**
-     * Copy an existing document model to potentially a different resource, region, or subscription.
-     */
+    /** Static value documentModelCopyTo for OperationKind. */
     public static final OperationKind DOCUMENT_MODEL_COPY_TO = fromString("documentModelCopyTo");
 
-    /**
-     * Build a new custom classifier model.
-     */
+    /** Static value documentClassifierBuild for OperationKind. */
     public static final OperationKind DOCUMENT_CLASSIFIER_BUILD = fromString("documentClassifierBuild");
 
     /**
      * Creates a new instance of OperationKind value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public OperationKind() {
-    }
+    public OperationKind() {}
 
     /**
      * Creates or finds a OperationKind from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding OperationKind.
      */
+    @JsonCreator
     public static OperationKind fromString(String name) {
         return fromString(name, OperationKind.class);
     }
 
     /**
      * Gets known OperationKind values.
-     * 
+     *
      * @return known OperationKind values.
      */
     public static Collection<OperationKind> values() {

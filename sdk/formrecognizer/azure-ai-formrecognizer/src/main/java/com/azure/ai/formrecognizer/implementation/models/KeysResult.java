@@ -5,33 +5,25 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Keys extracted by the custom model.
- */
+/** Keys extracted by the custom model. */
 @Fluent
-public final class KeysResult implements JsonSerializable<KeysResult> {
+public final class KeysResult {
     /*
      * Object mapping clusterIds to a list of keys.
      */
+    @JsonProperty(value = "clusters", required = true)
     private Map<String, List<String>> clusters;
 
-    /**
-     * Creates an instance of KeysResult class.
-     */
-    public KeysResult() {
-    }
+    /** Creates an instance of KeysResult class. */
+    public KeysResult() {}
 
     /**
      * Get the clusters property: Object mapping clusterIds to a list of keys.
-     * 
+     *
      * @return the clusters value.
      */
     public Map<String, List<String>> getClusters() {
@@ -40,49 +32,12 @@ public final class KeysResult implements JsonSerializable<KeysResult> {
 
     /**
      * Set the clusters property: Object mapping clusterIds to a list of keys.
-     * 
+     *
      * @param clusters the clusters value to set.
      * @return the KeysResult object itself.
      */
     public KeysResult setClusters(Map<String, List<String>> clusters) {
         this.clusters = clusters;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("clusters", this.clusters,
-            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of KeysResult from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of KeysResult if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the KeysResult.
-     */
-    public static KeysResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            KeysResult deserializedKeysResult = new KeysResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("clusters".equals(fieldName)) {
-                    Map<String, List<String>> clusters
-                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
-                    deserializedKeysResult.clusters = clusters;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedKeysResult;
-        });
     }
 }

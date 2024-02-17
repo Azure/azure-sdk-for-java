@@ -5,55 +5,50 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
-/**
- * A set of extracted fields corresponding to the input document.
- */
+/** A set of extracted fields corresponding to the input document. */
 @Fluent
-public final class DocumentResult implements JsonSerializable<DocumentResult> {
+public final class DocumentResult {
     /*
      * Document type.
      */
+    @JsonProperty(value = "docType", required = true)
     private String docType;
 
     /*
      * Model identifier.
      */
+    @JsonProperty(value = "modelId")
     private UUID modelId;
 
     /*
      * First and last page number where the document is found.
      */
+    @JsonProperty(value = "pageRange", required = true)
     private List<Integer> pageRange;
 
     /*
      * Predicted document type confidence.
      */
+    @JsonProperty(value = "docTypeConfidence")
     private Float docTypeConfidence;
 
     /*
      * Dictionary of named field values.
      */
+    @JsonProperty(value = "fields", required = true)
     private Map<String, FieldValue> fields;
 
-    /**
-     * Creates an instance of DocumentResult class.
-     */
-    public DocumentResult() {
-    }
+    /** Creates an instance of DocumentResult class. */
+    public DocumentResult() {}
 
     /**
      * Get the docType property: Document type.
-     * 
+     *
      * @return the docType value.
      */
     public String getDocType() {
@@ -62,7 +57,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Set the docType property: Document type.
-     * 
+     *
      * @param docType the docType value to set.
      * @return the DocumentResult object itself.
      */
@@ -73,7 +68,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Get the modelId property: Model identifier.
-     * 
+     *
      * @return the modelId value.
      */
     public UUID getModelId() {
@@ -82,7 +77,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Set the modelId property: Model identifier.
-     * 
+     *
      * @param modelId the modelId value to set.
      * @return the DocumentResult object itself.
      */
@@ -93,7 +88,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Get the pageRange property: First and last page number where the document is found.
-     * 
+     *
      * @return the pageRange value.
      */
     public List<Integer> getPageRange() {
@@ -102,7 +97,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Set the pageRange property: First and last page number where the document is found.
-     * 
+     *
      * @param pageRange the pageRange value to set.
      * @return the DocumentResult object itself.
      */
@@ -113,7 +108,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Get the docTypeConfidence property: Predicted document type confidence.
-     * 
+     *
      * @return the docTypeConfidence value.
      */
     public Float getDocTypeConfidence() {
@@ -122,7 +117,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Set the docTypeConfidence property: Predicted document type confidence.
-     * 
+     *
      * @param docTypeConfidence the docTypeConfidence value to set.
      * @return the DocumentResult object itself.
      */
@@ -133,7 +128,7 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Get the fields property: Dictionary of named field values.
-     * 
+     *
      * @return the fields value.
      */
     public Map<String, FieldValue> getFields() {
@@ -142,61 +137,12 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Set the fields property: Dictionary of named field values.
-     * 
+     *
      * @param fields the fields value to set.
      * @return the DocumentResult object itself.
      */
     public DocumentResult setFields(Map<String, FieldValue> fields) {
         this.fields = fields;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("docType", this.docType);
-        jsonWriter.writeArrayField("pageRange", this.pageRange, (writer, element) -> writer.writeInt(element));
-        jsonWriter.writeMapField("fields", this.fields, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("modelId", Objects.toString(this.modelId, null));
-        jsonWriter.writeNumberField("docTypeConfidence", this.docTypeConfidence);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DocumentResult from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DocumentResult.
-     */
-    public static DocumentResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DocumentResult deserializedDocumentResult = new DocumentResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("docType".equals(fieldName)) {
-                    deserializedDocumentResult.docType = reader.getString();
-                } else if ("pageRange".equals(fieldName)) {
-                    List<Integer> pageRange = reader.readArray(reader1 -> reader1.getInt());
-                    deserializedDocumentResult.pageRange = pageRange;
-                } else if ("fields".equals(fieldName)) {
-                    Map<String, FieldValue> fields = reader.readMap(reader1 -> FieldValue.fromJson(reader1));
-                    deserializedDocumentResult.fields = fields;
-                } else if ("modelId".equals(fieldName)) {
-                    deserializedDocumentResult.modelId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("docTypeConfidence".equals(fieldName)) {
-                    deserializedDocumentResult.docTypeConfidence = reader.getNullable(JsonReader::getFloat);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedDocumentResult;
-        });
     }
 }

@@ -5,48 +5,43 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Information about the extracted key or value in a key-value pair.
- */
+/** Information about the extracted key or value in a key-value pair. */
 @Fluent
-public final class KeyValueElement implements JsonSerializable<KeyValueElement> {
+public final class KeyValueElement {
     /*
      * Semantic data type of the key value element.
      */
+    @JsonProperty(value = "type")
     private KeyValueType type;
 
     /*
      * The text content of the key or value.
      */
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * Bounding box of the key or value.
      */
+    @JsonProperty(value = "boundingBox")
     private List<Float> boundingBox;
 
     /*
      * When includeTextDetails is set to true, a list of references to the text elements constituting this key or
      * value.
      */
+    @JsonProperty(value = "elements")
     private List<String> elements;
 
-    /**
-     * Creates an instance of KeyValueElement class.
-     */
-    public KeyValueElement() {
-    }
+    /** Creates an instance of KeyValueElement class. */
+    public KeyValueElement() {}
 
     /**
      * Get the type property: Semantic data type of the key value element.
-     * 
+     *
      * @return the type value.
      */
     public KeyValueType getType() {
@@ -55,7 +50,7 @@ public final class KeyValueElement implements JsonSerializable<KeyValueElement> 
 
     /**
      * Set the type property: Semantic data type of the key value element.
-     * 
+     *
      * @param type the type value to set.
      * @return the KeyValueElement object itself.
      */
@@ -66,7 +61,7 @@ public final class KeyValueElement implements JsonSerializable<KeyValueElement> 
 
     /**
      * Get the text property: The text content of the key or value.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -75,7 +70,7 @@ public final class KeyValueElement implements JsonSerializable<KeyValueElement> 
 
     /**
      * Set the text property: The text content of the key or value.
-     * 
+     *
      * @param text the text value to set.
      * @return the KeyValueElement object itself.
      */
@@ -86,7 +81,7 @@ public final class KeyValueElement implements JsonSerializable<KeyValueElement> 
 
     /**
      * Get the boundingBox property: Bounding box of the key or value.
-     * 
+     *
      * @return the boundingBox value.
      */
     public List<Float> getBoundingBox() {
@@ -95,7 +90,7 @@ public final class KeyValueElement implements JsonSerializable<KeyValueElement> 
 
     /**
      * Set the boundingBox property: Bounding box of the key or value.
-     * 
+     *
      * @param boundingBox the boundingBox value to set.
      * @return the KeyValueElement object itself.
      */
@@ -107,7 +102,7 @@ public final class KeyValueElement implements JsonSerializable<KeyValueElement> 
     /**
      * Get the elements property: When includeTextDetails is set to true, a list of references to the text elements
      * constituting this key or value.
-     * 
+     *
      * @return the elements value.
      */
     public List<String> getElements() {
@@ -117,57 +112,12 @@ public final class KeyValueElement implements JsonSerializable<KeyValueElement> 
     /**
      * Set the elements property: When includeTextDetails is set to true, a list of references to the text elements
      * constituting this key or value.
-     * 
+     *
      * @param elements the elements value to set.
      * @return the KeyValueElement object itself.
      */
     public KeyValueElement setElements(List<String> elements) {
         this.elements = elements;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeArrayField("boundingBox", this.boundingBox, (writer, element) -> writer.writeFloat(element));
-        jsonWriter.writeArrayField("elements", this.elements, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of KeyValueElement from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of KeyValueElement if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the KeyValueElement.
-     */
-    public static KeyValueElement fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            KeyValueElement deserializedKeyValueElement = new KeyValueElement();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("text".equals(fieldName)) {
-                    deserializedKeyValueElement.text = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedKeyValueElement.type = KeyValueType.fromString(reader.getString());
-                } else if ("boundingBox".equals(fieldName)) {
-                    List<Float> boundingBox = reader.readArray(reader1 -> reader1.getFloat());
-                    deserializedKeyValueElement.boundingBox = boundingBox;
-                } else if ("elements".equals(fieldName)) {
-                    List<String> elements = reader.readArray(reader1 -> reader1.getString());
-                    deserializedKeyValueElement.elements = elements;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedKeyValueElement;
-        });
     }
 }
