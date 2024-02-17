@@ -17,9 +17,7 @@ import io.opentelemetry.sdk.logs.data.LogRecordData;
 import io.opentelemetry.sdk.resources.Resource;
 import reactor.util.annotation.Nullable;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.function.BiConsumer;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.MappingType.LOG;
@@ -29,8 +27,6 @@ import static io.opentelemetry.api.common.AttributeKey.stringKey;
 public class LogDataMapper {
 
     private static final ClientLogger logger = new ClientLogger(LogDataMapper.class);
-
-    private static final Set<String> EXCLUDE_LOGGER_NAMES = getExcludedLoggerNames();
 
     private static final String LOG4J_MDC_PREFIX = "log4j.mdc."; // log4j 1.2
     private static final String LOG4J_CONTEXT_DATA_PREFIX = "log4j.context_data."; // log4j 2.x
@@ -104,7 +100,7 @@ public class LogDataMapper {
     }
 
     public TelemetryItem map(LogRecordData log, @Nullable String stack, @Nullable Long itemCount) {
-        if (stack == null && !EXCLUDE_LOGGER_NAMES.contains(log.getInstrumentationScopeInfo().getName())) {
+        if (stack == null) {
             return createMessageTelemetryItem(log, itemCount);
         } else {
             return createExceptionTelemetryItem(log, stack, itemCount);
@@ -354,10 +350,5 @@ public class LogDataMapper {
                 logger.error("Unexpected severity {}", severity);
                 return null;
         }
-    }
-
-    private static Set<String> getExcludedLoggerNames() {
-        // it might be a good idea to exclude prefix "org.apache.catalina.core.ContainerBase."? Logger name will come in as "org.apache.catalina.core.ContainerBase.[Catalina]"
-        return Collections.singleton("org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet]");
     }
 }
