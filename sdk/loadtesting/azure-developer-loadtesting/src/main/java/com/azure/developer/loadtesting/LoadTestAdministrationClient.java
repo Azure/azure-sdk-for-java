@@ -15,45 +15,35 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.loadtesting.implementation.LoadTestAdministrationsImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.Duration;
 
-/**
- * Initializes a new instance of the synchronous LoadTestingClient type.
- */
+/** Initializes a new instance of the synchronous LoadTestingClient type. */
 @ServiceClient(builder = LoadTestAdministrationClientBuilder.class)
 public final class LoadTestAdministrationClient {
 
-    private static final ClientLogger LOGGER = new ClientLogger(LoadTestAdministrationClient.class);
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-    @Generated
-    private final LoadTestAdministrationsImpl serviceClient;
+    @Generated private final LoadTestAdministrationAsyncClient client;
 
     /**
      * Initializes an instance of LoadTestAdministrationClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    LoadTestAdministrationClient(LoadTestAdministrationsImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    LoadTestAdministrationClient(LoadTestAdministrationAsyncClient client) {
+        this.client = client;
     }
 
     /**
      * Configure server metrics for a test.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     testId: String (Optional)
      *     metrics (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             id: String (Optional)
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
@@ -70,14 +60,14 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedBy: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     testId: String (Optional)
      *     metrics (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             id: String (Optional)
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
@@ -96,7 +86,7 @@ public final class LoadTestAdministrationClient {
      * }</pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     * hyphen characters.
+     *     hyphen characters.
      * @param body Server metric configuration model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -107,9 +97,9 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(String testId, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateServerMetricsConfigWithResponse(testId, body, requestOptions);
+    public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(
+            String testId, BinaryData body, RequestOptions requestOptions) {
+        return this.client.createOrUpdateServerMetricsConfigWithResponse(testId, body, requestOptions).block();
     }
 
     /**
@@ -119,47 +109,41 @@ public final class LoadTestAdministrationClient {
      * @param fileName Unique name for test file with file extension like : App.jmx.
      * @param body The file content as application/octet-stream.
      * @param fileUploadRequestOptions The options to configure the file upload HTTP request before HTTP client sends
-     * it.
+     *     it.
      * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
      * @return A {@link SyncPoller} to poll on and retrieve the file info with validation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginUploadTestFile(String testId, String fileName, BinaryData body,
-        RequestOptions fileUploadRequestOptions) {
-        RequestOptions defaultRequestOptions = new RequestOptions();
-        if (fileUploadRequestOptions != null) {
-            defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());
-        }
-        return SyncPoller.createPoller(Duration.ofSeconds(2), (context) -> {
-            Response<BinaryData> fileResponse
-                = uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions);
-            return PollingUtils.getValidationStatus(fileResponse.getValue(), OBJECT_MAPPER);
-        }, (context) -> {
-            Response<BinaryData> fileResponse = getTestFileWithResponse(testId, fileName, defaultRequestOptions);
-            return PollingUtils.getValidationStatus(fileResponse.getValue(), OBJECT_MAPPER);
-        }, (activationResponse, context) -> {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
-        }, (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).getValue());
+    public SyncPoller<BinaryData, BinaryData> beginUploadTestFile(
+            String testId, String fileName, BinaryData body, RequestOptions fileUploadRequestOptions) {
+        PollerFlux<BinaryData, BinaryData> asyncPoller =
+                this.client.beginUploadTestFile(testId, fileName, body, fileUploadRequestOptions);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
      * Get all test files.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
-     *     url: String (Optional)
-     *     fileName: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *     expireDateTime: OffsetDateTime (Optional)
-     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     *     validationFailureDetails: String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             url: String (Optional)
+     *             fileName: String (Optional)
+     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
+     *             expireDateTime: OffsetDateTime (Optional)
+     *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *             validationFailureDetails: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     * hyphen characters.
+     *     hyphen characters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -170,19 +154,19 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTestFiles(String testId, RequestOptions requestOptions) {
-        return this.serviceClient.listTestFiles(testId, requestOptions);
+        return new PagedIterable<>(this.client.listTestFiles(testId, requestOptions));
     }
 
     /**
      * Create a new test or update an existing test.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
-     *             String (Required): {
+     *             String (Optional): {
      *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
@@ -195,7 +179,7 @@ public final class LoadTestAdministrationClient {
      *         }
      *     }
      *     secrets (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             value: String (Optional)
      *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
      *         }
@@ -206,7 +190,7 @@ public final class LoadTestAdministrationClient {
      *         name: String (Optional)
      *     }
      *     environmentVariables (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     loadTestConfiguration (Optional): {
      *         engineInstances: Integer (Optional)
@@ -247,14 +231,14 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedBy: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
-     *             String (Required): {
+     *             String (Optional): {
      *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
@@ -267,7 +251,7 @@ public final class LoadTestAdministrationClient {
      *         }
      *     }
      *     secrets (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             value: String (Optional)
      *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
      *         }
@@ -278,7 +262,7 @@ public final class LoadTestAdministrationClient {
      *         name: String (Optional)
      *     }
      *     environmentVariables (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     loadTestConfiguration (Optional): {
      *         engineInstances: Integer (Optional)
@@ -321,7 +305,7 @@ public final class LoadTestAdministrationClient {
      * }</pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     * hyphen characters.
+     *     hyphen characters.
      * @param body Load test model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -332,16 +316,16 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateTestWithResponse(String testId, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateTestWithResponse(testId, body, requestOptions);
+    public Response<BinaryData> createOrUpdateTestWithResponse(
+            String testId, BinaryData body, RequestOptions requestOptions) {
+        return this.client.createOrUpdateTestWithResponse(testId, body, requestOptions).block();
     }
 
     /**
      * Delete a test by its name.
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     * hyphen characters.
+     *     hyphen characters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -352,19 +336,19 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestWithResponse(String testId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteTestWithResponse(testId, requestOptions);
+        return this.client.deleteTestWithResponse(testId, requestOptions).block();
     }
 
     /**
      * Get load test details by test name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
-     *             String (Required): {
+     *             String (Optional): {
      *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
@@ -377,7 +361,7 @@ public final class LoadTestAdministrationClient {
      *         }
      *     }
      *     secrets (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             value: String (Optional)
      *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
      *         }
@@ -388,7 +372,7 @@ public final class LoadTestAdministrationClient {
      *         name: String (Optional)
      *     }
      *     environmentVariables (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     loadTestConfiguration (Optional): {
      *         engineInstances: Integer (Optional)
@@ -431,7 +415,7 @@ public final class LoadTestAdministrationClient {
      * }</pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     * hyphen characters.
+     *     hyphen characters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -442,127 +426,101 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTestWithResponse(String testId, RequestOptions requestOptions) {
-        return this.serviceClient.getTestWithResponse(testId, requestOptions);
+        return this.client.getTestWithResponse(testId, requestOptions).block();
     }
 
     /**
      * Get all load tests by the fully qualified resource Id e.g
      * subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName}.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     *
+     * <p><strong>Query Parameters</strong>
+     *
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields -
-     * lastModifiedDateTime</td>
-     * </tr>
-     * <tr>
-     * <td>search</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Prefix based, case sensitive search on searchable fields - displayName, createdBy. For example, to search for
-     * a test, with display name is Login Test, the search parameter can be Login.</td>
-     * </tr>
-     * <tr>
-     * <td>lastModifiedStartTime</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td>
-     * </tr>
-     * <tr>
-     * <td>lastModifiedEndTime</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of results in response.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields - displayName, createdBy. For example, to search for a test, with display name is Login Test, the search parameter can be Login.</td></tr>
+     *     <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
+     *     <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
      * </table>
+     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
-     *     passFailCriteria (Optional): {
-     *         passFailMetrics (Optional): {
-     *             String (Required): {
-     *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
-     *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
-     *                 condition: String (Optional)
-     *                 requestName: String (Optional)
-     *                 value: Double (Optional)
-     *                 action: String(continue/stop) (Optional)
-     *                 actualValue: Double (Optional)
-     *                 result: String(passed/undetermined/failed) (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             passFailCriteria (Optional): {
+     *                 passFailMetrics (Optional): {
+     *                     String (Optional): {
+     *                         clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
+     *                         aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
+     *                         condition: String (Optional)
+     *                         requestName: String (Optional)
+     *                         value: Double (Optional)
+     *                         action: String(continue/stop) (Optional)
+     *                         actualValue: Double (Optional)
+     *                         result: String(passed/undetermined/failed) (Optional)
+     *                     }
+     *                 }
      *             }
+     *             secrets (Optional): {
+     *                 String (Optional): {
+     *                     value: String (Optional)
+     *                     type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
+     *                 }
+     *             }
+     *             certificate (Optional): {
+     *                 value: String (Optional)
+     *                 type: String(AKV_CERT_URI) (Optional)
+     *                 name: String (Optional)
+     *             }
+     *             environmentVariables (Optional): {
+     *                 String: String (Optional)
+     *             }
+     *             loadTestConfiguration (Optional): {
+     *                 engineInstances: Integer (Optional)
+     *                 splitAllCSVs: Boolean (Optional)
+     *                 quickStartTest: Boolean (Optional)
+     *                 optionalLoadTestConfig (Optional): {
+     *                     endpointUrl: String (Optional)
+     *                     virtualUsers: Integer (Optional)
+     *                     rampUpTime: Integer (Optional)
+     *                     duration: Integer (Optional)
+     *                 }
+     *             }
+     *             inputArtifacts (Optional): {
+     *                 configFileInfo (Optional): {
+     *                     url: String (Optional)
+     *                     fileName: String (Optional)
+     *                     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
+     *                     expireDateTime: OffsetDateTime (Optional)
+     *                     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *                     validationFailureDetails: String (Optional)
+     *                 }
+     *                 testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
+     *                 userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
+     *                 inputArtifactsZipFileInfo (Optional): (recursive schema, see inputArtifactsZipFileInfo above)
+     *                 additionalFileInfo (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *             testId: String (Optional)
+     *             description: String (Optional)
+     *             displayName: String (Optional)
+     *             subnetId: String (Optional)
+     *             keyvaultReferenceIdentityType: String (Optional)
+     *             keyvaultReferenceIdentityId: String (Optional)
+     *             createdDateTime: OffsetDateTime (Optional)
+     *             createdBy: String (Optional)
+     *             lastModifiedDateTime: OffsetDateTime (Optional)
+     *             lastModifiedBy: String (Optional)
      *         }
-     *     }
-     *     secrets (Optional): {
-     *         String (Required): {
-     *             value: String (Optional)
-     *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
-     *         }
-     *     }
-     *     certificate (Optional): {
-     *         value: String (Optional)
-     *         type: String(AKV_CERT_URI) (Optional)
-     *         name: String (Optional)
-     *     }
-     *     environmentVariables (Optional): {
-     *         String: String (Required)
-     *     }
-     *     loadTestConfiguration (Optional): {
-     *         engineInstances: Integer (Optional)
-     *         splitAllCSVs: Boolean (Optional)
-     *         quickStartTest: Boolean (Optional)
-     *         optionalLoadTestConfig (Optional): {
-     *             endpointUrl: String (Optional)
-     *             virtualUsers: Integer (Optional)
-     *             rampUpTime: Integer (Optional)
-     *             duration: Integer (Optional)
-     *         }
-     *     }
-     *     inputArtifacts (Optional): {
-     *         configFileInfo (Optional): {
-     *             url: String (Optional)
-     *             fileName: String (Optional)
-     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *             expireDateTime: OffsetDateTime (Optional)
-     *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     *             validationFailureDetails: String (Optional)
-     *         }
-     *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
-     *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
-     *         inputArtifactsZipFileInfo (Optional): (recursive schema, see inputArtifactsZipFileInfo above)
-     *         additionalFileInfo (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *     }
-     *     testId: String (Optional)
-     *     description: String (Optional)
-     *     displayName: String (Optional)
-     *     subnetId: String (Optional)
-     *     keyvaultReferenceIdentityType: String (Optional)
-     *     keyvaultReferenceIdentityId: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -572,49 +530,36 @@ public final class LoadTestAdministrationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all load tests by the fully qualified resource Id e.g
-     * subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName} as paginated
-     * response with {@link PagedIterable}.
+     *     subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName} as
+     *     paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTests(RequestOptions requestOptions) {
-        return this.serviceClient.listTests(requestOptions);
+        return new PagedIterable<>(this.client.listTests(requestOptions));
     }
 
     /**
      * Upload input file for a given test name. File size can't be more than 50 MB. Existing file with same name for the
      * given test will be overwritten. File should be provided in the request body as application/octet-stream.
      *
-     * <p>
-     * <strong>Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>fileType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>File type. Allowed values: "JMX_FILE", "USER_PROPERTIES", "ADDITIONAL_ARTIFACTS".</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>fileType</td><td>String</td><td>No</td><td>File type. Allowed values: "JMX_FILE", "USER_PROPERTIES", "ADDITIONAL_ARTIFACTS".</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p>
-     * <strong>Request Body Schema</strong>
+     * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * BinaryData
      * }</pre>
      *
-     * <p>
-     * <strong>Response Body Schema</strong>
+     * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -628,7 +573,7 @@ public final class LoadTestAdministrationClient {
      * }</pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     * hyphen characters.
+     *     hyphen characters.
      * @param fileName Unique name for test file with file extension like : App.jmx.
      * @param body The file content as application/octet-stream.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -639,16 +584,16 @@ public final class LoadTestAdministrationClient {
      * @return file info along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> uploadTestFileWithResponse(String testId, String fileName, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.uploadTestFileWithResponse(testId, fileName, body, requestOptions);
+    Response<BinaryData> uploadTestFileWithResponse(
+            String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
+        return this.client.uploadTestFileWithResponse(testId, fileName, body, requestOptions).block();
     }
 
     /**
      * Get test file by the file name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     url: String (Optional)
@@ -661,7 +606,7 @@ public final class LoadTestAdministrationClient {
      * }</pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     * hyphen characters.
+     *     hyphen characters.
      * @param fileName File name with file extension like app.jmx.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -673,14 +618,14 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTestFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
-        return this.serviceClient.getTestFileWithResponse(testId, fileName, requestOptions);
+        return this.client.getTestFileWithResponse(testId, fileName, requestOptions).block();
     }
 
     /**
      * Delete file by the file name for a test.
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     * hyphen characters.
+     *     hyphen characters.
      * @param fileName File name with file extension like app.jmx.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -692,14 +637,14 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestFileWithResponse(String testId, String fileName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteTestFileWithResponse(testId, fileName, requestOptions);
+        return this.client.deleteTestFileWithResponse(testId, fileName, requestOptions).block();
     }
 
     /**
      * Associate an app component (collection of azure resources) to a test.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     components (Required): {
@@ -720,9 +665,9 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedBy: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     components (Required): {
@@ -745,7 +690,7 @@ public final class LoadTestAdministrationClient {
      * }</pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     * hyphen characters.
+     *     hyphen characters.
      * @param body App Component model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -756,16 +701,16 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(String testId, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateAppComponentsWithResponse(testId, body, requestOptions);
+    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(
+            String testId, BinaryData body, RequestOptions requestOptions) {
+        return this.client.createOrUpdateAppComponentsWithResponse(testId, body, requestOptions).block();
     }
 
     /**
      * Get associated app component (collection of azure resources) for the given test.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     components (Required): {
@@ -788,7 +733,7 @@ public final class LoadTestAdministrationClient {
      * }</pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     * hyphen characters.
+     *     hyphen characters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -799,19 +744,19 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
-        return this.serviceClient.getAppComponentsWithResponse(testId, requestOptions);
+        return this.client.getAppComponentsWithResponse(testId, requestOptions).block();
     }
 
     /**
      * List server metrics configuration for the given test.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
      * <pre>{@code
      * {
      *     testId: String (Optional)
      *     metrics (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             id: String (Optional)
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
@@ -830,7 +775,7 @@ public final class LoadTestAdministrationClient {
      * }</pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
-     * hyphen characters.
+     *     hyphen characters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -841,6 +786,6 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getServerMetricsConfigWithResponse(String testId, RequestOptions requestOptions) {
-        return this.serviceClient.getServerMetricsConfigWithResponse(testId, requestOptions);
+        return this.client.getServerMetricsConfigWithResponse(testId, requestOptions).block();
     }
 }
