@@ -3,11 +3,21 @@
 
 package com.azure.cosmos.models;
 
+/**
+ * Specifies the options associated with read many operation
+ * in the Azure Cosmos DB database service.
+ */
 public class CosmosReadManyRequestOptions extends CosmosQueryRequestOptionsBase<CosmosReadManyRequestOptions> {
+    /**
+     * Instantiates a new read many request options.
+     */
     public CosmosReadManyRequestOptions() {
         super();
     }
 
+    /**
+     * Instantiates a new read many request options.
+     */
     public CosmosReadManyRequestOptions(CosmosReadManyRequestOptions options) {
         super(options);
     }
