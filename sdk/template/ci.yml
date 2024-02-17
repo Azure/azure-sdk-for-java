@@ -90,6 +90,7 @@ extends:
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
         parameters:
+          CalledFromClient: true
           ServiceDirectory: template
           Artifacts:
             - name: azure-sdk-template

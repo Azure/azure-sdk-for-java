@@ -234,6 +234,7 @@ extends:
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
         parameters:
+          CalledFromClient: true
           ServiceDirectory: core
           Artifacts:
             - name: azure-core
