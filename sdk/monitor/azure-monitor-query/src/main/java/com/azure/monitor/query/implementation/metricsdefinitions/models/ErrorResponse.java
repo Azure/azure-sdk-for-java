@@ -7,9 +7,7 @@ package com.azure.monitor.query.implementation.metricsdefinitions.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Describes the format of Error response.
- */
+/** Describes the format of Error response. */
 @Fluent
 public final class ErrorResponse {
     /*
@@ -24,15 +22,12 @@ public final class ErrorResponse {
     @JsonProperty(value = "message")
     private String message;
 
-    /**
-     * Creates an instance of ErrorResponse class.
-     */
-    public ErrorResponse() {
-    }
+    /** Creates an instance of ErrorResponse class. */
+    public ErrorResponse() {}
 
     /**
      * Get the code property: Error code.
-     * 
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -41,7 +36,7 @@ public final class ErrorResponse {
 
     /**
      * Set the code property: Error code.
-     * 
+     *
      * @param code the code value to set.
      * @return the ErrorResponse object itself.
      */
@@ -52,7 +47,7 @@ public final class ErrorResponse {
 
     /**
      * Get the message property: Error message indicating why the operation failed.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -61,7 +56,7 @@ public final class ErrorResponse {
 
     /**
      * Set the message property: Error message indicating why the operation failed.
-     * 
+     *
      * @param message the message value to set.
      * @return the ErrorResponse object itself.
      */
@@ -69,4 +64,11 @@ public final class ErrorResponse {
         this.message = message;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

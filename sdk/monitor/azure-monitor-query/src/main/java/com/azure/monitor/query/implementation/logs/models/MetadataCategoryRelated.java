@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The related metadata items for the category.
- */
+/** The related metadata items for the category. */
 @Fluent
 public final class MetadataCategoryRelated {
     /*
@@ -43,15 +41,12 @@ public final class MetadataCategoryRelated {
     @JsonProperty(value = "solutions")
     private List<String> solutions;
 
-    /**
-     * Creates an instance of MetadataCategoryRelated class.
-     */
-    public MetadataCategoryRelated() {
-    }
+    /** Creates an instance of MetadataCategoryRelated class. */
+    public MetadataCategoryRelated() {}
 
     /**
      * Get the tables property: The tables related to the category.
-     * 
+     *
      * @return the tables value.
      */
     public List<String> getTables() {
@@ -60,7 +55,7 @@ public final class MetadataCategoryRelated {
 
     /**
      * Set the tables property: The tables related to the category.
-     * 
+     *
      * @param tables the tables value to set.
      * @return the MetadataCategoryRelated object itself.
      */
@@ -71,7 +66,7 @@ public final class MetadataCategoryRelated {
 
     /**
      * Get the functions property: The functions related to the category.
-     * 
+     *
      * @return the functions value.
      */
     public List<String> getFunctions() {
@@ -80,7 +75,7 @@ public final class MetadataCategoryRelated {
 
     /**
      * Set the functions property: The functions related to the category.
-     * 
+     *
      * @param functions the functions value to set.
      * @return the MetadataCategoryRelated object itself.
      */
@@ -91,7 +86,7 @@ public final class MetadataCategoryRelated {
 
     /**
      * Get the resourceTypes property: The resource types related to the category.
-     * 
+     *
      * @return the resourceTypes value.
      */
     public List<String> getResourceTypes() {
@@ -100,7 +95,7 @@ public final class MetadataCategoryRelated {
 
     /**
      * Set the resourceTypes property: The resource types related to the category.
-     * 
+     *
      * @param resourceTypes the resourceTypes value to set.
      * @return the MetadataCategoryRelated object itself.
      */
@@ -111,7 +106,7 @@ public final class MetadataCategoryRelated {
 
     /**
      * Get the queries property: The saved queries related to the category.
-     * 
+     *
      * @return the queries value.
      */
     public List<String> getQueries() {
@@ -120,7 +115,7 @@ public final class MetadataCategoryRelated {
 
     /**
      * Set the queries property: The saved queries related to the category.
-     * 
+     *
      * @param queries the queries value to set.
      * @return the MetadataCategoryRelated object itself.
      */
@@ -131,7 +126,7 @@ public final class MetadataCategoryRelated {
 
     /**
      * Get the solutions property: The Log Analytics solutions related to the category.
-     * 
+     *
      * @return the solutions value.
      */
     public List<String> getSolutions() {
@@ -140,7 +135,7 @@ public final class MetadataCategoryRelated {
 
     /**
      * Set the solutions property: The Log Analytics solutions related to the category.
-     * 
+     *
      * @param solutions the solutions value to set.
      * @return the MetadataCategoryRelated object itself.
      */
@@ -148,4 +143,11 @@ public final class MetadataCategoryRelated {
         this.solutions = solutions;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

@@ -11,7 +11,6 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -20,6 +19,7 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -39,27 +39,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * A builder for creating a new instance of the MonitorManagementClient type.
- */
-@ServiceClientBuilder(serviceClients = { MonitorManagementClientImpl.class })
-public final class MonitorManagementClientImplBuilder implements HttpTrait<MonitorManagementClientImplBuilder>,
-    ConfigurationTrait<MonitorManagementClientImplBuilder>, TokenCredentialTrait<MonitorManagementClientImplBuilder> {
-    @Generated
-    private static final String SDK_NAME = "name";
+/** A builder for creating a new instance of the MonitorManagementClient type. */
+@ServiceClientBuilder(serviceClients = {MonitorManagementClientImpl.class})
+public final class MonitorManagementClientImplBuilder
+        implements HttpTrait<MonitorManagementClientImplBuilder>,
+                ConfigurationTrait<MonitorManagementClientImplBuilder>,
+                TokenCredentialTrait<MonitorManagementClientImplBuilder> {
+    @Generated private static final String SDK_NAME = "name";
 
-    @Generated
-    private static final String SDK_VERSION = "version";
+    @Generated private static final String SDK_VERSION = "version";
 
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-monitor-query.properties");
 
-    @Generated
-    private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /**
-     * Create an instance of the MonitorManagementClientBuilder.
-     */
+    /** Create an instance of the MonitorManagementClientBuilder. */
     @Generated
     public MonitorManagementClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -68,12 +63,9 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated
-    private HttpPipeline pipeline;
+    @Generated private HttpPipeline pipeline;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public MonitorManagementClientImplBuilder pipeline(HttpPipeline pipeline) {
@@ -84,12 +76,9 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
     /*
      * The HTTP client used to send the request.
      */
-    @Generated
-    private HttpClient httpClient;
+    @Generated private HttpClient httpClient;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public MonitorManagementClientImplBuilder httpClient(HttpClient httpClient) {
@@ -100,12 +89,9 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated
-    private HttpLogOptions httpLogOptions;
+    @Generated private HttpLogOptions httpLogOptions;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public MonitorManagementClientImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -116,12 +102,9 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
     /*
      * The client options such as application ID and custom headers to set on a request.
      */
-    @Generated
-    private ClientOptions clientOptions;
+    @Generated private ClientOptions clientOptions;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public MonitorManagementClientImplBuilder clientOptions(ClientOptions clientOptions) {
@@ -132,12 +115,9 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated
-    private RetryOptions retryOptions;
+    @Generated private RetryOptions retryOptions;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public MonitorManagementClientImplBuilder retryOptions(RetryOptions retryOptions) {
@@ -145,9 +125,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
         return this;
     }
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public MonitorManagementClientImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -159,12 +137,9 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
     /*
      * The configuration store that is used during construction of the service client.
      */
-    @Generated
-    private Configuration configuration;
+    @Generated private Configuration configuration;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public MonitorManagementClientImplBuilder configuration(Configuration configuration) {
@@ -175,12 +150,9 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
     /*
      * The TokenCredential used for authentication.
      */
-    @Generated
-    private TokenCredential tokenCredential;
+    @Generated private TokenCredential tokenCredential;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public MonitorManagementClientImplBuilder credential(TokenCredential tokenCredential) {
@@ -191,12 +163,11 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
     /*
      * server parameter
      */
-    @Generated
-    private String host;
+    @Generated private String host;
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the MonitorManagementClientBuilder.
      */
@@ -209,12 +180,11 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
     /*
      * Api Version
      */
-    @Generated
-    private String apiVersion;
+    @Generated private String apiVersion;
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the MonitorManagementClientBuilder.
      */
@@ -227,12 +197,11 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
     /*
      * The serializer to serialize an object into a string
      */
-    @Generated
-    private SerializerAdapter serializerAdapter;
+    @Generated private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the MonitorManagementClientBuilder.
      */
@@ -245,12 +214,11 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated
-    private RetryPolicy retryPolicy;
+    @Generated private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the MonitorManagementClientBuilder.
      */
@@ -262,7 +230,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Builds an instance of MonitorManagementClient with the provided parameters.
-     * 
+     *
      * @return an instance of MonitorManagementClient.
      */
     @Generated
@@ -270,17 +238,17 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://management.azure.com";
         String localApiVersion = (apiVersion != null) ? apiVersion : "2018-01-01";
-        SerializerAdapter localSerializerAdapter
-            = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
-        MonitorManagementClientImpl client
-            = new MonitorManagementClientImpl(localPipeline, localSerializerAdapter, localHost, localApiVersion);
+        SerializerAdapter localSerializerAdapter =
+                (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
+        MonitorManagementClientImpl client =
+                new MonitorManagementClientImpl(localPipeline, localSerializerAdapter, localHost, localApiVersion);
         return client;
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration =
+                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -291,26 +259,32 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-            .forEach(p -> policies.add(p));
+        this.pipelinePolicies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
+        policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             String localHost = (host != null) ? host : "https://management.azure.com";
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", localHost)));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-            .forEach(p -> policies.add(p));
+        this.pipelinePolicies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient).clientOptions(localClientOptions).build();
+        HttpPipeline httpPipeline =
+                new HttpPipelineBuilder()
+                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                        .httpClient(httpClient)
+                        .clientOptions(localClientOptions)
+                        .build();
         return httpPipeline;
     }
 }

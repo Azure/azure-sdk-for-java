@@ -19,7 +19,7 @@ public final class MonitorQueryTestUtils {
         .get("AZURE_MONITOR_LOGS_RESOURCE_ID");
 
     private static final String METRIC_RESOURCE_URI = Configuration.getGlobalConfiguration()
-        .get("AZURE_MONITOR_METRICS_RESOURCE_URI_1");
+        .get("AZURE_MONITOR_METRICS_RESOURCE_URI");
 
 
     public static final String QUERY_STRING = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "

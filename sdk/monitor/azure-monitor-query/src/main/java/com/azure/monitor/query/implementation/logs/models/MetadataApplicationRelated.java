@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The related metadata items for the Application Insights app.
- */
+/** The related metadata items for the Application Insights app. */
 @Fluent
 public final class MetadataApplicationRelated {
     /*
@@ -25,15 +23,12 @@ public final class MetadataApplicationRelated {
     @JsonProperty(value = "functions")
     private List<String> functions;
 
-    /**
-     * Creates an instance of MetadataApplicationRelated class.
-     */
-    public MetadataApplicationRelated() {
-    }
+    /** Creates an instance of MetadataApplicationRelated class. */
+    public MetadataApplicationRelated() {}
 
     /**
      * Get the tables property: The related tables for the Application Insights app.
-     * 
+     *
      * @return the tables value.
      */
     public List<String> getTables() {
@@ -42,7 +37,7 @@ public final class MetadataApplicationRelated {
 
     /**
      * Set the tables property: The related tables for the Application Insights app.
-     * 
+     *
      * @param tables the tables value to set.
      * @return the MetadataApplicationRelated object itself.
      */
@@ -53,7 +48,7 @@ public final class MetadataApplicationRelated {
 
     /**
      * Get the functions property: The related functions for the Application Insights app.
-     * 
+     *
      * @return the functions value.
      */
     public List<String> getFunctions() {
@@ -62,7 +57,7 @@ public final class MetadataApplicationRelated {
 
     /**
      * Set the functions property: The related functions for the Application Insights app.
-     * 
+     *
      * @param functions the functions value to set.
      * @return the MetadataApplicationRelated object itself.
      */
@@ -70,4 +65,11 @@ public final class MetadataApplicationRelated {
         this.functions = functions;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

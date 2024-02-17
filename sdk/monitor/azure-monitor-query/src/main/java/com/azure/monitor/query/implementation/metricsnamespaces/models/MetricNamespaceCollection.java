@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Represents collection of metric namespaces.
- */
+/** Represents collection of metric namespaces. */
 @Immutable
 public final class MetricNamespaceCollection {
     /*
@@ -22,7 +20,7 @@ public final class MetricNamespaceCollection {
 
     /**
      * Creates an instance of MetricNamespaceCollection class.
-     * 
+     *
      * @param value the value value to set.
      */
     @JsonCreator
@@ -32,10 +30,23 @@ public final class MetricNamespaceCollection {
 
     /**
      * Get the value property: The values for the metric namespaces.
-     * 
+     *
      * @return the value value.
      */
     public List<MetricNamespace> getValue() {
         return this.value;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getValue() == null) {
+            throw new IllegalArgumentException("Missing required property value in model MetricNamespaceCollection");
+        } else {
+            getValue().forEach(e -> e.validate());
+        }
     }
 }

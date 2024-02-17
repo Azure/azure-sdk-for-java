@@ -10,14 +10,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Error details.
- * 
- * Contains details when the response code indicates an error.
+ *
+ * <p>Contains details when the response code indicates an error.
  */
 @Immutable
 public final class ErrorResponse {
     /*
      * The code and message for an error.
-     * 
+     *
      * The error details.
      */
     @JsonProperty(value = "error", required = true)
@@ -25,7 +25,7 @@ public final class ErrorResponse {
 
     /**
      * Creates an instance of ErrorResponse class.
-     * 
+     *
      * @param error the error value to set.
      */
     @JsonCreator
@@ -35,12 +35,25 @@ public final class ErrorResponse {
 
     /**
      * Get the error property: The code and message for an error.
-     * 
-     * The error details.
-     * 
+     *
+     * <p>The error details.
+     *
      * @return the error value.
      */
     public ErrorInfo getError() {
         return this.error;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getError() == null) {
+            throw new IllegalArgumentException("Missing required property error in model ErrorResponse");
+        } else {
+            getError().validate();
+        }
     }
 }
