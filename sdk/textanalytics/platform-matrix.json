@@ -8,6 +8,12 @@
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "JdkHttpClientProvider",
       "TestFromSource": false
+    },
+    {
+      "Agent": { "ubuntu-22.04": { "OSVmImage": "MMSUbuntu22.04", "Pool": "azsdk-pool-mms-ubuntu-2204-general" } },
+      "JavaTestVersion": "1.17",
+      "AZURE_TEST_HTTP_CLIENTS": "VertxAsyncHttpClientProvider",
+      "TestFromSource": false
     }
   ]
 }
