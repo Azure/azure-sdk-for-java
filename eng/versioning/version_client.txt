@@ -119,7 +119,7 @@ com.azure:azure-data-schemaregistry-jsonschema;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-data-tables;12.3.18;12.4.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-developer-devcenter;1.0.0-beta.3;1.0.0-beta.4
-com.azure:azure-developer-loadtesting;1.0.9;1.1.0-beta.1
+com.azure:azure-developer-loadtesting;1.0.9;1.0.10
 com.azure:azure-digitaltwins-core;1.3.16;1.4.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
