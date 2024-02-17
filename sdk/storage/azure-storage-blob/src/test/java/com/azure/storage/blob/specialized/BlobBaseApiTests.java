@@ -5,7 +5,6 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.test.utils.TestUtils;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobQueryArrowField;
 import com.azure.storage.blob.models.BlobQueryArrowFieldType;
@@ -20,10 +19,10 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -121,7 +120,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         return queryData;
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @ValueSource(ints = {
         1, // 32 bytes
@@ -163,7 +162,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("queryCsvSerializationSeparatorSupplier")
     public void queryCsvSerializationSeparator(char recordSeparator, char columnSeparator, boolean headersPresentIn,
@@ -249,7 +248,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         );
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryCsvSerializationEscapeAndFieldQuote() {
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -289,7 +288,7 @@ public class BlobBaseApiTests extends BlobTestBase {
     }
 
     /* Note: Input delimited tested everywhere */
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @ValueSource(ints = {1, 10, 100, 1000})
     public void queryInputJson(int numCopies) {
@@ -325,7 +324,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
     @Test
     public void queryInputParquet() {
         String fileName = "parquet.parquet";
@@ -358,7 +357,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryInputCsvOutputJson() {
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
@@ -395,7 +394,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryInputJsonOutputCsv() {
         BlobQueryJsonSerialization inSer = new BlobQueryJsonSerialization()
@@ -433,7 +432,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryInputCsvOutputArrow() {
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
@@ -467,7 +466,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryNonFatalError() {
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -506,7 +505,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryFatalError() {
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -530,7 +529,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryProgressReceiver() {
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -574,8 +573,8 @@ public class BlobBaseApiTests extends BlobTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
-    @LiveOnly // Large amount of data.
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode") // Large amount of data.
     @Test
     public void queryMultipleRecordsWithProgressReceiver() {
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -629,7 +628,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void querySnapshot() {
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -670,7 +669,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @CsvSource({ "true, false", "false, true" })
     public void queryInputOutputIA(boolean input, boolean output) {
@@ -694,7 +693,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryArrowInputIA() {
         BlobQueryArrowSerialization inSer = new BlobQueryArrowSerialization();
@@ -711,7 +710,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
     @Test
     public void queryParquetOutputIA() {
         BlobQueryParquetSerialization outSer = new BlobQueryParquetSerialization();
@@ -729,7 +728,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryError() {
         liveTestScenarioWithRetry(() -> {
@@ -741,7 +740,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("queryACSupplier")
     public void queryAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -786,7 +785,7 @@ public class BlobBaseApiTests extends BlobTestBase {
             );
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void queryACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,

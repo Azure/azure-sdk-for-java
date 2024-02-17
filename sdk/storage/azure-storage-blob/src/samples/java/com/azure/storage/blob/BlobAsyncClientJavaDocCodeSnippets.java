@@ -609,11 +609,10 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-        Long blockSize = 100 * 1024 * 1024L; // 100 MB;
 
         client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(
-                new ParallelTransferOptions().setBlockSizeLong(blockSize))
+                new ParallelTransferOptions().setBlockSizeLong(BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE))
             .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(AccessTier.HOT)
             .setRequestConditions(requestConditions))
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))

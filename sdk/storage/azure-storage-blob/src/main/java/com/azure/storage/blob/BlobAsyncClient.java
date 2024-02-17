@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Contexts;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
@@ -55,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -778,7 +778,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .flatMapSequential(bufferAggregator -> {
                 Flux<ByteBuffer> chunkData = bufferAggregator.asFlux();
 
-                String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString().getBytes(UTF_8));
+                final String blockId = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(UTF_8));
                 return UploadUtils.computeMd5(chunkData, computeMd5, LOGGER)
                     .flatMap(fluxMd5Wrapper -> {
                         Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(blockId,
@@ -940,11 +940,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     * Long blockSize = 100 * 1024 * 1024L; &#47;&#47; 100 MB;
      *
      * client.uploadFromFileWithResponse&#40;new BlobUploadFromFileOptions&#40;filePath&#41;
      *     .setParallelTransferOptions&#40;
-     *         new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;blockSize&#41;&#41;
+     *         new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE&#41;&#41;
      *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;
      *     .setRequestConditions&#40;requestConditions&#41;&#41;
      *     .doOnError&#40;throwable -&gt; System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, throwable.getMessage&#40;&#41;&#41;&#41;
@@ -1055,7 +1054,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     private String getBlockID() {
-        return Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString().getBytes(StandardCharsets.UTF_8));
+        return Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
     }
 
     private List<BlobRange> sliceFile(long fileSize, Long originalBlockSize, long blockSize) {

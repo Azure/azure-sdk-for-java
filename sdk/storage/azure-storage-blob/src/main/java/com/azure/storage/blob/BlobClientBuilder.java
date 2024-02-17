@@ -32,6 +32,7 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -360,7 +361,7 @@ public final class BlobClientBuilder implements
             this.endpoint = BuilderHelper.getEndpoint(parts);
             this.containerName = parts.getBlobContainerName() == null ? this.containerName
                 : parts.getBlobContainerName();
-            this.blobName = parts.getBlobName() == null ? this.blobName : parts.getBlobName();
+            this.blobName = parts.getBlobName() == null ? this.blobName : Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
             this.versionId = parts.getVersionId();
 
@@ -390,12 +391,14 @@ public final class BlobClientBuilder implements
     /**
      * Sets the name of the blob.
      *
-     * @param blobName Name of the blob.
+     * @param blobName Name of the blob. If the blob name contains special characters, pass in the url encoded version
+     * of the blob name.
      * @return the updated BlobClientBuilder object
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public BlobClientBuilder blobName(String blobName) {
-        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
+        this.blobName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(blobName,
+            "'blobName' cannot be null.")));
         return this;
     }
 

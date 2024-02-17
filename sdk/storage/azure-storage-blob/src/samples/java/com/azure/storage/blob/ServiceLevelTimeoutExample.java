@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -100,7 +99,7 @@ public class ServiceLevelTimeoutExample {
     }
 
     static byte[] getRandomByteArray(int size) {
-        long seed = UUID.fromString(CoreUtils.randomUuid().toString()).getMostSignificantBits() & Long.MAX_VALUE;
+        long seed = UUID.fromString(UUID.randomUUID().toString()).getMostSignificantBits() & Long.MAX_VALUE;
         Random rand = new Random(seed);
         byte[] data = new byte[size];
         rand.nextBytes(data);

@@ -864,8 +864,8 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
-     * use {@link #downloadStream(OutputStream)} to download larger blobs.</p>
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadStream(OutputStream)} to download larger blobs.</p>
      *
      * @return The content of the blob.
      * @throws UncheckedIOException If an I/O error occurs.
@@ -985,8 +985,8 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
-     * use {@link #downloadStreamWithResponse(OutputStream, BlobRange,
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadStreamWithResponse(OutputStream, BlobRange,
      * DownloadRetryOptions, BlobRequestConditions, boolean, Duration, Context)}  to download larger blobs.</p>
      *
      * @param options {@link DownloadRetryOptions}

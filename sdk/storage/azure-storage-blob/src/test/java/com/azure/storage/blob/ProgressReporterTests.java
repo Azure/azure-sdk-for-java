@@ -4,8 +4,8 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.Disposable;
@@ -46,7 +46,7 @@ public class ProgressReporterTests extends BlobTestBase {
         Mockito.verify(mockReceiver, times(0)).reportProgress(Mockito.longThat(arg -> arg > 30));
     }
 
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void reportProgressSequentialNetworkTest() {
         ProgressReceiver mockReceiver = Mockito.mock(ProgressReceiver.class);

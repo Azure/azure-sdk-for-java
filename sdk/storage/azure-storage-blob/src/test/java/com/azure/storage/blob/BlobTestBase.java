@@ -9,7 +9,13 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -17,41 +23,44 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
-import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
-import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlobClientBase;
-import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
 import com.azure.storage.blob.specialized.BlobLeaseClient;
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.test.shared.StorageCommonTestUtils;
+import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
-import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
+import okhttp3.ConnectionPool;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -60,11 +69,16 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
+import java.util.zip.CRC32;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -75,6 +89,10 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 public class BlobTestBase extends TestProxyTestBase {
     public static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
     protected static final TestDataFactory DATA = TestDataFactory.getInstance();
+    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build();
+    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder()
+        .connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES))
+        .build();
     protected static final ClientLogger LOGGER = new ClientLogger(BlobTestBase.class);
 
     Integer entityNo = 0; // Used to generate stable container names for recording tests requiring multiple containers.
@@ -123,21 +141,16 @@ public class BlobTestBase extends TestProxyTestBase {
      */
     protected static final String RECEIVED_LEASE_ID = "received";
 
-    protected static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
+    protected static final String GARBAGE_LEASE_ID = UUID.randomUUID().toString();
 
     private static final Pattern URL_SANITIZER = Pattern.compile("(?<=http://|https://)([^/?]+)");
 
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient alternateBlobServiceClient;
-    protected BlobServiceAsyncClient alternateBlobServiceAsyncClient;
-
     protected BlobServiceClient premiumBlobServiceClient;
-    protected BlobServiceAsyncClient premiumBlobServiceAsyncClient;
     protected BlobServiceClient versionedBlobServiceClient;
-    protected BlobServiceAsyncClient versionedBlobServiceAsyncClient;
     protected BlobServiceClient softDeleteServiceClient;
-    protected BlobServiceAsyncClient softDeleteServiceAsyncClient;
 
     protected String containerName;
 
@@ -146,7 +159,7 @@ public class BlobTestBase extends TestProxyTestBase {
     @Override
     public void beforeTest() {
         super.beforeTest();
-        prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
+        prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(Arrays.asList(
@@ -170,19 +183,14 @@ public class BlobTestBase extends TestProxyTestBase {
         primaryBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());
         alternateBlobServiceClient = getServiceClient(ENVIRONMENT.getSecondaryAccount());
-        alternateBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getSecondaryAccount());
         premiumBlobServiceClient = getServiceClient(ENVIRONMENT.getPremiumAccount());
-        premiumBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPremiumAccount());
         versionedBlobServiceClient = getServiceClient(ENVIRONMENT.getVersionedAccount());
-        versionedBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getVersionedAccount());
         softDeleteServiceClient = getServiceClient(ENVIRONMENT.getSoftDeleteAccount());
-        softDeleteServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getSoftDeleteAccount());
 
         containerName = generateContainerName();
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName);
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
         cc.createIfNotExists();
-        ccAsync.createIfNotExists().block();
     }
 
     /**
@@ -196,7 +204,7 @@ public class BlobTestBase extends TestProxyTestBase {
         }
 
         BlobServiceClient cleanupClient = new BlobServiceClientBuilder()
-            .httpClient(StorageCommonTestUtils.getHttpClient(interceptorManager))
+            .httpClient(getHttpClient())
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
             .buildClient();
@@ -213,8 +221,63 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
+    private static String getCrc32(String input) {
+        CRC32 crc32 = new CRC32();
+        crc32.update(input.getBytes(StandardCharsets.UTF_8));
+        return String.format(Locale.US, "%08X", crc32.getValue()).toLowerCase();
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
+        // Groovy style reflection. All our builders follow this pattern.
+        builder.httpClient(getHttpClient());
+
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        if (ENVIRONMENT.getServiceVersion() != null) {
+            try {
+                Method serviceVersionMethod = Arrays.stream(builder.getClass().getDeclaredMethods())
+                    .filter(method -> "serviceVersion".equals(method.getName())
+                        && method.getParameterCount() == 1
+                        && ServiceVersion.class.isAssignableFrom(method.getParameterTypes()[0]))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Unable to find serviceVersion method for builder: "
+                        + builder.getClass()));
+                Class<E> serviceVersionClass = (Class<E>) serviceVersionMethod.getParameterTypes()[0];
+                ServiceVersion serviceVersion = (ServiceVersion) Enum.valueOf(serviceVersionClass,
+                    ENVIRONMENT.getServiceVersion());
+                serviceVersionMethod.invoke(builder, serviceVersion);
+                builder.addPolicy(new ServiceVersionValidationPolicy(serviceVersion.getVersion()));
+            } catch (ReflectiveOperationException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return builder;
+    }
+
     protected static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map(ByteBuffer::wrap);
+    }
+
+    protected HttpClient getHttpClient() {
+        return getHttpClient(interceptorManager::getPlaybackClient);
+    }
+
+    public static HttpClient getHttpClient(Supplier<HttpClient> playbackClientSupplier) {
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            switch (ENVIRONMENT.getHttpClientType()) {
+                case NETTY:
+                    return NETTY_HTTP_CLIENT;
+                case OK_HTTP:
+                    return OK_HTTP_CLIENT;
+                default:
+                    throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());
+            }
+        } else {
+            return playbackClientSupplier.get();
+        }
     }
 
     protected static String getAuthToken() {
@@ -241,6 +304,94 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected String getBlockID() {
         return Base64.getEncoder().encodeToString(testResourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8));
+    }
+
+    protected byte[] getRandomByteArray(int size) {
+        long seed = UUID.fromString(testResourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE;
+        Random rand = new Random(seed);
+        byte[] data = new byte[size];
+        rand.nextBytes(data);
+        return data;
+    }
+
+    /*
+    Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
+    */
+    public ByteBuffer getRandomData(int size) {
+        return ByteBuffer.wrap(getRandomByteArray(size));
+    }
+
+    /*
+    We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
+     */
+    protected File getRandomFile(int size) throws IOException {
+        try {
+            File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
+            file.deleteOnExit();
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                if (size > Constants.MB) {
+                    byte[] data = getRandomByteArray(Constants.MB);
+                    int mbChunks = size / Constants.MB;
+                    int remaining = size % Constants.MB;
+                    for (int i = 0; i < mbChunks; i++) {
+                        fos.write(data);
+                    }
+
+                    if (remaining > 0) {
+                        fos.write(data, 0, remaining);
+                    }
+                } else {
+                    fos.write(getRandomByteArray(size));
+                }
+                return file;
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    /**
+     * Compares two files for having equivalent content.
+     *
+     * @param file1 File used to upload data to the service
+     * @param file2 File used to download data from the service
+     * @param offset Write offset from the upload file
+     * @param count Size of the download from the service
+     * @return Whether the files have equivalent content based on offset and read count
+     */
+    protected boolean compareFiles(File file1, File file2, long offset, long count) throws IOException {
+        long pos = 0L;
+        int defaultBufferSize = 128 * Constants.KB;
+        FileInputStream stream1 = new FileInputStream(file1);
+        stream1.skip(offset);
+        FileInputStream stream2 = new FileInputStream(file2);
+
+        try {
+            // If the amount we are going to read is smaller than the default buffer size use that instead.
+            int bufferSize = (int) Math.min(defaultBufferSize, count);
+
+            while (pos < count) {
+                // Number of bytes we expect to read.
+                int expectedReadCount = (int) Math.min(bufferSize, count - pos);
+                byte[] buffer1 = new byte[expectedReadCount];
+                byte[] buffer2 = new byte[expectedReadCount];
+
+                int readCount1 = stream1.read(buffer1);
+                int readCount2 = stream2.read(buffer2);
+
+                // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
+                TestUtils.assertArraysEqual(buffer1, buffer2);
+                assertEquals(readCount1, readCount2);
+
+                pos += expectedReadCount;
+            }
+
+            int verificationRead = stream2.read();
+            return pos == count && verificationRead == -1;
+        } finally {
+            stream1.close();
+            stream2.close();
+        }
     }
 
     /**
@@ -275,10 +426,12 @@ public class BlobTestBase extends TestProxyTestBase {
      * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
      * with other AC tests.
      *
-     * @param bc The blob on which to acquire a lease.
-     * @param leaseID The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID},
-     * or {@code null}.
-     * @return The actual lease Id of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
+     * @param bc
+     *      The blob on which to acquire a lease.
+     * @param leaseID
+     *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
+     * @return
+     * The actual lease Id of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
     protected String setupBlobLeaseCondition(BlobClientBase bc, String leaseID) {
@@ -317,14 +470,6 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupContainerAsyncLeaseCondition(BlobContainerAsyncClient cu, String leaseID) {
-        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
-            return createLeaseAsyncClient(cu).acquireLease(-1).block();
-        } else {
-            return leaseID;
-        }
-    }
-
     protected BlobServiceClient getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
@@ -332,15 +477,6 @@ public class BlobTestBase extends TestProxyTestBase {
         instrument(builder);
 
         return setOauthCredentials(builder).buildClient();
-    }
-
-    protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
-
-        instrument(builder);
-
-        return setOauthCredentials(builder).buildAsyncClient();
     }
 
     protected BlobServiceClientBuilder setOauthCredentials(BlobServiceClientBuilder builder) {
@@ -379,20 +515,6 @@ public class BlobTestBase extends TestProxyTestBase {
         return getServiceClientBuilder(account.getCredential(), account.getBlobEndpoint()).buildAsyncClient();
     }
 
-    protected BlobServiceAsyncClient getServiceAsyncClient(String sasToken, String endpoint) {
-        return getServiceClientBuilder(null, endpoint, (HttpPipelinePolicy) null).sasToken(sasToken).buildAsyncClient();
-    }
-
-    protected BlobServiceAsyncClient getServiceAsyncClient(String endpoint) {
-        return getServiceAsyncClient(null, endpoint, (HttpPipelinePolicy) null);
-    }
-
-    protected BlobServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint,
-                                                 HttpPipelinePolicy... policies) {
-        return getServiceClientBuilder(credential, endpoint, policies)
-            .buildAsyncClient();
-    }
-
     protected BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
@@ -413,8 +535,7 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    protected BlobServiceClientBuilder getServiceClientBuilderWithTokenCredential(String endpoint,
-        HttpPipelinePolicy... policies) {
+    protected BlobServiceClientBuilder getServiceClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint);
 
@@ -445,17 +566,6 @@ public class BlobTestBase extends TestProxyTestBase {
             .buildClient();
     }
 
-    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobAsyncClientBase blobAsyncClient) {
-        return createLeaseAsyncClient(blobAsyncClient, null);
-    }
-
-    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobAsyncClientBase blobAsyncClient, String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .blobAsyncClient(blobAsyncClient)
-            .leaseId(leaseId)
-            .buildAsyncClient();
-    }
-
     protected static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient) {
         return createLeaseClient(containerClient, null);
     }
@@ -465,18 +575,6 @@ public class BlobTestBase extends TestProxyTestBase {
             .containerClient(containerClient)
             .leaseId(leaseId)
             .buildClient();
-    }
-
-    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobContainerAsyncClient containerAsyncClient) {
-        return createLeaseAsyncClient(containerAsyncClient, null);
-    }
-
-    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobContainerAsyncClient containerAsyncClient,
-        String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .containerAsyncClient(containerAsyncClient)
-            .leaseId(leaseId)
-            .buildAsyncClient();
     }
 
     /**
@@ -513,12 +611,9 @@ public class BlobTestBase extends TestProxyTestBase {
         return getContainerClientBuilder(endpoint).sasToken(sasToken).buildClient();
     }
 
-    protected BlobContainerAsyncClient getContainerAsyncClient(String sasToken, String endpoint) {
-        return getContainerClientBuilder(endpoint).sasToken(sasToken).buildAsyncClient();
-    }
-
     protected BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder().endpoint(endpoint);
+        //builder.clientOptions(new HttpClientOptions().setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))));
         instrument(builder);
         return builder;
     }
@@ -551,17 +646,6 @@ public class BlobTestBase extends TestProxyTestBase {
         instrument(builder);
 
         return builder.credential(credential).buildAsyncClient();
-    }
-
-    protected BlobAsyncClient getBlobAsyncClient(String sasToken, String endpoint, String blobName, String snapshotId) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .blobName(blobName)
-            .snapshot(snapshotId);
-
-        instrument(builder);
-
-        return builder.sasToken(sasToken).buildAsyncClient();
     }
 
     protected BlobClient getBlobClient(String sasToken, String endpoint, String blobName) {
@@ -645,17 +729,6 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder.buildClient();
     }
 
-    protected BlobAsyncClient getBlobAsyncClient(String endpoint, String sasToken) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
-        instrument(builder);
-
-        if (!CoreUtils.isNullOrEmpty(sasToken)) {
-            builder.sasToken(sasToken);
-        }
-        return builder.buildAsyncClient();
-    }
-
     protected BlobClientBuilder getBlobClientBuilder(String endpoint) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint);
@@ -705,6 +778,51 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder;
     }
 
+    /*
+    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
+    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
+    with than was worth it.
+     */
+    public static HttpResponse getStubResponse(int code, HttpRequest request) {
+        return new HttpResponse(request) {
+
+            @Override
+            public int getStatusCode() {
+                return code;
+            }
+
+            @Override
+            public String getHeaderValue(String s) {
+                return null;
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                return new HttpHeaders();
+            }
+
+            @Override
+            public Flux<ByteBuffer> getBody() {
+                return Flux.empty();
+            }
+
+            @Override
+            public Mono<byte[]> getBodyAsByteArray() {
+                return Mono.just(new byte[0]);
+            }
+
+            @Override
+            public Mono<String> getBodyAsString() {
+                return Mono.just("");
+            }
+
+            @Override
+            public Mono<String> getBodyAsString(Charset charset) {
+                return Mono.just("");
+            }
+        };
+    }
+
     protected HttpResponse getStubDownloadResponse(HttpResponse response, int code, Flux<ByteBuffer> body, HttpHeaders headers) {
         return new HttpResponse(response.getRequest()) {
 
@@ -749,7 +867,7 @@ public class BlobTestBase extends TestProxyTestBase {
     * Validates the presence of headers that are present on a large number of responses. These headers are generally
     * random and can really only be checked as not null.
     * @param headers The object (may be headers object or response object) that has properties which expose these common headers.
-    * @return Whether the header values are appropriate.
+    * @return Whether or not the header values are appropriate.
     */
     protected static boolean validateBasicHeaders(HttpHeaders headers) {
         return headers.getValue(HttpHeaderName.ETAG) != null
@@ -777,7 +895,37 @@ public class BlobTestBase extends TestProxyTestBase {
      * real key this way.
      */
     protected byte[] getRandomKey() {
-        return StorageCommonTestUtils.getRandomByteArray(32, testResourceNamer); // 256-bit key
+        return getRandomByteArray(32); // 256-bit key
+    }
+
+    /**
+     * Injects one retry-able IOException failure per url.
+     */
+    public static class TransientFailureInjectingHttpPipelinePolicy implements HttpPipelinePolicy {
+
+        private final ConcurrentHashMap<String, Boolean> failureTracker = new ConcurrentHashMap<>();
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext,
+            HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            HttpRequest request = httpPipelineCallContext.getHttpRequest();
+            String key = request.getUrl().toString();
+
+            // Make sure that failure happens once per url.
+            if (failureTracker.get(key) == null) {
+                failureTracker.put(key, false);
+                return httpPipelineNextPolicy.process();
+            } else {
+                failureTracker.put(key, true);
+                return request.getBody().flatMap(byteBuffer -> {
+                    // Read a byte from each buffer to simulate that failure occurred in the middle of transfer.
+                    byteBuffer.get();
+                    return Flux.just(byteBuffer);
+                })// Reduce in order to force processing of all buffers.
+                .reduce(0L, (a, byteBuffer) -> a + byteBuffer.remaining())
+                    .flatMap(aLong -> Mono.error(new IOException("KABOOM!")));
+            }
+        }
     }
 
     protected void liveTestScenarioWithRetry(Runnable runnable) {
@@ -798,8 +946,23 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
+    Duration getPollingDuration(long liveTestDurationInMillis) {
+        return (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) ? Duration.ofMillis(1)
+            : Duration.ofMillis(liveTestDurationInMillis);
+    }
+
     protected HttpPipelinePolicy getPerCallVersionPolicy() {
-        return new PerCallVersionPolicy("2017-11-09");
+        return new HttpPipelinePolicy() {
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                context.getHttpRequest().setHeader(X_MS_VERSION, "2017-11-09");
+                return next.process();
+            }
+            @Override
+            public HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL;
+            }
+        };
     }
 
     // add this to BlobTestHelper class
@@ -814,12 +977,6 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.getStatusCode());
         return response;
-    }
-
-    protected static <T> void assertAsyncResponseStatusCode(Mono<Response<T>> response, int expectedStatusCode) {
-        StepVerifier.create(response)
-            .assertNext(r -> assertEquals(expectedStatusCode, r.getStatusCode()))
-            .verifyComplete();
     }
 
     protected static Stream<Arguments> allConditionsSupplier() {
@@ -852,6 +1009,72 @@ public class BlobTestBase extends TestProxyTestBase {
         );
     }
 
+    protected static boolean olderThan20190707ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2019_07_07);
+    }
+
+    protected static boolean olderThan20191212ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2019_12_12);
+    }
+
+    private static boolean olderThan20200210ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2020_02_10);
+    }
+
+    protected static boolean olderThan20201206ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2020_12_06);
+    }
+
+
+    protected static boolean olderThan20201002ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2020_10_02);
+    }
+
+    protected static boolean olderThan20200408ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2020_04_08);
+    }
+
+    protected static boolean olderThan20210410ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2021_04_10);
+    }
+    protected static boolean olderThan20210608ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2021_06_08);
+    }
+
+    protected static boolean olderThan20211202ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2021_12_02);
+    }
+
+    protected static boolean olderThan20221102ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2022_11_02);
+    }
+
+    protected static boolean olderThan20210212ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2021_02_12);
+    }
+
+    protected static boolean olderThan(BlobServiceVersion targetVersion) {
+        String targetServiceVersionFromEnvironment = ENVIRONMENT.getServiceVersion();
+        BlobServiceVersion version = (targetServiceVersionFromEnvironment != null)
+            ? Enum.valueOf(BlobServiceVersion.class, targetServiceVersionFromEnvironment)
+            : BlobServiceVersion.getLatest();
+
+        return version.ordinal() < targetVersion.ordinal();
+    }
+
+    public static boolean isLiveMode() {
+        return ENVIRONMENT.getTestMode() == TestMode.LIVE;
+    }
+
+    public static boolean isPlaybackMode() {
+        return ENVIRONMENT.getTestMode() == TestMode.PLAYBACK;
+    }
+
+    public static boolean isOperatingSystemMac() {
+        String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        return osName.contains("mac os") || osName.contains("darwin");
+    }
+
     protected static String redactUrl(String url) {
         if (url == null) {
             return null;
@@ -860,51 +1083,18 @@ public class BlobTestBase extends TestProxyTestBase {
         return URL_SANITIZER.matcher(url).replaceAll("REDACTED");
     }
 
-    protected HttpClient getHttpClient() {
-        return StorageCommonTestUtils.getHttpClient(interceptorManager);
-    }
+    public static byte[] convertInputStreamToByteArray(InputStream inputStream) {
+        byte[] buffer = new byte[4096];
+        int b;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            while ((b = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, b);
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
 
-    public static HttpClient getHttpClient(Supplier<HttpClient> playbackClientSupplier) {
-        return StorageCommonTestUtils.getHttpClient(playbackClientSupplier);
-    }
-
-    protected  <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
-        return StorageCommonTestUtils.instrument(builder, BlobServiceClientBuilder.getDefaultHttpLogOptions(),
-            interceptorManager);
-    }
-
-    protected byte[] convertInputStreamToByteArray(InputStream inputStream) {
-        return StorageCommonTestUtils.convertInputStreamToByteArray(inputStream);
-    }
-
-    protected boolean compareFiles(File file1, File file2, long offset, long count) throws IOException {
-        return StorageCommonTestUtils.compareFiles(file1, file2, offset, count);
-    }
-
-    protected byte[] getRandomByteArray(int size) {
-        return StorageCommonTestUtils.getRandomByteArray(size, testResourceNamer);
-    }
-
-    public ByteBuffer getRandomData(int size) {
-        return StorageCommonTestUtils.getRandomData(size, testResourceNamer);
-    }
-
-    protected File getRandomFile(int size) throws IOException {
-        return StorageCommonTestUtils.getRandomFile(size, testResourceNamer);
-    }
-
-    /*https://learn.microsoft.com/en-us/rest/api/storageservices/define-stored-access-policy#creating-or-modifying-a-stored-access-policy
-    Second note, it can take up to 30 seconds to set/create an access policy and this was causing flakeyness in the live test pipeline
-    */
-    protected void setAccessPolicySleep(BlobContainerClient cc, PublicAccessType access,
-                                        List<BlobSignedIdentifier> identifiers) {
-        cc.setAccessPolicy(access, identifiers);
-        sleepIfRunningAgainstService(30 * 1000);
-    }
-
-    protected void setAccessPolicySleepAsync(BlobContainerAsyncClient cc, PublicAccessType access,
-                                        List<BlobSignedIdentifier> identifiers) {
-        cc.setAccessPolicy(access, identifiers).block();
-        sleepIfRunningAgainstService(30 * 1000);
+        return outputStream.toByteArray();
     }
 }
