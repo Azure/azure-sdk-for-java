@@ -8,12 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The ChatParticipant model.
- */
+/** The ChatParticipant model. */
 @Fluent
 public final class ChatParticipant {
-    /**
+    /*
      * Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This
      * model must be interpreted as a union: Apart from rawId, at most one
@@ -22,13 +20,13 @@ public final class ChatParticipant {
     @JsonProperty(value = "communicationIdentifier", required = true)
     private CommunicationIdentifier communicationIdentifier;
 
-    /**
+    /*
      * Display name for the chat participant.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
-    /**
+    /*
      * Time from which the chat history is shared with the member. The
      * timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */

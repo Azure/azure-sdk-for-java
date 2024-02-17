@@ -8,31 +8,29 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Details of the message to send.
- */
+/** Details of the message to send. */
 @Fluent
 public final class SendChatMessageOptions {
-    /**
+    /*
      * Chat message content.
      */
     @JsonProperty(value = "content", required = true)
     private String content;
 
-    /**
+    /*
      * The display name of the chat message sender. This property is used to
      * populate sender name for push notifications.
      */
     @JsonProperty(value = "senderDisplayName")
     private String senderDisplayName;
 
-    /**
+    /*
      * The chat message type.
      */
     @JsonProperty(value = "type")
     private ChatMessageType type;
 
-    /**
+    /*
      * Message metadata.
      */
     @JsonProperty(value = "metadata")

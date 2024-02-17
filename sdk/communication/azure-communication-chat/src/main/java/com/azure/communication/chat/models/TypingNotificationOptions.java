@@ -7,12 +7,10 @@ package com.azure.communication.chat.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Request payload for typing notifications.
- */
+/** Request payload for typing notifications. */
 @Fluent
 public final class TypingNotificationOptions {
-    /**
+    /*
      * The display name of the typing notification sender. This property is
      * used to populate sender name for push notifications.
      */
