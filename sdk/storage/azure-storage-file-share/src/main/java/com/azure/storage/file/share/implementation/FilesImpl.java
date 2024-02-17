@@ -594,7 +594,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -621,7 +620,6 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
                 @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
                 @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -4571,7 +4569,6 @@ public final class FilesImpl {
                                 fileLastWrittenMode,
                                 this.client.isAllowTrailingDot(),
                                 this.client.isAllowSourceTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4658,7 +4655,6 @@ public final class FilesImpl {
                 fileLastWrittenMode,
                 this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }
@@ -4868,7 +4864,6 @@ public final class FilesImpl {
                                 fileLastWrittenMode,
                                 this.client.isAllowTrailingDot(),
                                 this.client.isAllowSourceTrailingDot(),
-                                this.client.getFileRequestIntent(),
                                 accept,
                                 context));
     }
@@ -4955,7 +4950,6 @@ public final class FilesImpl {
                 fileLastWrittenMode,
                 this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(),
-                this.client.getFileRequestIntent(),
                 accept,
                 context);
     }

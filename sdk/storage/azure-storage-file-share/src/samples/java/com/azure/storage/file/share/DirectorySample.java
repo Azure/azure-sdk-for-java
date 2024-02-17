@@ -3,9 +3,10 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareStorageException;
+
+import java.util.UUID;
 
 /**
  * Sample demonstrates how to create, list and delete directory and its subdirectories and files
@@ -17,7 +18,7 @@ public class DirectorySample {
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
-        return CoreUtils.randomUuid().toString().substring(0, 8);
+        return UUID.randomUUID().toString().substring(0, 8);
     }
 
     /**

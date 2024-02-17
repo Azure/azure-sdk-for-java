@@ -6,7 +6,6 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -18,13 +17,14 @@ import com.azure.storage.file.share.models.ShareServiceProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import org.junit.jupiter.api.parallel.ResourceLock;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -190,7 +190,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
             Arguments.of(new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true), 4, true, true));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-07-07")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20190707ServiceVersion")
     @Test
     public void listSharesWithPremiumShare() {
         String premiumShareName = generateShareName();
@@ -251,7 +251,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
             Arguments.of(INVALID_ALLOWED_METHOD, 400, ShareErrorCode.INVALID_XML_NODE_VALUE));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreShareMin() {
         ShareAsyncClient shareClient = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName());
@@ -263,7 +263,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
                 new ListSharesOptions()
                     .setPrefix(shareClient.getShareName())
                     .setIncludeDeleted(true)).next()).block();
-        sleepIfRunningAgainstService(30000);
+        sleepIfLiveTesting(30000);
         assertNotNull(shareItem);
         Mono<ShareAsyncClient> restoredShareClientMono = primaryFileServiceAsyncClient.undeleteShare(
             shareItem.getName(), shareItem.getVersion());
@@ -271,7 +271,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
             .assertNext(Assertions::assertTrue).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreShareMax() {
         ShareAsyncClient shareClient = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName());
@@ -283,7 +283,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
                 new ListSharesOptions()
                     .setPrefix(shareClient.getShareName())
                     .setIncludeDeleted(true)).next()).block();
-        sleepIfRunningAgainstService(30000);
+        sleepIfLiveTesting(30000);
 
         assertNotNull(shareItem);
         Mono<ShareAsyncClient> restoredShareClientMono = primaryFileServiceAsyncClient.undeleteShareWithResponse(
@@ -293,7 +293,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
             .assertNext(Assertions::assertTrue).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreShareError() {
         StepVerifier.create(primaryFileServiceAsyncClient.undeleteShare(generateShareName(), "01D60F8BB59A4652"))

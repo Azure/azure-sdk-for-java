@@ -6,19 +6,17 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
-import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareErrorCode;
-import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
-import com.azure.storage.file.share.models.ShareStorageException;
-import com.azure.storage.file.share.models.ShareTokenIntent;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
+import com.azure.storage.file.share.models.ShareStorageException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,18 +30,18 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class DirectoryAsyncApiTests extends FileShareTestBase {
 
@@ -412,7 +410,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
      *                               -> listOp6 (file)
      *              -> listOp2 (file)
      */
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-10-02")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20201002ServiceVersion")
     @ParameterizedTest
     @MethodSource("listFilesAndDirectoriesArgsSupplier")
     public void listFilesAndDirectoriesArgs(String extraPrefix, Integer maxResults, int numOfResults) {
@@ -469,7 +467,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
                 FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-07-07")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20190707ServiceVersion")
     @Test
     public void forceCloseHandleMin() {
         primaryDirectoryAsyncClient.create().block();
@@ -488,7 +486,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             .verifyErrorSatisfies(it -> assertInstanceOf(ShareStorageException.class, it));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-07-07")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20190707ServiceVersion")
     @Test
     public void forceCloseAllHandlesMin() {
         primaryDirectoryAsyncClient.create().block();
@@ -838,78 +836,5 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
     @Test
     public void getDirectoryPath() {
         assertEquals(directoryPath, primaryDirectoryAsyncClient.getDirectoryPath());
-    }
-
-    @Test
-    public void defaultAudience() {
-        String dirName = generatePathName();
-        ShareDirectoryAsyncClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryAsyncClient();
-        dirClient.create().block();
-        ShareServiceAsyncClient oAuthServiceClient =
-            getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
-                .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(null) /* should default to "https://storage.azure.com/" */);
-
-        ShareDirectoryAsyncClient aadDirClient = oAuthServiceClient.getShareAsyncClient(shareName).getDirectoryClient(dirName);
-
-        StepVerifier.create(aadDirClient.exists())
-            .expectNext(true)
-            .verifyComplete();
-    }
-
-    @Test
-    public void storageAccountAudience() {
-        String dirName = generatePathName();
-        ShareDirectoryAsyncClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryAsyncClient();
-        dirClient.create().block();
-        ShareServiceAsyncClient oAuthServiceClient =
-            getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
-                .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(ShareAudience.createShareServiceAccountAudience(primaryDirectoryAsyncClient.getAccountName())));
-
-        ShareDirectoryAsyncClient aadDirClient = oAuthServiceClient.getShareAsyncClient(shareName).getDirectoryClient(dirName);
-
-        StepVerifier.create(aadDirClient.exists())
-            .expectNext(true)
-            .verifyComplete();
-    }
-
-    @Test
-    public void audienceError() {
-        String dirName = generatePathName();
-        ShareDirectoryAsyncClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryAsyncClient();
-        dirClient.create().block();
-        ShareServiceAsyncClient oAuthServiceClient =
-            getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
-                .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(ShareAudience.createShareServiceAccountAudience("badAudience")));
-
-        ShareDirectoryAsyncClient aadDirClient = oAuthServiceClient.getShareAsyncClient(shareName).getDirectoryClient(dirName);
-
-        StepVerifier.create(aadDirClient.exists())
-            .verifyErrorSatisfies(r -> {
-                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
-                assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
-            });
-    }
-
-    @Test
-    public void audienceFromString() {
-        String url = String.format("https://%s.file.core.windows.net/", primaryDirectoryAsyncClient.getAccountName());
-        ShareAudience audience = ShareAudience.fromString(url);
-
-        String dirName = generatePathName();
-        ShareDirectoryAsyncClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryAsyncClient();
-        dirClient.create().block();
-        ShareServiceAsyncClient oAuthServiceClient =
-            getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
-                .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(audience));
-
-        ShareDirectoryAsyncClient aadDirClient = oAuthServiceClient.getShareAsyncClient(shareName).getDirectoryClient(dirName);
-
-        StepVerifier.create(aadDirClient.exists())
-            .expectNext(true)
-            .verifyComplete();
     }
 }

@@ -12,7 +12,6 @@ import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.SasProtocol;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -21,6 +20,7 @@ import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -382,7 +382,7 @@ public class FileSasTests extends FileShareTestBase {
     Ensures that we don't break the functionality of the deprecated means of generating an AccountSas.
     Only run in live mode because recordings would frequently get messed up when we update recordings to new sas version
      */
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isLiveMode")
     @Test
     public void accountSasDeprecated() {
         AccountSasService service = new AccountSasService()

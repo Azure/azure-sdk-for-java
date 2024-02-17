@@ -114,7 +114,7 @@ class FileSasClientTests extends FileShareTestBase {
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier));
 
         // Sleep 30 seconds if running against the live service as it may take ACLs that long to take effect.
-        sleepIfRunningAgainstService(30000);
+        sleepIfLiveTesting(30000);
 
         // Check shareSASPermissions
         ShareSasPermission permissions = new ShareSasPermission()

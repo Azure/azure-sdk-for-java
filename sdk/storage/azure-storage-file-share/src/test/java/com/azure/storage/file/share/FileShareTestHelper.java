@@ -4,10 +4,8 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
@@ -24,6 +22,7 @@ import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,14 +36,17 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileShareTestHelper {
 
@@ -101,13 +103,14 @@ public class FileShareTestHelper {
     }
 
     protected static byte[] getRandomBuffer(int length) {
+        final Random randGenerator = new Random();
         final byte[] buff = new byte[length];
-        ThreadLocalRandom.current().nextBytes(buff);
+        randGenerator.nextBytes(buff);
         return buff;
     }
 
     protected static File getRandomFile(int size) throws IOException {
-        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
         file.deleteOnExit();
         FileOutputStream fos = new FileOutputStream(file);
 
@@ -131,7 +134,34 @@ public class FileShareTestHelper {
     }
 
     protected static boolean compareFiles(File file1, File file2, long offset, long count) throws IOException {
-        return StorageCommonTestUtils.compareFiles(file1, file2, offset, count);
+        long pos = 0L;
+        int defaultBufferSize = 128 * Constants.KB;
+        FileInputStream stream1 = new FileInputStream(file1);
+        stream1.skip(offset);
+        FileInputStream stream2 = new FileInputStream(file2);
+
+        try {
+            // If the amount we are going to read is smaller than the default buffer size use that instead.
+            int bufferSize = (int) Math.min(defaultBufferSize, count);
+            while (pos < count) {
+                // Number of bytes we expect to read.
+                int expectedReadCount = (int) Math.min(bufferSize, count - pos);
+                byte[] buffer1 = new byte[expectedReadCount];
+                byte[] buffer2 = new byte[expectedReadCount];
+
+                int readCount1 = stream1.read(buffer1);
+                int readCount2 = stream2.read(buffer2);
+
+                assertTrue((readCount1 == readCount2 && Arrays.equals(buffer1, buffer2)));
+                pos += expectedReadCount;
+            }
+
+            int verificationRead = stream2.read();
+            return pos == count && verificationRead == -1;
+        } finally {
+            stream1.close();
+            stream2.close();
+        }
     }
 
     protected static ByteBuffer getRandomByteBuffer(int length) {
