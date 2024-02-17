@@ -101,7 +101,12 @@ public class FetcherTest {
                         ImplementationBridgeHelpers
                             .CosmosQueryRequestOptionsBaseHelper
                             .getCosmosQueryRequestOptionsBaseAccessor()
-                            .getOperationContext(options),
+                            .getOperationContext(
+                                ImplementationBridgeHelpers
+                                    .CosmosQueryRequestOptionsHelper
+                                    .getCosmosQueryRequestOptionsAccessor()
+                                    .getImpl(options)
+                                ),
                     ImplementationBridgeHelpers
                         .CosmosQueryRequestOptionsHelper
                         .getCosmosQueryRequestOptionsAccessor()

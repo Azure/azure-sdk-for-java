@@ -56,7 +56,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
                 CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
                     qryOptAccessor.clone(requestOptions);
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
-                qryOptBaseAccessor.setItemFactoryMethod(orderByCosmosQueryRequestOptions, null);
+                qryOptBaseAccessor.setItemFactoryMethod(qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions), null);
 
                 documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
 
@@ -67,7 +67,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
                 CosmosQueryRequestOptions parallelCosmosQueryRequestOptions =
                     qryOptAccessor.clone(requestOptions);
-                qryOptBaseAccessor.setItemFactoryMethod(parallelCosmosQueryRequestOptions, null);
+                qryOptBaseAccessor.setItemFactoryMethod(qryOptAccessor.getImpl(parallelCosmosQueryRequestOptions), null);
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(parallelCosmosQueryRequestOptions, continuationToken);
 
                 documentQueryParams.setCosmosQueryRequestOptions(parallelCosmosQueryRequestOptions);

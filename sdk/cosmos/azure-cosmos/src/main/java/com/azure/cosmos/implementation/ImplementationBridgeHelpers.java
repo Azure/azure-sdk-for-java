@@ -262,6 +262,7 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosQueryRequestOptionsAccessor {
+            CosmosQueryRequestOptionsBase<?> getImpl(CosmosQueryRequestOptions options);
             CosmosQueryRequestOptions clone(CosmosQueryRequestOptions toBeCloned);
             CosmosQueryRequestOptions clone(CosmosQueryRequestOptionsBase<?> toBeCloned);
             boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions);

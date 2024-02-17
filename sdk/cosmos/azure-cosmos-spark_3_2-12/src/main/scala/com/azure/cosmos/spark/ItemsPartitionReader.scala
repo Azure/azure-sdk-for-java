@@ -42,7 +42,12 @@ private case class ItemsPartitionReader
     .disallowQueryPlanRetrieval(new CosmosQueryRequestOptions())
 
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-  ThroughputControlHelper.populateThroughputControlGroupName(queryOptions, readConfig.throughputControlConfig)
+  ThroughputControlHelper.populateThroughputControlGroupName(
+    ImplementationBridgeHelpers
+      .CosmosQueryRequestOptionsHelper
+      .getCosmosQueryRequestOptionsAccessor
+      .getImpl(queryOptions),
+    readConfig.throughputControlConfig)
 
   private val operationContext = {
     val taskContext = TaskContext.get
@@ -64,7 +69,12 @@ private case class ItemsPartitionReader
 
       ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper
         .getCosmosQueryRequestOptionsBaseAccessor
-        .setOperationContext(queryOptions, ctxAndListener)
+        .setOperationContext(
+          ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor
+            .getImpl(queryOptions),
+          ctxAndListener)
 
       Some(ctxAndListener)
     } else {
@@ -148,7 +158,12 @@ private case class ItemsPartitionReader
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
       ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper
         .getCosmosQueryRequestOptionsBaseAccessor
-        .setOperationContext(queryOptions, operationContextAndListenerTuple)
+        .setOperationContext(
+          ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor
+            .getImpl(queryOptions),
+          operationContextAndListenerTuple)
 
       taskDiagnosticsContext
     } else{
@@ -166,7 +181,10 @@ private case class ItemsPartitionReader
     .CosmosQueryRequestOptionsBaseHelper
     .getCosmosQueryRequestOptionsBaseAccessor
     .setItemFactoryMethod(
-      queryOptions,
+      ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .getCosmosQueryRequestOptionsAccessor
+        .getImpl(queryOptions),
       jsonNode => {
         val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
 
@@ -236,7 +254,10 @@ private case class ItemsPartitionReader
         .CosmosQueryRequestOptionsBaseHelper
         .getCosmosQueryRequestOptionsBaseAccessor
         .setCorrelationActivityId(
-          queryOptions,
+          ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor
+            .getImpl(queryOptions),
           diagnosticsContext.correlationActivityId)
 
       cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[SparkRowItem])

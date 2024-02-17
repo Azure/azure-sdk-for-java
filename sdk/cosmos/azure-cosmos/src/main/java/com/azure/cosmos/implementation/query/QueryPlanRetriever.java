@@ -29,6 +29,9 @@ import java.util.function.Supplier;
 
 class QueryPlanRetriever {
     private final static
+    ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    private final static
     ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.CosmosQueryRequestOptionsBaseAccessor qryOptBaseAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.getCosmosQueryRequestOptionsBaseAccessor();
 
@@ -78,7 +81,7 @@ class QueryPlanRetriever {
         queryPlanRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
         CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig =
-            qryOptBaseAccessor.getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions);
+            qryOptBaseAccessor.getEndToEndOperationLatencyPolicyConfig(qryOptAccessor.getImpl(nonNullRequestOptions));
         if (end2EndConfig != null) {
             queryPlanRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(end2EndConfig);
         }

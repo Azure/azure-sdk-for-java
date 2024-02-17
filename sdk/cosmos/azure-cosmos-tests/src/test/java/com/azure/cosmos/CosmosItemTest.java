@@ -842,7 +842,12 @@ public class CosmosItemTest extends TestSuiteBase {
         ImplementationBridgeHelpers
             .CosmosQueryRequestOptionsBaseHelper
             .getCosmosQueryRequestOptionsBaseAccessor()
-            .setCorrelationActivityId(cosmosQueryRequestOptions, correlationId);
+            .setCorrelationActivityId(
+                ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getImpl(cosmosQueryRequestOptions),
+                correlationId);
 
         CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
             container.queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class);

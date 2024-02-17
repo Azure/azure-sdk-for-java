@@ -3,48 +3,29 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.Strings;
 
-import java.util.ArrayList;
+import java.time.Duration;
 import java.util.List;
 
 /**
  * Specifies the options associated with query methods (enumeration operations)
  * in the Azure Cosmos DB database service.
  */
-public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<CosmosQueryRequestOptions> {
-    private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
-    private String partitionKeyRangeId;
-    private Boolean scanInQueryEnabled;
-    private Boolean emitVerboseTracesInQuery;
-    private int maxDegreeOfParallelism;
-    private int maxBufferedItemCount;
-    private Integer maxItemCount;
-    private String requestContinuation;
-    private PartitionKey partitionkey;
-    private boolean emptyPagesAllowed;
-    private FeedRange feedRange;
-    private boolean queryPlanRetrievalDisallowed;
-    private boolean emptyPageDiagnosticsEnabled;
-    private String queryName;
-    private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
+public class CosmosQueryRequestOptions {
+    private final CosmosQueryRequestOptionsImpl actualRequestOptions;
 
     /**
      * Instantiates a new query request options.
      */
     public CosmosQueryRequestOptions() {
-        super();
 
-        this.emptyPageDiagnosticsEnabled = Configs.isEmptyPageDiagnosticsEnabled();
-    }
-
-    CosmosQueryRequestOptions(CosmosQueryRequestOptionsBase<?> options) {
-        super(options);
+        this.actualRequestOptions = new CosmosQueryRequestOptionsImpl();
     }
 
     /**
@@ -53,41 +34,60 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @param options the options
      */
     CosmosQueryRequestOptions(CosmosQueryRequestOptions options) {
-        super(options);
-
-        this.partitionKeyRangeId = options.partitionKeyRangeId;
-        this.scanInQueryEnabled = options.scanInQueryEnabled;
-        this.emitVerboseTracesInQuery = options.emitVerboseTracesInQuery;
-        this.maxDegreeOfParallelism = options.maxDegreeOfParallelism;
-        this.maxBufferedItemCount = options.maxBufferedItemCount;
-        this.maxItemCount = options.maxItemCount;
-        this.requestContinuation = options.requestContinuation;
-        this.partitionkey = options.partitionkey;
-        this.emptyPagesAllowed = options.emptyPagesAllowed;
-        this.queryPlanRetrievalDisallowed = options.queryPlanRetrievalDisallowed;
-        this.emptyPageDiagnosticsEnabled = options.emptyPageDiagnosticsEnabled;
-        this.queryName = options.queryName;
-        this.feedRange = options.feedRange;
-        this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
+        this.actualRequestOptions = new CosmosQueryRequestOptionsImpl(options.actualRequestOptions);
     }
 
     /**
-     * Gets the partitionKeyRangeId.
+     * Instantiates a new query request options.
      *
-     * @return the partitionKeyRangeId.
+     * @param options the options
      */
-    String getPartitionKeyRangeIdInternal() {
-        return this.partitionKeyRangeId;
+    CosmosQueryRequestOptions(CosmosQueryRequestOptionsBase<?> options) {
+        this.actualRequestOptions = new CosmosQueryRequestOptionsImpl(options);
     }
 
     /**
-     * Sets the partitionKeyRangeId.
+     * Gets the consistency level required for the request.
      *
-     * @param partitionKeyRangeId the partitionKeyRangeId.
+     * @return the consistency level.
+     */
+
+    public ConsistencyLevel getConsistencyLevel() {
+        return this.actualRequestOptions.getConsistencyLevel();
+    }
+
+    /**
+     * Sets the consistency level required for the request. The effective consistency level
+     * can only be reduce for read/query requests. So when the Account's default consistency level
+     * is for example Session you can specify on a request-by-request level for individual requests
+     * that Eventual consistency is sufficient - which could reduce the latency and RU charges for this
+     * request but will not guarantee session consistency (read-your-own-write) anymore
+     *
+     * @param consistencyLevel the consistency level.
+     * @return the CosmosItemRequestOptions.
+     */
+    public CosmosQueryRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+        this.actualRequestOptions.setConsistencyLevel(consistencyLevel);
+        return this;
+    }
+
+    /**
+     * Gets the session token for use with session consistency.
+     *
+     * @return the session token.
+     */
+    public String getSessionToken() {
+        return this.actualRequestOptions.getSessionToken();
+    }
+
+    /**
+     * Sets the session token for use with session consistency.
+     *
+     * @param sessionToken the session token.
      * @return the CosmosQueryRequestOptions.
      */
-    CosmosQueryRequestOptions setPartitionKeyRangeIdInternal(String partitionKeyRangeId) {
-        this.partitionKeyRangeId = partitionKeyRangeId;
+    public CosmosQueryRequestOptions setSessionToken(String sessionToken) {
+        this.actualRequestOptions.setSessionToken(sessionToken);
         return this;
     }
 
@@ -98,7 +98,7 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the option of enable scan in query.
      */
     public Boolean isScanInQueryEnabled() {
-        return this.scanInQueryEnabled;
+        return this.actualRequestOptions.isScanInQueryEnabled();
     }
 
     /**
@@ -109,29 +109,7 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the CosmosQueryRequestOptions.
      */
     public CosmosQueryRequestOptions setScanInQueryEnabled(Boolean scanInQueryEnabled) {
-        this.scanInQueryEnabled = scanInQueryEnabled;
-        return this;
-    }
-
-    /**
-     * Gets the option to allow queries to emit out verbose traces for
-     * investigation.
-     *
-     * @return the emit verbose traces in query.
-     */
-    Boolean isEmitVerboseTracesInQuery() {
-        return this.emitVerboseTracesInQuery;
-    }
-
-    /**
-     * Sets the option to allow queries to emit out verbose traces for
-     * investigation.
-     *
-     * @param emitVerboseTracesInQuery the emit verbose traces in query.
-     * @return the CosmosQueryRequestOptions.
-     */
-    CosmosQueryRequestOptions setEmitVerboseTracesInQuery(Boolean emitVerboseTracesInQuery) {
-        this.emitVerboseTracesInQuery = emitVerboseTracesInQuery;
+        this.actualRequestOptions.setScanInQueryEnabled(scanInQueryEnabled);
         return this;
     }
 
@@ -143,7 +121,7 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * execution.
      */
     public int getMaxDegreeOfParallelism() {
-        return maxDegreeOfParallelism;
+        return this.actualRequestOptions.getMaxDegreeOfParallelism();
     }
 
     /**
@@ -154,7 +132,7 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the CosmosQueryRequestOptions.
      */
     public CosmosQueryRequestOptions setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
-        this.maxDegreeOfParallelism = maxDegreeOfParallelism;
+        this.actualRequestOptions.setMaxDegreeOfParallelism(maxDegreeOfParallelism);
         return this;
     }
 
@@ -166,7 +144,7 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * parallel query execution.
      */
     public int getMaxBufferedItemCount() {
-        return maxBufferedItemCount;
+        return this.actualRequestOptions.getMaxBufferedItemCount();
     }
 
     /**
@@ -177,8 +155,80 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the CosmosQueryRequestOptions.
      */
     public CosmosQueryRequestOptions setMaxBufferedItemCount(int maxBufferedItemCount) {
-        this.maxBufferedItemCount = maxBufferedItemCount;
+        this.actualRequestOptions.setMaxBufferedItemCount(maxBufferedItemCount);
         return this;
+    }
+
+    /**
+     * Sets the ResponseContinuationTokenLimitInKb request option for item query
+     * requests in the Azure Cosmos DB service.
+     * <p>
+     * ResponseContinuationTokenLimitInKb is used to limit the length of
+     * continuation token in the query response. Valid values are &gt;= 1.
+     * <p>
+     * The continuation token contains both required and optional fields. The
+     * required fields are necessary for resuming the execution from where it was
+     * stooped. The optional fields may contain serialized index lookup work that
+     * was done but not yet utilized. This avoids redoing the work again in
+     * subsequent continuations and hence improve the query performance. Setting the
+     * maximum continuation size to 1KB, the Azure Cosmos DB service will only
+     * serialize required fields. Starting from 2KB, the Azure Cosmos DB service
+     * would serialize as much as it could fit till it reaches the maximum specified
+     * size.
+     *
+     * @param limitInKb continuation token size limit.
+     * @return the CosmosQueryRequestOptions.
+     */
+    public CosmosQueryRequestOptions setResponseContinuationTokenLimitInKb(int limitInKb) {
+        this.actualRequestOptions.setResponseContinuationTokenLimitInKb(limitInKb);
+        return this;
+    }
+
+    /**
+     * Gets the ResponseContinuationTokenLimitInKb request option for item query
+     * requests in the Azure Cosmos DB service. If not already set returns 0.
+     * <p>
+     * ResponseContinuationTokenLimitInKb is used to limit the length of
+     * continuation token in the query response. Valid values are &gt;= 1.
+     *
+     * @return return set ResponseContinuationTokenLimitInKb, or 0 if not set
+     */
+    public int getResponseContinuationTokenLimitInKb() {
+        return this.actualRequestOptions.getResponseContinuationTokenLimitInKb();
+    }
+
+    /**
+     * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} to be used for the request. If the config is already set
+     *      * on the client, then this will override the client level config for this request
+     *
+     * @param cosmosEndToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * @return the CosmosQueryRequestOptions
+     */
+    public CosmosQueryRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
+        this.actualRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(cosmosEndToEndOperationLatencyPolicyConfig);
+        return this;
+    }
+
+    /**
+     * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
+     *
+     * @param excludeRegions the regions to exclude
+     * @return the {@link CosmosQueryRequestOptions}
+     */
+    public CosmosQueryRequestOptions setExcludedRegions(List<String> excludeRegions) {
+        this.actualRequestOptions.setExcludedRegions(excludeRegions);
+        return this;
+    }
+
+    /**
+     * Gets the list of regions to exclude for the request/retries. These regions are excluded
+     * from the preferred region list.
+     *
+     * @return a list of excluded regions
+     * */
+    public List<String> getExcludedRegions() {
+        return this.actualRequestOptions.getExcludedRegions();
     }
 
     /**
@@ -188,7 +238,7 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the max number of items.
      */
     Integer getMaxItemCount() {
-        return this.maxItemCount;
+        return this.actualRequestOptions.getMaxItemCount();
     }
 
     /**
@@ -199,7 +249,7 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the CosmosQueryRequestOptions.
      */
     CosmosQueryRequestOptions setMaxItemCount(Integer maxItemCount) {
-        this.maxItemCount = maxItemCount;
+        this.actualRequestOptions.setMaxItemCount(maxItemCount);
         return this;
     }
 
@@ -209,7 +259,7 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the request continuation.
      */
     String getRequestContinuation() {
-        return this.requestContinuation;
+        return this.actualRequestOptions.getRequestContinuation();
     }
 
     /**
@@ -219,7 +269,7 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the CosmosQueryRequestOptions.
      */
     CosmosQueryRequestOptions setRequestContinuation(String requestContinuation) {
-        this.requestContinuation = requestContinuation;
+        this.actualRequestOptions.setRequestContinuation(requestContinuation);
         return this;
     }
 
@@ -230,7 +280,7 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the partition key.
      */
     public PartitionKey getPartitionKey() {
-        return this.partitionkey;
+        return this.actualRequestOptions.getPartitionKey();
     }
 
     /**
@@ -241,26 +291,28 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the CosmosQueryRequestOptions.
      */
     public CosmosQueryRequestOptions setPartitionKey(PartitionKey partitionkey) {
-        this.partitionkey = partitionkey;
+        this.actualRequestOptions.setPartitionKey(partitionkey);
         return this;
     }
 
     /**
-     * Gets the option to allow empty result pages in feed response.
+     * Gets the option to enable populate query metrics. By default query metrics are enabled.
      *
-     * @return whether to enable allow empty pages or not
+     * @return whether to enable populate query metrics (default: true)
      */
-    boolean isEmptyPagesAllowed() {
-        return emptyPagesAllowed;
+    public boolean isQueryMetricsEnabled() {
+        return this.actualRequestOptions.isQueryMetricsEnabled();
     }
 
     /**
-     * Sets the option to allow empty result pages in feed response. Defaults to false
-     * @param emptyPagesAllowed whether to allow empty pages in feed response
+     * Sets the option to enable/disable getting metrics relating to query execution on item query requests.
+     * By default query metrics are enabled.
+     *
+     * @param queryMetricsEnabled whether to enable or disable query metrics
      * @return the CosmosQueryRequestOptions.
      */
-    CosmosQueryRequestOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
-        this.emptyPagesAllowed = emptyPagesAllowed;
+    public CosmosQueryRequestOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
+        this.actualRequestOptions.setQueryMetricsEnabled(queryMetricsEnabled);
         return this;
     }
 
@@ -269,7 +321,7 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the {@link FeedRange}
      */
     public FeedRange getFeedRange() {
-        return feedRange;
+        return this.actualRequestOptions.getFeedRange();
     }
 
     /**
@@ -278,21 +330,114 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the CosmosQueryRequestOptions.
      */
     public CosmosQueryRequestOptions setFeedRange(FeedRange feedRange) {
-        this.feedRange = feedRange;
+        this.actualRequestOptions.setFeedRange(feedRange);
         return this;
     }
 
     /**
-     * Gets the logical query name - this identifier is only used for metrics and logs
-     * to distinguish different queries in telemetry. Cardinality of unique  values for queryName should be
-     * reasonably low - like significantly smaller than 100.
-     *
-     * @param defaultQueryName the default query name that should be used if none is specified on request options
-     * @return the logical query name
+     * Get throughput control group name.
+     * @return The throughput control group name.
      */
-    String getQueryNameOrDefault(String defaultQueryName) {
-        return !Strings.isNullOrWhiteSpace(queryName) ? queryName : defaultQueryName;
+    public String getThroughputControlGroupName() {
+        return this.actualRequestOptions.getThroughputControlGroupName();
     }
+
+    /**
+     * Set the throughput control group name.
+     *
+     * @param throughputControlGroupName The throughput control group name.
+     * @return A {@link CosmosQueryRequestOptions}.
+     */
+    public CosmosQueryRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
+        this.actualRequestOptions.setThroughputControlGroupName(throughputControlGroupName);
+        return this;
+    }
+
+    /**
+     * Gets the Dedicated Gateway Request Options
+     * @return the Dedicated Gateway Request Options
+     */
+    public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
+        return this.actualRequestOptions.getDedicatedGatewayRequestOptions();
+    }
+
+    /**
+     * Sets the Dedicated Gateway Request Options
+     * @param dedicatedGatewayRequestOptions Dedicated Gateway Request Options
+     * @return the CosmosQueryRequestOptions
+     */
+    public CosmosQueryRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+        this.actualRequestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
+        return this;
+    }
+
+    /**
+     * Gets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * Default is 500 ms.
+     *
+     * @return  thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     */
+    public Duration getThresholdForDiagnosticsOnTracer() {
+        return this.actualRequestOptions.getThresholdForDiagnosticsOnTracer();
+    }
+
+    /**
+     * Sets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * Default is 500 ms
+     *
+     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     * @return the CosmosQueryRequestOptions
+     */
+    public CosmosQueryRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        this.actualRequestOptions.setThresholdForDiagnosticsOnTracer(thresholdForDiagnosticsOnTracer);
+
+        return this;
+    }
+
+    /**
+     * Allows overriding the diagnostic thresholds for a specific operation.
+     * @param operationSpecificThresholds the diagnostic threshold override for this operation
+     * @return the CosmosQueryRequestOptions.
+     */
+    public CosmosQueryRequestOptions setDiagnosticsThresholds(
+        CosmosDiagnosticsThresholds operationSpecificThresholds) {
+
+        this.actualRequestOptions.setDiagnosticsThresholds(operationSpecificThresholds);
+        return this;
+    }
+
+    /**
+     * Gets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
+     * indexes and could use potential new indexes.
+     * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
+     * enabled when debuging slow queries.
+     *
+     * @return indexMetricsEnabled (default: false)
+     */
+    public boolean isIndexMetricsEnabled() {
+        return this.actualRequestOptions.isIndexMetricsEnabled();
+    }
+
+    /**
+     * Sets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
+     * indexes and could use potential new indexes.
+     * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
+     * enabled when debugging slow queries.
+     *
+     * By default the indexMetrics are disabled.
+     *
+     * @param indexMetricsEnabled a boolean used to obtain the index metrics
+     * @return indexMetricsEnabled
+     */
+    public CosmosQueryRequestOptions setIndexMetricsEnabled(boolean indexMetricsEnabled) {
+        this.actualRequestOptions.setIndexMetricsEnabled(indexMetricsEnabled);
+        return this;
+    }
+
 
     /**
      * Sets the logical query name - this identifier is only used for metrics and logs
@@ -303,29 +448,13 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
      * @return the logical query name
      */
     public CosmosQueryRequestOptions setQueryName(String queryName) {
-        this.queryName = queryName;
+        this.actualRequestOptions.setQueryName(queryName);
 
         return this;
     }
 
-    CosmosQueryRequestOptions disallowQueryPlanRetrieval() {
-        this.queryPlanRetrievalDisallowed = true;
-
-        return this;
-    }
-
-    boolean isQueryPlanRetrievalDisallowed() {
-        return this.queryPlanRetrievalDisallowed;
-    }
-
-    boolean isEmptyPageDiagnosticsEnabled() { return this.emptyPageDiagnosticsEnabled; }
-
-    List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker() {
-        return this.cancelledRequestDiagnosticsTracker;
-    }
-
-    void setCancelledRequestDiagnosticsTracker(List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
-        this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
+    CosmosQueryRequestOptionsImpl getImpl() {
+        return this.actualRequestOptions;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -334,6 +463,11 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
     static void initialize() {
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.setCosmosQueryRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor() {
+
+                @Override
+                public CosmosQueryRequestOptionsBase<?> getImpl(CosmosQueryRequestOptions options) {
+                    return options.actualRequestOptions;
+                }
 
                 @Override
                 public CosmosQueryRequestOptions clone(CosmosQueryRequestOptions toBeCloned) {
@@ -349,29 +483,32 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
                 public CosmosQueryRequestOptions disallowQueryPlanRetrieval(
                     CosmosQueryRequestOptions queryRequestOptions) {
 
-                    return queryRequestOptions.disallowQueryPlanRetrieval();
+                    queryRequestOptions.actualRequestOptions.disallowQueryPlanRetrieval();
+                    return queryRequestOptions;
                 }
 
                 @Override
                 public boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions) {
-                    return queryRequestOptions.isQueryPlanRetrievalDisallowed();
+                    return queryRequestOptions.actualRequestOptions.isQueryPlanRetrievalDisallowed();
                 }
 
                 @Override
                 public boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions) {
-                    return queryRequestOptions.isEmptyPageDiagnosticsEnabled();
+                    return queryRequestOptions.actualRequestOptions.isEmptyPageDiagnosticsEnabled();
                 }
 
                 @Override
                 public String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions,
                                                     String defaultQueryName) {
 
-                    return queryRequestOptions.getQueryNameOrDefault(defaultQueryName);
+                    return queryRequestOptions.actualRequestOptions.getQueryNameOrDefault(defaultQueryName);
                 }
 
                 @Override
                 public RequestOptions toRequestOptions(CosmosQueryRequestOptions queryRequestOptions) {
-                    RequestOptions requestOptions = queryRequestOptions.applyToRequestOptions(new RequestOptions());
+                    RequestOptions requestOptions = queryRequestOptions
+                        .actualRequestOptions
+                        .applyToRequestOptions(new RequestOptions());
                     requestOptions.setPartitionKey(queryRequestOptions.getPartitionKey());
 
                     return requestOptions;
@@ -379,24 +516,28 @@ public class CosmosQueryRequestOptions extends CosmosQueryRequestOptionsBase<Cos
 
                 @Override
                 public List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker(CosmosQueryRequestOptions options) {
-                    return options.getCancelledRequestDiagnosticsTracker();
+                    return options.actualRequestOptions.getCancelledRequestDiagnosticsTracker();
                 }
 
                 public void setCancelledRequestDiagnosticsTracker(
                     CosmosQueryRequestOptions options,
                     List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
 
-                    options.setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
+                    options
+                        .actualRequestOptions
+                        .setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
                 }
 
                 @Override
                 public void setAllowEmptyPages(CosmosQueryRequestOptions options, boolean emptyPagesAllowed) {
-                    options.setEmptyPagesAllowed(emptyPagesAllowed);
+                    options
+                        .actualRequestOptions
+                        .setEmptyPagesAllowed(emptyPagesAllowed);
                 }
 
                 @Override
                 public boolean getAllowEmptyPages(CosmosQueryRequestOptions options) {
-                    return options.isEmptyPagesAllowed();
+                    return options.actualRequestOptions.isEmptyPagesAllowed();
                 }
 
                 @Override

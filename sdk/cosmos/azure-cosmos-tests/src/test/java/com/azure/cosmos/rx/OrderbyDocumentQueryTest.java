@@ -204,7 +204,12 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             // customers if we ever make the custom factory method public
             // For now in Spark don't need to worry about extracting values - we would need a wrapper to
             // allow inferring schema anyway.
-            .setItemFactoryMethod(options, (node) -> node.get("_value").intValue());
+            .setItemFactoryMethod(
+                ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getImpl(options),
+                (node) -> node.get("_value").intValue());
 
         int pageSize = 3;
         CosmosPagedFlux<Integer> queryObservable = createdCollection.queryItems(query, options,

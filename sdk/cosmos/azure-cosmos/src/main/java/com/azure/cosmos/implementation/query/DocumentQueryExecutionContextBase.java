@@ -83,7 +83,7 @@ implements IDocumentQueryExecutionContext<T> {
         this.correlatedActivityId = correlatedActivityId;
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.operationContext = qryOptBaseAccessor
-            .getOperationContext(cosmosQueryRequestOptions);
+            .getOperationContext(qryOptAccessor.getImpl(cosmosQueryRequestOptions));
         this.isQueryCancelledOnTimeout = isQueryCancelledOnTimeout;
         this.operationContextTextProvider = () -> {
             String operationContextText = operationContext != null && operationContext.getOperationContext() != null ?
@@ -131,12 +131,12 @@ implements IDocumentQueryExecutionContext<T> {
 
         request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig =
-            qryOptBaseAccessor.getEndToEndOperationLatencyPolicyConfig(cosmosQueryRequestOptions);
+            qryOptBaseAccessor.getEndToEndOperationLatencyPolicyConfig(qryOptAccessor.getImpl(cosmosQueryRequestOptions));
 
         if (endToEndOperationLatencyConfig != null) {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
-        request.requestContext.setExcludeRegions(qryOptBaseAccessor.getExcludeRegions(cosmosQueryRequestOptions));
+        request.requestContext.setExcludeRegions(qryOptBaseAccessor.getExcludeRegions(qryOptAccessor.getImpl(cosmosQueryRequestOptions)));
 
         request.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
         return request;
@@ -224,7 +224,7 @@ implements IDocumentQueryExecutionContext<T> {
         Map<String, String> customOptions = ImplementationBridgeHelpers
             .CosmosQueryRequestOptionsBaseHelper
             .getCosmosQueryRequestOptionsBaseAccessor()
-            .getHeader(cosmosQueryRequestOptions);
+            .getHeader(qryOptAccessor.getImpl(cosmosQueryRequestOptions));
         if(customOptions != null) {
             requestHeaders.putAll(customOptions);
         }
@@ -232,7 +232,7 @@ implements IDocumentQueryExecutionContext<T> {
         UUID correlationActivityId = ImplementationBridgeHelpers
             .CosmosQueryRequestOptionsBaseHelper
             .getCosmosQueryRequestOptionsBaseAccessor()
-            .getCorrelationActivityId(cosmosQueryRequestOptions);
+            .getCorrelationActivityId(qryOptAccessor.getImpl(cosmosQueryRequestOptions));
         if (correlationActivityId != null) {
             requestHeaders.put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, correlationActivityId.toString());
         }
@@ -328,7 +328,7 @@ implements IDocumentQueryExecutionContext<T> {
                     // AuthorizationTokenType.PrimaryMasterKey,
                 requestHeaders);
             CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig =
-                qryOptBaseAccessor.getEndToEndOperationLatencyPolicyConfig(cosmosQueryRequestOptions);
+                qryOptBaseAccessor.getEndToEndOperationLatencyPolicyConfig(qryOptAccessor.getImpl(cosmosQueryRequestOptions));
             if (endToEndOperationLatencyConfig != null) {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
             }
@@ -362,7 +362,9 @@ implements IDocumentQueryExecutionContext<T> {
         Class<T> classOfT) {
 
         Function<JsonNode, T> factoryMethodFromRequestOptions = cosmosQueryRequestOptions == null ?
-            null: qryOptBaseAccessor.getItemFactoryMethod(cosmosQueryRequestOptions, classOfT);
+            null: qryOptBaseAccessor.getItemFactoryMethod(
+                qryOptAccessor.getImpl(cosmosQueryRequestOptions),
+                classOfT);
 
         return getEffectiveFactoryMethod(factoryMethodFromRequestOptions, hasSelectValue, classOfT);
     }

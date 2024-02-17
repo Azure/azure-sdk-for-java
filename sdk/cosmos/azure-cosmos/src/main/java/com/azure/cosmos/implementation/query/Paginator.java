@@ -57,7 +57,7 @@ public class Paginator {
             top,
             maxPageSize,
             getPreFetchCount(cosmosQueryRequestOptions, top, maxPageSize),
-            qryOptBaseAccessor.getOperationContext(cosmosQueryRequestOptions),
+            qryOptBaseAccessor.getOperationContext(qryOptAccessor.getImpl(cosmosQueryRequestOptions)),
             qryOptAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions));
     }
 

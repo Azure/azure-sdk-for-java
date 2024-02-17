@@ -201,7 +201,7 @@ class DocumentProducer<T> {
                         top,
                         pageSize,
                         Paginator.getPreFetchCount(cosmosQueryRequestOptions, top, pageSize),
-                        qryOptionsBaseAccessor.getOperationContext(cosmosQueryRequestOptions),
+                        qryOptionsBaseAccessor.getOperationContext(qryOptionsAccessor.getImpl(cosmosQueryRequestOptions)),
                         qryOptionsAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions)
                 )
                 .map(rsp -> {

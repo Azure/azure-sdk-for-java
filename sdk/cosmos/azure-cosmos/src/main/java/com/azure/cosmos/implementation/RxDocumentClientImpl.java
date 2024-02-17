@@ -969,7 +969,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options == null) {
             return null;
         }
-        return qryOptBaseAccessor.getOperationContext(options);
+        return qryOptBaseAccessor.getOperationContext(qryOptAccessor.getImpl(options));
     }
 
     private OperationContextAndListenerTuple getOperationContextAndListenerTuple(RequestOptions options) {
@@ -1002,7 +1002,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosQueryRequestOptions nonNullQueryOptions = state.getQueryOptions();
 
         UUID correlationActivityIdOfRequestOptions = qryOptBaseAccessor
-            .getCorrelationActivityId(nonNullQueryOptions);
+            .getCorrelationActivityId(qryOptAccessor.getImpl(nonNullQueryOptions));
         UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
             correlationActivityIdOfRequestOptions : randomUuid();
 
@@ -3375,7 +3375,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Class<T> klass) {
 
         Function<JsonNode, T> factoryMethod = queryRequestOptions == null ?
-                null : qryOptBaseAccessor.getItemFactoryMethod(queryRequestOptions, klass);
+                null : qryOptBaseAccessor.getItemFactoryMethod(qryOptAccessor.getImpl(queryRequestOptions), klass);
 
         if (factoryMethod == null) {
             return this.itemDeserializer; // using default itemDeserializer
@@ -4944,7 +4944,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request -> readFeed(request)
                 .map(response -> toFeedResponsePage(
                                     response,
-                                    qryOptBaseAccessor.getItemFactoryMethod(nonNullOptions, klass),
+                                    qryOptBaseAccessor.getItemFactoryMethod(qryOptAccessor.getImpl(nonNullOptions), klass),
                                     klass));
 
         return Paginator
