@@ -217,7 +217,7 @@ public class IdentitySyncClient extends IdentityClientBase {
     public MsalToken authenticateWithPublicClientCache(TokenRequestContext request, IAccount account) {
         PublicClientApplication pc =  getPublicClientInstance(request).getValue();
         MsalToken token = acquireTokenFromPublicClientSilently(request, pc, account, false);
-        if (OffsetDateTime.now().isBefore(token.getExpiresAt().minus(REFRESH_OFFSET))) {
+        if (OffsetDateTime.now().isAfter(token.getExpiresAt().minus(REFRESH_OFFSET))) {
             token = acquireTokenFromPublicClientSilently(request, pc, account, true);
         }
         return token;
