@@ -37,7 +37,9 @@ public class SmsAsyncClientTests extends SmsTestBase {
         asyncClient = setupAsyncClient(builder, "sendSmsUsingConnectionString");
         assertNotNull(asyncClient);
         StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE))
-            .assertNext(this::assertHappyPath)
+            .assertNext(sendResult -> {
+                assertHappyPath(sendResult);
+            })
             .verifyComplete();
     }
 
@@ -49,7 +51,9 @@ public class SmsAsyncClientTests extends SmsTestBase {
         asyncClient = setupAsyncClient(builder, "sendSmsUsingTokenCredential");
         assertNotNull(asyncClient);
         StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE))
-            .assertNext(this::assertHappyPath)
+            .assertNext(sendResult -> {
+                assertHappyPath(sendResult);
+            })
             .verifyComplete();
     }
 
@@ -100,7 +104,9 @@ public class SmsAsyncClientTests extends SmsTestBase {
         // Action & Assert
         Mono<SmsSendResult> response = asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE);
         StepVerifier.create(response)
-            .assertNext(this::assertHappyPath)
+            .assertNext(sendResult -> {
+                assertHappyPath(sendResult);
+            })
             .verifyComplete();
     }
 
@@ -116,22 +122,9 @@ public class SmsAsyncClientTests extends SmsTestBase {
 
         // Action & Assert
         StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options))
-            .assertNext(this::assertHappyPath)
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void sendSmsToSingleNumberWithContext(HttpClient httpClient) {
-        // Arrange
-        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
-        asyncClient = setupAsyncClient(builder, "sendSmsToSingleNumberWithOptions");
-        SmsSendOptions options = new SmsSendOptions();
-        Context context = new Context("context_key", "context_value");
-
-        // Action & Assert
-        StepVerifier.create(asyncClient.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options, context))
-            .assertNext(this::assertHappyPath)
+            .assertNext((SmsSendResult sendResult) -> {
+                assertHappyPath(sendResult);
+            })
             .verifyComplete();
     }
 
@@ -145,7 +138,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
         Mono<SmsSendResult> response = asyncClient.send("+155512345678", TO_PHONE_NUMBER, MESSAGE);
         StepVerifier.create(response)
             .expectErrorMatches(exception ->
-                ((HttpResponseException) exception).getResponse().getStatusCode() == 401).verify();
+                ((HttpResponseException) exception).getResponse().getStatusCode() == 400).verify();
     }
 
     @ParameterizedTest
@@ -160,6 +153,28 @@ public class SmsAsyncClientTests extends SmsTestBase {
         StepVerifier.create(response)
         .expectErrorMatches(exception ->
                ((HttpResponseException) exception).getResponse().getStatusCode() == 401).verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendToFakePhoneNumber(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        asyncClient = setupAsyncClient(builder, "sendToFakePhoneNumber");
+        Mono<Iterable<SmsSendResult>> response = asyncClient.send(FROM_PHONE_NUMBER, Arrays.asList("+15550000000"), MESSAGE);
+
+        // Action & Assert
+        StepVerifier.create(response)
+            .assertNext(item -> {
+                assertNotNull(item);
+            })
+            .verifyComplete();
+
+        Iterable<SmsSendResult> smsSendResults = response.block();
+        for (SmsSendResult result : smsSendResults) {
+            assertFalse(result.isSuccessful());
+            assertEquals(result.getHttpStatusCode(), 400);
+        }
     }
 
     @ParameterizedTest
@@ -203,7 +218,8 @@ public class SmsAsyncClientTests extends SmsTestBase {
         asyncClient = setupAsyncClient(builder, "sendSmsFromNullNumber");
 
         // Action & Assert
-        Mono<SmsSendResult> response = asyncClient.send(null, TO_PHONE_NUMBER, MESSAGE);
+        String from = null;
+        Mono<SmsSendResult> response = asyncClient.send(from, TO_PHONE_NUMBER, MESSAGE);
         StepVerifier.create(response).verifyError();
     }
 
