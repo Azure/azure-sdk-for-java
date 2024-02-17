@@ -65,7 +65,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-webpubsub</artifactId>
-    <version>1.2.6</version>
+    <version>1.2.11</version>
 </dependency>
 ```
 
