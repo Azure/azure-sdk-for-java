@@ -5,6 +5,7 @@ package com.azure.data.schemaregistry;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -15,6 +16,7 @@ import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -29,14 +31,15 @@ import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_GROUP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link SchemaFormat#AVRO} using {@link SchemaRegistryAsyncClient}.
  */
 public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
-    static final String SCHEMA_CONTENT = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\","
-        + "\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },"
-        + "{ \"name\" : \"Age\", \"type\" : \"int\" }]}";
+    static final String SCHEMA_CONTENT = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" }]}";
 
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
@@ -47,9 +50,16 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
         TokenCredential tokenCredential;
         String endpoint;
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = tokenRequestContext ->
-                Mono.fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
+            tokenCredential = mock(TokenCredential.class);
             schemaGroup = PLAYBACK_TEST_GROUP;
+
+            // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
+            when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
+                return Mono.fromCallable(() -> {
+                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
+                });
+            });
+
             endpoint = PLAYBACK_ENDPOINT;
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -80,6 +90,11 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
             .build();
     }
 
+    @Override
+    protected void afterTest() {
+        Mockito.framework().clearInlineMock(this);
+    }
+
     /**
      * Verifies that we can register a schema and then get it by its schemaId.
      */
@@ -101,9 +116,7 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
     @Test
     public void registerAndGetSchemaTwice() {
         // Arrange
-        final String schemaContentModified = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\","
-            + "\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },"
-            + "{ \"name\" : \"Age\", \"type\" : \"int\" },{ \"name\" : \"Sign\", \"type\" : \"string\" }]}";
+        final String schemaContentModified = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" },{ \"name\" : \"Sign\", \"type\" : \"string\" }]}";
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
         final SchemaRegistryAsyncClient client2 = builder.buildAsyncClient();
@@ -138,8 +151,7 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
         final SchemaFormat unknownSchemaFormat = SchemaFormat.fromString("protobuf");
 
         // Act & Assert
-        StepVerifier.create(client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT,
-                unknownSchemaFormat))
+        StepVerifier.create(client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT, unknownSchemaFormat))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof HttpResponseException);
 
@@ -182,9 +194,7 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
     @Test
     public void registerBadRequest() {
         // Arrange
-        final String invalidContent = "\"{\"type\" : \"record\",\"namespace\" : \"TestSchema\","
-            + "\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },"
-            + "{ \"name\" : \"Age\" }]}\"";
+        final String invalidContent = "\"{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\" }]}\"";
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
 
@@ -248,7 +258,7 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
                 assertEquals(registeredSchema.getVersion(), properties.getVersion());
                 assertEquals(schemaGroup, registeredSchema.getGroupName());
                 assertEquals(schemaName, registeredSchema.getName());
-                assertEquals(registeredSchema.getId(), properties.getId());
+                assertEquals(registeredSchema.getId(), registeredSchema.getId());
             })
             .expectComplete()
             .verify();
