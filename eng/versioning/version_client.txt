@@ -163,7 +163,7 @@ com.azure:azure-mixedreality-remoterendering;1.1.25;1.2.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.17;1.0.0-beta.18
 com.azure:azure-monitor-ingestion;1.1.3;1.2.0-beta.1
 com.azure:azure-monitor-ingestion-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-monitor-query;1.2.8;1.3.0-beta.3
+com.azure:azure-monitor-query;1.2.8;1.2.9
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
