@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
-import com.azure.cosmos.models.{CosmosItemIdentity, CosmosQueryRequestOptions, CosmosReadManyRequestOptions}
+import com.azure.cosmos.models.{CosmosItemIdentity, CosmosReadManyRequestOptions}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 // scalastyle:off underscore.import

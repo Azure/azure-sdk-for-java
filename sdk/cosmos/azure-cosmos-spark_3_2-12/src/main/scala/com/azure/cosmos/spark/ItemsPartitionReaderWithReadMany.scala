@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkRowItem}
-import com.azure.cosmos.models.{CosmosItemIdentity, CosmosQueryRequestOptions, CosmosReadManyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
+import com.azure.cosmos.models.{CosmosItemIdentity, CosmosReadManyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
 import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
@@ -56,7 +56,7 @@ private[spark] case class ItemsPartitionReaderWithReadMany
 
       val ctxAndListener = new OperationContextAndListenerTuple(operationContext, listener)
 
-      ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper
+      ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper
         .getCosmosQueryRequestOptionsBaseAccessor
         .setOperationContext(readManyOptions, ctxAndListener)
 
@@ -117,8 +117,8 @@ private[spark] case class ItemsPartitionReaderWithReadMany
         partitionKeyDefinition)
 
   ImplementationBridgeHelpers
-    .CosmosQueryRequestOptionsHelper
-    .getCosmosQueryRequestOptionsAccessor
+    .CosmosQueryRequestOptionsBaseHelper
+    .getCosmosQueryRequestOptionsBaseAccessor
     .setItemFactoryMethod(
       readManyOptions,
       jsonNode => {

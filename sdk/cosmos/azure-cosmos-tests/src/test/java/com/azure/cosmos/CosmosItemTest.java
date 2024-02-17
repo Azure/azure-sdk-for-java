@@ -17,6 +17,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -24,10 +25,22 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -202,6 +215,91 @@ public class CosmosItemTest extends TestSuiteBase {
         for (int i = 0; i < feedResponse.getResults().size(); i++) {
             InternalObjectNode fetchedResult = feedResponse.getResults().get(i);
             assertThat(idSet.contains(fetchedResult.getId())).isTrue();
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = 100 * TIMEOUT)
+    public void readManyWithTimeout() throws Exception {
+        if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Fault injection only targeting direct mode");
+        }
+
+        List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        Set<String> idSet = new HashSet<>();
+        int numDocuments = 50;
+
+        for (int i = 0; i < numDocuments; i++) {
+            String id = UUID.randomUUID().toString();
+            ObjectNode document = getDocumentDefinition(id, id);
+            container.createItem(document);
+
+            PartitionKey partitionKey = new PartitionKey(id);
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, id);
+            cosmosItemIdentities.add(cosmosItemIdentity);
+            idSet.add(id);
+        }
+
+        FaultInjectionRuleBuilder ruleBuilder = new FaultInjectionRuleBuilder("extremelyLongResponseDelay");
+        FaultInjectionConditionBuilder conditionBuilder = new FaultInjectionConditionBuilder()
+            .operationType(FaultInjectionOperationType.QUERY_ITEM)
+            .connectionType(FaultInjectionConnectionType.DIRECT);
+        List<FeedRange> feedRanges = container.getFeedRanges();
+        conditionBuilder = conditionBuilder.endpoints(
+            new FaultInjectionEndpointBuilder(feedRanges.get(feedRanges.size() - 1))
+                .replicaCount(4)
+                .includePrimary(true)
+                .build()
+        );
+        FaultInjectionCondition faultInjectionCondition = conditionBuilder.build();
+        FaultInjectionServerErrorResult retryWithResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.GONE)
+            .times(100)
+            .delay(Duration.ofSeconds(3))
+            .build();
+        FaultInjectionRule transitTimeout = ruleBuilder
+            .condition(faultInjectionCondition)
+            .result(retryWithResult)
+            .duration(Duration.ofSeconds(240))
+            .build();
+
+        CosmosFaultInjectionHelper
+            .configureFaultInjectionRules(container.asyncContainer, Arrays.asList(transitTimeout))
+            .block();
+
+        AtomicBoolean timeoutFired = new AtomicBoolean(false);
+
+        CosmosReadManyRequestOptions requestOptionsWith5SecondsTimeout = new CosmosReadManyRequestOptions()
+            .setCosmosEndToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(5)).build()
+            );
+
+        try {
+            FeedResponse<ObjectNode> feedResponse = container
+                .asyncContainer
+                .readMany(cosmosItemIdentities, requestOptionsWith5SecondsTimeout, ObjectNode.class)
+                .onErrorMap(throwable -> {
+                    logger.error("Error observed.", throwable);
+
+                    if (throwable instanceof CosmosException) {
+                        // Special error handling for fast detection here
+
+                        CosmosException cosmosException = (CosmosException)throwable;
+
+                        if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT &&
+                          cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
+                            timeoutFired.set(true);
+                        }
+                    }
+
+                    return throwable;
+                })
+                .block();
+
+            fail("Should have timed out.");
+        }
+        catch (Exception e) {
+            logger.info("Exception handled", e);
+            assertThat(timeoutFired.get()).isTrue();
         }
     }
 
@@ -742,8 +840,8 @@ public class CosmosItemTest extends TestSuiteBase {
 
         UUID correlationId = UUID.randomUUID();
         ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor()
+            .CosmosQueryRequestOptionsBaseHelper
+            .getCosmosQueryRequestOptionsBaseAccessor()
             .setCorrelationActivityId(cosmosQueryRequestOptions, correlationId);
 
         CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
