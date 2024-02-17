@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-webpubsub</artifactId>
-  <version>1.2.11</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
+  <version>1.2.12</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
 
   <name>Microsoft Azure client library for Azure Web Pub Sub Service</name>
   <description>This package contains the Microsoft Azure Web Pub Sub library.</description>
@@ -42,12 +42,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.45.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.46.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.11</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
@@ -59,7 +59,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.22.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.23.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -95,7 +95,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.11.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
