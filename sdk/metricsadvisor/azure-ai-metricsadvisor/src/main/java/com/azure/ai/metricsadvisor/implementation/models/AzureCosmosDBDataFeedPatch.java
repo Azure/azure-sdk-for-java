@@ -5,33 +5,29 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * The AzureCosmosDBDataFeedPatch model.
- */
+/** The AzureCosmosDBDataFeedPatch model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
+@JsonTypeName("AzureCosmosDB")
 @Fluent
 public final class AzureCosmosDBDataFeedPatch extends DataFeedDetailPatch {
     /*
      * The dataSourceParameter property.
      */
+    @JsonProperty(value = "dataSourceParameter")
     private AzureCosmosDBParameterPatch dataSourceParameter;
 
-    /**
-     * Creates an instance of AzureCosmosDBDataFeedPatch class.
-     */
-    public AzureCosmosDBDataFeedPatch() {
-    }
+    /** Creates an instance of AzureCosmosDBDataFeedPatch class. */
+    public AzureCosmosDBDataFeedPatch() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
-     * 
+     *
      * @return the dataSourceParameter value.
      */
     public AzureCosmosDBParameterPatch getDataSourceParameter() {
@@ -40,7 +36,7 @@ public final class AzureCosmosDBDataFeedPatch extends DataFeedDetailPatch {
 
     /**
      * Set the dataSourceParameter property: The dataSourceParameter property.
-     * 
+     *
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureCosmosDBDataFeedPatch object itself.
      */
@@ -49,313 +45,150 @@ public final class AzureCosmosDBDataFeedPatch extends DataFeedDetailPatch {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setAdmins(List<String> admins) {
         super.setAdmins(admins);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setViewers(List<String> viewers) {
         super.setViewers(viewers);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setStatus(EntityStatus status) {
         super.setStatus(status);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureCosmosDBDataFeedPatch setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            DataSourceType.AZURE_COSMOS_DB == null ? null : DataSourceType.AZURE_COSMOS_DB.toString());
-        jsonWriter.writeStringField("dataFeedName", getDataFeedName());
-        jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
-        jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
-        jsonWriter.writeStringField("dataStartFrom",
-            getDataStartFrom() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getDataStartFrom()));
-        jsonWriter.writeNumberField("startOffsetInSeconds", getStartOffsetInSeconds());
-        jsonWriter.writeNumberField("maxConcurrency", getMaxConcurrency());
-        jsonWriter.writeNumberField("minRetryIntervalInSeconds", getMinRetryIntervalInSeconds());
-        jsonWriter.writeNumberField("stopRetryAfterInSeconds", getStopRetryAfterInSeconds());
-        jsonWriter.writeStringField("needRollup", getNeedRollup() == null ? null : getNeedRollup().toString());
-        jsonWriter.writeStringField("rollUpMethod", getRollUpMethod() == null ? null : getRollUpMethod().toString());
-        jsonWriter.writeArrayField("rollUpColumns", getRollUpColumns(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("allUpIdentification", getAllUpIdentification());
-        jsonWriter.writeStringField("fillMissingPointType",
-            getFillMissingPointType() == null ? null : getFillMissingPointType().toString());
-        jsonWriter.writeNumberField("fillMissingPointValue", getFillMissingPointValue());
-        jsonWriter.writeStringField("viewMode", getViewMode() == null ? null : getViewMode().toString());
-        jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("viewers", getViewers(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
-        jsonWriter.writeStringField("actionLinkTemplate", getActionLinkTemplate());
-        jsonWriter.writeStringField("authenticationType",
-            getAuthenticationType() == null ? null : getAuthenticationType().toString());
-        jsonWriter.writeStringField("credentialId", getCredentialId());
-        jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureCosmosDBDataFeedPatch from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureCosmosDBDataFeedPatch if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the AzureCosmosDBDataFeedPatch.
-     */
-    public static AzureCosmosDBDataFeedPatch fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AzureCosmosDBDataFeedPatch deserializedAzureCosmosDBDataFeedPatch = new AzureCosmosDBDataFeedPatch();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("dataSourceType".equals(fieldName)) {
-                    String dataSourceType = reader.getString();
-                    if (!"AzureCosmosDB".equals(dataSourceType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceType' was expected to be non-null and equal to 'AzureCosmosDB'. The found 'dataSourceType' was '"
-                                + dataSourceType + "'.");
-                    }
-                } else if ("dataFeedName".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.setDataFeedName(reader.getString());
-                } else if ("dataFeedDescription".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.setDataFeedDescription(reader.getString());
-                } else if ("timestampColumn".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.setTimestampColumn(reader.getString());
-                } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.setDataStartFrom(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                } else if ("startOffsetInSeconds".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch
-                        .setStartOffsetInSeconds(reader.getNullable(JsonReader::getLong));
-                } else if ("maxConcurrency".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.setMaxConcurrency(reader.getNullable(JsonReader::getInt));
-                } else if ("minRetryIntervalInSeconds".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch
-                        .setMinRetryIntervalInSeconds(reader.getNullable(JsonReader::getLong));
-                } else if ("stopRetryAfterInSeconds".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch
-                        .setStopRetryAfterInSeconds(reader.getNullable(JsonReader::getLong));
-                } else if ("needRollup".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.setNeedRollup(NeedRollupEnum.fromString(reader.getString()));
-                } else if ("rollUpMethod".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.setRollUpMethod(RollUpMethod.fromString(reader.getString()));
-                } else if ("rollUpColumns".equals(fieldName)) {
-                    List<String> rollUpColumns = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureCosmosDBDataFeedPatch.setRollUpColumns(rollUpColumns);
-                } else if ("allUpIdentification".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.setAllUpIdentification(reader.getString());
-                } else if ("fillMissingPointType".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch
-                        .setFillMissingPointType(FillMissingPointType.fromString(reader.getString()));
-                } else if ("fillMissingPointValue".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch
-                        .setFillMissingPointValue(reader.getNullable(JsonReader::getDouble));
-                } else if ("viewMode".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.setViewMode(ViewMode.fromString(reader.getString()));
-                } else if ("admins".equals(fieldName)) {
-                    List<String> admins = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureCosmosDBDataFeedPatch.setAdmins(admins);
-                } else if ("viewers".equals(fieldName)) {
-                    List<String> viewers = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureCosmosDBDataFeedPatch.setViewers(viewers);
-                } else if ("status".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.setStatus(EntityStatus.fromString(reader.getString()));
-                } else if ("actionLinkTemplate".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.setActionLinkTemplate(reader.getString());
-                } else if ("authenticationType".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch
-                        .setAuthenticationType(AuthenticationTypeEnum.fromString(reader.getString()));
-                } else if ("credentialId".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.setCredentialId(reader.getString());
-                } else if ("dataSourceParameter".equals(fieldName)) {
-                    deserializedAzureCosmosDBDataFeedPatch.dataSourceParameter
-                        = AzureCosmosDBParameterPatch.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAzureCosmosDBDataFeedPatch;
-        });
     }
 }

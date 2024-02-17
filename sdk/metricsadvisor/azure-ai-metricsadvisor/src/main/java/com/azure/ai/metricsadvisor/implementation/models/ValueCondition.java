@@ -5,66 +5,62 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/**
- * The ValueCondition model.
- */
+/** The ValueCondition model. */
 @Fluent
-public final class ValueCondition implements JsonSerializable<ValueCondition> {
+public final class ValueCondition {
     /*
      * lower bound
-     * 
+     *
      * should be specified when direction is Both or Down
      */
+    @JsonProperty(value = "lower")
     private Double lower;
 
     /*
      * upper bound
-     * 
+     *
      * should be specified when direction is Both or Up
      */
+    @JsonProperty(value = "upper")
     private Double upper;
 
     /*
      * value filter direction
      */
+    @JsonProperty(value = "direction", required = true)
     private Direction direction;
 
     /*
      * data used to implement value filter
      */
+    @JsonProperty(value = "type")
     private ValueType type;
 
     /*
      * the other metric unique id used for value filter
      */
+    @JsonProperty(value = "metricId")
     private UUID metricId;
 
     /*
      * trigger alert when the corresponding point is missing in the other metric
-     * 
+     *
      * should be specified only when using other metric to filter
      */
+    @JsonProperty(value = "triggerForMissing")
     private Boolean triggerForMissing;
 
-    /**
-     * Creates an instance of ValueCondition class.
-     */
-    public ValueCondition() {
-    }
+    /** Creates an instance of ValueCondition class. */
+    public ValueCondition() {}
 
     /**
      * Get the lower property: lower bound
-     * 
-     * should be specified when direction is Both or Down.
-     * 
+     *
+     * <p>should be specified when direction is Both or Down.
+     *
      * @return the lower value.
      */
     public Double getLower() {
@@ -73,9 +69,9 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
 
     /**
      * Set the lower property: lower bound
-     * 
-     * should be specified when direction is Both or Down.
-     * 
+     *
+     * <p>should be specified when direction is Both or Down.
+     *
      * @param lower the lower value to set.
      * @return the ValueCondition object itself.
      */
@@ -86,9 +82,9 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
 
     /**
      * Get the upper property: upper bound
-     * 
-     * should be specified when direction is Both or Up.
-     * 
+     *
+     * <p>should be specified when direction is Both or Up.
+     *
      * @return the upper value.
      */
     public Double getUpper() {
@@ -97,9 +93,9 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
 
     /**
      * Set the upper property: upper bound
-     * 
-     * should be specified when direction is Both or Up.
-     * 
+     *
+     * <p>should be specified when direction is Both or Up.
+     *
      * @param upper the upper value to set.
      * @return the ValueCondition object itself.
      */
@@ -110,7 +106,7 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
 
     /**
      * Get the direction property: value filter direction.
-     * 
+     *
      * @return the direction value.
      */
     public Direction getDirection() {
@@ -119,7 +115,7 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
 
     /**
      * Set the direction property: value filter direction.
-     * 
+     *
      * @param direction the direction value to set.
      * @return the ValueCondition object itself.
      */
@@ -130,7 +126,7 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
 
     /**
      * Get the type property: data used to implement value filter.
-     * 
+     *
      * @return the type value.
      */
     public ValueType getType() {
@@ -139,7 +135,7 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
 
     /**
      * Set the type property: data used to implement value filter.
-     * 
+     *
      * @param type the type value to set.
      * @return the ValueCondition object itself.
      */
@@ -150,7 +146,7 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
 
     /**
      * Get the metricId property: the other metric unique id used for value filter.
-     * 
+     *
      * @return the metricId value.
      */
     public UUID getMetricId() {
@@ -159,7 +155,7 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
 
     /**
      * Set the metricId property: the other metric unique id used for value filter.
-     * 
+     *
      * @param metricId the metricId value to set.
      * @return the ValueCondition object itself.
      */
@@ -170,9 +166,9 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
 
     /**
      * Get the triggerForMissing property: trigger alert when the corresponding point is missing in the other metric
-     * 
-     * should be specified only when using other metric to filter.
-     * 
+     *
+     * <p>should be specified only when using other metric to filter.
+     *
      * @return the triggerForMissing value.
      */
     public Boolean isTriggerForMissing() {
@@ -181,64 +177,14 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
 
     /**
      * Set the triggerForMissing property: trigger alert when the corresponding point is missing in the other metric
-     * 
-     * should be specified only when using other metric to filter.
-     * 
+     *
+     * <p>should be specified only when using other metric to filter.
+     *
      * @param triggerForMissing the triggerForMissing value to set.
      * @return the ValueCondition object itself.
      */
     public ValueCondition setTriggerForMissing(Boolean triggerForMissing) {
         this.triggerForMissing = triggerForMissing;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
-        jsonWriter.writeNumberField("lower", this.lower);
-        jsonWriter.writeNumberField("upper", this.upper);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("metricId", Objects.toString(this.metricId, null));
-        jsonWriter.writeBooleanField("triggerForMissing", this.triggerForMissing);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ValueCondition from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ValueCondition if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ValueCondition.
-     */
-    public static ValueCondition fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ValueCondition deserializedValueCondition = new ValueCondition();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("direction".equals(fieldName)) {
-                    deserializedValueCondition.direction = Direction.fromString(reader.getString());
-                } else if ("lower".equals(fieldName)) {
-                    deserializedValueCondition.lower = reader.getNullable(JsonReader::getDouble);
-                } else if ("upper".equals(fieldName)) {
-                    deserializedValueCondition.upper = reader.getNullable(JsonReader::getDouble);
-                } else if ("type".equals(fieldName)) {
-                    deserializedValueCondition.type = ValueType.fromString(reader.getString());
-                } else if ("metricId".equals(fieldName)) {
-                    deserializedValueCondition.metricId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("triggerForMissing".equals(fieldName)) {
-                    deserializedValueCondition.triggerForMissing = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedValueCondition;
-        });
     }
 }

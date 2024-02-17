@@ -5,54 +5,45 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Type of data source credential.
- */
+/** Type of data source credential. */
 public final class DataSourceCredentialType extends ExpandableStringEnum<DataSourceCredentialType> {
-    /**
-     * Static value AzureSQLConnectionString for DataSourceCredentialType.
-     */
+    /** Static value AzureSQLConnectionString for DataSourceCredentialType. */
     public static final DataSourceCredentialType AZURE_SQLCONNECTION_STRING = fromString("AzureSQLConnectionString");
 
-    /**
-     * Static value DataLakeGen2SharedKey for DataSourceCredentialType.
-     */
+    /** Static value DataLakeGen2SharedKey for DataSourceCredentialType. */
     public static final DataSourceCredentialType DATA_LAKE_GEN2SHARED_KEY = fromString("DataLakeGen2SharedKey");
 
-    /**
-     * Static value ServicePrincipal for DataSourceCredentialType.
-     */
+    /** Static value ServicePrincipal for DataSourceCredentialType. */
     public static final DataSourceCredentialType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
-    /**
-     * Static value ServicePrincipalInKV for DataSourceCredentialType.
-     */
+    /** Static value ServicePrincipalInKV for DataSourceCredentialType. */
     public static final DataSourceCredentialType SERVICE_PRINCIPAL_IN_KV = fromString("ServicePrincipalInKV");
 
     /**
      * Creates a new instance of DataSourceCredentialType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DataSourceCredentialType() {
-    }
+    public DataSourceCredentialType() {}
 
     /**
      * Creates or finds a DataSourceCredentialType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding DataSourceCredentialType.
      */
+    @JsonCreator
     public static DataSourceCredentialType fromString(String name) {
         return fromString(name, DataSourceCredentialType.class);
     }
 
     /**
      * Gets known DataSourceCredentialType values.
-     * 
+     *
      * @return known DataSourceCredentialType values.
      */
     public static Collection<DataSourceCredentialType> values() {

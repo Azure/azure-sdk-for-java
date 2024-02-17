@@ -5,68 +5,66 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/**
- * The MetricAlertingConfiguration model.
- */
+/** The MetricAlertingConfiguration model. */
 @Fluent
-public final class MetricAlertingConfiguration implements JsonSerializable<MetricAlertingConfiguration> {
+public final class MetricAlertingConfiguration {
     /*
      * Anomaly detection configuration unique id
      */
+    @JsonProperty(value = "anomalyDetectionConfigurationId", required = true)
     private UUID anomalyDetectionConfigurationId;
 
     /*
      * Anomaly scope
      */
+    @JsonProperty(value = "anomalyScopeType", required = true)
     private AnomalyScope anomalyScopeType;
 
     /*
      * Negation operation
      */
+    @JsonProperty(value = "negationOperation")
     private Boolean negationOperation;
 
     /*
      * The dimensionAnomalyScope property.
      */
+    @JsonProperty(value = "dimensionAnomalyScope")
     private DimensionGroupIdentity dimensionAnomalyScope;
 
     /*
      * The topNAnomalyScope property.
      */
+    @JsonProperty(value = "topNAnomalyScope")
     private TopNGroupScope topNAnomalyScope;
 
     /*
      * The severityFilter property.
      */
+    @JsonProperty(value = "severityFilter")
     private SeverityCondition severityFilter;
 
     /*
      * The snoozeFilter property.
      */
+    @JsonProperty(value = "snoozeFilter")
     private MetricAnomalyAlertSnoozeCondition snoozeFilter;
 
     /*
      * The valueFilter property.
      */
+    @JsonProperty(value = "valueFilter")
     private ValueCondition valueFilter;
 
-    /**
-     * Creates an instance of MetricAlertingConfiguration class.
-     */
-    public MetricAlertingConfiguration() {
-    }
+    /** Creates an instance of MetricAlertingConfiguration class. */
+    public MetricAlertingConfiguration() {}
 
     /**
      * Get the anomalyDetectionConfigurationId property: Anomaly detection configuration unique id.
-     * 
+     *
      * @return the anomalyDetectionConfigurationId value.
      */
     public UUID getAnomalyDetectionConfigurationId() {
@@ -75,7 +73,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Set the anomalyDetectionConfigurationId property: Anomaly detection configuration unique id.
-     * 
+     *
      * @param anomalyDetectionConfigurationId the anomalyDetectionConfigurationId value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
@@ -86,7 +84,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Get the anomalyScopeType property: Anomaly scope.
-     * 
+     *
      * @return the anomalyScopeType value.
      */
     public AnomalyScope getAnomalyScopeType() {
@@ -95,7 +93,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Set the anomalyScopeType property: Anomaly scope.
-     * 
+     *
      * @param anomalyScopeType the anomalyScopeType value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
@@ -106,7 +104,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Get the negationOperation property: Negation operation.
-     * 
+     *
      * @return the negationOperation value.
      */
     public Boolean isNegationOperation() {
@@ -115,7 +113,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Set the negationOperation property: Negation operation.
-     * 
+     *
      * @param negationOperation the negationOperation value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
@@ -126,7 +124,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Get the dimensionAnomalyScope property: The dimensionAnomalyScope property.
-     * 
+     *
      * @return the dimensionAnomalyScope value.
      */
     public DimensionGroupIdentity getDimensionAnomalyScope() {
@@ -135,7 +133,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Set the dimensionAnomalyScope property: The dimensionAnomalyScope property.
-     * 
+     *
      * @param dimensionAnomalyScope the dimensionAnomalyScope value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
@@ -146,7 +144,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Get the topNAnomalyScope property: The topNAnomalyScope property.
-     * 
+     *
      * @return the topNAnomalyScope value.
      */
     public TopNGroupScope getTopNAnomalyScope() {
@@ -155,7 +153,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Set the topNAnomalyScope property: The topNAnomalyScope property.
-     * 
+     *
      * @param topNAnomalyScope the topNAnomalyScope value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
@@ -166,7 +164,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Get the severityFilter property: The severityFilter property.
-     * 
+     *
      * @return the severityFilter value.
      */
     public SeverityCondition getSeverityFilter() {
@@ -175,7 +173,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Set the severityFilter property: The severityFilter property.
-     * 
+     *
      * @param severityFilter the severityFilter value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
@@ -186,7 +184,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Get the snoozeFilter property: The snoozeFilter property.
-     * 
+     *
      * @return the snoozeFilter value.
      */
     public MetricAnomalyAlertSnoozeCondition getSnoozeFilter() {
@@ -195,7 +193,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Set the snoozeFilter property: The snoozeFilter property.
-     * 
+     *
      * @param snoozeFilter the snoozeFilter value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
@@ -206,7 +204,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Get the valueFilter property: The valueFilter property.
-     * 
+     *
      * @return the valueFilter value.
      */
     public ValueCondition getValueFilter() {
@@ -215,74 +213,12 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
 
     /**
      * Set the valueFilter property: The valueFilter property.
-     * 
+     *
      * @param valueFilter the valueFilter value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
     public MetricAlertingConfiguration setValueFilter(ValueCondition valueFilter) {
         this.valueFilter = valueFilter;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("anomalyDetectionConfigurationId",
-            Objects.toString(this.anomalyDetectionConfigurationId, null));
-        jsonWriter.writeStringField("anomalyScopeType",
-            this.anomalyScopeType == null ? null : this.anomalyScopeType.toString());
-        jsonWriter.writeBooleanField("negationOperation", this.negationOperation);
-        jsonWriter.writeJsonField("dimensionAnomalyScope", this.dimensionAnomalyScope);
-        jsonWriter.writeJsonField("topNAnomalyScope", this.topNAnomalyScope);
-        jsonWriter.writeJsonField("severityFilter", this.severityFilter);
-        jsonWriter.writeJsonField("snoozeFilter", this.snoozeFilter);
-        jsonWriter.writeJsonField("valueFilter", this.valueFilter);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of MetricAlertingConfiguration from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MetricAlertingConfiguration if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MetricAlertingConfiguration.
-     */
-    public static MetricAlertingConfiguration fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MetricAlertingConfiguration deserializedMetricAlertingConfiguration = new MetricAlertingConfiguration();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("anomalyDetectionConfigurationId".equals(fieldName)) {
-                    deserializedMetricAlertingConfiguration.anomalyDetectionConfigurationId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("anomalyScopeType".equals(fieldName)) {
-                    deserializedMetricAlertingConfiguration.anomalyScopeType
-                        = AnomalyScope.fromString(reader.getString());
-                } else if ("negationOperation".equals(fieldName)) {
-                    deserializedMetricAlertingConfiguration.negationOperation
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("dimensionAnomalyScope".equals(fieldName)) {
-                    deserializedMetricAlertingConfiguration.dimensionAnomalyScope
-                        = DimensionGroupIdentity.fromJson(reader);
-                } else if ("topNAnomalyScope".equals(fieldName)) {
-                    deserializedMetricAlertingConfiguration.topNAnomalyScope = TopNGroupScope.fromJson(reader);
-                } else if ("severityFilter".equals(fieldName)) {
-                    deserializedMetricAlertingConfiguration.severityFilter = SeverityCondition.fromJson(reader);
-                } else if ("snoozeFilter".equals(fieldName)) {
-                    deserializedMetricAlertingConfiguration.snoozeFilter
-                        = MetricAnomalyAlertSnoozeCondition.fromJson(reader);
-                } else if ("valueFilter".equals(fieldName)) {
-                    deserializedMetricAlertingConfiguration.valueFilter = ValueCondition.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedMetricAlertingConfiguration;
-        });
     }
 }

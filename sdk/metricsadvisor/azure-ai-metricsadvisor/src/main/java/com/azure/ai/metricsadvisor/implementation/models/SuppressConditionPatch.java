@@ -5,36 +5,29 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SuppressConditionPatch model.
- */
+/** The SuppressConditionPatch model. */
 @Fluent
-public final class SuppressConditionPatch implements JsonSerializable<SuppressConditionPatch> {
+public final class SuppressConditionPatch {
     /*
      * min point number, value range : [1, +∞)
      */
+    @JsonProperty(value = "minNumber")
     private Integer minNumber;
 
     /*
      * min point ratio, value range : (0, 100]
      */
+    @JsonProperty(value = "minRatio")
     private Double minRatio;
 
-    /**
-     * Creates an instance of SuppressConditionPatch class.
-     */
-    public SuppressConditionPatch() {
-    }
+    /** Creates an instance of SuppressConditionPatch class. */
+    public SuppressConditionPatch() {}
 
     /**
      * Get the minNumber property: min point number, value range : [1, +∞).
-     * 
+     *
      * @return the minNumber value.
      */
     public Integer getMinNumber() {
@@ -43,7 +36,7 @@ public final class SuppressConditionPatch implements JsonSerializable<SuppressCo
 
     /**
      * Set the minNumber property: min point number, value range : [1, +∞).
-     * 
+     *
      * @param minNumber the minNumber value to set.
      * @return the SuppressConditionPatch object itself.
      */
@@ -54,7 +47,7 @@ public final class SuppressConditionPatch implements JsonSerializable<SuppressCo
 
     /**
      * Get the minRatio property: min point ratio, value range : (0, 100].
-     * 
+     *
      * @return the minRatio value.
      */
     public Double getMinRatio() {
@@ -63,48 +56,12 @@ public final class SuppressConditionPatch implements JsonSerializable<SuppressCo
 
     /**
      * Set the minRatio property: min point ratio, value range : (0, 100].
-     * 
+     *
      * @param minRatio the minRatio value to set.
      * @return the SuppressConditionPatch object itself.
      */
     public SuppressConditionPatch setMinRatio(Double minRatio) {
         this.minRatio = minRatio;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("minNumber", this.minNumber);
-        jsonWriter.writeNumberField("minRatio", this.minRatio);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SuppressConditionPatch from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SuppressConditionPatch if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SuppressConditionPatch.
-     */
-    public static SuppressConditionPatch fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SuppressConditionPatch deserializedSuppressConditionPatch = new SuppressConditionPatch();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("minNumber".equals(fieldName)) {
-                    deserializedSuppressConditionPatch.minNumber = reader.getNullable(JsonReader::getInt);
-                } else if ("minRatio".equals(fieldName)) {
-                    deserializedSuppressConditionPatch.minRatio = reader.getNullable(JsonReader::getDouble);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSuppressConditionPatch;
-        });
     }
 }

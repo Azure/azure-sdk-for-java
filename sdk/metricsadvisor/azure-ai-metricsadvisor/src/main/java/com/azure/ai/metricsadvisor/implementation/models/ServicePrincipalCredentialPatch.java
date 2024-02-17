@@ -5,30 +5,27 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The ServicePrincipalCredentialPatch model.
- */
+/** The ServicePrincipalCredentialPatch model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceCredentialType")
+@JsonTypeName("ServicePrincipal")
 @Fluent
 public final class ServicePrincipalCredentialPatch extends DataSourceCredentialPatch {
     /*
      * The parameters property.
      */
+    @JsonProperty(value = "parameters")
     private ServicePrincipalParamPatch parameters;
 
-    /**
-     * Creates an instance of ServicePrincipalCredentialPatch class.
-     */
-    public ServicePrincipalCredentialPatch() {
-    }
+    /** Creates an instance of ServicePrincipalCredentialPatch class. */
+    public ServicePrincipalCredentialPatch() {}
 
     /**
      * Get the parameters property: The parameters property.
-     * 
+     *
      * @return the parameters value.
      */
     public ServicePrincipalParamPatch getParameters() {
@@ -37,7 +34,7 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
 
     /**
      * Set the parameters property: The parameters property.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the ServicePrincipalCredentialPatch object itself.
      */
@@ -46,72 +43,17 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ServicePrincipalCredentialPatch setDataSourceCredentialName(String dataSourceCredentialName) {
         super.setDataSourceCredentialName(dataSourceCredentialName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ServicePrincipalCredentialPatch setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
         super.setDataSourceCredentialDescription(dataSourceCredentialDescription);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceCredentialType", DataSourceCredentialType.SERVICE_PRINCIPAL == null
-            ? null : DataSourceCredentialType.SERVICE_PRINCIPAL.toString());
-        jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
-        jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());
-        jsonWriter.writeJsonField("parameters", this.parameters);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ServicePrincipalCredentialPatch from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ServicePrincipalCredentialPatch if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the ServicePrincipalCredentialPatch.
-     */
-    public static ServicePrincipalCredentialPatch fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ServicePrincipalCredentialPatch deserializedServicePrincipalCredentialPatch
-                = new ServicePrincipalCredentialPatch();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("dataSourceCredentialType".equals(fieldName)) {
-                    String dataSourceCredentialType = reader.getString();
-                    if (!"ServicePrincipal".equals(dataSourceCredentialType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceCredentialType' was expected to be non-null and equal to 'ServicePrincipal'. The found 'dataSourceCredentialType' was '"
-                                + dataSourceCredentialType + "'.");
-                    }
-                } else if ("dataSourceCredentialName".equals(fieldName)) {
-                    deserializedServicePrincipalCredentialPatch.setDataSourceCredentialName(reader.getString());
-                } else if ("dataSourceCredentialDescription".equals(fieldName)) {
-                    deserializedServicePrincipalCredentialPatch.setDataSourceCredentialDescription(reader.getString());
-                } else if ("parameters".equals(fieldName)) {
-                    deserializedServicePrincipalCredentialPatch.parameters
-                        = ServicePrincipalParamPatch.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedServicePrincipalCredentialPatch;
-        });
     }
 }

@@ -5,32 +5,24 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The SeriesResultList model.
- */
+/** The SeriesResultList model. */
 @Fluent
-public final class SeriesResultList implements JsonSerializable<SeriesResultList> {
+public final class SeriesResultList {
     /*
      * The value property.
      */
+    @JsonProperty(value = "value", required = true)
     private List<SeriesResult> value;
 
-    /**
-     * Creates an instance of SeriesResultList class.
-     */
-    public SeriesResultList() {
-    }
+    /** Creates an instance of SeriesResultList class. */
+    public SeriesResultList() {}
 
     /**
      * Get the value property: The value property.
-     * 
+     *
      * @return the value value.
      */
     public List<SeriesResult> getValue() {
@@ -39,47 +31,12 @@ public final class SeriesResultList implements JsonSerializable<SeriesResultList
 
     /**
      * Set the value property: The value property.
-     * 
+     *
      * @param value the value value to set.
      * @return the SeriesResultList object itself.
      */
     public SeriesResultList setValue(List<SeriesResult> value) {
         this.value = value;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SeriesResultList from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SeriesResultList if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SeriesResultList.
-     */
-    public static SeriesResultList fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SeriesResultList deserializedSeriesResultList = new SeriesResultList();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("value".equals(fieldName)) {
-                    List<SeriesResult> value = reader.readArray(reader1 -> SeriesResult.fromJson(reader1));
-                    deserializedSeriesResultList.value = value;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSeriesResultList;
-        });
     }
 }

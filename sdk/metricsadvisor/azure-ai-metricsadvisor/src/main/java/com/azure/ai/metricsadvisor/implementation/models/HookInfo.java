@@ -5,53 +5,62 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * The HookInfo model.
- */
+/** The HookInfo model. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "hookType",
+        defaultImpl = HookInfo.class)
+@JsonTypeName("HookInfo")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "Email", value = EmailHookInfo.class),
+    @JsonSubTypes.Type(name = "Webhook", value = WebhookHookInfo.class)
+})
 @Fluent
-public class HookInfo implements JsonSerializable<HookInfo> {
+public class HookInfo {
     /*
      * Hook unique id
      */
+    @JsonProperty(value = "hookId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID hookId;
 
     /*
      * hook unique name
      */
+    @JsonProperty(value = "hookName", required = true)
     private String hookName;
 
     /*
      * hook description
      */
+    @JsonProperty(value = "description")
     private String description;
 
     /*
      * hook external link
      */
+    @JsonProperty(value = "externalLink")
     private String externalLink;
 
     /*
      * hook administrators
      */
+    @JsonProperty(value = "admins")
     private List<String> admins;
 
-    /**
-     * Creates an instance of HookInfo class.
-     */
-    public HookInfo() {
-    }
+    /** Creates an instance of HookInfo class. */
+    public HookInfo() {}
 
     /**
      * Get the hookId property: Hook unique id.
-     * 
+     *
      * @return the hookId value.
      */
     public UUID getHookId() {
@@ -59,19 +68,8 @@ public class HookInfo implements JsonSerializable<HookInfo> {
     }
 
     /**
-     * Set the hookId property: Hook unique id.
-     * 
-     * @param hookId the hookId value to set.
-     * @return the HookInfo object itself.
-     */
-    HookInfo setHookId(UUID hookId) {
-        this.hookId = hookId;
-        return this;
-    }
-
-    /**
      * Get the hookName property: hook unique name.
-     * 
+     *
      * @return the hookName value.
      */
     public String getHookName() {
@@ -80,7 +78,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
 
     /**
      * Set the hookName property: hook unique name.
-     * 
+     *
      * @param hookName the hookName value to set.
      * @return the HookInfo object itself.
      */
@@ -91,7 +89,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
 
     /**
      * Get the description property: hook description.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -100,7 +98,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
 
     /**
      * Set the description property: hook description.
-     * 
+     *
      * @param description the description value to set.
      * @return the HookInfo object itself.
      */
@@ -111,7 +109,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
 
     /**
      * Get the externalLink property: hook external link.
-     * 
+     *
      * @return the externalLink value.
      */
     public String getExternalLink() {
@@ -120,7 +118,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
 
     /**
      * Set the externalLink property: hook external link.
-     * 
+     *
      * @param externalLink the externalLink value to set.
      * @return the HookInfo object itself.
      */
@@ -131,7 +129,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
 
     /**
      * Get the admins property: hook administrators.
-     * 
+     *
      * @return the admins value.
      */
     public List<String> getAdmins() {
@@ -140,87 +138,12 @@ public class HookInfo implements JsonSerializable<HookInfo> {
 
     /**
      * Set the admins property: hook administrators.
-     * 
+     *
      * @param admins the admins value to set.
      * @return the HookInfo object itself.
      */
     public HookInfo setAdmins(List<String> admins) {
         this.admins = admins;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("hookName", this.hookName);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("externalLink", this.externalLink);
-        jsonWriter.writeArrayField("admins", this.admins, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of HookInfo from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of HookInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the HookInfo.
-     */
-    public static HookInfo fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
-
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("hookType".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
-                }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("Email".equals(discriminatorValue)) {
-                return EmailHookInfo.fromJson(readerToUse.reset());
-            } else if ("Webhook".equals(discriminatorValue)) {
-                return WebhookHookInfo.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
-            }
-        });
-    }
-
-    static HookInfo fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            HookInfo deserializedHookInfo = new HookInfo();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("hookName".equals(fieldName)) {
-                    deserializedHookInfo.hookName = reader.getString();
-                } else if ("hookId".equals(fieldName)) {
-                    deserializedHookInfo.hookId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("description".equals(fieldName)) {
-                    deserializedHookInfo.description = reader.getString();
-                } else if ("externalLink".equals(fieldName)) {
-                    deserializedHookInfo.externalLink = reader.getString();
-                } else if ("admins".equals(fieldName)) {
-                    List<String> admins = reader.readArray(reader1 -> reader1.getString());
-                    deserializedHookInfo.admins = admins;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedHookInfo;
-        });
     }
 }

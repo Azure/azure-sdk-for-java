@@ -5,30 +5,25 @@
 package com.azure.ai.metricsadvisor.administration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for SnoozeScope.
- */
+/** Defines values for SnoozeScope. */
 public final class SnoozeScope extends ExpandableStringEnum<SnoozeScope> {
-    /**
-     * Static value Metric for SnoozeScope.
-     */
-    public static final SnoozeScope METRIC = fromString("Metric");
-
-    /**
-     * Static value Series for SnoozeScope.
-     */
-    public static final SnoozeScope SERIES = fromString("Series");
 
     /**
      * Constructs a SnoozeScope object.
-     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
     public SnoozeScope() {
     }
+
+    /** Static value Metric for SnoozeScope. */
+    public static final SnoozeScope METRIC = fromString("Metric");
+
+    /** Static value Series for SnoozeScope. */
+    public static final SnoozeScope SERIES = fromString("Series");
 
     /**
      * Creates or finds a SnoozeScope from its string representation.
@@ -36,13 +31,13 @@ public final class SnoozeScope extends ExpandableStringEnum<SnoozeScope> {
      * @param name a name to look for.
      * @return the corresponding SnoozeScope.
      */
+    @JsonCreator
     public static SnoozeScope fromString(String name) {
         return fromString(name, SnoozeScope.class);
     }
 
     /**
      * Returns known SnoozeScope values.
-     *
      * @return known SnoozeScope values.
      */
     public static Collection<SnoozeScope> values() {

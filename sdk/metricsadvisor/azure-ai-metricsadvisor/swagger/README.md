@@ -21,7 +21,6 @@ autorest --java --use=C:/work/autorest.java
 ### Code generation settings
 ``` yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/MetricsAdvisor/stable/v1.0/MetricsAdvisor.json
-use: '@autorest/java@4.1.26'
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -38,7 +37,6 @@ custom-types: AnomalyStatus,AnomalyValue,ChangePointValue,EnrichmentStatus,Feedb
 default-http-exception-type: com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException
 enable-sync-stack: true
 polling: {} 
-stream-style-serialization: true
 ```
 
 ### Generated types renamed and moved to model

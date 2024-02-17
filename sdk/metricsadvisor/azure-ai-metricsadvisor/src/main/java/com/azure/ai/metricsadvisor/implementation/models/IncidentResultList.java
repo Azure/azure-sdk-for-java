@@ -5,37 +5,30 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The IncidentResultList model.
- */
+/** The IncidentResultList model. */
 @Fluent
-public final class IncidentResultList implements JsonSerializable<IncidentResultList> {
+public final class IncidentResultList {
     /*
      * The @nextLink property.
      */
+    @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * The value property.
      */
+    @JsonProperty(value = "value", required = true)
     private List<IncidentResult> value;
 
-    /**
-     * Creates an instance of IncidentResultList class.
-     */
-    public IncidentResultList() {
-    }
+    /** Creates an instance of IncidentResultList class. */
+    public IncidentResultList() {}
 
     /**
      * Get the nextLink property: The @nextLink property.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -44,7 +37,7 @@ public final class IncidentResultList implements JsonSerializable<IncidentResult
 
     /**
      * Get the value property: The value property.
-     * 
+     *
      * @return the value value.
      */
     public List<IncidentResult> getValue() {
@@ -53,49 +46,12 @@ public final class IncidentResultList implements JsonSerializable<IncidentResult
 
     /**
      * Set the value property: The value property.
-     * 
+     *
      * @param value the value value to set.
      * @return the IncidentResultList object itself.
      */
     public IncidentResultList setValue(List<IncidentResult> value) {
         this.value = value;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of IncidentResultList from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of IncidentResultList if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the IncidentResultList.
-     */
-    public static IncidentResultList fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            IncidentResultList deserializedIncidentResultList = new IncidentResultList();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("value".equals(fieldName)) {
-                    List<IncidentResult> value = reader.readArray(reader1 -> IncidentResult.fromJson(reader1));
-                    deserializedIncidentResultList.value = value;
-                } else if ("@nextLink".equals(fieldName)) {
-                    deserializedIncidentResultList.nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedIncidentResultList;
-        });
     }
 }

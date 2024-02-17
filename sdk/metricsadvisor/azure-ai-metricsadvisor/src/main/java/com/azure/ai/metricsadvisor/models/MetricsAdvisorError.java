@@ -5,26 +5,21 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.IOException;
-
-/**
- * The MetricsAdvisorError model.
- */
+/** The MetricsAdvisorError model. */
 @Fluent
-public final class MetricsAdvisorError implements JsonSerializable<MetricsAdvisorError> {
+public final class MetricsAdvisorError {
     /*
      * The message property.
      */
+    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The code property.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /**
@@ -71,42 +66,5 @@ public final class MetricsAdvisorError implements JsonSerializable<MetricsAdviso
     public MetricsAdvisorError setCode(String code) {
         this.code = code;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeStringField("code", this.code);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureTableParameter from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MetricsAdvisorError if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MetricsAdvisorError.
-     */
-    public static MetricsAdvisorError fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MetricsAdvisorError deserializedMetricsAdvisorError = new MetricsAdvisorError();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("message".equals(fieldName)) {
-                    deserializedMetricsAdvisorError.message = reader.getString();
-                } else if ("code".equals(fieldName)) {
-                    deserializedMetricsAdvisorError.code = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedMetricsAdvisorError;
-        });
     }
 }

@@ -6,37 +6,30 @@ package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The EnrichmentStatusList model.
- */
+/** The EnrichmentStatusList model. */
 @Immutable
-public final class EnrichmentStatusList implements JsonSerializable<EnrichmentStatusList> {
+public final class EnrichmentStatusList {
     /*
      * The @nextLink property.
      */
+    @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * The value property.
      */
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<EnrichmentStatus> value;
 
-    /**
-     * Creates an instance of EnrichmentStatusList class.
-     */
-    public EnrichmentStatusList() {
-    }
+    /** Creates an instance of EnrichmentStatusList class. */
+    public EnrichmentStatusList() {}
 
     /**
      * Get the nextLink property: The @nextLink property.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -45,45 +38,10 @@ public final class EnrichmentStatusList implements JsonSerializable<EnrichmentSt
 
     /**
      * Get the value property: The value property.
-     * 
+     *
      * @return the value value.
      */
     public List<EnrichmentStatus> getValue() {
         return this.value;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of EnrichmentStatusList from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of EnrichmentStatusList if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the EnrichmentStatusList.
-     */
-    public static EnrichmentStatusList fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            EnrichmentStatusList deserializedEnrichmentStatusList = new EnrichmentStatusList();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("@nextLink".equals(fieldName)) {
-                    deserializedEnrichmentStatusList.nextLink = reader.getString();
-                } else if ("value".equals(fieldName)) {
-                    List<EnrichmentStatus> value = reader.readArray(reader1 -> EnrichmentStatus.fromJson(reader1));
-                    deserializedEnrichmentStatusList.value = value;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedEnrichmentStatusList;
-        });
     }
 }
