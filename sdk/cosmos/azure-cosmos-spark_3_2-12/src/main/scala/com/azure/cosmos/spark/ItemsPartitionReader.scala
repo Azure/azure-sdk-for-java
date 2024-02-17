@@ -62,8 +62,8 @@ private case class ItemsPartitionReader
 
       val ctxAndListener = new OperationContextAndListenerTuple(operationContext, listener)
 
-      ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper
-        .getCosmosQueryRequestOptionsAccessor
+      ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper
+        .getCosmosQueryRequestOptionsBaseAccessor
         .setOperationContext(queryOptions, ctxAndListener)
 
       Some(ctxAndListener)
@@ -146,8 +146,8 @@ private case class ItemsPartitionReader
         DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
-      ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper
-        .getCosmosQueryRequestOptionsAccessor
+      ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper
+        .getCosmosQueryRequestOptionsBaseAccessor
         .setOperationContext(queryOptions, operationContextAndListenerTuple)
 
       taskDiagnosticsContext
@@ -163,8 +163,8 @@ private case class ItemsPartitionReader
   queryOptions.setFeedRange(SparkBridgeImplementationInternal.toFeedRange(feedRange))
 
   ImplementationBridgeHelpers
-    .CosmosQueryRequestOptionsHelper
-    .getCosmosQueryRequestOptionsAccessor
+    .CosmosQueryRequestOptionsBaseHelper
+    .getCosmosQueryRequestOptionsBaseAccessor
     .setItemFactoryMethod(
       queryOptions,
       jsonNode => {
@@ -233,8 +233,8 @@ private case class ItemsPartitionReader
       queryOptions.setDedicatedGatewayRequestOptions(readConfig.dedicatedGatewayRequestOptions)
 
       ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsHelper
-        .getCosmosQueryRequestOptionsAccessor
+        .CosmosQueryRequestOptionsBaseHelper
+        .getCosmosQueryRequestOptionsBaseAccessor
         .setCorrelationActivityId(
           queryOptions,
           diagnosticsContext.correlationActivityId)

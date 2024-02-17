@@ -55,8 +55,8 @@ class TransientIOErrorsRetryingIteratorITest
     val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
     ImplementationBridgeHelpers
-      .CosmosQueryRequestOptionsHelper
-      .getCosmosQueryRequestOptionsAccessor
+      .CosmosQueryRequestOptionsBaseHelper
+      .getCosmosQueryRequestOptionsBaseAccessor
       .setItemFactoryMethod(
         queryOptions,
         jsonNode => {
@@ -181,8 +181,8 @@ class TransientIOErrorsRetryingIteratorITest
     val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
     ImplementationBridgeHelpers
-      .CosmosQueryRequestOptionsHelper
-      .getCosmosQueryRequestOptionsAccessor
+      .CosmosQueryRequestOptionsBaseHelper
+      .getCosmosQueryRequestOptionsBaseAccessor
       .setItemFactoryMethod(
         queryOptions,
         jsonNode => {
