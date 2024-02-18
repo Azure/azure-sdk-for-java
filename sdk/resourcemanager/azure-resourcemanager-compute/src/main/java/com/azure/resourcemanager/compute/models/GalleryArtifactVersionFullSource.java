@@ -19,6 +19,13 @@ public final class GalleryArtifactVersionFullSource extends GalleryArtifactVersi
     @JsonProperty(value = "communityGalleryImageId")
     private String communityGalleryImageId;
 
+    /*
+     * The resource Id of the source virtual machine. Only required when capturing a virtual machine to source this
+     * Gallery Image Version.
+     */
+    @JsonProperty(value = "virtualMachineId")
+    private String virtualMachineId;
+
     /**
      * Creates an instance of GalleryArtifactVersionFullSource class.
      */
@@ -44,6 +51,28 @@ public final class GalleryArtifactVersionFullSource extends GalleryArtifactVersi
      */
     public GalleryArtifactVersionFullSource withCommunityGalleryImageId(String communityGalleryImageId) {
         this.communityGalleryImageId = communityGalleryImageId;
+        return this;
+    }
+
+    /**
+     * Get the virtualMachineId property: The resource Id of the source virtual machine. Only required when capturing
+     * a virtual machine to source this Gallery Image Version.
+     * 
+     * @return the virtualMachineId value.
+     */
+    public String virtualMachineId() {
+        return this.virtualMachineId;
+    }
+
+    /**
+     * Set the virtualMachineId property: The resource Id of the source virtual machine. Only required when capturing
+     * a virtual machine to source this Gallery Image Version.
+     * 
+     * @param virtualMachineId the virtualMachineId value to set.
+     * @return the GalleryArtifactVersionFullSource object itself.
+     */
+    public GalleryArtifactVersionFullSource withVirtualMachineId(String virtualMachineId) {
+        this.virtualMachineId = virtualMachineId;
         return this;
     }
 

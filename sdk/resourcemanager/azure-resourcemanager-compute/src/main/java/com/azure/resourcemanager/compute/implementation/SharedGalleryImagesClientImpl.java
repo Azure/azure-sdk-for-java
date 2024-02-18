@@ -120,7 +120,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
@@ -161,7 +161,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -294,7 +294,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
@@ -338,7 +338,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location, apiVersion,
