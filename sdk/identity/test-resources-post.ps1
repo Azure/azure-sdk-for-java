@@ -17,7 +17,11 @@ function getVariable {
 
 
 $webappRoot = "$PSScriptRoot/identity-mi-server" | Resolve-Path
+
+echo "webappRoot: $webappRoot"
 $webappRootPom = "$webappRoot/pom.xml" | Resolve-Path
+
+echo "webappRootPom: $webappRootPom"
 # $workingFolder = $webappRoot;
 
 $funcAppRoot = "$PSScriptRoot/live-test-apps/identity-test-function" | Resolve-Path
@@ -35,6 +39,14 @@ az webapp deploy --resource-group $(getVariable('IDENTITY_RESOURCE_GROUP')) --na
 # if ($null -eq $Env:AGENT_WORKFOLDER) {
 #     Remove-Item -Force -Recurse "$webappRoot/%AGENT_WORKFOLDER%"
 # }
+
+if (Test-Path -Path "$webappRoot/target/identity-mi-server-0.0.1-SNAPSHOT.jar" -PathType Leaf) {
+    Write-Host "The file exists!"
+} else {
+    Write-Host "The file does not exist."
+}
+
+echo "working on function"
 
 # build function app
 mvn clean package "-DfunctionAppName=$(getVariable('IDENTITY_FUNCTION_NAME'))" "-DresourceGroup=$(getVariable('IDENTITY_RESOURCE_GROUP'))" "-DappServicePlanName=$(getVariable('IDENTITY_APPSERVICE_NAME'))" -f $funcAppPom
