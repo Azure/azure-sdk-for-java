@@ -18,10 +18,10 @@ function getVariable {
 
 $webappRoot = "$PSScriptRoot/identity-mi-server" | Resolve-Path
 
-echo "webappRoot: $webappRoot"
+Write-Host "webappRoot: $webappRoot"
 $webappRootPom = "$webappRoot/pom.xml" | Resolve-Path
 
-echo "webappRootPom: $webappRootPom"
+Write-Host "webappRootPom: $webappRootPom"
 # $workingFolder = $webappRoot;
 
 $funcAppRoot = "$PSScriptRoot/live-test-apps/identity-test-function" | Resolve-Path
@@ -32,6 +32,8 @@ $funcAppPom = "$funcAppRoot/pom.xml" | Resolve-Path
 # }
 az login --service-principal -u $(getVariable('IDENTITY_CLIENT_ID')) -p $(getVariable('IDENTITY_CLIENT_SECRET')) --tenant $(getVariable('IDENTITY_TENANT_ID'))
 az account set --subscription $(getVariable('IDENTITY_SUBSCRIPTION_ID'))
+
+mvn --version | Write-Host
 
 mvn clean package $webappRootPom
 az webapp deploy --resource-group $(getVariable('IDENTITY_RESOURCE_GROUP')) --name $(getVariable('IDENTITY_WEBAPP_NAME')) --src-path "$webappRoot/target/identity-mi-server-0.0.1-SNAPSHOT.jar" --type jar
@@ -46,7 +48,7 @@ if (Test-Path -Path "$webappRoot/target/identity-mi-server-0.0.1-SNAPSHOT.jar" -
     Write-Host "The file does not exist."
 }
 
-echo "working on function"
+Write-Host "working on function"
 
 # build function app
 mvn clean package "-DfunctionAppName=$(getVariable('IDENTITY_FUNCTION_NAME'))" "-DresourceGroup=$(getVariable('IDENTITY_RESOURCE_GROUP'))" "-DappServicePlanName=$(getVariable('IDENTITY_APPSERVICE_NAME'))" -f $funcAppPom
