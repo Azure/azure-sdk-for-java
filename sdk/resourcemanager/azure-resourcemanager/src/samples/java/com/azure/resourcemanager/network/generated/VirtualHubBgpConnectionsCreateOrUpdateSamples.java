@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.fluent.models.BgpConnectionInner;
 public final class VirtualHubBgpConnectionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VirtualHubBgpConnectionPut.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualHubBgpConnectionPut.
      * json
      */
     /**

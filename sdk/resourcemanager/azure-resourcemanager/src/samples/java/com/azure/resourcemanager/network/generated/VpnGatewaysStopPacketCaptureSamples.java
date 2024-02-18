@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.VpnGatewayPacketCaptureStopParam
 public final class VpnGatewaysStopPacketCaptureSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VpnGatewayStopPacketCapture.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VpnGatewayStopPacketCapture.
      * json
      */
     /**

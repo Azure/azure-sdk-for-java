@@ -27,6 +27,12 @@ public final class BastionHostInner extends Resource {
     private BastionHostPropertiesFormat innerProperties;
 
     /*
+     * A list of availability zones denoting where the resource needs to come from.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
+
+    /*
      * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
@@ -57,6 +63,26 @@ public final class BastionHostInner extends Resource {
      */
     private BastionHostPropertiesFormat innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the zones property: A list of availability zones denoting where the resource needs to come from.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: A list of availability zones denoting where the resource needs to come from.
+     * 
+     * @param zones the zones value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
     }
 
     /**
