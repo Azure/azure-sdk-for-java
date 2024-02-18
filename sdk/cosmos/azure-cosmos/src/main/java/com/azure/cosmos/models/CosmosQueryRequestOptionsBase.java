@@ -465,11 +465,6 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.setCosmosQueryRequestOptionsBaseAccessor(
             new ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.CosmosQueryRequestOptionsBaseAccessor() {
                 @Override
-                public <T extends CosmosQueryRequestOptionsBase<?>> T clone(T toBeCloned) {
-                    return null;
-                }
-
-                @Override
                 public void setOperationContext(CosmosQueryRequestOptionsBase<?> queryRequestOptions,
                                                 OperationContextAndListenerTuple operationContextAndListenerTuple) {
                     queryRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);

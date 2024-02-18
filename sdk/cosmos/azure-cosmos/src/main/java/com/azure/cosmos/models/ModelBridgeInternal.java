@@ -304,7 +304,7 @@ public final class ModelBridgeInternal {
      */
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static String getPartitionKeyRangeIdInternal(CosmosQueryRequestOptions options) {
-        return options.getImpl().getPartitionKeyRangeIdInternal();
+        return options.getPartitionKeyRangeIdInternal();
     }
 
     /**
@@ -316,7 +316,7 @@ public final class ModelBridgeInternal {
      */
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosQueryRequestOptions setPartitionKeyRangeIdInternal(CosmosQueryRequestOptions options, String partitionKeyRangeId) {
-        options.getImpl().setPartitionKeyRangeIdInternal(partitionKeyRangeId);
+        options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
         return options;
     }
 

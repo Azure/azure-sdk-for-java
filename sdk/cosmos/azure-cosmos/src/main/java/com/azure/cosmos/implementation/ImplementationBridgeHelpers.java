@@ -315,7 +315,6 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosQueryRequestOptionsBaseAccessor {
-            <T extends CosmosQueryRequestOptionsBase<?>> T clone(T toBeCloned);
             void setOperationContext(CosmosQueryRequestOptionsBase<?> queryRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptionsBase<?> queryRequestOptions);
             <T extends CosmosQueryRequestOptionsBase<?>> T setHeader(T queryRequestOptions, String name, String value);

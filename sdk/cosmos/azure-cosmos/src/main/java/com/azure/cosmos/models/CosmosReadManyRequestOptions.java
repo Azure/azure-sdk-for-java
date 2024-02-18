@@ -17,6 +17,7 @@ public class CosmosReadManyRequestOptions extends CosmosQueryRequestOptionsBase<
 
     /**
      * Instantiates a new read many request options.
+     * @param options The request options to-be cloned
      */
     public CosmosReadManyRequestOptions(CosmosReadManyRequestOptions options) {
         super(options);
