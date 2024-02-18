@@ -158,7 +158,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -201,7 +201,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -390,7 +390,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -434,7 +434,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, virtualNetworkPeeringName,
@@ -541,7 +541,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
         } else {
             virtualNetworkPeeringParameters.validate();
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -598,7 +598,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
         } else {
             virtualNetworkPeeringParameters.validate();
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -753,7 +753,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
         SyncRemoteAddressSpace syncRemoteAddressSpace) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName,
             virtualNetworkPeeringParameters, syncRemoteAddressSpace).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -775,7 +775,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
         final SyncRemoteAddressSpace syncRemoteAddressSpace = null;
         return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName,
             virtualNetworkPeeringParameters, syncRemoteAddressSpace).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -800,7 +800,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
         SyncRemoteAddressSpace syncRemoteAddressSpace, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName,
             virtualNetworkPeeringParameters, syncRemoteAddressSpace, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -878,7 +878,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -919,7 +919,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

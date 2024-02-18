@@ -15,7 +15,7 @@ import java.util.Arrays;
 public final class RouteTablesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/RouteTableCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/RouteTableCreate.json
      */
     /**
      * Sample code: Create route table.
@@ -29,7 +29,7 @@ public final class RouteTablesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/RouteTableCreateWithRoute.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/RouteTableCreateWithRoute.
      * json
      */
     /**
