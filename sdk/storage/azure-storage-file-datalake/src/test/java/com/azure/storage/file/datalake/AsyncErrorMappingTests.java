@@ -3,7 +3,6 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import org.junit.jupiter.api.BeforeEach;
