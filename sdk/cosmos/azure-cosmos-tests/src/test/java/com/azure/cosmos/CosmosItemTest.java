@@ -51,6 +51,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.nio.charset.StandardCharsets;
+import java.rmi.ConnectIOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -310,11 +311,14 @@ public class CosmosItemTest extends TestSuiteBase {
             throw new SkipException("Fault injection only targeting direct mode");
         }
 
-        if (ImplementationBridgeHelpers
+        ConsistencyLevel effectiveConsistencyLevel = ImplementationBridgeHelpers
             .CosmosAsyncClientHelper
             .getCosmosAsyncClientAccessor()
-            .getEffectiveConsistencyLevel(client.asyncClient(), OperationType.Query, null) != ConsistencyLevel.BOUNDED_STALENESS) {
-            throw new SkipException("Fault injection only targeting direct mode");
+            .getEffectiveConsistencyLevel(client.asyncClient(), OperationType.Query, null);
+
+        if (effectiveConsistencyLevel != ConsistencyLevel.BOUNDED_STALENESS &&
+            effectiveConsistencyLevel != ConsistencyLevel.STRONG) {
+            throw new SkipException("Test only targeting strong and bounded staleness.");
         }
 
         List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
