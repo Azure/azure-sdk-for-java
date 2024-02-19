@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
 public final class GalleryImageVersionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Get_WithVhdAsSource.json
      */
     /**
@@ -27,7 +27,7 @@ public final class GalleryImageVersionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Get.json
      */
     /**
@@ -42,7 +42,7 @@ public final class GalleryImageVersionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Get_WithReplicationStatus.json
      */
     /**
@@ -59,7 +59,7 @@ public final class GalleryImageVersionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Get_WithSnapshotsAsSource.json
      */
     /**

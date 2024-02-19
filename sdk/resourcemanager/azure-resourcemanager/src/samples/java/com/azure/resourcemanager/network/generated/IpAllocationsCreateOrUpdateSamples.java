@@ -15,7 +15,7 @@ import java.util.Map;
 public final class IpAllocationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/IpAllocationCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/IpAllocationCreate.json
      */
     /**
      * Sample code: Create IpAllocation.

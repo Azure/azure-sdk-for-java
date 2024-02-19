@@ -36,7 +36,7 @@ import java.util.Map;
 public final class FirewallPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/FirewallPolicyPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/FirewallPolicyPut.json
      */
     /**
      * Sample code: Create FirewallPolicy.

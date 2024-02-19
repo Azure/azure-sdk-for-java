@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class GalleryArtifactVersionSource {
     /*
-     * The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, user image or storage
-     * account resource.
+     * The id of the gallery artifact version source.
      */
     @JsonProperty(value = "id")
     private String id;
@@ -26,8 +25,7 @@ public class GalleryArtifactVersionSource {
     }
 
     /**
-     * Get the id property: The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, user
-     * image or storage account resource.
+     * Get the id property: The id of the gallery artifact version source.
      * 
      * @return the id value.
      */
@@ -36,8 +34,7 @@ public class GalleryArtifactVersionSource {
     }
 
     /**
-     * Set the id property: The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, user
-     * image or storage account resource.
+     * Set the id property: The id of the gallery artifact version source.
      * 
      * @param id the id value to set.
      * @return the GalleryArtifactVersionSource object itself.

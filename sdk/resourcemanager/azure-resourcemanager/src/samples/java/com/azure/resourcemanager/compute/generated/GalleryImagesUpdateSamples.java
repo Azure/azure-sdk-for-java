@@ -16,7 +16,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 public final class GalleryImagesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImage_Update.json
      */
     /**

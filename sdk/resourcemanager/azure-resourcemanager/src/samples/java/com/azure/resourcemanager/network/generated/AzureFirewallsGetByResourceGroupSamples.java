@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AzureFirewallsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
      * AzureFirewallGetWithAdditionalProperties.json
      */
     /**
@@ -24,7 +24,7 @@ public final class AzureFirewallsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/AzureFirewallGetWithIpGroups.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/AzureFirewallGetWithIpGroups.
      * json
      */
     /**
@@ -39,7 +39,7 @@ public final class AzureFirewallsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/AzureFirewallGetWithZones.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/AzureFirewallGetWithZones.
      * json
      */
     /**
@@ -53,7 +53,7 @@ public final class AzureFirewallsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
      * AzureFirewallGetWithMgmtSubnet.json
      */
     /**
@@ -68,7 +68,7 @@ public final class AzureFirewallsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/AzureFirewallGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/AzureFirewallGet.json
      */
     /**
      * Sample code: Get Azure Firewall.

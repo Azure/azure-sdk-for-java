@@ -20,7 +20,7 @@ import java.util.Arrays;
 public final class GalleryApplicationVersionsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryApplicationVersion_Update.json
      */
     /**
