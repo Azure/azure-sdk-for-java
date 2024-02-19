@@ -38,6 +38,15 @@ spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cos
 spark.sql(s"ALTER TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} " +
   s"SET TBLPROPERTIES('manualThroughput' = '1100')")
 
+// read database with client retireved from cache
+val clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+  .getCosmosClientFromCache(cfg)
+  .getClient
+val dbResponse = clientFromCache.getDatabase(cosmosDatabase).read().block()
+
+assert(dbResponse.getProperties.getId.equals(cosmosDatabase))
+clientFromCache.close()
+
 // COMMAND ----------
 
 // ingestion

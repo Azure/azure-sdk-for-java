@@ -97,6 +97,24 @@ abstract class SparkE2EQueryITestBase
     // assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = true)
   }
 
+  "cosmos client" can "be retrieved from cache" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+    )
+    val clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+      .getCosmosClientFromCache(cfg)
+      .getClient
+    val dbResponse = clientFromCache .getDatabase(cosmosDatabase).read().block()
+
+    dbResponse.getProperties.getId shouldEqual cosmosDatabase
+    clientFromCache.close()
+  }
+
   private def insertDummyValue() : Unit = {
     val id = UUID.randomUUID().toString
 
