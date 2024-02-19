@@ -26,8 +26,6 @@ public class ReadToFileOptions {
     private boolean rangeGetContentMd5;
     private Set<OpenOption> openOptions;
     private Boolean userPrincipalName;
-    private boolean overwrite;
-
 
     /**
      * @return A {@link String} representing the filePath where the downloaded data will be written.
