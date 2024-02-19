@@ -28,7 +28,7 @@ public class AsyncErrorMappingTests extends DataLakeTestBase {
 
     @Test
     public void getFileProperties() {
-        StepVerifier.create(fsac.getFileAsyncClient(generatePathName()).getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(fsac.getFileAsyncClient(generatePathName()).getPropertiesWithResponse(null))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -46,7 +46,7 @@ public class AsyncErrorMappingTests extends DataLakeTestBase {
 
     @Test
     public void getDirectoryProperties() {
-        StepVerifier.create(fsac.getDirectoryAsyncClient(generatePathName()).getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(fsac.getDirectoryAsyncClient(generatePathName()).getPropertiesWithResponse(null))
             .verifyError(DataLakeStorageException.class);
     }
 

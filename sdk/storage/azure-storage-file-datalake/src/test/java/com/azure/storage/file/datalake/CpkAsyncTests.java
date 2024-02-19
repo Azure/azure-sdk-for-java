@@ -57,7 +57,7 @@ public class CpkAsyncTests extends DataLakeTestBase {
     public void pathGetProperties() {
         cpkFile.create().block();
 
-        StepVerifier.create(cpkFile.getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(cpkFile.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 assertEquals(200, r.getStatusCode());
                 assertTrue(r.getValue().isServerEncrypted());

@@ -43,7 +43,7 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .assertNext(r -> assertEquals(r, leaseClient.getLeaseId()))
             .verifyComplete();
 
-        StepVerifier.create(fc.getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 assertEquals(leaseStateType, r.getValue().getLeaseState());
                 assertEquals(leaseDurationType, r.getValue().getLeaseDuration());

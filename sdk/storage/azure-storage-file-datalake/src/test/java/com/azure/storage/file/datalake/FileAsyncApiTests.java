@@ -221,7 +221,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         fc.createWithResponse(null, null, headers, null, null).block();
 
         String finalContentType = contentType;
-        StepVerifier.create(fc.getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                     null, finalContentType);
@@ -556,7 +556,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(headers), null).block();
 
         String finalContentType = contentType;
-        StepVerifier.create(fc.getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
             .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, null, finalContentType))
             .verifyComplete();
@@ -803,7 +803,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     public void deleteFileDoesNotExistAnymore() {
         fc.deleteWithResponse(null, null, null).block();
 
-        StepVerifier.create(fc.getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
             .verifyErrorSatisfies(r -> DataLakeTestBase.assertExceptionStatusCodeAndMessage(r, 404,
             BlobErrorCode.BLOB_NOT_FOUND));
     }
@@ -853,7 +853,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @Test
     public void deleteIfExistsFileDoesNotExistAnymore() {
         assertAsyncResponseStatusCode(fc.deleteIfExistsWithResponse(null, null), 200);
-        StepVerifier.create(fc.getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -1108,7 +1108,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void getPropertiesDefault() {
-        StepVerifier.create(fc.getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 HttpHeaders headers = r.getHeaders();
                 PathProperties properties = r.getValue();
@@ -1148,7 +1148,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void getPropertiesMin() {
-        assertAsyncResponseStatusCode(fc.getPropertiesWithResponse((DataLakeRequestConditions) null), 200);
+        assertAsyncResponseStatusCode(fc.getPropertiesWithResponse(null), 200);
     }
 
     @ParameterizedTest
@@ -1235,7 +1235,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
         fc.setHttpHeaders(putHeaders).block();
 
-        StepVerifier.create(fc.getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
             .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
             contentMD5, contentType))
                 .verifyComplete();
@@ -2053,7 +2053,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     public void renameWithResponse() {
         StepVerifier.create(fc.renameWithResponse(null, generatePathName(),
             null, null, null)
-            .flatMap(r -> r.getValue().getPropertiesWithResponse((DataLakeRequestConditions) null)))
+            .flatMap(r -> r.getValue().getPropertiesWithResponse(null)))
             .assertNext(piece -> assertEquals(200, piece.getStatusCode()))
             .verifyComplete();
 
@@ -2069,7 +2069,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(fc.renameWithResponse(newFileSystem.getFileSystemName(), generatePathName(),
             null, null, null)
-            .flatMap(r -> r.getValue().getPropertiesWithResponse((DataLakeRequestConditions) null)))
+            .flatMap(r -> r.getValue().getPropertiesWithResponse(null)))
             .assertNext(p -> assertEquals(p.getStatusCode(), 200))
             .verifyComplete();
 
@@ -2097,7 +2097,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         StepVerifier.create(fc.renameWithResponse(null, generatePathName() + destination, null, null, null)
             .flatMap(r -> {
                 assertEquals(201, r.getStatusCode());
-                return r.getValue().getPropertiesWithResponse((DataLakeRequestConditions) null);
+                return r.getValue().getPropertiesWithResponse(null);
             }))
             .assertNext(piece -> assertEquals(200, piece.getStatusCode()))
             .verifyComplete();
@@ -2190,7 +2190,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
         DataLakeFileAsyncClient destClient = client.rename(dataLakeFileSystemAsyncClient.getFileSystemName(), generatePathName()).block();
 
-        StepVerifier.create(destClient.getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(destClient.getPropertiesWithResponse(null))
             .assertNext(r -> assertEquals(r.getStatusCode(), 200))
             .verifyComplete();
     }
@@ -2210,7 +2210,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
         DataLakeFileAsyncClient destClient = client.rename(dataLakeFileSystemAsyncClient.getFileSystemName(), generatePathName()).block();
 
-        StepVerifier.create(destClient.getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(destClient.getPropertiesWithResponse(null))
             .assertNext(r -> assertEquals(r.getStatusCode(), 200))
             .verifyComplete();
     }
@@ -2532,7 +2532,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
 
         String finalContentType = contentType;
-        StepVerifier.create(fc.getPropertiesWithResponse((DataLakeRequestConditions) null))
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
             .assertNext(r -> validatePathProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                 null, finalContentType))
             .verifyComplete();
@@ -3199,7 +3199,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                 .setContentLanguage(contentLanguage)
                 .setContentMd5(contentMD5)
                 .setContentType(contentType), null, null)
-            .then(fac.getPropertiesWithResponse((DataLakeRequestConditions) null));
+            .then(fac.getPropertiesWithResponse(null));
 
         StepVerifier.create(uploadOperation)
             .assertNext(response -> validatePathProperties(response, cacheControl, contentDisposition, contentEncoding,
@@ -3234,7 +3234,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setMaxConcurrency(10);
         Mono<Response<PathProperties>> uploadOperation = fac.uploadWithResponse(Flux.just(getRandomData(10)),
                 parallelTransferOptions, null, metadata, null)
-            .then(fac.getPropertiesWithResponse((DataLakeRequestConditions) null));
+            .then(fac.getPropertiesWithResponse(null));
 
         StepVerifier.create(uploadOperation)
             .assertNext(response -> {
@@ -3278,7 +3278,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
         Mono<Response<PathProperties>> uploadOperation = fac.uploadWithResponse(
             new FileParallelUploadOptions(Flux.just(getRandomData(10))).setPermissions("0777").setUmask("0057"))
-            .then(fac.getPropertiesWithResponse((DataLakeRequestConditions) null));
+            .then(fac.getPropertiesWithResponse(null));
 
         StepVerifier.create(uploadOperation)
             .assertNext(response -> {
@@ -4127,7 +4127,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .buildFileAsyncClient();
 
         // blob endpoint
-        assertEquals("2019-02-02", fileAsyncClient.getPropertiesWithResponse((DataLakeRequestConditions) null).block().getHeaders()
+        assertEquals("2019-02-02", fileAsyncClient.getPropertiesWithResponse(null).block().getHeaders()
             .getValue(X_MS_VERSION));
 
         // dfs endpoint
@@ -4215,7 +4215,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .assertNext(r -> assertNotNull(r.getAccessControlList()))
             .verifyComplete();
 
-        StepVerifier.create(fc.getPropertiesWithResponse(propertiesOptions))
+        StepVerifier.create(fc.getPropertiesUsingOptionsWithResponse(propertiesOptions))
             .assertNext(r -> assertNotNull(r.getValue().getAccessControlList()));
 
         //readToFile

@@ -873,7 +873,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathProperties> getProperties() {
-        return getPropertiesWithResponse((DataLakeRequestConditions) null).flatMap(FluxUtil::toMono);
+        return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -898,7 +898,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathProperties> getProperties(PathGetPropertiesOptions options) {
-        return getPropertiesWithResponse(options).flatMap(FluxUtil::toMono);
+        return getPropertiesUsingOptionsWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -951,7 +951,7 @@ public class DataLakePathAsyncClient {
      * @return A reactive response containing the resource's properties and metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PathProperties>> getPropertiesWithResponse(PathGetPropertiesOptions options) {
+    public Mono<Response<PathProperties>> getPropertiesUsingOptionsWithResponse(PathGetPropertiesOptions options) {
         Context context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), null);
 
         return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(options.getRequestConditions()))

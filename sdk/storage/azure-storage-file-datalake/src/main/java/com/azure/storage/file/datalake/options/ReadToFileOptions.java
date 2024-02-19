@@ -159,20 +159,4 @@ public class ReadToFileOptions {
         this.userPrincipalName = userPrincipalName;
         return this;
     }
-
-    /**
-     * @return Whether to overwrite the file.
-     */
-    public boolean isOverwrite() {
-        return overwrite;
-    }
-
-    /**
-     * @param overwrite Whether to overwrite the file.
-     * @return The updated options.
-     */
-    public ReadToFileOptions setOverwrite(boolean overwrite) {
-        this.overwrite = overwrite;
-        return this;
-    }
 }

@@ -4,7 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 public class BlobBaseTestHelper {
-    public String getEncryptionScope(BlobAsyncClientBase baseClient) {
+    public static String getEncryptionScope(BlobAsyncClientBase baseClient) {
         return baseClient.getEncryptionScope();
     }
 }
