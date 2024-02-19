@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.DiscoveriesImpl;
+import com.azure.analytics.purview.datamap.implementation.DiscoveryClientImpl;
 import com.azure.analytics.purview.datamap.models.AutoCompleteContent;
 import com.azure.analytics.purview.datamap.models.AutoCompleteResult;
 import com.azure.analytics.purview.datamap.models.SearchContent;
@@ -26,12 +26,12 @@ import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous PurviewDataMapClient type.
+ * Initializes a new instance of the asynchronous DiscoveryClient type.
  */
-@ServiceClient(builder = PurviewDataMapClientBuilder.class, isAsync = true)
+@ServiceClient(builder = DiscoveryClientBuilder.class, isAsync = true)
 public final class DiscoveryAsyncClient {
     @Generated
-    private final DiscoveriesImpl serviceClient;
+    private final DiscoveryClientImpl serviceClient;
 
     /**
      * Initializes an instance of DiscoveryAsyncClient class.
@@ -39,7 +39,7 @@ public final class DiscoveryAsyncClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DiscoveryAsyncClient(DiscoveriesImpl serviceClient) {
+    DiscoveryAsyncClient(DiscoveryClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

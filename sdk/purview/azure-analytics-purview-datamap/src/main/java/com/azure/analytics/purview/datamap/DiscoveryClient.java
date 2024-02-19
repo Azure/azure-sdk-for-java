@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.DiscoveriesImpl;
+import com.azure.analytics.purview.datamap.implementation.DiscoveryClientImpl;
 import com.azure.analytics.purview.datamap.models.AutoCompleteContent;
 import com.azure.analytics.purview.datamap.models.AutoCompleteResult;
 import com.azure.analytics.purview.datamap.models.SearchContent;
@@ -24,12 +24,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
 /**
- * Initializes a new instance of the synchronous PurviewDataMapClient type.
+ * Initializes a new instance of the synchronous DiscoveryClient type.
  */
-@ServiceClient(builder = PurviewDataMapClientBuilder.class)
+@ServiceClient(builder = DiscoveryClientBuilder.class)
 public final class DiscoveryClient {
     @Generated
-    private final DiscoveriesImpl serviceClient;
+    private final DiscoveryClientImpl serviceClient;
 
     /**
      * Initializes an instance of DiscoveryClient class.
@@ -37,7 +37,7 @@ public final class DiscoveryClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DiscoveryClient(DiscoveriesImpl serviceClient) {
+    DiscoveryClient(DiscoveryClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

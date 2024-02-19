@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.LineagesImpl;
+import com.azure.analytics.purview.datamap.implementation.LineageClientImpl;
 import com.azure.analytics.purview.datamap.models.AtlasLineageInfo;
 import com.azure.analytics.purview.datamap.models.LineageDirection;
 import com.azure.core.annotation.Generated;
@@ -22,12 +22,12 @@ import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous PurviewDataMapClient type.
+ * Initializes a new instance of the asynchronous LineageClient type.
  */
-@ServiceClient(builder = PurviewDataMapClientBuilder.class, isAsync = true)
+@ServiceClient(builder = LineageClientBuilder.class, isAsync = true)
 public final class LineageAsyncClient {
     @Generated
-    private final LineagesImpl serviceClient;
+    private final LineageClientImpl serviceClient;
 
     /**
      * Initializes an instance of LineageAsyncClient class.
@@ -35,7 +35,7 @@ public final class LineageAsyncClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    LineageAsyncClient(LineagesImpl serviceClient) {
+    LineageAsyncClient(LineageClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

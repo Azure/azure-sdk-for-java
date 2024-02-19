@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.EntitiesImpl;
+import com.azure.analytics.purview.datamap.implementation.EntityClientImpl;
 import com.azure.analytics.purview.datamap.models.AtlasClassification;
 import com.azure.analytics.purview.datamap.models.AtlasClassifications;
 import com.azure.analytics.purview.datamap.models.AtlasEntitiesWithExtInfo;
@@ -31,12 +31,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Initializes a new instance of the synchronous PurviewDataMapClient type.
+ * Initializes a new instance of the synchronous EntityClient type.
  */
-@ServiceClient(builder = PurviewDataMapClientBuilder.class)
+@ServiceClient(builder = EntityClientBuilder.class)
 public final class EntityClient {
     @Generated
-    private final EntitiesImpl serviceClient;
+    private final EntityClientImpl serviceClient;
 
     /**
      * Initializes an instance of EntityClient class.
@@ -44,7 +44,7 @@ public final class EntityClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    EntityClient(EntitiesImpl serviceClient) {
+    EntityClient(EntityClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.RelationshipsImpl;
+import com.azure.analytics.purview.datamap.implementation.RelationshipClientImpl;
 import com.azure.analytics.purview.datamap.models.AtlasRelationship;
 import com.azure.analytics.purview.datamap.models.AtlasRelationshipWithExtInfo;
 import com.azure.core.annotation.Generated;
@@ -20,12 +20,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
 /**
- * Initializes a new instance of the synchronous PurviewDataMapClient type.
+ * Initializes a new instance of the synchronous RelationshipClient type.
  */
-@ServiceClient(builder = PurviewDataMapClientBuilder.class)
+@ServiceClient(builder = RelationshipClientBuilder.class)
 public final class RelationshipClient {
     @Generated
-    private final RelationshipsImpl serviceClient;
+    private final RelationshipClientImpl serviceClient;
 
     /**
      * Initializes an instance of RelationshipClient class.
@@ -33,7 +33,7 @@ public final class RelationshipClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    RelationshipClient(RelationshipsImpl serviceClient) {
+    RelationshipClient(RelationshipClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

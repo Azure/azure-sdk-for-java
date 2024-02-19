@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.EntitiesImpl;
+import com.azure.analytics.purview.datamap.implementation.EntityClientImpl;
 import com.azure.analytics.purview.datamap.models.AtlasClassification;
 import com.azure.analytics.purview.datamap.models.AtlasClassifications;
 import com.azure.analytics.purview.datamap.models.AtlasEntitiesWithExtInfo;
@@ -33,12 +33,12 @@ import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous PurviewDataMapClient type.
+ * Initializes a new instance of the asynchronous EntityClient type.
  */
-@ServiceClient(builder = PurviewDataMapClientBuilder.class, isAsync = true)
+@ServiceClient(builder = EntityClientBuilder.class, isAsync = true)
 public final class EntityAsyncClient {
     @Generated
-    private final EntitiesImpl serviceClient;
+    private final EntityClientImpl serviceClient;
 
     /**
      * Initializes an instance of EntityAsyncClient class.
@@ -46,7 +46,7 @@ public final class EntityAsyncClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    EntityAsyncClient(EntitiesImpl serviceClient) {
+    EntityAsyncClient(EntityClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

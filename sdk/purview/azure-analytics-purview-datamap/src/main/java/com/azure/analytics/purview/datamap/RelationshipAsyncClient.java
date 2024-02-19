@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.RelationshipsImpl;
+import com.azure.analytics.purview.datamap.implementation.RelationshipClientImpl;
 import com.azure.analytics.purview.datamap.models.AtlasRelationship;
 import com.azure.analytics.purview.datamap.models.AtlasRelationshipWithExtInfo;
 import com.azure.core.annotation.Generated;
@@ -22,12 +22,12 @@ import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous PurviewDataMapClient type.
+ * Initializes a new instance of the asynchronous RelationshipClient type.
  */
-@ServiceClient(builder = PurviewDataMapClientBuilder.class, isAsync = true)
+@ServiceClient(builder = RelationshipClientBuilder.class, isAsync = true)
 public final class RelationshipAsyncClient {
     @Generated
-    private final RelationshipsImpl serviceClient;
+    private final RelationshipClientImpl serviceClient;
 
     /**
      * Initializes an instance of RelationshipAsyncClient class.
@@ -35,7 +35,7 @@ public final class RelationshipAsyncClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    RelationshipAsyncClient(RelationshipsImpl serviceClient) {
+    RelationshipAsyncClient(RelationshipClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

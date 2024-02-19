@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.TypesImpl;
+import com.azure.analytics.purview.datamap.implementation.TypeClientImpl;
 import com.azure.analytics.purview.datamap.models.AtlasBusinessMetadataDef;
 import com.azure.analytics.purview.datamap.models.AtlasClassificationDef;
 import com.azure.analytics.purview.datamap.models.AtlasEntityDef;
@@ -31,12 +31,12 @@ import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
 
 /**
- * Initializes a new instance of the synchronous PurviewDataMapClient type.
+ * Initializes a new instance of the synchronous TypeClient type.
  */
-@ServiceClient(builder = PurviewDataMapClientBuilder.class)
+@ServiceClient(builder = TypeClientBuilder.class)
 public final class TypeClient {
     @Generated
-    private final TypesImpl serviceClient;
+    private final TypeClientImpl serviceClient;
 
     /**
      * Initializes an instance of TypeClient class.
@@ -44,7 +44,7 @@ public final class TypeClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    TypeClient(TypesImpl serviceClient) {
+    TypeClient(TypeClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

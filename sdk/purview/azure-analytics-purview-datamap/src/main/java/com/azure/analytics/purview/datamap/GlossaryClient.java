@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.GlossariesImpl;
+import com.azure.analytics.purview.datamap.implementation.GlossaryClientImpl;
 import com.azure.analytics.purview.datamap.models.AtlasGlossary;
 import com.azure.analytics.purview.datamap.models.AtlasGlossaryCategory;
 import com.azure.analytics.purview.datamap.models.AtlasGlossaryExtInfo;
@@ -28,12 +28,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Initializes a new instance of the synchronous PurviewDataMapClient type.
+ * Initializes a new instance of the synchronous GlossaryClient type.
  */
-@ServiceClient(builder = PurviewDataMapClientBuilder.class)
+@ServiceClient(builder = GlossaryClientBuilder.class)
 public final class GlossaryClient {
     @Generated
-    private final GlossariesImpl serviceClient;
+    private final GlossaryClientImpl serviceClient;
 
     /**
      * Initializes an instance of GlossaryClient class.
@@ -41,7 +41,7 @@ public final class GlossaryClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    GlossaryClient(GlossariesImpl serviceClient) {
+    GlossaryClient(GlossaryClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

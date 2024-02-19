@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.LineagesImpl;
+import com.azure.analytics.purview.datamap.implementation.LineageClientImpl;
 import com.azure.analytics.purview.datamap.models.AtlasLineageInfo;
 import com.azure.analytics.purview.datamap.models.LineageDirection;
 import com.azure.core.annotation.Generated;
@@ -20,12 +20,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
 /**
- * Initializes a new instance of the synchronous PurviewDataMapClient type.
+ * Initializes a new instance of the synchronous LineageClient type.
  */
-@ServiceClient(builder = PurviewDataMapClientBuilder.class)
+@ServiceClient(builder = LineageClientBuilder.class)
 public final class LineageClient {
     @Generated
-    private final LineagesImpl serviceClient;
+    private final LineageClientImpl serviceClient;
 
     /**
      * Initializes an instance of LineageClient class.
@@ -33,7 +33,7 @@ public final class LineageClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    LineageClient(LineagesImpl serviceClient) {
+    LineageClient(LineageClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
