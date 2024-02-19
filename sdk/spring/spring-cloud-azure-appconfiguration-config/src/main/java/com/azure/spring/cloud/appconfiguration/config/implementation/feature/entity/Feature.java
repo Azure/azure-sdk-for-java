@@ -29,6 +29,9 @@ public final class Feature {
     @JsonProperty(REQUIREMENT_TYPE)
     private String requirementType = DEFAULT_REQUIREMENT_TYPE;
 
+    @JsonProperty("telemetry")
+    private FeatureTelemetry telemetry;
+
     /**
      * Feature Flag object.
      */
@@ -37,7 +40,7 @@ public final class Feature {
 
     /**
      * Feature Flag object.
-     * 
+     *
      * @param key Name of the Feature Flag
      * @param featureItem Configurations of the Feature Flag.
      */
@@ -95,4 +98,17 @@ public final class Feature {
         this.requirementType = requirementType;
     }
 
+    /**
+     * @return the telemetry
+     */
+    public FeatureTelemetry getTelemetry() {
+        return telemetry;
+    }
+
+    /**
+     * @param telemetry the telemetry to set
+     */
+    public void setTelemetry(FeatureTelemetry telemetry) {
+        this.telemetry = telemetry;
+    }
 }
