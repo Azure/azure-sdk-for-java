@@ -82,6 +82,7 @@ public final class CosmosEncryptionAsyncContainer {
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private final static ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor = ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
     private final static ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor cosmosItemRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
+    private final static ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.CosmosQueryRequestOptionsBaseAccessor cosmosQueryRequestOptionsBaseAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.getCosmosQueryRequestOptionsBaseAccessor();
     private final static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor cosmosQueryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
     private final static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor cosmosChangeFeedRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
     private final static ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor cosmosAsyncContainerAccessor = ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
@@ -1502,9 +1503,14 @@ public final class CosmosEncryptionAsyncContainer {
     }
 
     private CosmosQueryRequestOptions setRequestHeaders(CosmosQueryRequestOptions requestOptions) {
-        cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
-        cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
-        System.out.println("Setting collectionRid header " + this.encryptionProcessor.getContainerRid());
+        cosmosQueryRequestOptionsBaseAccessor.setHeader(
+            cosmosQueryRequestOptionsAccessor.getImpl(requestOptions),
+            Constants.IS_CLIENT_ENCRYPTED_HEADER,
+            "true");
+        cosmosQueryRequestOptionsBaseAccessor.setHeader(
+            cosmosQueryRequestOptionsAccessor.getImpl(requestOptions),
+            Constants.INTENDED_COLLECTION_RID_HEADER,
+            this.encryptionProcessor.getContainerRid());
         return requestOptions;
     }
 

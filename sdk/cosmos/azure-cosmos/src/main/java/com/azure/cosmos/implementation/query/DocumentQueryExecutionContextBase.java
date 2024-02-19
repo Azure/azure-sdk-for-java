@@ -50,6 +50,10 @@ implements IDocumentQueryExecutionContext<T> {
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
+    private final static
+    ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.CosmosQueryRequestOptionsBaseAccessor qryOptBaseAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.getCosmosQueryRequestOptionsBaseAccessor();
+
     protected final DiagnosticsClientContext diagnosticsClientContext;
     protected ResourceType resourceTypeEnum;
     protected String resourceLink;
@@ -78,10 +82,8 @@ implements IDocumentQueryExecutionContext<T> {
         this.resourceLink = resourceLink;
         this.correlatedActivityId = correlatedActivityId;
         this.diagnosticsClientContext = diagnosticsClientContext;
-        this.operationContext = ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor()
-            .getOperationContext(cosmosQueryRequestOptions);
+        this.operationContext = qryOptBaseAccessor
+            .getOperationContext(qryOptAccessor.getImpl(cosmosQueryRequestOptions));
         this.isQueryCancelledOnTimeout = isQueryCancelledOnTimeout;
         this.operationContextTextProvider = () -> {
             String operationContextText = operationContext != null && operationContext.getOperationContext() != null ?
@@ -129,15 +131,12 @@ implements IDocumentQueryExecutionContext<T> {
 
         request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig =
-            ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
-                getCosmosQueryRequestOptionsAccessor()
-                .getEndToEndOperationLatencyPolicyConfig(cosmosQueryRequestOptions);
+            qryOptBaseAccessor.getEndToEndOperationLatencyPolicyConfig(qryOptAccessor.getImpl(cosmosQueryRequestOptions));
 
         if (endToEndOperationLatencyConfig != null) {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
-        request.requestContext.setExcludeRegions(ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
-            getCosmosQueryRequestOptionsAccessor().getExcludeRegions(cosmosQueryRequestOptions));
+        request.requestContext.setExcludeRegions(qryOptBaseAccessor.getExcludeRegions(qryOptAccessor.getImpl(cosmosQueryRequestOptions)));
 
         request.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
         return request;
@@ -223,17 +222,17 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         Map<String, String> customOptions = ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor()
-            .getHeader(cosmosQueryRequestOptions);
+            .CosmosQueryRequestOptionsBaseHelper
+            .getCosmosQueryRequestOptionsBaseAccessor()
+            .getHeader(qryOptAccessor.getImpl(cosmosQueryRequestOptions));
         if(customOptions != null) {
             requestHeaders.putAll(customOptions);
         }
 
         UUID correlationActivityId = ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor()
-            .getCorrelationActivityId(cosmosQueryRequestOptions);
+            .CosmosQueryRequestOptionsBaseHelper
+            .getCosmosQueryRequestOptionsBaseAccessor()
+            .getCorrelationActivityId(qryOptAccessor.getImpl(cosmosQueryRequestOptions));
         if (correlationActivityId != null) {
             requestHeaders.put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, correlationActivityId.toString());
         }
@@ -329,9 +328,7 @@ implements IDocumentQueryExecutionContext<T> {
                     // AuthorizationTokenType.PrimaryMasterKey,
                 requestHeaders);
             CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig =
-                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
-                    getCosmosQueryRequestOptionsAccessor()
-                    .getEndToEndOperationLatencyPolicyConfig(cosmosQueryRequestOptions);
+                qryOptBaseAccessor.getEndToEndOperationLatencyPolicyConfig(qryOptAccessor.getImpl(cosmosQueryRequestOptions));
             if (endToEndOperationLatencyConfig != null) {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
             }
@@ -365,11 +362,9 @@ implements IDocumentQueryExecutionContext<T> {
         Class<T> classOfT) {
 
         Function<JsonNode, T> factoryMethodFromRequestOptions = cosmosQueryRequestOptions == null ?
-            null:
-            ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getItemFactoryMethod(cosmosQueryRequestOptions, classOfT);
+            null: qryOptBaseAccessor.getItemFactoryMethod(
+                qryOptAccessor.getImpl(cosmosQueryRequestOptions),
+                classOfT);
 
         return getEffectiveFactoryMethod(factoryMethodFromRequestOptions, hasSelectValue, classOfT);
     }

@@ -25,6 +25,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -3444,17 +3445,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     private CosmosResponseWrapper readManyCore(
         List<Pair<String, String>> tuples,
-        ItemOperationInvocationParameters params,
-        boolean enforceEmptyPages
+        ItemOperationInvocationParameters params
     ) {
-        CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
-
-        if (enforceEmptyPages) {
-            ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .setAllowEmptyPages(queryOptions, true);
-        }
+        CosmosReadManyRequestOptions queryOptions = new CosmosReadManyRequestOptions();
 
         CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = ImplementationBridgeHelpers
             .CosmosItemRequestOptionsHelper
@@ -3642,7 +3635,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
 
         BiFunction<ItemOperationInvocationParameters, List<Pair<String, String>>, CosmosResponseWrapper>
-            readMany = (inputParams, tuples) -> readManyCore(tuples, inputParams, false);
+            readMany = (inputParams, tuples) -> readManyCore(tuples, inputParams);
 
         return new Object[][] {
             // CONFIG description

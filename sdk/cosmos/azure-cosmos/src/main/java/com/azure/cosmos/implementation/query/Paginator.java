@@ -31,6 +31,18 @@ public class Paginator {
 
     private final static Logger logger = LoggerFactory.getLogger(Paginator.class);
 
+    private static final ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .CosmosQueryRequestOptionsAccessor qryOptAccessor = ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .getCosmosQueryRequestOptionsAccessor();
+
+    private static final ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsBaseHelper
+        .CosmosQueryRequestOptionsBaseAccessor qryOptBaseAccessor = ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsBaseHelper
+        .getCosmosQueryRequestOptionsBaseAccessor();
+
     public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
@@ -45,14 +57,8 @@ public class Paginator {
             top,
             maxPageSize,
             getPreFetchCount(cosmosQueryRequestOptions, top, maxPageSize),
-            ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getOperationContext(cosmosQueryRequestOptions),
-            ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions));
+            qryOptBaseAccessor.getOperationContext(qryOptAccessor.getImpl(cosmosQueryRequestOptions)),
+            qryOptAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions));
     }
 
     public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(

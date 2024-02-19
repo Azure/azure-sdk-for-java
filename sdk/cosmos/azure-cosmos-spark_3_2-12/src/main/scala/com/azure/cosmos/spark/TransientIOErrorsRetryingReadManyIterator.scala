@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
-import com.azure.cosmos.models.{CosmosItemIdentity, CosmosQueryRequestOptions}
+import com.azure.cosmos.models.{CosmosItemIdentity, CosmosReadManyRequestOptions}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 // scalastyle:off underscore.import
@@ -17,7 +17,7 @@ private[spark] class TransientIOErrorsRetryingReadManyIterator[TSparkRow]
 (
   val container: CosmosAsyncContainer,
   val readManyFilterList: Iterator[CosmosItemIdentity],
-  val queryOptions: CosmosQueryRequestOptions,
+  val queryOptions: CosmosReadManyRequestOptions,
   val pageSize: Int,
   val operationContextAndListener: Option[OperationContextAndListenerTuple],
   val classType: Class[TSparkRow]

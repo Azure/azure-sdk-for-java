@@ -3,6 +3,7 @@
 ### 4.56.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added overloads for `CosmosAsyncContainer.readMany` and `CosmosContainr.readMany` accepting request options via `CosmosReadManyRequestOptions` to allow specifying excluded regions, diagnostics thresholds and end-to-end timeout etc. - See [PR 38821](https://github.com/Azure/azure-sdk-for-java/pull/38821)
 
 #### Breaking Changes
 

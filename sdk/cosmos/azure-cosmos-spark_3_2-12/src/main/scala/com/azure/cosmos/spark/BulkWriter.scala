@@ -323,7 +323,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   val cosmosIdentitySet = readManyOperations.map(option => option.cosmosItemIdentity).toSet
 
                   // for each batch, use readMany to read items from cosmosdb
-                  val requestOptions = new CosmosQueryRequestOptions()
+                  val requestOptions = new CosmosReadManyRequestOptions()
                   ThroughputControlHelper.populateThroughputControlGroupName(requestOptions, writeConfig.throughputControlConfig)
                   ImplementationBridgeHelpers
                       .CosmosAsyncContainerHelper
