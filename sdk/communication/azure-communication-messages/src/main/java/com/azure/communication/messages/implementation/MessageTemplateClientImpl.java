@@ -197,7 +197,7 @@ public final class MessageTemplateClientImpl {
     }
 
     /**
-     * List all templates for given ACS channel.
+     * List all templates for given Azure Communication Services channel.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -249,7 +249,7 @@ public final class MessageTemplateClientImpl {
     }
 
     /**
-     * List all templates for given ACS channel.
+     * List all templates for given Azure Communication Services channel.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -318,7 +318,7 @@ public final class MessageTemplateClientImpl {
     }
 
     /**
-     * List all templates for given ACS channel.
+     * List all templates for given Azure Communication Services channel.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -367,7 +367,7 @@ public final class MessageTemplateClientImpl {
     }
 
     /**
-     * List all templates for given ACS channel.
+     * List all templates for given Azure Communication Services channel.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>

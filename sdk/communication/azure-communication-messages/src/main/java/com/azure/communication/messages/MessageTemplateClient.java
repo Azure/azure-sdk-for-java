@@ -37,7 +37,7 @@ public final class MessageTemplateClient {
     }
 
     /**
-     * List all templates for given ACS channel.
+     * List all templates for given Azure Communication Services channel.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -83,7 +83,7 @@ public final class MessageTemplateClient {
     }
 
     /**
-     * List all templates for given ACS channel.
+     * List all templates for given Azure Communication Services channel.
      * 
      * @param channelId The registration ID of the channel.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
