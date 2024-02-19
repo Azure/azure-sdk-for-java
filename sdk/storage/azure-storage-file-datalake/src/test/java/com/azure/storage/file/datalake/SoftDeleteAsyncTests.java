@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.List;
@@ -165,6 +166,22 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
                 return true;
             })
             .verifyComplete();
+
+        /*Mono<Void> createDeleteSubDirFiles = fileSystemClient.getDirectoryAsyncClient(generatePathName()).create()
+            .flatMap(directory -> {
+                Mono<Void> createDelete1 = directory.getFileAsyncClient(generatePathName()).create(true).flatMap(fc1 -> fc1.delete());
+                Mono<Void> createDelete2 = directory.getFileAsyncClient(generatePathName()).create(true).flatMap(fc2 -> fc2.delete());
+                return Mono.when(createDelete1, createDelete2);
+            });
+
+        Mono<Void> createDeleteRootDirFile = fileSystemClient.getFileAsyncClient(generatePathName()).create().flatMap(fc3 -> fc3.delete());
+
+        StepVerifier.create(Mono.when(createDeleteSubDirFiles, createDeleteRootDirFile).then(fileSystemClient.listDeletedPaths().byPage(1)))
+            .thenConsumeWhile(r -> {
+                assertEquals(1, r.getValue().size());
+                return true;
+            })
+            .verifyComplete();*/
     }
 
     @Test

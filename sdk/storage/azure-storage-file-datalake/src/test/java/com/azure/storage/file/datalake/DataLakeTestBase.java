@@ -580,6 +580,11 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_ETAG, match) ? pac.getProperties().block().getETag() : match;
     }
 
+    protected Mono<String> setupPathMatchConditionNonBlocking(DataLakePathAsyncClient pac, String match) {
+        return Objects.equals(RECEIVED_ETAG, match) ? pac.getProperties().map(PathProperties::getETag) : Mono.just(match == null ? "null": match);
+
+    }
+
     /**
      * This helper method will acquire a lease on a path to prepare for testing lease id. We want to test
      * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
@@ -612,6 +617,20 @@ public class DataLakeTestBase extends TestProxyTestBase {
                 : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pac).acquireLease(-1).block();
         }
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
+    }
+
+    protected Mono<String> setupPathLeaseConditionNonBlocking(DataLakePathAsyncClient pac, String leaseID){
+        Mono<String> responseLeaseId = Mono.empty();
+
+        if (Objects.equals(RECEIVED_LEASE_ID, leaseID) || Objects.equals(GARBAGE_LEASE_ID, leaseID)) {
+            responseLeaseId = (pac instanceof DataLakeFileAsyncClient)
+                ? createLeaseAsyncClient((DataLakeFileAsyncClient) pac).acquireLease(-1)
+                : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pac).acquireLease(-1);
+        }
+        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : Mono.just(leaseID == null ? "null": leaseID);
+
+        //Optional<String> empty = Optional.empty();
+        //return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? Mono.just(responseLeaseId) : Mono.just(leaseID == null ? empty : Optional.of(leaseID));
     }
 
     protected static void compareACL(List<PathAccessControlEntry> expected, List<PathAccessControlEntry> actual) {

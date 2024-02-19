@@ -3,6 +3,7 @@
 package com.azure.storage.file.datalake.specialized;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient;
@@ -16,6 +17,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
@@ -270,7 +272,10 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
 
         leaseClient.acquireLease(leaseTime).block();
 
-        StepVerifier.create(leaseClient.breakLeaseWithResponse(breakPeriod, null))
+        Mono<Response<Integer>> response = leaseClient.acquireLease(leaseTime)
+                .then(leaseClient.breakLeaseWithResponse(breakPeriod, null));
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertTrue(r.getValue() <= remainingTime);
                 validateBasicHeaders(r.getHeaders());
@@ -337,15 +342,16 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
     public void changeFileLease() {
         DataLakeFileAsyncClient fc = createPathClient();
         DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(fc, testResourceNamer.randomUuid());
-        leaseClient.acquireLease(15).block();
 
-        String newLeaseId = testResourceNamer.randomUuid();
-        StepVerifier.create(leaseClient.changeLeaseWithResponse(newLeaseId, null)
-            .flatMap(r -> {
-                validateBasicHeaders(r.getHeaders());
-                assertEquals(leaseClient.getLeaseId(), r.getValue());
-                return createLeaseAsyncClient(fc, r.getValue()).releaseLeaseWithResponse(null);
-            }))
+        Mono<Response<Void>> response = leaseClient.acquireLease(15)
+                .then(leaseClient.changeLeaseWithResponse(testResourceNamer.randomUuid(), null)
+                    .flatMap(r -> {
+                        validateBasicHeaders(r.getHeaders());
+                        assertEquals(leaseClient.getLeaseId(), r.getValue());
+                        return createLeaseAsyncClient(fc, r.getValue()).releaseLeaseWithResponse(null);
+                    }));
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertEquals(200, r.getStatusCode());
             })
@@ -621,9 +627,11 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
     @CsvSource(value = {"-1,null,0", "-1,20,25", "20,15,16"}, nullValues = "null")
     public void breakFileSystemLease(int leaseTime, Integer breakPeriod, int remainingTime) {
         DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(dataLakeFileSystemAsyncClient, testResourceNamer.randomUuid());
-        leaseClient.acquireLease(leaseTime).block();
 
-        StepVerifier.create(leaseClient.breakLeaseWithResponse(breakPeriod, null))
+        Mono<Response<Integer>> response = leaseClient.acquireLease(leaseTime)
+                .then(leaseClient.breakLeaseWithResponse(breakPeriod, null));
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertTrue(r.getValue() <= remainingTime);
                 validateBasicHeaders(r.getHeaders());
