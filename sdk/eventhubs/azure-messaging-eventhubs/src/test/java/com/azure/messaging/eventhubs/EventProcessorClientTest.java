@@ -266,6 +266,14 @@ public class EventProcessorClientTest {
             }
         );
 
+        final String expectedSettleSpanName = getSpanName(SETTLE, EVENT_HUB_NAME);
+        when(tracer.start(eq(expectedSettleSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+                invocation -> {
+                    assertCheckpointStartOptions(invocation.getArgument(1, StartSpanOptions.class));
+                    return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
+                }
+        );
+
         when(tracer.makeSpanCurrent(any())).thenReturn(() -> { });
         // processor span ends after TestPartitionProcessor latch counts down
         CountDownLatch latch = new CountDownLatch(1);
@@ -298,6 +306,7 @@ public class EventProcessorClientTest {
         //Assert
         verify(tracer, times(1)).extractContext(any());
         verify(tracer, times(1)).start(eq(expectedProcessSpanName), any(), any(Context.class));
+        verify(tracer, times(1)).start(eq(expectedSettleSpanName), any(), any(Context.class));
         verify(tracer, times(2)).end(isNull(), isNull(), any());
 
         assertProcessMetrics(meter, 1, null);
@@ -599,6 +608,14 @@ public class EventProcessorClientTest {
             }
         );
 
+        final String expectedSettleSpanName = getSpanName(SETTLE, EVENT_HUB_NAME);
+        when(tracer.start(eq(expectedSettleSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+                invocation -> {
+                    assertCheckpointStartOptions(invocation.getArgument(1, StartSpanOptions.class));
+                    return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
+                }
+        );
+
         AtomicBoolean closed = new AtomicBoolean(false);
         when(tracer.makeSpanCurrent(any())).thenReturn(() -> closed.set(true));
 
@@ -631,6 +648,7 @@ public class EventProcessorClientTest {
         // This is one less because the processEvent is called before the end span call, so it is possible for
         // to reach this line without calling it the 5th time yet. (Timing issue.)
         verify(tracer, times(numberOfEvents)).start(eq(expectedProcessSpanName), any(), any(Context.class));
+        verify(tracer, times(numberOfEvents)).start(eq(expectedSettleSpanName), any(), any(Context.class));
         verify(tracer, atLeast(numberOfEvents - 1)).end(isNull(), isNull(), any());
     }
 

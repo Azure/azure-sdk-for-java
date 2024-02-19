@@ -10,7 +10,6 @@ import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
-import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
@@ -30,7 +29,6 @@ import reactor.test.StepVerifier;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,7 +39,6 @@ import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CREATE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PUBLISH;
 import static io.opentelemetry.api.trace.SpanKind.CLIENT;
-import static io.opentelemetry.api.trace.SpanKind.CONSUMER;
 import static io.opentelemetry.api.trace.SpanKind.PRODUCER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -50,8 +47,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 public class EventHubsProducerInstrumentationTests {
     private static final String FQDN = "fqdn";
     private static final String ENTITY_NAME = "entityName";
-    private static final String CONSUMER_GROUP = "consumerGroup";
-    private static final String TRACEPARENT1 = "00-1123456789abcdef0123456789abcdef-0123456789abcdef-01";
     private Tracer tracer;
     private TestMeter meter;
     private TestSpanProcessor spanProcessor;

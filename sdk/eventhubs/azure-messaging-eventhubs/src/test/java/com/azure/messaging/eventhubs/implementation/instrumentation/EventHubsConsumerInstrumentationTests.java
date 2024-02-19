@@ -10,6 +10,7 @@ import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.test.utils.metrics.TestCounter;
 import com.azure.core.test.utils.metrics.TestHistogram;
+import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.TracingOptions;
@@ -57,6 +58,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
@@ -122,6 +124,7 @@ public class EventHubsConsumerInstrumentationTests {
 
         try (InstrumentationScope scope =
                      instrumentation.startAsyncConsume(createMessage(Instant.now()), "0")) {
+            assertNull(scope.getStartTime());
         }
 
         TestHistogram lag = meter.getHistograms().get("messaging.eventhubs.consumer.lag");
@@ -164,6 +167,8 @@ public class EventHubsConsumerInstrumentationTests {
 
         // sync consumer reports spans in different instrumentation point
         assertEquals(0, spanProcessor.getEndedSpans().size());
+
+        assertEquals(0, meter.getHistograms().get("messaging.process.duration").getMeasurements().size());
     }
 
     @Test
@@ -202,6 +207,7 @@ public class EventHubsConsumerInstrumentationTests {
             assertAllAttributes(FQDN, ENTITY_NAME, partitionIds[i], CONSUMER_GROUP, expectedErrors[i], attributes);
             assertNotNull(attributes.get("messaging.eventhubs.message.enqueued_time"));
             assertSpanStatus(i == 0 ? "cancelled" : i == 1 ? "test" : null, span);
+            assertProcessDuration(null, partitionIds[i], expectedErrors[i]);
         }
     }
 
@@ -503,7 +509,7 @@ public class EventHubsConsumerInstrumentationTests {
         assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, attributes);
         assertSpanStatus(spanDescription, span);
 
-        assertEquals((long)expectedBatchSize, attributes.get("messaging.batch.message_count"));
+        assertEquals((long) expectedBatchSize, attributes.get("messaging.batch.message_count"));
         return span;
     }
 
@@ -540,14 +546,17 @@ public class EventHubsConsumerInstrumentationTests {
     private void assertProcessDuration(Duration duration, String partitionId, String expectedErrorType) {
         TestHistogram processDuration = meter.getHistograms().get("messaging.process.duration");
         assertNotNull(processDuration);
-        assertEquals(1, processDuration.getMeasurements().size());
+        List<TestMeasurement<Double>> durationPerPartition = processDuration.getMeasurements().stream()
+                        .filter(m -> partitionId.equals(m.getAttributes().get("messaging.eventhubs.destination.partition.id")))
+                        .collect(Collectors.toList());
+        assertEquals(1, durationPerPartition.size());
         if (duration != null) {
             double sec = getDoubleSeconds(duration);
-            assertEquals(sec, processDuration.getMeasurements().get(0).getValue(), sec);
+            assertEquals(sec, durationPerPartition.get(0).getValue(), sec);
         }
 
         assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType,
-                processDuration.getMeasurements().get(0).getAttributes());
+                durationPerPartition.get(0).getAttributes());
     }
 
     private void assertCheckpointDuration(String partitionId, String expectedErrorType) {
@@ -585,7 +594,7 @@ public class EventHubsConsumerInstrumentationTests {
     private static class ThrowingCheckpointStore implements CheckpointStore {
         private final CheckpointStore inner;
         private final Throwable exception;
-        public ThrowingCheckpointStore(CheckpointStore inner, Throwable exception) {
+        ThrowingCheckpointStore(CheckpointStore inner, Throwable exception) {
             this.exception = exception;
             this.inner = inner;
         }

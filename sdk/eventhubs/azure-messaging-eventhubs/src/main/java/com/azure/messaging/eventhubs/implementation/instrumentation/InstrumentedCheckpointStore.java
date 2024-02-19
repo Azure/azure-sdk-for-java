@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.implementation.instrumentation;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.SpanKind;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
@@ -13,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SETTLE;
 
 public final class InstrumentedCheckpointStore implements CheckpointStore {
@@ -55,7 +57,8 @@ public final class InstrumentedCheckpointStore implements CheckpointStore {
                         .setSpan(startSpan(checkpoint.getPartitionId())),
                 scope -> checkpointStore.updateCheckpoint(checkpoint)
                         .doOnError(scope::setError)
-                        .doOnCancel(scope::setCancelled),
+                        .doOnCancel(scope::setCancelled)
+                        .contextWrite(reactor.util.context.Context.of(PARENT_TRACE_CONTEXT_KEY, scope.getSpan())),
                 InstrumentationScope::close);
     }
 

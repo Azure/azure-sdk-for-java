@@ -26,7 +26,7 @@ spec:
           java \
           -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
           -Dotel.traces.sampler=traceidratio \
-          -Dotel.traces.sampler.arg=0.00001 \
+          -Dotel.traces.sampler.arg=0.001 \
           -XX:InitialRAMPercentage=75.0 \
           -XX:MaxRAMPercentage=75.0 \
           -XX:+HeapDumpOnOutOfMemoryError \
@@ -60,7 +60,7 @@ spec:
           java \
           -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
           -Dotel.traces.sampler=traceidratio \
-          -Dotel.traces.sampler.arg=0.00001 \
+          -Dotel.traces.sampler.arg=0.001 \
           -XX:InitialRAMPercentage=75.0 \
           -XX:MaxRAMPercentage=75.0 \
           -XX:+HeapDumpOnOutOfMemoryError \

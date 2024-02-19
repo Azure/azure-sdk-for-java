@@ -7,8 +7,6 @@ import com.azure.core.util.Context;
 
 import java.time.Instant;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.CANCELLED_ERROR_TYPE_VALUE;
 
@@ -25,6 +23,7 @@ public final class InstrumentationScope implements AutoCloseable {
     private Context span = Context.NONE;
     private AutoCloseable spanScope;
     private BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback;
+    private boolean closed = false;
 
     public InstrumentationScope(EventHubsTracer tracer,
                                 EventHubsMetricsProvider meter,
@@ -46,11 +45,6 @@ public final class InstrumentationScope implements AutoCloseable {
         if (isEnabled) {
             this.error = error;
         }
-        return this;
-    }
-
-    public InstrumentationScope setStartTime(Instant time) {
-        this.startTime = time;
         return this;
     }
 
@@ -96,11 +90,14 @@ public final class InstrumentationScope implements AutoCloseable {
 
     @Override
     public void close() {
-        if (meter != null && reportMetricsCallback != null) {
-            reportMetricsCallback.accept(meter, this);
-        }
-        if (tracer != null) {
-            tracer.endSpan(errorType, error, span, spanScope);
+        if (!closed) {
+            closed = true;
+            if (meter != null && reportMetricsCallback != null) {
+                reportMetricsCallback.accept(meter, this);
+            }
+            if (tracer != null) {
+                tracer.endSpan(errorType, error, span, spanScope);
+            }
         }
     }
 

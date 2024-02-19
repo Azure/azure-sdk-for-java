@@ -510,7 +510,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertTrue(processed.size() >= 2);
         assertConsumerSpan(processed.get(0), received.get(0));
 
-        List<ReadableSpan> checkpointed = findSpans(spans, SETTLE).stream().toList();
+        List<ReadableSpan> checkpointed = findSpans(spans, SETTLE).stream().collect(toList());
         for (int i = 1; i < processed.size(); i++) {
             assertConsumerSpan(processed.get(i), received.get(i));
             SpanContext parentSpanContext = processed.get(i).getSpanContext();

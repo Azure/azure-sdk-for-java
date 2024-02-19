@@ -18,7 +18,6 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 
 import java.time.Instant;
-import java.util.Map;
 import java.util.function.BiConsumer;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
@@ -29,7 +28,7 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Opera
 
 public class EventHubsConsumerInstrumentation {
     private static final Symbol ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL = Symbol.valueOf(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-    private static final InstrumentationScope NOOP_SCOPE = new InstrumentationScope(null, null, (m, s) -> {});
+    private static final InstrumentationScope NOOP_SCOPE = new InstrumentationScope(null, null, null);
     private final EventHubsTracer tracer;
     private final EventHubsMetricsProvider meter;
     private final boolean isSync;
@@ -53,7 +52,11 @@ public class EventHubsConsumerInstrumentation {
             return NOOP_SCOPE;
         }
 
-        InstrumentationScope scope = createScope((m, s) -> m.reportProcess(1, partitionId, s));
+        InstrumentationScope scope = createScope((m, s) ->  {
+            if (!isSync) {
+                m.reportProcess(1, partitionId, s);
+            }
+        });
         Instant enqueuedTime = MessageUtils.getEnqueuedTime(message.getMessageAnnotations().getValue(), ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL);
         if (!isSync) {
             ApplicationProperties properties = message.getApplicationProperties();
