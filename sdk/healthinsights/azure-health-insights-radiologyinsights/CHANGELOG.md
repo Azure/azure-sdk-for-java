@@ -6,9 +6,3 @@
 
 ### Features Added
 * Radiology Insights API: Scans radiology reports as text to provide quality checks as feedback on errors and inconsistencies (mismatches). Critical findings are identified and communicated using the full context of the report. Follow-up recommendations and clinical findings with measurements (sizes) documented by the radiologist are also identified.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
