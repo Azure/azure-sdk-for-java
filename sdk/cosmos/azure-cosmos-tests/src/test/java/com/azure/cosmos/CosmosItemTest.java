@@ -9,6 +9,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
@@ -76,7 +77,7 @@ public class CosmosItemTest extends TestSuiteBase {
     private CosmosClient client;
     private CosmosContainer container;
 
-    @Factory(dataProvider = "clientBuildersWithDirectSession")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public CosmosItemTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -303,6 +304,78 @@ public class CosmosItemTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = { "fast" }, timeOut = 100 * TIMEOUT)
+    public void readManyWithTwoSecondariesNotReachable() throws Exception {
+        if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Fault injection only targeting direct mode");
+        }
+
+        if (ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getEffectiveConsistencyLevel(client.asyncClient(), OperationType.Query, null) != ConsistencyLevel.BOUNDED_STALENESS) {
+            throw new SkipException("Fault injection only targeting direct mode");
+        }
+
+        List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        Set<String> idSet = new HashSet<>();
+        int numDocuments = 50;
+
+        for (int i = 0; i < numDocuments; i++) {
+            String id = UUID.randomUUID().toString();
+            ObjectNode document = getDocumentDefinition(id, id);
+            container.createItem(document);
+
+            PartitionKey partitionKey = new PartitionKey(id);
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, id);
+            cosmosItemIdentities.add(cosmosItemIdentity);
+            idSet.add(id);
+        }
+
+        FaultInjectionRuleBuilder ruleBuilder = new FaultInjectionRuleBuilder("extremelyLongConnectDelay");
+        FaultInjectionConditionBuilder conditionBuilder = new FaultInjectionConditionBuilder()
+            .operationType(FaultInjectionOperationType.QUERY_ITEM)
+            .connectionType(FaultInjectionConnectionType.DIRECT);
+        List<FeedRange> feedRanges = container.getFeedRanges();
+        conditionBuilder = conditionBuilder.endpoints(
+            new FaultInjectionEndpointBuilder(FeedRange.forFullRange()) //feedRanges.get(feedRanges.size() - 1)
+                .replicaCount(2)
+                .includePrimary(false)
+                .build()
+        );
+        FaultInjectionCondition faultInjectionCondition = conditionBuilder.build();
+        FaultInjectionServerErrorResult connectTimeoutResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.GONE)
+            .times(Integer.MAX_VALUE - 1)
+            .delay(Duration.ofDays(1))
+            .build();
+        FaultInjectionRule connectTimeout = ruleBuilder
+            .condition(faultInjectionCondition)
+            .result(connectTimeoutResult)
+            .duration(Duration.ofSeconds(240))
+            .build();
+
+        CosmosFaultInjectionHelper
+            .configureFaultInjectionRules(container.asyncContainer, Arrays.asList(connectTimeout))
+            .block();
+
+        CosmosReadManyRequestOptions requestOptionsWith5SecondsTimeout = new CosmosReadManyRequestOptions()
+            .setCosmosEndToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(70)).build()
+            );
+
+        FeedResponse<ObjectNode> feedResponse = container
+            .asyncContainer
+            .readMany(cosmosItemIdentities, requestOptionsWith5SecondsTimeout, ObjectNode.class)
+            .onErrorMap(throwable -> {
+                logger.error("Error observed.", throwable);
+
+                return throwable;
+            })
+            .block();
+
+        logger.info("Cosmos Diagnostics: {}", feedResponse.getCosmosDiagnostics().getDiagnosticsContext().toJson());
+    }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readManyWithSamePartitionKey() throws Exception {
