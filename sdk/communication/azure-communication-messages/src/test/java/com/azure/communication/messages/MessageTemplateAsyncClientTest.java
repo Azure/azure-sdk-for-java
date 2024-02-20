@@ -37,7 +37,7 @@ public class MessageTemplateAsyncClientTest extends CommunicationMessagesTestBas
                 assertNotNull(template.getLanguage());
                 assertNotNull(template.getStatus());
                 assertInstanceOf(WhatsAppMessageTemplateItem.class, template);
-                assertNotNull(((WhatsAppMessageTemplateItem)template).getContent());
+                assertNotNull(((WhatsAppMessageTemplateItem) template).getContent());
             });
     }
 
@@ -53,7 +53,7 @@ public class MessageTemplateAsyncClientTest extends CommunicationMessagesTestBas
                 assertNotNull(template.getLanguage());
                 assertNotNull(template.getStatus());
                 assertInstanceOf(WhatsAppMessageTemplateItem.class, template);
-                assertNotNull(((WhatsAppMessageTemplateItem)template).getContent());
+                assertNotNull(((WhatsAppMessageTemplateItem) template).getContent());
             });
     }
 

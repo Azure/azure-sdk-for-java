@@ -201,8 +201,8 @@ public class NotificationMessageAsyncClientTest extends  CommunicationMessagesTe
 
         // Add parameter binding for template buttons in a list
         List<WhatsAppMessageTemplateBindingsButton> templateButtonBindings = new ArrayList<>();
-        templateButtonBindings.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "Yes" ));
-        templateButtonBindings.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "No" ));
+        templateButtonBindings.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "Yes"));
+        templateButtonBindings.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "No"));
 
         MessageTemplateBindings templateBindings = new WhatsAppMessageTemplateBindings()
             .setBody(templateBodyBindings) // Set the parameter binding for template body
