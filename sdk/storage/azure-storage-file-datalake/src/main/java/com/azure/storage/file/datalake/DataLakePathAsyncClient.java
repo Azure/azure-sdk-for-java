@@ -934,15 +934,15 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#PathGetPropertiesOptions -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesUsingOptionsWithResponse#PathGetPropertiesOptions -->
      * <pre>
      * PathGetPropertiesOptions options = new PathGetPropertiesOptions&#40;&#41;.setUserPrincipalName&#40;true&#41;;
      *
-     * client.getPropertiesWithResponse&#40;options&#41;.subscribe&#40;
+     * client.getPropertiesUsingOptionsWithResponse&#40;options&#41;.subscribe&#40;
      *     response -&gt; System.out.printf&#40;&quot;Creation Time: %s, Size: %d%n&quot;, response.getValue&#40;&#41;.getCreationTime&#40;&#41;,
      *         response.getValue&#40;&#41;.getFileSize&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#PathGetPropertiesOptions -->
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesUsingOptionsWithResponse#PathGetPropertiesOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
