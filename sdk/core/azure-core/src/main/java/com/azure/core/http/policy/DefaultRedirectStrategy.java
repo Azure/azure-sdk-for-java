@@ -98,11 +98,9 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         }
     }
 
-
     @Override
-    public boolean shouldAttemptRedirect(HttpPipelineCallContext context,
-                                         HttpResponse httpResponse, int tryCount,
-                                         Set<String> attemptedRedirectUrls) {
+    public boolean shouldAttemptRedirect(HttpPipelineCallContext context, HttpResponse httpResponse, int tryCount,
+        Set<String> attemptedRedirectUrls) {
 
         if (isValidRedirectStatusCode(httpResponse.getStatusCode())
             && isValidRedirectCount(tryCount)
@@ -141,8 +139,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      * @return {@code true} if the redirectUrl provided in the response header is already being attempted for redirect
      * , {@code false} otherwise.
      */
-    private boolean alreadyAttemptedRedirectUrl(String redirectUrl,
-                                                Set<String> attemptedRedirectUrls) {
+    private boolean alreadyAttemptedRedirectUrl(String redirectUrl, Set<String> attemptedRedirectUrls) {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
             LOGGER.atError()
                 .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
@@ -161,9 +158,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      */
     private boolean isValidRedirectCount(int tryCount) {
         if (tryCount >= getMaxAttempts()) {
-            LOGGER.atError()
-                .addKeyValue("maxAttempts", getMaxAttempts())
-                .log("Redirect attempts have been exhausted.");
+            LOGGER.atError().addKeyValue("maxAttempts", getMaxAttempts()).log("Redirect attempts have been exhausted.");
 
             return false;
         }

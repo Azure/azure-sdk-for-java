@@ -23,40 +23,32 @@ import java.nio.ByteBuffer;
 @ServiceInterface(name = "MyMockService")
 public interface MyRestProxyService {
     @Get("RawData/{id}")
-    Mono<Response<Flux<ByteBuffer>>> getRawDataAsync(@HostParam("$host") String endpoint,
-                                                     @PathParam("id") String id);
+    Mono<Response<Flux<ByteBuffer>>> getRawDataAsync(@HostParam("$host") String endpoint, @PathParam("id") String id);
 
     @Put("RawData/{id}")
-    Mono<Void> setRawData(@HostParam("$host") String endpoint,
-                          @PathParam("id") String id,
-                          @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
-                          @HeaderParam("Content-Length") long length);
+    Mono<Void> setRawData(@HostParam("$host") String endpoint, @PathParam("id") String id,
+        @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Content-Length") long length);
 
     @Get("BinaryData/{id}")
-    Mono<Response<BinaryData>> getBinaryDataAsync(@HostParam("$host") String endpoint,
-                                                  @PathParam("id") String id);
+    Mono<Response<BinaryData>> getBinaryDataAsync(@HostParam("$host") String endpoint, @PathParam("id") String id);
 
     @Put("BinaryData/{id}")
-    Mono<Void> setBinaryData(@HostParam("$host") String endpoint,
-                             @PathParam("id") String id,
-                             @BodyParam("application/octet-stream") BinaryData body,
-                             @HeaderParam("Content-Length") long length);
+    Mono<Void> setBinaryData(@HostParam("$host") String endpoint, @PathParam("id") String id,
+        @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Content-Length") long length);
 
     @Get("UserDatabaseXml/{id}")
     Mono<Response<UserDatabase>> getUserDatabaseXmlAsync(@HostParam("$host") String endpoint,
-                                                         @PathParam("id") String id);
+        @PathParam("id") String id);
 
     @Put("UserDatabaseXml/{id}")
-    Mono<Void> setUserDatabaseXml(@HostParam("$host") String endpoint,
-                                  @PathParam("id") String id,
-                                  @BodyParam("application/xml") UserDatabase userDatabase);
+    Mono<Void> setUserDatabaseXml(@HostParam("$host") String endpoint, @PathParam("id") String id,
+        @BodyParam("application/xml") UserDatabase userDatabase);
 
     @Get("UserDatabaseJson/{id}")
     Mono<Response<UserDatabase>> getUserDatabaseJsonAsync(@HostParam("$host") String endpoint,
-                                                          @PathParam("id") String id);
+        @PathParam("id") String id);
 
     @Put("UserDatabaseJson/{id}")
-    Mono<Void> setUserDatabaseJson(@HostParam("$host") String endpoint,
-                                   @PathParam("id") String id,
-                                   @BodyParam("application/json") UserDatabase userDatabase);
+    Mono<Void> setUserDatabaseJson(@HostParam("$host") String endpoint, @PathParam("id") String id,
+        @BodyParam("application/json") UserDatabase userDatabase);
 }

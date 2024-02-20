@@ -21,21 +21,26 @@ public class AzureEnvironmentTests {
         Assertions.assertEquals(".vault.azure.net", env.getKeyVaultDnsSuffix());
         Assertions.assertEquals("https://management.core.windows.net/", env.getManagementEndpoint());
 
-        Assertions.assertEquals("https://management.azure.com/", env.getUrlByEndpoint(AzureEnvironment.Endpoint.RESOURCE_MANAGER));
-        Assertions.assertEquals("https://graph.microsoft.com/", env.getUrlByEndpoint(AzureEnvironment.Endpoint.MICROSOFT_GRAPH));
+        Assertions.assertEquals("https://management.azure.com/",
+            env.getUrlByEndpoint(AzureEnvironment.Endpoint.RESOURCE_MANAGER));
+        Assertions.assertEquals("https://graph.microsoft.com/",
+            env.getUrlByEndpoint(AzureEnvironment.Endpoint.MICROSOFT_GRAPH));
         Assertions.assertEquals(".vault.azure.net", env.getUrlByEndpoint(AzureEnvironment.Endpoint.KEYVAULT));
-        Assertions.assertEquals("https://management.core.windows.net/", env.getUrlByEndpoint(AzureEnvironment.Endpoint.MANAGEMENT));
+        Assertions.assertEquals("https://management.core.windows.net/",
+            env.getUrlByEndpoint(AzureEnvironment.Endpoint.MANAGEMENT));
 
         Assertions.assertEquals("https://management.azure.com/", env.getEndpoints().get("resourceManagerEndpointUrl"));
         Assertions.assertEquals(".managedhsm.azure.net", env.getUrlByEndpoint(AzureEnvironment.Endpoint.MANAGED_HSM));
 
         // Azure China
         AzureEnvironment envChina = AzureEnvironment.AZURE_CHINA;
-        Assertions.assertEquals(".managedhsm.azure.cn", envChina.getUrlByEndpoint(AzureEnvironment.Endpoint.MANAGED_HSM));
+        Assertions.assertEquals(".managedhsm.azure.cn",
+            envChina.getUrlByEndpoint(AzureEnvironment.Endpoint.MANAGED_HSM));
 
         // Azure US Government
         AzureEnvironment envUsGov = AzureEnvironment.AZURE_US_GOVERNMENT;
-        Assertions.assertEquals(".managedhsm.usgovcloudapi.net", envUsGov.getUrlByEndpoint(AzureEnvironment.Endpoint.MANAGED_HSM));
+        Assertions.assertEquals(".managedhsm.usgovcloudapi.net",
+            envUsGov.getUrlByEndpoint(AzureEnvironment.Endpoint.MANAGED_HSM));
     }
 
     @Test

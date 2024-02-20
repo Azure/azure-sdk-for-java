@@ -316,7 +316,8 @@ public final class ModelBridgeInternal {
      */
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosQueryRequestOptions setPartitionKeyRangeIdInternal(CosmosQueryRequestOptions options, String partitionKeyRangeId) {
-        return options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
+        options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
+        return options;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -721,12 +722,13 @@ public final class ModelBridgeInternal {
             return null;
         }
 
-        return options.getProperties();
+        return options.getImpl().getProperties();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosQueryRequestOptions setQueryRequestOptionsProperties(CosmosQueryRequestOptions options, Map<String, Object> properties) {
-        return options.setProperties(properties);
+        options.getImpl().setProperties(properties);
+        return options;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -917,6 +919,7 @@ public final class ModelBridgeInternal {
         CosmosItemRequestOptions.initialize();
         CosmosItemResponse.initialize();
         CosmosPatchOperations.initialize();
+        CosmosQueryRequestOptionsBase.initialize();
         CosmosQueryRequestOptions.initialize();
         FeedResponse.initialize();
         PartitionKey.initialize();

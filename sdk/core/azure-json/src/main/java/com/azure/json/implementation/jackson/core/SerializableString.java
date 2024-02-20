@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -22,8 +23,7 @@ import java.nio.ByteBuffer;
  * 
  * @see com.azure.json.implementation.jackson.core.io.SerializedString
  */
-public interface SerializableString
-{
+public interface SerializableString {
     /**
      * Returns unquoted String that this object represents (and offers
      * serialized forms for)
@@ -31,7 +31,7 @@ public interface SerializableString
      * @return Unquoted String
      */
     String getValue();
-    
+
     /**
      * Returns length of the (unquoted) String as characters.
      * Functionally equivalent to:
@@ -44,11 +44,11 @@ public interface SerializableString
     int charLength();
 
     /*
-    /**********************************************************
-    /* Accessors for byte sequences
-    /**********************************************************
+     * /**********************************************************
+     * /* Accessors for byte sequences
+     * /**********************************************************
      */
-    
+
     /**
      * Returns JSON quoted form of the String, as character array.
      * Result can be embedded as-is in textual JSON as property name or JSON String.
@@ -80,9 +80,9 @@ public interface SerializableString
     byte[] asQuotedUTF8();
 
     /*
-    /**********************************************************
-    /* Helper methods for appending byte/char sequences
-    /**********************************************************
+     * /**********************************************************
+     * /* Helper methods for appending byte/char sequences
+     * /**********************************************************
      */
 
     /**
@@ -117,7 +117,7 @@ public interface SerializableString
      * @return Number of characters appended, if successful, otherwise -1
      */
     int appendQuoted(char[] buffer, int offset);
-    
+
     /**
      * Method that will append unquoted ('raw') UTF-8 bytes of this String into given
      * buffer. Functionally equivalent to:
@@ -151,9 +151,9 @@ public interface SerializableString
     int appendUnquoted(char[] buffer, int offset);
 
     /*
-    /**********************************************************
-    /* Helper methods for writing out byte sequences
-    /**********************************************************
+     * /**********************************************************
+     * /* Helper methods for writing out byte sequences
+     * /**********************************************************
      */
 
     /**

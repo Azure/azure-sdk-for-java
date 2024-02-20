@@ -9,8 +9,6 @@ import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +17,7 @@ public class ImageAnalysisAsyncJavaDocCodeSnippets {
     private static String endpoint;
     private static String key;
 
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[] args) {
 
         endpoint = System.getenv("VISION_ENDPOINT");
         key = System.getenv("VISION_KEY");
@@ -74,7 +72,7 @@ public class ImageAnalysisAsyncJavaDocCodeSnippets {
         ImageAnalysisSyncJavaDocCodeSnippets.printAnalysisResults(result.block());
     }
 
-    private static void analysisFromUrl() throws MalformedURLException {
+    private static void analysisFromUrl() {
 
         ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder()
             .endpoint(endpoint)
@@ -93,8 +91,8 @@ public class ImageAnalysisAsyncJavaDocCodeSnippets {
             .setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33))
             .setModelVersion("latest");
 
-        Mono<ImageAnalysisResult> result = client.analyze(
-            new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"),
+        Mono<ImageAnalysisResult> result = client.analyzeFromUrl(
+            "https://aka.ms/azsdk/image-analysis/sample.jpg",
             Arrays.asList(
                 VisualFeatures.SMART_CROPS,
                 VisualFeatures.CAPTION,

@@ -21,9 +21,7 @@ public class DeserializeListBlobsTests {
     public void minimumListing() throws XMLStreamException {
         String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
             + "<EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.blob.core.windows.net/\" ContainerName=\"b9a86bdc0b9a86bdca9a521096fb76e1772d14cbaabf\">"
-            + "<Blobs />"
-            + "<NextMarker />"
-            + "</EnumerationResults>";
+            + "<Blobs />" + "<NextMarker />" + "</EnumerationResults>";
 
         ListBlobsFlatSegmentResponse expected = new ListBlobsFlatSegmentResponse()
             .setServiceEndpoint("https://kasobolcanadacentral.blob.core.windows.net/")
@@ -40,8 +38,7 @@ public class DeserializeListBlobsTests {
         String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
             + "<EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.blob.core.windows.net/\" ContainerName=\"34fbcbbc034fbcbbc26a33948aa1becb5a91f4ae995b\">"
             + "<Marker>2!120!MDAwMDQ1IWMzNGZiY2JiYzIzNGZiY2JiYzI2YTgzMDgzZWVhMDI2YjYxNWNhNGJlOGI0NSEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-</Marker>"
-            + "<MaxResults>2</MaxResults>"
-            + "<Blobs>"
+            + "<MaxResults>2</MaxResults>" + "<Blobs>"
             + "<Blob><Name>c34fbcbbc234fbcbbc26a83083eea026b615ca4be8b45</Name><Properties><Creation-Time>Thu, 15 Jul 2021 17:40:59 GMT</Creation-Time><Last-Modified>Thu, 15 Jul 2021 17:40:59 GMT</Last-Modified><Etag>0x8D947B7B4FE7512</Etag><Content-Length>512</Content-Length><Content-Type>application/octet-stream</Content-Type><Content-Encoding /><Content-Language /><Content-MD5 /><Cache-Control /><Content-Disposition /><x-ms-blob-sequence-number>0</x-ms-blob-sequence-number><BlobType>PageBlob</BlobType><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><CopyId>8ae85440-2394-487a-b23b-00c25b75e7c6</CopyId><CopySource>https://kasobolcanadacentral.blob.core.windows.net/34fbcbbc034fbcbbc26a33948aa1becb5a91f4ae995b/a34fbcbbc134fbcbbc26a18108a93ba402c8674eb2ac9</CopySource><CopyStatus>success</CopyStatus><CopyProgress>512/512</CopyProgress><CopyCompletionTime>Thu, 15 Jul 2021 17:40:59 GMT</CopyCompletionTime><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob>"
             + "<Blob><Name>m34fbcbbc334fbcbbc26a5500231fa08e4205441e8908</Name><Properties><Creation-Time>Thu, 15 Jul 2021 17:41:04 GMT</Creation-Time><Last-Modified>Thu, 15 Jul 2021 17:41:04 GMT</Last-Modified><Etag>0x8D947B7B821553B</Etag><Content-Length>512</Content-Length><Content-Type>application/octet-stream</Content-Type><Content-Encoding /><Content-Language /><Content-MD5 /><Cache-Control /><Content-Disposition /><x-ms-blob-sequence-number>0</x-ms-blob-sequence-number><BlobType>PageBlob</BlobType><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob>"
             + "</Blobs>"
@@ -62,34 +59,36 @@ public class DeserializeListBlobsTests {
                 .setLeaseStatus(LeaseStatusType.UNLOCKED)
                 .setLeaseState(LeaseStateType.AVAILABLE)
                 .setCopyId("8ae85440-2394-487a-b23b-00c25b75e7c6")
-                .setCopySource("https://kasobolcanadacentral.blob.core.windows.net/34fbcbbc034fbcbbc26a33948aa1becb5a91f4ae995b/a34fbcbbc134fbcbbc26a18108a93ba402c8674eb2ac9")
+                .setCopySource(
+                    "https://kasobolcanadacentral.blob.core.windows.net/34fbcbbc034fbcbbc26a33948aa1becb5a91f4ae995b/a34fbcbbc134fbcbbc26a18108a93ba402c8674eb2ac9")
                 .setCopyStatus(CopyStatusType.SUCCESS)
                 .setCopyProgress("512/512")
                 .setCopyCompletionTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:59 GMT").getDateTime())
                 .setServerEncrypted(true)));
 
-        expectedBlobs.add(new BlobItemInternal()
-            .setName(new BlobName().setContent("m34fbcbbc334fbcbbc26a5500231fa08e4205441e8908"))
-            .setProperties(new BlobItemPropertiesInternal()
-                .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
-                .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
-                .setETag("0x8D947B7B821553B")
-                .setContentLength(512L)
-                .setContentType("application/octet-stream")
-                .setBlobSequenceNumber(0L)
-                .setBlobType(BlobType.PAGE_BLOB)
-                .setLeaseStatus(LeaseStatusType.UNLOCKED)
-                .setLeaseState(LeaseStateType.AVAILABLE)
-                .setServerEncrypted(true)));
-
+        expectedBlobs.add(
+            new BlobItemInternal().setName(new BlobName().setContent("m34fbcbbc334fbcbbc26a5500231fa08e4205441e8908"))
+                .setProperties(new BlobItemPropertiesInternal()
+                    .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
+                    .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
+                    .setETag("0x8D947B7B821553B")
+                    .setContentLength(512L)
+                    .setContentType("application/octet-stream")
+                    .setBlobSequenceNumber(0L)
+                    .setBlobType(BlobType.PAGE_BLOB)
+                    .setLeaseStatus(LeaseStatusType.UNLOCKED)
+                    .setLeaseState(LeaseStateType.AVAILABLE)
+                    .setServerEncrypted(true)));
 
         ListBlobsFlatSegmentResponse expected = new ListBlobsFlatSegmentResponse()
             .setServiceEndpoint("https://kasobolcanadacentral.blob.core.windows.net/")
             .setContainerName("34fbcbbc034fbcbbc26a33948aa1becb5a91f4ae995b")
-            .setMarker("2!120!MDAwMDQ1IWMzNGZiY2JiYzIzNGZiY2JiYzI2YTgzMDgzZWVhMDI2YjYxNWNhNGJlOGI0NSEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-")
+            .setMarker(
+                "2!120!MDAwMDQ1IWMzNGZiY2JiYzIzNGZiY2JiYzI2YTgzMDgzZWVhMDI2YjYxNWNhNGJlOGI0NSEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-")
             .setMaxResults(2)
             .setSegment(new BlobFlatListSegment().setBlobItems(expectedBlobs))
-            .setNextMarker("2!120!MDAwMDQ1IXQzNGZiY2JiYzQzNGZiY2JiYzI2YTgwMjA0YzRkMTlhYTliYTIxNDQ0NWFjYyEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-");
+            .setNextMarker(
+                "2!120!MDAwMDQ1IXQzNGZiY2JiYzQzNGZiY2JiYzI2YTgwMjA0YzRkMTlhYTliYTIxNDQ0NWFjYyEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-");
 
         ListBlobsFlatSegmentResponse actual = ListBlobsFlatSegmentResponse.fromXml(DefaultXmlReader.fromString(xml));
 
@@ -105,69 +104,67 @@ public class DeserializeListBlobsTests {
             + "<Blob><Name>c42735743242735743c8d834098b54a65a62e3420492a</Name><Properties><Creation-Time>Thu, 15 Jul 2021 17:40:59 GMT</Creation-Time><Last-Modified>Thu, 15 Jul 2021 17:40:59 GMT</Last-Modified><Etag>0x8D947B7B4FDFFD3</Etag><Content-Length>512</Content-Length><Content-Type>application/octet-stream</Content-Type><Content-Encoding /><Content-Language /><Content-MD5 /><Cache-Control /><Content-Disposition /><x-ms-blob-sequence-number>0</x-ms-blob-sequence-number><BlobType>PageBlob</BlobType><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><Metadata /><OrMetadata /></Blob>"
             + "<Blob><Name>m42735743342735743c8d22425502d8ff84f624929914</Name><Properties><Creation-Time>Thu, 15 Jul 2021 17:41:04 GMT</Creation-Time><Last-Modified>Thu, 15 Jul 2021 17:41:04 GMT</Last-Modified><Etag>0x8D947B7B8212E2F</Etag><Content-Length>512</Content-Length><Content-Type>application/octet-stream</Content-Type><Content-Encoding /><Content-Language /><Content-MD5 /><Cache-Control /><Content-Disposition /><x-ms-blob-sequence-number>0</x-ms-blob-sequence-number><BlobType>PageBlob</BlobType><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><Metadata><foo>bar</foo></Metadata><OrMetadata /></Blob>"
             + "<Blob><Name>t42735743442735743c8d782813c3cddcf99614508b1b</Name><Properties><Creation-Time>Thu, 15 Jul 2021 17:41:04 GMT</Creation-Time><Last-Modified>Thu, 15 Jul 2021 17:41:04 GMT</Last-Modified><Etag>0x8D947B7B830C157</Etag><Content-Length>512</Content-Length><Content-Type>application/octet-stream</Content-Type><Content-Encoding /><Content-Language /><Content-MD5 /><Cache-Control /><Content-Disposition /><x-ms-blob-sequence-number>0</x-ms-blob-sequence-number><BlobType>PageBlob</BlobType><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted><TagCount>1</TagCount></Properties><Metadata /><OrMetadata /></Blob>"
-            + "</Blobs>"
-            + "<NextMarker />"
-            + "</EnumerationResults>";
+            + "</Blobs>" + "<NextMarker />" + "</EnumerationResults>";
 
         List<BlobItemInternal> expectedBlobs = new ArrayList<>();
 
-        expectedBlobs.add(new BlobItemInternal()
-            .setName(new BlobName().setContent("a42735743142735743c8d9381852879576c1764347b65"))
-            .setProperties(new BlobItemPropertiesInternal()
-                .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:58 GMT").getDateTime())
-                .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:58 GMT").getDateTime())
-                .setETag("0x8D947B7B4C818F4")
-                .setContentLength(512L)
-                .setContentType("application/octet-stream")
-                .setBlobSequenceNumber(0L)
-                .setBlobType(BlobType.PAGE_BLOB)
-                .setLeaseStatus(LeaseStatusType.UNLOCKED)
-                .setLeaseState(LeaseStateType.AVAILABLE)
-                .setServerEncrypted(true)));
+        expectedBlobs.add(
+            new BlobItemInternal().setName(new BlobName().setContent("a42735743142735743c8d9381852879576c1764347b65"))
+                .setProperties(new BlobItemPropertiesInternal()
+                    .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:58 GMT").getDateTime())
+                    .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:58 GMT").getDateTime())
+                    .setETag("0x8D947B7B4C818F4")
+                    .setContentLength(512L)
+                    .setContentType("application/octet-stream")
+                    .setBlobSequenceNumber(0L)
+                    .setBlobType(BlobType.PAGE_BLOB)
+                    .setLeaseStatus(LeaseStatusType.UNLOCKED)
+                    .setLeaseState(LeaseStateType.AVAILABLE)
+                    .setServerEncrypted(true)));
 
-        expectedBlobs.add(new BlobItemInternal()
-            .setName(new BlobName().setContent("c42735743242735743c8d834098b54a65a62e3420492a"))
-            .setProperties(new BlobItemPropertiesInternal()
-                .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:59 GMT").getDateTime())
-                .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:59 GMT").getDateTime())
-                .setETag("0x8D947B7B4FDFFD3")
-                .setContentLength(512L)
-                .setContentType("application/octet-stream")
-                .setBlobSequenceNumber(0L)
-                .setBlobType(BlobType.PAGE_BLOB)
-                .setLeaseStatus(LeaseStatusType.UNLOCKED)
-                .setLeaseState(LeaseStateType.AVAILABLE)
-                .setServerEncrypted(true)));
+        expectedBlobs.add(
+            new BlobItemInternal().setName(new BlobName().setContent("c42735743242735743c8d834098b54a65a62e3420492a"))
+                .setProperties(new BlobItemPropertiesInternal()
+                    .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:59 GMT").getDateTime())
+                    .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:59 GMT").getDateTime())
+                    .setETag("0x8D947B7B4FDFFD3")
+                    .setContentLength(512L)
+                    .setContentType("application/octet-stream")
+                    .setBlobSequenceNumber(0L)
+                    .setBlobType(BlobType.PAGE_BLOB)
+                    .setLeaseStatus(LeaseStatusType.UNLOCKED)
+                    .setLeaseState(LeaseStateType.AVAILABLE)
+                    .setServerEncrypted(true)));
 
-        expectedBlobs.add(new BlobItemInternal()
-            .setName(new BlobName().setContent("m42735743342735743c8d22425502d8ff84f624929914"))
-            .setProperties(new BlobItemPropertiesInternal()
-                .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
-                .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
-                .setETag("0x8D947B7B8212E2F")
-                .setContentLength(512L)
-                .setContentType("application/octet-stream")
-                .setBlobSequenceNumber(0L)
-                .setBlobType(BlobType.PAGE_BLOB)
-                .setLeaseStatus(LeaseStatusType.UNLOCKED)
-                .setLeaseState(LeaseStateType.AVAILABLE)
-                .setServerEncrypted(true))
-            .setMetadata(Collections.singletonMap("foo", "bar")));
+        expectedBlobs.add(
+            new BlobItemInternal().setName(new BlobName().setContent("m42735743342735743c8d22425502d8ff84f624929914"))
+                .setProperties(new BlobItemPropertiesInternal()
+                    .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
+                    .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
+                    .setETag("0x8D947B7B8212E2F")
+                    .setContentLength(512L)
+                    .setContentType("application/octet-stream")
+                    .setBlobSequenceNumber(0L)
+                    .setBlobType(BlobType.PAGE_BLOB)
+                    .setLeaseStatus(LeaseStatusType.UNLOCKED)
+                    .setLeaseState(LeaseStateType.AVAILABLE)
+                    .setServerEncrypted(true))
+                .setMetadata(Collections.singletonMap("foo", "bar")));
 
-        expectedBlobs.add(new BlobItemInternal()
-            .setName(new BlobName().setContent("t42735743442735743c8d782813c3cddcf99614508b1b"))
-            .setProperties(new BlobItemPropertiesInternal()
-                .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
-                .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
-                .setETag("0x8D947B7B830C157")
-                .setContentLength(512L)
-                .setContentType("application/octet-stream")
-                .setBlobSequenceNumber(0L)
-                .setBlobType(BlobType.PAGE_BLOB)
-                .setLeaseStatus(LeaseStatusType.UNLOCKED)
-                .setLeaseState(LeaseStateType.AVAILABLE)
-                .setServerEncrypted(true)
-                .setTagCount(1)));
+        expectedBlobs.add(
+            new BlobItemInternal().setName(new BlobName().setContent("t42735743442735743c8d782813c3cddcf99614508b1b"))
+                .setProperties(new BlobItemPropertiesInternal()
+                    .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
+                    .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
+                    .setETag("0x8D947B7B830C157")
+                    .setContentLength(512L)
+                    .setContentType("application/octet-stream")
+                    .setBlobSequenceNumber(0L)
+                    .setBlobType(BlobType.PAGE_BLOB)
+                    .setLeaseStatus(LeaseStatusType.UNLOCKED)
+                    .setLeaseState(LeaseStateType.AVAILABLE)
+                    .setServerEncrypted(true)
+                    .setTagCount(1)));
 
         ListBlobsFlatSegmentResponse expected = new ListBlobsFlatSegmentResponse()
             .setServiceEndpoint("https://kasobolcanadacentral.blob.core.windows.net/")
@@ -188,69 +185,68 @@ public class DeserializeListBlobsTests {
             + "<Blob><Name>c3f9c116223f9c11629bd72727d615e5f71fe64dfcad8</Name><Properties><Creation-Time>Thu, 15 Jul 2021 17:40:59 GMT</Creation-Time><Last-Modified>Thu, 15 Jul 2021 17:40:59 GMT</Last-Modified><Etag>0x8D947B7B4FDFFD3</Etag><Content-Length>512</Content-Length><Content-Type>application/octet-stream</Content-Type><Content-Encoding /><Content-Language /><Content-MD5 /><Cache-Control /><Content-Disposition /><x-ms-blob-sequence-number>0</x-ms-blob-sequence-number><BlobType>PageBlob</BlobType><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob>"
             + "<Blob><Name>m3f9c116233f9c11629bd84991e132664066c1470cb71</Name><Properties><Creation-Time>Thu, 15 Jul 2021 17:41:04 GMT</Creation-Time><Last-Modified>Thu, 15 Jul 2021 17:41:04 GMT</Last-Modified><Etag>0x8D947B7B8210711</Etag><Content-Length>512</Content-Length><Content-Type>application/octet-stream</Content-Type><Content-Encoding /><Content-Language /><Content-MD5 /><Cache-Control /><Content-Disposition /><x-ms-blob-sequence-number>0</x-ms-blob-sequence-number><BlobType>PageBlob</BlobType><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob>"
             + "<Blob><Name>t3f9c116243f9c11629bd353117a5155f1caf24c4b881</Name><Properties><Creation-Time>Thu, 15 Jul 2021 17:41:04 GMT</Creation-Time><Last-Modified>Thu, 15 Jul 2021 17:41:04 GMT</Last-Modified><Etag>0x8D947B7B840548C</Etag><Content-Length>512</Content-Length><Content-Type>application/octet-stream</Content-Type><Content-Encoding /><Content-Language /><Content-MD5 /><Cache-Control /><Content-Disposition /><x-ms-blob-sequence-number>0</x-ms-blob-sequence-number><BlobType>PageBlob</BlobType><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted><TagCount>1</TagCount></Properties><Tags><TagSet><Tag><Key>3f9c1162778907eb</Key><Value>3f9c116276514d71</Value></Tag></TagSet></Tags><OrMetadata /></Blob>"
-            + "</Blobs>"
-            + "<NextMarker />"
-            + "</EnumerationResults>";
+            + "</Blobs>" + "<NextMarker />" + "</EnumerationResults>";
 
         List<BlobItemInternal> expectedBlobs = new ArrayList<>();
 
-        expectedBlobs.add(new BlobItemInternal()
-            .setName(new BlobName().setContent("a3f9c116213f9c11629bd63732ac2e67370c044bf89eb"))
-            .setProperties(new BlobItemPropertiesInternal()
-                .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:58 GMT").getDateTime())
-                .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:58 GMT").getDateTime())
-                .setETag("0x8D947B7B4C8B550")
-                .setContentLength(512L)
-                .setContentType("application/octet-stream")
-                .setBlobSequenceNumber(0L)
-                .setBlobType(BlobType.PAGE_BLOB)
-                .setLeaseStatus(LeaseStatusType.UNLOCKED)
-                .setLeaseState(LeaseStateType.AVAILABLE)
-                .setServerEncrypted(true)));
+        expectedBlobs.add(
+            new BlobItemInternal().setName(new BlobName().setContent("a3f9c116213f9c11629bd63732ac2e67370c044bf89eb"))
+                .setProperties(new BlobItemPropertiesInternal()
+                    .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:58 GMT").getDateTime())
+                    .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:58 GMT").getDateTime())
+                    .setETag("0x8D947B7B4C8B550")
+                    .setContentLength(512L)
+                    .setContentType("application/octet-stream")
+                    .setBlobSequenceNumber(0L)
+                    .setBlobType(BlobType.PAGE_BLOB)
+                    .setLeaseStatus(LeaseStatusType.UNLOCKED)
+                    .setLeaseState(LeaseStateType.AVAILABLE)
+                    .setServerEncrypted(true)));
 
-        expectedBlobs.add(new BlobItemInternal()
-            .setName(new BlobName().setContent("c3f9c116223f9c11629bd72727d615e5f71fe64dfcad8"))
-            .setProperties(new BlobItemPropertiesInternal()
-                .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:59 GMT").getDateTime())
-                .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:59 GMT").getDateTime())
-                .setETag("0x8D947B7B4FDFFD3")
-                .setContentLength(512L)
-                .setContentType("application/octet-stream")
-                .setBlobSequenceNumber(0L)
-                .setBlobType(BlobType.PAGE_BLOB)
-                .setLeaseStatus(LeaseStatusType.UNLOCKED)
-                .setLeaseState(LeaseStateType.AVAILABLE)
-                .setServerEncrypted(true)));
+        expectedBlobs.add(
+            new BlobItemInternal().setName(new BlobName().setContent("c3f9c116223f9c11629bd72727d615e5f71fe64dfcad8"))
+                .setProperties(new BlobItemPropertiesInternal()
+                    .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:59 GMT").getDateTime())
+                    .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:40:59 GMT").getDateTime())
+                    .setETag("0x8D947B7B4FDFFD3")
+                    .setContentLength(512L)
+                    .setContentType("application/octet-stream")
+                    .setBlobSequenceNumber(0L)
+                    .setBlobType(BlobType.PAGE_BLOB)
+                    .setLeaseStatus(LeaseStatusType.UNLOCKED)
+                    .setLeaseState(LeaseStateType.AVAILABLE)
+                    .setServerEncrypted(true)));
 
-        expectedBlobs.add(new BlobItemInternal()
-            .setName(new BlobName().setContent("m3f9c116233f9c11629bd84991e132664066c1470cb71"))
-            .setProperties(new BlobItemPropertiesInternal()
-                .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
-                .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
-                .setETag("0x8D947B7B8210711")
-                .setContentLength(512L)
-                .setContentType("application/octet-stream")
-                .setBlobSequenceNumber(0L)
-                .setBlobType(BlobType.PAGE_BLOB)
-                .setLeaseStatus(LeaseStatusType.UNLOCKED)
-                .setLeaseState(LeaseStateType.AVAILABLE)
-                .setServerEncrypted(true)));
+        expectedBlobs.add(
+            new BlobItemInternal().setName(new BlobName().setContent("m3f9c116233f9c11629bd84991e132664066c1470cb71"))
+                .setProperties(new BlobItemPropertiesInternal()
+                    .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
+                    .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
+                    .setETag("0x8D947B7B8210711")
+                    .setContentLength(512L)
+                    .setContentType("application/octet-stream")
+                    .setBlobSequenceNumber(0L)
+                    .setBlobType(BlobType.PAGE_BLOB)
+                    .setLeaseStatus(LeaseStatusType.UNLOCKED)
+                    .setLeaseState(LeaseStateType.AVAILABLE)
+                    .setServerEncrypted(true)));
 
-        expectedBlobs.add(new BlobItemInternal()
-            .setName(new BlobName().setContent("t3f9c116243f9c11629bd353117a5155f1caf24c4b881"))
-            .setProperties(new BlobItemPropertiesInternal()
-                .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
-                .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
-                .setETag("0x8D947B7B840548C")
-                .setContentLength(512L)
-                .setContentType("application/octet-stream")
-                .setBlobSequenceNumber(0L)
-                .setBlobType(BlobType.PAGE_BLOB)
-                .setLeaseStatus(LeaseStatusType.UNLOCKED)
-                .setLeaseState(LeaseStateType.AVAILABLE)
-                .setServerEncrypted(true)
-                .setTagCount(1))
-            .setBlobTags(new BlobTags().setBlobTagSet(Collections.singletonList(new BlobTag().setKey("3f9c1162778907eb").setValue("3f9c116276514d71")))));
+        expectedBlobs.add(
+            new BlobItemInternal().setName(new BlobName().setContent("t3f9c116243f9c11629bd353117a5155f1caf24c4b881"))
+                .setProperties(new BlobItemPropertiesInternal()
+                    .setCreationTime(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
+                    .setLastModified(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime())
+                    .setETag("0x8D947B7B840548C")
+                    .setContentLength(512L)
+                    .setContentType("application/octet-stream")
+                    .setBlobSequenceNumber(0L)
+                    .setBlobType(BlobType.PAGE_BLOB)
+                    .setLeaseStatus(LeaseStatusType.UNLOCKED)
+                    .setLeaseState(LeaseStateType.AVAILABLE)
+                    .setServerEncrypted(true)
+                    .setTagCount(1))
+                .setBlobTags(new BlobTags().setBlobTagSet(
+                    Collections.singletonList(new BlobTag().setKey("3f9c1162778907eb").setValue("3f9c116276514d71")))));
 
         ListBlobsFlatSegmentResponse expected = new ListBlobsFlatSegmentResponse()
             .setServiceEndpoint("https://kasobolcanadacentral.blob.core.windows.net/")
@@ -266,19 +262,14 @@ public class DeserializeListBlobsTests {
     public void restApiExample() throws XMLStreamException {
         String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
             + "<EnumerationResults ServiceEndpoint=\"http://myaccount.blob.core.windows.net/\"  ContainerName=\"mycontainer\">"
-            + "<Prefix>string-value</Prefix>"
-            + "<Marker>string-value</Marker>"
-            + "<MaxResults>5</MaxResults>"
+            + "<Prefix>string-value</Prefix>" + "<Marker>string-value</Marker>" + "<MaxResults>5</MaxResults>"
             + "<Blobs>"
             + "<Blob><Name Encoded=\"true\">blob-name</Name><Snapshot>Thu, 15 Jul 2021 17:41:04 GMT</Snapshot><VersionId>Thu, 15 Jul 2021 17:41:04 GMT</VersionId><IsCurrentVersion>true</IsCurrentVersion><Deleted>true</Deleted><Properties><Creation-Time>Thu, 15 Jul 2021 17:41:04 GMT</Creation-Time><Last-Modified>Thu, 15 Jul 2021 17:41:04 GMT</Last-Modified><Etag>etag</Etag><Content-Length>10000000000</Content-Length><Content-Type>application/octet-stream</Content-Type><Content-Encoding>utf-8</Content-Encoding><Content-Language>en-US</Content-Language><Content-MD5>7a6d667ea5ed4467c017b2ed6ea07e78</Content-MD5><Cache-Control>no-cache</Cache-Control><x-ms-blob-sequence-number>123</x-ms-blob-sequence-number><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><LeaseStatus>locked</LeaseStatus><LeaseState>leased</LeaseState><LeaseDuration>infinite</LeaseDuration><CopyId>id</CopyId><CopyStatus>pending</CopyStatus><CopySource>source url</CopySource><CopyProgress>bytes copied/bytes total</CopyProgress><CopyCompletionTime>Thu, 15 Jul 2021 17:41:04 GMT</CopyCompletionTime><CopyStatusDescription>error string</CopyStatusDescription><ServerEncrypted>true</ServerEncrypted><CustomerProvidedKeySha256>encryption-key-sha256</CustomerProvidedKeySha256><EncryptionScope>encryption-scope-name</EncryptionScope><IncrementalCopy>true</IncrementalCopy><AccessTierInferred>true</AccessTierInferred><AccessTierChangeTime>Thu, 15 Jul 2021 17:41:04 GMT</AccessTierChangeTime><DeletedTime>Thu, 15 Jul 2021 17:41:04 GMT</DeletedTime><RemainingRetentionDays>1</RemainingRetentionDays><TagCount>10</TagCount><RehydratePriority>High</RehydratePriority><Expiry-Time>Thu, 15 Jul 2021 17:41:04 GMT</Expiry-Time></Properties><Metadata><Name>value</Name></Metadata><Tags><TagSet><Tag><Key>TagName</Key><Value>TagValue</Value></Tag></TagSet></Tags><OrMetadata><Name>value</Name></OrMetadata></Blob>"
-            + "</Blobs>"
-            + "<NextMarker />"
-            + "</EnumerationResults>";
+            + "</Blobs>" + "<NextMarker />" + "</EnumerationResults>";
 
         List<BlobItemInternal> expectedBlobs = new ArrayList<>();
 
-        expectedBlobs.add(new BlobItemInternal()
-            .setName(new BlobName().setEncoded(true).setContent("blob-name"))
+        expectedBlobs.add(new BlobItemInternal().setName(new BlobName().setEncoded(true).setContent("blob-name"))
             .setSnapshot("Thu, 15 Jul 2021 17:41:04 GMT")
             .setVersionId("Thu, 15 Jul 2021 17:41:04 GMT")
             .setIsCurrentVersion(true)
@@ -317,16 +308,17 @@ public class DeserializeListBlobsTests {
                 .setRehydratePriority(RehydratePriority.HIGH)
                 .setExpiresOn(DateTimeRfc1123.fromString("Thu, 15 Jul 2021 17:41:04 GMT").getDateTime()))
             .setMetadata(Collections.singletonMap("Name", "value"))
-            .setBlobTags(new BlobTags().setBlobTagSet(Collections.singletonList(new BlobTag().setKey("TagName").setValue("TagValue"))))
+            .setBlobTags(new BlobTags()
+                .setBlobTagSet(Collections.singletonList(new BlobTag().setKey("TagName").setValue("TagValue"))))
             .setObjectReplicationMetadata(Collections.singletonMap("Name", "value")));
 
-        ListBlobsFlatSegmentResponse expected = new ListBlobsFlatSegmentResponse()
-            .setServiceEndpoint("http://myaccount.blob.core.windows.net/")
-            .setContainerName("mycontainer")
-            .setPrefix("string-value")
-            .setMarker("string-value")
-            .setMaxResults(5)
-            .setSegment(new BlobFlatListSegment().setBlobItems(expectedBlobs));
+        ListBlobsFlatSegmentResponse expected
+            = new ListBlobsFlatSegmentResponse().setServiceEndpoint("http://myaccount.blob.core.windows.net/")
+                .setContainerName("mycontainer")
+                .setPrefix("string-value")
+                .setMarker("string-value")
+                .setMaxResults(5)
+                .setSegment(new BlobFlatListSegment().setBlobItems(expectedBlobs));
 
         ListBlobsFlatSegmentResponse actual = ListBlobsFlatSegmentResponse.fromXml(DefaultXmlReader.fromString(xml));
 

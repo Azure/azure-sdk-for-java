@@ -75,8 +75,8 @@ public class FileContent extends BinaryDataContent {
         Objects.requireNonNull(file, "'file' cannot be null.");
 
         if (!file.toFile().exists()) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(
-                new FileNotFoundException("File does not exist " + file)));
+            throw LOGGER.logExceptionAsError(
+                new UncheckedIOException(new FileNotFoundException("File does not exist " + file)));
         }
 
         return file;
@@ -84,8 +84,8 @@ public class FileContent extends BinaryDataContent {
 
     private static int validateChunkSize(int chunkSize) {
         if (chunkSize <= 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'chunkSize' cannot be less than or equal to 0."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'chunkSize' cannot be less than or equal to 0."));
         }
 
         return chunkSize;
@@ -188,8 +188,7 @@ public class FileContent extends BinaryDataContent {
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
         return Flux.using(this::openAsynchronousFileChannel,
-            channel -> FluxUtil.readFile(channel, chunkSize, position, length),
-            channel -> {
+            channel -> FluxUtil.readFile(channel, chunkSize, position, length), channel -> {
                 try {
                     channel.close();
                 } catch (IOException ex) {
@@ -301,4 +300,3 @@ public class FileContent extends BinaryDataContent {
         }
     }
 }
-

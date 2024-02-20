@@ -65,8 +65,8 @@ public class TestProxyTests extends TestProxyTestBase {
     private static final List<TestProxySanitizer> CUSTOM_SANITIZER = new ArrayList<>();
 
     public static final String REDACTED = "REDACTED";
-    private static final HttpHeaderName OCP_APIM_SUBSCRIPTION_KEY =
-        HttpHeaderName.fromString("Ocp-Apim-Subscription-Key");
+    private static final HttpHeaderName OCP_APIM_SUBSCRIPTION_KEY
+        = HttpHeaderName.fromString("Ocp-Apim-Subscription-Key");
 
     static {
         CUSTOM_SANITIZER.add(new TestProxySanitizer("$..modelId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
@@ -79,10 +79,12 @@ public class TestProxyTests extends TestProxyTestBase {
         server = new TestProxyTestServer();
 
     }
+
     @AfterAll
     public static void teardownClass() {
         server.close();
     }
+
     @Test
     @Tag("Record")
     public void testBasicRecord() {
@@ -192,7 +194,8 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Live")
     public void testCannotGetPlaybackClient() {
-        RuntimeException thrown = assertThrows(IllegalStateException.class, () -> interceptorManager.getPlaybackClient());
+        RuntimeException thrown
+            = assertThrows(IllegalStateException.class, () -> interceptorManager.getPlaybackClient());
         assertEquals("A playback client can only be requested in PLAYBACK mode.", thrown.getMessage());
     }
 
@@ -230,7 +233,8 @@ public class TestProxyTests extends TestProxyTestBase {
             // default sanitizers
             assertEquals("http://REDACTED/fr/path/1", record.getUri());
             assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
-            assertTrue(record.getResponseHeaders().get("Operation-Location")
+            assertTrue(record.getResponseHeaders()
+                .get("Operation-Location")
                 .startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
             // custom sanitizers
             assertEquals(REDACTED, record.getResponse().get("modelId"));
@@ -281,7 +285,9 @@ public class TestProxyTests extends TestProxyTestBase {
         assertEquals("http://REDACTED/fr/path/2", record.getUri());
 
         // user delegation sanitizers
-        assertTrue(record.getResponse().get("Body").contains("<UserDelegationKey><SignedTid>REDACTED</SignedTid></UserDelegationKey>"));
+        assertTrue(record.getResponse()
+            .get("Body")
+            .contains("<UserDelegationKey><SignedTid>REDACTED</SignedTid></UserDelegationKey>"));
         assertTrue(record.getResponse().get("primaryKey").contains("<PrimaryKey>REDACTED</PrimaryKey>"));
 
         // custom body regex
@@ -300,10 +306,8 @@ public class TestProxyTests extends TestProxyTestBase {
     public void testResetTestProxyData() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(interceptorManager.getRecordPolicy())
-            .build();
+        final HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
 
         try (HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET,
                 "http://localhost:" + server.port()), Context.NONE)) {
@@ -329,6 +333,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
+
             assertEquals("http://localhost:" + server.port() + "/echoheaders", response.getRequest().getUrl().toString());
             assertNull(response.getRequest().getHeaders().get(HttpHeaderName.fromString("x-recording-upstream-base-uri")));
         }
@@ -347,6 +352,7 @@ public class TestProxyTests extends TestProxyTestBase {
     static class RecordedTestProxyData {
         @JsonProperty("Entries")
         private final LinkedList<TestProxyDataRecord> testProxyDataRecords;
+
         RecordedTestProxyData() {
             testProxyDataRecords = new LinkedList<>();
         }
@@ -401,4 +407,3 @@ public class TestProxyTests extends TestProxyTestBase {
         }
     }
 }
-

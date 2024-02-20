@@ -48,6 +48,7 @@ public class ListByteBufferContent extends BinaryDataContent {
     public ListByteBufferContent(List<ByteBuffer> content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
+
     @Override
     public Long getLength() {
         if (cachedLength == null) {

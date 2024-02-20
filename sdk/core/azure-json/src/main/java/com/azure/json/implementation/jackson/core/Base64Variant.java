@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -17,9 +18,7 @@ import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
  * 
  * @author Tatu Saloranta
  */
-public final class Base64Variant
-    implements java.io.Serializable
-{
+public final class Base64Variant implements java.io.Serializable {
     /**
      * Defines how the Base64Variant deals with Padding while reading
      *
@@ -43,12 +42,11 @@ public final class Base64Variant
          * exception thrown based on existence or absence, as long as proper
          * padding characters are used.
          */
-        PADDING_ALLOWED
-        ;
+        PADDING_ALLOWED;
     }
 
     private final static int INT_SPACE = 0x20;
-    
+
     // We'll only serialize name
     private static final long serialVersionUID = 1L;
 
@@ -72,9 +70,9 @@ public final class Base64Variant
     public final static int BASE64_VALUE_PADDING = -2;
 
     /*
-    /**********************************************************
-    /* Encoding/decoding tables
-    /**********************************************************
+     * /**********************************************************
+     * /* Encoding/decoding tables
+     * /**********************************************************
      */
 
     /**
@@ -95,9 +93,9 @@ public final class Base64Variant
     private final transient byte[] _base64ToAsciiB = new byte[64];
 
     /*
-    /**********************************************************
-    /* Other configuration
-    /**********************************************************
+     * /**********************************************************
+     * /* Other configuration
+     * /**********************************************************
      */
 
     /**
@@ -140,13 +138,13 @@ public final class Base64Variant
     private final PaddingReadBehaviour _paddingReadBehaviour;
 
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
 
-    public Base64Variant(String name, String base64Alphabet, boolean writePadding, char paddingChar, int maxLineLength)
-    {
+    public Base64Variant(String name, String base64Alphabet, boolean writePadding, char paddingChar,
+        int maxLineLength) {
         _name = name;
         _writePadding = writePadding;
         _paddingChar = paddingChar;
@@ -157,7 +155,7 @@ public final class Base64Variant
         // First the main encoding table:
         int alphaLen = base64Alphabet.length();
         if (alphaLen != 64) {
-            throw new IllegalArgumentException("Base64Alphabet length must be exactly 64 (was "+alphaLen+")");
+            throw new IllegalArgumentException("Base64Alphabet length must be exactly 64 (was " + alphaLen + ")");
         }
 
         // And then secondary encoding table and decoding table:
@@ -176,9 +174,8 @@ public final class Base64Variant
 
         // By default, require padding on input if written on output; do not
         // accept if padding not written
-        _paddingReadBehaviour = writePadding
-                ? PaddingReadBehaviour.PADDING_REQUIRED
-                : PaddingReadBehaviour.PADDING_FORBIDDEN;
+        _paddingReadBehaviour
+            = writePadding ? PaddingReadBehaviour.PADDING_REQUIRED : PaddingReadBehaviour.PADDING_FORBIDDEN;
     }
 
     /**
@@ -191,9 +188,7 @@ public final class Base64Variant
      * @param maxLineLength Maximum length (in characters) of lines to output before
      *    using linefeed
      */
-    public Base64Variant(Base64Variant base,
-            String name, int maxLineLength)
-    {
+    public Base64Variant(Base64Variant base, String name, int maxLineLength) {
         this(base, name, base._writePadding, base._paddingChar, maxLineLength);
     }
 
@@ -209,15 +204,12 @@ public final class Base64Variant
      * @param maxLineLength Maximum length (in characters) of lines to output before
      *    using linefeed
      */
-    public Base64Variant(Base64Variant base,
-            String name, boolean writePadding, char paddingChar, int maxLineLength)
-    {
+    public Base64Variant(Base64Variant base, String name, boolean writePadding, char paddingChar, int maxLineLength) {
         this(base, name, writePadding, paddingChar, base._paddingReadBehaviour, maxLineLength);
     }
 
-    private Base64Variant(Base64Variant base,
-            String name, boolean writePadding, char paddingChar, PaddingReadBehaviour paddingReadBehaviour, int maxLineLength)
-    {
+    private Base64Variant(Base64Variant base, String name, boolean writePadding, char paddingChar,
+        PaddingReadBehaviour paddingReadBehaviour, int maxLineLength) {
         _name = name;
         byte[] srcB = base._base64ToAsciiB;
         System.arraycopy(srcB, 0, this._base64ToAsciiB, 0, srcB.length);
@@ -270,8 +262,7 @@ public final class Base64Variant
      * @since 2.12
      */
     public Base64Variant withReadPadding(PaddingReadBehaviour readPadding) {
-        return (readPadding == _paddingReadBehaviour) ? this
-                : new Base64Variant(this, readPadding);
+        return (readPadding == _paddingReadBehaviour) ? this : new Base64Variant(this, readPadding);
     }
 
     /**
@@ -282,47 +273,50 @@ public final class Base64Variant
      * @since 2.12
      */
     public Base64Variant withWritePadding(boolean writePadding) {
-        return (writePadding == _writePadding) ? this
-                : new Base64Variant(this, _name, writePadding, _paddingChar, _maxLineLength);
+        return (writePadding == _writePadding)
+            ? this
+            : new Base64Variant(this, _name, writePadding, _paddingChar, _maxLineLength);
     }
 
     /*
-    /**********************************************************
-    /* Serializable overrides
-    /**********************************************************
+     * /**********************************************************
+     * /* Serializable overrides
+     * /**********************************************************
      */
 
     // 26-Oct-2020, tatu: Much more complicated with 2.12 as it is
-    //   possible to create differently configured instances.
-    //   Need to start with name to regenerate tables etc but then
-    //   handle overrides
+    // possible to create differently configured instances.
+    // Need to start with name to regenerate tables etc but then
+    // handle overrides
     protected Object readResolve() {
         Base64Variant base = Base64Variants.valueOf(_name);
         if ((_writePadding != base._writePadding)
-                || (_paddingChar != base._paddingChar)
-                || (_paddingReadBehaviour != base._paddingReadBehaviour)
-                || (_maxLineLength != base._maxLineLength)
-                || (_writePadding != base._writePadding)
-                ) {
-            return new Base64Variant(base,
-                    _name, _writePadding, _paddingChar, _paddingReadBehaviour, _maxLineLength);
+            || (_paddingChar != base._paddingChar)
+            || (_paddingReadBehaviour != base._paddingReadBehaviour)
+            || (_maxLineLength != base._maxLineLength)
+            || (_writePadding != base._writePadding)) {
+            return new Base64Variant(base, _name, _writePadding, _paddingChar, _paddingReadBehaviour, _maxLineLength);
         }
         return base;
     }
 
     /*
-    /**********************************************************
-    /* Public accessors
-    /**********************************************************
+     * /**********************************************************
+     * /* Public accessors
+     * /**********************************************************
      */
 
-    public String getName() { return _name; }
+    public String getName() {
+        return _name;
+    }
 
     /**
      * @return True if this Base64 encoding will <b>write</b> padding on output
      *   (note: before Jackson 2.12 also dictated whether padding was accepted on read)
      */
-    public boolean usesPadding() { return _writePadding; }
+    public boolean usesPadding() {
+        return _writePadding;
+    }
 
     /**
      * @return {@code True} if this variant requires padding on content decoded; {@code false} if not.
@@ -342,8 +336,13 @@ public final class Base64Variant
         return _paddingReadBehaviour != PaddingReadBehaviour.PADDING_FORBIDDEN;
     }
 
-    public boolean usesPaddingChar(char c) { return c == _paddingChar; }
-    public boolean usesPaddingChar(int ch) { return ch == (int) _paddingChar; }
+    public boolean usesPaddingChar(char c) {
+        return c == _paddingChar;
+    }
+
+    public boolean usesPaddingChar(int ch) {
+        return ch == (int) _paddingChar;
+    }
 
     /**
      * @return Indicator on how this Base64 encoding will handle possible padding
@@ -351,17 +350,26 @@ public final class Base64Variant
      *
      * @since 2.12
      */
-    public PaddingReadBehaviour paddingReadBehaviour() { return _paddingReadBehaviour; }
+    public PaddingReadBehaviour paddingReadBehaviour() {
+        return _paddingReadBehaviour;
+    }
 
-    public char getPaddingChar() { return _paddingChar; }
-    public byte getPaddingByte() { return (byte)_paddingChar; }
+    public char getPaddingChar() {
+        return _paddingChar;
+    }
 
-    public int getMaxLineLength() { return _maxLineLength; }
+    public byte getPaddingByte() {
+        return (byte) _paddingChar;
+    }
+
+    public int getMaxLineLength() {
+        return _maxLineLength;
+    }
 
     /*
-    /**********************************************************
-    /* Decoding support
-    /**********************************************************
+     * /**********************************************************
+     * /* Decoding support
+     * /**********************************************************
      */
 
     /**
@@ -369,19 +377,16 @@ public final class Base64Variant
      *
      * @return 6-bit decoded value, if valid character; 
      */
-    public int decodeBase64Char(char c)
-    {
+    public int decodeBase64Char(char c) {
         int ch = (int) c;
         return (ch <= 127) ? _asciiToBase64[ch] : BASE64_VALUE_INVALID;
     }
 
-    public int decodeBase64Char(int ch)
-    {
+    public int decodeBase64Char(int ch) {
         return (ch <= 127) ? _asciiToBase64[ch] : BASE64_VALUE_INVALID;
     }
 
-    public int decodeBase64Byte(byte b)
-    {
+    public int decodeBase64Byte(byte b) {
         int ch = (int) b;
         // note: cast retains sign, so it's from -128 to +127
         if (ch < 0) {
@@ -391,13 +396,12 @@ public final class Base64Variant
     }
 
     /*
-    /**********************************************************
-    /* Encoding support
-    /**********************************************************
+     * /**********************************************************
+     * /* Encoding support
+     * /**********************************************************
      */
 
-    public char encodeBase64BitsAsChar(int value)
-    {
+    public char encodeBase64BitsAsChar(int value) {
         // Let's assume caller has done necessary checks; this
         // method must be fast and inlinable
         return _base64ToAsciiC[value];
@@ -415,8 +419,7 @@ public final class Base64Variant
      *
      * @return Pointer in output buffer after appending 4 encoded characters
      */
-    public int encodeBase64Chunk(int b24, char[] buffer, int outPtr)
-    {
+    public int encodeBase64Chunk(int b24, char[] buffer, int outPtr) {
         buffer[outPtr++] = _base64ToAsciiC[(b24 >> 18) & 0x3F];
         buffer[outPtr++] = _base64ToAsciiC[(b24 >> 12) & 0x3F];
         buffer[outPtr++] = _base64ToAsciiC[(b24 >> 6) & 0x3F];
@@ -424,8 +427,7 @@ public final class Base64Variant
         return outPtr;
     }
 
-    public void encodeBase64Chunk(StringBuilder sb, int b24)
-    {
+    public void encodeBase64Chunk(StringBuilder sb, int b24) {
         sb.append(_base64ToAsciiC[(b24 >> 18) & 0x3F]);
         sb.append(_base64ToAsciiC[(b24 >> 12) & 0x3F]);
         sb.append(_base64ToAsciiC[(b24 >> 6) & 0x3F]);
@@ -445,13 +447,11 @@ public final class Base64Variant
      *
      * @return Pointer in output buffer after appending encoded characters (2, 3 or 4)
      */
-    public int encodeBase64Partial(int bits, int outputBytes, char[] buffer, int outPtr)
-    {
+    public int encodeBase64Partial(int bits, int outputBytes, char[] buffer, int outPtr) {
         buffer[outPtr++] = _base64ToAsciiC[(bits >> 18) & 0x3F];
         buffer[outPtr++] = _base64ToAsciiC[(bits >> 12) & 0x3F];
         if (usesPadding()) {
-            buffer[outPtr++] = (outputBytes == 2) ?
-                _base64ToAsciiC[(bits >> 6) & 0x3F] : _paddingChar;
+            buffer[outPtr++] = (outputBytes == 2) ? _base64ToAsciiC[(bits >> 6) & 0x3F] : _paddingChar;
             buffer[outPtr++] = _paddingChar;
         } else {
             if (outputBytes == 2) {
@@ -461,13 +461,11 @@ public final class Base64Variant
         return outPtr;
     }
 
-    public void encodeBase64Partial(StringBuilder sb, int bits, int outputBytes)
-    {
+    public void encodeBase64Partial(StringBuilder sb, int bits, int outputBytes) {
         sb.append(_base64ToAsciiC[(bits >> 18) & 0x3F]);
         sb.append(_base64ToAsciiC[(bits >> 12) & 0x3F]);
         if (usesPadding()) {
-            sb.append((outputBytes == 2) ?
-                      _base64ToAsciiC[(bits >> 6) & 0x3F] : _paddingChar);
+            sb.append((outputBytes == 2) ? _base64ToAsciiC[(bits >> 6) & 0x3F] : _paddingChar);
             sb.append(_paddingChar);
         } else {
             if (outputBytes == 2) {
@@ -476,8 +474,7 @@ public final class Base64Variant
         }
     }
 
-    public byte encodeBase64BitsAsByte(int value)
-    {
+    public byte encodeBase64BitsAsByte(int value) {
         // As with above, assuming it is 6-bit value
         return _base64ToAsciiB[value];
     }
@@ -492,8 +489,7 @@ public final class Base64Variant
      *
      * @return Pointer in output buffer after appending 4 encoded characters
      */
-    public int encodeBase64Chunk(int b24, byte[] buffer, int outPtr)
-    {
+    public int encodeBase64Chunk(int b24, byte[] buffer, int outPtr) {
         buffer[outPtr++] = _base64ToAsciiB[(b24 >> 18) & 0x3F];
         buffer[outPtr++] = _base64ToAsciiB[(b24 >> 12) & 0x3F];
         buffer[outPtr++] = _base64ToAsciiB[(b24 >> 6) & 0x3F];
@@ -514,14 +510,12 @@ public final class Base64Variant
      *
      * @return Pointer in output buffer after appending encoded characters (2, 3 or 4)
      */
-    public int encodeBase64Partial(int bits, int outputBytes, byte[] buffer, int outPtr)
-    {
+    public int encodeBase64Partial(int bits, int outputBytes, byte[] buffer, int outPtr) {
         buffer[outPtr++] = _base64ToAsciiB[(bits >> 18) & 0x3F];
         buffer[outPtr++] = _base64ToAsciiB[(bits >> 12) & 0x3F];
         if (usesPadding()) {
             byte pb = (byte) _paddingChar;
-            buffer[outPtr++] = (outputBytes == 2) ?
-                _base64ToAsciiB[(bits >> 6) & 0x3F] : pb;
+            buffer[outPtr++] = (outputBytes == 2) ? _base64ToAsciiB[(bits >> 6) & 0x3F] : pb;
             buffer[outPtr++] = pb;
         } else {
             if (outputBytes == 2) {
@@ -532,11 +526,11 @@ public final class Base64Variant
     }
 
     /*
-    /**********************************************************
-    /* Convenience conversion methods for String to/from bytes use case
-    /**********************************************************
+     * /**********************************************************
+     * /* Convenience conversion methods for String to/from bytes use case
+     * /**********************************************************
      */
-    
+
     /**
      * Convenience method for converting given byte array as base64 encoded
      * String using this variant's settings.
@@ -546,8 +540,7 @@ public final class Base64Variant
      *
      * @return Base64 encoded String of encoded {@code input} bytes, not surrounded by quotes
      */
-    public String encode(byte[] input)
-    {
+    public String encode(byte[] input) {
         return encode(input, false);
     }
 
@@ -563,8 +556,7 @@ public final class Base64Variant
      * @return Base64 encoded String of encoded {@code input} bytes, possibly
      *     surrounded by quotes (if {@code addQuotes} enabled)
      */
-    public String encode(byte[] input, boolean addQuotes)
-    {
+    public String encode(byte[] input, boolean addQuotes) {
         final int inputEnd = input.length;
         final StringBuilder sb = new StringBuilder(inputEnd + (inputEnd >> 2) + (inputEnd >> 3));
         if (addQuotes) {
@@ -575,7 +567,7 @@ public final class Base64Variant
 
         // Ok, first we loop through all full triplets of data:
         int inputPtr = 0;
-        int safeInputEnd = inputEnd-3; // to get only full triplets
+        int safeInputEnd = inputEnd - 3; // to get only full triplets
 
         while (inputPtr <= safeInputEnd) {
             // First, mash 3 bytes into lsb of 32-bit int
@@ -620,8 +612,7 @@ public final class Base64Variant
      *
      * @since 2.10
      */
-    public String encode(byte[] input, boolean addQuotes, String linefeed)
-    {
+    public String encode(byte[] input, boolean addQuotes, String linefeed) {
         final int inputEnd = input.length;
         final StringBuilder sb = new StringBuilder(inputEnd + (inputEnd >> 2) + (inputEnd >> 3));
         if (addQuotes) {
@@ -631,7 +622,7 @@ public final class Base64Variant
         int chunksBeforeLF = getMaxLineLength() >> 2;
 
         int inputPtr = 0;
-        int safeInputEnd = inputEnd-3;
+        int safeInputEnd = inputEnd - 3;
 
         while (inputPtr <= safeInputEnd) {
             int b24 = ((int) input[inputPtr++]) << 8;
@@ -671,8 +662,7 @@ public final class Base64Variant
      * @throws IllegalArgumentException if input is not valid base64 encoded data
      */
     @SuppressWarnings("resource")
-    public byte[] decode(String input) throws IllegalArgumentException
-    {
+    public byte[] decode(String input) throws IllegalArgumentException {
         ByteArrayBuilder b = new ByteArrayBuilder();
         decode(input, b);
         return b.toByteArray();
@@ -694,13 +684,11 @@ public final class Base64Variant
      *
      * @throws IllegalArgumentException if input is not valid base64 encoded data
      */
-    public void decode(String str, ByteArrayBuilder builder) throws IllegalArgumentException
-    {
+    public void decode(String str, ByteArrayBuilder builder) throws IllegalArgumentException {
         int ptr = 0;
         int len = str.length();
 
-    main_loop:
-        while (true) {
+        main_loop: while (true) {
             // first, we'll skip preceding white space, if any
             char ch;
             do {
@@ -736,7 +724,7 @@ public final class Base64Variant
             }
             ch = str.charAt(ptr++);
             bits = decodeBase64Char(ch);
-            
+
             // First branch: can get padding (-> 1 byte)
             if (bits < 0) {
                 if (bits != Base64Variant.BASE64_VALUE_PADDING) {
@@ -751,7 +739,7 @@ public final class Base64Variant
                 }
                 ch = str.charAt(ptr++);
                 if (!usesPaddingChar(ch)) {
-                    _reportInvalidBase64(ch, 3, "expected padding character '"+getPaddingChar()+"'");
+                    _reportInvalidBase64(ch, 3, "expected padding character '" + getPaddingChar() + "'");
                 }
                 // Got 12 bits, only need 8, need to shift
                 decodedData >>= 4;
@@ -790,28 +778,31 @@ public final class Base64Variant
     }
 
     /*
-    /**********************************************************
-    /* Overridden standard methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Overridden standard methods
+     * /**********************************************************
      */
 
     @Override
-    public String toString() { return _name; }
+    public String toString() {
+        return _name;
+    }
 
     @Override
     public boolean equals(Object o) {
         // identity comparison should be fine
         // 26-Oct-2020, tatu: ... not any more with 2.12
-        if (o == this) return true;
-        if (o == null || o.getClass() != getClass()) return false;
+        if (o == this)
+            return true;
+        if (o == null || o.getClass() != getClass())
+            return false;
 
         Base64Variant other = (Base64Variant) o;
         return (other._paddingChar == _paddingChar)
-                && (other._maxLineLength == _maxLineLength)
-                && (other._writePadding == _writePadding)
-                && (other._paddingReadBehaviour == _paddingReadBehaviour)
-                && (_name.equals(other._name))
-                ;
+            && (other._maxLineLength == _maxLineLength)
+            && (other._writePadding == _writePadding)
+            && (other._paddingReadBehaviour == _paddingReadBehaviour)
+            && (_name.equals(other._name));
     }
 
     @Override
@@ -820,9 +811,9 @@ public final class Base64Variant
     }
 
     /*
-    /**********************************************************
-    /* Internal helper methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal helper methods
+     * /**********************************************************
      */
 
     /**
@@ -831,19 +822,19 @@ public final class Base64Variant
      *   and 3 (as unit has exactly 4 characters)
      * @param msg Base message to use for exception
      */
-    protected void _reportInvalidBase64(char ch, int bindex, String msg)
-        throws IllegalArgumentException
-    {
+    protected void _reportInvalidBase64(char ch, int bindex, String msg) throws IllegalArgumentException {
         String base;
         if (ch <= INT_SPACE) {
-            base = "Illegal white space character (code 0x"+Integer.toHexString(ch)+") as character #"+(bindex+1)+" of 4-char base64 unit: can only used between units";
+            base = "Illegal white space character (code 0x" + Integer.toHexString(ch) + ") as character #"
+                + (bindex + 1) + " of 4-char base64 unit: can only used between units";
         } else if (usesPaddingChar(ch)) {
-            base = "Unexpected padding character ('"+getPaddingChar()+"') as character #"+(bindex+1)+" of 4-char base64 unit: padding only legal as 3rd or 4th character";
+            base = "Unexpected padding character ('" + getPaddingChar() + "') as character #" + (bindex + 1)
+                + " of 4-char base64 unit: padding only legal as 3rd or 4th character";
         } else if (!Character.isDefined(ch) || Character.isISOControl(ch)) {
             // Not sure if we can really get here... ? (most illegal xml chars are caught at lower level)
-            base = "Illegal character (code 0x"+Integer.toHexString(ch)+") in base64 content";
+            base = "Illegal character (code 0x" + Integer.toHexString(ch) + ") in base64 content";
         } else {
-            base = "Illegal character '"+ch+"' (code 0x"+Integer.toHexString(ch)+") in base64 content";
+            base = "Illegal character '" + ch + "' (code 0x" + Integer.toHexString(ch) + ") in base64 content";
         }
         if (msg != null) {
             base = base + ": " + msg;
@@ -868,8 +859,9 @@ public final class Base64Variant
      * @since 2.12
      */
     protected String unexpectedPaddingMessage() {
-        return String.format("Unexpected end of base64-encoded String: base64 variant '%s' expects no padding at the end while decoding. This Base64Variant might have been incorrectly configured",
-                getName());
+        return String.format(
+            "Unexpected end of base64-encoded String: base64 variant '%s' expects no padding at the end while decoding. This Base64Variant might have been incorrectly configured",
+            getName());
     }
 
     /**
@@ -881,7 +873,8 @@ public final class Base64Variant
      * @since 2.10
      */
     public String missingPaddingMessage() { // !!! TODO: why is this 'public'?
-        return String.format("Unexpected end of base64-encoded String: base64 variant '%s' expects padding (one or more '%c' characters) at the end. This Base64Variant might have been incorrectly configured",
-                getName(), getPaddingChar());
+        return String.format(
+            "Unexpected end of base64-encoded String: base64 variant '%s' expects padding (one or more '%c' characters) at the end. This Base64Variant might have been incorrectly configured",
+            getName(), getPaddingChar());
     }
 }

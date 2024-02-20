@@ -9,8 +9,8 @@ package com.azure.core.util;
  */
 public final class UserAgentUtil {
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
-        + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_LENGTH
+        = "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
 
     /**
@@ -58,18 +58,11 @@ public final class UserAgentUtil {
         }
 
         // Add the required default User-Agent string.
-        userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER)
-            .append("-")
-            .append(sdkName)
-            .append("/")
-            .append(sdkVersion);
+        userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER).append("-").append(sdkName).append("/").append(sdkVersion);
 
         // Only add the platform telemetry if it is allowed as it is optional.
         if (!isTelemetryDisabled(configuration)) {
-            userAgentBuilder.append(" ")
-                .append("(")
-                .append(getPlatformInfo())
-                .append(")");
+            userAgentBuilder.append(" (").append(getPlatformInfo()).append(")");
         }
 
         return userAgentBuilder.toString();

@@ -58,6 +58,8 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptionsBase;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -260,24 +262,14 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosQueryRequestOptionsAccessor {
-            CosmosQueryRequestOptions clone(
-                CosmosQueryRequestOptions toBeCloned);
-            void setOperationContext(CosmosQueryRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
-            OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions);
-            CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name, String value);
-            Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions);
+            CosmosQueryRequestOptionsBase<?> getImpl(CosmosQueryRequestOptions options);
+            CosmosQueryRequestOptions clone(CosmosQueryRequestOptions toBeCloned);
+            CosmosQueryRequestOptions clone(CosmosQueryRequestOptionsBase<?> toBeCloned);
             boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions disallowQueryPlanRetrieval(CosmosQueryRequestOptions queryRequestOptions);
-            UUID getCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions);
-            CosmosQueryRequestOptions setCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId);
             boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions);
-            <T> Function<JsonNode, T> getItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT);
-            CosmosQueryRequestOptions setItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions, String defaultQueryName);
             RequestOptions toRequestOptions(CosmosQueryRequestOptions queryRequestOptions);
-            CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options);
-            CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptions options);
-            List<String> getExcludeRegions(CosmosQueryRequestOptions options);
             List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker(CosmosQueryRequestOptions options);
             void setCancelledRequestDiagnosticsTracker(
                 CosmosQueryRequestOptions options,
@@ -289,6 +281,51 @@ public class ImplementationBridgeHelpers {
             Integer getMaxItemCount(CosmosQueryRequestOptions options);
 
             String getRequestContinuation(CosmosQueryRequestOptions options);
+        }
+    }
+
+    public static final class CosmosQueryRequestOptionsBaseHelper {
+        private final static AtomicBoolean cosmosQueryRequestOptionsBaseClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosQueryRequestOptionsBaseAccessor> accessor = new AtomicReference<>();
+
+        private CosmosQueryRequestOptionsBaseHelper() {}
+
+        public static void setCosmosQueryRequestOptionsBaseAccessor(final CosmosQueryRequestOptionsBaseAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosQueryRequestOptionsBaseAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosQueryRequestOptionsBaseAccessor...");
+                cosmosQueryRequestOptionsBaseClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosQueryRequestOptionsBaseAccessor getCosmosQueryRequestOptionsBaseAccessor() {
+            if (!cosmosQueryRequestOptionsBaseClassLoaded.get()) {
+                logger.debug("Initializing CosmosQueryRequestOptionsBaseAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosQueryRequestOptionsBaseAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosQueryRequestOptionsBaseAccessor is not initialized yet!");
+                System.exit(9729); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosQueryRequestOptionsBaseAccessor {
+            void setOperationContext(CosmosQueryRequestOptionsBase<?> queryRequestOptions, OperationContextAndListenerTuple operationContext);
+            OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptionsBase<?> queryRequestOptions);
+            <T extends CosmosQueryRequestOptionsBase<?>> T setHeader(T queryRequestOptions, String name, String value);
+            Map<String, String> getHeader(CosmosQueryRequestOptionsBase<?> queryRequestOptions);
+            UUID getCorrelationActivityId(CosmosQueryRequestOptionsBase<?> queryRequestOptions);
+            <T extends CosmosQueryRequestOptionsBase<?>> T setCorrelationActivityId(T queryRequestOptions, UUID correlationActivityId);
+            <T> Function<JsonNode, T> getItemFactoryMethod(CosmosQueryRequestOptionsBase<?> queryRequestOptions, Class<T> classOfT);
+            <T extends CosmosQueryRequestOptionsBase<?>> T setItemFactoryMethod(T queryRequestOptions, Function<JsonNode, ?> factoryMethod);
+            CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptionsBase<?> options);
+            CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptionsBase<?> options);
+            List<String> getExcludeRegions(CosmosQueryRequestOptionsBase<?> options);
         }
     }
 
@@ -918,7 +955,7 @@ public class ImplementationBridgeHelpers {
             <T> Mono<FeedResponse<T>> readMany(
                 CosmosAsyncContainer cosmosAsyncContainer,
                 List<CosmosItemIdentity> itemIdentityList,
-                CosmosQueryRequestOptions requestOptions,
+                CosmosReadManyRequestOptions requestOptions,
                 Class<T> classType);
 
             <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
