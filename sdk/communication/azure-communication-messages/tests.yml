@@ -14,17 +14,13 @@ stages:
           ${{ if eq(parameters.runOnlyPPE, true) }}:
             Clouds: 'PPE'
           ${{ if eq(parameters.runOnlyPPE, false) }}:
-            Clouds: 'Public,PPE,Int'
+            Clouds: 'Public,PPE'
           CloudConfig:
             Public:
               SubscriptionConfigurations:
                 - $(sub-config-azure-cloud-test-resources)
                 - $(sub-config-communication-services-cloud-test-resources-common)
                 - $(sub-config-communication-services-cloud-test-resources-java)
-            Int:
-              SubscriptionConfigurations:
-                - $(sub-config-communication-int-test-resources-common)
-                - $(sub-config-communication-int-test-resources-java)
             PPE:
               SubscriptionConfigurations:
                 - $(sub-config-communication-ppe-test-resources-common)
