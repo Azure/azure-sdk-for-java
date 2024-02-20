@@ -81,10 +81,11 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
      *                 less chatty network and faster message processing on the client).
      * @param creditFlowMode the mode indicating how to compute the credit and when to send it to the broker.
      * @param retryPolicy the retry policy to use to obtain a new receiver upon current receiver termination.
-     * @throws IllegalStateException if the {@code prefetch} is a negative value.
+     * @throws IllegalArgumentException if the {@code prefetch} is a negative value.
      * @throws NullPointerException if the {@code retryPolicy} is {@code null}.
      */
-    public MessageFlux(Flux<? extends AmqpReceiveLink> source, int prefetch, CreditFlowMode creditFlowMode, AmqpRetryPolicy retryPolicy) {
+    public MessageFlux(Flux<? extends AmqpReceiveLink> source, int prefetch, CreditFlowMode creditFlowMode,
+        AmqpRetryPolicy retryPolicy) {
         super(source);
 
         final Map<String, Object> loggingContext = new HashMap<>(1);
@@ -615,10 +616,10 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * </ul>
          * 2. If retry is enabled (i.e., NULL_RETRY_POLICY is not set) and there is 'non-retriable or retry exhaust'
          * error, then set an error signal for the drain-loop to terminate the operator.
-         * <br/>
+         * <br>
          * 3. If retry is disabled (i.e., NULL_RETRY_POLICY is set), then set an error signal (if first receiver error-ed)
          * or completion signal (if first receiver completed) for the drain-loop to terminate the operator.
-         * <p></p>
+         *
          * @param error the error that leads to error-ed termination of the last mediator or {@code null}
          *              if terminated with completion.
          * @param downstream the downstream.

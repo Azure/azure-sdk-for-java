@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Diagnostic parameters of diagnostic operations. */
+/**
+ * Diagnostic parameters of diagnostic operations.
+ */
 @Fluent
 public final class DiagnosticParameters {
     /*
@@ -29,8 +31,14 @@ public final class DiagnosticParameters {
     private String duration;
 
     /**
+     * Creates an instance of DiagnosticParameters class.
+     */
+    public DiagnosticParameters() {
+    }
+
+    /**
      * Get the appInstance property: App instance name.
-     *
+     * 
      * @return the appInstance value.
      */
     public String appInstance() {
@@ -39,7 +47,7 @@ public final class DiagnosticParameters {
 
     /**
      * Set the appInstance property: App instance name.
-     *
+     * 
      * @param appInstance the appInstance value to set.
      * @return the DiagnosticParameters object itself.
      */
@@ -50,7 +58,7 @@ public final class DiagnosticParameters {
 
     /**
      * Get the filePath property: Your target file path in your own BYOS.
-     *
+     * 
      * @return the filePath value.
      */
     public String filePath() {
@@ -59,7 +67,7 @@ public final class DiagnosticParameters {
 
     /**
      * Set the filePath property: Your target file path in your own BYOS.
-     *
+     * 
      * @param filePath the filePath value to set.
      * @return the DiagnosticParameters object itself.
      */
@@ -70,7 +78,7 @@ public final class DiagnosticParameters {
 
     /**
      * Get the duration property: Duration of your JFR. 1 min can be represented by 1m or 60s.
-     *
+     * 
      * @return the duration value.
      */
     public String duration() {
@@ -79,7 +87,7 @@ public final class DiagnosticParameters {
 
     /**
      * Set the duration property: Duration of your JFR. 1 min can be represented by 1m or 60s.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the DiagnosticParameters object itself.
      */
@@ -90,7 +98,7 @@ public final class DiagnosticParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

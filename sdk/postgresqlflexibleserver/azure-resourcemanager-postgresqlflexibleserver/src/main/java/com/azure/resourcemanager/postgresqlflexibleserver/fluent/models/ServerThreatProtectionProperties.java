@@ -10,7 +10,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectio
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of server Threat Protection state. */
+/**
+ * Properties of server Threat Protection state.
+ */
 @Fluent
 public final class ServerThreatProtectionProperties {
     /*
@@ -26,14 +28,16 @@ public final class ServerThreatProtectionProperties {
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
-    /** Creates an instance of ServerThreatProtectionProperties class. */
+    /**
+     * Creates an instance of ServerThreatProtectionProperties class.
+     */
     public ServerThreatProtectionProperties() {
     }
 
     /**
      * Get the state property: Specifies the state of the Threat Protection, whether it is enabled or disabled or a
      * state has not been applied yet on the specific server.
-     *
+     * 
      * @return the state value.
      */
     public ThreatProtectionState state() {
@@ -43,7 +47,7 @@ public final class ServerThreatProtectionProperties {
     /**
      * Set the state property: Specifies the state of the Threat Protection, whether it is enabled or disabled or a
      * state has not been applied yet on the specific server.
-     *
+     * 
      * @param state the state value to set.
      * @return the ServerThreatProtectionProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class ServerThreatProtectionProperties {
 
     /**
      * Get the creationTime property: Specifies the UTC creation time of the policy.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -63,15 +67,13 @@ public final class ServerThreatProtectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model ServerThreatProtectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property state in model ServerThreatProtectionProperties"));
         }
     }
 

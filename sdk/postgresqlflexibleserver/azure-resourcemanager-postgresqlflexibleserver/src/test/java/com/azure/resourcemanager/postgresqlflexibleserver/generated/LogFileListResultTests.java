@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LogFileListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogFileListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"createdTime\":\"2021-06-10T05:43:26Z\",\"lastModifiedTime\":\"2020-12-28T18:29:51Z\",\"sizeInKb\":1664396973547622224,\"type\":\"ossxk\",\"url\":\"thrrgh\"},\"id\":\"bdhqxvcxgf\",\"name\":\"pdso\",\"type\":\"bshrnsvbuswd\"},{\"properties\":{\"createdTime\":\"2021-07-28T13:53:22Z\",\"lastModifiedTime\":\"2021-02-22T05:56:13Z\",\"sizeInKb\":1929545324703716474,\"type\":\"vj\",\"url\":\"tkfa\"},\"id\":\"opqgikyzirtxdyux\",\"name\":\"ejnt\",\"type\":\"sewgioilqukr\"},{\"properties\":{\"createdTime\":\"2021-05-20T16:44:09Z\",\"lastModifiedTime\":\"2021-08-09T07:56:36Z\",\"sizeInKb\":4739380056500631916,\"type\":\"orgguf\",\"url\":\"aomtbghhavgrvkff\"},\"id\":\"jzhpjbibgjmfx\",\"name\":\"mv\",\"type\":\"cluyovwxnbkf\"},{\"properties\":{\"createdTime\":\"2021-10-29T21:58:29Z\",\"lastModifiedTime\":\"2021-10-06T08:35:26Z\",\"sizeInKb\":3180545189941819155,\"type\":\"dgirujbzbom\",\"url\":\"zbtd\"},\"id\":\"vp\",\"name\":\"iyujviylwdshfs\",\"type\":\"n\"}],\"nextLink\":\"gy\"}")
-                .toObject(LogFileListResult.class);
+        LogFileListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-06-10T05:43:26Z\",\"lastModifiedTime\":\"2020-12-28T18:29:51Z\",\"sizeInKb\":1664396973547622224,\"type\":\"ossxk\",\"url\":\"thrrgh\"},\"id\":\"bdhqxvcxgf\",\"name\":\"pdso\",\"type\":\"bshrnsvbuswd\"},{\"properties\":{\"createdTime\":\"2021-07-28T13:53:22Z\",\"lastModifiedTime\":\"2021-02-22T05:56:13Z\",\"sizeInKb\":1929545324703716474,\"type\":\"vj\",\"url\":\"tkfa\"},\"id\":\"opqgikyzirtxdyux\",\"name\":\"ejnt\",\"type\":\"sewgioilqukr\"},{\"properties\":{\"createdTime\":\"2021-05-20T16:44:09Z\",\"lastModifiedTime\":\"2021-08-09T07:56:36Z\",\"sizeInKb\":4739380056500631916,\"type\":\"orgguf\",\"url\":\"aomtbghhavgrvkff\"},\"id\":\"jzhpjbibgjmfx\",\"name\":\"mv\",\"type\":\"cluyovwxnbkf\"},{\"properties\":{\"createdTime\":\"2021-10-29T21:58:29Z\",\"lastModifiedTime\":\"2021-10-06T08:35:26Z\",\"sizeInKb\":3180545189941819155,\"type\":\"dgirujbzbom\",\"url\":\"zbtd\"},\"id\":\"vp\",\"name\":\"iyujviylwdshfs\",\"type\":\"n\"}],\"nextLink\":\"gy\"}")
+            .toObject(LogFileListResult.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T05:43:26Z"), model.value().get(0).createdTime());
         Assertions.assertEquals(OffsetDateTime.parse("2020-12-28T18:29:51Z"), model.value().get(0).lastModifiedTime());
         Assertions.assertEquals(1664396973547622224L, model.value().get(0).sizeInKb());
@@ -29,36 +27,21 @@ public final class LogFileListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogFileListResult model =
-            new LogFileListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LogFileInner()
-                                .withCreatedTime(OffsetDateTime.parse("2021-06-10T05:43:26Z"))
-                                .withLastModifiedTime(OffsetDateTime.parse("2020-12-28T18:29:51Z"))
-                                .withSizeInKb(1664396973547622224L)
-                                .withTypePropertiesType("ossxk")
-                                .withUrl("thrrgh"),
-                            new LogFileInner()
-                                .withCreatedTime(OffsetDateTime.parse("2021-07-28T13:53:22Z"))
-                                .withLastModifiedTime(OffsetDateTime.parse("2021-02-22T05:56:13Z"))
-                                .withSizeInKb(1929545324703716474L)
-                                .withTypePropertiesType("vj")
-                                .withUrl("tkfa"),
-                            new LogFileInner()
-                                .withCreatedTime(OffsetDateTime.parse("2021-05-20T16:44:09Z"))
-                                .withLastModifiedTime(OffsetDateTime.parse("2021-08-09T07:56:36Z"))
-                                .withSizeInKb(4739380056500631916L)
-                                .withTypePropertiesType("orgguf")
-                                .withUrl("aomtbghhavgrvkff"),
-                            new LogFileInner()
-                                .withCreatedTime(OffsetDateTime.parse("2021-10-29T21:58:29Z"))
-                                .withLastModifiedTime(OffsetDateTime.parse("2021-10-06T08:35:26Z"))
-                                .withSizeInKb(3180545189941819155L)
-                                .withTypePropertiesType("dgirujbzbom")
-                                .withUrl("zbtd")))
-                .withNextLink("gy");
+        LogFileListResult model = new LogFileListResult()
+            .withValue(Arrays.asList(
+                new LogFileInner().withCreatedTime(OffsetDateTime.parse("2021-06-10T05:43:26Z"))
+                    .withLastModifiedTime(OffsetDateTime.parse("2020-12-28T18:29:51Z"))
+                    .withSizeInKb(1664396973547622224L).withTypePropertiesType("ossxk").withUrl("thrrgh"),
+                new LogFileInner().withCreatedTime(OffsetDateTime.parse("2021-07-28T13:53:22Z"))
+                    .withLastModifiedTime(OffsetDateTime.parse("2021-02-22T05:56:13Z"))
+                    .withSizeInKb(1929545324703716474L).withTypePropertiesType("vj").withUrl("tkfa"),
+                new LogFileInner().withCreatedTime(OffsetDateTime.parse("2021-05-20T16:44:09Z"))
+                    .withLastModifiedTime(OffsetDateTime.parse("2021-08-09T07:56:36Z"))
+                    .withSizeInKb(4739380056500631916L).withTypePropertiesType("orgguf").withUrl("aomtbghhavgrvkff"),
+                new LogFileInner().withCreatedTime(OffsetDateTime.parse("2021-10-29T21:58:29Z"))
+                    .withLastModifiedTime(OffsetDateTime.parse("2021-10-06T08:35:26Z"))
+                    .withSizeInKb(3180545189941819155L).withTypePropertiesType("dgirujbzbom").withUrl("zbtd")))
+            .withNextLink("gy");
         model = BinaryData.fromObject(model).toObject(LogFileListResult.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T05:43:26Z"), model.value().get(0).createdTime());
         Assertions.assertEquals(OffsetDateTime.parse("2020-12-28T18:29:51Z"), model.value().get(0).lastModifiedTime());

@@ -13,6 +13,9 @@ import com.fasterxml.jackson.databind.cfg.PackageVersion;
 
 import java.lang.reflect.Array;
 
+/**
+ * Constructs and configures {@link ObjectMapper} instances that handle XML.
+ */
 public final class XmlMapperFactory {
     private static final ClientLogger LOGGER = new ClientLogger(XmlMapperFactory.class);
 
@@ -79,6 +82,12 @@ public final class XmlMapperFactory {
         this.useJackson212 = PackageVersion.VERSION.getMinorVersion() >= 12;
     }
 
+    /**
+     * Creates a new {@link ObjectMapper} instance that can handle XML.
+     *
+     * @return A new {@link ObjectMapper} instance that can handle XML.
+     * @throws IllegalStateException If the {@link ObjectMapper} cannot be created.
+     */
     public ObjectMapper createXmlMapper() {
         ObjectMapper xmlMapper;
         try {

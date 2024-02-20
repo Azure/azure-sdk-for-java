@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 
 import java.net.HttpURLConnection;
 import java.util.EnumSet;
@@ -79,7 +80,8 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
     private static HttpHeaderName validateLocationHeader(String locationHeader) {
         if (CoreUtils.isNullOrEmpty(locationHeader)) {
-            LOGGER.error("'locationHeader' provided as null will be defaulted to {}", HttpHeaderName.LOCATION);
+            LOGGER.log(LogLevel.INFORMATIONAL,
+                () -> "'locationHeader' provided as null will be defaulted to " + HttpHeaderName.LOCATION);
             return HttpHeaderName.LOCATION;
         } else {
             return HttpHeaderName.fromString(locationHeader);
@@ -88,28 +90,24 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
     private static Set<HttpMethod> validateAllowedMethods(Set<HttpMethod> allowedMethods) {
         if (CoreUtils.isNullOrEmpty(allowedMethods)) {
-            LOGGER.error("'allowedMethods' provided as null will be defaulted to {}", DEFAULT_REDIRECT_ALLOWED_METHODS);
+            LOGGER.log(LogLevel.INFORMATIONAL,
+                () -> "'allowedMethods' provided as null will be defaulted to " + DEFAULT_REDIRECT_ALLOWED_METHODS);
             return DEFAULT_REDIRECT_ALLOWED_METHODS;
         } else {
             return EnumSet.copyOf(allowedMethods);
         }
     }
 
-
     @Override
-    public boolean shouldAttemptRedirect(HttpPipelineCallContext context,
-                                         HttpResponse httpResponse, int tryCount,
-                                         Set<String> attemptedRedirectUrls) {
+    public boolean shouldAttemptRedirect(HttpPipelineCallContext context, HttpResponse httpResponse, int tryCount,
+        Set<String> attemptedRedirectUrls) {
 
-        if (isValidRedirectStatusCode(httpResponse.getStatusCode())
-            && isValidRedirectCount(tryCount)
+        if (isValidRedirectStatusCode(httpResponse.getStatusCode()) && isValidRedirectCount(tryCount)
             && isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())) {
             String redirectUrl = httpResponse.getHeaderValue(locationHeader);
             if (redirectUrl != null && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
-                LOGGER.atVerbose()
-                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                    .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString)
-                    .log("Redirecting.");
+                LOGGER.atVerbose().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                    .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString).log("Redirecting.");
                 attemptedRedirectUrls.add(redirectUrl);
                 return true;
             } else {
@@ -138,11 +136,9 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      * @return {@code true} if the redirectUrl provided in the response header is already being attempted for redirect
      * , {@code false} otherwise.
      */
-    private boolean alreadyAttemptedRedirectUrl(String redirectUrl,
-                                                Set<String> attemptedRedirectUrls) {
+    private boolean alreadyAttemptedRedirectUrl(String redirectUrl, Set<String> attemptedRedirectUrls) {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
-            LOGGER.atError()
-                .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
+            LOGGER.atError().addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
                 .log("Request was redirected more than once to the same URL.");
 
             return true;
@@ -158,9 +154,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      */
     private boolean isValidRedirectCount(int tryCount) {
         if (tryCount >= getMaxAttempts()) {
-            LOGGER.atError()
-                .addKeyValue("maxAttempts", getMaxAttempts())
-                .log("Redirect attempts have been exhausted.");
+            LOGGER.atError().addKeyValue("maxAttempts", getMaxAttempts()).log("Redirect attempts have been exhausted.");
 
             return false;
         }
@@ -177,8 +171,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         if (allowedRedirectHttpMethods.contains(httpMethod)) {
             return true;
         } else {
-            LOGGER.atError()
-                .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
+            LOGGER.atError().addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
                 .log("Request was redirected from an invalid redirect allowed method.");
 
             return false;
@@ -192,9 +185,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      * @return {@code true} if the request {@code statusCode} is a valid http redirect method, {@code false} otherwise.
      */
     private boolean isValidRedirectStatusCode(int statusCode) {
-        return statusCode == HttpURLConnection.HTTP_MOVED_TEMP
-            || statusCode == HttpURLConnection.HTTP_MOVED_PERM
-            || statusCode == PERMANENT_REDIRECT_STATUS_CODE
-            || statusCode == TEMPORARY_REDIRECT_STATUS_CODE;
+        return statusCode == HttpURLConnection.HTTP_MOVED_TEMP || statusCode == HttpURLConnection.HTTP_MOVED_PERM
+            || statusCode == PERMANENT_REDIRECT_STATUS_CODE || statusCode == TEMPORARY_REDIRECT_STATUS_CODE;
     }
 }

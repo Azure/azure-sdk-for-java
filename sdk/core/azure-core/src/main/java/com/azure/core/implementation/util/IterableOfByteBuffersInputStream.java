@@ -10,13 +10,20 @@ import java.util.Iterator;
 import java.util.Objects;
 
 /**
- * An {@link InputStream} implementation that is based on {@link Iterator} of {@link java.nio.ByteBuffer}.
+ * An {@link InputStream} implementation that is based on {@link Iterator} of {@link ByteBuffer}.
  */
 public class IterableOfByteBuffersInputStream extends InputStream {
 
     private final Iterator<ByteBuffer> buffers;
     private ByteBuffer currentBuffer;
 
+    /**
+     * Creates an instance of {@link IterableOfByteBuffersInputStream} that is based on {@link Iterator} of
+     * {@link ByteBuffer}.
+     *
+     * @param buffersIterable {@link Iterable} of {@link ByteBuffer} to be used as the source of data.
+     * @throws NullPointerException if {@code buffersIterable} is null.
+     */
     public IterableOfByteBuffersInputStream(Iterable<ByteBuffer> buffersIterable) {
         Objects.requireNonNull(buffersIterable, "'buffers' must not be null");
         this.buffers = buffersIterable.iterator();

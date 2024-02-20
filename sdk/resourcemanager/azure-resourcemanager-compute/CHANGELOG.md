@@ -1,14 +1,25 @@
 # Release History
 
-## 2.35.0-beta.1 (Unreleased)
+## 2.36.0-beta.1 (Unreleased)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of GalleryRP to `2023-07-03`.
+
+## 2.35.0 (2024-01-26)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported `WINDOWS_DESKTOP_10_PRO` in `KnownWindowsVirtualMachineImage`.
+- Added `withEncryptionAtHost` in `VirtualMachine`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-10-02`.
 
 ## 2.34.0 (2023-12-22)
 

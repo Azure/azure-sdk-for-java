@@ -5,6 +5,9 @@ package com.azure.core.amqp.implementation;
 
 import java.time.Duration;
 
+/**
+ * Constants used in Azure AMQP client.
+ */
 public final class ClientConstants {
     public static final String NOT_APPLICABLE = "n/a";
     public static final String PLATFORM_INFO = getOSInformation();

@@ -3,8 +3,8 @@
 
 package com.azure.core.http.okhttp.implementation;
 
-
-import com.azure.core.implementation.util.FileContent;
+import com.azure.core.util.BinaryData;
+import okhttp3.RequestBody;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.ByteString;
@@ -20,25 +20,22 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class OkHttpFileRequestBodyTest {
-
-    private static final Random RANDOM = new Random();
-
     @ParameterizedTest
     @ValueSource(ints = {1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113})
     public void transferContentTransferAll(int size) throws Exception {
         Path file = Files.createTempFile("OkHttpFileRequestBodyTest", null);
         file.toFile().deleteOnExit();
         byte[] bytes = new byte[size];
-        RANDOM.nextBytes(bytes);
+        ThreadLocalRandom.current().nextBytes(bytes);
         Files.write(file, bytes);
 
-        OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(
-            new FileContent(file, 1024, 0L, null), bytes.length, null);
+        RequestBody fileRequestBody = new BinaryDataRequestBody(BinaryData.fromFile(file, 0L, null, 1024), null,
+            bytes.length);
 
         TestSink sink = new TestSink(false);
 
@@ -53,11 +50,11 @@ public class OkHttpFileRequestBodyTest {
         Path file = Files.createTempFile("OkHttpFileRequestBodyTest", null);
         file.toFile().deleteOnExit();
         byte[] bytes = new byte[size];
-        RANDOM.nextBytes(bytes);
+        ThreadLocalRandom.current().nextBytes(bytes);
         Files.write(file, bytes);
 
-        OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(
-            new FileContent(file, 1024, 0L, null), bytes.length, null);
+        RequestBody fileRequestBody = new BinaryDataRequestBody(BinaryData.fromFile(file, 0L, null, 1024), null,
+            bytes.length);
 
         TestSink sink = new TestSink(true);
 
@@ -72,11 +69,11 @@ public class OkHttpFileRequestBodyTest {
         Path file = Files.createTempFile("OkHttpFileRequestBodyTest", null);
         file.toFile().deleteOnExit();
         byte[] bytes = new byte[size];
-        RANDOM.nextBytes(bytes);
+        ThreadLocalRandom.current().nextBytes(bytes);
         Files.write(file, bytes);
 
-        OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(
-            new FileContent(file, 1024, 0L, size + 112L), bytes.length, null);
+        RequestBody fileRequestBody = new BinaryDataRequestBody(BinaryData.fromFile(file, 0L, size + 112L, 1024), null,
+            bytes.length);
 
         TestSink sink = new TestSink(true);
 

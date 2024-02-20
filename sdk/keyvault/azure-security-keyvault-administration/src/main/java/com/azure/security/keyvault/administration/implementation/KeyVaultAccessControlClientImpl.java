@@ -11,62 +11,74 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the KeyVaultAccessControlClient type. */
+/**
+ * Initializes a new instance of the KeyVaultAccessControlClient type.
+ */
 public final class KeyVaultAccessControlClientImpl {
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The RoleDefinitionsImpl object to access its operations. */
+    /**
+     * The RoleDefinitionsImpl object to access its operations.
+     */
     private final RoleDefinitionsImpl roleDefinitions;
 
     /**
      * Gets the RoleDefinitionsImpl object to access its operations.
-     *
+     * 
      * @return the RoleDefinitionsImpl object.
      */
     public RoleDefinitionsImpl getRoleDefinitions() {
         return this.roleDefinitions;
     }
 
-    /** The RoleAssignmentsImpl object to access its operations. */
+    /**
+     * The RoleAssignmentsImpl object to access its operations.
+     */
     private final RoleAssignmentsImpl roleAssignments;
 
     /**
      * Gets the RoleAssignmentsImpl object to access its operations.
-     *
+     * 
      * @return the RoleAssignmentsImpl object.
      */
     public RoleAssignmentsImpl getRoleAssignments() {
@@ -75,19 +87,17 @@ public final class KeyVaultAccessControlClientImpl {
 
     /**
      * Initializes an instance of KeyVaultAccessControlClient client.
-     *
+     * 
      * @param apiVersion Api Version.
      */
     public KeyVaultAccessControlClientImpl(String apiVersion) {
-        this(
-                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                apiVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), apiVersion);
     }
 
     /**
      * Initializes an instance of KeyVaultAccessControlClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param apiVersion Api Version.
      */
@@ -97,13 +107,13 @@ public final class KeyVaultAccessControlClientImpl {
 
     /**
      * Initializes an instance of KeyVaultAccessControlClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param apiVersion Api Version.
      */
-    public KeyVaultAccessControlClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion) {
+    public KeyVaultAccessControlClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.apiVersion = apiVersion;

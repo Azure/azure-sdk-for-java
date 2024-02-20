@@ -8,7 +8,6 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
-import com.azure.core.test.http.LocalTestServer;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.ResourceLeakDetectorFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -24,13 +23,11 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import javax.servlet.ServletException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.WritableByteChannel;
-import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
@@ -39,6 +36,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
+import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.LONG_BODY_PATH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -50,16 +48,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpResponseDrainsBufferTests {
-    private static final String LONG_BODY_PATH = "/long";
-    private static final byte[] LONG_BODY = new byte[1024 * 1024]; // 1 MB
-
     private static ResourceLeakDetector.Level originalLevel;
-    private static LocalTestServer server;
-    private static String url;
-
-    static {
-        new SecureRandom().nextBytes(LONG_BODY);
-    }
+    private static final String URL = NettyHttpClientLocalTestServer.getServer().getHttpUri() + LONG_BODY_PATH;
 
     private ResourceLeakDetectorFactory originalLeakDetectorFactory;
     private final TestResourceLeakDetectorFactory testResourceLeakDetectorFactory =
@@ -69,20 +59,6 @@ public class HttpResponseDrainsBufferTests {
     public static void startTestServer() {
         originalLevel = ResourceLeakDetector.getLevel();
         ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
-
-        server = new LocalTestServer((req, resp, requestBody) -> {
-            if ("GET".equals(req.getMethod()) && LONG_BODY_PATH.equals(req.getServletPath())) {
-                resp.setStatus(200);
-                resp.setContentLength(LONG_BODY.length);
-                resp.setContentType("application/octet-stream");
-                resp.getOutputStream().write(LONG_BODY);
-            } else {
-                throw new ServletException("Unexpected request: " + req.getMethod() + " " + req.getServletPath());
-            }
-        });
-
-        server.start();
-        url = server.getHttpUri() + LONG_BODY_PATH;
     }
 
     @BeforeEach
@@ -99,9 +75,6 @@ public class HttpResponseDrainsBufferTests {
     @AfterAll
     public static void stopTestServer() {
         ResourceLeakDetector.setLevel(originalLevel);
-        if (server != null) {
-            server.stop();
-        }
     }
 
     @Test
@@ -223,7 +196,7 @@ public class HttpResponseDrainsBufferTests {
             sink.next(callCount);
             return callCount + 1;
         })
-            .concatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url)).flatMap(responseConsumer))
+            .concatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, URL)).flatMap(responseConsumer))
             .parallel(10)
             .runOn(Schedulers.boundedElastic())
             .then();
@@ -247,7 +220,7 @@ public class HttpResponseDrainsBufferTests {
     @Test
     public void closingHttpResponseIsIdempotent() {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url))
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, URL))
                 .flatMap(response -> Mono.fromRunnable(response::close).thenReturn(response))
                 .delayElement(Duration.ofSeconds(1))
                 .flatMap(response -> Mono.fromRunnable(response::close))

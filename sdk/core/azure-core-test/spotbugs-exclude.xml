@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+  <Match>
+    <Bug pattern="CT_CONSTRUCTOR_THROW" />
+    <Or>
+      <Class name="com.azure.core.test.InterceptorManager" />
+      <Class name="com.azure.core.test.TestContextManager" />
+      <Class name="com.azure.core.test.http.TestProxyTestServer" />
+      <Class name="com.azure.core.test.utils.HttpURLConnectionHttpClient$HttpURLResponse" />
+      <Class name="com.azure.core.test.utils.TestProxyDownloader$PlatformInfo" />
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <And>
+        <Class name="com.azure.core.test.InterceptorManager" />
+        <Or>
+          <Method name="getPlaybackClient" />
+          <Method name="getRecordedData" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.test.http.MockHttpResponse" />
+        <Method name="getHeaders" />
+      </And>
+      <And>
+        <Or>
+          <Class name="com.azure.core.test.implementation.entities.HttpBinFormDataJson" />
+          <Class name="com.azure.core.test.implementation.entities.HttpBinJson" />
+        </Or>
+        <Method name="headers" />
+      </And>
+      <And>
+        <Class name="com.azure.core.test.implementation.entities.HttpBinFormDataJson$Form" />
+        <Method name="toppings" />
+      </And>
+      <And>
+        <Class name="com.azure.core.test.models.CustomMatcher" />
+        <Or>
+          <Method name="getExcludedHeaders" />
+          <Method name="getHeadersKeyOnlyMatch" />
+          <Method name="getIgnoredQueryParameters" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.test.models.NetworkCallError" />
+        <Method name="get" />
+      </And>
+      <And>
+        <Class name="com.azure.core.test.models.NetworkCallRecord" />
+        <Or>
+          <Method name="getException" />
+          <Method name="getHeaders" />
+          <Method name="getResponse" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.test.models.TestProxyRecordingOptions$ProxyTransport" />
+        <Method name="getCertificates" />
+      </And>
+      <And>
+        <Class name="com.azure.core.test.utils.TestConfigurationSource" />
+        <Method name="getProperties" />
+      </And>
+      <And>
+        <Class name="com.azure.core.test.utils.metrics.TestMeter" />
+        <Or>
+          <Method name="getCounters" />
+          <Method name="getGauges" />
+          <Method name="getHistograms" />
+          <Method name="getUpDownCounters" />
+        </Or>
+      </And>
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <And>
+        <Or>
+          <Class name="com.azure.core.test.InterceptorManager" />
+          <Class name="com.azure.core.test.http.MockHttpResponse" />
+          <Class name="com.azure.core.test.http.PlaybackClient" />
+          <Class name="com.azure.core.test.models.NetworkCallError" />
+          <Class name="com.azure.core.test.policy.RecordNetworkCallPolicy" />
+        </Or>
+        <Method name="&lt;init&gt;" />
+      </And>
+      <And>
+        <Or>
+          <Class name="com.azure.core.test.implementation.entities.HttpBinFormDataJson" />
+          <Class name="com.azure.core.test.implementation.entities.HttpBinJson" />
+        </Or>
+        <Method name="headers" />
+      </And>
+      <And>
+        <Class name="com.azure.core.test.implementation.entities.HttpBinFormDataJson$Form" />
+        <Method name="toppings" />
+      </And>
+      <And>
+        <Class name="com.azure.core.test.models.CustomMatcher" />
+        <Or>
+          <Method name="setExcludedHeaders" />
+          <Method name="setHeadersKeyOnlyMatch" />
+          <Method name="setIgnoredQueryParameters" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.test.models.NetworkCallError" />
+        <Method name="setThrowable" />
+      </And>
+      <And>
+        <Class name="com.azure.core.test.models.NetworkCallRecord" />
+        <Or>
+          <Method name="setException" />
+          <Method name="setHeaders" />
+          <Method name="setResponse" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.test.models.TestProxyRecordingOptions$ProxyTransport" />
+        <Method name="setCertificates" />
+      </And>
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="URF_UNREAD_FIELD" />
+    <Class name="com.azure.core.test.models.RecordFilePayload" />
+    <Or>
+      <Field name="assetFile" />
+      <Field name="recordingFile" />
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+    <Class name="com.azure.core.test.TestBase" />
+    <Field name="testResourceNamer" />
+  </Match>
+
+  <Match>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+    <Class name="com.azure.core.test.TestBase" />
+    <Or>
+      <Field name="interceptorManager" />
+      <Field name="testContextManager" />
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="REC_CATCH_EXCEPTION" />
+    <Class name="com.azure.core.test.http.MockHttpClient" />
+    <Method name="send" />
+  </Match>
+
+  <Match>
+    <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR" />
+    <Class name="com.azure.core.test.http.TestProxyTestServer" />
+  </Match>
+
+  <Match>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
+    <Class name="com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider" />
+    <Method name="getServiceVersions" />
+  </Match>
+
+  <Match>
+    <Bug pattern="SE_BAD_FIELD,SE_NO_SERIALVERSIONID" />
+    <Class name="com.azure.core.test.http.LocalTestServer$AzureTestHttpServlet" />
+  </Match>
+
+  <Match>
+    <Bug pattern="DE_MIGHT_IGNORE" />
+    <Class name="com.azure.core.test.utils.TestProxyManager" />
+    <Method name="checkAlive" />
+  </Match>
+</FindBugsFilter>

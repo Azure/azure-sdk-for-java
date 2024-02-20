@@ -141,7 +141,7 @@ public class ReactorHandlerProvider {
      * @param connectionId Identifier of the parent connection that created this session.
      * @param hostname Fully qualified namespace of the parent connection.
      * @param senderName Name of the send link.
-     *
+     * @param entityPath The relative path to the messaging entity streaming the messages.
      * @return A new {@link SendLinkHandler}.
      */
     public SendLinkHandler createSendLinkHandler(String connectionId, String hostname,
@@ -155,6 +155,7 @@ public class ReactorHandlerProvider {
      * @param connectionId Identifier of the parent connection that created this session.
      * @param hostname Fully qualified namespace of the parent connection.
      * @param receiverName Name of the send link.
+     * @param entityPath The relative path to the messaging entity streaming the messages.
      * @return A new {@link ReceiveLinkHandler}.
      */
     public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname,

@@ -58,8 +58,8 @@ public final class RestSource extends CopySource {
     private Object requestInterval;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
-     * Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: key value pairs (value should be string
+     * type).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
@@ -203,8 +203,8 @@ public final class RestSource extends CopySource {
     }
 
     /**
-     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
-     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: key value
+     * pairs (value should be string type).
      * 
      * @return the additionalColumns value.
      */
@@ -213,8 +213,8 @@ public final class RestSource extends CopySource {
     }
 
     /**
-     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
-     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: key value
+     * pairs (value should be string type).
      * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the RestSource object itself.

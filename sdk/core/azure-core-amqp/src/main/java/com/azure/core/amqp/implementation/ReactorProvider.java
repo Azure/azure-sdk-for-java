@@ -17,18 +17,31 @@ import java.io.IOException;
 import java.nio.channels.Pipe;
 import java.time.Duration;
 
+/**
+ * Creates a proton-j Reactor.
+ */
 public class ReactorProvider {
     private static final ClientLogger LOGGER = new ClientLogger(ReactorProvider.class);
     private final Object lock = new Object();
     private Reactor reactor;
     private ReactorDispatcher reactorDispatcher;
 
+    /**
+     * Gets the Reactor of this instance.
+     *
+     * @return The Reactor of this instance.
+     */
     public Reactor getReactor() {
         synchronized (lock) {
             return reactor;
         }
     }
 
+    /**
+     * Gets the ReactorDispatcher of this instance.
+     *
+     * @return The ReactorDispatcher of this instance.
+     */
     public ReactorDispatcher getReactorDispatcher() {
         synchronized (lock) {
             return reactorDispatcher;
@@ -39,6 +52,7 @@ public class ReactorProvider {
      * Creates a QPID Reactor.
      *
      * @param connectionId Identifier for Reactor.
+     * @param maxFrameSize The max frame size for the connection.
      * @return The newly created reactor instance.
      * @throws IOException If the service could not create a Reactor instance.
      */

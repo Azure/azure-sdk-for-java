@@ -15,8 +15,8 @@ import java.util.List;
 
 /**
  * Planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
- *
- * <p>See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about
+ * 
+ * See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about
  * planned maintenance.
  */
 @Fluent
@@ -45,13 +45,15 @@ public final class MaintenanceConfigurationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of MaintenanceConfigurationInner class. */
+    /**
+     * Creates an instance of MaintenanceConfigurationInner class.
+     */
     public MaintenanceConfigurationInner() {
     }
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -60,7 +62,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Get the innerProperties property: Properties of a default maintenance configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MaintenanceConfigurationProperties innerProperties() {
@@ -70,7 +72,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -79,14 +81,16 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MaintenanceConfigurationInner withId(String id) {
         super.withId(id);
@@ -95,10 +99,10 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
-     *
-     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * 
+     * If two array entries specify the same day of the week, the applied configuration is the union of times in both
      * entries.
-     *
+     * 
      * @return the timeInWeek value.
      */
     public List<TimeInWeek> timeInWeek() {
@@ -107,10 +111,10 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
-     *
-     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * 
+     * If two array entries specify the same day of the week, the applied configuration is the union of times in both
      * entries.
-     *
+     * 
      * @param timeInWeek the timeInWeek value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -124,7 +128,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Get the notAllowedTime property: Time slots on which upgrade is not allowed.
-     *
+     * 
      * @return the notAllowedTime value.
      */
     public List<TimeSpan> notAllowedTime() {
@@ -133,7 +137,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Set the notAllowedTime property: Time slots on which upgrade is not allowed.
-     *
+     * 
      * @param notAllowedTime the notAllowedTime value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -147,7 +151,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Get the maintenanceWindow property: Maintenance window for the maintenance configuration.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public MaintenanceWindow maintenanceWindow() {
@@ -156,7 +160,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Set the maintenanceWindow property: Maintenance window for the maintenance configuration.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -170,7 +174,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

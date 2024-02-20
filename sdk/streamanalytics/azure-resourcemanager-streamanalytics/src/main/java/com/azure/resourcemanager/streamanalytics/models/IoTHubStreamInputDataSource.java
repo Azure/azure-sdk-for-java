@@ -5,31 +5,35 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.IoTHubStreamInputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes an IoT Hub input data source that contains stream data. */
+/**
+ * Describes an IoT Hub input data source that contains stream data.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Microsoft.Devices/IotHubs")
 @Fluent
 public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTHubStreamInputDataSource.class);
-
     /*
-     * The properties that are associated with an IoT Hub input containing
-     * stream data. Required on PUT (CreateOrReplace) requests.
+     * The properties that are associated with an IoT Hub input containing stream data. Required on PUT
+     * (CreateOrReplace) requests.
      */
     @JsonProperty(value = "properties")
     private IoTHubStreamInputDataSourceProperties innerProperties;
 
     /**
+     * Creates an instance of IoTHubStreamInputDataSource class.
+     */
+    public IoTHubStreamInputDataSource() {
+    }
+
+    /**
      * Get the innerProperties property: The properties that are associated with an IoT Hub input containing stream
      * data. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IoTHubStreamInputDataSourceProperties innerProperties() {
@@ -37,8 +41,9 @@ public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Get the iotHubNamespace property: The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace) requests.
-     *
+     * Get the iotHubNamespace property: The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace)
+     * requests.
+     * 
      * @return the iotHubNamespace value.
      */
     public String iotHubNamespace() {
@@ -46,8 +51,9 @@ public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the iotHubNamespace property: The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace) requests.
-     *
+     * Set the iotHubNamespace property: The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace)
+     * requests.
+     * 
      * @param iotHubNamespace the iotHubNamespace value to set.
      * @return the IoTHubStreamInputDataSource object itself.
      */
@@ -62,7 +68,7 @@ public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
     /**
      * Get the sharedAccessPolicyName property: The shared access policy name for the IoT Hub. This policy must contain
      * at least the Service connect permission. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the sharedAccessPolicyName value.
      */
     public String sharedAccessPolicyName() {
@@ -72,7 +78,7 @@ public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
     /**
      * Set the sharedAccessPolicyName property: The shared access policy name for the IoT Hub. This policy must contain
      * at least the Service connect permission. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param sharedAccessPolicyName the sharedAccessPolicyName value to set.
      * @return the IoTHubStreamInputDataSource object itself.
      */
@@ -87,7 +93,7 @@ public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
     /**
      * Get the sharedAccessPolicyKey property: The shared access policy key for the specified shared access policy.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the sharedAccessPolicyKey value.
      */
     public String sharedAccessPolicyKey() {
@@ -97,7 +103,7 @@ public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
     /**
      * Set the sharedAccessPolicyKey property: The shared access policy key for the specified shared access policy.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param sharedAccessPolicyKey the sharedAccessPolicyKey value to set.
      * @return the IoTHubStreamInputDataSource object itself.
      */
@@ -110,9 +116,9 @@ public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Get the consumerGroupName property: The name of an IoT Hub Consumer Group that should be used to read events from
-     * the IoT Hub. If not specified, the input uses the Iot Hub’s default consumer group.
-     *
+     * Get the consumerGroupName property: The name of an IoT Hub Consumer Group that should be used to read events
+     * from the IoT Hub. If not specified, the input uses the Iot Hub’s default consumer group.
+     * 
      * @return the consumerGroupName value.
      */
     public String consumerGroupName() {
@@ -120,9 +126,9 @@ public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
     }
 
     /**
-     * Set the consumerGroupName property: The name of an IoT Hub Consumer Group that should be used to read events from
-     * the IoT Hub. If not specified, the input uses the Iot Hub’s default consumer group.
-     *
+     * Set the consumerGroupName property: The name of an IoT Hub Consumer Group that should be used to read events
+     * from the IoT Hub. If not specified, the input uses the Iot Hub’s default consumer group.
+     * 
      * @param consumerGroupName the consumerGroupName value to set.
      * @return the IoTHubStreamInputDataSource object itself.
      */
@@ -137,7 +143,7 @@ public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
     /**
      * Get the endpoint property: The IoT Hub endpoint to connect to (ie. messages/events,
      * messages/operationsMonitoringEvents, etc.).
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -147,7 +153,7 @@ public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
     /**
      * Set the endpoint property: The IoT Hub endpoint to connect to (ie. messages/events,
      * messages/operationsMonitoringEvents, etc.).
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the IoTHubStreamInputDataSource object itself.
      */
@@ -161,7 +167,7 @@ public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

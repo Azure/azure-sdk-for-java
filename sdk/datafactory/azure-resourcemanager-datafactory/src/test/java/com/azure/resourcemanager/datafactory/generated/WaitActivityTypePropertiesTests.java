@@ -11,12 +11,12 @@ public final class WaitActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WaitActivityTypeProperties model
-            = BinaryData.fromString("{\"waitTimeInSeconds\":\"datard\"}").toObject(WaitActivityTypeProperties.class);
+            = BinaryData.fromString("{\"waitTimeInSeconds\":\"dataq\"}").toObject(WaitActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WaitActivityTypeProperties model = new WaitActivityTypeProperties().withWaitTimeInSeconds("datard");
+        WaitActivityTypeProperties model = new WaitActivityTypeProperties().withWaitTimeInSeconds("dataq");
         model = BinaryData.fromObject(model).toObject(WaitActivityTypeProperties.class);
     }
 }

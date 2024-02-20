@@ -103,20 +103,23 @@ public class ReactorSession implements AmqpSession {
     /**
      * Creates a new AMQP session using proton-j.
      *
+     * @param amqpConnection AMQP connection associated with this session.
      * @param session Proton-j session for this AMQP session.
      * @param sessionHandler Handler for events that occur in the session.
      * @param sessionName Name of the session.
      * @param provider Provides reactor instances for messages to sent with.
      * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
+     * @param linkProvider Provides AMQP links that are created from proton-j links.
      * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
+     * @param messageSerializer Serializes and deserializes proton-j messages.
      * @param retryOptions for the session operations.
      */
     public ReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
-        String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
-        Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
-        MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
+        String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
+        AmqpLinkProvider linkProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
         this.amqpConnection = amqpConnection;
         this.session = session;
         this.sessionHandler = sessionHandler;
@@ -328,7 +331,7 @@ public class ReactorSession implements AmqpSession {
 
     /**
      * Creates an {@link AmqpReceiveLink} that has AMQP specific capabilities set.
-     *
+     * <p>
      * Filters can be applied to the source when receiving to inform the source to filter the items sent to the
      * consumer. See
      * <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#doc-idp326640">Filtering

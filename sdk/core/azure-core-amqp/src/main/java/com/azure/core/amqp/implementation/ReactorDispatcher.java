@@ -86,6 +86,11 @@ public final class ReactorDispatcher {
         this.reactor.update(schedulerSelectable);
     }
 
+    /**
+     * Gets the shutdown signal.
+     *
+     * @return A Mono that completes when the reactor is shutdown.
+     */
     public Mono<AmqpShutdownSignal> getShutdownSignal() {
         return shutdownSignal.asMono();
     }

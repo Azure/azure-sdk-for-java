@@ -9,7 +9,9 @@ import com.azure.core.management.Resource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Base class for backup request. Workload-specific backup requests are derived from this class. */
+/**
+ * Base class for backup request. Workload-specific backup requests are derived from this class.
+ */
 @Fluent
 public final class BackupRequestResource extends Resource {
     /*
@@ -24,13 +26,15 @@ public final class BackupRequestResource extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
-    /** Creates an instance of BackupRequestResource class. */
+    /**
+     * Creates an instance of BackupRequestResource class.
+     */
     public BackupRequestResource() {
     }
 
     /**
      * Get the properties property: BackupRequestResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public BackupRequest properties() {
@@ -39,7 +43,7 @@ public final class BackupRequestResource extends Resource {
 
     /**
      * Set the properties property: BackupRequestResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BackupRequestResource object itself.
      */
@@ -50,7 +54,7 @@ public final class BackupRequestResource extends Resource {
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -59,7 +63,7 @@ public final class BackupRequestResource extends Resource {
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the BackupRequestResource object itself.
      */
@@ -68,14 +72,18 @@ public final class BackupRequestResource extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupRequestResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupRequestResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -84,7 +92,7 @@ public final class BackupRequestResource extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

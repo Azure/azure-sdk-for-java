@@ -38,6 +38,13 @@ public class ActiveClientTokenManager implements TokenManager {
 
     private volatile Disposable subscription;
 
+    /**
+     * Creates an instance of {@link ActiveClientTokenManager}.
+     *
+     * @param cbsNode The {@link Mono} that supplies the claims based security node to authorize with.
+     * @param tokenAudience The token audience to authorize with.
+     * @param scopes The scopes to authorize with.
+     */
     public ActiveClientTokenManager(Mono<ClaimsBasedSecurityNode> cbsNode, String tokenAudience, String scopes) {
         this.cbsNode = cbsNode;
         this.tokenAudience = tokenAudience;

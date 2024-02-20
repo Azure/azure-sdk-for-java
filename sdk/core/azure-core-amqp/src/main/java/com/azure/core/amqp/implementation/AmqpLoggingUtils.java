@@ -29,6 +29,9 @@ public final class AmqpLoggingUtils {
 
     /**
      * Creates logging context with connectionId.
+     *
+     * @param connectionId connectionId to be added to the context.
+     * @return logging context with connectionId.
      */
     public static Map<String, Object> createContextWithConnectionId(String connectionId) {
         Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
@@ -42,21 +45,27 @@ public final class AmqpLoggingUtils {
     /**
      * Adds {@link SignalType} under {@code signalType} key and {@link reactor.core.publisher.Sinks.EmitResult}
      * under {@code emitResult} key to the {@link LoggingEventBuilder}
-
+     *
+     * @param logBuilder {@link LoggingEventBuilder} to add the properties to.
+     * @param signalType {@link SignalType} to be added.
+     * @param result {@link Sinks.EmitResult} to be added.
      * @return updated {@link LoggingEventBuilder} for chaining.
      */
-    public static LoggingEventBuilder addSignalTypeAndResult(LoggingEventBuilder logBuilder, SignalType signalType, Sinks.EmitResult result) {
+    public static LoggingEventBuilder addSignalTypeAndResult(LoggingEventBuilder logBuilder, SignalType signalType,
+        Sinks.EmitResult result) {
         return logBuilder
             .addKeyValue(SIGNAL_TYPE_KEY, signalType)
             .addKeyValue(EMIT_RESULT_KEY, result);
     }
 
     /**
-     * Adds {@link ErrorCondition} to the {@link LoggingEventBuilder}. Writes the {@code getCondition()} under {@code errorCondition} key
-     * and {@code getDescription()} under {@code errorDescription} keys.
-     *
+     * Adds {@link ErrorCondition} to the {@link LoggingEventBuilder}. Writes the {@code getCondition()} under
+     * {@code errorCondition} key and {@code getDescription()} under {@code errorDescription} keys.
+     * <p>
      * If errorCondition is {@code null} does not add properties.
      *
+     * @param logBuilder {@link LoggingEventBuilder} to add the properties to.
+     * @param errorCondition {@link ErrorCondition} to be added.
      * @return updated {@link LoggingEventBuilder} for chaining.
      */
     public static LoggingEventBuilder addErrorCondition(LoggingEventBuilder logBuilder, ErrorCondition errorCondition) {
@@ -76,6 +85,9 @@ public final class AmqpLoggingUtils {
     /**
      * Adds {@code key} and {@code value} to the {@link LoggingEventBuilder} if value is not null.
      *
+     * @param logBuilder {@link LoggingEventBuilder} to add the properties to.
+     * @param key key to be added.
+     * @param value value to be added.
      * @return updated {@link LoggingEventBuilder} for chaining.
      */
     public static LoggingEventBuilder addKeyValueIfNotNull(LoggingEventBuilder logBuilder, String key, String value) {
@@ -93,9 +105,13 @@ public final class AmqpLoggingUtils {
      *     <li>{@code isInitiatedByClient()} under {@code isInitiatedByClient}</li>
      *     <li>{@code toString()} under {@code shutdownMessage}</Li>
      * </ul>
+     *
+     * @param logBuilder {@link LoggingEventBuilder} to add the properties to.
+     * @param shutdownSignal {@link AmqpShutdownSignal} to be added.
      * @return updated {@link LoggingEventBuilder} for chaining.
      */
-    public static LoggingEventBuilder addShutdownSignal(LoggingEventBuilder logBuilder, AmqpShutdownSignal shutdownSignal) {
+    public static LoggingEventBuilder addShutdownSignal(LoggingEventBuilder logBuilder,
+        AmqpShutdownSignal shutdownSignal) {
         return logBuilder
             .addKeyValue("isTransient", shutdownSignal.isTransient())
             .addKeyValue("isInitiatedByClient", shutdownSignal.isInitiatedByClient())

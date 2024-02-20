@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Azure SQL workload-specific backup policy. */
+/**
+ * Azure SQL workload-specific backup policy.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
 @JsonTypeName("AzureSql")
 @Fluent
@@ -21,13 +23,15 @@ public final class AzureSqlProtectionPolicy extends ProtectionPolicy {
     @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
-    /** Creates an instance of AzureSqlProtectionPolicy class. */
+    /**
+     * Creates an instance of AzureSqlProtectionPolicy class.
+     */
     public AzureSqlProtectionPolicy() {
     }
 
     /**
      * Get the retentionPolicy property: Retention policy details.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
@@ -36,7 +40,7 @@ public final class AzureSqlProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the retentionPolicy property: Retention policy details.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the AzureSqlProtectionPolicy object itself.
      */
@@ -45,14 +49,18 @@ public final class AzureSqlProtectionPolicy extends ProtectionPolicy {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlProtectionPolicy withProtectedItemsCount(Integer protectedItemsCount) {
         super.withProtectedItemsCount(protectedItemsCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlProtectionPolicy withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
@@ -61,7 +69,7 @@ public final class AzureSqlProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

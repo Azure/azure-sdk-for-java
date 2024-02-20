@@ -136,9 +136,18 @@ public class ReactorConnection implements AmqpConnection {
                 final Mono<AmqpEndpointState> activeEndpoint = getEndpointStates()
                     .filter(state -> state == AmqpEndpointState.ACTIVE)
                     .next()
-                    .timeout(operationTimeout, Mono.error(() -> new AmqpException(true, TIMEOUT_ERROR,
-                        String.format("Connection '%s' not active within the timout: %s.", connectionId, operationTimeout),
-                        handler.getErrorContext())));
+                    .timeout(operationTimeout, Mono.error(() -> {
+                        AmqpException exception = new AmqpException(true, TIMEOUT_ERROR,
+                            String.format("Connection '%s' not active within the timout: %s.", connectionId, operationTimeout),
+                            handler.getErrorContext());
+                        if (!isV2) {
+                            // this is temp patch to make v1 stack retry on timeout.
+                            // V2 stack does connection management differently via ReactorConnectionCache
+                            // and does not need to call into handler here
+                            handler.onError(exception);
+                        }
+                        return exception;
+                    }));
                 return activeEndpoint.thenReturn(reactorConnection);
             })
             .doOnError(error -> {
@@ -153,7 +162,9 @@ public class ReactorConnection implements AmqpConnection {
         this.endpointStates = this.handler.getEndpointStates()
             .takeUntilOther(shutdownSignalSink.asMono())
             .map(state -> {
-                logger.verbose("State {}", state);
+                logger.atVerbose()
+                    .addKeyValue("state", state)
+                    .log("getConnectionState");
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
             .onErrorResume(error -> {
@@ -481,6 +492,12 @@ public class ReactorConnection implements AmqpConnection {
         return closeAsync(new AmqpShutdownSignal(false, true, "Disposed by client."));
     }
 
+    /**
+     * Disposes of the connection.
+     *
+     * @param shutdownSignal Shutdown signal to emit.
+     * @return A mono that completes when the connection is disposed.
+     */
     public Mono<Void> closeAsync(AmqpShutdownSignal shutdownSignal) {
         addShutdownSignal(logger.atInfo(), shutdownSignal).log("Disposing of ReactorConnection.");
         final Sinks.EmitResult result = shutdownSignalSink.tryEmitValue(shutdownSignal);
@@ -643,6 +660,9 @@ public class ReactorConnection implements AmqpConnection {
         return connection;
     }
 
+    /**
+     * ReactorExceptionHandler handles exceptions that occur in the reactor.
+     */
     public final class ReactorExceptionHandler extends AmqpExceptionHandler {
         private ReactorExceptionHandler() {
             super();

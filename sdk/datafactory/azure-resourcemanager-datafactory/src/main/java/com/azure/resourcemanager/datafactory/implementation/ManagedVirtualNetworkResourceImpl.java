@@ -108,9 +108,10 @@ public final class ManagedVirtualNetworkResourceImpl implements ManagedVirtualNe
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.managedVirtualNetworkName = Utils.getValueFromIdByName(innerObject.id(), "managedVirtualNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.managedVirtualNetworkName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedVirtualNetworks");
     }
 
     public ManagedVirtualNetworkResource refresh() {

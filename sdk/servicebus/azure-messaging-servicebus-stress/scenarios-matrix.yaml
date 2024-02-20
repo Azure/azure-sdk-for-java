@@ -5,7 +5,7 @@ matrix:
       testDurationMin: 15
       senderTestClass: MessageSenderAsync
       senderConcurrency: 5
-      sendRate: 600 # per each container, so 1.2k messages per sec total
+      sendRate: 2000
       batchSize: 3
       receiverTestClass: MessageProcessor
       processingConcurrency: 64
@@ -18,9 +18,9 @@ matrix:
       imageBuildDir: ..\..\..\
       testDurationMin: 15
       senderTestClass: MessageSenderAsync
-      sendRate: 2600 # per each container, so 5.2k messages per sec total
-      batchSize: 10
+      sendRate: 8000
+      batchSize: 20
       senderConcurrency: 20
       receiverTestClass: MessageProcessor
-      processingConcurrency: 256
-
+      processingConcurrency: 400
+      messageSizeInBytes: 1024

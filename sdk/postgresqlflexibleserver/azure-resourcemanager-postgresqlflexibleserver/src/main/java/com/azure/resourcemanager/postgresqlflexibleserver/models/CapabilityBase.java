@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Base object for representing capability. */
+/**
+ * Base object for representing capability.
+ */
 @Immutable
 public class CapabilityBase {
     /*
@@ -22,13 +24,15 @@ public class CapabilityBase {
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
-    /** Creates an instance of CapabilityBase class. */
+    /**
+     * Creates an instance of CapabilityBase class.
+     */
     public CapabilityBase() {
     }
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -37,7 +41,7 @@ public class CapabilityBase {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -46,7 +50,7 @@ public class CapabilityBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

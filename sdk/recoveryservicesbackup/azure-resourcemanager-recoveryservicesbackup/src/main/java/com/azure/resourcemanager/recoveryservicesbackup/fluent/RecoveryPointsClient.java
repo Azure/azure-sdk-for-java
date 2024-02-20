@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
 
-/** An instance of this class provides access to all the operations defined in RecoveryPointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecoveryPointsClient.
+ */
 public interface RecoveryPointsClient {
     /**
      * Lists the backup copies for the backed up item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -27,12 +29,12 @@ public interface RecoveryPointsClient {
      * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecoveryPointResourceInner> list(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName);
+    PagedIterable<RecoveryPointResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName);
 
     /**
      * Lists the backup copies for the backed up item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -46,19 +48,14 @@ public interface RecoveryPointsClient {
      * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecoveryPointResourceInner> list(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String filter,
-        Context context);
+    PagedIterable<RecoveryPointResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String filter, Context context);
 
     /**
      * Provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous
-     * operation. To know the status of the operation, call the GetProtectedItemOperationResult API.
-     *
+     * operation.
+     * To know the status of the operation, call the GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with backed up item.
@@ -72,19 +69,14 @@ public interface RecoveryPointsClient {
      * @return base class for backup copies along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecoveryPointResourceInner> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        Context context);
+    Response<RecoveryPointResourceInner> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String recoveryPointId, Context context);
 
     /**
      * Provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous
-     * operation. To know the status of the operation, call the GetProtectedItemOperationResult API.
-     *
+     * operation.
+     * To know the status of the operation, call the GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with backed up item.
@@ -97,11 +89,6 @@ public interface RecoveryPointsClient {
      * @return base class for backup copies.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecoveryPointResourceInner get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId);
+    RecoveryPointResourceInner get(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId);
 }

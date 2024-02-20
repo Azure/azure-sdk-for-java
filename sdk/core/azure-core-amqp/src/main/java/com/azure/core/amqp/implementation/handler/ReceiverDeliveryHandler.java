@@ -33,12 +33,12 @@ import static com.azure.core.amqp.implementation.ClientConstants.REMOTE_CREDIT_K
 import static com.azure.core.amqp.implementation.ClientConstants.UPDATED_LINK_CREDIT_KEY;
 
 /**
- * A type to handle all {@link Delivery} from the ProtonJ library. The ProtonJ library creates {@link Delivery}
- * object upon receiving a transfer or disposition frame from the broker.
+ * A type to handle all {@link Delivery} from the ProtonJ library. The ProtonJ library creates {@link Delivery} object
+ * upon receiving a transfer or disposition frame from the broker.
  * <p>
- * This type takes care of streaming the {@link Message} objects that are read and decoded from the transfer frame
- * and (when DeliverySettleMode is SETTLE_VIA_DISPOSITION) this type allows the settlement of these deliveries by
- * sending disposition frame to the broker and handling the corresponding acknowledgment disposition frame.
+ * This type takes care of streaming the {@link Message} objects that are read and decoded from the transfer frame and
+ * (when DeliverySettleMode is SETTLE_VIA_DISPOSITION) this type allows the settlement of these deliveries by sending
+ * disposition frame to the broker and handling the corresponding acknowledgment disposition frame.
  */
 final class ReceiverDeliveryHandler {
     static final UUID DELIVERY_EMPTY_TAG = new UUID(0L, 0L);
@@ -57,16 +57,16 @@ final class ReceiverDeliveryHandler {
     /**
      * Creates DeliveryHandler.
      *
-     * @param entityPath                  the relative path identifying the messaging entity from which the deliveries are
-     *                                    received from.
-     * @param receiveLinkName             the name of the amqp receive-link 'Attach'-ed to the messaging entity from
-     *                                    which the deliveries are received from.
-     * @param settlingMode                the mode in which DeliveryHandler should operate when settling received deliveries.
-     * @param unsettledDeliveries         manages the received deliveries which are not settled on the broker that
-     *                                    application can later request settlement.
-     * @param includeDeliveryTagInMessage indicate if the delivery tag should be included in the {@link Message}
-     *                                    from {@link ReceiverDeliveryHandler#getMessages()}'s Flux.
-     * @param logger                      the logger.
+     * @param entityPath the relative path identifying the messaging entity from which the deliveries are received
+     * from.
+     * @param receiveLinkName the name of the amqp receive-link 'Attach'-ed to the messaging entity from which the
+     * deliveries are received from.
+     * @param settlingMode the mode in which DeliveryHandler should operate when settling received deliveries.
+     * @param unsettledDeliveries manages the received deliveries which are not settled on the broker that application
+     * can later request settlement.
+     * @param includeDeliveryTagInMessage indicate if the delivery tag should be included in the {@link Message} from
+     * {@link ReceiverDeliveryHandler#getMessages()}'s Flux.
+     * @param logger the logger.
      */
     ReceiverDeliveryHandler(String entityPath, String receiveLinkName, DeliverySettleMode settlingMode,
         ReceiverUnsettledDeliveries unsettledDeliveries, boolean includeDeliveryTagInMessage, ClientLogger logger) {
@@ -79,18 +79,17 @@ final class ReceiverDeliveryHandler {
     }
 
     /**
-     * The ProtonJ library creates {@link Delivery} object upon receiving a transfer or disposition frame
-     * from the broker. Such delivery objects are notified to this function.
+     * The ProtonJ library creates {@link Delivery} object upon receiving a transfer or disposition frame from the
+     * broker. Such delivery objects are notified to this function.
      * <p>
-     * The 'transfer frame' contains the message, which this function read and decode from the delivery
-     * and streams through the {@link Flux} of {@link Message} from {@link ReceiverDeliveryHandler#getMessages()}.
+     * The 'transfer frame' contains the message, which this function read and decode from the delivery and streams
+     * through the {@link Flux} of {@link Message} from {@link ReceiverDeliveryHandler#getMessages()}.
      * <p>
-     * The 'disposition frame' is the broker's ack for the disposition of a delivery that the application
-     * requested, this function parses the ack for the fulfillment of such request.
-     * The application can request disposition only for deliveries that were earlier received as transfer frames.
-     * The ProtonJ library keeps earlier Delivery in-memory objects, and upon receiving the disposition frame,
-     * the corresponding delivery object is updated and redelivered to onDelivery.
-     * The {@link DeliverySettleMode#SETTLE_VIA_DISPOSITION} enables this request-ack mode.
+     * The 'disposition frame' is the broker's ack for the disposition of a delivery that the application requested,
+     * this function parses the ack for the fulfillment of such request. The application can request disposition only
+     * for deliveries that were earlier received as transfer frames. The ProtonJ library keeps earlier Delivery
+     * in-memory objects, and upon receiving the disposition frame, the corresponding delivery object is updated and
+     * redelivered to onDelivery. The {@link DeliverySettleMode#SETTLE_VIA_DISPOSITION} enables this request-ack mode.
      * <p>
      * Finally, this function also takes care of placing credit if the amqp receive-link has no credit left.
      *
@@ -112,7 +111,8 @@ final class ReceiverDeliveryHandler {
                 handleSettleViaDisposition(delivery);
                 break;
             default:
-                throw logger.logExceptionAsError(new RuntimeException("settlingMode is not supported: " + settlingMode));
+                throw logger.logExceptionAsError(
+                    new RuntimeException("settlingMode is not supported: " + settlingMode));
         }
     }
 
@@ -124,8 +124,8 @@ final class ReceiverDeliveryHandler {
     }
 
     /**
-     * Gets the {@link Flux} that streams the {@link Message} objects decoded from the {@link Delivery}
-     * received from the broker.
+     * Gets the {@link Flux} that streams the {@link Message} objects decoded from the {@link Delivery} received from
+     * the broker.
      *
      * @return the {@link Flux} streaming {@link Message}.
      */
@@ -141,19 +141,16 @@ final class ReceiverDeliveryHandler {
     }
 
     /**
-     * Completes the {@link Flux} of {@link Message} from {@link ReceiverDeliveryHandler#getMessages()},
-     * perform resource cleanup and close any pending work.
+     * Completes the {@link Flux} of {@link Message} from {@link ReceiverDeliveryHandler#getMessages()}, perform
+     * resource cleanup and close any pending work.
      *
      * @param errorMessage message to log if the {@link Flux} completion fails.
      */
     public void close(String errorMessage) {
         isTerminated.set(true);
         messages.emitComplete((signalType, emitResult) -> {
-            logger.atVerbose()
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue(LINK_NAME_KEY, receiveLinkName)
-                .addKeyValue(EMIT_RESULT_KEY, emitResult)
-                .log(errorMessage);
+            logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, receiveLinkName)
+                .addKeyValue(EMIT_RESULT_KEY, emitResult).log(errorMessage);
             return false;
         });
     }
@@ -173,18 +170,12 @@ final class ReceiverDeliveryHandler {
             final Link link = delivery.getLink();
             if (link != null) {
                 final ErrorCondition condition = link.getRemoteCondition();
-                addErrorCondition(logger.atVerbose(), condition)
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(LINK_NAME_KEY, receiveLinkName)
-                    .addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
-                    .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit())
-                    .addKeyValue(IS_PARTIAL_DELIVERY_KEY, true)
-                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, delivery.isSettled())
-                    .log("onDelivery.");
+                addErrorCondition(logger.atVerbose(), condition).addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .addKeyValue(LINK_NAME_KEY, receiveLinkName).addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
+                    .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit()).addKeyValue(IS_PARTIAL_DELIVERY_KEY, true)
+                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, delivery.isSettled()).log("onDelivery.");
             } else {
-                logger.atWarning()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
+                logger.atWarning().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
                     .log("Partial delivery with no link.");
             }
             return true;
@@ -197,17 +188,12 @@ final class ReceiverDeliveryHandler {
             //
             final Link link = delivery.getLink();
             if (link != null) {
-                addErrorCondition(logger.atInfo(), link.getRemoteCondition())
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(LINK_NAME_KEY, receiveLinkName)
-                    .addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
-                    .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit())
-                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
+                addErrorCondition(logger.atInfo(), link.getRemoteCondition()).addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .addKeyValue(LINK_NAME_KEY, receiveLinkName).addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
+                    .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit()).addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
                     .log("onDelivery. Was already settled.");
             } else {
-                logger.atWarning()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
+                logger.atWarning().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
                     .log("Settled delivery with no link.");
             }
             return true;
@@ -219,8 +205,7 @@ final class ReceiverDeliveryHandler {
      * Check if the delivery was received after the closure of receive link; if so, settle the delivery.
      *
      * @param delivery the delivery.
-     * @return {@code true} if the delivery was received after the closure of receive link,
-     * {@code false} otherwise.
+     * @return {@code true} if the delivery was received after the closure of receive link, {@code false} otherwise.
      */
     private boolean isDeliverySettledOnClosedLink(Delivery delivery) {
         final Link link = delivery.getLink();
@@ -306,10 +291,9 @@ final class ReceiverDeliveryHandler {
     }
 
     /**
-     * Read and decode the message from a delivery (delivery that the ProtonJ library created
-     * from transfer-frame).
+     * Read and decode the message from a delivery (delivery that the ProtonJ library created from transfer-frame).
      *
-     * @param delivery    the delivery
+     * @param delivery the delivery
      * @param deliveryTag the unique delivery tag associated with the delivery.
      * @return the decoded message optionally containing the delivery tag.
      */
@@ -353,6 +337,8 @@ final class ReceiverDeliveryHandler {
         } else {
             // Some unknown error :(, notify and rethrow to propagate to ProtonJ Reactor thread.
             emitError(new IllegalStateException("Unexpected error when decoding Delivery.", decodeError));
+            // This is thrown and emitted through Reactor's error stream as the global state is bad and needs to be
+            // explicitly interrupted.
             throw decodeError;
         }
     }
@@ -360,21 +346,17 @@ final class ReceiverDeliveryHandler {
     /**
      * Emit a message to stream through the {@link Flux} from {@link ReceiverDeliveryHandler#getMessages()}.
      *
-     * @param message  the message.
+     * @param message the message.
      * @param delivery the delivery from the message read and decoded.
      */
     private void emitMessage(Message message, Delivery delivery) {
         messages.emitNext(message, (signalType, emitResult) -> {
-            logger.atWarning()
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue(LINK_NAME_KEY, receiveLinkName)
-                .addKeyValue(EMIT_RESULT_KEY, emitResult)
-                .addKeyValue("delivery", delivery)
+            logger.atWarning().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, receiveLinkName)
+                .addKeyValue(EMIT_RESULT_KEY, emitResult).addKeyValue("delivery", delivery)
                 .log("Could not emit delivery.");
 
             final Link link = delivery.getLink();
-            if (emitResult == Sinks.EmitResult.FAIL_OVERFLOW
-                && link.getLocalState() != EndpointState.CLOSED) {
+            if (emitResult == Sinks.EmitResult.FAIL_OVERFLOW && link.getLocalState() != EndpointState.CLOSED) {
                 // Pending Ticket: https://github.com/Azure/azure-sdk-for-java/issues/33703
                 // Ref PR: https://github.com/Azure/azure-sdk-for-java/pull/19924
                 link.setCondition(new ErrorCondition(Symbol.getSymbol("delivery-buffer-overflow"),
@@ -394,11 +376,8 @@ final class ReceiverDeliveryHandler {
      */
     private void emitError(IllegalStateException error) {
         messages.emitError(error, (signalType, emitResult) -> {
-            logger.atVerbose()
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue(LINK_NAME_KEY, receiveLinkName)
-                .addKeyValue(EMIT_RESULT_KEY, emitResult)
-                .log("Could not emit messages.error.", error);
+            logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, receiveLinkName)
+                .addKeyValue(EMIT_RESULT_KEY, emitResult).log("Could not emit messages.error.", error);
             return false;
         });
     }
@@ -410,15 +389,13 @@ final class ReceiverDeliveryHandler {
         }
 
         final ErrorCondition condition = link.getRemoteCondition();
-        final LoggingEventBuilder loggingEvent = addErrorCondition(logger.atVerbose(), condition)
-            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-            .addKeyValue(LINK_NAME_KEY, receiveLinkName);
+        final LoggingEventBuilder loggingEvent = addErrorCondition(logger.atVerbose(), condition).addKeyValue(
+            ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, receiveLinkName);
         if (deliveryTag != null) {
             loggingEvent.addKeyValue(DELIVERY_TAG_KEY, deliveryTag);
         }
         loggingEvent.addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
-            .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit())
-            .addKeyValue(IS_SETTLED_DELIVERY_KEY, wasSettled)
+            .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit()).addKeyValue(IS_SETTLED_DELIVERY_KEY, wasSettled)
             .log("onDelivery.");
     }
 

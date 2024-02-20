@@ -38,22 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BuildpackBindingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BuildpackBindingsClient.
+ */
 public final class BuildpackBindingsClientImpl implements BuildpackBindingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BuildpackBindingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AppPlatformManagementClientImpl client;
 
     /**
      * Initializes an instance of BuildpackBindingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BuildpackBindingsClientImpl(AppPlatformManagementClientImpl client) {
-        this.service =
-            RestProxy.create(BuildpackBindingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(BuildpackBindingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,98 +69,231 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface BuildpackBindingsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}/buildpackBindings"
-                + "/{buildpackBindingName}")
-        @ExpectedResponses({200})
+    public interface BuildpackBindingsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildpackBindings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BuildpackBindingResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("buildServiceName") String buildServiceName,
-            @PathParam("builderName") String builderName,
-            @PathParam("buildpackBindingName") String buildpackBindingName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<BuildpackBindingResourceCollection>> listForCluster(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}/buildpackBindings/{buildpackBindingName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BuildpackBindingResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("buildServiceName") String buildServiceName, @PathParam("builderName") String builderName,
+            @PathParam("buildpackBindingName") String buildpackBindingName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}/buildpackBindings"
-                + "/{buildpackBindingName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}/buildpackBindings/{buildpackBindingName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("buildServiceName") String buildServiceName,
-            @PathParam("builderName") String builderName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("buildServiceName") String buildServiceName, @PathParam("builderName") String builderName,
             @PathParam("buildpackBindingName") String buildpackBindingName,
             @BodyParam("application/json") BuildpackBindingResourceInner buildpackBinding,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}/buildpackBindings"
-                + "/{buildpackBindingName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}/buildpackBindings/{buildpackBindingName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("buildServiceName") String buildServiceName,
-            @PathParam("builderName") String builderName,
-            @PathParam("buildpackBindingName") String buildpackBindingName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("buildServiceName") String buildServiceName, @PathParam("builderName") String builderName,
+            @PathParam("buildpackBindingName") String buildpackBindingName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}/buildpackBindings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}/buildpackBindings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BuildpackBindingResourceCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("buildServiceName") String buildServiceName,
-            @PathParam("builderName") String builderName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<BuildpackBindingResourceCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("buildServiceName") String buildServiceName, @PathParam("builderName") String builderName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BuildpackBindingResourceCollection>> listForClusterNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BuildpackBindingResourceCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+    }
+
+    /**
+     * Get collection of buildpack bindings under all builders.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of buildpack bindings under all builders along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BuildpackBindingResourceInner>> listForClusterSinglePageAsync(String resourceGroupName,
+        String serviceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listForCluster(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, accept, context))
+            .<PagedResponse<BuildpackBindingResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get collection of buildpack bindings under all builders.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of buildpack bindings under all builders along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BuildpackBindingResourceInner>> listForClusterSinglePageAsync(String resourceGroupName,
+        String serviceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listForCluster(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get collection of buildpack bindings under all builders.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of buildpack bindings under all builders as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BuildpackBindingResourceInner> listForClusterAsync(String resourceGroupName, String serviceName) {
+        return new PagedFlux<>(() -> listForClusterSinglePageAsync(resourceGroupName, serviceName),
+            nextLink -> listForClusterNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get collection of buildpack bindings under all builders.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of buildpack bindings under all builders as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<BuildpackBindingResourceInner> listForClusterAsync(String resourceGroupName, String serviceName,
+        Context context) {
+        return new PagedFlux<>(() -> listForClusterSinglePageAsync(resourceGroupName, serviceName, context),
+            nextLink -> listForClusterNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get collection of buildpack bindings under all builders.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of buildpack bindings under all builders as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BuildpackBindingResourceInner> listForCluster(String resourceGroupName, String serviceName) {
+        return new PagedIterable<>(listForClusterAsync(resourceGroupName, serviceName));
+    }
+
+    /**
+     * Get collection of buildpack bindings under all builders.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of buildpack bindings under all builders as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BuildpackBindingResourceInner> listForCluster(String resourceGroupName, String serviceName,
+        Context context) {
+        return new PagedIterable<>(listForClusterAsync(resourceGroupName, serviceName, context));
     }
 
     /**
      * Get a buildpack binding by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -165,23 +304,15 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return a buildpack binding by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BuildpackBindingResourceInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName) {
+    public Mono<Response<BuildpackBindingResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String buildServiceName, String builderName, String buildpackBindingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -203,28 +334,17 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            buildServiceName,
-                            builderName,
-                            buildpackBindingName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, buildServiceName, builderName,
+                buildpackBindingName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a buildpack binding by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -236,24 +356,15 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return a buildpack binding by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BuildpackBindingResourceInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        Context context) {
+    private Mono<Response<BuildpackBindingResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String buildServiceName, String builderName, String buildpackBindingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -275,25 +386,15 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                buildServiceName,
-                builderName,
-                buildpackBindingName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName, accept, context);
     }
 
     /**
      * Get a buildpack binding by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -304,45 +405,17 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return a buildpack binding by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BuildpackBindingResourceInner> getAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName) {
+    public Mono<BuildpackBindingResourceInner> getAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName) {
         return getWithResponseAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a buildpack binding by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param buildServiceName The name of the build service resource.
-     * @param builderName The name of the builder resource.
-     * @param buildpackBindingName The name of the Buildpack Binding Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a buildpack binding by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BuildpackBindingResourceInner get(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName) {
-        return getAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName).block();
-    }
-
-    /**
-     * Get a buildpack binding by name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -354,23 +427,38 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return a buildpack binding by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BuildpackBindingResourceInner> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName, context)
-            .block();
+    public Response<BuildpackBindingResourceInner> getWithResponse(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName, Context context) {
+        return getWithResponseAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName,
+            context).block();
+    }
+
+    /**
+     * Get a buildpack binding by name.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @param buildpackBindingName The name of the Buildpack Binding Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a buildpack binding by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BuildpackBindingResourceInner get(String resourceGroupName, String serviceName, String buildServiceName,
+        String builderName, String buildpackBindingName) {
+        return getWithResponse(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName,
+            Context.NONE).getValue();
     }
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -382,24 +470,16 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return buildpack Binding Resource object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String buildServiceName, String builderName, String buildpackBindingName,
         BuildpackBindingResourceInner buildpackBinding) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -427,29 +507,17 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            buildServiceName,
-                            builderName,
-                            buildpackBindingName,
-                            buildpackBinding,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, buildServiceName, builderName,
+                buildpackBindingName, buildpackBinding, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -462,25 +530,16 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return buildpack Binding Resource object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        BuildpackBindingResourceInner buildpackBinding,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String buildServiceName, String builderName, String buildpackBindingName,
+        BuildpackBindingResourceInner buildpackBinding, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -508,26 +567,16 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                buildServiceName,
-                builderName,
-                buildpackBindingName,
-                buildpackBinding,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serviceName, buildServiceName, builderName,
+            buildpackBindingName, buildpackBinding, accept, context);
     }
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -540,31 +589,20 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BuildpackBindingResourceInner>, BuildpackBindingResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serviceName,
-            String buildServiceName,
-            String builderName,
-            String buildpackBindingName,
-            BuildpackBindingResourceInner buildpackBinding) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName, buildpackBinding);
-        return this
-            .client
-            .<BuildpackBindingResourceInner, BuildpackBindingResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BuildpackBindingResourceInner.class,
-                BuildpackBindingResourceInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String buildServiceName,
+            String builderName, String buildpackBindingName, BuildpackBindingResourceInner buildpackBinding) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serviceName,
+            buildServiceName, builderName, buildpackBindingName, buildpackBinding);
+        return this.client.<BuildpackBindingResourceInner, BuildpackBindingResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BuildpackBindingResourceInner.class, BuildpackBindingResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -578,39 +616,22 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BuildpackBindingResourceInner>, BuildpackBindingResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serviceName,
-            String buildServiceName,
-            String builderName,
-            String buildpackBindingName,
-            BuildpackBindingResourceInner buildpackBinding,
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String buildServiceName,
+            String builderName, String buildpackBindingName, BuildpackBindingResourceInner buildpackBinding,
             Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                serviceName,
-                buildServiceName,
-                builderName,
-                buildpackBindingName,
-                buildpackBinding,
-                context);
-        return this
-            .client
-            .<BuildpackBindingResourceInner, BuildpackBindingResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BuildpackBindingResourceInner.class,
-                BuildpackBindingResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serviceName,
+            buildServiceName, builderName, buildpackBindingName, buildpackBinding, context);
+        return this.client.<BuildpackBindingResourceInner, BuildpackBindingResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BuildpackBindingResourceInner.class, BuildpackBindingResourceInner.class,
+            context);
     }
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -623,22 +644,17 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BuildpackBindingResourceInner>, BuildpackBindingResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        BuildpackBindingResourceInner buildpackBinding) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName, buildpackBinding)
-            .getSyncPoller();
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName,
+        String buildpackBindingName, BuildpackBindingResourceInner buildpackBinding) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, buildServiceName, builderName,
+            buildpackBindingName, buildpackBinding).getSyncPoller();
     }
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -652,29 +668,17 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BuildpackBindingResourceInner>, BuildpackBindingResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        BuildpackBindingResourceInner buildpackBinding,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                serviceName,
-                buildServiceName,
-                builderName,
-                buildpackBindingName,
-                buildpackBinding,
-                context)
-            .getSyncPoller();
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName,
+        String buildpackBindingName, BuildpackBindingResourceInner buildpackBinding, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, buildServiceName, builderName,
+            buildpackBindingName, buildpackBinding, context).getSyncPoller();
     }
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -686,24 +690,18 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return buildpack Binding Resource object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BuildpackBindingResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
+    public Mono<BuildpackBindingResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName,
         BuildpackBindingResourceInner buildpackBinding) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName, buildpackBinding)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, buildServiceName, builderName,
+            buildpackBindingName, buildpackBinding).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -716,31 +714,18 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return buildpack Binding Resource object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BuildpackBindingResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        BuildpackBindingResourceInner buildpackBinding,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                serviceName,
-                buildServiceName,
-                builderName,
-                buildpackBindingName,
-                buildpackBinding,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<BuildpackBindingResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName,
+        BuildpackBindingResourceInner buildpackBinding, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, buildServiceName, builderName,
+            buildpackBindingName, buildpackBinding, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -752,23 +737,18 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return buildpack Binding Resource object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BuildpackBindingResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
+    public BuildpackBindingResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName,
         BuildpackBindingResourceInner buildpackBinding) {
-        return createOrUpdateAsync(
-                resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName, buildpackBinding)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName,
+            buildpackBinding).block();
     }
 
     /**
      * Create or update a buildpack binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -781,30 +761,18 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return buildpack Binding Resource object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BuildpackBindingResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        BuildpackBindingResourceInner buildpackBinding,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                serviceName,
-                buildServiceName,
-                builderName,
-                buildpackBindingName,
-                buildpackBinding,
-                context)
-            .block();
+    public BuildpackBindingResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName,
+        BuildpackBindingResourceInner buildpackBinding, Context context) {
+        return createOrUpdateAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName,
+            buildpackBinding, context).block();
     }
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -815,23 +783,15 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -853,28 +813,17 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            buildServiceName,
-                            builderName,
-                            buildpackBindingName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, buildServiceName, builderName,
+                buildpackBindingName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -886,24 +835,15 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -925,25 +865,15 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                buildServiceName,
-                builderName,
-                buildpackBindingName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName, accept, context);
     }
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -954,26 +884,19 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName,
+            buildServiceName, builderName, buildpackBindingName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -985,52 +908,42 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName,
+            buildServiceName, builderName, buildpackBindingName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Operation to delete a Buildpack Binding.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @param buildpackBindingName The name of the Buildpack Binding Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName) {
         return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Operation to delete a Buildpack Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param buildServiceName The name of the build service resource.
-     * @param builderName The name of the builder resource.
-     * @param buildpackBindingName The name of the Buildpack Binding Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName)
+            .beginDeleteAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName)
             .getSyncPoller();
     }
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -1042,23 +955,17 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        Context context) {
-        return beginDeleteAsync(
-                resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName, context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, String buildpackBindingName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, serviceName, buildServiceName, builderName,
+            buildpackBindingName, context).getSyncPoller();
     }
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -1069,22 +976,17 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String buildServiceName,
+        String builderName, String buildpackBindingName) {
         return beginDeleteAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -1096,24 +998,17 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        Context context) {
-        return beginDeleteAsync(
-                resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String buildServiceName,
+        String builderName, String buildpackBindingName, Context context) {
+        return beginDeleteAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -1123,20 +1018,16 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
+    public void delete(String resourceGroupName, String serviceName, String buildServiceName, String builderName,
         String buildpackBindingName) {
         deleteAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName).block();
     }
 
     /**
      * Operation to delete a Buildpack Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -1147,22 +1038,17 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName,
-        Context context) {
+    public void delete(String resourceGroupName, String serviceName, String buildServiceName, String builderName,
+        String buildpackBindingName, Context context) {
         deleteAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName, context)
             .block();
     }
 
     /**
      * Handles requests to list all buildpack bindings in a builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -1170,22 +1056,18 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of BuildpackBinding resources and a possible link for next set along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BuildpackBindingResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName) {
+    private Mono<PagedResponse<BuildpackBindingResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String serviceName, String buildServiceName, String builderName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1203,36 +1085,19 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            buildServiceName,
-                            builderName,
-                            accept,
-                            context))
-            .<PagedResponse<BuildpackBindingResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, buildServiceName, builderName, accept,
+                context))
+            .<PagedResponse<BuildpackBindingResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Handles requests to list all buildpack bindings in a builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -1241,22 +1106,18 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of BuildpackBinding resources and a possible link for next set along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BuildpackBindingResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context) {
+    private Mono<PagedResponse<BuildpackBindingResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String serviceName, String buildServiceName, String builderName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1275,32 +1136,17 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                buildServiceName,
-                builderName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceName, buildServiceName, builderName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Handles requests to list all buildpack bindings in a builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -1308,21 +1154,20 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of BuildpackBinding resources and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BuildpackBindingResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, buildServiceName, builderName),
+    public PagedFlux<BuildpackBindingResourceInner> listAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName, buildServiceName, builderName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Handles requests to list all buildpack bindings in a builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -1331,11 +1176,11 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of BuildpackBinding resources and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BuildpackBindingResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context) {
+    private PagedFlux<BuildpackBindingResourceInner> listAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, serviceName, buildServiceName, builderName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -1343,9 +1188,9 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
 
     /**
      * Handles requests to list all buildpack bindings in a builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -1353,19 +1198,19 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of BuildpackBinding resources and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BuildpackBindingResourceInner> list(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName) {
+    public PagedIterable<BuildpackBindingResourceInner> list(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName) {
         return new PagedIterable<>(listAsync(resourceGroupName, serviceName, buildServiceName, builderName));
     }
 
     /**
      * Handles requests to list all buildpack bindings in a builder.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
@@ -1374,23 +1219,84 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of BuildpackBinding resources and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BuildpackBindingResourceInner> list(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context) {
+    public PagedIterable<BuildpackBindingResourceInner> list(String resourceGroupName, String serviceName,
+        String buildServiceName, String builderName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, serviceName, buildServiceName, builderName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of BuildpackBinding resources and a possible link for next set along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BuildpackBindingResourceInner>> listForClusterNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listForClusterNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<BuildpackBindingResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes an array of BuildpackBinding resources and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BuildpackBindingResourceInner>> listForClusterNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listForClusterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes an array of BuildpackBinding resources and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BuildpackBindingResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1398,61 +1304,43 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BuildpackBindingResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<BuildpackBindingResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of BuildpackBinding resources and a possible link for next set along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BuildpackBindingResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<BuildpackBindingResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

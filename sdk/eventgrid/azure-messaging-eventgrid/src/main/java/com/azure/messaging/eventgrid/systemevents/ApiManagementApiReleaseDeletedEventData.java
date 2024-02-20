@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiReleaseDeleted event.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIReleaseDeleted event.
  */
 @Fluent
 public final class ApiManagementApiReleaseDeletedEventData

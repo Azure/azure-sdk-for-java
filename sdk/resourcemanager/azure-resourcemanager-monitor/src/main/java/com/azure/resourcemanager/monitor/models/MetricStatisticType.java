@@ -7,24 +7,38 @@ package com.azure.resourcemanager.monitor.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** the metric statistic type. How the metrics from multiple instances are combined. */
+/**
+ * the metric statistic type. How the metrics from multiple instances are combined.
+ */
 public enum MetricStatisticType {
-    /** Enum value Average. */
+    /**
+     * Enum value Average.
+     */
     AVERAGE("Average"),
 
-    /** Enum value Min. */
+    /**
+     * Enum value Min.
+     */
     MIN("Min"),
 
-    /** Enum value Max. */
+    /**
+     * Enum value Max.
+     */
     MAX("Max"),
 
-    /** Enum value Sum. */
+    /**
+     * Enum value Sum.
+     */
     SUM("Sum"),
 
-    /** Enum value Count. */
+    /**
+     * Enum value Count.
+     */
     COUNT("Count");
 
-    /** The actual serialized value for a MetricStatisticType instance. */
+    /**
+     * The actual serialized value for a MetricStatisticType instance.
+     */
     private final String value;
 
     MetricStatisticType(String value) {
@@ -33,7 +47,7 @@ public enum MetricStatisticType {
 
     /**
      * Parses a serialized value to a MetricStatisticType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MetricStatisticType object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum MetricStatisticType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

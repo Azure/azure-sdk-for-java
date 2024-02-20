@@ -21,6 +21,8 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType;
+import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.NETTY;
+import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.OKHTTP;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -84,13 +86,13 @@ public class CorePerfIntegrationTest {
         List<String[]> args = new ArrayList<>();
 
         for (BackendType backendType : Arrays.asList(BackendType.MOCK, BackendType.WIREMOCK)) {
-            for (HttpClientType httpClientType : HttpClientType.values()) {
+            for (HttpClientType httpClientType : Arrays.asList(NETTY, OKHTTP)) {
                 for (BinaryDataSource binaryDataSource : BinaryDataSource.values()) {
                     for (Boolean includePipelinePolicies : Arrays.asList(true, false)) {
                         List<String> argLine = new ArrayList<>(Arrays.asList(
                             "unused",
                             "--backend-type", backendType.name(),
-                            "--http-client", httpClientType.name(),
+                            "--http-client", httpClientType.toString(),
                             "--binary-data-source", binaryDataSource.name()
                         ));
                         if (includePipelinePolicies) {

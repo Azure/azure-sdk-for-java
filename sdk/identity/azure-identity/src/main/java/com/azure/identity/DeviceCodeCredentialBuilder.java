@@ -66,6 +66,13 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
     private boolean automaticAuthentication = true;
 
     /**
+     * Constructs an instance of DeviceCodeCredentialBuilder.
+     */
+    public DeviceCodeCredentialBuilder() {
+        super();
+    }
+
+    /**
      * Sets the consumer to meet the device code challenge. If not specified a default consumer is used which prints
      * the device code info message to stdout.
      *

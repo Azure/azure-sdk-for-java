@@ -127,6 +127,11 @@ public final class ObjectMapperShim {
     private MemberNameConverterImpl memberNameConverter;
 
 
+    /**
+     * Creates instance of {@link ObjectMapperShim}.
+     *
+     * @param mapper {@link ObjectMapper} to wrap.
+     */
     public ObjectMapperShim(ObjectMapper mapper) {
         this.mapper = mapper;
     }
@@ -136,7 +141,7 @@ public final class ObjectMapperShim {
      *
      * @param value object to serialize.
      * @return Serialized string.
-     * @throws IOException
+     * @throws IOException If serialization fails.
      */
     public String writeValueAsString(Object value) throws IOException {
         try {
@@ -151,7 +156,7 @@ public final class ObjectMapperShim {
      *
      * @param value object to serialize.
      * @return Serialized byte array.
-     * @throws IOException
+     * @throws IOException If serialization fails.
      */
     public byte[] writeValueAsBytes(Object value) throws IOException {
         try {
@@ -166,7 +171,7 @@ public final class ObjectMapperShim {
      *
      * @param out stream to write serialized object to.
      * @param value object to serialize.
-     * @throws IOException
+     * @throws IOException If serialization fails.
      */
     public void writeValue(OutputStream out, Object value) throws IOException {
         try {
@@ -179,10 +184,11 @@ public final class ObjectMapperShim {
     /**
      * Deserializes Java object from a string.
      *
+     * @param <T> Type of the deserialized object.
      * @param content serialized object.
      * @param valueType type of the value.
      * @return Deserialized object.
-     * @throws IOException
+     * @throws IOException If deserialization fails.
      */
     public <T> T readValue(String content, final Type valueType) throws IOException {
         try {
@@ -196,10 +202,11 @@ public final class ObjectMapperShim {
     /**
      * Deserializes Java object from a byte array.
      *
+     * @param <T> Type of the deserialized object.
      * @param src serialized object.
      * @param valueType type of the value.
      * @return Deserialized object.
-     * @throws IOException
+     * @throws IOException If deserialization fails.
      */
     public <T> T readValue(byte[] src, final Type valueType) throws IOException {
         try {
@@ -213,10 +220,11 @@ public final class ObjectMapperShim {
     /**
      * Reads and deserializes Java object from a stream.
      *
+     * @param <T> Type of the deserialized object.
      * @param src serialized object.
      * @param valueType type of the value.
      * @return Deserialized object.
-     * @throws IOException
+     * @throws IOException If deserialization fails.
      */
     public <T> T readValue(InputStream src, final Type valueType) throws IOException {
         try {
@@ -232,7 +240,7 @@ public final class ObjectMapperShim {
      *
      * @param content serialized JSON tree.
      * @return {@code JsonNode} instance
-     * @throws IOException
+     * @throws IOException If deserialization fails.
      */
     public JsonNode readTree(String content) throws IOException {
         try {
@@ -247,6 +255,7 @@ public final class ObjectMapperShim {
      *
      * @param content serialized JSON tree.
      * @return {@code JsonNode} instance
+     * @throws IOException If deserialization fails.
      */
     public JsonNode readTree(byte[] content) throws IOException {
         try {
@@ -276,6 +285,16 @@ public final class ObjectMapperShim {
         }
     }
 
+    /**
+     * Deserializes {@link HttpHeaders} from the given {@link InputStream}.
+     *
+     * @param <T> Type of the deserialized object.
+     * @param headers The {@link HttpHeaders} to deserialize from.
+     * @param deserializedHeadersType The {@link Type} of the deserialized {@link HttpHeaders}.
+     * @return The deserialized {@link HttpHeaders}.
+     * @throws RuntimeException If reflection fails.
+     * @throws IOException If deserialization fails.
+     */
     @SuppressWarnings("unchecked")
     public <T> T deserialize(HttpHeaders headers, Type deserializedHeadersType) throws IOException {
         if (deserializedHeadersType == null) {
@@ -375,6 +394,12 @@ public final class ObjectMapperShim {
         return deserializedHeaders;
     }
 
+    /**
+     * Gets the name of the given member.
+     *
+     * @param member The member to get the name of.
+     * @return The name of the given member.
+     */
     public String convertMemberName(Member member) {
         if (memberNameConverter == null) {
             // Defer creating the member name converter until it needs to be used.
@@ -390,6 +415,13 @@ public final class ObjectMapperShim {
         }
     }
 
+    /**
+     * Converts the given value to a {@link JsonNode}.
+     *
+     * @param fromValue The value to convert to a {@link JsonNode}.
+     * @return The {@link JsonNode} representing the given value.
+     * @param <T> The type of the value to convert to a {@link JsonNode}.
+     */
     public <T extends JsonNode> T valueToTree(Object fromValue) {
         try {
             return mapper.valueToTree(fromValue);

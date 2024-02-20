@@ -5,7 +5,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import reactor.util.annotation.Nullable;
 
 import java.io.File;
@@ -77,10 +76,6 @@ public class TempDirs {
      * @return a {@link File} representing a folder in which temporary files will be stored for the
      * current user.
      */
-    @SuppressFBWarnings(
-        value = "SECPTI", // Potential Path Traversal
-        justification =
-            "The constructed file path cannot be controlled by an end user of the instrumented application")
     private static File maybeAddUserSubDir(File dir) {
 
         // does it look shared?

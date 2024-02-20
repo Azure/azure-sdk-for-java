@@ -21,17 +21,28 @@ param(
 Write-Host "
 
 ===========================================
-Invoking TypeSpec Project Sync and Generate
+Installing typespec-client-generator-cli
 ===========================================
 
 "
 
+npm install -g @azure-tools/typespec-client-generator-cli
+
+Write-Host "
+
+===========================================
+Invoking tsp-client update
+===========================================
+
+"
 
 foreach ($tspLocationPath in (Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse)) {
   $sdkPath = (get-item $tspLocationPath).Directory.FullName
   Write-Host "Generate SDK for $sdkPath"
-  ./eng/common/scripts/TypeSpec-Project-Sync.ps1 $sdkPath
-  ./eng/common/scripts/TypeSpec-Project-Generate.ps1 $sdkPath
+  Push-Location
+  Set-Location -Path $sdkPath
+  tsp-client update
+  Pop-Location
 }
 
 Write-Host "

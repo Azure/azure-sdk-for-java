@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains information about orchestrator. */
+/**
+ * Contains information about orchestrator.
+ */
 @Fluent
 public final class OrchestratorProfile {
     /*
@@ -29,13 +31,15 @@ public final class OrchestratorProfile {
     @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
-    /** Creates an instance of OrchestratorProfile class. */
+    /**
+     * Creates an instance of OrchestratorProfile class.
+     */
     public OrchestratorProfile() {
     }
 
     /**
      * Get the orchestratorType property: Orchestrator type.
-     *
+     * 
      * @return the orchestratorType value.
      */
     public String orchestratorType() {
@@ -44,7 +48,7 @@ public final class OrchestratorProfile {
 
     /**
      * Set the orchestratorType property: Orchestrator type.
-     *
+     * 
      * @param orchestratorType the orchestratorType value to set.
      * @return the OrchestratorProfile object itself.
      */
@@ -55,7 +59,7 @@ public final class OrchestratorProfile {
 
     /**
      * Get the orchestratorVersion property: Orchestrator version (major, minor, patch).
-     *
+     * 
      * @return the orchestratorVersion value.
      */
     public String orchestratorVersion() {
@@ -64,7 +68,7 @@ public final class OrchestratorProfile {
 
     /**
      * Set the orchestratorVersion property: Orchestrator version (major, minor, patch).
-     *
+     * 
      * @param orchestratorVersion the orchestratorVersion value to set.
      * @return the OrchestratorProfile object itself.
      */
@@ -75,7 +79,7 @@ public final class OrchestratorProfile {
 
     /**
      * Get the isPreview property: Whether Kubernetes version is currently in preview.
-     *
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -84,7 +88,7 @@ public final class OrchestratorProfile {
 
     /**
      * Set the isPreview property: Whether Kubernetes version is currently in preview.
-     *
+     * 
      * @param isPreview the isPreview value to set.
      * @return the OrchestratorProfile object itself.
      */
@@ -95,15 +99,13 @@ public final class OrchestratorProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (orchestratorVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property orchestratorVersion in model OrchestratorProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property orchestratorVersion in model OrchestratorProfile"));
         }
     }
 

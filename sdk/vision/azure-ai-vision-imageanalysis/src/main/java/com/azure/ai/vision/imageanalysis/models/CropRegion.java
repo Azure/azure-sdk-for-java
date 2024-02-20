@@ -35,7 +35,7 @@ public final class CropRegion {
 
     /**
      * Creates an instance of CropRegion class.
-     * 
+     *
      * @param aspectRatio the aspectRatio value to set.
      * @param boundingBox the boundingBox value to set.
      */
@@ -53,7 +53,7 @@ public final class CropRegion {
      * The aspect ratio will be in the range 0.75 to 1.8 (inclusive) if provided by the developer during the analyze
      * call.
      * Otherwise, it will be in the range 0.5 to 2.0 (inclusive).
-     * 
+     *
      * @return the aspectRatio value.
      */
     @Generated
@@ -63,7 +63,7 @@ public final class CropRegion {
 
     /**
      * Get the boundingBox property: The bounding box of the region.
-     * 
+     *
      * @return the boundingBox value.
      */
     @Generated

@@ -73,6 +73,12 @@ public final class SwaggerInterfaceParser {
         return host;
     }
 
+    /**
+     * Get the desired service name that the provided Swagger interface will target with its REST API calls. This value
+     * is retrieved from the @ServiceInterface annotation placed on the Swagger interface.
+     *
+     * @return The value of the @ServiceInterface annotation.
+     */
     public String getServiceName() {
         return serviceName;
     }

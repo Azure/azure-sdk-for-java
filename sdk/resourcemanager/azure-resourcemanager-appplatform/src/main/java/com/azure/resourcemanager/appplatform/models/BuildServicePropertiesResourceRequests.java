@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The runtime resource configuration of this build service. */
+/**
+ * The runtime resource configuration of this build service.
+ */
 @Immutable
 public final class BuildServicePropertiesResourceRequests {
     /*
@@ -23,8 +25,14 @@ public final class BuildServicePropertiesResourceRequests {
     private String memory;
 
     /**
+     * Creates an instance of BuildServicePropertiesResourceRequests class.
+     */
+    public BuildServicePropertiesResourceRequests() {
+    }
+
+    /**
      * Get the cpu property: vCPU allocated to the entire build service node pool.
-     *
+     * 
      * @return the cpu value.
      */
     public String cpu() {
@@ -33,7 +41,7 @@ public final class BuildServicePropertiesResourceRequests {
 
     /**
      * Get the memory property: Memory allocated to the entire build service node pool.
-     *
+     * 
      * @return the memory value.
      */
     public String memory() {
@@ -42,7 +50,7 @@ public final class BuildServicePropertiesResourceRequests {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

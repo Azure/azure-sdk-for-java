@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Describes the latest status of running an image template. */
+/**
+ * Describes the latest status of running an image template.
+ */
 @Fluent
 public final class ImageTemplateLastRunStatus {
     /*
@@ -41,13 +43,15 @@ public final class ImageTemplateLastRunStatus {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of ImageTemplateLastRunStatus class. */
+    /**
+     * Creates an instance of ImageTemplateLastRunStatus class.
+     */
     public ImageTemplateLastRunStatus() {
     }
 
     /**
      * Get the startTime property: Start time of the last run (UTC).
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -56,7 +60,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Set the startTime property: Start time of the last run (UTC).
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ImageTemplateLastRunStatus object itself.
      */
@@ -67,7 +71,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Get the endTime property: End time of the last run (UTC).
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -76,7 +80,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Set the endTime property: End time of the last run (UTC).
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the ImageTemplateLastRunStatus object itself.
      */
@@ -87,7 +91,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Get the runState property: State of the last run.
-     *
+     * 
      * @return the runState value.
      */
     public RunState runState() {
@@ -96,7 +100,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Set the runState property: State of the last run.
-     *
+     * 
      * @param runState the runState value to set.
      * @return the ImageTemplateLastRunStatus object itself.
      */
@@ -107,7 +111,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Get the runSubState property: Sub-state of the last run.
-     *
+     * 
      * @return the runSubState value.
      */
     public RunSubState runSubState() {
@@ -116,7 +120,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Set the runSubState property: Sub-state of the last run.
-     *
+     * 
      * @param runSubState the runSubState value to set.
      * @return the ImageTemplateLastRunStatus object itself.
      */
@@ -127,7 +131,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Get the message property: Verbose information about the last run state.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -136,7 +140,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Set the message property: Verbose information about the last run state.
-     *
+     * 
      * @param message the message value to set.
      * @return the ImageTemplateLastRunStatus object itself.
      */
@@ -147,7 +151,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

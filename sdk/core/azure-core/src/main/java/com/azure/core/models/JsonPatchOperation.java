@@ -84,8 +84,7 @@ final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(op.toString(), from, path,
-            (value == null) ? null : value.getValue());
+        return Objects.hash(op.toString(), from, path, (value == null) ? null : value.getValue());
     }
 
     @Override
@@ -99,9 +98,7 @@ final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
         }
 
         JsonPatchOperation other = (JsonPatchOperation) obj;
-        return Objects.equals(op, other.op)
-            && Objects.equals(from, other.from)
-            && Objects.equals(path, other.path)
+        return Objects.equals(op, other.op) && Objects.equals(from, other.from) && Objects.equals(path, other.path)
             && Objects.equals(value, other.value);
     }
 
@@ -111,23 +108,16 @@ final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
     }
 
     StringBuilder buildString(StringBuilder builder) {
-        builder.append("{\"op\":\"")
-            .append(op.toString())
-            .append("\"");
+        builder.append("{\"op\":\"").append(op.toString()).append("\"");
 
         if (from != null) {
-            builder.append(",\"from\":\"")
-                .append(from)
-                .append("\"");
+            builder.append(",\"from\":\"").append(from).append("\"");
         }
 
-        builder.append(",\"path\":\"")
-            .append(path)
-            .append("\"");
+        builder.append(",\"path\":\"").append(path).append("\"");
 
         if (value.isInitialized()) {
-            builder.append(",\"value\":")
-                .append(value.getValue());
+            builder.append(",\"value\":").append(value.getValue());
         }
 
         return builder.append("}");
@@ -135,9 +125,7 @@ final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject()
-            .writeStringField("op", op.toString())
-            .writeStringField("from", from)
+        jsonWriter.writeStartObject().writeStringField("op", op.toString()).writeStringField("from", from)
             .writeStringField("path", path);
 
         if (value.isInitialized()) {

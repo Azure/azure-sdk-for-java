@@ -18,10 +18,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.Executor;
 
 /**
@@ -44,15 +45,7 @@ public class JdkHttpClientBuilder {
     static final Set<String> DEFAULT_RESTRICTED_HEADERS;
 
     static {
-        TreeSet<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        treeSet.addAll(Set.of(
-            "connection",
-            "content-length",
-            "expect",
-            "host",
-            "upgrade"
-        ));
-        DEFAULT_RESTRICTED_HEADERS = Collections.unmodifiableSet(treeSet);
+        DEFAULT_RESTRICTED_HEADERS = Set.of("connection", "content-length", "expect", "host", "upgrade");
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
@@ -204,37 +197,29 @@ public class JdkHttpClientBuilder {
 
     Set<String> getRestrictedHeaders() {
         // Compute the effective restricted headers by removing the allowed headers from default restricted headers
-        Set<String> allowRestrictedHeaders = getAllowRestrictedHeaders();
-        Set<String> restrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        restrictedHeaders.addAll(DEFAULT_RESTRICTED_HEADERS);
-        restrictedHeaders.removeAll(allowRestrictedHeaders);
+        Set<String> restrictedHeaders = new HashSet<>(DEFAULT_RESTRICTED_HEADERS);
+        removeAllowedHeaders(restrictedHeaders);
         return restrictedHeaders;
     }
 
-    private Set<String> getAllowRestrictedHeaders() {
+    private void removeAllowedHeaders(Set<String> restrictedHeaders) {
         Properties properties = getNetworkProperties();
         String[] allowRestrictedHeadersNetProperties =
             properties.getProperty(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
 
         // Read all allowed restricted headers from configuration
-        Configuration config = (this.configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration config = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         String[] allowRestrictedHeadersSystemProperties = config.get(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "")
             .split(",");
 
-        Set<String> allowRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-
         // Combine the set of all allowed restricted headers from both sources
         for (String header : allowRestrictedHeadersSystemProperties) {
-            allowRestrictedHeaders.add(header.trim());
+            restrictedHeaders.remove(header.trim().toLowerCase(Locale.ROOT));
         }
 
         for (String header : allowRestrictedHeadersNetProperties) {
-            allowRestrictedHeaders.add(header.trim());
+            restrictedHeaders.remove(header.trim().toLowerCase(Locale.ROOT));
         }
-
-        return allowRestrictedHeaders;
     }
 
     Properties getNetworkProperties() {

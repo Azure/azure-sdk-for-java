@@ -23,6 +23,9 @@ import java.util.concurrent.RejectedExecutionException;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KEY;
 
+/**
+ * Handler for managing a session.
+ */
 public class SessionHandler extends Handler {
     private final String sessionName;
     private final Duration openTimeout;
@@ -30,14 +33,33 @@ public class SessionHandler extends Handler {
     private final AmqpMetricsProvider metricsProvider;
 
     /**
-     * @deprecated use {@link SessionHandler#SessionHandler(String, String, String, ReactorDispatcher, Duration, AmqpMetricsProvider)} instead.
+     * Creates a session handler.
+     *
+     * @param connectionId Identifier for the connection.
+     * @param hostname Hostname of the connection.
+     * @param sessionName Name of the session.
+     * @param reactorDispatcher Reactor dispatcher.
+     * @param openTimeout Timeout for opening the session.
+     * @deprecated use {@link #SessionHandler(String, String, String, ReactorDispatcher, Duration, AmqpMetricsProvider)}
+     * instead.
      */
     @Deprecated
     public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
-                          Duration openTimeout) {
-        this(connectionId, hostname, sessionName, reactorDispatcher, openTimeout, new AmqpMetricsProvider(null, hostname, null));
+        Duration openTimeout) {
+        this(connectionId, hostname, sessionName, reactorDispatcher, openTimeout,
+            new AmqpMetricsProvider(null, hostname, null));
     }
 
+    /**
+     * Creates a session handler.
+     *
+     * @param connectionId Identifier for the connection.
+     * @param hostname Hostname of the connection.
+     * @param sessionName Name of the session.
+     * @param reactorDispatcher Reactor dispatcher.
+     * @param openTimeout Timeout for opening the session.
+     * @param metricProvider Metrics provider.
+     */
     public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
         Duration openTimeout, AmqpMetricsProvider metricProvider) {
         super(connectionId, hostname);
@@ -47,6 +69,11 @@ public class SessionHandler extends Handler {
         this.metricsProvider = metricProvider;
     }
 
+    /**
+     * Gets the error context of the session.
+     *
+     * @return The error context of the session.
+     */
     public AmqpErrorContext getErrorContext() {
         return new SessionErrorContext(getHostname(), sessionName);
     }

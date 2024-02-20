@@ -27,22 +27,28 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.AzureVMRes
 import com.azure.resourcemanager.recoveryservicesbackup.models.FeatureSupportRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FeatureSupportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FeatureSupportsClient.
+ */
 public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FeatureSupportsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of FeatureSupportsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FeatureSupportsClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy.create(FeatureSupportsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(FeatureSupportsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,49 +59,41 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface FeatureSupportsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupValidateFeatures")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupValidateFeatures")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureVMResourceFeatureSupportResponseInner>> validate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("azureRegion") String azureRegion,
+        Mono<Response<AzureVMResourceFeatureSupportResponseInner>> validate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("azureRegion") String azureRegion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") FeatureSupportRequest parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") FeatureSupportRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * It will validate if given feature with resource properties is supported in service.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Feature support request object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for feature support requests for Azure IaasVm along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureVMResourceFeatureSupportResponseInner>> validateWithResponseAsync(
-        String azureRegion, FeatureSupportRequest parameters) {
+    private Mono<Response<AzureVMResourceFeatureSupportResponseInner>> validateWithResponseAsync(String azureRegion,
+        FeatureSupportRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (azureRegion == null) {
             return Mono.error(new IllegalArgumentException("Parameter azureRegion is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -104,23 +102,14 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            azureRegion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.validate(this.client.getEndpoint(), this.client.getApiVersion(),
+                azureRegion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * It will validate if given feature with resource properties is supported in service.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Feature support request object.
      * @param context The context to associate with this operation.
@@ -128,25 +117,21 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for feature support requests for Azure IaasVm along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureVMResourceFeatureSupportResponseInner>> validateWithResponseAsync(
-        String azureRegion, FeatureSupportRequest parameters, Context context) {
+    private Mono<Response<AzureVMResourceFeatureSupportResponseInner>> validateWithResponseAsync(String azureRegion,
+        FeatureSupportRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (azureRegion == null) {
             return Mono.error(new IllegalArgumentException("Parameter azureRegion is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -155,20 +140,13 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                azureRegion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.validate(this.client.getEndpoint(), this.client.getApiVersion(), azureRegion,
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * It will validate if given feature with resource properties is supported in service.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Feature support request object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -177,14 +155,14 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
      * @return response for feature support requests for Azure IaasVm on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureVMResourceFeatureSupportResponseInner> validateAsync(
-        String azureRegion, FeatureSupportRequest parameters) {
+    private Mono<AzureVMResourceFeatureSupportResponseInner> validateAsync(String azureRegion,
+        FeatureSupportRequest parameters) {
         return validateWithResponseAsync(azureRegion, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * It will validate if given feature with resource properties is supported in service.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Feature support request object.
      * @param context The context to associate with this operation.
@@ -194,14 +172,14 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
      * @return response for feature support requests for Azure IaasVm along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureVMResourceFeatureSupportResponseInner> validateWithResponse(
-        String azureRegion, FeatureSupportRequest parameters, Context context) {
+    public Response<AzureVMResourceFeatureSupportResponseInner> validateWithResponse(String azureRegion,
+        FeatureSupportRequest parameters, Context context) {
         return validateWithResponseAsync(azureRegion, parameters, context).block();
     }
 
     /**
      * It will validate if given feature with resource properties is supported in service.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Feature support request object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

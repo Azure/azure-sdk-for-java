@@ -47,8 +47,8 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
 
     /*
      * Dictionary used for changing data path assignments without retraining. Values will be passed in the
-     * dataPathAssignments property of the published pipeline execution request. Type: object with key value pairs (or
-     * Expression with resultType object).
+     * dataPathAssignments property of the published pipeline execution request. Type: object (or Expression with
+     * resultType object).
      */
     @JsonProperty(value = "dataPathAssignments")
     private Object dataPathAssignments;
@@ -193,7 +193,7 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
     /**
      * Get the dataPathAssignments property: Dictionary used for changing data path assignments without retraining.
      * Values will be passed in the dataPathAssignments property of the published pipeline execution request. Type:
-     * object with key value pairs (or Expression with resultType object).
+     * object (or Expression with resultType object).
      * 
      * @return the dataPathAssignments value.
      */
@@ -204,7 +204,7 @@ public final class AzureMLExecutePipelineActivityTypeProperties {
     /**
      * Set the dataPathAssignments property: Dictionary used for changing data path assignments without retraining.
      * Values will be passed in the dataPathAssignments property of the published pipeline execution request. Type:
-     * object with key value pairs (or Expression with resultType object).
+     * object (or Expression with resultType object).
      * 
      * @param dataPathAssignments the dataPathAssignments value to set.
      * @return the AzureMLExecutePipelineActivityTypeProperties object itself.

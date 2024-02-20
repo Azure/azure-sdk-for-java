@@ -33,7 +33,7 @@ public final class KubernetesVersionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"hnjivo\"},\"properties\":{\"provisioningState\":\"InProgress\",\"values\":[{\"version\":\"fzg\",\"capabilities\":{\"supportPlan\":[\"ftul\",\"ltducea\",\"tmczuomejwcwwqi\"]},\"isPreview\":true,\"patchVersions\":{\"xmojmsvpkjp\":{}}}]},\"id\":\"kwcf\",\"name\":\"ql\",\"type\":\"yxgtczh\"}]}";
+            = "{\"value\":[{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"tedltmmj\"},\"properties\":{\"provisioningState\":\"Creating\",\"values\":[{\"version\":\"hvwauyqncy\",\"isPreview\":false,\"patchVersions\":{\"ipmdscwx\":{},\"upev\":{},\"hfstotxhojujbyp\":{},\"lmcuvhixb\":{}}}]},\"id\":\"yfwnylr\",\"name\":\"ool\",\"type\":\"ttpkiwkkbnujrywv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,10 +51,10 @@ public final class KubernetesVersionsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<KubernetesVersionProfile> response
-            = manager.kubernetesVersions().list("vkhbejdznx", com.azure.core.util.Context.NONE);
+            = manager.kubernetesVersions().list("ffiakp", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION,
             response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals("hnjivo", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("tedltmmj", response.iterator().next().extendedLocation().name());
     }
 }

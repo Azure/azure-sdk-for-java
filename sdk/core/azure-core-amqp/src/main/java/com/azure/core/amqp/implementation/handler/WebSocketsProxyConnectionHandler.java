@@ -46,9 +46,9 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * The value of 'hostname:port' field for the 'HTTP CONNECT hostname:port HTTP/1.1'
      * request to the Proxy.
      * e.g.
-     *   CONNECT &lt;eventubs-namespace&gt;.servicebus.windows.net:443 HTTP/1.1 <br/>
-     *   CONNECT order-events.contoso.com:443 HTTP/1.1 <br/>
-     *   CONNECT shipping-events.contoso.com:200 HTTP/1.1 <br/>
+     *   CONNECT &lt;eventubs-namespace&gt;.servicebus.windows.net:443 HTTP/1.1 <br>
+     *   CONNECT order-events.contoso.com:443 HTTP/1.1 <br>
+     *   CONNECT shipping-events.contoso.com:200 HTTP/1.1 <br>
      *
      * The 'hostname' addresses the target host to which the HTTP Proxy server should forward
      * the connection. It is usually the FQDN of the Event Hubs or Service Bus, or the host
@@ -64,7 +64,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * @param connectionId Identifier for this connection.
      * @param connectionOptions Options used when creating the connection.
      * @param proxyOptions The options to use for proxy.
-     *
+     * @param peerDetails The peer details for this connection.
+     * @param metricsProvider The AMQP metrics provider.
      * @throws NullPointerException if {@code amqpHostname} or {@code proxyConfiguration} is null.
      * @throws IllegalStateException if a proxy address is unavailable for the given {@code proxyOptions}.
      */

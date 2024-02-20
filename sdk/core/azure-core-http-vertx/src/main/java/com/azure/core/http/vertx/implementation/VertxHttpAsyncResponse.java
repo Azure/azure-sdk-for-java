@@ -17,6 +17,12 @@ import java.nio.ByteBuffer;
 public final class VertxHttpAsyncResponse extends VertxHttpResponseBase {
     private volatile boolean closed;
 
+    /**
+     * Creates a http response.
+     *
+     * @param azureHttpRequest the original azure http request
+     * @param vertxHttpResponse the vertx http response
+     */
     public VertxHttpAsyncResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse) {
         super(azureHttpRequest, vertxHttpResponse.pause());
     }

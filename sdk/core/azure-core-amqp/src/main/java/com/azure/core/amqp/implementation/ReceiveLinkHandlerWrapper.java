@@ -32,22 +32,42 @@ public final class ReceiveLinkHandlerWrapper {
     private final ReceiveLinkHandler2 receiveLinkHandler2;
     private ClientLogger logger;
 
+    /**
+     * Creates an instance of {@link ReceiveLinkHandlerWrapper} that wraps {@link ReceiveLinkHandler}.
+     *
+     * @param receiveLinkHandler The receive link handler.
+     */
     public ReceiveLinkHandlerWrapper(ReceiveLinkHandler receiveLinkHandler) {
         this.isV2 = false;
         this.receiveLinkHandler = receiveLinkHandler;
         this.receiveLinkHandler2 = null;
     }
 
+    /**
+     * Creates an instance of {@link ReceiveLinkHandlerWrapper} that wraps {@link ReceiveLinkHandler2}.
+     *
+     * @param receiveLinkHandler2 The receive link handler.
+     */
     public ReceiveLinkHandlerWrapper(ReceiveLinkHandler2 receiveLinkHandler2) {
         this.isV2 = true;
         this.receiveLinkHandler = null;
         this.receiveLinkHandler2 = receiveLinkHandler2;
     }
 
+    /**
+     * Sets the logger.
+     *
+     * @param logger The logger.
+     */
     public void setLogger(ClientLogger logger) {
         this.logger = logger;
     }
 
+    /**
+     * Whether the receive link handler is v2.
+     *
+     * @return Whether the receive link handler is v2.
+     */
     public boolean isV2() {
         return this.isV2;
     }
@@ -56,10 +76,20 @@ public final class ReceiveLinkHandlerWrapper {
         return isV2 ? receiveLinkHandler2.getConnectionId() : receiveLinkHandler.getConnectionId();
     }
 
+    /**
+     * Gets the link name.
+     *
+     * @return The link name.
+     */
     public String getLinkName() {
         return isV2 ? receiveLinkHandler2.getLinkName() : receiveLinkHandler.getLinkName();
     }
 
+    /**
+     * Gets the hostname.
+     *
+     * @return The hostname.
+     */
     public String getHostname() {
         return isV2 ? receiveLinkHandler2.getHostname() : receiveLinkHandler.getHostname();
     }

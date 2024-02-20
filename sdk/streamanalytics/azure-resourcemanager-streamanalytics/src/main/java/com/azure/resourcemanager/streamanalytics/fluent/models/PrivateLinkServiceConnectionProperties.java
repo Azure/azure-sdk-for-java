@@ -5,50 +5,50 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.PrivateLinkConnectionState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Bag of properties defining a privatelinkServiceConnection. */
+/**
+ * Bag of properties defining a privatelinkServiceConnection.
+ */
 @Fluent
 public final class PrivateLinkServiceConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionProperties.class);
-
     /*
-     * The resource id of the private link service. Required on PUT
-     * (CreateOrUpdate) requests.
+     * The resource id of the private link service. Required on PUT (CreateOrUpdate) requests.
      */
     @JsonProperty(value = "privateLinkServiceId")
     private String privateLinkServiceId;
 
     /*
-     * The ID(s) of the group(s) obtained from the remote resource that this
-     * private endpoint should connect to. Required on PUT (CreateOrUpdate)
-     * requests.
+     * The ID(s) of the group(s) obtained from the remote resource that this private endpoint should connect to.
+     * Required on PUT (CreateOrUpdate) requests.
      */
     @JsonProperty(value = "groupIds")
     private List<String> groupIds;
 
     /*
-     * A message passed to the owner of the remote resource with this
-     * connection request. Restricted to 140 chars.
+     * A message passed to the owner of the remote resource with this connection request. Restricted to 140 chars.
      */
     @JsonProperty(value = "requestMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String requestMessage;
 
     /*
-     * A collection of read-only information about the state of the connection
-     * to the private remote resource.
+     * A collection of read-only information about the state of the connection to the private remote resource.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkConnectionState privateLinkServiceConnectionState;
 
     /**
+     * Creates an instance of PrivateLinkServiceConnectionProperties class.
+     */
+    public PrivateLinkServiceConnectionProperties() {
+    }
+
+    /**
      * Get the privateLinkServiceId property: The resource id of the private link service. Required on PUT
      * (CreateOrUpdate) requests.
-     *
+     * 
      * @return the privateLinkServiceId value.
      */
     public String privateLinkServiceId() {
@@ -58,7 +58,7 @@ public final class PrivateLinkServiceConnectionProperties {
     /**
      * Set the privateLinkServiceId property: The resource id of the private link service. Required on PUT
      * (CreateOrUpdate) requests.
-     *
+     * 
      * @param privateLinkServiceId the privateLinkServiceId value to set.
      * @return the PrivateLinkServiceConnectionProperties object itself.
      */
@@ -68,9 +68,9 @@ public final class PrivateLinkServiceConnectionProperties {
     }
 
     /**
-     * Get the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private endpoint
-     * should connect to. Required on PUT (CreateOrUpdate) requests.
-     *
+     * Get the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private
+     * endpoint should connect to. Required on PUT (CreateOrUpdate) requests.
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -78,9 +78,9 @@ public final class PrivateLinkServiceConnectionProperties {
     }
 
     /**
-     * Set the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private endpoint
-     * should connect to. Required on PUT (CreateOrUpdate) requests.
-     *
+     * Set the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private
+     * endpoint should connect to. Required on PUT (CreateOrUpdate) requests.
+     * 
      * @param groupIds the groupIds value to set.
      * @return the PrivateLinkServiceConnectionProperties object itself.
      */
@@ -92,7 +92,7 @@ public final class PrivateLinkServiceConnectionProperties {
     /**
      * Get the requestMessage property: A message passed to the owner of the remote resource with this connection
      * request. Restricted to 140 chars.
-     *
+     * 
      * @return the requestMessage value.
      */
     public String requestMessage() {
@@ -102,7 +102,7 @@ public final class PrivateLinkServiceConnectionProperties {
     /**
      * Get the privateLinkServiceConnectionState property: A collection of read-only information about the state of the
      * connection to the private remote resource.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkConnectionState privateLinkServiceConnectionState() {
@@ -112,19 +112,19 @@ public final class PrivateLinkServiceConnectionProperties {
     /**
      * Set the privateLinkServiceConnectionState property: A collection of read-only information about the state of the
      * connection to the private remote resource.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateLinkServiceConnectionProperties object itself.
      */
-    public PrivateLinkServiceConnectionProperties withPrivateLinkServiceConnectionState(
-        PrivateLinkConnectionState privateLinkServiceConnectionState) {
+    public PrivateLinkServiceConnectionProperties
+        withPrivateLinkServiceConnectionState(PrivateLinkConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

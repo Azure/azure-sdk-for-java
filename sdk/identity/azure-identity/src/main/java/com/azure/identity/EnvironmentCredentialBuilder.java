@@ -39,6 +39,13 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
     private String authorityHost;
 
     /**
+     * Constructs an instance of EnvironmentCredentialBuilder.
+     */
+    public EnvironmentCredentialBuilder() {
+        super();
+    }
+
+    /**
      * Specifies the Microsoft Entra endpoint to acquire tokens.
      * @param authorityHost the Microsoft Entra endpoint
      * @return An updated instance of this builder with the authority host set as specified.

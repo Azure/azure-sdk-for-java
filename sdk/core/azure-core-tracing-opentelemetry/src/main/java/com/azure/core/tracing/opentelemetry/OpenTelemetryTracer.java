@@ -16,7 +16,6 @@ import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.api.trace.TracerBuilder;
 import io.opentelemetry.api.trace.TracerProvider;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.propagation.TextMapGetter;
@@ -41,12 +40,16 @@ import java.util.function.Function;
 public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private static final StartSpanOptions DEFAULT_SPAN_START_OPTIONS = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
     private static final TextMapPropagator TRACE_CONTEXT_FORMAT = W3CTraceContextPropagator.getInstance();
+    private static final String SCHEMA_URL = "https://opentelemetry.io/schemas/1.23.1";
+    private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryTracer.class);
+    private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
+    private static final String SUPPRESSED_SPAN_FLAG = "suppressed-span-flag";
+    private static final String CLIENT_METHOD_CALL_FLAG = "client-method-call-flag";
+    private static final String AZ_TRACING_NAMESPACE_KEY = "az.namespace";
     private final Tracer tracer;
     private final boolean isEnabled;
 
     private final String azNamespace;
-
-    private final OpenTelemetrySchemaVersion schemaVersion;
 
     /**
      * Creates new {@link OpenTelemetryTracer} using default global tracer -
@@ -63,42 +66,16 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      */
     OpenTelemetryTracer(String libraryName, String libraryVersion, String azNamespace, TracingOptions options) {
-        TracerProvider otelProvider = null;
-        OpenTelemetrySchemaVersion otelSchemaVersion = null;
 
-        if (options != null && options.isEnabled() && options instanceof OpenTelemetryTracingOptions) {
-            OpenTelemetryTracingOptions otelOptions = (OpenTelemetryTracingOptions) options;
-            otelProvider = otelOptions.getOpenTelemetryProvider();
-            otelSchemaVersion = otelOptions.getSchemaVersion();
-        }
-
-        if (otelProvider == null) {
-            otelProvider = GlobalOpenTelemetry.getTracerProvider();
-        }
-
-        if (otelSchemaVersion == null) {
-            otelSchemaVersion = OpenTelemetrySchemaVersion.getLatest();
-        }
-
+        TracerProvider otelProvider = getTracerProvider(options);
         this.isEnabled = (options == null || options.isEnabled()) && otelProvider != TracerProvider.noop();
         this.azNamespace = azNamespace;
-        this.schemaVersion = otelSchemaVersion;
-        TracerBuilder tracerBuilder = otelProvider.tracerBuilder(libraryName);
-
-        if (libraryVersion != null) {
-            tracerBuilder.setInstrumentationVersion(libraryVersion);
-        }
-
-        this.tracer =  tracerBuilder
-            .setSchemaUrl("https://opentelemetry.io/schemas/" + otelSchemaVersion.toString())
+        this.tracer = otelProvider
+            .tracerBuilder(libraryName)
+            .setInstrumentationVersion(libraryVersion)
+            .setSchemaUrl(SCHEMA_URL)
             .build();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryTracer.class);
-    private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
-    private static final String SUPPRESSED_SPAN_FLAG = "suppressed-span-flag";
-    private static final String CLIENT_METHOD_CALL_FLAG = "client-method-call-flag";
-    private static final String AZ_TRACING_NAMESPACE_KEY = "az.namespace";
 
     /**
      * {@inheritDoc}
@@ -143,7 +120,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
             String tracingNamespace = getAzNamespace(context);
             if (tracingNamespace != null) {
-                OpenTelemetryUtils.addAttribute(span, AZ_TRACING_NAMESPACE_KEY, tracingNamespace, schemaVersion);
+                OpenTelemetryUtils.addAttribute(span, AZ_TRACING_NAMESPACE_KEY, tracingNamespace);
             }
         }
 
@@ -195,7 +172,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         if (options.getAttributes() != null) {
-            Attributes beforeSamplingAttributes = OpenTelemetryUtils.convert(options.getAttributes(), this.schemaVersion);
+            Attributes beforeSamplingAttributes = OpenTelemetryUtils.convert(options.getAttributes());
             // if some attributes are provided, set them
             spanBuilder.setAllAttributes(beforeSamplingAttributes);
         }
@@ -204,7 +181,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             for (TracingLink link : options.getLinks()) {
                 SpanContext spanContext = getOrNull(link.getContext(), SPAN_CONTEXT_KEY, SpanContext.class);
                 spanBuilder.addLink(spanContext != null ? spanContext : SpanContext.getInvalid(),
-                    OpenTelemetryUtils.convert(link.getAttributes(), schemaVersion));
+                    OpenTelemetryUtils.convert(link.getAttributes()));
             }
         }
         return spanBuilder;
@@ -231,7 +208,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         if (span.isRecording()) {
-            OpenTelemetryUtils.addAttribute(span, key, value, schemaVersion);
+            OpenTelemetryUtils.addAttribute(span, key, value);
         }
     }
 
@@ -257,7 +234,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         if (span.isRecording()) {
-            OpenTelemetryUtils.addAttribute(span, key, value, schemaVersion);
+            OpenTelemetryUtils.addAttribute(span, key, value);
         }
     }
 
@@ -272,10 +249,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         Span span = getSpanOrNull(context);
         if (span != null) {
-            if (span.isRecording()) {
-                span = OpenTelemetryUtils.setError(span, errorMessage, throwable);
-            }
-
+            span = OpenTelemetryUtils.setError(span, errorMessage, throwable);
             span.end();
         }
     }
@@ -308,6 +282,11 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         @Override
         @SuppressWarnings("deprecation")
         public String get(Function<String, String> headerGetter, String headerName) {
+            if (headerGetter == null) {
+                // headerGetter is annotated with Nullable, guard.
+                return null;
+            }
+
             String value = headerGetter.apply(headerName);
             if ("traceparent".equals(headerName) && value == null) {
                 value = headerGetter.apply(DIAGNOSTIC_ID_KEY);
@@ -349,7 +328,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             return;
         }
 
-        Attributes otelAttributes = OpenTelemetryUtils.convert(traceEventAttributes, schemaVersion);
+        Attributes otelAttributes = OpenTelemetryUtils.convert(traceEventAttributes);
         if (timestamp == null) {
             currentSpan.addEvent(eventName, otelAttributes);
         } else {
@@ -432,5 +411,15 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private static boolean getBoolean(String key, Context context) {
         Optional<Object> flag = context.getData(key);
         return flag.isPresent() && Boolean.TRUE.equals(flag.get());
+    }
+
+    private static TracerProvider getTracerProvider(TracingOptions options) {
+        if (options != null && options.isEnabled()
+            && options instanceof OpenTelemetryTracingOptions
+            && ((OpenTelemetryTracingOptions) options).getOpenTelemetryProvider() != null) {
+            return ((OpenTelemetryTracingOptions) options).getOpenTelemetryProvider();
+        }
+
+        return GlobalOpenTelemetry.getTracerProvider();
     }
 }

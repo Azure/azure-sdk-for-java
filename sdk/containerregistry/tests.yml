@@ -16,3 +16,8 @@ stages:
         AZURE_CLIENT_SECRET: $(CONTAINERREGISTRY_CLIENT_SECRET)
         AZURE_TENANT_ID: $(CONTAINERREGISTRY_TENANT_ID)
         AZURE_SUBSCRIPTION_ID: $(CONTAINERREGISTRY_SUBSCRIPTION_ID)
+      MatrixConfigs:
+        - Name: Container_registry_live_test
+          Path: sdk/containerregistry/platform-matrix.json
+          Selection: sparse
+          GenerateVMJobs: true

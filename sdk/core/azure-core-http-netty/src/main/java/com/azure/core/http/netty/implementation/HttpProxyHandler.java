@@ -98,6 +98,13 @@ public final class HttpProxyHandler extends ProxyHandler {
     private HttpResponseStatus status;
     private HttpHeaders innerHeaders;
 
+    /**
+     * Creates an instance of HttpProxyHandler.
+     *
+     * @param proxyAddress The address of the proxy.
+     * @param challengeHandler The challenge handler to use when authenticating with the proxy.
+     * @param proxyChallengeHolderReference The reference to the proxy challenge holder.
+     */
     public HttpProxyHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
         AtomicReference<ChallengeHolder> proxyChallengeHolderReference) {
         super(proxyAddress);

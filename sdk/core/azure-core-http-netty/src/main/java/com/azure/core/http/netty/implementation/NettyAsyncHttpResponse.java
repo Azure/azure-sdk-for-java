@@ -29,6 +29,15 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     private final Connection reactorNettyConnection;
     private final boolean disableBufferCopy;
 
+    /**
+     * Creates a new response.
+     *
+     * @param reactorNettyResponse The Reactor Netty HTTP response.
+     * @param reactorNettyConnection The Reactor Netty connection.
+     * @param httpRequest The HTTP request that initiated this response.
+     * @param disableBufferCopy Whether to disable copying the response body into a new buffer.
+     * @param headersEagerlyConverted Whether the headers were eagerly converted.
+     */
     public NettyAsyncHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
         HttpRequest httpRequest, boolean disableBufferCopy, boolean headersEagerlyConverted) {
         super(reactorNettyResponse, httpRequest, headersEagerlyConverted);
@@ -108,6 +117,11 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     }
 
     // used for testing only
+    /**
+     * Gets the underlying Reactor Netty connection.
+     *
+     * @return The underlying Reactor Netty connection.
+     */
     public Connection internConnection() {
         return reactorNettyConnection;
     }

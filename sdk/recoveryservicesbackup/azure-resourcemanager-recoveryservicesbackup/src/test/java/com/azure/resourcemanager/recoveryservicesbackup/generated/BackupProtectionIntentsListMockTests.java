@@ -33,47 +33,35 @@ public final class BackupProtectionIntentsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureWorkload\",\"sourceResourceId\":\"qxvhcsyhzlwxa\",\"itemId\":\"ov\",\"policyId\":\"exdnd\",\"protectionState\":\"Protecting\"},\"eTag\":\"ead\",\"location\":\"rzmwn\",\"tags\":{\"mmagoaqylkjzt\":\"agttm\"},\"id\":\"iua\",\"name\":\"jcg\",\"type\":\"xitp\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"MAB\",\"sourceResourceId\":\"tcjb\",\"itemId\":\"vivuzqymtuowo\",\"policyId\":\"gitsqh\",\"protectionState\":\"Protecting\"},\"eTag\":\"zcdba\",\"location\":\"fzndscxmxeatkd\",\"tags\":{\"yibqbnao\":\"nrd\",\"alfihcjmobcancd\":\"hjrmkuhmaxl\",\"vaknokzwjj\":\"xxqcwgaxf\",\"tixldzyyfytpqs\":\"r\"},\"id\":\"x\",\"name\":\"mmpuj\",\"type\":\"vyqlkjuvsmbmslzo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ProtectionIntentResource> response =
-            manager.backupProtectionIntents().list("byl", "ui", "vxva", "vcrk", com.azure.core.util.Context.NONE);
+        PagedIterable<ProtectionIntentResource> response = manager.backupProtectionIntents().list("qkaadlknw",
+            "oanniyopetxi", "cnrly", "nucaephblkwqpat", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rzmwn", response.iterator().next().location());
-        Assertions.assertEquals("agttm", response.iterator().next().tags().get("mmagoaqylkjzt"));
-        Assertions
-            .assertEquals(
-                BackupManagementType.AZURE_WORKLOAD, response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("qxvhcsyhzlwxa", response.iterator().next().properties().sourceResourceId());
-        Assertions.assertEquals("ov", response.iterator().next().properties().itemId());
-        Assertions.assertEquals("exdnd", response.iterator().next().properties().policyId());
+        Assertions.assertEquals("fzndscxmxeatkd", response.iterator().next().location());
+        Assertions.assertEquals("nrd", response.iterator().next().tags().get("yibqbnao"));
+        Assertions.assertEquals(BackupManagementType.MAB,
+            response.iterator().next().properties().backupManagementType());
+        Assertions.assertEquals("tcjb", response.iterator().next().properties().sourceResourceId());
+        Assertions.assertEquals("vivuzqymtuowo", response.iterator().next().properties().itemId());
+        Assertions.assertEquals("gitsqh", response.iterator().next().properties().policyId());
         Assertions.assertEquals(ProtectionStatus.PROTECTING, response.iterator().next().properties().protectionState());
-        Assertions.assertEquals("ead", response.iterator().next().etag());
+        Assertions.assertEquals("zcdba", response.iterator().next().etag());
     }
 }

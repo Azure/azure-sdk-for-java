@@ -37,8 +37,8 @@ public final class GeoLinearRing implements JsonSerializable<GeoLinearRing> {
 
         int size = coordinates.size();
         if (size < 4) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("A linear ring requires at least 4 coordinates."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("A linear ring requires at least 4 coordinates."));
         }
 
         if (!Objects.equals(coordinates.get(0), coordinates.get(size - 1))) {

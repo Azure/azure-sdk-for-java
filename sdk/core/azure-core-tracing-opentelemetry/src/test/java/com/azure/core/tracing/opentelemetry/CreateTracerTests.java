@@ -123,7 +123,7 @@ public class CreateTracerTests {
         SpanData data = getSpanData(span);
         assertEquals(3, data.getAttributes().size());
         assertEquals("foo", data.getAttributes().get(AttributeKey.stringKey("messaging.destination.name")));
-        assertEquals("addr", data.getAttributes().get(AttributeKey.stringKey("net.peer.name")));
+        assertEquals("addr", data.getAttributes().get(AttributeKey.stringKey("server.address")));
         assertEquals(42, data.getAttributes().get(AttributeKey.longKey("not-mapped")));
     }
 
@@ -138,7 +138,7 @@ public class CreateTracerTests {
         Context span = tracer.start("test", Context.NONE);
         ReadableSpan readableSpan = getReadableSpan(span);
         assertEquals("test", readableSpan.getInstrumentationScopeInfo().getName());
-        assertEquals("https://opentelemetry.io/schemas/1.17.0", readableSpan.getInstrumentationScopeInfo().getSchemaUrl());
+        assertEquals("https://opentelemetry.io/schemas/1.23.1", readableSpan.getInstrumentationScopeInfo().getSchemaUrl());
         assertNull(readableSpan.getInstrumentationScopeInfo().getVersion());
     }
 
@@ -153,7 +153,7 @@ public class CreateTracerTests {
         Context span = tracer.start("test", Context.NONE);
         ReadableSpan readableSpan = getReadableSpan(span);
         assertEquals("test", readableSpan.getInstrumentationScopeInfo().getName());
-        assertEquals("https://opentelemetry.io/schemas/1.17.0", readableSpan.getInstrumentationScopeInfo().getSchemaUrl());
+        assertEquals("https://opentelemetry.io/schemas/1.23.1", readableSpan.getInstrumentationScopeInfo().getSchemaUrl());
         assertEquals("1.2.3-beta.45", readableSpan.getInstrumentationScopeInfo().getVersion());
     }
 

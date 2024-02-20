@@ -5,17 +5,15 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.SubscriptionQuota;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the GetQuotas operation. It contains a list of quotas for the subscription in a particular region. */
+/**
+ * Result of the GetQuotas operation. It contains a list of quotas for the subscription in a particular region.
+ */
 @Immutable
 public final class SubscriptionQuotasListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionQuotasListResultInner.class);
-
     /*
      * List of quotas for the subscription in a particular region.
      */
@@ -23,8 +21,14 @@ public final class SubscriptionQuotasListResultInner {
     private List<SubscriptionQuota> value;
 
     /**
+     * Creates an instance of SubscriptionQuotasListResultInner class.
+     */
+    public SubscriptionQuotasListResultInner() {
+    }
+
+    /**
      * Get the value property: List of quotas for the subscription in a particular region.
-     *
+     * 
      * @return the value value.
      */
     public List<SubscriptionQuota> value() {
@@ -33,7 +37,7 @@ public final class SubscriptionQuotasListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

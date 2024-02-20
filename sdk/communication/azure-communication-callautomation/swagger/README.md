@@ -28,7 +28,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ``` yaml
 tag: package-2023-10-03-preview
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/4a12c91e35ff85ea2fbbb3b0bab0d432a68d00df/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/65b473016bf28dd3b48e3fcda4712489d2b053ad/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -247,6 +247,8 @@ directive:
 - remove-model: DialogStarted
 - remove-model: DialogTransfer
 - remove-model: DialogFailed
+- remove-model: TeamsComplianceRecordingStateChanged
+- remove-model: TeamsRecordingStateChanged
 - remove-model: TranscriptionStarted
 - remove-model: TranscriptionResumed
 - remove-model: TranscriptionStopped
