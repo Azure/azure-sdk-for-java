@@ -62,14 +62,26 @@ public class ProxyOptions {
     private static final Pattern UNESCAPED_PERIOD = Pattern.compile("(?<!\\\\)\\.");
     private static final Pattern ANY = Pattern.compile("\\*");
 
-    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY = ConfigurationPropertyBuilder
-        .ofString(ConfigurationProperties.HTTP_PROXY_NON_PROXY_HOSTS).shared(true).logValue(true).build();
-    private static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder
-        .ofString(ConfigurationProperties.HTTP_PROXY_HOST).shared(true).logValue(true).build();
-    private static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder
-        .ofInteger(ConfigurationProperties.HTTP_PROXY_PORT).shared(true).defaultValue(DEFAULT_HTTPS_PORT).build();
-    private static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder
-        .ofString(ConfigurationProperties.HTTP_PROXY_USER).shared(true).logValue(true).build();
+    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_NON_PROXY_HOSTS)
+            .shared(true)
+            .logValue(true)
+            .build();
+    private static final ConfigurationProperty<String> HOST_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_HOST)
+            .shared(true)
+            .logValue(true)
+            .build();
+    private static final ConfigurationProperty<Integer> PORT_PROPERTY
+        = ConfigurationPropertyBuilder.ofInteger(ConfigurationProperties.HTTP_PROXY_PORT)
+            .shared(true)
+            .defaultValue(DEFAULT_HTTPS_PORT)
+            .build();
+    private static final ConfigurationProperty<String> USER_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_USER)
+            .shared(true)
+            .logValue(true)
+            .build();
     private static final ConfigurationProperty<String> PASSWORD_PROPERTY
         = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_PASSWORD).shared(true).build();
 
@@ -282,9 +294,9 @@ public class ProxyOptions {
             URL proxyUrl = ImplUtils.createUrl(proxyConfiguration);
             int port = (proxyUrl.getPort() == -1) ? proxyUrl.getDefaultPort() : proxyUrl.getPort();
 
-            InetSocketAddress socketAddress
-                = (createUnresolved) ? InetSocketAddress.createUnresolved(proxyUrl.getHost(), port)
-                    : new InetSocketAddress(proxyUrl.getHost(), port);
+            InetSocketAddress socketAddress = (createUnresolved)
+                ? InetSocketAddress.createUnresolved(proxyUrl.getHost(), port)
+                : new InetSocketAddress(proxyUrl.getHost(), port);
 
             ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, socketAddress);
 
@@ -467,7 +479,10 @@ public class ProxyOptions {
                 sanitizedNonProxyHost = Pattern.quote(sanitizedNonProxyHost);
             }
 
-            sanitizedBuilder.append("(").append(prefixWildcard).append(sanitizedNonProxyHost).append(suffixWildcard)
+            sanitizedBuilder.append("(")
+                .append(prefixWildcard)
+                .append(sanitizedNonProxyHost)
+                .append(suffixWildcard)
                 .append(")");
         }
 

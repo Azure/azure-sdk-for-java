@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -13,9 +14,7 @@ import com.azure.json.implementation.jackson.core.exc.StreamWriteException;
  * to output  content in wrong context (non-matching end-array or end-object,
  * for example).
  */
-public class JsonGenerationException
-    extends StreamWriteException
-{
+public class JsonGenerationException extends StreamWriteException {
     private final static long serialVersionUID = 123; // eclipse complains otherwise
 
     @Deprecated // since 2.7
@@ -43,7 +42,7 @@ public class JsonGenerationException
         super(msg, g);
         _processor = g;
     }
-    
+
     // @since 2.7
     public JsonGenerationException(String msg, Throwable rootCause, JsonGenerator g) {
         super(msg, rootCause, g);
@@ -68,5 +67,7 @@ public class JsonGenerationException
 
     // NOTE: overloaded in 2.13 just to retain binary compatibility with 2.12 (remove from 3.0)
     @Override
-    public JsonGenerator getProcessor() { return _processor; }
+    public JsonGenerator getProcessor() {
+        return _processor;
+    }
 }

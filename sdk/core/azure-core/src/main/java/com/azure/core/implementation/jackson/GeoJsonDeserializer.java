@@ -186,7 +186,8 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
         while (fieldsIterator.hasNext()) {
             Map.Entry<String, JsonNode> field = fieldsIterator.next();
             String propertyName = field.getKey();
-            if (propertyName.equalsIgnoreCase(TYPE_PROPERTY) || propertyName.equalsIgnoreCase(BOUNDING_BOX_PROPERTY)
+            if (propertyName.equalsIgnoreCase(TYPE_PROPERTY)
+                || propertyName.equalsIgnoreCase(BOUNDING_BOX_PROPERTY)
                 || propertyName.equalsIgnoreCase(knownProperty)) {
                 continue;
             }
@@ -225,8 +226,9 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
 
             case OBJECT:
                 Map<String, Object> object = new HashMap<>();
-                node.fields().forEachRemaining(
-                    field -> object.put(field.getKey(), readAdditionalPropertyValue(field.getValue())));
+                node.fields()
+                    .forEachRemaining(
+                        field -> object.put(field.getKey(), readAdditionalPropertyValue(field.getValue())));
 
                 return object;
 

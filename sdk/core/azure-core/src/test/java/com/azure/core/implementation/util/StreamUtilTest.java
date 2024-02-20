@@ -87,8 +87,9 @@ public class StreamUtilTest {
         byte[] bytes = new byte[64];
         fillArray(bytes);
 
-        List<ByteBuffer> byteBuffers = StreamUtil
-            .readStreamToListOfByteBuffers(new ByteArrayInputStream(bytes), (long) bytes.length, 8, 128).getT2();
+        List<ByteBuffer> byteBuffers
+            = StreamUtil.readStreamToListOfByteBuffers(new ByteArrayInputStream(bytes), (long) bytes.length, 8, 128)
+                .getT2();
 
         assertEquals(1, byteBuffers.size());
         assertEquals(bytes.length, byteBuffers.get(0).capacity());
@@ -105,8 +106,9 @@ public class StreamUtilTest {
         byte[] bytes = new byte[1024];
         fillArray(bytes);
 
-        List<ByteBuffer> byteBuffers = StreamUtil
-            .readStreamToListOfByteBuffers(new ByteArrayInputStream(bytes), (long) bytes.length, 8, 128).getT2();
+        List<ByteBuffer> byteBuffers
+            = StreamUtil.readStreamToListOfByteBuffers(new ByteArrayInputStream(bytes), (long) bytes.length, 8, 128)
+                .getT2();
 
         assertEquals(8, byteBuffers.size());
         for (ByteBuffer byteBuffer : byteBuffers) {
@@ -129,8 +131,9 @@ public class StreamUtilTest {
         byte[] bytes = new byte[1025];
         fillArray(bytes);
 
-        List<ByteBuffer> byteBuffers = StreamUtil
-            .readStreamToListOfByteBuffers(new ByteArrayInputStream(bytes), (long) bytes.length - 1, 8, 128).getT2();
+        List<ByteBuffer> byteBuffers
+            = StreamUtil.readStreamToListOfByteBuffers(new ByteArrayInputStream(bytes), (long) bytes.length - 1, 8, 128)
+                .getT2();
 
         assertEquals(9, byteBuffers.size());
         for (ByteBuffer byteBuffer : byteBuffers) {

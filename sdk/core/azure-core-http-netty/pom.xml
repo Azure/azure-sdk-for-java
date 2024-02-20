@@ -65,6 +65,7 @@
 
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+    <spotless.skip>false</spotless.skip>
 
     <netty.version>4.1.101.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
     <netty-tcnative.version>2.0.62.Final</netty-tcnative.version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->

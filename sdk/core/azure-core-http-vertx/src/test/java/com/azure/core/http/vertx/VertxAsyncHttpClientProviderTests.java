@@ -36,8 +36,8 @@ public class VertxAsyncHttpClientProviderTests {
 
     @Test
     public void nullOptionsReturnsBaseClient() {
-        VertxAsyncHttpClient httpClient = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider()
-            .createInstance(null);
+        VertxAsyncHttpClient httpClient
+            = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider().createInstance(null);
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
@@ -52,8 +52,8 @@ public class VertxAsyncHttpClientProviderTests {
 
     @Test
     public void defaultOptionsReturnsBaseClient() {
-        VertxAsyncHttpClient httpClient = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider()
-            .createInstance(new HttpClientOptions());
+        VertxAsyncHttpClient httpClient
+            = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider().createInstance(new HttpClientOptions());
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
@@ -73,8 +73,8 @@ public class VertxAsyncHttpClientProviderTests {
 
         HttpClientOptions clientOptions = new HttpClientOptions().setProxyOptions(proxyOptions);
 
-        VertxAsyncHttpClient httpClient = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider()
-            .createInstance(clientOptions);
+        VertxAsyncHttpClient httpClient
+            = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider().createInstance(clientOptions);
 
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 
@@ -96,14 +96,13 @@ public class VertxAsyncHttpClientProviderTests {
     @Test
     public void optionsWithTimeouts() {
         Duration timeout = Duration.ofMillis(15000);
-        HttpClientOptions clientOptions = new HttpClientOptions()
-            .setConnectTimeout(timeout)
+        HttpClientOptions clientOptions = new HttpClientOptions().setConnectTimeout(timeout)
             .setConnectionIdleTimeout(timeout)
             .setReadTimeout(timeout)
             .setWriteTimeout(timeout);
 
-        VertxAsyncHttpClient httpClient = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider()
-            .createInstance(clientOptions);
+        VertxAsyncHttpClient httpClient
+            = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider().createInstance(clientOptions);
 
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 
@@ -120,8 +119,8 @@ public class VertxAsyncHttpClientProviderTests {
         CreateCountVertxProvider mockVertxProvider = new CreateCountVertxProvider(vertx);
 
         try {
-            Vertx vertxSelectedByBuilder = VertxAsyncHttpClientBuilder.getVertx(
-                Collections.singletonList((VertxProvider) mockVertxProvider).iterator());
+            Vertx vertxSelectedByBuilder = VertxAsyncHttpClientBuilder
+                .getVertx(Collections.singletonList((VertxProvider) mockVertxProvider).iterator());
 
             assertEquals(1, mockVertxProvider.getCreateCount());
             assertSame(vertx, vertxSelectedByBuilder);
@@ -140,8 +139,8 @@ public class VertxAsyncHttpClientProviderTests {
         CreateCountVertxProvider mockVertxProviderB = new CreateCountVertxProvider(vertx);
 
         try {
-            Vertx vertxSelectedByBuilder = VertxAsyncHttpClientBuilder.getVertx(
-                Arrays.asList((VertxProvider) mockVertxProviderA, mockVertxProviderB).iterator());
+            Vertx vertxSelectedByBuilder = VertxAsyncHttpClientBuilder
+                .getVertx(Arrays.asList((VertxProvider) mockVertxProviderA, mockVertxProviderB).iterator());
 
             // Only the first provider should have been invoked
             assertEquals(1, mockVertxProviderA.getCreateCount());

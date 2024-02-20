@@ -94,7 +94,8 @@ public final class GeoPointCollection extends GeoObject {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject().writeStringField("type", GeoObjectType.MULTI_POINT.toString())
+        jsonWriter.writeStartObject()
+            .writeStringField("type", GeoObjectType.MULTI_POINT.toString())
             .writeArrayField("coordinates", points, (writer, geoPoint) -> geoPoint.getCoordinates().toJson(writer))
             .writeJsonField("bbox", getBoundingBox());
 

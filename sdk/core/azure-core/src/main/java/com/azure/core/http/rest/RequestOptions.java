@@ -57,18 +57,18 @@ import java.util.function.Consumer;
  *   "category": {
  *     "id": 0,
  *     "name": "string"
- *   },
- *   "name": "doggie",
- *   "photoUrls": [
- *     "string"
- *   ],
- *   "tags": [
- *     {
- *       "id": 0,
- *       "name": "string"
- *     }
- *   ],
- *   "status": "available"
+ * },
+ * "name": "doggie",
+ * "photoUrls": [
+ * "string"
+ * ],
+ * "tags": [
+ * {
+ * "id": 0,
+ * "name": "string"
+ * }
+ * ],
+ * "status": "available"
  * }
  * }</pre>
  *

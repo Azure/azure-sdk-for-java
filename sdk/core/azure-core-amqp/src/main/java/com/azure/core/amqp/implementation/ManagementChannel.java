@@ -46,11 +46,11 @@ public class ManagementChannel implements AmqpManagementNode {
      * @param entityPath The entity path for the message broker.
      * @param tokenManager Manages tokens for authorization.
      */
-    public ManagementChannel(AmqpChannelProcessor<RequestResponseChannel> createChannel,
-        String fullyQualifiedNamespace, String entityPath, TokenManager tokenManager) {
+    public ManagementChannel(AmqpChannelProcessor<RequestResponseChannel> createChannel, String fullyQualifiedNamespace,
+        String entityPath, TokenManager tokenManager) {
         this.createChannel = Objects.requireNonNull(createChannel, "'createChannel' cannot be null.");
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null.");
+        this.fullyQualifiedNamespace
+            = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
 
         Map<String, Object> globalLoggingContext = new HashMap<>();
@@ -66,8 +66,8 @@ public class ManagementChannel implements AmqpManagementNode {
             final Message protonJMessage = MessageUtils.toProtonJMessage(message);
 
             return channel.sendWithAck(protonJMessage)
-                .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) ->
-                    handleResponse(responseMessage, sink, channel.getErrorContext()))
+                .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) -> handleResponse(
+                    responseMessage, sink, channel.getErrorContext()))
                 .switchIfEmpty(errorIfEmpty(channel, null));
         }));
     }
@@ -79,8 +79,8 @@ public class ManagementChannel implements AmqpManagementNode {
             final DeliveryState protonJDeliveryState = MessageUtils.toProtonJDeliveryState(deliveryOutcome);
 
             return channel.sendWithAck(protonJMessage, protonJDeliveryState)
-                .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) ->
-                    handleResponse(responseMessage, sink, channel.getErrorContext()))
+                .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) -> handleResponse(
+                    responseMessage, sink, channel.getErrorContext()))
                 .switchIfEmpty(errorIfEmpty(channel, deliveryOutcome.getDeliveryState()));
         }));
     }
@@ -131,14 +131,14 @@ public class ManagementChannel implements AmqpManagementNode {
         sink.error(throwable);
     }
 
-    private <T> Mono<T> errorIfEmpty(RequestResponseChannel channel, com.azure.core.amqp.models.DeliveryState deliveryState) {
+    private <T> Mono<T> errorIfEmpty(RequestResponseChannel channel,
+        com.azure.core.amqp.models.DeliveryState deliveryState) {
         return Mono.error(() -> {
-            String error = String.format(
-                "entityPath[%s] deliveryState[%s] No response received from management channel.", entityPath, deliveryState);
+            String error
+                = String.format("entityPath[%s] deliveryState[%s] No response received from management channel.",
+                    entityPath, deliveryState);
             AmqpException exception = new AmqpException(true, error, channel.getErrorContext());
-            return logger.atError()
-                .addKeyValue(DELIVERY_STATE_KEY, deliveryState)
-                .log(exception);
+            return logger.atError().addKeyValue(DELIVERY_STATE_KEY, deliveryState).log(exception);
         });
     }
 
@@ -151,10 +151,11 @@ public class ManagementChannel implements AmqpManagementNode {
                 if (RequestResponseUtils.isSuccessful(response)) {
                     sink.complete();
                 } else {
-                    final String message = String.format("User does not have authorization to perform operation "
-                        + "on entity [%s]. Response: [%s]", entityPath, response);
-                    sink.error(ExceptionUtil.amqpResponseCodeToException(response.getValue(), message,
-                        getErrorContext()));
+                    final String message = String.format(
+                        "User does not have authorization to perform operation " + "on entity [%s]. Response: [%s]",
+                        entityPath, response);
+                    sink.error(
+                        ExceptionUtil.amqpResponseCodeToException(response.getValue(), message, getErrorContext()));
                 }
             });
     }

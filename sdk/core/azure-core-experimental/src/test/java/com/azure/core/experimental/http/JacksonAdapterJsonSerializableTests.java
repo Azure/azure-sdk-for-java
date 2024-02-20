@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 public class JacksonAdapterJsonSerializableTests {
     private static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final SimpleJsonSerializable OBJECT = new SimpleJsonSerializable(true, 10, 10.0, "10");

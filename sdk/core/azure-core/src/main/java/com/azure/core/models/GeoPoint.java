@@ -101,8 +101,10 @@ public final class GeoPoint extends GeoObject {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject().writeStringField("type", GeoObjectType.POINT.toString())
-            .writeJsonField("coordinates", coordinates).writeJsonField("bbox", getBoundingBox());
+        jsonWriter.writeStartObject()
+            .writeStringField("type", GeoObjectType.POINT.toString())
+            .writeJsonField("coordinates", coordinates)
+            .writeJsonField("bbox", getBoundingBox());
 
         return writeCustomProperties(jsonWriter).writeEndObject();
     }

@@ -503,7 +503,8 @@ public final class JsonPatchDocument implements JsonSerializable<JsonPatchDocume
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return (CoreUtils.isNullOrEmpty(operations)) ? jsonWriter
+        return (CoreUtils.isNullOrEmpty(operations))
+            ? jsonWriter
             : jsonWriter.writeArray(operations, JsonWriter::writeJson);
     }
 

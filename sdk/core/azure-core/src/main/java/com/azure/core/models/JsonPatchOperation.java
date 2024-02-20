@@ -98,7 +98,9 @@ final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
         }
 
         JsonPatchOperation other = (JsonPatchOperation) obj;
-        return Objects.equals(op, other.op) && Objects.equals(from, other.from) && Objects.equals(path, other.path)
+        return Objects.equals(op, other.op)
+            && Objects.equals(from, other.from)
+            && Objects.equals(path, other.path)
             && Objects.equals(value, other.value);
     }
 
@@ -125,7 +127,9 @@ final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject().writeStringField("op", op.toString()).writeStringField("from", from)
+        jsonWriter.writeStartObject()
+            .writeStringField("op", op.toString())
+            .writeStringField("from", from)
             .writeStringField("path", path);
 
         if (value.isInitialized()) {

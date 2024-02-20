@@ -10,7 +10,7 @@ import com.azure.core.util.Configuration;
  * {@link Configuration}.
  *
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
- *        to return the concrete type, rather than the trait type.
+ * to return the concrete type, rather than the trait type.
  * @see com.azure.core.client.traits
  * @see Configuration
  */

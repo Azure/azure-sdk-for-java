@@ -55,9 +55,8 @@ public final class ManagementErrorDeserializer extends StdDeserializer<Object> {
         SimpleModule module = new SimpleModule();
         module.setDeserializerModifier(new BeanDeserializerModifier() {
             @Override
-            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config,
-                                                          BeanDescription beanDesc,
-                                                          JsonDeserializer<?> deserializer) {
+            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
+                JsonDeserializer<?> deserializer) {
                 if (ManagementError.class.isAssignableFrom(beanDesc.getBeanClass())) {
                     // Register 'ManagementErrorDeserializer' for class and subclass of 'ManagementError'
                     return new ManagementErrorDeserializer(beanDesc.getBeanClass(), mapper);
