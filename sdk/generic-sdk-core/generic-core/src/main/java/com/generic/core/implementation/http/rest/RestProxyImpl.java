@@ -14,7 +14,6 @@ import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.models.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
-import com.generic.json.JsonSerializable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,8 +22,6 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.EnumSet;
 import java.util.function.Consumer;
-
-import static com.generic.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
 
 public class RestProxyImpl extends RestProxyBase {
 
@@ -225,32 +222,21 @@ public class RestProxyImpl extends RestProxyBase {
 
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
         if (supportsJsonSerializable(bodyContentObject.getClass())) {
-            request.setBody(serializeJsonSerializableToBytes((JsonSerializable<?>) bodyContentObject));
+            request.setBody(BinaryData.fromObject(bodyContentObject));
 
             return;
         }
 
         if (isJson) {
-            request.setBody(serializerAdapter.serializeToBytes(bodyContentObject));
+            request.setBody(BinaryData.fromObject(bodyContentObject, serializerAdapter));
         } else if (bodyContentObject instanceof byte[]) {
-            request.setBody((byte[]) bodyContentObject);
+            request.setBody(BinaryData.fromBytes((byte[]) bodyContentObject));
         } else if (bodyContentObject instanceof String) {
-            final String bodyContentString = (String) bodyContentObject;
-
-            if (!bodyContentString.isEmpty()) {
-                request.setBody(bodyContentString);
-            }
+            request.setBody(BinaryData.fromString((String) bodyContentObject));
         } else if (bodyContentObject instanceof ByteBuffer) {
-            if (((ByteBuffer) bodyContentObject).hasArray()) {
-                request.setBody(((ByteBuffer) bodyContentObject).array());
-            } else {
-                byte[] array = new byte[((ByteBuffer) bodyContentObject).remaining()];
-
-                ((ByteBuffer) bodyContentObject).get(array);
-                request.setBody(array);
-            }
+            request.setBody(BinaryData.fromByteBuffer((ByteBuffer) bodyContentObject));
         } else {
-            request.setBody(serializerAdapter.serializeToBytes(bodyContentObject));
+            request.setBody(BinaryData.fromObject(bodyContentObject, serializerAdapter));
         }
     }
 }

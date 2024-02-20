@@ -7,6 +7,7 @@ import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.models.BinaryData;
+import com.generic.core.models.Headers;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -76,8 +77,8 @@ public class RestProxyUtilsTests {
     @Test
     public void multipleToBytesToCheckBodyLength() {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-            .setBody(EXPECTED)
-            .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
+            .setBody(BinaryData.fromBytes(EXPECTED));
+        httpRequest.getHeaders().set(HeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
 
         BinaryData binaryData = RestProxyUtils.validateLength(httpRequest);
 
@@ -93,23 +94,23 @@ public class RestProxyUtilsTests {
         return Stream.of(
             Arguments.of(
                 Named.of("bytes", new HttpRequest(HttpMethod.GET, "http://localhost")
-                    .setBody(EXPECTED)
-                    .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
+                    .setBody(BinaryData.fromBytes(EXPECTED))
+                    .setHeaders(new Headers().set(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength))))
             ),
             Arguments.of(
                 Named.of("string", new HttpRequest(HttpMethod.GET, "http://localhost")
-                    .setBody(SAMPLE)
-                    .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
+                    .setBody(BinaryData.fromString(SAMPLE))
+                    .setHeaders(new Headers().set(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength))))
             ),
             Arguments.of(
                 Named.of("stream", new HttpRequest(HttpMethod.GET, "http://localhost")
                     .setBody(BinaryData.fromStream(new ByteArrayInputStream(EXPECTED), (long) EXPECTED.length))
-                    .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
+                    .setHeaders(new Headers().set(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength))))
             ),
             Arguments.of(
                 Named.of("file", new HttpRequest(HttpMethod.GET, "http://localhost")
                     .setBody(BinaryData.fromFile(file))
-                    .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
+                    .setHeaders(new Headers().set(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength))))
             )
         );
     }
@@ -118,8 +119,8 @@ public class RestProxyUtilsTests {
     public void userProvidedLengthShouldNotBeTrustedTooLarge() throws IOException {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-                .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length - 1L))
-                .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length - 1L));
+                .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length - 1L));
+            httpRequest.getHeaders().set(HeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length - 1L));
 
             IllegalStateException thrown =
                 assertThrows(IllegalStateException.class, () -> validateAndCollectRequest(httpRequest),
@@ -133,8 +134,8 @@ public class RestProxyUtilsTests {
     public void userProvidedLengthShouldNotBeTrustedTooSmall() throws IOException {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-                .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length + 1L))
-                .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length + 1L));
+                .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length + 1L));
+            httpRequest.getHeaders().set(HeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length + 1L));
 
             IllegalStateException thrown =
                 assertThrows(IllegalStateException.class, () -> validateAndCollectRequest(httpRequest),
@@ -149,8 +150,8 @@ public class RestProxyUtilsTests {
     public void expectedBodyLength() throws IOException {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-                .setBody(BinaryData.fromStream(byteArrayInputStream, (long) EXPECTED.length))
-                .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
+                .setBody(BinaryData.fromStream(byteArrayInputStream, (long) EXPECTED.length));
+            httpRequest.getHeaders().set(HeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
 
             assertArraysEqual(EXPECTED, validateAndCollectRequest(httpRequest));
         }

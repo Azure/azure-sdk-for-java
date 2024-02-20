@@ -4,7 +4,7 @@
 package com.generic.core.http.models;
 
 import com.generic.core.http.policy.RequestRetryCondition;
-import com.generic.core.models.Header;
+import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
 import java.time.Duration;
@@ -22,7 +22,7 @@ public final class RetryOptions {
     private final Duration maxDelay;
     private final Duration fixedDelay;
     private Predicate<RequestRetryCondition> shouldRetryCondition;
-    private Function<Header, Duration> delayFromHeaders;
+    private Function<Headers, Duration> delayFromHeaders;
 
     /**
      * Creates an instance of {@link RetryOptions} with values for {@code baseDelay} and {@code maxDelay}. Use this
@@ -36,8 +36,8 @@ public final class RetryOptions {
         Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
         if (maxRetries < 0) {
-            LOGGER.log(ClientLogger.LogLevel.VERBOSE, () -> "Max retries cannot be less than 0. " +
-                "Using 3 retries as the maximum.");
+            LOGGER.log(ClientLogger.LogLevel.VERBOSE,
+                () -> "Max retries cannot be less than 0. Using 3 retries as the maximum.");
             maxRetries = 3;
         }
         this.baseDelay = baseDelay;
@@ -56,8 +56,8 @@ public final class RetryOptions {
     public RetryOptions(int maxRetries, Duration fixedDelay) {
         Objects.requireNonNull(fixedDelay, "'fixedDelay' cannot be null.");
         if (maxRetries < 0) {
-            LOGGER.log(ClientLogger.LogLevel.VERBOSE, () -> "Max retries cannot be less than 0. " +
-                "Using 3 retries as the maximum.");
+            LOGGER.log(ClientLogger.LogLevel.VERBOSE,
+                () -> "Max retries cannot be less than 0. Using 3 retries as the maximum.");
             maxRetries = 3;
         }
         this.maxRetries = maxRetries;
@@ -129,7 +129,7 @@ public final class RetryOptions {
      * Gets the headers that will be added to a retry request.
      * @return The headers that will be added to a retry request.
      */
-    public Function<Header, Duration> getDelayFromHeaders() {
+    public Function<Headers, Duration> getDelayFromHeaders() {
         return delayFromHeaders;
     }
 
@@ -138,7 +138,7 @@ public final class RetryOptions {
      * @param delayFromHeaders the map of headers to add to a retry request.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions setDelayFromHeaders(Function<Header, Duration> delayFromHeaders) {
+    public RetryOptions setDelayFromHeaders(Function<Headers, Duration> delayFromHeaders) {
         this.delayFromHeaders = delayFromHeaders;
         return this;
     }

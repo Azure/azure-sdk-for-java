@@ -16,6 +16,7 @@ public interface ServerSentEventListener {
      * Gets called every time an event or data is received.
      *
      * @param sse the instance of {@link ServerSentEvent}
+     * @throws IOException if an I/O error occurs
      */
     void onEvent(ServerSentEvent sse) throws IOException;
 
@@ -41,6 +42,7 @@ public interface ServerSentEventListener {
      * @param throwable the instance of the error that caused the failure
      * @param retryAfter new retry time duration
      * @param lastEventId ID of last event that was received
+     * @return whether to retry
      */
     default boolean shouldRetry(Throwable throwable, Duration retryAfter, long lastEventId) {
         // do not auto-retry.
