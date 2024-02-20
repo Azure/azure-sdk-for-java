@@ -109,11 +109,10 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         } else {
             // Otherwise each property in the serialized class will be inspected for being annotated with @JsonFlatten
             // to determine which JSON properties need to be flattened.
-            this.jsonPropertiesWithJsonFlatten = beanDesc.findProperties().stream()
-                .filter(BeanPropertyDefinition::hasField)
-                .filter(property -> property.getField().hasAnnotation(JsonFlatten.class))
-                .map(BeanPropertyDefinition::getName)
-                .collect(Collectors.toSet());
+            this.jsonPropertiesWithJsonFlatten
+                = beanDesc.findProperties().stream().filter(BeanPropertyDefinition::hasField)
+                    .filter(property -> property.getField().hasAnnotation(JsonFlatten.class))
+                    .map(BeanPropertyDefinition::getName).collect(Collectors.toSet());
         }
     }
 
@@ -134,8 +133,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                 // Otherwise do not add the serializer.
                 boolean hasJsonFlattenOnClass = beanDesc.getClassAnnotations().has(JsonFlatten.class);
                 boolean hasJsonFlattenOnProperty = beanDesc.findProperties().stream()
-                    .filter(BeanPropertyDefinition::hasField)
-                    .map(BeanPropertyDefinition::getField)
+                    .filter(BeanPropertyDefinition::hasField).map(BeanPropertyDefinition::getField)
                     .anyMatch(field -> field.hasAnnotation(JsonFlatten.class));
 
                 if (hasJsonFlattenOnClass || hasJsonFlattenOnProperty) {
@@ -168,12 +166,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             return;
         }
 
-        if (value.getClass().isPrimitive()
-            || value.getClass().isEnum()
-            || value instanceof OffsetDateTime
-            || value instanceof Duration
-            || value instanceof String
-            || value instanceof ExpandableStringEnum) {
+        if (value.getClass().isPrimitive() || value.getClass().isEnum() || value instanceof OffsetDateTime
+            || value instanceof Duration || value instanceof String || value instanceof ExpandableStringEnum) {
             return;
         }
 
@@ -212,8 +206,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     }
 
     @Override
-    public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider,
-        TypeSerializer typeSer) throws IOException {
+    public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider, TypeSerializer typeSer)
+        throws IOException {
         if (value == null) {
             gen.writeNull();
             return;
@@ -262,23 +256,22 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                 // "flattened.number" should serialize into the following:
                 //
                 // {
-                //   "flattened": {
-                //     "string": "string",
-                //     "number": 0
-                //   }
+                // "flattened": {
+                // "string": "string",
+                // "number": 0
+                // }
                 // }
                 //
                 // If this isn't done it could result in the following:
                 //
                 // {
-                //   "flattened": {
-                //     { "string": "string" },
-                //     { "number": 0 }
-                //   }
+                // "flattened": {
+                // { "string": "string" },
+                // { "number": 0 }
+                // }
                 // }
                 for (int i = 0; i < splitNames.length - 1; i++) {
-                    nodeToUse = (nodeToUse.has(splitNames[i]))
-                        ? (ObjectNode) nodeToUse.get(splitNames[i])
+                    nodeToUse = (nodeToUse.has(splitNames[i])) ? (ObjectNode) nodeToUse.get(splitNames[i])
                         : nodeToUse.putObject(splitNames[i]);
                 }
             }
@@ -303,8 +296,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         if (anyGetter != null && anyGetter.getAnnotation(JsonAnyGetter.class).enabled()) {
             BeanProperty.Std anyProperty = new BeanProperty.Std(PropertyName.construct(anyGetter.getName()),
                 anyGetter.getType(), null, anyGetter, PropertyMetadata.STD_OPTIONAL);
-            JsonSerializer<Object> anySerializer = provider.findTypedValueSerializer(anyGetter.getType(), true,
-                anyProperty);
+            JsonSerializer<Object> anySerializer
+                = provider.findTypedValueSerializer(anyGetter.getType(), true, anyProperty);
             AnyGetterWriter anyGetterWriter = new AnyGetterWriter(anyProperty, anyGetter, anySerializer);
 
             try {
@@ -370,8 +363,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                 if (field.getValue() instanceof ObjectNode) {
                     source.add((ObjectNode) field.getValue());
                     target.add((ObjectNode) outNode);
-                } else if (field.getValue() instanceof ArrayNode
-                    && (field.getValue()).size() > 0
+                } else if (field.getValue() instanceof ArrayNode && (field.getValue()).size() > 0
                     && (field.getValue()).get(0) instanceof ObjectNode) {
                     Iterator<JsonNode> sourceIt = field.getValue().elements();
                     Iterator<JsonNode> targetIt = outNode.elements();

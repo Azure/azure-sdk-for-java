@@ -37,12 +37,8 @@ import com.github.tomakehurst.wiremock.http.HttpHeader;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.RequestMethod;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -69,19 +65,6 @@ public class LROPollerTests {
     private static final SerializerAdapter SERIALIZER = SerializerFactory.createDefaultManagementSerializerAdapter();
 
     private static final Duration POLLING_DURATION = Duration.ofMillis(100);
-
-    private AutoCloseable openMocks;
-
-    @BeforeEach
-    public void beforeTest() {
-        this.openMocks = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    public void afterTest() throws Exception {
-        this.openMocks.close();
-        Mockito.framework().clearInlineMock(this);
-    }
 
     @Host("http://localhost")
     @ServiceInterface(name = "ProvisioningStateLroService")

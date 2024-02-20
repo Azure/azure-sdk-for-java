@@ -41,8 +41,7 @@ public final class GeoCollection extends GeoObject {
      * @param customProperties Additional properties of the {@link GeoCollection}.
      * @throws NullPointerException If {@code geometries} is {@code null}.
      */
-    public GeoCollection(List<GeoObject> geometries, GeoBoundingBox boundingBox,
-        Map<String, Object> customProperties) {
+    public GeoCollection(List<GeoObject> geometries, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(geometries, "'geometries' cannot be null.");
@@ -84,10 +83,8 @@ public final class GeoCollection extends GeoObject {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject()
-            .writeStringField("type", GeoObjectType.GEOMETRY_COLLECTION.toString())
-            .writeArrayField("geometries", geometries, JsonWriter::writeJson)
-            .writeJsonField("bbox", getBoundingBox());
+        jsonWriter.writeStartObject().writeStringField("type", GeoObjectType.GEOMETRY_COLLECTION.toString())
+            .writeArrayField("geometries", geometries, JsonWriter::writeJson).writeJsonField("bbox", getBoundingBox());
 
         return writeCustomProperties(jsonWriter).writeEndObject();
     }

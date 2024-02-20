@@ -40,7 +40,8 @@ public final class GeoLineString extends GeoObject {
      * @param customProperties Additional properties of the geometric line.
      * @throws NullPointerException If {@code positions} is {@code null}.
      */
-    public GeoLineString(List<GeoPosition> positions, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
+    public GeoLineString(List<GeoPosition> positions, GeoBoundingBox boundingBox,
+        Map<String, Object> customProperties) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(positions, "'positions' cannot be null.");
@@ -82,8 +83,7 @@ public final class GeoLineString extends GeoObject {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject()
-            .writeStringField("type", GeoObjectType.LINE_STRING.toString())
+        jsonWriter.writeStartObject().writeStringField("type", GeoObjectType.LINE_STRING.toString())
             .writeArrayField("coordinates", getCoordinates(), JsonWriter::writeJson)
             .writeJsonField("bbox", getBoundingBox());
 

@@ -150,8 +150,8 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         }
 
         return bufferContent().map(bufferedData -> {
-            FluxByteBufferContent bufferedContent = new FluxByteBufferContent(Flux.fromIterable(bufferedData)
-                .map(ByteBuffer::duplicate), length, true);
+            FluxByteBufferContent bufferedContent
+                = new FluxByteBufferContent(Flux.fromIterable(bufferedData).map(ByteBuffer::duplicate), length, true);
             cachedReplayableContent.set(bufferedContent);
 
             return bufferedContent;
@@ -189,7 +189,6 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         }).collect(LinkedList::new, LinkedList::add);
     }
 
-
     @Override
     public BinaryDataContentType getContentType() {
         return BinaryDataContentType.BINARY;
@@ -201,9 +200,8 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         }
 
         return FluxUtil.collectBytesInByteBufferStream(content)
-                // this doesn't seem to be working (newBoundedElastic() didn't work either)
-                // .publishOn(Schedulers.boundedElastic())
-                .share()
-                .block();
+            // this doesn't seem to be working (newBoundedElastic() didn't work either)
+            // .publishOn(Schedulers.boundedElastic())
+            .share().block();
     }
 }

@@ -29,15 +29,14 @@ public class AddDatePolicyTests {
     @Test
     public void dateIsRefreshedOnRetryAsync() {
         StepVerifier.create(getPipeline().send(new HttpRequest(HttpMethod.GET, "https://azure.com")))
-            .assertNext(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
 
     }
 
     @Test
     public void dateIsRefreshedOnRetrySync() {
-        try (HttpResponse response = getPipeline().sendSync(new HttpRequest(HttpMethod.GET, "https://azure.com"),
-            Context.NONE)) {
+        try (HttpResponse response
+            = getPipeline().sendSync(new HttpRequest(HttpMethod.GET, "https://azure.com"), Context.NONE)) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -68,7 +67,6 @@ public class AddDatePolicyTests {
                         return new MockHttpResponse(request, 429);
                     }
                 }
-            })
-            .build();
+            }).build();
     }
 }

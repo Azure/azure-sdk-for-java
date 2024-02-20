@@ -78,18 +78,19 @@ public class ExponentialBackoff implements RetryStrategy {
             ObjectsUtil.requireNonNullElse(Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
                 DEFAULT_BASE_DELAY),
             ObjectsUtil.requireNonNullElse(Objects.requireNonNull(options, "'options' cannot be null.").getMaxDelay(),
-                DEFAULT_MAX_DELAY)
-        );
+                DEFAULT_MAX_DELAY));
     }
 
     private ExponentialBackoff(ExponentialBackoffOptions options,
         Predicate<RequestRetryCondition> shouldRetryCondition) {
-        this(ObjectsUtil.requireNonNullElse(
-            Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(), DEFAULT_MAX_RETRIES),
+        this(
+            ObjectsUtil.requireNonNullElse(Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(),
+                DEFAULT_MAX_RETRIES),
             ObjectsUtil.requireNonNullElse(Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
                 DEFAULT_BASE_DELAY),
             ObjectsUtil.requireNonNullElse(Objects.requireNonNull(options, "'options' cannot be null.").getMaxDelay(),
-                DEFAULT_MAX_DELAY), shouldRetryCondition);
+                DEFAULT_MAX_DELAY),
+            shouldRetryCondition);
     }
 
     /**
@@ -142,8 +143,7 @@ public class ExponentialBackoff implements RetryStrategy {
 
     @Override
     public boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
-        return shouldRetryCondition == null
-            ? RetryStrategy.super.shouldRetryCondition(requestRetryCondition)
+        return shouldRetryCondition == null ? RetryStrategy.super.shouldRetryCondition(requestRetryCondition)
             : shouldRetryCondition.test(requestRetryCondition);
     }
 }

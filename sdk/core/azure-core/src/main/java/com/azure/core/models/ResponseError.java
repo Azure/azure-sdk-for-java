@@ -126,13 +126,9 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("code", code)
-            .writeStringField("message", message)
-            .writeStringField("target", target)
-            .writeJsonField("innererror", innerError)
-            .writeArrayField("details", errorDetails, JsonWriter::writeJson)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeStringField("code", code).writeStringField("message", message)
+            .writeStringField("target", target).writeJsonField("innererror", innerError)
+            .writeArrayField("details", errorDetails, JsonWriter::writeJson).writeEndObject();
     }
 
     /**
@@ -207,9 +203,7 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
                 throw new IllegalStateException("Missing required property: message");
             }
 
-            return new ResponseError(code, message)
-                .setTarget(target)
-                .setInnerError(innerError)
+            return new ResponseError(code, message).setTarget(target).setInnerError(innerError)
                 .setErrorDetails(errorDetails);
         });
     }

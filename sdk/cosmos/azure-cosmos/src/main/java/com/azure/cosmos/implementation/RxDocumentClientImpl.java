@@ -155,6 +155,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
+    private final static
+    ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.CosmosQueryRequestOptionsBaseAccessor qryOptBaseAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.getCosmosQueryRequestOptionsBaseAccessor();
+
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -965,7 +969,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options == null) {
             return null;
         }
-        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getOperationContext(options);
+        return qryOptBaseAccessor.getOperationContext(qryOptAccessor.getImpl(options));
     }
 
     private OperationContextAndListenerTuple getOperationContextAndListenerTuple(RequestOptions options) {
@@ -997,8 +1001,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         CosmosQueryRequestOptions nonNullQueryOptions = state.getQueryOptions();
 
-        UUID correlationActivityIdOfRequestOptions = qryOptAccessor
-            .getCorrelationActivityId(nonNullQueryOptions);
+        UUID correlationActivityIdOfRequestOptions = qryOptBaseAccessor
+            .getCorrelationActivityId(qryOptAccessor.getImpl(nonNullQueryOptions));
         UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
             correlationActivityIdOfRequestOptions : randomUuid();
 
@@ -3371,11 +3375,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Class<T> klass) {
 
         Function<JsonNode, T> factoryMethod = queryRequestOptions == null ?
-                null :
-                ImplementationBridgeHelpers
-                        .CosmosQueryRequestOptionsHelper
-                        .getCosmosQueryRequestOptionsAccessor()
-                        .getItemFactoryMethod(queryRequestOptions, klass);
+                null : qryOptBaseAccessor.getItemFactoryMethod(qryOptAccessor.getImpl(queryRequestOptions), klass);
 
         if (factoryMethod == null) {
             return this.itemDeserializer; // using default itemDeserializer
@@ -4944,10 +4944,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request -> readFeed(request)
                 .map(response -> toFeedResponsePage(
                                     response,
-                                    ImplementationBridgeHelpers
-                                        .CosmosQueryRequestOptionsHelper
-                                        .getCosmosQueryRequestOptionsAccessor()
-                                        .getItemFactoryMethod(nonNullOptions, klass),
+                                    qryOptBaseAccessor.getItemFactoryMethod(qryOptAccessor.getImpl(nonNullOptions), klass),
                                     klass));
 
         return Paginator

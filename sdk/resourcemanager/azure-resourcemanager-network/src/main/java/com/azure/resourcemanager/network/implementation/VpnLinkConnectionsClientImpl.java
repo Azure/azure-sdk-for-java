@@ -146,7 +146,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetConnection(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -192,7 +192,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetConnection(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -394,7 +394,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getIkeSas(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -440,7 +440,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getIkeSas(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -639,7 +639,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -684,7 +684,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
