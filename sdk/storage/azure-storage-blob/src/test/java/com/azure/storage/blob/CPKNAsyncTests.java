@@ -373,38 +373,36 @@ public class CPKNAsyncTests extends BlobTestBase {
     public void getEncryptionScopeClient() {
         String newEncryptionScope = "newtestscope";
 
-        BlobBaseTestHelper blobBaseTestHelper = new BlobBaseTestHelper();
-
         // when: "AppendBlob"
         AppendBlobAsyncClient newCpknAppendBlob = cpknAppendBlob.getEncryptionScopeAsyncClient(newEncryptionScope);
         assertInstanceOf(AppendBlobAsyncClient.class, newCpknAppendBlob);
-        assertNotEquals(blobBaseTestHelper.getEncryptionScope(cpknAppendBlob),
-            blobBaseTestHelper.getEncryptionScope(newCpknAppendBlob));
+        assertNotEquals(BlobBaseTestHelper.getEncryptionScope(cpknAppendBlob),
+            BlobBaseTestHelper.getEncryptionScope(newCpknAppendBlob));
 
         // when: "BlockBlob"
         BlockBlobAsyncClient newCpknBlockBlob = cpknBlockBlob.getEncryptionScopeAsyncClient(newEncryptionScope);
         assertInstanceOf(BlockBlobAsyncClient.class, newCpknBlockBlob);
-        assertNotEquals(blobBaseTestHelper.getEncryptionScope(cpknBlockBlob),
-            blobBaseTestHelper.getEncryptionScope(newCpknBlockBlob));
+        assertNotEquals(BlobBaseTestHelper.getEncryptionScope(cpknBlockBlob),
+            BlobBaseTestHelper.getEncryptionScope(newCpknBlockBlob));
 
         // when: "PageBlob"
         PageBlobAsyncClient newCpknPageBlob = cpknPageBlob.getEncryptionScopeAsyncClient(newEncryptionScope);
         assertInstanceOf(PageBlobAsyncClient.class, newCpknPageBlob);
-        assertNotEquals(blobBaseTestHelper.getEncryptionScope(cpknPageBlob),
-            blobBaseTestHelper.getEncryptionScope(newCpknPageBlob));
+        assertNotEquals(BlobBaseTestHelper.getEncryptionScope(cpknPageBlob),
+            BlobBaseTestHelper.getEncryptionScope(newCpknPageBlob));
 
         // when: "BlobClient"
         BlobAsyncClient cpkBlobClient = cpknContainer.getBlobAsyncClient(generateBlobName()); // Inherits container's CPK
         BlobAsyncClient newCpknBlobClient = cpkBlobClient.getEncryptionScopeAsyncClient(newEncryptionScope);
         assertInstanceOf(BlobAsyncClient.class, newCpknBlobClient);
-        assertNotEquals(blobBaseTestHelper.getEncryptionScope(cpkBlobClient),
-            blobBaseTestHelper.getEncryptionScope(newCpknBlobClient));
+        assertNotEquals(BlobBaseTestHelper.getEncryptionScope(cpkBlobClient),
+            BlobBaseTestHelper.getEncryptionScope(newCpknBlobClient));
 
         // when: "BlobClientBase"
         BlobAsyncClientBase newCpknBlobClientBase = ((BlobAsyncClientBase) cpkBlobClient)
             .getEncryptionScopeAsyncClient(newEncryptionScope);
         assertInstanceOf(BlobAsyncClientBase.class, newCpknBlobClientBase);
-        assertNotEquals(blobBaseTestHelper.getEncryptionScope(cpkBlobClient),
-            blobBaseTestHelper.getEncryptionScope(newCpknBlobClientBase));
+        assertNotEquals(BlobBaseTestHelper.getEncryptionScope(cpkBlobClient),
+            BlobBaseTestHelper.getEncryptionScope(newCpknBlobClientBase));
     }
 }
