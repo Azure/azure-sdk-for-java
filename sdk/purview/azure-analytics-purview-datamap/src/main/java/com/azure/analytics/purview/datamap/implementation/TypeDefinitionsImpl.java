@@ -4,7 +4,6 @@
 
 package com.azure.analytics.purview.datamap.implementation;
 
-import com.azure.analytics.purview.datamap.PurviewDataMapServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -24,138 +23,55 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the TypeClient type.
+ * An instance of this class provides access to all the operations defined in TypeDefinitions.
  */
-public final class TypeClientImpl {
+public final class TypeDefinitionsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final TypeClientService service;
+    private final TypeDefinitionsService service;
 
     /**
+     * The service client containing this operation class.
      */
-    private final String endpoint;
+    private final DataMapClientImpl client;
 
     /**
-     * Gets.
+     * Initializes an instance of TypeDefinitionsImpl.
      * 
-     * @return the endpoint value.
+     * @param client the instance of the service client containing this operation class.
      */
-    public String getEndpoint() {
-        return this.endpoint;
+    TypeDefinitionsImpl(DataMapClientImpl client) {
+        this.service
+            = RestProxy.create(TypeDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.client = client;
     }
 
     /**
-     * Service version.
-     */
-    private final PurviewDataMapServiceVersion serviceVersion;
-
-    /**
-     * Gets Service version.
-     * 
-     * @return the serviceVersion value.
-     */
-    public PurviewDataMapServiceVersion getServiceVersion() {
-        return this.serviceVersion;
-    }
-
-    /**
-     * The HTTP pipeline to send requests through.
-     */
-    private final HttpPipeline httpPipeline;
-
-    /**
-     * Gets The HTTP pipeline to send requests through.
-     * 
-     * @return the httpPipeline value.
-     */
-    public HttpPipeline getHttpPipeline() {
-        return this.httpPipeline;
-    }
-
-    /**
-     * The serializer to serialize an object into a string.
-     */
-    private final SerializerAdapter serializerAdapter;
-
-    /**
-     * Gets The serializer to serialize an object into a string.
-     * 
-     * @return the serializerAdapter value.
-     */
-    public SerializerAdapter getSerializerAdapter() {
-        return this.serializerAdapter;
-    }
-
-    /**
-     * Initializes an instance of TypeClient client.
-     * 
-     * @param endpoint
-     * @param serviceVersion Service version.
-     */
-    public TypeClientImpl(String endpoint, PurviewDataMapServiceVersion serviceVersion) {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
-    }
-
-    /**
-     * Initializes an instance of TypeClient client.
-     * 
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint
-     * @param serviceVersion Service version.
-     */
-    public TypeClientImpl(HttpPipeline httpPipeline, String endpoint, PurviewDataMapServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
-    }
-
-    /**
-     * Initializes an instance of TypeClient client.
-     * 
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint
-     * @param serviceVersion Service version.
-     */
-    public TypeClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        PurviewDataMapServiceVersion serviceVersion) {
-        this.httpPipeline = httpPipeline;
-        this.serializerAdapter = serializerAdapter;
-        this.endpoint = endpoint;
-        this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(TypeClientService.class, this.httpPipeline, this.getSerializerAdapter());
-    }
-
-    /**
-     * The interface defining all the services for TypeClient to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for DataMapClientTypeDefinitions to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "TypeClient")
-    public interface TypeClientService {
+    @ServiceInterface(name = "DataMapClientTypeDef")
+    public interface TypeDefinitionsService {
         @Get("/atlas/v2/types/businessmetadatadef/guid/{guid}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getBusinessMetadataDefByGuid(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> getBusinessMetadataById(@HostParam("endpoint") String endpoint,
+            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("/atlas/v2/types/businessmetadatadef/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -163,9 +79,9 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getBusinessMetadataDefByGuidSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> getBusinessMetadataByIdSync(@HostParam("endpoint") String endpoint,
+            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("/atlas/v2/types/businessmetadatadef/name/{name}")
         @ExpectedResponses({ 200 })
@@ -173,287 +89,271 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getBusinessMetadataDefByName(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/businessmetadatadef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getBusinessMetadataDefByNameSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/classificationdef/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getClassificationDefByGuid(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/classificationdef/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getClassificationDefByGuidSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/classificationdef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getClassificationDefByName(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/classificationdef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getClassificationDefByNameSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/entitydef/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getEntityDefByGuid(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/entitydef/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getEntityDefByGuidSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/entitydef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getEntityDefByName(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/entitydef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getEntityDefByNameSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/enumdef/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getEnumDefByGuid(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/enumdef/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getEnumDefByGuidSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/enumdef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getEnumDefByName(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/enumdef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getEnumDefByNameSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/relationshipdef/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getRelationshipDefByGuid(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/relationshipdef/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getRelationshipDefByGuidSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/relationshipdef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getRelationshipDefByName(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/relationshipdef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getRelationshipDefByNameSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/structdef/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getStructDefByGuid(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/structdef/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getStructDefByGuidSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/structdef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getStructDefByName(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/structdef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getStructDefByNameSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/typedef/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getByGuid(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/typedef/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getByGuidSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/typedef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getByName(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/types/typedef/name/{name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getByNameSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Delete("/atlas/v2/types/typedef/name/{name}")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Delete("/atlas/v2/types/typedef/name/{name}")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+        Mono<Response<BinaryData>> getBusinessMetadataByName(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
+        @Get("/atlas/v2/types/businessmetadatadef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getBusinessMetadataByNameSync(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/atlas/v2/types/classificationdef/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getClassificationById(@HostParam("endpoint") String endpoint,
+            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/atlas/v2/types/classificationdef/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getClassificationByIdSync(@HostParam("endpoint") String endpoint,
+            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/atlas/v2/types/classificationdef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getClassificationByName(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/atlas/v2/types/classificationdef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getClassificationByNameSync(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/atlas/v2/types/entitydef/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getEntityById(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/entitydef/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEntityByIdSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/entitydef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getEntityByName(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/atlas/v2/types/entitydef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEntityByNameSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/enumdef/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getEnumById(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/enumdef/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEnumByIdSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/enumdef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getEnumByName(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/enumdef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEnumByNameSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/relationshipdef/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getRelationshipById(@HostParam("endpoint") String endpoint,
+            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/atlas/v2/types/relationshipdef/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getRelationshipByIdSync(@HostParam("endpoint") String endpoint,
+            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/atlas/v2/types/relationshipdef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getRelationshipByName(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/atlas/v2/types/relationshipdef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getRelationshipByNameSync(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/atlas/v2/types/structdef/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getStructById(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/structdef/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getStructByIdSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/structdef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getStructByName(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/atlas/v2/types/structdef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getStructByNameSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/typedef/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getById(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/typedef/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getByIdSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/typedef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getByName(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/types/typedef/name/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getByNameSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/atlas/v2/types/typedef/name/{name}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/atlas/v2/types/typedef/name/{name}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
         @Get("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -463,7 +363,7 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -473,9 +373,9 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> bulkCreate(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData typesDef, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> batchCreate(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasTypesDef,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 200 })
@@ -483,9 +383,9 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> bulkCreateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData typesDef, RequestOptions requestOptions, Context context);
+        Response<BinaryData> batchCreateSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasTypesDef,
+            RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 200 })
@@ -493,9 +393,9 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> bulkUpdate(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData typesDef, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> batchUpdate(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasTypesDef,
+            RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 200 })
@@ -503,9 +403,9 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> bulkUpdateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData typesDef, RequestOptions requestOptions, Context context);
+        Response<BinaryData> batchUpdateSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasTypesDef,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 204 })
@@ -513,9 +413,8 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> bulkDelete(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData typesDef, RequestOptions requestOptions, Context context);
+        Mono<Response<Void>> batchDelete(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData atlasTypesDef, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 204 })
@@ -523,9 +422,8 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> bulkDeleteSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData typesDef, RequestOptions requestOptions, Context context);
+        Response<Void> batchDeleteSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData atlasTypesDef, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/typedefs/headers")
         @ExpectedResponses({ 200 })
@@ -533,7 +431,7 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listHeaders(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getHeaders(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -543,7 +441,7 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listHeadersSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getHeadersSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -553,7 +451,7 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTermTemplateDefByGuid(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTermTemplateById(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -563,7 +461,7 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTermTemplateDefByGuidSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTermTemplateByIdSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -573,7 +471,7 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTermTemplateDefByName(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTermTemplateByName(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -583,7 +481,7 @@ public final class TypeClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTermTemplateDefByNameSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTermTemplateByNameSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
     }
@@ -688,11 +586,11 @@ public final class TypeClientImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBusinessMetadataDefByGuidWithResponseAsync(String guid,
+    public Mono<Response<BinaryData>> getBusinessMetadataByIdWithResponseAsync(String guid,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getBusinessMetadataDefByGuid(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), guid, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getBusinessMetadataById(this.client.getEndpoint(), guid, accept,
+            requestOptions, context));
     }
 
     /**
@@ -794,10 +692,10 @@ public final class TypeClientImpl {
      * @return the businessMetadata definition for the given guid along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBusinessMetadataDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+    public Response<BinaryData> getBusinessMetadataByIdWithResponse(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getBusinessMetadataDefByGuidSync(this.getEndpoint(), this.getServiceVersion().getVersion(), guid,
-            accept, requestOptions, Context.NONE);
+        return service.getBusinessMetadataByIdSync(this.client.getEndpoint(), guid, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -900,11 +798,11 @@ public final class TypeClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBusinessMetadataDefByNameWithResponseAsync(String name,
+    public Mono<Response<BinaryData>> getBusinessMetadataByNameWithResponseAsync(String name,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getBusinessMetadataDefByName(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getBusinessMetadataByName(this.client.getEndpoint(), name,
+            accept, requestOptions, context));
     }
 
     /**
@@ -1006,10 +904,10 @@ public final class TypeClientImpl {
      * @return the businessMetadata definition by it's name (unique) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBusinessMetadataDefByNameWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> getBusinessMetadataByNameWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getBusinessMetadataDefByNameSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
-            accept, requestOptions, Context.NONE);
+        return service.getBusinessMetadataByNameSync(this.client.getEndpoint(), name, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1121,11 +1019,11 @@ public final class TypeClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getClassificationDefByGuidWithResponseAsync(String guid,
+    public Mono<Response<BinaryData>> getClassificationByIdWithResponseAsync(String guid,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getClassificationDefByGuid(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), guid, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getClassificationById(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -1236,10 +1134,9 @@ public final class TypeClientImpl {
      * @return the classification definition for the given GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getClassificationDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+    public Response<BinaryData> getClassificationByIdWithResponse(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getClassificationDefByGuidSync(this.getEndpoint(), this.getServiceVersion().getVersion(), guid,
-            accept, requestOptions, Context.NONE);
+        return service.getClassificationByIdSync(this.client.getEndpoint(), guid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1351,11 +1248,11 @@ public final class TypeClientImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getClassificationDefByNameWithResponseAsync(String name,
+    public Mono<Response<BinaryData>> getClassificationByNameWithResponseAsync(String name,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getClassificationDefByName(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getClassificationByName(this.client.getEndpoint(), name, accept,
+            requestOptions, context));
     }
 
     /**
@@ -1466,10 +1363,10 @@ public final class TypeClientImpl {
      * @return the classification definition by its name (unique) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getClassificationDefByNameWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> getClassificationByNameWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getClassificationDefByNameSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
-            accept, requestOptions, Context.NONE);
+        return service.getClassificationByNameSync(this.client.getEndpoint(), name, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1601,10 +1498,10 @@ public final class TypeClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEntityDefByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getEntityByIdWithResponseAsync(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getEntityDefByGuid(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), guid, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getEntityById(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -1735,10 +1632,9 @@ public final class TypeClientImpl {
      * @return the Entity definition for the given GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEntityDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+    public Response<BinaryData> getEntityByIdWithResponse(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getEntityDefByGuidSync(this.getEndpoint(), this.getServiceVersion().getVersion(), guid, accept,
-            requestOptions, Context.NONE);
+        return service.getEntityByIdSync(this.client.getEndpoint(), guid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1870,10 +1766,10 @@ public final class TypeClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEntityDefByNameWithResponseAsync(String name, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getEntityByNameWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getEntityDefByName(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getEntityByName(this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -2004,10 +1900,9 @@ public final class TypeClientImpl {
      * @return the entity definition by its name (unique) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEntityDefByNameWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> getEntityByNameWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getEntityDefByNameSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
-            requestOptions, Context.NONE);
+        return service.getEntityByNameSync(this.client.getEndpoint(), name, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2092,10 +1987,10 @@ public final class TypeClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEnumDefByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getEnumByIdWithResponseAsync(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getEnumDefByGuid(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), guid, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getEnumById(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -2179,10 +2074,9 @@ public final class TypeClientImpl {
      * @return the enum definition for the given GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEnumDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+    public Response<BinaryData> getEnumByIdWithResponse(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getEnumDefByGuidSync(this.getEndpoint(), this.getServiceVersion().getVersion(), guid, accept,
-            requestOptions, Context.NONE);
+        return service.getEnumByIdSync(this.client.getEndpoint(), guid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2267,10 +2161,10 @@ public final class TypeClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEnumDefByNameWithResponseAsync(String name, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getEnumByNameWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getEnumDefByName(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getEnumByName(this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -2354,10 +2248,9 @@ public final class TypeClientImpl {
      * @return the enum definition by its name (unique) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEnumDefByNameWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> getEnumByNameWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getEnumDefByNameSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
-            requestOptions, Context.NONE);
+        return service.getEnumByNameSync(this.client.getEndpoint(), name, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2471,11 +2364,10 @@ public final class TypeClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getRelationshipDefByGuidWithResponseAsync(String guid,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getRelationshipByIdWithResponseAsync(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRelationshipDefByGuid(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), guid, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getRelationshipById(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -2588,10 +2480,9 @@ public final class TypeClientImpl {
      * @return the relationship definition for the given GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRelationshipDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+    public Response<BinaryData> getRelationshipByIdWithResponse(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getRelationshipDefByGuidSync(this.getEndpoint(), this.getServiceVersion().getVersion(), guid,
-            accept, requestOptions, Context.NONE);
+        return service.getRelationshipByIdSync(this.client.getEndpoint(), guid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2705,11 +2596,11 @@ public final class TypeClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getRelationshipDefByNameWithResponseAsync(String name,
+    public Mono<Response<BinaryData>> getRelationshipByNameWithResponseAsync(String name,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRelationshipDefByName(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getRelationshipByName(this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -2822,10 +2713,9 @@ public final class TypeClientImpl {
      * @return the relationship definition by its name (unique) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRelationshipDefByNameWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> getRelationshipByNameWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getRelationshipDefByNameSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
-            accept, requestOptions, Context.NONE);
+        return service.getRelationshipByNameSync(this.client.getEndpoint(), name, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2928,10 +2818,10 @@ public final class TypeClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getStructDefByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getStructByIdWithResponseAsync(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getStructDefByGuid(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), guid, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getStructById(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -3033,10 +2923,9 @@ public final class TypeClientImpl {
      * @return the struct definition for the given GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getStructDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+    public Response<BinaryData> getStructByIdWithResponse(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getStructDefByGuidSync(this.getEndpoint(), this.getServiceVersion().getVersion(), guid, accept,
-            requestOptions, Context.NONE);
+        return service.getStructByIdSync(this.client.getEndpoint(), guid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3139,10 +3028,10 @@ public final class TypeClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getStructDefByNameWithResponseAsync(String name, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getStructByNameWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getStructDefByName(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getStructByName(this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -3244,10 +3133,9 @@ public final class TypeClientImpl {
      * @return the struct definition by its name (unique) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getStructDefByNameWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> getStructByNameWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getStructDefByNameSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
-            requestOptions, Context.NONE);
+        return service.getStructByNameSync(this.client.getEndpoint(), name, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3401,10 +3289,10 @@ public final class TypeClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getByIdWithResponseAsync(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getByGuid(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), guid, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getById(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -3557,10 +3445,9 @@ public final class TypeClientImpl {
      * @return the type definition for the given GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getByGuidWithResponse(String guid, RequestOptions requestOptions) {
+    public Response<BinaryData> getByIdWithResponse(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getByGuidSync(this.getEndpoint(), this.getServiceVersion().getVersion(), guid, accept,
-            requestOptions, Context.NONE);
+        return service.getByIdSync(this.client.getEndpoint(), guid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3716,8 +3603,8 @@ public final class TypeClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByNameWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getByName(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getByName(this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -3872,8 +3759,7 @@ public final class TypeClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getByNameWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getByNameSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
-            requestOptions, Context.NONE);
+        return service.getByNameSync(this.client.getEndpoint(), name, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3890,8 +3776,8 @@ public final class TypeClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            name, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -3908,8 +3794,7 @@ public final class TypeClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
-            requestOptions, Context.NONE);
+        return service.deleteSync(this.client.getEndpoint(), name, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3937,8 +3822,8 @@ public final class TypeClientImpl {
      * <td>type</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Typedef name as search filter when get typedefs. Allowed values: "enum", "entity", "classification",
-     * "relationship", "struct", "term_template".</td>
+     * <td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM",
+     * "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -4234,10 +4119,10 @@ public final class TypeClientImpl {
      * @return the definitions of types along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -4265,8 +4150,8 @@ public final class TypeClientImpl {
      * <td>type</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Typedef name as search filter when get typedefs. Allowed values: "enum", "entity", "classification",
-     * "relationship", "struct", "term_template".</td>
+     * <td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM",
+     * "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -4562,10 +4447,10 @@ public final class TypeClientImpl {
      * @return the definitions of types along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions,
-            Context.NONE);
+        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -5139,7 +5024,7 @@ public final class TypeClientImpl {
      * }
      * }</pre>
      * 
-     * @param typesDef A composite wrapper object with corresponding lists of the type definition.
+     * @param atlasTypesDef The definitions of types.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5148,10 +5033,11 @@ public final class TypeClientImpl {
      * @return the definitions of types along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> bulkCreateWithResponseAsync(BinaryData typesDef, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> batchCreateWithResponseAsync(BinaryData atlasTypesDef,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.bulkCreate(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, typesDef, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.batchCreate(this.client.getEndpoint(), accept, atlasTypesDef, requestOptions, context));
     }
 
     /**
@@ -5725,7 +5611,7 @@ public final class TypeClientImpl {
      * }
      * }</pre>
      * 
-     * @param typesDef A composite wrapper object with corresponding lists of the type definition.
+     * @param atlasTypesDef The definitions of types.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5734,10 +5620,9 @@ public final class TypeClientImpl {
      * @return the definitions of types along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> bulkCreateWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
+    public Response<BinaryData> batchCreateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.bulkCreateSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, typesDef,
-            requestOptions, Context.NONE);
+        return service.batchCreateSync(this.client.getEndpoint(), accept, atlasTypesDef, requestOptions, Context.NONE);
     }
 
     /**
@@ -6310,7 +6195,7 @@ public final class TypeClientImpl {
      * }
      * }</pre>
      * 
-     * @param typesDef A composite object that captures all type definition changes.
+     * @param atlasTypesDef The definitions of types.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6319,10 +6204,11 @@ public final class TypeClientImpl {
      * @return the definitions of types along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> bulkUpdateWithResponseAsync(BinaryData typesDef, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> batchUpdateWithResponseAsync(BinaryData atlasTypesDef,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.bulkUpdate(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, typesDef, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.batchUpdate(this.client.getEndpoint(), accept, atlasTypesDef, requestOptions, context));
     }
 
     /**
@@ -6895,7 +6781,7 @@ public final class TypeClientImpl {
      * }
      * }</pre>
      * 
-     * @param typesDef A composite object that captures all type definition changes.
+     * @param atlasTypesDef The definitions of types.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6904,10 +6790,9 @@ public final class TypeClientImpl {
      * @return the definitions of types along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> bulkUpdateWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
+    public Response<BinaryData> batchUpdateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.bulkUpdateSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, typesDef,
-            requestOptions, Context.NONE);
+        return service.batchUpdateSync(this.client.getEndpoint(), accept, atlasTypesDef, requestOptions, Context.NONE);
     }
 
     /**
@@ -7196,7 +7081,7 @@ public final class TypeClientImpl {
      * }
      * }</pre>
      * 
-     * @param typesDef A composite object that captures all types to be deleted.
+     * @param atlasTypesDef The definitions of types.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7205,10 +7090,10 @@ public final class TypeClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> bulkDeleteWithResponseAsync(BinaryData typesDef, RequestOptions requestOptions) {
+    public Mono<Response<Void>> batchDeleteWithResponseAsync(BinaryData atlasTypesDef, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.bulkDelete(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, typesDef, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.batchDelete(this.client.getEndpoint(), accept, atlasTypesDef, requestOptions, context));
     }
 
     /**
@@ -7497,7 +7382,7 @@ public final class TypeClientImpl {
      * }
      * }</pre>
      * 
-     * @param typesDef A composite object that captures all types to be deleted.
+     * @param atlasTypesDef The definitions of types.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7506,10 +7391,9 @@ public final class TypeClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> bulkDeleteWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
+    public Response<Void> batchDeleteWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.bulkDeleteSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, typesDef,
-            requestOptions, Context.NONE);
+        return service.batchDeleteSync(this.client.getEndpoint(), accept, atlasTypesDef, requestOptions, Context.NONE);
     }
 
     /**
@@ -7537,8 +7421,8 @@ public final class TypeClientImpl {
      * <td>type</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Typedef name as search filter when get typedefs. Allowed values: "enum", "entity", "classification",
-     * "relationship", "struct", "term_template".</td>
+     * <td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM",
+     * "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -7563,10 +7447,10 @@ public final class TypeClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listHeadersWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getHeadersWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listHeaders(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getHeaders(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -7594,8 +7478,8 @@ public final class TypeClientImpl {
      * <td>type</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Typedef name as search filter when get typedefs. Allowed values: "enum", "entity", "classification",
-     * "relationship", "struct", "term_template".</td>
+     * <td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM",
+     * "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -7620,9 +7504,9 @@ public final class TypeClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listHeadersWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getHeadersWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listHeadersSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        return service.getHeadersSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 
@@ -7726,11 +7610,10 @@ public final class TypeClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTermTemplateDefByGuidWithResponseAsync(String guid,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTermTemplateByIdWithResponseAsync(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTermTemplateDefByGuid(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), guid, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getTermTemplateById(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -7832,10 +7715,10 @@ public final class TypeClientImpl {
      * @return the term template definition for the given GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTermTemplateDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+    public Response<BinaryData> getTermTemplateByIdWithResponse(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getTermTemplateDefByGuidSync(this.getEndpoint(), this.getServiceVersion().getVersion(), guid,
-            accept, requestOptions, Context.NONE);
+        return service.getTermTemplateByIdSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            guid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -7938,11 +7821,11 @@ public final class TypeClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTermTemplateDefByNameWithResponseAsync(String name,
+    public Mono<Response<BinaryData>> getTermTemplateByNameWithResponseAsync(String name,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTermTemplateDefByName(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getTermTemplateByName(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -8044,9 +7927,9 @@ public final class TypeClientImpl {
      * @return the term template definition by its name (unique) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTermTemplateDefByNameWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> getTermTemplateByNameWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getTermTemplateDefByNameSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
-            accept, requestOptions, Context.NONE);
+        return service.getTermTemplateByNameSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, accept, requestOptions, Context.NONE);
     }
 }

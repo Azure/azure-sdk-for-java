@@ -39,25 +39,25 @@ public final class DiscoveriesImpl {
     /**
      * The service client containing this operation class.
      */
-    private final PurviewDataMapClientImpl client;
+    private final DataMapClientImpl client;
 
     /**
      * Initializes an instance of DiscoveriesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    DiscoveriesImpl(PurviewDataMapClientImpl client) {
+    DiscoveriesImpl(DataMapClientImpl client) {
         this.service
             = RestProxy.create(DiscoveriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PurviewDataMapClientDiscoveries to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for DataMapClientDiscoveries to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "PurviewDataMapClient")
+    @ServiceInterface(name = "DataMapClientDiscove")
     public interface DiscoveriesService {
         @Post("/search/query")
         @ExpectedResponses({ 200 })
@@ -67,7 +67,7 @@ public final class DiscoveriesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> query(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData searchRequest, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData queryOptions, RequestOptions requestOptions, Context context);
 
         @Post("/search/query")
         @ExpectedResponses({ 200 })
@@ -77,7 +77,7 @@ public final class DiscoveriesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> querySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData searchRequest, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData queryOptions, RequestOptions requestOptions, Context context);
 
         @Post("/search/suggest")
         @ExpectedResponses({ 200 })
@@ -87,7 +87,7 @@ public final class DiscoveriesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> suggest(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData suggestRequest, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData suggestOptions, RequestOptions requestOptions, Context context);
 
         @Post("/search/suggest")
         @ExpectedResponses({ 200 })
@@ -97,7 +97,7 @@ public final class DiscoveriesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> suggestSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData suggestRequest, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData suggestOptions, RequestOptions requestOptions, Context context);
 
         @Post("/search/autocomplete")
         @ExpectedResponses({ 200 })
@@ -107,7 +107,7 @@ public final class DiscoveriesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> autoComplete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData autoCompleteRequest, RequestOptions requestOptions,
+            @BodyParam("application/json") BinaryData autoCompleteOptions, RequestOptions requestOptions,
             Context context);
 
         @Post("/search/autocomplete")
@@ -118,7 +118,7 @@ public final class DiscoveriesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> autoCompleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData autoCompleteRequest, RequestOptions requestOptions,
+            @BodyParam("application/json") BinaryData autoCompleteOptions, RequestOptions requestOptions,
             Context context);
     }
 
@@ -159,10 +159,10 @@ public final class DiscoveriesImpl {
      * </p>
      * <pre>{@code
      * {
-     *     &#64;search.count: Integer (Optional)
-     *     &#64;search.count.approximate: Boolean (Optional)
+     *     searchCount: Integer (Optional)
+     *     searchCountApproximate: Boolean (Optional)
      *     continuationToken: String (Optional)
-     *     &#64;search.facets (Optional): {
+     *     searchFacets (Optional): {
      *         entityType (Optional): [
      *              (Optional){
      *                 count: Integer (Optional)
@@ -199,8 +199,8 @@ public final class DiscoveriesImpl {
      *     }
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
-     *             &#64;search.highlights (Optional): {
+     *             searchScore: Double (Optional)
+     *             searchHighlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
      *                 ]
@@ -262,7 +262,7 @@ public final class DiscoveriesImpl {
      * }
      * }</pre>
      * 
-     * @param searchRequest An object specifying the search criteria.
+     * @param queryOptions The search query of advanced search request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -271,10 +271,10 @@ public final class DiscoveriesImpl {
      * @return data using search along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> queryWithResponseAsync(BinaryData searchRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> queryWithResponseAsync(BinaryData queryOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.query(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, searchRequest, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, queryOptions, requestOptions, context));
     }
 
     /**
@@ -314,10 +314,10 @@ public final class DiscoveriesImpl {
      * </p>
      * <pre>{@code
      * {
-     *     &#64;search.count: Integer (Optional)
-     *     &#64;search.count.approximate: Boolean (Optional)
+     *     searchCount: Integer (Optional)
+     *     searchCountApproximate: Boolean (Optional)
      *     continuationToken: String (Optional)
-     *     &#64;search.facets (Optional): {
+     *     searchFacets (Optional): {
      *         entityType (Optional): [
      *              (Optional){
      *                 count: Integer (Optional)
@@ -354,8 +354,8 @@ public final class DiscoveriesImpl {
      *     }
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
-     *             &#64;search.highlights (Optional): {
+     *             searchScore: Double (Optional)
+     *             searchHighlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
      *                 ]
@@ -417,7 +417,7 @@ public final class DiscoveriesImpl {
      * }
      * }</pre>
      * 
-     * @param searchRequest An object specifying the search criteria.
+     * @param queryOptions The search query of advanced search request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -426,10 +426,10 @@ public final class DiscoveriesImpl {
      * @return data using search along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> queryWithResponse(BinaryData searchRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> queryWithResponse(BinaryData queryOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.querySync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
-            searchRequest, requestOptions, Context.NONE);
+            queryOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -441,8 +441,7 @@ public final class DiscoveriesImpl {
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter (Optional): {
-     *     }
+     *     filter: Object (Optional)
      * }
      * }</pre>
      * <p>
@@ -452,8 +451,8 @@ public final class DiscoveriesImpl {
      * {
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
-     *             &#64;search.text: String (Optional)
+     *             searchScore: Double (Optional)
+     *             searchText: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
      *             updateTime: Long (Optional)
@@ -499,7 +498,7 @@ public final class DiscoveriesImpl {
      * }
      * }</pre>
      * 
-     * @param suggestRequest An object specifying the suggest criteria.
+     * @param suggestOptions The payload of suggest request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -509,11 +508,11 @@ public final class DiscoveriesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> suggestWithResponseAsync(BinaryData suggestRequest,
+    public Mono<Response<BinaryData>> suggestWithResponseAsync(BinaryData suggestOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.suggest(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, suggestRequest, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, suggestOptions, requestOptions, context));
     }
 
     /**
@@ -525,8 +524,7 @@ public final class DiscoveriesImpl {
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter (Optional): {
-     *     }
+     *     filter: Object (Optional)
      * }
      * }</pre>
      * <p>
@@ -536,8 +534,8 @@ public final class DiscoveriesImpl {
      * {
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
-     *             &#64;search.text: String (Optional)
+     *             searchScore: Double (Optional)
+     *             searchText: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
      *             updateTime: Long (Optional)
@@ -583,7 +581,7 @@ public final class DiscoveriesImpl {
      * }
      * }</pre>
      * 
-     * @param suggestRequest An object specifying the suggest criteria.
+     * @param suggestOptions The payload of suggest request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -592,10 +590,10 @@ public final class DiscoveriesImpl {
      * @return search suggestions by query criteria along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> suggestWithResponse(BinaryData suggestRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> suggestWithResponse(BinaryData suggestOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.suggestSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
-            suggestRequest, requestOptions, Context.NONE);
+            suggestOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -607,8 +605,7 @@ public final class DiscoveriesImpl {
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter (Optional): {
-     *     }
+     *     filter: Object (Optional)
      * }
      * }</pre>
      * <p>
@@ -625,7 +622,7 @@ public final class DiscoveriesImpl {
      * }
      * }</pre>
      * 
-     * @param autoCompleteRequest An object specifying the autocomplete criteria.
+     * @param autoCompleteOptions The payload of autocomplete request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -634,11 +631,11 @@ public final class DiscoveriesImpl {
      * @return auto complete options along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> autoCompleteWithResponseAsync(BinaryData autoCompleteRequest,
+    public Mono<Response<BinaryData>> autoCompleteWithResponseAsync(BinaryData autoCompleteOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.autoComplete(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, autoCompleteRequest, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, autoCompleteOptions, requestOptions, context));
     }
 
     /**
@@ -650,8 +647,7 @@ public final class DiscoveriesImpl {
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter (Optional): {
-     *     }
+     *     filter: Object (Optional)
      * }
      * }</pre>
      * <p>
@@ -668,7 +664,7 @@ public final class DiscoveriesImpl {
      * }
      * }</pre>
      * 
-     * @param autoCompleteRequest An object specifying the autocomplete criteria.
+     * @param autoCompleteOptions The payload of autocomplete request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -677,10 +673,10 @@ public final class DiscoveriesImpl {
      * @return auto complete options along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> autoCompleteWithResponse(BinaryData autoCompleteRequest,
+    public Response<BinaryData> autoCompleteWithResponse(BinaryData autoCompleteOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.autoCompleteSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
-            autoCompleteRequest, requestOptions, Context.NONE);
+            autoCompleteOptions, requestOptions, Context.NONE);
     }
 }

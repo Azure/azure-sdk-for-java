@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.RelationshipClientImpl;
+import com.azure.analytics.purview.datamap.implementation.RelationshipsImpl;
 import com.azure.analytics.purview.datamap.models.AtlasRelationship;
 import com.azure.analytics.purview.datamap.models.AtlasRelationshipWithExtInfo;
 import com.azure.core.annotation.Generated;
@@ -20,12 +20,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
 /**
- * Initializes a new instance of the synchronous RelationshipClient type.
+ * Initializes a new instance of the synchronous DataMapClient type.
  */
-@ServiceClient(builder = RelationshipClientBuilder.class)
+@ServiceClient(builder = DataMapClientBuilder.class)
 public final class RelationshipClient {
     @Generated
-    private final RelationshipClientImpl serviceClient;
+    private final RelationshipsImpl serviceClient;
 
     /**
      * Initializes an instance of RelationshipClient class.
@@ -33,7 +33,7 @@ public final class RelationshipClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    RelationshipClient(RelationshipClientImpl serviceClient) {
+    RelationshipClient(RelationshipsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -100,8 +100,7 @@ public final class RelationshipClient {
      * }
      * }</pre>
      * 
-     * @param relationship The AtlasRelationship object containing the information for the relationship to
-     * be created.
+     * @param atlasRelationship Atlas relationship instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -111,8 +110,8 @@ public final class RelationshipClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(BinaryData relationship, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponse(relationship, requestOptions);
+    public Response<BinaryData> createWithResponse(BinaryData atlasRelationship, RequestOptions requestOptions) {
+        return this.serviceClient.createWithResponse(atlasRelationship, requestOptions);
     }
 
     /**
@@ -178,8 +177,7 @@ public final class RelationshipClient {
      * }
      * }</pre>
      * 
-     * @param relationship The AtlasRelationship object containing the information for the relationship to
-     * be created.
+     * @param atlasRelationship Atlas relationship instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -189,8 +187,8 @@ public final class RelationshipClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(BinaryData relationship, RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponse(relationship, requestOptions);
+    public Response<BinaryData> updateWithResponse(BinaryData atlasRelationship, RequestOptions requestOptions) {
+        return this.serviceClient.updateWithResponse(atlasRelationship, requestOptions);
     }
 
     /**
@@ -335,8 +333,7 @@ public final class RelationshipClient {
     /**
      * Create a new relationship between entities.
      * 
-     * @param relationship The AtlasRelationship object containing the information for the relationship to
-     * be created.
+     * @param atlasRelationship Atlas relationship instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -347,18 +344,17 @@ public final class RelationshipClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasRelationship create(AtlasRelationship relationship) {
+    public AtlasRelationship create(AtlasRelationship atlasRelationship) {
         // Generated convenience method for createWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(BinaryData.fromObject(relationship), requestOptions).getValue()
+        return createWithResponse(BinaryData.fromObject(atlasRelationship), requestOptions).getValue()
             .toObject(AtlasRelationship.class);
     }
 
     /**
      * Update an existing relationship between entities.
      * 
-     * @param relationship The AtlasRelationship object containing the information for the relationship to
-     * be created.
+     * @param atlasRelationship Atlas relationship instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -369,10 +365,10 @@ public final class RelationshipClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasRelationship update(AtlasRelationship relationship) {
+    public AtlasRelationship update(AtlasRelationship atlasRelationship) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateWithResponse(BinaryData.fromObject(relationship), requestOptions).getValue()
+        return updateWithResponse(BinaryData.fromObject(atlasRelationship), requestOptions).getValue()
             .toObject(AtlasRelationship.class);
     }
 

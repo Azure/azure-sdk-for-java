@@ -19,7 +19,7 @@ public final class SearchResultValue {
      * search score by default.
      */
     @Generated
-    @JsonProperty(value = "@search.score")
+    @JsonProperty(value = "searchScore")
     private Double searchScore;
 
     /*
@@ -30,7 +30,7 @@ public final class SearchResultValue {
      * @search.highlights.
      */
     @Generated
-    @JsonProperty(value = "@search.highlights")
+    @JsonProperty(value = "searchHighlights")
     private SearchHighlights searchHighlights;
 
     /*

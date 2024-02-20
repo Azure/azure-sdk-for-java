@@ -4,12 +4,12 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.DiscoveryClientImpl;
-import com.azure.analytics.purview.datamap.models.AutoCompleteContent;
+import com.azure.analytics.purview.datamap.implementation.DiscoveriesImpl;
+import com.azure.analytics.purview.datamap.models.AutoCompleteOptions;
 import com.azure.analytics.purview.datamap.models.AutoCompleteResult;
-import com.azure.analytics.purview.datamap.models.SearchContent;
-import com.azure.analytics.purview.datamap.models.SearchResult;
-import com.azure.analytics.purview.datamap.models.SuggestContent;
+import com.azure.analytics.purview.datamap.models.QueryOptions;
+import com.azure.analytics.purview.datamap.models.QueryResult;
+import com.azure.analytics.purview.datamap.models.SuggestOptions;
 import com.azure.analytics.purview.datamap.models.SuggestResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -24,12 +24,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
 /**
- * Initializes a new instance of the synchronous DiscoveryClient type.
+ * Initializes a new instance of the synchronous DataMapClient type.
  */
-@ServiceClient(builder = DiscoveryClientBuilder.class)
+@ServiceClient(builder = DataMapClientBuilder.class)
 public final class DiscoveryClient {
     @Generated
-    private final DiscoveryClientImpl serviceClient;
+    private final DiscoveriesImpl serviceClient;
 
     /**
      * Initializes an instance of DiscoveryClient class.
@@ -37,7 +37,7 @@ public final class DiscoveryClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DiscoveryClient(DiscoveryClientImpl serviceClient) {
+    DiscoveryClient(DiscoveriesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -78,10 +78,10 @@ public final class DiscoveryClient {
      * </p>
      * <pre>{@code
      * {
-     *     &#64;search.count: Integer (Optional)
-     *     &#64;search.count.approximate: Boolean (Optional)
+     *     searchCount: Integer (Optional)
+     *     searchCountApproximate: Boolean (Optional)
      *     continuationToken: String (Optional)
-     *     &#64;search.facets (Optional): {
+     *     searchFacets (Optional): {
      *         entityType (Optional): [
      *              (Optional){
      *                 count: Integer (Optional)
@@ -118,8 +118,8 @@ public final class DiscoveryClient {
      *     }
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
-     *             &#64;search.highlights (Optional): {
+     *             searchScore: Double (Optional)
+     *             searchHighlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
      *                 ]
@@ -181,7 +181,7 @@ public final class DiscoveryClient {
      * }
      * }</pre>
      * 
-     * @param searchRequest An object specifying the search criteria.
+     * @param queryOptions The search query of advanced search request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -191,8 +191,8 @@ public final class DiscoveryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> queryWithResponse(BinaryData searchRequest, RequestOptions requestOptions) {
-        return this.serviceClient.queryWithResponse(searchRequest, requestOptions);
+    public Response<BinaryData> queryWithResponse(BinaryData queryOptions, RequestOptions requestOptions) {
+        return this.serviceClient.queryWithResponse(queryOptions, requestOptions);
     }
 
     /**
@@ -204,8 +204,7 @@ public final class DiscoveryClient {
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter (Optional): {
-     *     }
+     *     filter: Object (Optional)
      * }
      * }</pre>
      * <p>
@@ -215,8 +214,8 @@ public final class DiscoveryClient {
      * {
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
-     *             &#64;search.text: String (Optional)
+     *             searchScore: Double (Optional)
+     *             searchText: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
      *             updateTime: Long (Optional)
@@ -262,7 +261,7 @@ public final class DiscoveryClient {
      * }
      * }</pre>
      * 
-     * @param suggestRequest An object specifying the suggest criteria.
+     * @param suggestOptions The payload of suggest request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -272,8 +271,8 @@ public final class DiscoveryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> suggestWithResponse(BinaryData suggestRequest, RequestOptions requestOptions) {
-        return this.serviceClient.suggestWithResponse(suggestRequest, requestOptions);
+    public Response<BinaryData> suggestWithResponse(BinaryData suggestOptions, RequestOptions requestOptions) {
+        return this.serviceClient.suggestWithResponse(suggestOptions, requestOptions);
     }
 
     /**
@@ -285,8 +284,7 @@ public final class DiscoveryClient {
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter (Optional): {
-     *     }
+     *     filter: Object (Optional)
      * }
      * }</pre>
      * <p>
@@ -303,7 +301,7 @@ public final class DiscoveryClient {
      * }
      * }</pre>
      * 
-     * @param autoCompleteRequest An object specifying the autocomplete criteria.
+     * @param autoCompleteOptions The payload of autocomplete request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -313,15 +311,15 @@ public final class DiscoveryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> autoCompleteWithResponse(BinaryData autoCompleteRequest,
+    public Response<BinaryData> autoCompleteWithResponse(BinaryData autoCompleteOptions,
         RequestOptions requestOptions) {
-        return this.serviceClient.autoCompleteWithResponse(autoCompleteRequest, requestOptions);
+        return this.serviceClient.autoCompleteWithResponse(autoCompleteOptions, requestOptions);
     }
 
     /**
      * Get data using search.
      * 
-     * @param searchRequest An object specifying the search criteria.
+     * @param queryOptions The search query of advanced search request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -332,17 +330,17 @@ public final class DiscoveryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchResult query(SearchContent searchRequest) {
+    public QueryResult query(QueryOptions queryOptions) {
         // Generated convenience method for queryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return queryWithResponse(BinaryData.fromObject(searchRequest), requestOptions).getValue()
-            .toObject(SearchResult.class);
+        return queryWithResponse(BinaryData.fromObject(queryOptions), requestOptions).getValue()
+            .toObject(QueryResult.class);
     }
 
     /**
      * Get search suggestions by query criteria.
      * 
-     * @param suggestRequest An object specifying the suggest criteria.
+     * @param suggestOptions The payload of suggest request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -353,17 +351,17 @@ public final class DiscoveryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SuggestResult suggest(SuggestContent suggestRequest) {
+    public SuggestResult suggest(SuggestOptions suggestOptions) {
         // Generated convenience method for suggestWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return suggestWithResponse(BinaryData.fromObject(suggestRequest), requestOptions).getValue()
+        return suggestWithResponse(BinaryData.fromObject(suggestOptions), requestOptions).getValue()
             .toObject(SuggestResult.class);
     }
 
     /**
      * Get auto complete options.
      * 
-     * @param autoCompleteRequest An object specifying the autocomplete criteria.
+     * @param autoCompleteOptions The payload of autocomplete request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -374,10 +372,10 @@ public final class DiscoveryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutoCompleteResult autoComplete(AutoCompleteContent autoCompleteRequest) {
+    public AutoCompleteResult autoComplete(AutoCompleteOptions autoCompleteOptions) {
         // Generated convenience method for autoCompleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return autoCompleteWithResponse(BinaryData.fromObject(autoCompleteRequest), requestOptions).getValue()
+        return autoCompleteWithResponse(BinaryData.fromObject(autoCompleteOptions), requestOptions).getValue()
             .toObject(AutoCompleteResult.class);
     }
 }

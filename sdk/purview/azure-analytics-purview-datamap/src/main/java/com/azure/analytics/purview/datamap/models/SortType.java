@@ -23,13 +23,13 @@ public final class SortType extends ExpandableStringEnum<SortType> {
      * Use ascending order for sorting.
      */
     @Generated
-    public static final SortType ASC = fromString("ASC");
+    public static final SortType ASCEND = fromString("ASC");
 
     /**
      * Use descending order for sorting.
      */
     @Generated
-    public static final SortType DESC = fromString("DESC");
+    public static final SortType DESCEND = fromString("DESC");
 
     /**
      * Creates a new instance of SortType value.

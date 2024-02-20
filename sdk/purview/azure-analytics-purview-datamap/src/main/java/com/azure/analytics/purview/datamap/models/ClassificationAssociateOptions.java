@@ -10,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The request content for classification association.
+ * The request payload for classification association.
  */
 @Fluent
-public final class ClassificationAssociateContent {
+public final class ClassificationAssociateOptions {
     /*
      * An instance of a classification; it doesn't have an identity, this object
      * exists only when associated with an entity.
@@ -30,10 +30,10 @@ public final class ClassificationAssociateContent {
     private List<String> entityGuids;
 
     /**
-     * Creates an instance of ClassificationAssociateContent class.
+     * Creates an instance of ClassificationAssociateOptions class.
      */
     @Generated
-    public ClassificationAssociateContent() {
+    public ClassificationAssociateOptions() {
     }
 
     /**
@@ -52,10 +52,10 @@ public final class ClassificationAssociateContent {
      * exists only when associated with an entity.
      * 
      * @param classification the classification value to set.
-     * @return the ClassificationAssociateContent object itself.
+     * @return the ClassificationAssociateOptions object itself.
      */
     @Generated
-    public ClassificationAssociateContent setClassification(AtlasClassification classification) {
+    public ClassificationAssociateOptions setClassification(AtlasClassification classification) {
         this.classification = classification;
         return this;
     }
@@ -74,10 +74,10 @@ public final class ClassificationAssociateContent {
      * Set the entityGuids property: The GUID of the entity.
      * 
      * @param entityGuids the entityGuids value to set.
-     * @return the ClassificationAssociateContent object itself.
+     * @return the ClassificationAssociateOptions object itself.
      */
     @Generated
-    public ClassificationAssociateContent setEntityGuids(List<String> entityGuids) {
+    public ClassificationAssociateOptions setEntityGuids(List<String> entityGuids) {
         this.entityGuids = entityGuids;
         return this;
     }

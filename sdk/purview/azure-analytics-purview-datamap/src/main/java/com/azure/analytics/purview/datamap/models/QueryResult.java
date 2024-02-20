@@ -13,20 +13,20 @@ import java.util.List;
  * The result of the search result.
  */
 @Immutable
-public final class SearchResult {
+public final class QueryResult {
     /*
      * The total number of search results (not the number of documents in a single
      * page).
      */
     @Generated
-    @JsonProperty(value = "@search.count")
+    @JsonProperty(value = "searchCount")
     private Integer searchCount;
 
     /*
      * 'True' if the '@search.count' is an approximate value and vise versa.
      */
     @Generated
-    @JsonProperty(value = "@search.count.approximate")
+    @JsonProperty(value = "searchCountApproximate")
     private Boolean searchCountApproximate;
 
     /*
@@ -42,7 +42,7 @@ public final class SearchResult {
      * the facet is returned as an element of @search.facets.
      */
     @Generated
-    @JsonProperty(value = "@search.facets")
+    @JsonProperty(value = "searchFacets")
     private SearchFacetResultValue searchFacets;
 
     /*
@@ -53,10 +53,10 @@ public final class SearchResult {
     private List<SearchResultValue> value;
 
     /**
-     * Creates an instance of SearchResult class.
+     * Creates an instance of QueryResult class.
      */
     @Generated
-    private SearchResult() {
+    private QueryResult() {
     }
 
     /**

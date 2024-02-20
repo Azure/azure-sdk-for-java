@@ -9,10 +9,10 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The query of suggest request.
+ * The payload of suggest request.
  */
 @Fluent
-public final class SuggestContent {
+public final class SuggestOptions {
     /*
      * The keywords applied to all fields that support suggest operation. It must be
      * at least 1 character, and no more than 100 characters. In the index schema we
@@ -36,13 +36,13 @@ public final class SuggestContent {
      */
     @Generated
     @JsonProperty(value = "filter")
-    private SearchFilter filter;
+    private Object filter;
 
     /**
-     * Creates an instance of SuggestContent class.
+     * Creates an instance of SuggestOptions class.
      */
     @Generated
-    public SuggestContent() {
+    public SuggestOptions() {
     }
 
     /**
@@ -65,10 +65,10 @@ public final class SuggestContent {
      * a search mode.
      * 
      * @param keywords the keywords value to set.
-     * @return the SuggestContent object itself.
+     * @return the SuggestOptions object itself.
      */
     @Generated
-    public SuggestContent setKeywords(String keywords) {
+    public SuggestOptions setKeywords(String keywords) {
         this.keywords = keywords;
         return this;
     }
@@ -89,10 +89,10 @@ public final class SuggestContent {
      * must be a number between 1 and 100.
      * 
      * @param limit the limit value to set.
-     * @return the SuggestContent object itself.
+     * @return the SuggestOptions object itself.
      */
     @Generated
-    public SuggestContent setLimit(Integer limit) {
+    public SuggestOptions setLimit(Integer limit) {
         this.limit = limit;
         return this;
     }
@@ -103,7 +103,7 @@ public final class SuggestContent {
      * @return the filter value.
      */
     @Generated
-    public SearchFilter getFilter() {
+    public Object getFilter() {
         return this.filter;
     }
 
@@ -111,10 +111,10 @@ public final class SuggestContent {
      * Set the filter property: The filter for the search.
      * 
      * @param filter the filter value to set.
-     * @return the SuggestContent object itself.
+     * @return the SuggestOptions object itself.
      */
     @Generated
-    public SuggestContent setFilter(SearchFilter filter) {
+    public SuggestOptions setFilter(Object filter) {
         this.filter = filter;
         return this;
     }

@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.GlossaryClientImpl;
+import com.azure.analytics.purview.datamap.implementation.GlossariesImpl;
 import com.azure.analytics.purview.datamap.models.AtlasGlossary;
 import com.azure.analytics.purview.datamap.models.AtlasGlossaryCategory;
 import com.azure.analytics.purview.datamap.models.AtlasGlossaryExtInfo;
@@ -28,12 +28,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Initializes a new instance of the synchronous GlossaryClient type.
+ * Initializes a new instance of the synchronous DataMapClient type.
  */
-@ServiceClient(builder = GlossaryClientBuilder.class)
+@ServiceClient(builder = DataMapClientBuilder.class)
 public final class GlossaryClient {
     @Generated
-    private final GlossaryClientImpl serviceClient;
+    private final GlossariesImpl serviceClient;
 
     /**
      * Initializes an instance of GlossaryClient class.
@@ -41,7 +41,7 @@ public final class GlossaryClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    GlossaryClient(GlossaryClientImpl serviceClient) {
+    GlossaryClient(GlossariesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -50,10 +50,10 @@ public final class GlossaryClient {
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
      * separately using
      * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/terms'
+     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
      * and
      * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryGuid}/categories'.
+     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -161,8 +161,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listWithResponse(requestOptions);
+    public Response<BinaryData> batchGetWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.batchGetWithResponse(requestOptions);
     }
 
     /**
@@ -284,9 +284,7 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param atlasGlossary Glossary definition, terms &amp; categories can be anchored to a glossary.
-     * Using
-     * the anchor attribute when creating the Term/Category.
+     * @param atlasGlossary The glossary object.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -431,7 +429,7 @@ public final class GlossaryClient {
      * ]
      * }</pre>
      * 
-     * @param glossaryCategory An array of glossary category definitions to be created.
+     * @param body An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -441,9 +439,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createCategoriesWithResponse(BinaryData glossaryCategory,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createCategoriesWithResponse(glossaryCategory, requestOptions);
+    public Response<BinaryData> createCategoriesWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createCategoriesWithResponse(body, requestOptions);
     }
 
     /**
@@ -573,10 +570,7 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary
-     * when creating.
-     * Optionally, terms belonging to the category and the hierarchy
-     * can also be defined during creation.
+     * @param atlasGlossaryCategory The glossary category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -586,8 +580,9 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createCategoryWithResponse(BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return this.serviceClient.createCategoryWithResponse(glossaryCategory, requestOptions);
+    public Response<BinaryData> createCategoryWithResponse(BinaryData atlasGlossaryCategory,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createCategoryWithResponse(atlasGlossaryCategory, requestOptions);
     }
 
     /**
@@ -655,7 +650,7 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -665,8 +660,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.getCategoryWithResponse(categoryGuid, requestOptions);
+    public Response<BinaryData> getCategoryWithResponse(String categoryId, RequestOptions requestOptions) {
+        return this.serviceClient.getCategoryWithResponse(categoryId, requestOptions);
     }
 
     /**
@@ -796,8 +791,8 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param glossaryCategory The glossary category to be updated.
+     * @param categoryId The globally unique identifier of the category.
+     * @param atlasGlossaryCategory The glossary category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -807,15 +802,15 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateCategoryWithResponse(String categoryGuid, BinaryData glossaryCategory,
+    public Response<BinaryData> updateCategoryWithResponse(String categoryId, BinaryData atlasGlossaryCategory,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateCategoryWithResponse(categoryGuid, glossaryCategory, requestOptions);
+        return this.serviceClient.updateCategoryWithResponse(categoryId, atlasGlossaryCategory, requestOptions);
     }
 
     /**
      * Delete a glossary category.
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -825,8 +820,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.deleteCategoryWithResponse(categoryGuid, requestOptions);
+    public Response<Void> deleteCategoryWithResponse(String categoryId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteCategoryWithResponse(categoryId, requestOptions);
     }
 
     /**
@@ -836,7 +831,9 @@ public final class GlossaryClient {
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
-     * Object
+     * {
+     *     String: String (Required)
+     * }
      * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
@@ -901,8 +898,8 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param categoryId The globally unique identifier of the category.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values for partial update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -913,9 +910,9 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> partialUpdateCategoryWithResponse(String categoryGuid, BinaryData partialUpdates,
+    public Response<BinaryData> partialUpdateCategoryWithResponse(String categoryId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateCategoryWithResponse(categoryGuid, partialUpdates, requestOptions);
+        return this.serviceClient.partialUpdateCategoryWithResponse(categoryId, body, requestOptions);
     }
 
     /**
@@ -969,7 +966,7 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -979,8 +976,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listRelatedCategoriesWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listRelatedCategoriesWithResponse(categoryGuid, requestOptions);
+    public Response<BinaryData> getRelatedCategoriesWithResponse(String categoryId, RequestOptions requestOptions) {
+        return this.serviceClient.getRelatedCategoriesWithResponse(categoryId, requestOptions);
     }
 
     /**
@@ -1033,7 +1030,7 @@ public final class GlossaryClient {
      * ]
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1043,8 +1040,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listCategoryTermsWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listCategoryTermsWithResponse(categoryGuid, requestOptions);
+    public Response<BinaryData> getCategoryTermsWithResponse(String categoryId, RequestOptions requestOptions) {
+        return this.serviceClient.getCategoryTermsWithResponse(categoryId, requestOptions);
     }
 
     /**
@@ -1395,9 +1392,7 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time
-     * of creation.
-     * Optionally it can be categorized as well.
+     * @param atlasGlossaryTerm The glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1407,8 +1402,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTermWithResponse(BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return this.serviceClient.createTermWithResponse(glossaryTerm, requestOptions);
+    public Response<BinaryData> createTermWithResponse(BinaryData atlasGlossaryTerm, RequestOptions requestOptions) {
+        return this.serviceClient.createTermWithResponse(atlasGlossaryTerm, requestOptions);
     }
 
     /**
@@ -1577,7 +1572,7 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1587,8 +1582,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTermWithResponse(String termGuid, RequestOptions requestOptions) {
-        return this.serviceClient.getTermWithResponse(termGuid, requestOptions);
+    public Response<BinaryData> getTermWithResponse(String termId, RequestOptions requestOptions) {
+        return this.serviceClient.getTermWithResponse(termId, requestOptions);
     }
 
     /**
@@ -1939,8 +1934,8 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param glossaryTerm The glossary term to be updated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param atlasGlossaryTerm The glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1950,15 +1945,15 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateTermWithResponse(String termGuid, BinaryData glossaryTerm,
+    public Response<BinaryData> updateTermWithResponse(String termId, BinaryData atlasGlossaryTerm,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateTermWithResponse(termGuid, glossaryTerm, requestOptions);
+        return this.serviceClient.updateTermWithResponse(termId, atlasGlossaryTerm, requestOptions);
     }
 
     /**
      * Delete a glossary term.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1968,8 +1963,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTermWithResponse(String termGuid, RequestOptions requestOptions) {
-        return this.serviceClient.deleteTermWithResponse(termGuid, requestOptions);
+    public Response<Void> deleteTermWithResponse(String termId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteTermWithResponse(termId, requestOptions);
     }
 
     /**
@@ -1998,7 +1993,9 @@ public final class GlossaryClient {
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
-     * Object
+     * {
+     *     String: String (Required)
+     * }
      * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
@@ -2164,8 +2161,8 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param termId The globally unique identifier for glossary term.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2176,9 +2173,9 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> partialUpdateTermWithResponse(String termGuid, BinaryData partialUpdates,
+    public Response<BinaryData> partialUpdateTermWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateTermWithResponse(termGuid, partialUpdates, requestOptions);
+        return this.serviceClient.partialUpdateTermWithResponse(termId, body, requestOptions);
     }
 
     /**
@@ -2533,7 +2530,7 @@ public final class GlossaryClient {
      * ]
      * }</pre>
      * 
-     * @param glossaryTerm An array of glossary term definitions to be created in bulk.
+     * @param body An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2543,8 +2540,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTermsWithResponse(BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return this.serviceClient.createTermsWithResponse(glossaryTerm, requestOptions);
+    public Response<BinaryData> createTermsWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createTermsWithResponse(body, requestOptions);
     }
 
     /**
@@ -2608,7 +2605,7 @@ public final class GlossaryClient {
      * ]
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2618,9 +2615,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listEntitiesAssignedWithTermWithResponse(String termGuid,
-        RequestOptions requestOptions) {
-        return this.serviceClient.listEntitiesAssignedWithTermWithResponse(termGuid, requestOptions);
+    public Response<BinaryData> getEntitiesAssignedWithTermWithResponse(String termId, RequestOptions requestOptions) {
+        return this.serviceClient.getEntitiesAssignedWithTermWithResponse(termId, requestOptions);
     }
 
     /**
@@ -2657,8 +2653,8 @@ public final class GlossaryClient {
      * ]
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param body An array of related object IDs to which the term has to be associated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2668,9 +2664,9 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> assignTermToEntitiesWithResponse(String termGuid, BinaryData relatedObjectIds,
+    public Response<Void> assignTermToEntitiesWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.assignTermToEntitiesWithResponse(termGuid, relatedObjectIds, requestOptions);
+        return this.serviceClient.assignTermToEntitiesWithResponse(termId, body, requestOptions);
     }
 
     /**
@@ -2702,8 +2698,8 @@ public final class GlossaryClient {
      * ]
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param body An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2713,10 +2709,9 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(String termGuid, BinaryData relatedObjectIds,
+    public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteTermAssignmentFromEntitiesWithResponse(termGuid, relatedObjectIds,
-            requestOptions);
+        return this.serviceClient.deleteTermAssignmentFromEntitiesWithResponse(termId, body, requestOptions);
     }
 
     /**
@@ -2772,7 +2767,7 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2782,8 +2777,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listRelatedTermsWithResponse(String termGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listRelatedTermsWithResponse(termGuid, requestOptions);
+    public Response<BinaryData> getRelatedTermsWithResponse(String termId, RequestOptions requestOptions) {
+        return this.serviceClient.getRelatedTermsWithResponse(termId, requestOptions);
     }
 
     /**
@@ -2847,7 +2842,7 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2857,8 +2852,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(glossaryGuid, requestOptions);
+    public Response<BinaryData> getWithResponse(String glossaryId, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponse(glossaryId, requestOptions);
     }
 
     /**
@@ -2999,8 +2994,8 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param updatedGlossary The glossary definition to be updated.
+     * @param glossaryId The globally unique identifier for glossary.
+     * @param atlasGlossary The glossary object.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3010,16 +3005,16 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(String glossaryGuid, BinaryData updatedGlossary,
+    public Response<BinaryData> updateWithResponse(String glossaryId, BinaryData atlasGlossary,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponse(glossaryGuid, updatedGlossary, requestOptions);
+        return this.serviceClient.updateWithResponse(glossaryId, atlasGlossary, requestOptions);
     }
 
     /**
      * Delete a glossary. Will delete underlying terms/categories together. Recommend
      * separate delete terms and categories.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3029,8 +3024,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponse(glossaryGuid, requestOptions);
+    public Response<Void> deleteWithResponse(String glossaryId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponse(glossaryId, requestOptions);
     }
 
     /**
@@ -3132,7 +3127,7 @@ public final class GlossaryClient {
      * ]
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3142,8 +3137,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listCategoriesWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listCategoriesWithResponse(glossaryGuid, requestOptions);
+    public Response<BinaryData> getCategoriesWithResponse(String glossaryId, RequestOptions requestOptions) {
+        return this.serviceClient.getCategoriesWithResponse(glossaryId, requestOptions);
     }
 
     /**
@@ -3195,7 +3190,7 @@ public final class GlossaryClient {
      * ]
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3205,8 +3200,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listCategoriesHeadersWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listCategoriesHeadersWithResponse(glossaryGuid, requestOptions);
+    public Response<BinaryData> getCategoriesHeadersWithResponse(String glossaryId, RequestOptions requestOptions) {
+        return this.serviceClient.getCategoriesHeadersWithResponse(glossaryId, requestOptions);
     }
 
     /**
@@ -3215,9 +3210,9 @@ public final class GlossaryClient {
      * 
      * Recommend to fetch terms/categories details separately using
      * 
-     * GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/terms and
+     * GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms and
      * 
-     * GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/categories.
+     * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -3438,7 +3433,7 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3448,8 +3443,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDetailedWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.getDetailedWithResponse(glossaryGuid, requestOptions);
+    public Response<BinaryData> getDetailedWithResponse(String glossaryId, RequestOptions requestOptions) {
+        return this.serviceClient.getDetailedWithResponse(glossaryId, requestOptions);
     }
 
     /**
@@ -3484,7 +3479,9 @@ public final class GlossaryClient {
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
-     * Object
+     * {
+     *     String: String (Required)
+     * }
      * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
@@ -3545,8 +3542,8 @@ public final class GlossaryClient {
      * }
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param glossaryId The globally unique identifier for glossary.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3557,9 +3554,9 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> partialUpdateWithResponse(String glossaryGuid, BinaryData partialUpdates,
+    public Response<BinaryData> partialUpdateWithResponse(String glossaryId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateWithResponse(glossaryGuid, partialUpdates, requestOptions);
+        return this.serviceClient.partialUpdateWithResponse(glossaryId, body, requestOptions);
     }
 
     /**
@@ -3762,7 +3759,7 @@ public final class GlossaryClient {
      * ]
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3772,8 +3769,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listTermsWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listTermsWithResponse(glossaryGuid, requestOptions);
+    public Response<BinaryData> getTermsWithResponse(String glossaryId, RequestOptions requestOptions) {
+        return this.serviceClient.getTermsWithResponse(glossaryId, requestOptions);
     }
 
     /**
@@ -3827,7 +3824,7 @@ public final class GlossaryClient {
      * ]
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3837,8 +3834,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listTermHeadersWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listTermHeadersWithResponse(glossaryGuid, requestOptions);
+    public Response<BinaryData> getTermHeadersWithResponse(String glossaryId, RequestOptions requestOptions) {
+        return this.serviceClient.getTermHeadersWithResponse(glossaryId, requestOptions);
     }
 
     /**
@@ -3846,10 +3843,10 @@ public final class GlossaryClient {
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
      * separately using
      * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/terms'
+     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
      * and
      * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryGuid}/categories'.
+     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * 
      * @param limit The page size - by default there is no paging.
      * @param offset The offset for pagination purpose.
@@ -3865,8 +3862,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossary> list(Integer limit, Integer offset, String sort, Boolean ignoreTermsAndCategories) {
-        // Generated convenience method for listWithResponse
+    public List<AtlasGlossary> batchGet(Integer limit, Integer offset, String sort, Boolean ignoreTermsAndCategories) {
+        // Generated convenience method for batchGetWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -3880,7 +3877,7 @@ public final class GlossaryClient {
         if (ignoreTermsAndCategories != null) {
             requestOptions.addQueryParam("ignoreTermsAndCategories", String.valueOf(ignoreTermsAndCategories), false);
         }
-        return listWithResponse(requestOptions).getValue().toObject(TYPE_REFERENCE_LIST_ATLAS_GLOSSARY);
+        return batchGetWithResponse(requestOptions).getValue().toObject(TYPE_REFERENCE_LIST_ATLAS_GLOSSARY);
     }
 
     /**
@@ -3888,10 +3885,10 @@ public final class GlossaryClient {
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
      * separately using
      * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/terms'
+     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
      * and
      * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryGuid}/categories'.
+     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3902,18 +3899,16 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossary> list() {
-        // Generated convenience method for listWithResponse
+    public List<AtlasGlossary> batchGet() {
+        // Generated convenience method for batchGetWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listWithResponse(requestOptions).getValue().toObject(TYPE_REFERENCE_LIST_ATLAS_GLOSSARY);
+        return batchGetWithResponse(requestOptions).getValue().toObject(TYPE_REFERENCE_LIST_ATLAS_GLOSSARY);
     }
 
     /**
      * Create a glossary.
      * 
-     * @param atlasGlossary Glossary definition, terms &amp; categories can be anchored to a glossary.
-     * Using
-     * the anchor attribute when creating the Term/Category.
+     * @param atlasGlossary The glossary object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3934,7 +3929,7 @@ public final class GlossaryClient {
     /**
      * Create glossary category in bulk.
      * 
-     * @param glossaryCategory An array of glossary category definitions to be created.
+     * @param body An array of glossary category definitions to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3945,20 +3940,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryCategory> createCategories(List<AtlasGlossaryCategory> glossaryCategory) {
+    public List<AtlasGlossaryCategory> createCategories(List<AtlasGlossaryCategory> body) {
         // Generated convenience method for createCategoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createCategoriesWithResponse(BinaryData.fromObject(glossaryCategory), requestOptions).getValue()
+        return createCategoriesWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_GLOSSARY_CATEGORY);
     }
 
     /**
      * Create a glossary category.
      * 
-     * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary
-     * when creating.
-     * Optionally, terms belonging to the category and the hierarchy
-     * can also be defined during creation.
+     * @param atlasGlossaryCategory The glossary category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3969,17 +3961,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryCategory createCategory(AtlasGlossaryCategory glossaryCategory) {
+    public AtlasGlossaryCategory createCategory(AtlasGlossaryCategory atlasGlossaryCategory) {
         // Generated convenience method for createCategoryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createCategoryWithResponse(BinaryData.fromObject(glossaryCategory), requestOptions).getValue()
+        return createCategoryWithResponse(BinaryData.fromObject(atlasGlossaryCategory), requestOptions).getValue()
             .toObject(AtlasGlossaryCategory.class);
     }
 
     /**
      * Get specific glossary category by its GUID.
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3990,17 +3982,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryCategory getCategory(String categoryGuid) {
+    public AtlasGlossaryCategory getCategory(String categoryId) {
         // Generated convenience method for getCategoryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCategoryWithResponse(categoryGuid, requestOptions).getValue().toObject(AtlasGlossaryCategory.class);
+        return getCategoryWithResponse(categoryId, requestOptions).getValue().toObject(AtlasGlossaryCategory.class);
     }
 
     /**
      * Update the given glossary category by its GUID.
      * 
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param glossaryCategory The glossary category to be updated.
+     * @param categoryId The globally unique identifier of the category.
+     * @param atlasGlossaryCategory The glossary category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4011,17 +4003,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryCategory updateCategory(String categoryGuid, AtlasGlossaryCategory glossaryCategory) {
+    public AtlasGlossaryCategory updateCategory(String categoryId, AtlasGlossaryCategory atlasGlossaryCategory) {
         // Generated convenience method for updateCategoryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateCategoryWithResponse(categoryGuid, BinaryData.fromObject(glossaryCategory), requestOptions)
+        return updateCategoryWithResponse(categoryId, BinaryData.fromObject(atlasGlossaryCategory), requestOptions)
             .getValue().toObject(AtlasGlossaryCategory.class);
     }
 
     /**
      * Delete a glossary category.
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4031,18 +4023,18 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteCategory(String categoryGuid) {
+    public void deleteCategory(String categoryId) {
         // Generated convenience method for deleteCategoryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteCategoryWithResponse(categoryGuid, requestOptions).getValue();
+        deleteCategoryWithResponse(categoryId, requestOptions).getValue();
     }
 
     /**
      * Update the glossary category partially. So far we only supports partial
      * updating shortDescription and longDescription for category.
      * 
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param categoryId The globally unique identifier of the category.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values for partial update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4054,18 +4046,18 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryCategory partialUpdateCategory(String categoryGuid, Object partialUpdates) {
+    public AtlasGlossaryCategory partialUpdateCategory(String categoryId, Map<String, String> body) {
         // Generated convenience method for partialUpdateCategoryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return partialUpdateCategoryWithResponse(categoryGuid, BinaryData.fromObject(partialUpdates), requestOptions)
-            .getValue().toObject(AtlasGlossaryCategory.class);
+        return partialUpdateCategoryWithResponse(categoryId, BinaryData.fromObject(body), requestOptions).getValue()
+            .toObject(AtlasGlossaryCategory.class);
     }
 
     /**
      * Get all related categories (parent and children). Limit, offset, and sort
      * parameters are currently not being enabled and won't work even they are passed.
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param limit The page size - by default there is no paging.
      * @param offset The offset for pagination purpose.
      * @param sort The sort order, ASC (default) or DESC.
@@ -4079,9 +4071,9 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, List<AtlasRelatedCategoryHeader>> listRelatedCategories(String categoryGuid, Integer limit,
+    public Map<String, List<AtlasRelatedCategoryHeader>> getRelatedCategories(String categoryId, Integer limit,
         Integer offset, String sort) {
-        // Generated convenience method for listRelatedCategoriesWithResponse
+        // Generated convenience method for getRelatedCategoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -4092,7 +4084,7 @@ public final class GlossaryClient {
         if (sort != null) {
             requestOptions.addQueryParam("sort", sort, false);
         }
-        return listRelatedCategoriesWithResponse(categoryGuid, requestOptions).getValue()
+        return getRelatedCategoriesWithResponse(categoryId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_MAP_STRING_LIST_ATLAS_RELATED_CATEGORY_HEADER);
     }
 
@@ -4100,7 +4092,7 @@ public final class GlossaryClient {
      * Get all related categories (parent and children). Limit, offset, and sort
      * parameters are currently not being enabled and won't work even they are passed.
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4111,17 +4103,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, List<AtlasRelatedCategoryHeader>> listRelatedCategories(String categoryGuid) {
-        // Generated convenience method for listRelatedCategoriesWithResponse
+    public Map<String, List<AtlasRelatedCategoryHeader>> getRelatedCategories(String categoryId) {
+        // Generated convenience method for getRelatedCategoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listRelatedCategoriesWithResponse(categoryGuid, requestOptions).getValue()
+        return getRelatedCategoriesWithResponse(categoryId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_MAP_STRING_LIST_ATLAS_RELATED_CATEGORY_HEADER);
     }
 
     /**
      * Get all terms associated with the specific category.
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param limit The page size - by default there is no paging.
      * @param offset The offset for pagination purpose.
      * @param sort The sort order, ASC (default) or DESC.
@@ -4135,9 +4127,9 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedTermHeader> listCategoryTerms(String categoryGuid, Integer limit, Integer offset,
+    public List<AtlasRelatedTermHeader> getCategoryTerms(String categoryId, Integer limit, Integer offset,
         String sort) {
-        // Generated convenience method for listCategoryTermsWithResponse
+        // Generated convenience method for getCategoryTermsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -4148,14 +4140,14 @@ public final class GlossaryClient {
         if (sort != null) {
             requestOptions.addQueryParam("sort", sort, false);
         }
-        return listCategoryTermsWithResponse(categoryGuid, requestOptions).getValue()
+        return getCategoryTermsWithResponse(categoryId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_RELATED_TERM_HEADER);
     }
 
     /**
      * Get all terms associated with the specific category.
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4166,19 +4158,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedTermHeader> listCategoryTerms(String categoryGuid) {
-        // Generated convenience method for listCategoryTermsWithResponse
+    public List<AtlasRelatedTermHeader> getCategoryTerms(String categoryId) {
+        // Generated convenience method for getCategoryTermsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listCategoryTermsWithResponse(categoryGuid, requestOptions).getValue()
+        return getCategoryTermsWithResponse(categoryId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_RELATED_TERM_HEADER);
     }
 
     /**
      * Create a glossary term.
      * 
-     * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time
-     * of creation.
-     * Optionally it can be categorized as well.
+     * @param atlasGlossaryTerm The glossary term.
      * @param includeTermHierarchy Whether include term hierarchy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4190,22 +4180,20 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryTerm createTerm(AtlasGlossaryTerm glossaryTerm, Boolean includeTermHierarchy) {
+    public AtlasGlossaryTerm createTerm(AtlasGlossaryTerm atlasGlossaryTerm, Boolean includeTermHierarchy) {
         // Generated convenience method for createTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeTermHierarchy != null) {
             requestOptions.addQueryParam("includeTermHierarchy", String.valueOf(includeTermHierarchy), false);
         }
-        return createTermWithResponse(BinaryData.fromObject(glossaryTerm), requestOptions).getValue()
+        return createTermWithResponse(BinaryData.fromObject(atlasGlossaryTerm), requestOptions).getValue()
             .toObject(AtlasGlossaryTerm.class);
     }
 
     /**
      * Create a glossary term.
      * 
-     * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time
-     * of creation.
-     * Optionally it can be categorized as well.
+     * @param atlasGlossaryTerm The glossary term.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4216,17 +4204,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryTerm createTerm(AtlasGlossaryTerm glossaryTerm) {
+    public AtlasGlossaryTerm createTerm(AtlasGlossaryTerm atlasGlossaryTerm) {
         // Generated convenience method for createTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createTermWithResponse(BinaryData.fromObject(glossaryTerm), requestOptions).getValue()
+        return createTermWithResponse(BinaryData.fromObject(atlasGlossaryTerm), requestOptions).getValue()
             .toObject(AtlasGlossaryTerm.class);
     }
 
     /**
      * Get a specific glossary term by its GUID.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4237,17 +4225,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryTerm getTerm(String termGuid) {
+    public AtlasGlossaryTerm getTerm(String termId) {
         // Generated convenience method for getTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTermWithResponse(termGuid, requestOptions).getValue().toObject(AtlasGlossaryTerm.class);
+        return getTermWithResponse(termId, requestOptions).getValue().toObject(AtlasGlossaryTerm.class);
     }
 
     /**
      * Update the given glossary term by its GUID.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param glossaryTerm The glossary term to be updated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param atlasGlossaryTerm The glossary term.
      * @param includeTermHierarchy Whether include term hierarchy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4259,21 +4247,22 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryTerm updateTerm(String termGuid, AtlasGlossaryTerm glossaryTerm, Boolean includeTermHierarchy) {
+    public AtlasGlossaryTerm updateTerm(String termId, AtlasGlossaryTerm atlasGlossaryTerm,
+        Boolean includeTermHierarchy) {
         // Generated convenience method for updateTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeTermHierarchy != null) {
             requestOptions.addQueryParam("includeTermHierarchy", String.valueOf(includeTermHierarchy), false);
         }
-        return updateTermWithResponse(termGuid, BinaryData.fromObject(glossaryTerm), requestOptions).getValue()
+        return updateTermWithResponse(termId, BinaryData.fromObject(atlasGlossaryTerm), requestOptions).getValue()
             .toObject(AtlasGlossaryTerm.class);
     }
 
     /**
      * Update the given glossary term by its GUID.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param glossaryTerm The glossary term to be updated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param atlasGlossaryTerm The glossary term.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4284,17 +4273,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryTerm updateTerm(String termGuid, AtlasGlossaryTerm glossaryTerm) {
+    public AtlasGlossaryTerm updateTerm(String termId, AtlasGlossaryTerm atlasGlossaryTerm) {
         // Generated convenience method for updateTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateTermWithResponse(termGuid, BinaryData.fromObject(glossaryTerm), requestOptions).getValue()
+        return updateTermWithResponse(termId, BinaryData.fromObject(atlasGlossaryTerm), requestOptions).getValue()
             .toObject(AtlasGlossaryTerm.class);
     }
 
     /**
      * Delete a glossary term.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4304,18 +4293,18 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteTerm(String termGuid) {
+    public void deleteTerm(String termId) {
         // Generated convenience method for deleteTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteTermWithResponse(termGuid, requestOptions).getValue();
+        deleteTermWithResponse(termId, requestOptions).getValue();
     }
 
     /**
      * Update the glossary term partially. So far we only supports partial updating
      * shortDescription, longDescription, abbreviation, usage and status for term.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param termId The globally unique identifier for glossary term.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values to be updated.
      * @param includeTermHierarchy Whether include term hierarchy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4328,13 +4317,13 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryTerm partialUpdateTerm(String termGuid, Object partialUpdates, Boolean includeTermHierarchy) {
+    public AtlasGlossaryTerm partialUpdateTerm(String termId, Map<String, String> body, Boolean includeTermHierarchy) {
         // Generated convenience method for partialUpdateTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeTermHierarchy != null) {
             requestOptions.addQueryParam("includeTermHierarchy", String.valueOf(includeTermHierarchy), false);
         }
-        return partialUpdateTermWithResponse(termGuid, BinaryData.fromObject(partialUpdates), requestOptions).getValue()
+        return partialUpdateTermWithResponse(termId, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasGlossaryTerm.class);
     }
 
@@ -4342,8 +4331,8 @@ public final class GlossaryClient {
      * Update the glossary term partially. So far we only supports partial updating
      * shortDescription, longDescription, abbreviation, usage and status for term.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param termId The globally unique identifier for glossary term.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4355,17 +4344,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryTerm partialUpdateTerm(String termGuid, Object partialUpdates) {
+    public AtlasGlossaryTerm partialUpdateTerm(String termId, Map<String, String> body) {
         // Generated convenience method for partialUpdateTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return partialUpdateTermWithResponse(termGuid, BinaryData.fromObject(partialUpdates), requestOptions).getValue()
+        return partialUpdateTermWithResponse(termId, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasGlossaryTerm.class);
     }
 
     /**
      * Create glossary terms in bulk.
      * 
-     * @param glossaryTerm An array of glossary term definitions to be created in bulk.
+     * @param body An array of glossary term definitions to be created in bulk.
      * @param includeTermHierarchy Whether include term hierarchy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4377,20 +4366,20 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryTerm> createTerms(List<AtlasGlossaryTerm> glossaryTerm, Boolean includeTermHierarchy) {
+    public List<AtlasGlossaryTerm> createTerms(List<AtlasGlossaryTerm> body, Boolean includeTermHierarchy) {
         // Generated convenience method for createTermsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeTermHierarchy != null) {
             requestOptions.addQueryParam("includeTermHierarchy", String.valueOf(includeTermHierarchy), false);
         }
-        return createTermsWithResponse(BinaryData.fromObject(glossaryTerm), requestOptions).getValue()
+        return createTermsWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_GLOSSARY_TERM);
     }
 
     /**
      * Create glossary terms in bulk.
      * 
-     * @param glossaryTerm An array of glossary term definitions to be created in bulk.
+     * @param body An array of glossary term definitions to be created in bulk.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4401,10 +4390,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryTerm> createTerms(List<AtlasGlossaryTerm> glossaryTerm) {
+    public List<AtlasGlossaryTerm> createTerms(List<AtlasGlossaryTerm> body) {
         // Generated convenience method for createTermsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createTermsWithResponse(BinaryData.fromObject(glossaryTerm), requestOptions).getValue()
+        return createTermsWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_GLOSSARY_TERM);
     }
 
@@ -4412,7 +4401,7 @@ public final class GlossaryClient {
      * List all related objects assigned with the specified term. Recommend using
      * limit/offset to get pagination result.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param limit The page size - by default there is no paging.
      * @param offset The offset for pagination purpose.
      * @param sort The sort order, ASC (default) or DESC.
@@ -4426,9 +4415,9 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedObjectId> listEntitiesAssignedWithTerm(String termGuid, Integer limit, Integer offset,
+    public List<AtlasRelatedObjectId> getEntitiesAssignedWithTerm(String termId, Integer limit, Integer offset,
         String sort) {
-        // Generated convenience method for listEntitiesAssignedWithTermWithResponse
+        // Generated convenience method for getEntitiesAssignedWithTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -4439,7 +4428,7 @@ public final class GlossaryClient {
         if (sort != null) {
             requestOptions.addQueryParam("sort", sort, false);
         }
-        return listEntitiesAssignedWithTermWithResponse(termGuid, requestOptions).getValue()
+        return getEntitiesAssignedWithTermWithResponse(termId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_RELATED_OBJECT_ID);
     }
 
@@ -4447,7 +4436,7 @@ public final class GlossaryClient {
      * List all related objects assigned with the specified term. Recommend using
      * limit/offset to get pagination result.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4458,10 +4447,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedObjectId> listEntitiesAssignedWithTerm(String termGuid) {
-        // Generated convenience method for listEntitiesAssignedWithTermWithResponse
+    public List<AtlasRelatedObjectId> getEntitiesAssignedWithTerm(String termId) {
+        // Generated convenience method for getEntitiesAssignedWithTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listEntitiesAssignedWithTermWithResponse(termGuid, requestOptions).getValue()
+        return getEntitiesAssignedWithTermWithResponse(termId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_RELATED_OBJECT_ID);
     }
 
@@ -4473,8 +4462,8 @@ public final class GlossaryClient {
      * operation](https://learn.microsoft.com/en-us/rest/api/purview/datamapdataplane/entity/bulk-create-or-update?tabs=HTTP)
      * is an alternative to assign a term to multiple entities.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param body An array of related object IDs to which the term has to be associated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4484,17 +4473,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void assignTermToEntities(String termGuid, List<AtlasRelatedObjectId> relatedObjectIds) {
+    public void assignTermToEntities(String termId, List<AtlasRelatedObjectId> body) {
         // Generated convenience method for assignTermToEntitiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        assignTermToEntitiesWithResponse(termGuid, BinaryData.fromObject(relatedObjectIds), requestOptions).getValue();
+        assignTermToEntitiesWithResponse(termId, BinaryData.fromObject(body), requestOptions).getValue();
     }
 
     /**
      * Delete the term assignment for the given list of related objects.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param body An array of related object IDs from which the term has to be dissociated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4504,18 +4493,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteTermAssignmentFromEntities(String termGuid, List<AtlasRelatedObjectId> relatedObjectIds) {
+    public void deleteTermAssignmentFromEntities(String termId, List<AtlasRelatedObjectId> body) {
         // Generated convenience method for deleteTermAssignmentFromEntitiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteTermAssignmentFromEntitiesWithResponse(termGuid, BinaryData.fromObject(relatedObjectIds), requestOptions)
-            .getValue();
+        deleteTermAssignmentFromEntitiesWithResponse(termId, BinaryData.fromObject(body), requestOptions).getValue();
     }
 
     /**
      * Get all related terms for a specific term by its GUID. Limit, offset, and sort
      * parameters are currently not being enabled and won't work even they are passed.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param limit The page size - by default there is no paging.
      * @param offset The offset for pagination purpose.
      * @param sort The sort order, ASC (default) or DESC.
@@ -4529,9 +4517,9 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, List<AtlasRelatedTermHeader>> listRelatedTerms(String termGuid, Integer limit, Integer offset,
+    public Map<String, List<AtlasRelatedTermHeader>> getRelatedTerms(String termId, Integer limit, Integer offset,
         String sort) {
-        // Generated convenience method for listRelatedTermsWithResponse
+        // Generated convenience method for getRelatedTermsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -4542,7 +4530,7 @@ public final class GlossaryClient {
         if (sort != null) {
             requestOptions.addQueryParam("sort", sort, false);
         }
-        return listRelatedTermsWithResponse(termGuid, requestOptions).getValue()
+        return getRelatedTermsWithResponse(termId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_MAP_STRING_LIST_ATLAS_RELATED_TERM_HEADER);
     }
 
@@ -4550,7 +4538,7 @@ public final class GlossaryClient {
      * Get all related terms for a specific term by its GUID. Limit, offset, and sort
      * parameters are currently not being enabled and won't work even they are passed.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4561,17 +4549,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, List<AtlasRelatedTermHeader>> listRelatedTerms(String termGuid) {
-        // Generated convenience method for listRelatedTermsWithResponse
+    public Map<String, List<AtlasRelatedTermHeader>> getRelatedTerms(String termId) {
+        // Generated convenience method for getRelatedTermsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listRelatedTermsWithResponse(termGuid, requestOptions).getValue()
+        return getRelatedTermsWithResponse(termId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_MAP_STRING_LIST_ATLAS_RELATED_TERM_HEADER);
     }
 
     /**
      * Get a specific Glossary by its GUID.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4582,17 +4570,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossary get(String glossaryGuid) {
+    public AtlasGlossary get(String glossaryId) {
         // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(glossaryGuid, requestOptions).getValue().toObject(AtlasGlossary.class);
+        return getWithResponse(glossaryId, requestOptions).getValue().toObject(AtlasGlossary.class);
     }
 
     /**
      * Update the given glossary.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param updatedGlossary The glossary definition to be updated.
+     * @param glossaryId The globally unique identifier for glossary.
+     * @param atlasGlossary The glossary object.
      * @param ignoreTermsAndCategories Whether ignore terms and categories.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4604,21 +4592,21 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossary update(String glossaryGuid, AtlasGlossary updatedGlossary, Boolean ignoreTermsAndCategories) {
+    public AtlasGlossary update(String glossaryId, AtlasGlossary atlasGlossary, Boolean ignoreTermsAndCategories) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (ignoreTermsAndCategories != null) {
             requestOptions.addQueryParam("ignoreTermsAndCategories", String.valueOf(ignoreTermsAndCategories), false);
         }
-        return updateWithResponse(glossaryGuid, BinaryData.fromObject(updatedGlossary), requestOptions).getValue()
+        return updateWithResponse(glossaryId, BinaryData.fromObject(atlasGlossary), requestOptions).getValue()
             .toObject(AtlasGlossary.class);
     }
 
     /**
      * Update the given glossary.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param updatedGlossary The glossary definition to be updated.
+     * @param glossaryId The globally unique identifier for glossary.
+     * @param atlasGlossary The glossary object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4629,10 +4617,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossary update(String glossaryGuid, AtlasGlossary updatedGlossary) {
+    public AtlasGlossary update(String glossaryId, AtlasGlossary atlasGlossary) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateWithResponse(glossaryGuid, BinaryData.fromObject(updatedGlossary), requestOptions).getValue()
+        return updateWithResponse(glossaryId, BinaryData.fromObject(atlasGlossary), requestOptions).getValue()
             .toObject(AtlasGlossary.class);
     }
 
@@ -4640,7 +4628,7 @@ public final class GlossaryClient {
      * Delete a glossary. Will delete underlying terms/categories together. Recommend
      * separate delete terms and categories.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4650,17 +4638,17 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String glossaryGuid) {
+    public void delete(String glossaryId) {
         // Generated convenience method for deleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteWithResponse(glossaryGuid, requestOptions).getValue();
+        deleteWithResponse(glossaryId, requestOptions).getValue();
     }
 
     /**
      * Get the categories belonging to a specific glossary. Recommend using
      * limit/offset to get pagination result.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param limit The page size - by default there is no paging.
      * @param offset The offset for pagination purpose.
      * @param sort The sort order, ASC (default) or DESC.
@@ -4674,8 +4662,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryCategory> listCategories(String glossaryGuid, Integer limit, Integer offset, String sort) {
-        // Generated convenience method for listCategoriesWithResponse
+    public List<AtlasGlossaryCategory> getCategories(String glossaryId, Integer limit, Integer offset, String sort) {
+        // Generated convenience method for getCategoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -4686,7 +4674,7 @@ public final class GlossaryClient {
         if (sort != null) {
             requestOptions.addQueryParam("sort", sort, false);
         }
-        return listCategoriesWithResponse(glossaryGuid, requestOptions).getValue()
+        return getCategoriesWithResponse(glossaryId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_GLOSSARY_CATEGORY);
     }
 
@@ -4694,7 +4682,7 @@ public final class GlossaryClient {
      * Get the categories belonging to a specific glossary. Recommend using
      * limit/offset to get pagination result.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4705,10 +4693,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryCategory> listCategories(String glossaryGuid) {
-        // Generated convenience method for listCategoriesWithResponse
+    public List<AtlasGlossaryCategory> getCategories(String glossaryId) {
+        // Generated convenience method for getCategoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listCategoriesWithResponse(glossaryGuid, requestOptions).getValue()
+        return getCategoriesWithResponse(glossaryId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_GLOSSARY_CATEGORY);
     }
 
@@ -4716,7 +4704,7 @@ public final class GlossaryClient {
      * Get the category headers belonging to a specific glossary. Recommend using
      * limit/offset to get pagination result.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param limit The page size - by default there is no paging.
      * @param offset The offset for pagination purpose.
      * @param sort The sort order, ASC (default) or DESC.
@@ -4730,9 +4718,9 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedCategoryHeader> listCategoriesHeaders(String glossaryGuid, Integer limit, Integer offset,
+    public List<AtlasRelatedCategoryHeader> getCategoriesHeaders(String glossaryId, Integer limit, Integer offset,
         String sort) {
-        // Generated convenience method for listCategoriesHeadersWithResponse
+        // Generated convenience method for getCategoriesHeadersWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -4743,7 +4731,7 @@ public final class GlossaryClient {
         if (sort != null) {
             requestOptions.addQueryParam("sort", sort, false);
         }
-        return listCategoriesHeadersWithResponse(glossaryGuid, requestOptions).getValue()
+        return getCategoriesHeadersWithResponse(glossaryId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_RELATED_CATEGORY_HEADER);
     }
 
@@ -4751,7 +4739,7 @@ public final class GlossaryClient {
      * Get the category headers belonging to a specific glossary. Recommend using
      * limit/offset to get pagination result.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4762,10 +4750,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedCategoryHeader> listCategoriesHeaders(String glossaryGuid) {
-        // Generated convenience method for listCategoriesHeadersWithResponse
+    public List<AtlasRelatedCategoryHeader> getCategoriesHeaders(String glossaryId) {
+        // Generated convenience method for getCategoriesHeadersWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listCategoriesHeadersWithResponse(glossaryGuid, requestOptions).getValue()
+        return getCategoriesHeadersWithResponse(glossaryId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_RELATED_CATEGORY_HEADER);
     }
 
@@ -4775,11 +4763,11 @@ public final class GlossaryClient {
      * 
      * Recommend to fetch terms/categories details separately using
      * 
-     * GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/terms and
+     * GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms and
      * 
-     * GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/categories.
+     * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4790,10 +4778,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryExtInfo getDetailed(String glossaryGuid) {
+    public AtlasGlossaryExtInfo getDetailed(String glossaryId) {
         // Generated convenience method for getDetailedWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDetailedWithResponse(glossaryGuid, requestOptions).getValue().toObject(AtlasGlossaryExtInfo.class);
+        return getDetailedWithResponse(glossaryId, requestOptions).getValue().toObject(AtlasGlossaryExtInfo.class);
     }
 
     /**
@@ -4806,8 +4794,8 @@ public final class GlossaryClient {
      * Recommend
      * using 'ignoreTermsAndCategories=true' to reduce response body size.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param glossaryId The globally unique identifier for glossary.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values.
      * @param ignoreTermsAndCategories Whether ignore terms and categories.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4820,13 +4808,13 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossary partialUpdate(String glossaryGuid, Object partialUpdates, Boolean ignoreTermsAndCategories) {
+    public AtlasGlossary partialUpdate(String glossaryId, Map<String, String> body, Boolean ignoreTermsAndCategories) {
         // Generated convenience method for partialUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (ignoreTermsAndCategories != null) {
             requestOptions.addQueryParam("ignoreTermsAndCategories", String.valueOf(ignoreTermsAndCategories), false);
         }
-        return partialUpdateWithResponse(glossaryGuid, BinaryData.fromObject(partialUpdates), requestOptions).getValue()
+        return partialUpdateWithResponse(glossaryId, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasGlossary.class);
     }
 
@@ -4840,8 +4828,8 @@ public final class GlossaryClient {
      * Recommend
      * using 'ignoreTermsAndCategories=true' to reduce response body size.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param glossaryId The globally unique identifier for glossary.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4853,10 +4841,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossary partialUpdate(String glossaryGuid, Object partialUpdates) {
+    public AtlasGlossary partialUpdate(String glossaryId, Map<String, String> body) {
         // Generated convenience method for partialUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return partialUpdateWithResponse(glossaryGuid, BinaryData.fromObject(partialUpdates), requestOptions).getValue()
+        return partialUpdateWithResponse(glossaryId, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasGlossary.class);
     }
 
@@ -4864,7 +4852,7 @@ public final class GlossaryClient {
      * Get terms belonging to a specific glossary. Recommend using limit/offset to get
      * pagination result.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param limit The page size - by default there is no paging.
      * @param offset The offset for pagination purpose.
      * @param sort The sort order, ASC (default) or DESC.
@@ -4878,8 +4866,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryTerm> listTerms(String glossaryGuid, Integer limit, Integer offset, String sort) {
-        // Generated convenience method for listTermsWithResponse
+    public List<AtlasGlossaryTerm> getTerms(String glossaryId, Integer limit, Integer offset, String sort) {
+        // Generated convenience method for getTermsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -4890,7 +4878,7 @@ public final class GlossaryClient {
         if (sort != null) {
             requestOptions.addQueryParam("sort", sort, false);
         }
-        return listTermsWithResponse(glossaryGuid, requestOptions).getValue()
+        return getTermsWithResponse(glossaryId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_GLOSSARY_TERM);
     }
 
@@ -4898,7 +4886,7 @@ public final class GlossaryClient {
      * Get terms belonging to a specific glossary. Recommend using limit/offset to get
      * pagination result.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4909,10 +4897,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasGlossaryTerm> listTerms(String glossaryGuid) {
-        // Generated convenience method for listTermsWithResponse
+    public List<AtlasGlossaryTerm> getTerms(String glossaryId) {
+        // Generated convenience method for getTermsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listTermsWithResponse(glossaryGuid, requestOptions).getValue()
+        return getTermsWithResponse(glossaryId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_GLOSSARY_TERM);
     }
 
@@ -4920,7 +4908,7 @@ public final class GlossaryClient {
      * Get term headers belonging to a specific glossary. Recommend using limit/offset
      * to get pagination result.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param limit The page size - by default there is no paging.
      * @param offset The offset for pagination purpose.
      * @param sort The sort order, ASC (default) or DESC.
@@ -4934,9 +4922,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedTermHeader> listTermHeaders(String glossaryGuid, Integer limit, Integer offset,
-        String sort) {
-        // Generated convenience method for listTermHeadersWithResponse
+    public List<AtlasRelatedTermHeader> getTermHeaders(String glossaryId, Integer limit, Integer offset, String sort) {
+        // Generated convenience method for getTermHeadersWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -4947,7 +4934,7 @@ public final class GlossaryClient {
         if (sort != null) {
             requestOptions.addQueryParam("sort", sort, false);
         }
-        return listTermHeadersWithResponse(glossaryGuid, requestOptions).getValue()
+        return getTermHeadersWithResponse(glossaryId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_RELATED_TERM_HEADER);
     }
 
@@ -4955,7 +4942,7 @@ public final class GlossaryClient {
      * Get term headers belonging to a specific glossary. Recommend using limit/offset
      * to get pagination result.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4966,10 +4953,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasRelatedTermHeader> listTermHeaders(String glossaryGuid) {
-        // Generated convenience method for listTermHeadersWithResponse
+    public List<AtlasRelatedTermHeader> getTermHeaders(String glossaryId) {
+        // Generated convenience method for getTermHeadersWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listTermHeadersWithResponse(glossaryGuid, requestOptions).getValue()
+        return getTermHeadersWithResponse(glossaryId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_ATLAS_RELATED_TERM_HEADER);
     }
 

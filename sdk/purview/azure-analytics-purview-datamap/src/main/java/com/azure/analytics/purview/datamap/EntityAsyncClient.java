@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.EntityClientImpl;
+import com.azure.analytics.purview.datamap.implementation.EntitiesImpl;
 import com.azure.analytics.purview.datamap.models.AtlasClassification;
 import com.azure.analytics.purview.datamap.models.AtlasClassifications;
 import com.azure.analytics.purview.datamap.models.AtlasEntitiesWithExtInfo;
@@ -12,9 +12,9 @@ import com.azure.analytics.purview.datamap.models.AtlasEntityHeader;
 import com.azure.analytics.purview.datamap.models.AtlasEntityHeaders;
 import com.azure.analytics.purview.datamap.models.AtlasEntityWithExtInfo;
 import com.azure.analytics.purview.datamap.models.BusinessAttributeUpdateBehavior;
-import com.azure.analytics.purview.datamap.models.ClassificationAssociateContent;
+import com.azure.analytics.purview.datamap.models.ClassificationAssociateOptions;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
-import com.azure.analytics.purview.datamap.models.MoveEntitiesContent;
+import com.azure.analytics.purview.datamap.models.MoveEntitiesOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -33,12 +33,12 @@ import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous EntityClient type.
+ * Initializes a new instance of the asynchronous DataMapClient type.
  */
-@ServiceClient(builder = EntityClientBuilder.class, isAsync = true)
+@ServiceClient(builder = DataMapClientBuilder.class, isAsync = true)
 public final class EntityAsyncClient {
     @Generated
-    private final EntityClientImpl serviceClient;
+    private final EntitiesImpl serviceClient;
 
     /**
      * Initializes an instance of EntityAsyncClient class.
@@ -46,7 +46,7 @@ public final class EntityAsyncClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    EntityAsyncClient(EntityClientImpl serviceClient) {
+    EntityAsyncClient(EntitiesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -236,7 +236,8 @@ public final class EntityAsyncClient {
      * }
      * }</pre>
      * 
-     * @param entity Atlas entity with extended information.
+     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -247,8 +248,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(BinaryData entity, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(entity, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(BinaryData atlasEntityWithExtInfo,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(atlasEntityWithExtInfo, requestOptions);
     }
 
     /**
@@ -373,8 +375,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listByGuidsWithResponse(List<String> guid, RequestOptions requestOptions) {
-        return this.serviceClient.listByGuidsWithResponseAsync(guid, requestOptions);
+    public Mono<Response<BinaryData>> getByIdsWithResponse(List<String> guid, RequestOptions requestOptions) {
+        return this.serviceClient.getByIdsWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -566,7 +568,8 @@ public final class EntityAsyncClient {
      * }
      * }</pre>
      * 
-     * @param entities An array of entities to create or update.
+     * @param atlasEntitiesWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -577,9 +580,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> bulkCreateOrUpdateWithResponse(BinaryData entities,
+    public Mono<Response<BinaryData>> batchCreateOrUpdateWithResponse(BinaryData atlasEntitiesWithExtInfo,
         RequestOptions requestOptions) {
-        return this.serviceClient.bulkCreateOrUpdateWithResponseAsync(entities, requestOptions);
+        return this.serviceClient.batchCreateOrUpdateWithResponseAsync(atlasEntitiesWithExtInfo, requestOptions);
     }
 
     /**
@@ -666,8 +669,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> bulkDeleteWithResponse(List<String> guid, RequestOptions requestOptions) {
-        return this.serviceClient.bulkDeleteWithResponseAsync(guid, requestOptions);
+    public Mono<Response<BinaryData>> batchDeleteWithResponse(List<String> guid, RequestOptions requestOptions) {
+        return this.serviceClient.batchDeleteWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -700,7 +703,7 @@ public final class EntityAsyncClient {
      * }
      * }</pre>
      * 
-     * @param request The request to associate a classification to multiple entities.
+     * @param classificationAssociateOptions The request payload for classification association.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -710,8 +713,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addClassificationWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.serviceClient.addClassificationWithResponseAsync(request, requestOptions);
+    public Mono<Response<Void>> addClassificationWithResponse(BinaryData classificationAssociateOptions,
+        RequestOptions requestOptions) {
+        return this.serviceClient.addClassificationWithResponseAsync(classificationAssociateOptions, requestOptions);
     }
 
     /**
@@ -933,9 +937,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> partialUpdateAttributeByGuidWithResponse(String guid, String name,
-        BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateAttributeByGuidWithResponseAsync(guid, name, body, requestOptions);
+    public Mono<Response<BinaryData>> updateAttributeByIdWithResponse(String guid, String name, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateAttributeByIdWithResponseAsync(guid, name, body, requestOptions);
     }
 
     /**
@@ -1146,7 +1150,7 @@ public final class EntityAsyncClient {
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param classifications An array of classifications to be added.
+     * @param body An array of classifications to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1156,9 +1160,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addClassificationsWithResponse(String guid, BinaryData classifications,
+    public Mono<Response<Void>> addClassificationsWithResponse(String guid, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.addClassificationsWithResponseAsync(guid, classifications, requestOptions);
+        return this.serviceClient.addClassificationsWithResponseAsync(guid, body, requestOptions);
     }
 
     /**
@@ -1189,7 +1193,7 @@ public final class EntityAsyncClient {
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param classifications An array of classifications to be updated.
+     * @param body An array of classifications to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1199,9 +1203,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateClassificationsWithResponse(String guid, BinaryData classifications,
+    public Mono<Response<Void>> updateClassificationsWithResponse(String guid, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateClassificationsWithResponseAsync(guid, classifications, requestOptions);
+        return this.serviceClient.updateClassificationsWithResponseAsync(guid, body, requestOptions);
     }
 
     /**
@@ -1357,9 +1361,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getByUniqueAttributesWithResponse(String typeName,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getByUniqueAttributesWithResponseAsync(typeName, requestOptions);
+    public Mono<Response<BinaryData>> getByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.getByUniqueAttributeWithResponseAsync(typeName, requestOptions);
     }
 
     /**
@@ -1551,7 +1554,8 @@ public final class EntityAsyncClient {
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param atlasEntityWithExtInfo Atlas entity with extended information.
+     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1562,9 +1566,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> partialUpdateByUniqueAttributesWithResponse(String typeName,
+    public Mono<Response<BinaryData>> updateByUniqueAttributeWithResponse(String typeName,
         BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateByUniqueAttributesWithResponseAsync(typeName, atlasEntityWithExtInfo,
+        return this.serviceClient.updateByUniqueAttributeWithResponseAsync(typeName, atlasEntityWithExtInfo,
             requestOptions);
     }
 
@@ -1776,7 +1780,7 @@ public final class EntityAsyncClient {
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param atlasClassificationArray An array of classification to be added.
+     * @param body An array of classification to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1786,10 +1790,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addClassificationsByUniqueAttributeWithResponse(String typeName,
-        BinaryData atlasClassificationArray, RequestOptions requestOptions) {
-        return this.serviceClient.addClassificationsByUniqueAttributeWithResponseAsync(typeName,
-            atlasClassificationArray, requestOptions);
+    public Mono<Response<Void>> addClassificationsByUniqueAttributeWithResponse(String typeName, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.addClassificationsByUniqueAttributeWithResponseAsync(typeName, body, requestOptions);
     }
 
     /**
@@ -1840,7 +1843,7 @@ public final class EntityAsyncClient {
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param atlasClassificationArray An array of classification to be updated.
+     * @param body An array of classification to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1850,10 +1853,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateClassificationsByUniqueAttributeWithResponse(String typeName,
-        BinaryData atlasClassificationArray, RequestOptions requestOptions) {
-        return this.serviceClient.updateClassificationsByUniqueAttributeWithResponseAsync(typeName,
-            atlasClassificationArray, requestOptions);
+    public Mono<Response<Void>> updateClassificationsUniqueByAttributeWithResponse(String typeName, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateClassificationsUniqueByAttributeWithResponseAsync(typeName, body,
+            requestOptions);
     }
 
     /**
@@ -1928,7 +1931,7 @@ public final class EntityAsyncClient {
      * ]
      * }</pre>
      * 
-     * @param entityHeaders Atlas entity headers.
+     * @param atlasEntityHeaders An instance of an entity header map.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1938,9 +1941,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> bulkSetClassificationsWithResponse(BinaryData entityHeaders,
+    public Mono<Response<BinaryData>> batchSetClassificationsWithResponse(BinaryData atlasEntityHeaders,
         RequestOptions requestOptions) {
-        return this.serviceClient.bulkSetClassificationsWithResponseAsync(entityHeaders, requestOptions);
+        return this.serviceClient.batchSetClassificationsWithResponseAsync(atlasEntityHeaders, requestOptions);
     }
 
     /**
@@ -2090,9 +2093,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listByUniqueAttributesWithResponse(String typeName,
+    public Mono<Response<BinaryData>> batchGetByUniqueAttributesWithResponse(String typeName,
         RequestOptions requestOptions) {
-        return this.serviceClient.listByUniqueAttributesWithResponseAsync(typeName, requestOptions);
+        return this.serviceClient.batchGetByUniqueAttributesWithResponseAsync(typeName, requestOptions);
     }
 
     /**
@@ -2183,7 +2186,7 @@ public final class EntityAsyncClient {
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadata Business metadata payload.
+     * @param body Business metadata payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2193,9 +2196,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeBusinessMetadataWithResponse(String guid, BinaryData businessMetadata,
+    public Mono<Response<Void>> removeBusinessMetadataWithResponse(String guid, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.removeBusinessMetadataWithResponseAsync(guid, businessMetadata, requestOptions);
+        return this.serviceClient.removeBusinessMetadataWithResponseAsync(guid, body, requestOptions);
     }
 
     /**
@@ -2232,7 +2235,7 @@ public final class EntityAsyncClient {
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadata BusinessMetadata payload.
+     * @param body BusinessMetadata payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2242,9 +2245,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addOrUpdateBusinessMetadataWithResponse(String guid, BinaryData businessMetadata,
+    public Mono<Response<Void>> addOrUpdateBusinessMetadataWithResponse(String guid, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.addOrUpdateBusinessMetadataWithResponseAsync(guid, businessMetadata, requestOptions);
+        return this.serviceClient.addOrUpdateBusinessMetadataWithResponseAsync(guid, body, requestOptions);
     }
 
     /**
@@ -2258,9 +2261,9 @@ public final class EntityAsyncClient {
      * }
      * }</pre>
      * 
-     * @param bmName BusinessMetadata name.
+     * @param businessMetadataName BusinessMetadata name.
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadataAttributes Business metadata attribute payload.
+     * @param body Business metadata attribute payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2270,10 +2273,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeBusinessMetadataAttributesWithResponse(String bmName, String guid,
-        BinaryData businessMetadataAttributes, RequestOptions requestOptions) {
-        return this.serviceClient.removeBusinessMetadataAttributesWithResponseAsync(bmName, guid,
-            businessMetadataAttributes, requestOptions);
+    public Mono<Response<Void>> removeBusinessMetadataAttributesWithResponse(String businessMetadataName, String guid,
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.removeBusinessMetadataAttributesWithResponseAsync(businessMetadataName, guid, body,
+            requestOptions);
     }
 
     /**
@@ -2287,9 +2290,9 @@ public final class EntityAsyncClient {
      * }
      * }</pre>
      * 
-     * @param bmName BusinessMetadata name.
+     * @param businessMetadataName BusinessMetadata name.
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadataAttributes Business metadata attribute payload.
+     * @param body Business metadata attribute payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2299,10 +2302,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addOrUpdateBusinessMetadataAttributesWithResponse(String bmName, String guid,
-        BinaryData businessMetadataAttributes, RequestOptions requestOptions) {
-        return this.serviceClient.addOrUpdateBusinessMetadataAttributesWithResponseAsync(bmName, guid,
-            businessMetadataAttributes, requestOptions);
+    public Mono<Response<Void>> addOrUpdateBusinessMetadataAttributesWithResponse(String businessMetadataName,
+        String guid, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.addOrUpdateBusinessMetadataAttributesWithResponseAsync(businessMetadataName, guid,
+            body, requestOptions);
     }
 
     /**
@@ -2324,8 +2327,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSampleBusinessMetadataTemplateWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getSampleBusinessMetadataTemplateWithResponseAsync(requestOptions);
+    public Mono<Response<BinaryData>> getBusinessMetadataTemplateWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getBusinessMetadataTemplateWithResponseAsync(requestOptions);
     }
 
     /**
@@ -2335,7 +2338,7 @@ public final class EntityAsyncClient {
      * </p>
      * <pre>{@code
      * {
-     *     uploadedInputStream: byte[] (Required)
+     *     file: byte[] (Required)
      * }
      * }</pre>
      * <p>
@@ -2380,12 +2383,11 @@ public final class EntityAsyncClient {
      * </p>
      * <pre>{@code
      * [
-     *     String (Required)
+     *     String (Optional)
      * ]
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param body set of labels to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2395,8 +2397,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeLabelsWithResponse(String guid, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.removeLabelsWithResponseAsync(guid, body, requestOptions);
+    public Mono<Response<Void>> removeLabelsWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.removeLabelsWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -2406,12 +2408,11 @@ public final class EntityAsyncClient {
      * </p>
      * <pre>{@code
      * [
-     *     String (Required)
+     *     String (Optional)
      * ]
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param body set of labels to be set to the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2421,8 +2422,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setLabelsWithResponse(String guid, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.setLabelsWithResponseAsync(guid, body, requestOptions);
+    public Mono<Response<Void>> setLabelsWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.setLabelsWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -2432,12 +2433,11 @@ public final class EntityAsyncClient {
      * </p>
      * <pre>{@code
      * [
-     *     String (Required)
+     *     String (Optional)
      * ]
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param body set of labels to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2447,8 +2447,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addLabelWithResponse(String guid, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.addLabelWithResponseAsync(guid, body, requestOptions);
+    public Mono<Response<Void>> addLabelWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.addLabelWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -2490,12 +2490,11 @@ public final class EntityAsyncClient {
      * </p>
      * <pre>{@code
      * [
-     *     String (Required)
+     *     String (Optional)
      * ]
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2505,9 +2504,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeLabelsByUniqueAttributeWithResponse(String typeName, BinaryData body,
+    public Mono<Response<Void>> removeLabelsByUniqueAttributeWithResponse(String typeName,
         RequestOptions requestOptions) {
-        return this.serviceClient.removeLabelsByUniqueAttributeWithResponseAsync(typeName, body, requestOptions);
+        return this.serviceClient.removeLabelsByUniqueAttributeWithResponseAsync(typeName, requestOptions);
     }
 
     /**
@@ -2551,12 +2550,11 @@ public final class EntityAsyncClient {
      * </p>
      * <pre>{@code
      * [
-     *     String (Required)
+     *     String (Optional)
      * ]
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be set.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2566,9 +2564,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setLabelsByUniqueAttributeWithResponse(String typeName, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.setLabelsByUniqueAttributeWithResponseAsync(typeName, body, requestOptions);
+    public Mono<Response<Void>> setLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.setLabelsByUniqueAttributeWithResponseAsync(typeName, requestOptions);
     }
 
     /**
@@ -2612,12 +2609,11 @@ public final class EntityAsyncClient {
      * </p>
      * <pre>{@code
      * [
-     *     String (Required)
+     *     String (Optional)
      * ]
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2627,9 +2623,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addLabelsByUniqueAttributeWithResponse(String typeName, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.addLabelsByUniqueAttributeWithResponseAsync(typeName, body, requestOptions);
+    public Mono<Response<Void>> addLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.addLabelsByUniqueAttributeWithResponseAsync(typeName, requestOptions);
     }
 
     /**
@@ -2715,7 +2710,7 @@ public final class EntityAsyncClient {
      * }</pre>
      * 
      * @param collectionId The collection where entities will be moved to.
-     * @param moveEntitiesRequest Entity guids to be moved to target collection.
+     * @param moveEntitiesOptions MoveEntitiesOptions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2727,8 +2722,8 @@ public final class EntityAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> moveEntitiesToCollectionWithResponse(String collectionId,
-        BinaryData moveEntitiesRequest, RequestOptions requestOptions) {
-        return this.serviceClient.moveEntitiesToCollectionWithResponseAsync(collectionId, moveEntitiesRequest,
+        BinaryData moveEntitiesOptions, RequestOptions requestOptions) {
+        return this.serviceClient.moveEntitiesToCollectionWithResponseAsync(collectionId, moveEntitiesOptions,
             requestOptions);
     }
 
@@ -2741,7 +2736,8 @@ public final class EntityAsyncClient {
      * int&gt;&gt;.
      * For each contact type, the maximum number of contacts is 20.
      * 
-     * @param entity Atlas entity with extended information.
+     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @param businessAttributeUpdateBehavior Used to define the update behavior for business attributes when updating
      * entities.
      * @param collectionId The collection where entities will be moved to. Only specify a value if you
@@ -2756,7 +2752,7 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> createOrUpdate(AtlasEntityWithExtInfo entity,
+    public Mono<EntityMutationResult> createOrUpdate(AtlasEntityWithExtInfo atlasEntityWithExtInfo,
         BusinessAttributeUpdateBehavior businessAttributeUpdateBehavior, String collectionId) {
         // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2767,7 +2763,8 @@ public final class EntityAsyncClient {
         if (collectionId != null) {
             requestOptions.addQueryParam("collectionId", collectionId, false);
         }
-        return createOrUpdateWithResponse(BinaryData.fromObject(entity), requestOptions).flatMap(FluxUtil::toMono)
+        return createOrUpdateWithResponse(BinaryData.fromObject(atlasEntityWithExtInfo), requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 
@@ -2780,7 +2777,8 @@ public final class EntityAsyncClient {
      * int&gt;&gt;.
      * For each contact type, the maximum number of contacts is 20.
      * 
-     * @param entity Atlas entity with extended information.
+     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2791,10 +2789,11 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> createOrUpdate(AtlasEntityWithExtInfo entity) {
+    public Mono<EntityMutationResult> createOrUpdate(AtlasEntityWithExtInfo atlasEntityWithExtInfo) {
         // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrUpdateWithResponse(BinaryData.fromObject(entity), requestOptions).flatMap(FluxUtil::toMono)
+        return createOrUpdateWithResponse(BinaryData.fromObject(atlasEntityWithExtInfo), requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 
@@ -2815,9 +2814,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasEntitiesWithExtInfo> listByGuids(List<String> guid, Boolean minExtInfo,
-        Boolean ignoreRelationships) {
-        // Generated convenience method for listByGuidsWithResponse
+    public Mono<AtlasEntitiesWithExtInfo> getByIds(List<String> guid, Boolean minExtInfo, Boolean ignoreRelationships) {
+        // Generated convenience method for getByIdsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (minExtInfo != null) {
             requestOptions.addQueryParam("minExtInfo", String.valueOf(minExtInfo), false);
@@ -2825,7 +2823,7 @@ public final class EntityAsyncClient {
         if (ignoreRelationships != null) {
             requestOptions.addQueryParam("ignoreRelationships", String.valueOf(ignoreRelationships), false);
         }
-        return listByGuidsWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
+        return getByIdsWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasEntitiesWithExtInfo.class));
     }
 
@@ -2844,10 +2842,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasEntitiesWithExtInfo> listByGuids(List<String> guid) {
-        // Generated convenience method for listByGuidsWithResponse
+    public Mono<AtlasEntitiesWithExtInfo> getByIds(List<String> guid) {
+        // Generated convenience method for getByIdsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listByGuidsWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
+        return getByIdsWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasEntitiesWithExtInfo.class));
     }
 
@@ -2861,7 +2859,8 @@ public final class EntityAsyncClient {
      * For each contact type, the maximum number of contacts
      * is 20.
      * 
-     * @param entities An array of entities to create or update.
+     * @param atlasEntitiesWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @param collectionId The collection where entities will be moved to. Only specify a value if you
      * need to move an entity to another collection.
      * @param businessAttributeUpdateBehavior Used to define the update behavior for business attributes when updating
@@ -2876,9 +2875,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> bulkCreateOrUpdate(AtlasEntitiesWithExtInfo entities, String collectionId,
-        BusinessAttributeUpdateBehavior businessAttributeUpdateBehavior) {
-        // Generated convenience method for bulkCreateOrUpdateWithResponse
+    public Mono<EntityMutationResult> batchCreateOrUpdate(AtlasEntitiesWithExtInfo atlasEntitiesWithExtInfo,
+        String collectionId, BusinessAttributeUpdateBehavior businessAttributeUpdateBehavior) {
+        // Generated convenience method for batchCreateOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (collectionId != null) {
             requestOptions.addQueryParam("collectionId", collectionId, false);
@@ -2887,7 +2886,8 @@ public final class EntityAsyncClient {
             requestOptions.addQueryParam("businessAttributeUpdateBehavior", businessAttributeUpdateBehavior.toString(),
                 false);
         }
-        return bulkCreateOrUpdateWithResponse(BinaryData.fromObject(entities), requestOptions).flatMap(FluxUtil::toMono)
+        return batchCreateOrUpdateWithResponse(BinaryData.fromObject(atlasEntitiesWithExtInfo), requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 
@@ -2901,7 +2901,8 @@ public final class EntityAsyncClient {
      * For each contact type, the maximum number of contacts
      * is 20.
      * 
-     * @param entities An array of entities to create or update.
+     * @param atlasEntitiesWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2912,10 +2913,11 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> bulkCreateOrUpdate(AtlasEntitiesWithExtInfo entities) {
-        // Generated convenience method for bulkCreateOrUpdateWithResponse
+    public Mono<EntityMutationResult> batchCreateOrUpdate(AtlasEntitiesWithExtInfo atlasEntitiesWithExtInfo) {
+        // Generated convenience method for batchCreateOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return bulkCreateOrUpdateWithResponse(BinaryData.fromObject(entities), requestOptions).flatMap(FluxUtil::toMono)
+        return batchCreateOrUpdateWithResponse(BinaryData.fromObject(atlasEntitiesWithExtInfo), requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 
@@ -2934,17 +2936,17 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> bulkDelete(List<String> guid) {
-        // Generated convenience method for bulkDeleteWithResponse
+    public Mono<EntityMutationResult> batchDelete(List<String> guid) {
+        // Generated convenience method for batchDeleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return bulkDeleteWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
+        return batchDeleteWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 
     /**
      * Associate a classification to multiple entities in bulk.
      * 
-     * @param request The request to associate a classification to multiple entities.
+     * @param classificationAssociateOptions The request payload for classification association.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2955,10 +2957,11 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addClassification(ClassificationAssociateContent request) {
+    public Mono<Void> addClassification(ClassificationAssociateOptions classificationAssociateOptions) {
         // Generated convenience method for addClassificationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return addClassificationWithResponse(BinaryData.fromObject(request), requestOptions).flatMap(FluxUtil::toMono);
+        return addClassificationWithResponse(BinaryData.fromObject(classificationAssociateOptions), requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3031,10 +3034,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> partialUpdateAttributeByGuid(String guid, String name, Object body) {
-        // Generated convenience method for partialUpdateAttributeByGuidWithResponse
+    public Mono<EntityMutationResult> updateAttributeById(String guid, String name, Object body) {
+        // Generated convenience method for updateAttributeByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return partialUpdateAttributeByGuidWithResponse(guid, name, BinaryData.fromObject(body), requestOptions)
+        return updateAttributeByIdWithResponse(guid, name, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
@@ -3128,7 +3131,7 @@ public final class EntityAsyncClient {
      * Add classifications to an existing entity represented by a GUID.
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param classifications An array of classifications to be added.
+     * @param body An array of classifications to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3139,10 +3142,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addClassifications(String guid, List<AtlasClassification> classifications) {
+    public Mono<Void> addClassifications(String guid, List<AtlasClassification> body) {
         // Generated convenience method for addClassificationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return addClassificationsWithResponse(guid, BinaryData.fromObject(classifications), requestOptions)
+        return addClassificationsWithResponse(guid, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -3150,7 +3153,7 @@ public final class EntityAsyncClient {
      * Update classifications to an existing entity represented by a guid.
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param classifications An array of classifications to be updated.
+     * @param body An array of classifications to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3161,10 +3164,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateClassifications(String guid, List<AtlasClassification> classifications) {
+    public Mono<Void> updateClassifications(String guid, List<AtlasClassification> body) {
         // Generated convenience method for updateClassificationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateClassificationsWithResponse(guid, BinaryData.fromObject(classifications), requestOptions)
+        return updateClassificationsWithResponse(guid, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -3187,7 +3190,7 @@ public final class EntityAsyncClient {
      * @param typeName The name of the type.
      * @param minExtInfo Whether to return minimal information for referred entities.
      * @param ignoreRelationships Whether to ignore relationship attributes.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3212,9 +3215,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasEntityWithExtInfo> getByUniqueAttributes(String typeName, Boolean minExtInfo,
-        Boolean ignoreRelationships, String attr) {
-        // Generated convenience method for getByUniqueAttributesWithResponse
+    public Mono<AtlasEntityWithExtInfo> getByUniqueAttribute(String typeName, Boolean minExtInfo,
+        Boolean ignoreRelationships, String attribute) {
+        // Generated convenience method for getByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (minExtInfo != null) {
             requestOptions.addQueryParam("minExtInfo", String.valueOf(minExtInfo), false);
@@ -3222,10 +3225,10 @@ public final class EntityAsyncClient {
         if (ignoreRelationships != null) {
             requestOptions.addQueryParam("ignoreRelationships", String.valueOf(ignoreRelationships), false);
         }
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        return getByUniqueAttributesWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono)
+        return getByUniqueAttributeWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasEntityWithExtInfo.class));
     }
 
@@ -3269,10 +3272,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasEntityWithExtInfo> getByUniqueAttributes(String typeName) {
-        // Generated convenience method for getByUniqueAttributesWithResponse
+    public Mono<AtlasEntityWithExtInfo> getByUniqueAttribute(String typeName) {
+        // Generated convenience method for getByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getByUniqueAttributesWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono)
+        return getByUniqueAttributeWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasEntityWithExtInfo.class));
     }
 
@@ -3295,8 +3298,9 @@ public final class EntityAsyncClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param atlasEntityWithExtInfo Atlas entity with extended information.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3308,14 +3312,14 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> partialUpdateByUniqueAttributes(String typeName,
-        AtlasEntityWithExtInfo atlasEntityWithExtInfo, String attr) {
-        // Generated convenience method for partialUpdateByUniqueAttributesWithResponse
+    public Mono<EntityMutationResult> updateByUniqueAttribute(String typeName,
+        AtlasEntityWithExtInfo atlasEntityWithExtInfo, String attribute) {
+        // Generated convenience method for updateByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        return partialUpdateByUniqueAttributesWithResponse(typeName, BinaryData.fromObject(atlasEntityWithExtInfo),
+        return updateByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(atlasEntityWithExtInfo),
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
@@ -3339,7 +3343,8 @@ public final class EntityAsyncClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param atlasEntityWithExtInfo Atlas entity with extended information.
+     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3350,11 +3355,11 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> partialUpdateByUniqueAttributes(String typeName,
+    public Mono<EntityMutationResult> updateByUniqueAttribute(String typeName,
         AtlasEntityWithExtInfo atlasEntityWithExtInfo) {
-        // Generated convenience method for partialUpdateByUniqueAttributesWithResponse
+        // Generated convenience method for updateByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return partialUpdateByUniqueAttributesWithResponse(typeName, BinaryData.fromObject(atlasEntityWithExtInfo),
+        return updateByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(atlasEntityWithExtInfo),
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
@@ -3374,7 +3379,7 @@ public final class EntityAsyncClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3386,11 +3391,11 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> deleteByUniqueAttribute(String typeName, String attr) {
+    public Mono<EntityMutationResult> deleteByUniqueAttribute(String typeName, String attribute) {
         // Generated convenience method for deleteByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
         return deleteByUniqueAttributeWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
@@ -3434,7 +3439,7 @@ public final class EntityAsyncClient {
      * 
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3446,11 +3451,12 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeClassificationByUniqueAttribute(String typeName, String classificationName, String attr) {
+    public Mono<Void> removeClassificationByUniqueAttribute(String typeName, String classificationName,
+        String attribute) {
         // Generated convenience method for removeClassificationByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
         return removeClassificationByUniqueAttributeWithResponse(typeName, classificationName, requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -3483,8 +3489,8 @@ public final class EntityAsyncClient {
      * Add classification to the entity identified by its type and unique attributes.
      * 
      * @param typeName The name of the type.
-     * @param atlasClassificationArray An array of classification to be added.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param body An array of classification to be added.
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3496,22 +3502,22 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addClassificationsByUniqueAttribute(String typeName,
-        List<AtlasClassification> atlasClassificationArray, String attr) {
+    public Mono<Void> addClassificationsByUniqueAttribute(String typeName, List<AtlasClassification> body,
+        String attribute) {
         // Generated convenience method for addClassificationsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        return addClassificationsByUniqueAttributeWithResponse(typeName,
-            BinaryData.fromObject(atlasClassificationArray), requestOptions).flatMap(FluxUtil::toMono);
+        return addClassificationsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
      * Add classification to the entity identified by its type and unique attributes.
      * 
      * @param typeName The name of the type.
-     * @param atlasClassificationArray An array of classification to be added.
+     * @param body An array of classification to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3522,20 +3528,19 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addClassificationsByUniqueAttribute(String typeName,
-        List<AtlasClassification> atlasClassificationArray) {
+    public Mono<Void> addClassificationsByUniqueAttribute(String typeName, List<AtlasClassification> body) {
         // Generated convenience method for addClassificationsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return addClassificationsByUniqueAttributeWithResponse(typeName,
-            BinaryData.fromObject(atlasClassificationArray), requestOptions).flatMap(FluxUtil::toMono);
+        return addClassificationsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
      * Update classification on an entity identified by its type and unique attributes.
      * 
      * @param typeName The name of the type.
-     * @param atlasClassificationArray An array of classification to be updated.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param body An array of classification to be updated.
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3547,22 +3552,22 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateClassificationsByUniqueAttribute(String typeName,
-        List<AtlasClassification> atlasClassificationArray, String attr) {
-        // Generated convenience method for updateClassificationsByUniqueAttributeWithResponse
+    public Mono<Void> updateClassificationsUniqueByAttribute(String typeName, List<AtlasClassification> body,
+        String attribute) {
+        // Generated convenience method for updateClassificationsUniqueByAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        return updateClassificationsByUniqueAttributeWithResponse(typeName,
-            BinaryData.fromObject(atlasClassificationArray), requestOptions).flatMap(FluxUtil::toMono);
+        return updateClassificationsUniqueByAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
      * Update classification on an entity identified by its type and unique attributes.
      * 
      * @param typeName The name of the type.
-     * @param atlasClassificationArray An array of classification to be updated.
+     * @param body An array of classification to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3573,18 +3578,17 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateClassificationsByUniqueAttribute(String typeName,
-        List<AtlasClassification> atlasClassificationArray) {
-        // Generated convenience method for updateClassificationsByUniqueAttributeWithResponse
+    public Mono<Void> updateClassificationsUniqueByAttribute(String typeName, List<AtlasClassification> body) {
+        // Generated convenience method for updateClassificationsUniqueByAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateClassificationsByUniqueAttributeWithResponse(typeName,
-            BinaryData.fromObject(atlasClassificationArray), requestOptions).flatMap(FluxUtil::toMono);
+        return updateClassificationsUniqueByAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
      * Set classifications on entities in bulk.
      * 
-     * @param entityHeaders Atlas entity headers.
+     * @param atlasEntityHeaders An instance of an entity header map.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3595,10 +3599,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<String>> bulkSetClassifications(AtlasEntityHeaders entityHeaders) {
-        // Generated convenience method for bulkSetClassificationsWithResponse
+    public Mono<List<String>> batchSetClassifications(AtlasEntityHeaders atlasEntityHeaders) {
+        // Generated convenience method for batchSetClassificationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return bulkSetClassificationsWithResponse(BinaryData.fromObject(entityHeaders), requestOptions)
+        return batchSetClassificationsWithResponse(BinaryData.fromObject(atlasEntityHeaders), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_STRING));
     }
@@ -3640,9 +3644,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasEntitiesWithExtInfo> listByUniqueAttributes(String typeName, Boolean minExtInfo,
+    public Mono<AtlasEntitiesWithExtInfo> batchGetByUniqueAttributes(String typeName, Boolean minExtInfo,
         Boolean ignoreRelationships, String attrNQualifiedName) {
-        // Generated convenience method for listByUniqueAttributesWithResponse
+        // Generated convenience method for batchGetByUniqueAttributesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (minExtInfo != null) {
             requestOptions.addQueryParam("minExtInfo", String.valueOf(minExtInfo), false);
@@ -3653,7 +3657,7 @@ public final class EntityAsyncClient {
         if (attrNQualifiedName != null) {
             requestOptions.addQueryParam("attr_N:qualifiedName", attrNQualifiedName, false);
         }
-        return listByUniqueAttributesWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono)
+        return batchGetByUniqueAttributesWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasEntitiesWithExtInfo.class));
     }
 
@@ -3689,10 +3693,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasEntitiesWithExtInfo> listByUniqueAttributes(String typeName) {
-        // Generated convenience method for listByUniqueAttributesWithResponse
+    public Mono<AtlasEntitiesWithExtInfo> batchGetByUniqueAttributes(String typeName) {
+        // Generated convenience method for batchGetByUniqueAttributesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listByUniqueAttributesWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono)
+        return batchGetByUniqueAttributesWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasEntitiesWithExtInfo.class));
     }
 
@@ -3721,7 +3725,7 @@ public final class EntityAsyncClient {
      * Remove business metadata from an entity.
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadata Business metadata payload.
+     * @param body Business metadata payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3732,10 +3736,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeBusinessMetadata(String guid, Map<String, Map<String, Object>> businessMetadata) {
+    public Mono<Void> removeBusinessMetadata(String guid, Map<String, Map<String, Object>> body) {
         // Generated convenience method for removeBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return removeBusinessMetadataWithResponse(guid, BinaryData.fromObject(businessMetadata), requestOptions)
+        return removeBusinessMetadataWithResponse(guid, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -3743,8 +3747,8 @@ public final class EntityAsyncClient {
      * Add business metadata to an entity.
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadata BusinessMetadata payload.
-     * @param isOverwrite Whether to overwrite the existing business metadata on the entity or not,
+     * @param body BusinessMetadata payload.
+     * @param overwrite Whether to overwrite the existing business metadata on the entity or not,
      * default is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3756,14 +3760,14 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, Object>> businessMetadata,
-        Boolean isOverwrite) {
+    public Mono<Void> addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, Object>> body,
+        Boolean overwrite) {
         // Generated convenience method for addOrUpdateBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (isOverwrite != null) {
-            requestOptions.addQueryParam("isOverwrite", String.valueOf(isOverwrite), false);
+        if (overwrite != null) {
+            requestOptions.addQueryParam("isOverwrite", String.valueOf(overwrite), false);
         }
-        return addOrUpdateBusinessMetadataWithResponse(guid, BinaryData.fromObject(businessMetadata), requestOptions)
+        return addOrUpdateBusinessMetadataWithResponse(guid, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -3771,7 +3775,7 @@ public final class EntityAsyncClient {
      * Add business metadata to an entity.
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadata BusinessMetadata payload.
+     * @param body BusinessMetadata payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3782,19 +3786,19 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, Object>> businessMetadata) {
+    public Mono<Void> addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, Object>> body) {
         // Generated convenience method for addOrUpdateBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return addOrUpdateBusinessMetadataWithResponse(guid, BinaryData.fromObject(businessMetadata), requestOptions)
+        return addOrUpdateBusinessMetadataWithResponse(guid, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
     /**
      * Delete business metadata attributes from an entity.
      * 
-     * @param bmName BusinessMetadata name.
+     * @param businessMetadataName BusinessMetadata name.
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadataAttributes Business metadata attribute payload.
+     * @param body Business metadata attribute payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3805,20 +3809,20 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeBusinessMetadataAttributes(String bmName, String guid,
-        Map<String, Object> businessMetadataAttributes) {
+    public Mono<Void> removeBusinessMetadataAttributes(String businessMetadataName, String guid,
+        Map<String, Object> body) {
         // Generated convenience method for removeBusinessMetadataAttributesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return removeBusinessMetadataAttributesWithResponse(bmName, guid,
-            BinaryData.fromObject(businessMetadataAttributes), requestOptions).flatMap(FluxUtil::toMono);
+        return removeBusinessMetadataAttributesWithResponse(businessMetadataName, guid, BinaryData.fromObject(body),
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Add or update business metadata attributes.
      * 
-     * @param bmName BusinessMetadata name.
+     * @param businessMetadataName BusinessMetadata name.
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadataAttributes Business metadata attribute payload.
+     * @param body Business metadata attribute payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3829,12 +3833,12 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addOrUpdateBusinessMetadataAttributes(String bmName, String guid,
-        Map<String, Object> businessMetadataAttributes) {
+    public Mono<Void> addOrUpdateBusinessMetadataAttributes(String businessMetadataName, String guid,
+        Map<String, Object> body) {
         // Generated convenience method for addOrUpdateBusinessMetadataAttributesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return addOrUpdateBusinessMetadataAttributesWithResponse(bmName, guid,
-            BinaryData.fromObject(businessMetadataAttributes), requestOptions).flatMap(FluxUtil::toMono);
+        return addOrUpdateBusinessMetadataAttributesWithResponse(businessMetadataName, guid,
+            BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3850,10 +3854,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getSampleBusinessMetadataTemplate() {
-        // Generated convenience method for getSampleBusinessMetadataTemplateWithResponse
+    public Mono<BinaryData> getBusinessMetadataTemplate() {
+        // Generated convenience method for getBusinessMetadataTemplateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSampleBusinessMetadataTemplateWithResponse(requestOptions).flatMap(FluxUtil::toMono);
+        return getBusinessMetadataTemplateWithResponse(requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3874,7 +3878,30 @@ public final class EntityAsyncClient {
     public Mono<Void> removeLabels(String guid, List<String> body) {
         // Generated convenience method for removeLabelsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return removeLabelsWithResponse(guid, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        return removeLabelsWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Delete given labels to a given entity.
+     * 
+     * @param guid The globally unique identifier of the entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> removeLabels(String guid) {
+        // Generated convenience method for removeLabelsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return removeLabelsWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3895,7 +3922,30 @@ public final class EntityAsyncClient {
     public Mono<Void> setLabels(String guid, List<String> body) {
         // Generated convenience method for setLabelsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return setLabelsWithResponse(guid, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        return setLabelsWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Set labels to a given entity.
+     * 
+     * @param guid The globally unique identifier of the entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setLabels(String guid) {
+        // Generated convenience method for setLabelsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return setLabelsWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3916,46 +3966,30 @@ public final class EntityAsyncClient {
     public Mono<Void> addLabel(String guid, List<String> body) {
         // Generated convenience method for addLabelWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return addLabelWithResponse(guid, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Delete given labels to a given entity identified by its type and unique
-     * attribute.
-     * 
-     * If labels is null/empty, no labels will be removed.
-     * 
-     * If any labels
-     * in labels set are non-existing labels, they will be ignored, only existing
-     * labels will be removed. In addition to the typeName path parameter, attribute
-     * key-value pair(s) can be provided in the following format:
-     * attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be unique
-     * across entities, eg. qualifiedName. The REST request would look something like
-     * this: DELETE
-     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
-     * 
-     * @param typeName The name of the type.
-     * @param body set of labels to be deleted.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
-     * be changed to other unique attributes).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeLabelsByUniqueAttribute(String typeName, List<String> body, String attr) {
-        // Generated convenience method for removeLabelsByUniqueAttributeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
         }
-        return removeLabelsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return addLabelWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Add given labels to a given entity.
+     * 
+     * @param guid The globally unique identifier of the entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> addLabel(String guid) {
+        // Generated convenience method for addLabelWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return addLabelWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3974,6 +4008,8 @@ public final class EntityAsyncClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
+     * be changed to other unique attributes).
      * @param body set of labels to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3985,11 +4021,48 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeLabelsByUniqueAttribute(String typeName, List<String> body) {
+    public Mono<Void> removeLabelsByUniqueAttribute(String typeName, String attribute, List<String> body) {
         // Generated convenience method for removeLabelsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return removeLabelsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
+        }
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        return removeLabelsByUniqueAttributeWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Delete given labels to a given entity identified by its type and unique
+     * attribute.
+     * 
+     * If labels is null/empty, no labels will be removed.
+     * 
+     * If any labels
+     * in labels set are non-existing labels, they will be ignored, only existing
+     * labels will be removed. In addition to the typeName path parameter, attribute
+     * key-value pair(s) can be provided in the following format:
+     * attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be unique
+     * across entities, eg. qualifiedName. The REST request would look something like
+     * this: DELETE
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     * 
+     * @param typeName The name of the type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> removeLabelsByUniqueAttribute(String typeName) {
+        // Generated convenience method for removeLabelsByUniqueAttributeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return removeLabelsByUniqueAttributeWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -4010,9 +4083,9 @@ public final class EntityAsyncClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be set.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
+     * @param body set of labels to be set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4023,14 +4096,16 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setLabelsByUniqueAttribute(String typeName, List<String> body, String attr) {
+    public Mono<Void> setLabelsByUniqueAttribute(String typeName, String attribute, List<String> body) {
         // Generated convenience method for setLabelsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        return setLabelsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono);
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        return setLabelsByUniqueAttributeWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -4051,7 +4126,6 @@ public final class EntityAsyncClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4062,11 +4136,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setLabelsByUniqueAttribute(String typeName, List<String> body) {
+    public Mono<Void> setLabelsByUniqueAttribute(String typeName) {
         // Generated convenience method for setLabelsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return setLabelsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return setLabelsByUniqueAttributeWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -4087,9 +4160,9 @@ public final class EntityAsyncClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be added.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
+     * @param body set of labels to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4100,14 +4173,16 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addLabelsByUniqueAttribute(String typeName, List<String> body, String attr) {
+    public Mono<Void> addLabelsByUniqueAttribute(String typeName, String attribute, List<String> body) {
         // Generated convenience method for addLabelsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        return addLabelsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono);
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        return addLabelsByUniqueAttributeWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -4128,7 +4203,6 @@ public final class EntityAsyncClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4139,18 +4213,17 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addLabelsByUniqueAttribute(String typeName, List<String> body) {
+    public Mono<Void> addLabelsByUniqueAttribute(String typeName) {
         // Generated convenience method for addLabelsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return addLabelsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return addLabelsByUniqueAttributeWithResponse(typeName, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Move existing entities to the target collection.
      * 
      * @param collectionId The collection where entities will be moved to.
-     * @param moveEntitiesRequest Entity guids to be moved to target collection.
+     * @param moveEntitiesOptions MoveEntitiesOptions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4162,10 +4235,10 @@ public final class EntityAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EntityMutationResult> moveEntitiesToCollection(String collectionId,
-        MoveEntitiesContent moveEntitiesRequest) {
+        MoveEntitiesOptions moveEntitiesOptions) {
         // Generated convenience method for moveEntitiesToCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return moveEntitiesToCollectionWithResponse(collectionId, BinaryData.fromObject(moveEntitiesRequest),
+        return moveEntitiesToCollectionWithResponse(collectionId, BinaryData.fromObject(moveEntitiesOptions),
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }

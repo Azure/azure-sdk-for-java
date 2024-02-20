@@ -10,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * MoveEntitiesContent.
+ * MoveEntitiesOptions.
  */
 @Fluent
-public final class MoveEntitiesContent {
+public final class MoveEntitiesOptions {
     /*
      * An array of entity guids to be moved to target collection.
      */
@@ -22,10 +22,10 @@ public final class MoveEntitiesContent {
     private List<String> entityGuids;
 
     /**
-     * Creates an instance of MoveEntitiesContent class.
+     * Creates an instance of MoveEntitiesOptions class.
      */
     @Generated
-    public MoveEntitiesContent() {
+    public MoveEntitiesOptions() {
     }
 
     /**
@@ -42,10 +42,10 @@ public final class MoveEntitiesContent {
      * Set the entityGuids property: An array of entity guids to be moved to target collection.
      * 
      * @param entityGuids the entityGuids value to set.
-     * @return the MoveEntitiesContent object itself.
+     * @return the MoveEntitiesOptions object itself.
      */
     @Generated
-    public MoveEntitiesContent setEntityGuids(List<String> entityGuids) {
+    public MoveEntitiesOptions setEntityGuids(List<String> entityGuids) {
         this.entityGuids = entityGuids;
         return this;
     }

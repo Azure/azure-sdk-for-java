@@ -1,6 +1,6 @@
 # Azure PurviewDataMap client library for Java
 
-Azure PurviewDataMap client library for Java.
+Azure PurviewDataMap client provides a set of APIs in Purview Data Map Data Plane. For a full list of APIs, please refer to [Data Map API](https://learn.microsoft.com/en-us/rest/api/purview/datamapdataplane/operation-groups?view=rest-purview-datamapdataplane-2023-09-01).
 
 This package contains Microsoft Azure PurviewDataMap client library.
 

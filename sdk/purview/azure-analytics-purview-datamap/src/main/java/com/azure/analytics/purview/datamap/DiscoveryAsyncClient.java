@@ -4,12 +4,12 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.DiscoveryClientImpl;
-import com.azure.analytics.purview.datamap.models.AutoCompleteContent;
+import com.azure.analytics.purview.datamap.implementation.DiscoveriesImpl;
+import com.azure.analytics.purview.datamap.models.AutoCompleteOptions;
 import com.azure.analytics.purview.datamap.models.AutoCompleteResult;
-import com.azure.analytics.purview.datamap.models.SearchContent;
-import com.azure.analytics.purview.datamap.models.SearchResult;
-import com.azure.analytics.purview.datamap.models.SuggestContent;
+import com.azure.analytics.purview.datamap.models.QueryOptions;
+import com.azure.analytics.purview.datamap.models.QueryResult;
+import com.azure.analytics.purview.datamap.models.SuggestOptions;
 import com.azure.analytics.purview.datamap.models.SuggestResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -26,12 +26,12 @@ import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous DiscoveryClient type.
+ * Initializes a new instance of the asynchronous DataMapClient type.
  */
-@ServiceClient(builder = DiscoveryClientBuilder.class, isAsync = true)
+@ServiceClient(builder = DataMapClientBuilder.class, isAsync = true)
 public final class DiscoveryAsyncClient {
     @Generated
-    private final DiscoveryClientImpl serviceClient;
+    private final DiscoveriesImpl serviceClient;
 
     /**
      * Initializes an instance of DiscoveryAsyncClient class.
@@ -39,7 +39,7 @@ public final class DiscoveryAsyncClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DiscoveryAsyncClient(DiscoveryClientImpl serviceClient) {
+    DiscoveryAsyncClient(DiscoveriesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -80,10 +80,10 @@ public final class DiscoveryAsyncClient {
      * </p>
      * <pre>{@code
      * {
-     *     &#64;search.count: Integer (Optional)
-     *     &#64;search.count.approximate: Boolean (Optional)
+     *     searchCount: Integer (Optional)
+     *     searchCountApproximate: Boolean (Optional)
      *     continuationToken: String (Optional)
-     *     &#64;search.facets (Optional): {
+     *     searchFacets (Optional): {
      *         entityType (Optional): [
      *              (Optional){
      *                 count: Integer (Optional)
@@ -120,8 +120,8 @@ public final class DiscoveryAsyncClient {
      *     }
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
-     *             &#64;search.highlights (Optional): {
+     *             searchScore: Double (Optional)
+     *             searchHighlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
      *                 ]
@@ -183,7 +183,7 @@ public final class DiscoveryAsyncClient {
      * }
      * }</pre>
      * 
-     * @param searchRequest An object specifying the search criteria.
+     * @param queryOptions The search query of advanced search request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -193,8 +193,8 @@ public final class DiscoveryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> queryWithResponse(BinaryData searchRequest, RequestOptions requestOptions) {
-        return this.serviceClient.queryWithResponseAsync(searchRequest, requestOptions);
+    public Mono<Response<BinaryData>> queryWithResponse(BinaryData queryOptions, RequestOptions requestOptions) {
+        return this.serviceClient.queryWithResponseAsync(queryOptions, requestOptions);
     }
 
     /**
@@ -206,8 +206,7 @@ public final class DiscoveryAsyncClient {
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter (Optional): {
-     *     }
+     *     filter: Object (Optional)
      * }
      * }</pre>
      * <p>
@@ -217,8 +216,8 @@ public final class DiscoveryAsyncClient {
      * {
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
-     *             &#64;search.text: String (Optional)
+     *             searchScore: Double (Optional)
+     *             searchText: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
      *             updateTime: Long (Optional)
@@ -264,7 +263,7 @@ public final class DiscoveryAsyncClient {
      * }
      * }</pre>
      * 
-     * @param suggestRequest An object specifying the suggest criteria.
+     * @param suggestOptions The payload of suggest request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -275,8 +274,8 @@ public final class DiscoveryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> suggestWithResponse(BinaryData suggestRequest, RequestOptions requestOptions) {
-        return this.serviceClient.suggestWithResponseAsync(suggestRequest, requestOptions);
+    public Mono<Response<BinaryData>> suggestWithResponse(BinaryData suggestOptions, RequestOptions requestOptions) {
+        return this.serviceClient.suggestWithResponseAsync(suggestOptions, requestOptions);
     }
 
     /**
@@ -288,8 +287,7 @@ public final class DiscoveryAsyncClient {
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter (Optional): {
-     *     }
+     *     filter: Object (Optional)
      * }
      * }</pre>
      * <p>
@@ -306,7 +304,7 @@ public final class DiscoveryAsyncClient {
      * }
      * }</pre>
      * 
-     * @param autoCompleteRequest An object specifying the autocomplete criteria.
+     * @param autoCompleteOptions The payload of autocomplete request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -316,15 +314,15 @@ public final class DiscoveryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> autoCompleteWithResponse(BinaryData autoCompleteRequest,
+    public Mono<Response<BinaryData>> autoCompleteWithResponse(BinaryData autoCompleteOptions,
         RequestOptions requestOptions) {
-        return this.serviceClient.autoCompleteWithResponseAsync(autoCompleteRequest, requestOptions);
+        return this.serviceClient.autoCompleteWithResponseAsync(autoCompleteOptions, requestOptions);
     }
 
     /**
      * Get data using search.
      * 
-     * @param searchRequest An object specifying the search criteria.
+     * @param queryOptions The search query of advanced search request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -335,17 +333,17 @@ public final class DiscoveryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchResult> query(SearchContent searchRequest) {
+    public Mono<QueryResult> query(QueryOptions queryOptions) {
         // Generated convenience method for queryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return queryWithResponse(BinaryData.fromObject(searchRequest), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SearchResult.class));
+        return queryWithResponse(BinaryData.fromObject(queryOptions), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(QueryResult.class));
     }
 
     /**
      * Get search suggestions by query criteria.
      * 
-     * @param suggestRequest An object specifying the suggest criteria.
+     * @param suggestOptions The payload of suggest request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -356,17 +354,17 @@ public final class DiscoveryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SuggestResult> suggest(SuggestContent suggestRequest) {
+    public Mono<SuggestResult> suggest(SuggestOptions suggestOptions) {
         // Generated convenience method for suggestWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return suggestWithResponse(BinaryData.fromObject(suggestRequest), requestOptions).flatMap(FluxUtil::toMono)
+        return suggestWithResponse(BinaryData.fromObject(suggestOptions), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SuggestResult.class));
     }
 
     /**
      * Get auto complete options.
      * 
-     * @param autoCompleteRequest An object specifying the autocomplete criteria.
+     * @param autoCompleteOptions The payload of autocomplete request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -377,10 +375,10 @@ public final class DiscoveryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AutoCompleteResult> autoComplete(AutoCompleteContent autoCompleteRequest) {
+    public Mono<AutoCompleteResult> autoComplete(AutoCompleteOptions autoCompleteOptions) {
         // Generated convenience method for autoCompleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return autoCompleteWithResponse(BinaryData.fromObject(autoCompleteRequest), requestOptions)
+        return autoCompleteWithResponse(BinaryData.fromObject(autoCompleteOptions), requestOptions)
             .flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(AutoCompleteResult.class));
     }
 }

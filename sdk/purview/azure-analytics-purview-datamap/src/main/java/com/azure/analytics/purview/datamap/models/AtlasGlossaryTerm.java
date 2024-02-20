@@ -153,7 +153,7 @@ public final class AtlasGlossaryTerm {
      */
     @Generated
     @JsonProperty(value = "contacts")
-    private Map<String, List<ContactBasic>> contacts;
+    private Map<String, List<ContactInfo>> contacts;
 
     /*
      * The custom attributes of the term, which is map<string,map<string,object>>.
@@ -707,7 +707,7 @@ public final class AtlasGlossaryTerm {
      * @return the contacts value.
      */
     @Generated
-    public Map<String, List<ContactBasic>> getContacts() {
+    public Map<String, List<ContactInfo>> getContacts() {
         return this.contacts;
     }
 
@@ -718,7 +718,7 @@ public final class AtlasGlossaryTerm {
      * @return the AtlasGlossaryTerm object itself.
      */
     @Generated
-    public AtlasGlossaryTerm setContacts(Map<String, List<ContactBasic>> contacts) {
+    public AtlasGlossaryTerm setContacts(Map<String, List<ContactInfo>> contacts) {
         this.contacts = contacts;
         return this;
     }

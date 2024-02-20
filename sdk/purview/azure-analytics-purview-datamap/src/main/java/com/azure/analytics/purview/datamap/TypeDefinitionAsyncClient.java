@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.TypeClientImpl;
+import com.azure.analytics.purview.datamap.implementation.TypeDefinitionsImpl;
 import com.azure.analytics.purview.datamap.models.AtlasBusinessMetadataDef;
 import com.azure.analytics.purview.datamap.models.AtlasClassificationDef;
 import com.azure.analytics.purview.datamap.models.AtlasEntityDef;
@@ -15,7 +15,7 @@ import com.azure.analytics.purview.datamap.models.AtlasTypeDef;
 import com.azure.analytics.purview.datamap.models.AtlasTypeDefHeader;
 import com.azure.analytics.purview.datamap.models.AtlasTypesDef;
 import com.azure.analytics.purview.datamap.models.TermTemplateDef;
-import com.azure.analytics.purview.datamap.models.TypeDef;
+import com.azure.analytics.purview.datamap.models.TypeCategory;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -33,20 +33,20 @@ import java.util.List;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the asynchronous TypeClient type.
+ * Initializes a new instance of the asynchronous DataMapClient type.
  */
-@ServiceClient(builder = TypeClientBuilder.class, isAsync = true)
-public final class TypeAsyncClient {
+@ServiceClient(builder = DataMapClientBuilder.class, isAsync = true)
+public final class TypeDefinitionAsyncClient {
     @Generated
-    private final TypeClientImpl serviceClient;
+    private final TypeDefinitionsImpl serviceClient;
 
     /**
-     * Initializes an instance of TypeAsyncClient class.
+     * Initializes an instance of TypeDefinitionAsyncClient class.
      * 
      * @param serviceClient the service client implementation.
      */
     @Generated
-    TypeAsyncClient(TypeClientImpl serviceClient) {
+    TypeDefinitionAsyncClient(TypeDefinitionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -151,9 +151,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBusinessMetadataDefByGuidWithResponse(String guid,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getBusinessMetadataDefByGuidWithResponseAsync(guid, requestOptions);
+    public Mono<Response<BinaryData>> getBusinessMetadataByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getBusinessMetadataByIdWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -257,9 +256,9 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBusinessMetadataDefByNameWithResponse(String name,
+    public Mono<Response<BinaryData>> getBusinessMetadataByNameWithResponse(String name,
         RequestOptions requestOptions) {
-        return this.serviceClient.getBusinessMetadataDefByNameWithResponseAsync(name, requestOptions);
+        return this.serviceClient.getBusinessMetadataByNameWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -372,9 +371,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getClassificationDefByGuidWithResponse(String guid,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getClassificationDefByGuidWithResponseAsync(guid, requestOptions);
+    public Mono<Response<BinaryData>> getClassificationByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getClassificationByIdWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -487,9 +485,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getClassificationDefByNameWithResponse(String name,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getClassificationDefByNameWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> getClassificationByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getClassificationByNameWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -622,8 +619,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEntityDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getEntityDefByGuidWithResponseAsync(guid, requestOptions);
+    public Mono<Response<BinaryData>> getEntityByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getEntityByIdWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -756,8 +753,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEntityDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getEntityDefByNameWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> getEntityByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getEntityByNameWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -843,8 +840,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEnumDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getEnumDefByGuidWithResponseAsync(guid, requestOptions);
+    public Mono<Response<BinaryData>> getEnumByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getEnumByIdWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -930,8 +927,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEnumDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getEnumDefByNameWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> getEnumByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getEnumByNameWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -1046,8 +1043,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getRelationshipDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getRelationshipDefByGuidWithResponseAsync(guid, requestOptions);
+    public Mono<Response<BinaryData>> getRelationshipByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getRelationshipByIdWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -1162,8 +1159,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getRelationshipDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getRelationshipDefByNameWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> getRelationshipByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getRelationshipByNameWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -1267,8 +1264,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getStructDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getStructDefByGuidWithResponseAsync(guid, requestOptions);
+    public Mono<Response<BinaryData>> getStructByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getStructByIdWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -1372,8 +1369,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getStructDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getStructDefByNameWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> getStructByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getStructByNameWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -1528,8 +1525,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getByGuidWithResponseAsync(guid, requestOptions);
+    public Mono<Response<BinaryData>> getByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getByIdWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -1730,8 +1727,8 @@ public final class TypeAsyncClient {
      * <td>type</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Typedef name as search filter when get typedefs. Allowed values: "enum", "entity", "classification",
-     * "relationship", "struct", "term_template".</td>
+     * <td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM",
+     * "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2028,8 +2025,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listWithResponseAsync(requestOptions);
+    public Mono<Response<BinaryData>> getWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(requestOptions);
     }
 
     /**
@@ -2603,7 +2600,7 @@ public final class TypeAsyncClient {
      * }
      * }</pre>
      * 
-     * @param typesDef A composite wrapper object with corresponding lists of the type definition.
+     * @param atlasTypesDef The definitions of types.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2613,8 +2610,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> bulkCreateWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.serviceClient.bulkCreateWithResponseAsync(typesDef, requestOptions);
+    public Mono<Response<BinaryData>> batchCreateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
+        return this.serviceClient.batchCreateWithResponseAsync(atlasTypesDef, requestOptions);
     }
 
     /**
@@ -3187,7 +3184,7 @@ public final class TypeAsyncClient {
      * }
      * }</pre>
      * 
-     * @param typesDef A composite object that captures all type definition changes.
+     * @param atlasTypesDef The definitions of types.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3197,8 +3194,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> bulkUpdateWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.serviceClient.bulkUpdateWithResponseAsync(typesDef, requestOptions);
+    public Mono<Response<BinaryData>> batchUpdateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
+        return this.serviceClient.batchUpdateWithResponseAsync(atlasTypesDef, requestOptions);
     }
 
     /**
@@ -3487,7 +3484,7 @@ public final class TypeAsyncClient {
      * }
      * }</pre>
      * 
-     * @param typesDef A composite object that captures all types to be deleted.
+     * @param atlasTypesDef The definitions of types.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3497,8 +3494,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> bulkDeleteWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.serviceClient.bulkDeleteWithResponseAsync(typesDef, requestOptions);
+    public Mono<Response<Void>> batchDeleteWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
+        return this.serviceClient.batchDeleteWithResponseAsync(atlasTypesDef, requestOptions);
     }
 
     /**
@@ -3526,8 +3523,8 @@ public final class TypeAsyncClient {
      * <td>type</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Typedef name as search filter when get typedefs. Allowed values: "enum", "entity", "classification",
-     * "relationship", "struct", "term_template".</td>
+     * <td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM",
+     * "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -3553,8 +3550,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listHeadersWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listHeadersWithResponseAsync(requestOptions);
+    public Mono<Response<BinaryData>> getHeadersWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getHeadersWithResponseAsync(requestOptions);
     }
 
     /**
@@ -3658,8 +3655,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTermTemplateDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getTermTemplateDefByGuidWithResponseAsync(guid, requestOptions);
+    public Mono<Response<BinaryData>> getTermTemplateByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getTermTemplateByIdWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -3763,8 +3760,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTermTemplateDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getTermTemplateDefByNameWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> getTermTemplateByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getTermTemplateByNameWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -3781,10 +3778,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasBusinessMetadataDef> getBusinessMetadataDefByGuid(String guid) {
-        // Generated convenience method for getBusinessMetadataDefByGuidWithResponse
+    public Mono<AtlasBusinessMetadataDef> getBusinessMetadataById(String guid) {
+        // Generated convenience method for getBusinessMetadataByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getBusinessMetadataDefByGuidWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
+        return getBusinessMetadataByIdWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasBusinessMetadataDef.class));
     }
 
@@ -3802,10 +3799,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasBusinessMetadataDef> getBusinessMetadataDefByName(String name) {
-        // Generated convenience method for getBusinessMetadataDefByNameWithResponse
+    public Mono<AtlasBusinessMetadataDef> getBusinessMetadataByName(String name) {
+        // Generated convenience method for getBusinessMetadataByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getBusinessMetadataDefByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getBusinessMetadataByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasBusinessMetadataDef.class));
     }
 
@@ -3823,10 +3820,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasClassificationDef> getClassificationDefByGuid(String guid) {
-        // Generated convenience method for getClassificationDefByGuidWithResponse
+    public Mono<AtlasClassificationDef> getClassificationById(String guid) {
+        // Generated convenience method for getClassificationByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getClassificationDefByGuidWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
+        return getClassificationByIdWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasClassificationDef.class));
     }
 
@@ -3844,10 +3841,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasClassificationDef> getClassificationDefByName(String name) {
-        // Generated convenience method for getClassificationDefByNameWithResponse
+    public Mono<AtlasClassificationDef> getClassificationByName(String name) {
+        // Generated convenience method for getClassificationByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getClassificationDefByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getClassificationByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasClassificationDef.class));
     }
 
@@ -3865,10 +3862,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasEntityDef> getEntityDefByGuid(String guid) {
-        // Generated convenience method for getEntityDefByGuidWithResponse
+    public Mono<AtlasEntityDef> getEntityById(String guid) {
+        // Generated convenience method for getEntityByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEntityDefByGuidWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
+        return getEntityByIdWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasEntityDef.class));
     }
 
@@ -3886,10 +3883,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasEntityDef> getEntityDefByName(String name) {
-        // Generated convenience method for getEntityDefByNameWithResponse
+    public Mono<AtlasEntityDef> getEntityByName(String name) {
+        // Generated convenience method for getEntityByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEntityDefByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getEntityByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasEntityDef.class));
     }
 
@@ -3907,10 +3904,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasEnumDef> getEnumDefByGuid(String guid) {
-        // Generated convenience method for getEnumDefByGuidWithResponse
+    public Mono<AtlasEnumDef> getEnumById(String guid) {
+        // Generated convenience method for getEnumByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEnumDefByGuidWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
+        return getEnumByIdWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasEnumDef.class));
     }
 
@@ -3928,10 +3925,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasEnumDef> getEnumDefByName(String name) {
-        // Generated convenience method for getEnumDefByNameWithResponse
+    public Mono<AtlasEnumDef> getEnumByName(String name) {
+        // Generated convenience method for getEnumByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEnumDefByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getEnumByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasEnumDef.class));
     }
 
@@ -3949,10 +3946,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasRelationshipDef> getRelationshipDefByGuid(String guid) {
-        // Generated convenience method for getRelationshipDefByGuidWithResponse
+    public Mono<AtlasRelationshipDef> getRelationshipById(String guid) {
+        // Generated convenience method for getRelationshipByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getRelationshipDefByGuidWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
+        return getRelationshipByIdWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasRelationshipDef.class));
     }
 
@@ -3970,10 +3967,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasRelationshipDef> getRelationshipDefByName(String name) {
-        // Generated convenience method for getRelationshipDefByNameWithResponse
+    public Mono<AtlasRelationshipDef> getRelationshipByName(String name) {
+        // Generated convenience method for getRelationshipByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getRelationshipDefByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getRelationshipByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasRelationshipDef.class));
     }
 
@@ -3991,10 +3988,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasStructDef> getStructDefByGuid(String guid) {
-        // Generated convenience method for getStructDefByGuidWithResponse
+    public Mono<AtlasStructDef> getStructById(String guid) {
+        // Generated convenience method for getStructByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getStructDefByGuidWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
+        return getStructByIdWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasStructDef.class));
     }
 
@@ -4012,10 +4009,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasStructDef> getStructDefByName(String name) {
-        // Generated convenience method for getStructDefByNameWithResponse
+    public Mono<AtlasStructDef> getStructByName(String name) {
+        // Generated convenience method for getStructByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getStructDefByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getStructByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasStructDef.class));
     }
 
@@ -4033,10 +4030,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasTypeDef> getByGuid(String guid) {
-        // Generated convenience method for getByGuidWithResponse
+    public Mono<AtlasTypeDef> getById(String guid) {
+        // Generated convenience method for getByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getByGuidWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
+        return getByIdWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasTypeDef.class));
     }
 
@@ -4098,8 +4095,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasTypesDef> list(Boolean includeTermTemplate, TypeDef type) {
-        // Generated convenience method for listWithResponse
+    public Mono<AtlasTypesDef> get(Boolean includeTermTemplate, TypeCategory type) {
+        // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeTermTemplate != null) {
             requestOptions.addQueryParam("includeTermTemplate", String.valueOf(includeTermTemplate), false);
@@ -4107,7 +4104,7 @@ public final class TypeAsyncClient {
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
         }
-        return listWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+        return getWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasTypesDef.class));
     }
 
@@ -4123,10 +4120,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasTypesDef> list() {
-        // Generated convenience method for listWithResponse
+    public Mono<AtlasTypesDef> get() {
+        // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+        return getWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasTypesDef.class));
     }
 
@@ -4135,7 +4132,7 @@ public final class TypeAsyncClient {
      * created.
      * Any changes to the existing definitions will be discarded.
      * 
-     * @param typesDef A composite wrapper object with corresponding lists of the type definition.
+     * @param atlasTypesDef The definitions of types.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4146,10 +4143,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasTypesDef> bulkCreate(AtlasTypesDef typesDef) {
-        // Generated convenience method for bulkCreateWithResponse
+    public Mono<AtlasTypesDef> batchCreate(AtlasTypesDef atlasTypesDef) {
+        // Generated convenience method for batchCreateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return bulkCreateWithResponse(BinaryData.fromObject(typesDef), requestOptions).flatMap(FluxUtil::toMono)
+        return batchCreateWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasTypesDef.class));
     }
 
@@ -4157,7 +4154,7 @@ public final class TypeAsyncClient {
      * Update all types in bulk, changes detected in the type definitions would be
      * persisted.
      * 
-     * @param typesDef A composite object that captures all type definition changes.
+     * @param atlasTypesDef The definitions of types.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4168,17 +4165,17 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasTypesDef> bulkUpdate(AtlasTypesDef typesDef) {
-        // Generated convenience method for bulkUpdateWithResponse
+    public Mono<AtlasTypesDef> batchUpdate(AtlasTypesDef atlasTypesDef) {
+        // Generated convenience method for batchUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return bulkUpdateWithResponse(BinaryData.fromObject(typesDef), requestOptions).flatMap(FluxUtil::toMono)
+        return batchUpdateWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasTypesDef.class));
     }
 
     /**
      * Delete API for all types in bulk.
      * 
-     * @param typesDef A composite object that captures all types to be deleted.
+     * @param atlasTypesDef The definitions of types.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4189,10 +4186,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> bulkDelete(AtlasTypesDef typesDef) {
-        // Generated convenience method for bulkDeleteWithResponse
+    public Mono<Void> batchDelete(AtlasTypesDef atlasTypesDef) {
+        // Generated convenience method for batchDeleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return bulkDeleteWithResponse(BinaryData.fromObject(typesDef), requestOptions).flatMap(FluxUtil::toMono);
+        return batchDeleteWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -4212,8 +4209,8 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasTypeDefHeader>> listHeaders(Boolean includeTermTemplate, TypeDef type) {
-        // Generated convenience method for listHeadersWithResponse
+    public Mono<List<AtlasTypeDefHeader>> getHeaders(Boolean includeTermTemplate, TypeCategory type) {
+        // Generated convenience method for getHeadersWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeTermTemplate != null) {
             requestOptions.addQueryParam("includeTermTemplate", String.valueOf(includeTermTemplate), false);
@@ -4221,7 +4218,7 @@ public final class TypeAsyncClient {
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
         }
-        return listHeadersWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+        return getHeadersWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_ATLAS_TYPE_DEF_HEADER));
     }
 
@@ -4237,10 +4234,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AtlasTypeDefHeader>> listHeaders() {
-        // Generated convenience method for listHeadersWithResponse
+    public Mono<List<AtlasTypeDefHeader>> getHeaders() {
+        // Generated convenience method for getHeadersWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listHeadersWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+        return getHeadersWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_ATLAS_TYPE_DEF_HEADER));
     }
 
@@ -4258,10 +4255,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TermTemplateDef> getTermTemplateDefByGuid(String guid) {
-        // Generated convenience method for getTermTemplateDefByGuidWithResponse
+    public Mono<TermTemplateDef> getTermTemplateById(String guid) {
+        // Generated convenience method for getTermTemplateByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTermTemplateDefByGuidWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
+        return getTermTemplateByIdWithResponse(guid, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TermTemplateDef.class));
     }
 
@@ -4279,10 +4276,10 @@ public final class TypeAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TermTemplateDef> getTermTemplateDefByName(String name) {
-        // Generated convenience method for getTermTemplateDefByNameWithResponse
+    public Mono<TermTemplateDef> getTermTemplateByName(String name) {
+        // Generated convenience method for getTermTemplateByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTermTemplateDefByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getTermTemplateByNameWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TermTemplateDef.class));
     }
 

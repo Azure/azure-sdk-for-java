@@ -9,10 +9,10 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The query of autocomplete request.
+ * The payload of autocomplete request.
  */
 @Fluent
-public final class AutoCompleteContent {
+public final class AutoCompleteOptions {
     /*
      * The keywords applied to all fields that support autocomplete operation. It must
      * be at least 1 character, and no more than 100 characters.
@@ -34,13 +34,13 @@ public final class AutoCompleteContent {
      */
     @Generated
     @JsonProperty(value = "filter")
-    private SearchFilter filter;
+    private Object filter;
 
     /**
-     * Creates an instance of AutoCompleteContent class.
+     * Creates an instance of AutoCompleteOptions class.
      */
     @Generated
-    public AutoCompleteContent() {
+    public AutoCompleteOptions() {
     }
 
     /**
@@ -59,10 +59,10 @@ public final class AutoCompleteContent {
      * be at least 1 character, and no more than 100 characters.
      * 
      * @param keywords the keywords value to set.
-     * @return the AutoCompleteContent object itself.
+     * @return the AutoCompleteOptions object itself.
      */
     @Generated
-    public AutoCompleteContent setKeywords(String keywords) {
+    public AutoCompleteOptions setKeywords(String keywords) {
         this.keywords = keywords;
         return this;
     }
@@ -83,10 +83,10 @@ public final class AutoCompleteContent {
      * The value must be a number between 1 and 100.
      * 
      * @param limit the limit value to set.
-     * @return the AutoCompleteContent object itself.
+     * @return the AutoCompleteOptions object itself.
      */
     @Generated
-    public AutoCompleteContent setLimit(Integer limit) {
+    public AutoCompleteOptions setLimit(Integer limit) {
         this.limit = limit;
         return this;
     }
@@ -97,7 +97,7 @@ public final class AutoCompleteContent {
      * @return the filter value.
      */
     @Generated
-    public SearchFilter getFilter() {
+    public Object getFilter() {
         return this.filter;
     }
 
@@ -105,10 +105,10 @@ public final class AutoCompleteContent {
      * Set the filter property: The filter for the autocomplete request.
      * 
      * @param filter the filter value to set.
-     * @return the AutoCompleteContent object itself.
+     * @return the AutoCompleteOptions object itself.
      */
     @Generated
-    public AutoCompleteContent setFilter(SearchFilter filter) {
+    public AutoCompleteOptions setFilter(Object filter) {
         this.filter = filter;
         return this;
     }

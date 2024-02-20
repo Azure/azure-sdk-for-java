@@ -8,13 +8,13 @@ package com.azure.analytics.purview.datamap.generated;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
+import com.azure.analytics.purview.datamap.DataMapClientBuilder;
 import com.azure.analytics.purview.datamap.DiscoveryClient;
 import com.azure.analytics.purview.datamap.EntityClient;
 import com.azure.analytics.purview.datamap.GlossaryClient;
 import com.azure.analytics.purview.datamap.LineageClient;
-import com.azure.analytics.purview.datamap.PurviewDataMapClientBuilder;
 import com.azure.analytics.purview.datamap.RelationshipClient;
-import com.azure.analytics.purview.datamap.TypeClient;
+import com.azure.analytics.purview.datamap.TypeDefinitionClient;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -26,7 +26,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-class PurviewDataMapClientTestBase extends TestProxyTestBase {
+class DataMapClientTestBase extends TestProxyTestBase {
     protected EntityClient entityClient;
 
     protected GlossaryClient glossaryClient;
@@ -37,14 +37,14 @@ class PurviewDataMapClientTestBase extends TestProxyTestBase {
 
     protected RelationshipClient relationshipClient;
 
-    protected TypeClient typeClient;
+    protected TypeDefinitionClient typeDefinitionClient;
 
     @Override
     protected void beforeTest() {
-        PurviewDataMapClientBuilder entityClientbuilder = new PurviewDataMapClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DataMapClientBuilder entityClientbuilder
+            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             entityClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -56,10 +56,10 @@ class PurviewDataMapClientTestBase extends TestProxyTestBase {
         }
         entityClient = entityClientbuilder.buildEntityClient();
 
-        PurviewDataMapClientBuilder glossaryClientbuilder = new PurviewDataMapClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DataMapClientBuilder glossaryClientbuilder
+            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             glossaryClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -71,10 +71,10 @@ class PurviewDataMapClientTestBase extends TestProxyTestBase {
         }
         glossaryClient = glossaryClientbuilder.buildGlossaryClient();
 
-        PurviewDataMapClientBuilder discoveryClientbuilder = new PurviewDataMapClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DataMapClientBuilder discoveryClientbuilder
+            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             discoveryClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -86,10 +86,10 @@ class PurviewDataMapClientTestBase extends TestProxyTestBase {
         }
         discoveryClient = discoveryClientbuilder.buildDiscoveryClient();
 
-        PurviewDataMapClientBuilder lineageClientbuilder = new PurviewDataMapClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DataMapClientBuilder lineageClientbuilder
+            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             lineageClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -101,10 +101,10 @@ class PurviewDataMapClientTestBase extends TestProxyTestBase {
         }
         lineageClient = lineageClientbuilder.buildLineageClient();
 
-        PurviewDataMapClientBuilder relationshipClientbuilder = new PurviewDataMapClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DataMapClientBuilder relationshipClientbuilder
+            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             relationshipClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -116,20 +116,20 @@ class PurviewDataMapClientTestBase extends TestProxyTestBase {
         }
         relationshipClient = relationshipClientbuilder.buildRelationshipClient();
 
-        PurviewDataMapClientBuilder typeClientbuilder = new PurviewDataMapClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DataMapClientBuilder typeDefinitionClientbuilder
+            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            typeClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+            typeDefinitionClientbuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            typeClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+            typeDefinitionClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            typeClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            typeDefinitionClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        typeClient = typeClientbuilder.buildTypeClient();
+        typeDefinitionClient = typeDefinitionClientbuilder.buildTypeDefinitionClient();
 
     }
 }

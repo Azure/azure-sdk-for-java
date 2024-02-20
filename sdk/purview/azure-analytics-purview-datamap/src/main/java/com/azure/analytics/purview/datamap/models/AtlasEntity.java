@@ -168,7 +168,7 @@ public final class AtlasEntity {
      */
     @Generated
     @JsonProperty(value = "contacts")
-    private Map<String, List<ContactBasic>> contacts;
+    private Map<String, List<ContactInfo>> contacts;
 
     /**
      * Creates an instance of AtlasEntity class.
@@ -635,7 +635,7 @@ public final class AtlasEntity {
      * @return the contacts value.
      */
     @Generated
-    public Map<String, List<ContactBasic>> getContacts() {
+    public Map<String, List<ContactInfo>> getContacts() {
         return this.contacts;
     }
 
@@ -646,7 +646,7 @@ public final class AtlasEntity {
      * @return the AtlasEntity object itself.
      */
     @Generated
-    public AtlasEntity setContacts(Map<String, List<ContactBasic>> contacts) {
+    public AtlasEntity setContacts(Map<String, List<ContactInfo>> contacts) {
         this.contacts = contacts;
         return this;
     }

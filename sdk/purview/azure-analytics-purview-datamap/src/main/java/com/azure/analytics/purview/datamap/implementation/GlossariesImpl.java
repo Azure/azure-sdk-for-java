@@ -43,25 +43,25 @@ public final class GlossariesImpl {
     /**
      * The service client containing this operation class.
      */
-    private final PurviewDataMapClientImpl client;
+    private final DataMapClientImpl client;
 
     /**
      * Initializes an instance of GlossariesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    GlossariesImpl(PurviewDataMapClientImpl client) {
+    GlossariesImpl(DataMapClientImpl client) {
         this.service
             = RestProxy.create(GlossariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PurviewDataMapClientGlossaries to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for DataMapClientGlossaries to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "PurviewDataMapClient")
+    @ServiceInterface(name = "DataMapClientGlossar")
     public interface GlossariesService {
         @Get("/atlas/v2/glossary")
         @ExpectedResponses({ 200 })
@@ -69,7 +69,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> batchGet(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -79,7 +79,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> batchGetSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -89,8 +89,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+        Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData atlasGlossary, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary")
@@ -99,8 +98,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+        Response<BinaryData> createSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData atlasGlossary, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/categories")
@@ -110,8 +108,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createCategories(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData glossaryCategory, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/categories")
         @ExpectedResponses({ 200 })
@@ -120,8 +118,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createCategoriesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData glossaryCategory, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/category")
         @ExpectedResponses({ 200 })
@@ -130,8 +128,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createCategory(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData glossaryCategory, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossaryCategory,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/category")
         @ExpectedResponses({ 200 })
@@ -140,132 +138,130 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createCategorySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData glossaryCategory, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossaryCategory,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/category/{categoryGuid}")
+        @Get("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCategory(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("categoryGuid") String categoryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/category/{categoryGuid}")
+        @Get("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCategorySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("categoryGuid") String categoryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Put("/atlas/v2/glossary/category/{categoryGuid}")
+        @Put("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateCategory(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("categoryGuid") String categoryGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData glossaryCategory,
-            RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData atlasGlossaryCategory, RequestOptions requestOptions,
+            Context context);
 
-        @Put("/atlas/v2/glossary/category/{categoryGuid}")
+        @Put("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateCategorySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("categoryGuid") String categoryGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData glossaryCategory,
-            RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData atlasGlossaryCategory, RequestOptions requestOptions,
+            Context context);
 
-        @Delete("/atlas/v2/glossary/category/{categoryGuid}")
+        @Delete("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteCategory(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("categoryGuid") String categoryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Delete("/atlas/v2/glossary/category/{categoryGuid}")
+        @Delete("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteCategorySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("categoryGuid") String categoryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Put("/atlas/v2/glossary/category/{categoryGuid}/partial")
+        @Put("/atlas/v2/glossary/category/{categoryId}/partial")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> partialUpdateCategory(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("categoryGuid") String categoryGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData partialUpdates,
-            RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
-        @Put("/atlas/v2/glossary/category/{categoryGuid}/partial")
+        @Put("/atlas/v2/glossary/category/{categoryId}/partial")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> partialUpdateCategorySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("categoryGuid") String categoryGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData partialUpdates,
+            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/glossary/category/{categoryId}/related")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getRelatedCategories(@HostParam("endpoint") String endpoint,
+            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/category/{categoryGuid}/related")
+        @Get("/atlas/v2/glossary/category/{categoryId}/related")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listRelatedCategories(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("categoryGuid") String categoryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> getRelatedCategoriesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/category/{categoryGuid}/related")
+        @Get("/atlas/v2/glossary/category/{categoryId}/terms")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listRelatedCategoriesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("categoryGuid") String categoryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> getCategoryTerms(@HostParam("endpoint") String endpoint,
+            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/category/{categoryGuid}/terms")
+        @Get("/atlas/v2/glossary/category/{categoryId}/terms")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listCategoryTerms(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("categoryGuid") String categoryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/glossary/category/{categoryGuid}/terms")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listCategoryTermsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("categoryGuid") String categoryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> getCategoryTermsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/term")
         @ExpectedResponses({ 200 })
@@ -274,8 +270,8 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createTerm(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData glossaryTerm, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossaryTerm,
+            RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/term")
         @ExpectedResponses({ 200 })
@@ -284,91 +280,89 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createTermSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData glossaryTerm, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossaryTerm,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/term/{termGuid}")
+        @Get("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTerm(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
+            @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/term/{termGuid}")
+        @Get("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTermSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
+            @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Put("/atlas/v2/glossary/term/{termGuid}")
+        @Put("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateTerm(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData glossaryTerm,
+            @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossaryTerm,
             RequestOptions requestOptions, Context context);
 
-        @Put("/atlas/v2/glossary/term/{termGuid}")
+        @Put("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateTermSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData glossaryTerm,
+            @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossaryTerm,
             RequestOptions requestOptions, Context context);
 
-        @Delete("/atlas/v2/glossary/term/{termGuid}")
+        @Delete("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteTerm(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
+        Mono<Response<Void>> deleteTerm(@HostParam("endpoint") String endpoint, @PathParam("termId") String termId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Delete("/atlas/v2/glossary/term/{termGuid}")
+        @Delete("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteTermSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
+        Response<Void> deleteTermSync(@HostParam("endpoint") String endpoint, @PathParam("termId") String termId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Put("/atlas/v2/glossary/term/{termGuid}/partial")
+        @Put("/atlas/v2/glossary/term/{termId}/partial")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> partialUpdateTerm(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData partialUpdates,
+            @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
-        @Put("/atlas/v2/glossary/term/{termGuid}/partial")
+        @Put("/atlas/v2/glossary/term/{termId}/partial")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> partialUpdateTermSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData partialUpdates,
+            @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/terms")
@@ -379,7 +373,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createTerms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData glossaryTerm, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/terms")
         @ExpectedResponses({ 200 })
@@ -389,275 +383,268 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createTermsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData glossaryTerm, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @Get("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listEntitiesAssignedWithTerm(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> getEntitiesAssignedWithTerm(@HostParam("endpoint") String endpoint,
+            @PathParam("termId") String termId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
-        @Get("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @Get("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listEntitiesAssignedWithTermSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> getEntitiesAssignedWithTermSync(@HostParam("endpoint") String endpoint,
+            @PathParam("termId") String termId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
 
-        @Post("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @Post("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> assignTermToEntities(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData relatedObjectIds,
-            RequestOptions requestOptions, Context context);
+            @PathParam("termId") String termId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
-        @Post("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @Post("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> assignTermToEntitiesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData relatedObjectIds,
-            RequestOptions requestOptions, Context context);
+            @PathParam("termId") String termId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
-        @Delete("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @Delete("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTermAssignmentFromEntities(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData relatedObjectIds,
-            RequestOptions requestOptions, Context context);
+            @PathParam("termId") String termId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
-        @Delete("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @Delete("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTermAssignmentFromEntitiesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData relatedObjectIds,
-            RequestOptions requestOptions, Context context);
+            @PathParam("termId") String termId, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/terms/{termGuid}/related")
+        @Get("/atlas/v2/glossary/terms/{termId}/related")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listRelatedTerms(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
+        Mono<Response<BinaryData>> getRelatedTerms(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/terms/{termGuid}/related")
+        @Get("/atlas/v2/glossary/terms/{termId}/related")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listRelatedTermsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("termGuid") String termGuid,
+        Response<BinaryData> getRelatedTermsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/{glossaryGuid}")
+        @Get("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/{glossaryGuid}")
+        @Get("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
+        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint, @PathParam("glossaryId") String glossaryId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Put("/atlas/v2/glossary/{glossaryGuid}")
+        @Put("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> update(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData updatedGlossary,
+            @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossary,
             RequestOptions requestOptions, Context context);
 
-        @Put("/atlas/v2/glossary/{glossaryGuid}")
+        @Put("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData updatedGlossary,
+            @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossary,
             RequestOptions requestOptions, Context context);
 
-        @Delete("/atlas/v2/glossary/{glossaryGuid}")
+        @Delete("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("glossaryId") String glossaryId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Delete("/atlas/v2/glossary/{glossaryGuid}")
+        @Delete("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("glossaryGuid") String glossaryGuid, @HeaderParam("accept") String accept,
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("glossaryId") String glossaryId,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/glossary/{glossaryId}/categories")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getCategories(@HostParam("endpoint") String endpoint,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/{glossaryGuid}/categories")
+        @Get("/atlas/v2/glossary/{glossaryId}/categories")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listCategories(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> getCategoriesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/{glossaryGuid}/categories")
+        @Get("/atlas/v2/glossary/{glossaryId}/categories/headers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listCategoriesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> getCategoriesHeaders(@HostParam("endpoint") String endpoint,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/{glossaryGuid}/categories/headers")
+        @Get("/atlas/v2/glossary/{glossaryId}/categories/headers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listCategoriesHeaders(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> getCategoriesHeadersSync(@HostParam("endpoint") String endpoint,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/{glossaryGuid}/categories/headers")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listCategoriesHeadersSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/glossary/{glossaryGuid}/detailed")
+        @Get("/atlas/v2/glossary/{glossaryId}/detailed")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDetailed(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
+            @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/{glossaryGuid}/detailed")
+        @Get("/atlas/v2/glossary/{glossaryId}/detailed")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDetailedSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
+            @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Put("/atlas/v2/glossary/{glossaryGuid}/partial")
+        @Put("/atlas/v2/glossary/{glossaryId}/partial")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> partialUpdate(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData partialUpdates,
+            @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
-        @Put("/atlas/v2/glossary/{glossaryGuid}/partial")
+        @Put("/atlas/v2/glossary/{glossaryId}/partial")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> partialUpdateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData partialUpdates,
+            @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/{glossaryGuid}/terms")
+        @Get("/atlas/v2/glossary/{glossaryId}/terms")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listTerms(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
+        Mono<Response<BinaryData>> getTerms(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/{glossaryGuid}/terms")
+        @Get("/atlas/v2/glossary/{glossaryId}/terms")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listTermsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
+        Response<BinaryData> getTermsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/{glossaryGuid}/terms/headers")
+        @Get("/atlas/v2/glossary/{glossaryId}/terms/headers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listTermHeaders(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> getTermHeaders(@HostParam("endpoint") String endpoint,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/atlas/v2/glossary/{glossaryGuid}/terms/headers")
+        @Get("/atlas/v2/glossary/{glossaryId}/terms/headers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listTermHeadersSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("glossaryGuid") String glossaryGuid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> getTermHeadersSync(@HostParam("endpoint") String endpoint,
+            @PathParam("glossaryId") String glossaryId, @HeaderParam("accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -665,10 +652,10 @@ public final class GlossariesImpl {
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
      * separately using
      * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/terms'
+     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
      * and
      * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryGuid}/categories'.
+     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -775,9 +762,9 @@ public final class GlossariesImpl {
      * @return all glossaries along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> batchGetWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.batchGet(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -786,10 +773,10 @@ public final class GlossariesImpl {
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
      * separately using
      * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/terms'
+     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
      * and
      * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryGuid}/categories'.
+     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * <p>
      * <strong>Query Parameters</strong>
      * </p>
@@ -896,9 +883,9 @@ public final class GlossariesImpl {
      * @return all glossaries along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> batchGetWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
+        return service.batchGetSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 
@@ -1021,9 +1008,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param atlasGlossary Glossary definition, terms &amp; categories can be anchored to a glossary.
-     * Using
-     * the anchor attribute when creating the Term/Category.
+     * @param atlasGlossary The glossary object.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1034,8 +1019,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData atlasGlossary, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, atlasGlossary, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.create(this.client.getEndpoint(), accept, atlasGlossary, requestOptions, context));
     }
 
     /**
@@ -1157,9 +1142,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param atlasGlossary Glossary definition, terms &amp; categories can be anchored to a glossary.
-     * Using
-     * the anchor attribute when creating the Term/Category.
+     * @param atlasGlossary The glossary object.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1170,8 +1153,7 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createWithResponse(BinaryData atlasGlossary, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
-            atlasGlossary, requestOptions, Context.NONE);
+        return service.createSync(this.client.getEndpoint(), accept, atlasGlossary, requestOptions, Context.NONE);
     }
 
     /**
@@ -1305,7 +1287,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param glossaryCategory An array of glossary category definitions to be created.
+     * @param body An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1314,11 +1296,11 @@ public final class GlossariesImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createCategoriesWithResponseAsync(BinaryData glossaryCategory,
+    public Mono<Response<BinaryData>> createCategoriesWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createCategories(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, glossaryCategory, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.createCategories(this.client.getEndpoint(), accept, body, requestOptions, context));
     }
 
     /**
@@ -1452,7 +1434,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param glossaryCategory An array of glossary category definitions to be created.
+     * @param body An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1461,11 +1443,9 @@ public final class GlossariesImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createCategoriesWithResponse(BinaryData glossaryCategory,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createCategoriesWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createCategoriesSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            accept, glossaryCategory, requestOptions, Context.NONE);
+        return service.createCategoriesSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -1595,10 +1575,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary
-     * when creating.
-     * Optionally, terms belonging to the category and the hierarchy
-     * can also be defined during creation.
+     * @param atlasGlossaryCategory The glossary category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1607,11 +1584,11 @@ public final class GlossariesImpl {
      * @return the glossary category along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createCategoryWithResponseAsync(BinaryData glossaryCategory,
+    public Mono<Response<BinaryData>> createCategoryWithResponseAsync(BinaryData atlasGlossaryCategory,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createCategory(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, glossaryCategory, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createCategory(this.client.getEndpoint(), accept,
+            atlasGlossaryCategory, requestOptions, context));
     }
 
     /**
@@ -1741,10 +1718,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary
-     * when creating.
-     * Optionally, terms belonging to the category and the hierarchy
-     * can also be defined during creation.
+     * @param atlasGlossaryCategory The glossary category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1753,10 +1727,11 @@ public final class GlossariesImpl {
      * @return the glossary category along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createCategoryWithResponse(BinaryData glossaryCategory, RequestOptions requestOptions) {
+    public Response<BinaryData> createCategoryWithResponse(BinaryData atlasGlossaryCategory,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createCategorySync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            accept, glossaryCategory, requestOptions, Context.NONE);
+        return service.createCategorySync(this.client.getEndpoint(), accept, atlasGlossaryCategory, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1824,7 +1799,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1834,10 +1809,10 @@ public final class GlossariesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCategoryWithResponseAsync(String categoryGuid, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCategoryWithResponseAsync(String categoryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCategory(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), categoryGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getCategory(this.client.getEndpoint(), categoryId, accept, requestOptions, context));
     }
 
     /**
@@ -1905,7 +1880,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1914,10 +1889,9 @@ public final class GlossariesImpl {
      * @return specific glossary category by its GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
+    public Response<BinaryData> getCategoryWithResponse(String categoryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCategorySync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            categoryGuid, accept, requestOptions, Context.NONE);
+        return service.getCategorySync(this.client.getEndpoint(), categoryId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2047,8 +2021,8 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param glossaryCategory The glossary category to be updated.
+     * @param categoryId The globally unique identifier of the category.
+     * @param atlasGlossaryCategory The glossary category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2057,12 +2031,11 @@ public final class GlossariesImpl {
      * @return the glossary category along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateCategoryWithResponseAsync(String categoryGuid, BinaryData glossaryCategory,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateCategoryWithResponseAsync(String categoryId,
+        BinaryData atlasGlossaryCategory, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.updateCategory(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                categoryGuid, accept, glossaryCategory, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateCategory(this.client.getEndpoint(), categoryId, accept,
+            atlasGlossaryCategory, requestOptions, context));
     }
 
     /**
@@ -2192,8 +2165,8 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param glossaryCategory The glossary category to be updated.
+     * @param categoryId The globally unique identifier of the category.
+     * @param atlasGlossaryCategory The glossary category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2202,17 +2175,17 @@ public final class GlossariesImpl {
      * @return the glossary category along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateCategoryWithResponse(String categoryGuid, BinaryData glossaryCategory,
+    public Response<BinaryData> updateCategoryWithResponse(String categoryId, BinaryData atlasGlossaryCategory,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateCategorySync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            categoryGuid, accept, glossaryCategory, requestOptions, Context.NONE);
+        return service.updateCategorySync(this.client.getEndpoint(), categoryId, accept, atlasGlossaryCategory,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Delete a glossary category.
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2221,16 +2194,16 @@ public final class GlossariesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteCategoryWithResponseAsync(String categoryGuid, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteCategoryWithResponseAsync(String categoryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteCategory(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), categoryGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.deleteCategory(this.client.getEndpoint(), categoryId, accept, requestOptions, context));
     }
 
     /**
      * Delete a glossary category.
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2239,10 +2212,9 @@ public final class GlossariesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
+    public Response<Void> deleteCategoryWithResponse(String categoryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteCategorySync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            categoryGuid, accept, requestOptions, Context.NONE);
+        return service.deleteCategorySync(this.client.getEndpoint(), categoryId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2252,7 +2224,9 @@ public final class GlossariesImpl {
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
-     * Object
+     * {
+     *     String: String (Required)
+     * }
      * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
@@ -2317,8 +2291,8 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param categoryId The globally unique identifier of the category.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values for partial update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2328,12 +2302,11 @@ public final class GlossariesImpl {
      * @return the glossary category along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> partialUpdateCategoryWithResponseAsync(String categoryGuid,
-        BinaryData partialUpdates, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> partialUpdateCategoryWithResponseAsync(String categoryId, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.partialUpdateCategory(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), categoryGuid, accept, partialUpdates, requestOptions,
-            context));
+        return FluxUtil.withContext(context -> service.partialUpdateCategory(this.client.getEndpoint(), categoryId,
+            accept, body, requestOptions, context));
     }
 
     /**
@@ -2343,7 +2316,9 @@ public final class GlossariesImpl {
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
-     * Object
+     * {
+     *     String: String (Required)
+     * }
      * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
@@ -2408,8 +2383,8 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param categoryId The globally unique identifier of the category.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values for partial update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2419,11 +2394,10 @@ public final class GlossariesImpl {
      * @return the glossary category along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> partialUpdateCategoryWithResponse(String categoryGuid, BinaryData partialUpdates,
+    public Response<BinaryData> partialUpdateCategoryWithResponse(String categoryId, BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.partialUpdateCategorySync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), categoryGuid, accept, partialUpdates, requestOptions,
+        return service.partialUpdateCategorySync(this.client.getEndpoint(), categoryId, accept, body, requestOptions,
             Context.NONE);
     }
 
@@ -2478,7 +2452,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2488,11 +2462,11 @@ public final class GlossariesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listRelatedCategoriesWithResponseAsync(String categoryGuid,
+    public Mono<Response<BinaryData>> getRelatedCategoriesWithResponseAsync(String categoryId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listRelatedCategories(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), categoryGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getRelatedCategories(this.client.getEndpoint(), categoryId,
+            accept, requestOptions, context));
     }
 
     /**
@@ -2546,7 +2520,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2555,10 +2529,10 @@ public final class GlossariesImpl {
      * @return all related categories (parent and children) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listRelatedCategoriesWithResponse(String categoryGuid, RequestOptions requestOptions) {
+    public Response<BinaryData> getRelatedCategoriesWithResponse(String categoryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listRelatedCategoriesSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), categoryGuid, accept, requestOptions, Context.NONE);
+        return service.getRelatedCategoriesSync(this.client.getEndpoint(), categoryId, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2611,7 +2585,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2621,11 +2595,11 @@ public final class GlossariesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listCategoryTermsWithResponseAsync(String categoryGuid,
+    public Mono<Response<BinaryData>> getCategoryTermsWithResponseAsync(String categoryId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listCategoryTerms(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), categoryGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getCategoryTerms(this.client.getEndpoint(), categoryId, accept,
+            requestOptions, context));
     }
 
     /**
@@ -2678,7 +2652,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param categoryGuid The globally unique identifier of the category.
+     * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2687,10 +2661,10 @@ public final class GlossariesImpl {
      * @return all terms associated with the specific category along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listCategoryTermsWithResponse(String categoryGuid, RequestOptions requestOptions) {
+    public Response<BinaryData> getCategoryTermsWithResponse(String categoryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listCategoryTermsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            categoryGuid, accept, requestOptions, Context.NONE);
+        return service.getCategoryTermsSync(this.client.getEndpoint(), categoryId, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3041,9 +3015,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time
-     * of creation.
-     * Optionally it can be categorized as well.
+     * @param atlasGlossaryTerm The glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3052,11 +3024,11 @@ public final class GlossariesImpl {
      * @return the glossary term along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createTermWithResponseAsync(BinaryData glossaryTerm,
+    public Mono<Response<BinaryData>> createTermWithResponseAsync(BinaryData atlasGlossaryTerm,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createTerm(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, glossaryTerm, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createTerm(this.client.getEndpoint(), accept, atlasGlossaryTerm,
+            requestOptions, context));
     }
 
     /**
@@ -3407,9 +3379,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time
-     * of creation.
-     * Optionally it can be categorized as well.
+     * @param atlasGlossaryTerm The glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3418,10 +3388,10 @@ public final class GlossariesImpl {
      * @return the glossary term along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTermWithResponse(BinaryData glossaryTerm, RequestOptions requestOptions) {
+    public Response<BinaryData> createTermWithResponse(BinaryData atlasGlossaryTerm, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createTermSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
-            glossaryTerm, requestOptions, Context.NONE);
+        return service.createTermSync(this.client.getEndpoint(), accept, atlasGlossaryTerm, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3590,7 +3560,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3600,10 +3570,10 @@ public final class GlossariesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTermWithResponseAsync(String termGuid, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTermWithResponseAsync(String termId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getTerm(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termGuid, accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), termId, accept, requestOptions, context));
     }
 
     /**
@@ -3772,7 +3742,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3781,9 +3751,9 @@ public final class GlossariesImpl {
      * @return a specific glossary term by its GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTermWithResponse(String termGuid, RequestOptions requestOptions) {
+    public Response<BinaryData> getTermWithResponse(String termId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getTermSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), termGuid,
+        return service.getTermSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), termId,
             accept, requestOptions, Context.NONE);
     }
 
@@ -4135,8 +4105,8 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param glossaryTerm The glossary term to be updated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param atlasGlossaryTerm The glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4145,11 +4115,11 @@ public final class GlossariesImpl {
      * @return the glossary term along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateTermWithResponseAsync(String termGuid, BinaryData glossaryTerm,
+    public Mono<Response<BinaryData>> updateTermWithResponseAsync(String termId, BinaryData atlasGlossaryTerm,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateTerm(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termGuid, accept, glossaryTerm, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), termId, accept, atlasGlossaryTerm, requestOptions, context));
     }
 
     /**
@@ -4500,8 +4470,8 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param glossaryTerm The glossary term to be updated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param atlasGlossaryTerm The glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4510,17 +4480,17 @@ public final class GlossariesImpl {
      * @return the glossary term along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateTermWithResponse(String termGuid, BinaryData glossaryTerm,
+    public Response<BinaryData> updateTermWithResponse(String termId, BinaryData atlasGlossaryTerm,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateTermSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), termGuid,
-            accept, glossaryTerm, requestOptions, Context.NONE);
+        return service.updateTermSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), termId,
+            accept, atlasGlossaryTerm, requestOptions, Context.NONE);
     }
 
     /**
      * Delete a glossary term.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4529,16 +4499,16 @@ public final class GlossariesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTermWithResponseAsync(String termGuid, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteTermWithResponseAsync(String termId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteTerm(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.deleteTerm(this.client.getEndpoint(), termId, accept, requestOptions, context));
     }
 
     /**
      * Delete a glossary term.
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4547,10 +4517,9 @@ public final class GlossariesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTermWithResponse(String termGuid, RequestOptions requestOptions) {
+    public Response<Void> deleteTermWithResponse(String termId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteTermSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), termGuid,
-            accept, requestOptions, Context.NONE);
+        return service.deleteTermSync(this.client.getEndpoint(), termId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4579,7 +4548,9 @@ public final class GlossariesImpl {
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
-     * Object
+     * {
+     *     String: String (Required)
+     * }
      * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
@@ -4745,8 +4716,8 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param termId The globally unique identifier for glossary term.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4756,11 +4727,11 @@ public final class GlossariesImpl {
      * @return the glossary term along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> partialUpdateTermWithResponseAsync(String termGuid, BinaryData partialUpdates,
+    public Mono<Response<BinaryData>> partialUpdateTermWithResponseAsync(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.partialUpdateTerm(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termGuid, accept, partialUpdates, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), termId, accept, body, requestOptions, context));
     }
 
     /**
@@ -4789,7 +4760,9 @@ public final class GlossariesImpl {
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
-     * Object
+     * {
+     *     String: String (Required)
+     * }
      * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
@@ -4955,8 +4928,8 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param termId The globally unique identifier for glossary term.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4966,11 +4939,11 @@ public final class GlossariesImpl {
      * @return the glossary term along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> partialUpdateTermWithResponse(String termGuid, BinaryData partialUpdates,
+    public Response<BinaryData> partialUpdateTermWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.partialUpdateTermSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            termGuid, accept, partialUpdates, requestOptions, Context.NONE);
+            termId, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -5325,7 +5298,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param glossaryTerm An array of glossary term definitions to be created in bulk.
+     * @param body An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5334,11 +5307,10 @@ public final class GlossariesImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createTermsWithResponseAsync(BinaryData glossaryTerm,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createTermsWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createTerms(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, glossaryTerm, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, body, requestOptions, context));
     }
 
     /**
@@ -5693,7 +5665,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param glossaryTerm An array of glossary term definitions to be created in bulk.
+     * @param body An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5702,10 +5674,10 @@ public final class GlossariesImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTermsWithResponse(BinaryData glossaryTerm, RequestOptions requestOptions) {
+    public Response<BinaryData> createTermsWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createTermsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
-            glossaryTerm, requestOptions, Context.NONE);
+            body, requestOptions, Context.NONE);
     }
 
     /**
@@ -5769,7 +5741,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5778,11 +5750,11 @@ public final class GlossariesImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listEntitiesAssignedWithTermWithResponseAsync(String termGuid,
+    public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponseAsync(String termId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listEntitiesAssignedWithTerm(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getEntitiesAssignedWithTerm(this.client.getEndpoint(), termId,
+            accept, requestOptions, context));
     }
 
     /**
@@ -5846,7 +5818,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5855,11 +5827,10 @@ public final class GlossariesImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listEntitiesAssignedWithTermWithResponse(String termGuid,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getEntitiesAssignedWithTermWithResponse(String termId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listEntitiesAssignedWithTermSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termGuid, accept, requestOptions, Context.NONE);
+        return service.getEntitiesAssignedWithTermSync(this.client.getEndpoint(), termId, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -5896,8 +5867,8 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param body An array of related object IDs to which the term has to be associated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5906,11 +5877,11 @@ public final class GlossariesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> assignTermToEntitiesWithResponseAsync(String termGuid, BinaryData relatedObjectIds,
+    public Mono<Response<Void>> assignTermToEntitiesWithResponseAsync(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.assignTermToEntities(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termGuid, accept, relatedObjectIds, requestOptions, context));
+        return FluxUtil.withContext(context -> service.assignTermToEntities(this.client.getEndpoint(), termId, accept,
+            body, requestOptions, context));
     }
 
     /**
@@ -5947,8 +5918,8 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param body An array of related object IDs to which the term has to be associated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5957,11 +5928,11 @@ public final class GlossariesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> assignTermToEntitiesWithResponse(String termGuid, BinaryData relatedObjectIds,
+    public Response<Void> assignTermToEntitiesWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.assignTermToEntitiesSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            termGuid, accept, relatedObjectIds, requestOptions, Context.NONE);
+        return service.assignTermToEntitiesSync(this.client.getEndpoint(), termId, accept, body, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -5993,8 +5964,8 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param body An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6003,11 +5974,11 @@ public final class GlossariesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponseAsync(String termGuid,
-        BinaryData relatedObjectIds, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponseAsync(String termId, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTermAssignmentFromEntities(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termGuid, accept, relatedObjectIds, requestOptions, context));
+            termId, accept, body, requestOptions, context));
     }
 
     /**
@@ -6039,8 +6010,8 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param termId The globally unique identifier for glossary term.
+     * @param body An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6049,12 +6020,11 @@ public final class GlossariesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(String termGuid, BinaryData relatedObjectIds,
+    public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteTermAssignmentFromEntitiesSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termGuid, accept, relatedObjectIds, requestOptions,
-            Context.NONE);
+        return service.deleteTermAssignmentFromEntitiesSync(this.client.getEndpoint(), termId, accept, body,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -6110,7 +6080,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6120,11 +6090,10 @@ public final class GlossariesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listRelatedTermsWithResponseAsync(String termGuid,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getRelatedTermsWithResponseAsync(String termId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listRelatedTerms(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getRelatedTerms(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), termId, accept, requestOptions, context));
     }
 
     /**
@@ -6180,7 +6149,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param termGuid The globally unique identifier for glossary term.
+     * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6189,10 +6158,10 @@ public final class GlossariesImpl {
      * @return all related terms for a specific term by its GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listRelatedTermsWithResponse(String termGuid, RequestOptions requestOptions) {
+    public Response<BinaryData> getRelatedTermsWithResponse(String termId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listRelatedTermsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            termGuid, accept, requestOptions, Context.NONE);
+        return service.getRelatedTermsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            termId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6256,7 +6225,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6265,10 +6234,10 @@ public final class GlossariesImpl {
      * @return a specific Glossary by its GUID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(String glossaryGuid, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponseAsync(String glossaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), glossaryGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.get(this.client.getEndpoint(), glossaryId, accept, requestOptions, context));
     }
 
     /**
@@ -6332,7 +6301,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6341,10 +6310,9 @@ public final class GlossariesImpl {
      * @return a specific Glossary by its GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String glossaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), glossaryGuid,
-            accept, requestOptions, Context.NONE);
+        return service.getSync(this.client.getEndpoint(), glossaryId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6485,8 +6453,8 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param updatedGlossary The glossary definition to be updated.
+     * @param glossaryId The globally unique identifier for glossary.
+     * @param atlasGlossary The glossary object.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6495,12 +6463,11 @@ public final class GlossariesImpl {
      * @return the glossary object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWithResponseAsync(String glossaryGuid, BinaryData updatedGlossary,
+    public Mono<Response<BinaryData>> updateWithResponseAsync(String glossaryId, BinaryData atlasGlossary,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.update(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                glossaryGuid, accept, updatedGlossary, requestOptions, context));
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), glossaryId, accept, atlasGlossary, requestOptions, context));
     }
 
     /**
@@ -6641,8 +6608,8 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param updatedGlossary The glossary definition to be updated.
+     * @param glossaryId The globally unique identifier for glossary.
+     * @param atlasGlossary The glossary object.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6651,18 +6618,18 @@ public final class GlossariesImpl {
      * @return the glossary object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(String glossaryGuid, BinaryData updatedGlossary,
+    public Response<BinaryData> updateWithResponse(String glossaryId, BinaryData atlasGlossary,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), glossaryGuid,
-            accept, updatedGlossary, requestOptions, Context.NONE);
+        return service.updateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), glossaryId,
+            accept, atlasGlossary, requestOptions, Context.NONE);
     }
 
     /**
      * Delete a glossary. Will delete underlying terms/categories together. Recommend
      * separate delete terms and categories.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6671,17 +6638,17 @@ public final class GlossariesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String glossaryGuid, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String glossaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), glossaryGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.delete(this.client.getEndpoint(), glossaryId, accept, requestOptions, context));
     }
 
     /**
      * Delete a glossary. Will delete underlying terms/categories together. Recommend
      * separate delete terms and categories.
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6690,10 +6657,9 @@ public final class GlossariesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponse(String glossaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), glossaryGuid,
-            accept, requestOptions, Context.NONE);
+        return service.deleteSync(this.client.getEndpoint(), glossaryId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6795,7 +6761,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6805,11 +6771,10 @@ public final class GlossariesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listCategoriesWithResponseAsync(String glossaryGuid,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCategoriesWithResponseAsync(String glossaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listCategories(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), glossaryGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getCategories(this.client.getEndpoint(), glossaryId, accept, requestOptions, context));
     }
 
     /**
@@ -6911,7 +6876,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6920,10 +6885,9 @@ public final class GlossariesImpl {
      * @return the categories belonging to a specific glossary along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listCategoriesWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+    public Response<BinaryData> getCategoriesWithResponse(String glossaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listCategoriesSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            glossaryGuid, accept, requestOptions, Context.NONE);
+        return service.getCategoriesSync(this.client.getEndpoint(), glossaryId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6975,7 +6939,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6985,11 +6949,11 @@ public final class GlossariesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listCategoriesHeadersWithResponseAsync(String glossaryGuid,
+    public Mono<Response<BinaryData>> getCategoriesHeadersWithResponseAsync(String glossaryId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listCategoriesHeaders(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), glossaryGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getCategoriesHeaders(this.client.getEndpoint(), glossaryId,
+            accept, requestOptions, context));
     }
 
     /**
@@ -7041,7 +7005,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7050,10 +7014,10 @@ public final class GlossariesImpl {
      * @return the category headers belonging to a specific glossary along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listCategoriesHeadersWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+    public Response<BinaryData> getCategoriesHeadersWithResponse(String glossaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listCategoriesHeadersSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), glossaryGuid, accept, requestOptions, Context.NONE);
+        return service.getCategoriesHeadersSync(this.client.getEndpoint(), glossaryId, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -7062,9 +7026,9 @@ public final class GlossariesImpl {
      * 
      * Recommend to fetch terms/categories details separately using
      * 
-     * GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/terms and
+     * GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms and
      * 
-     * GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/categories.
+     * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -7285,7 +7249,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7295,10 +7259,10 @@ public final class GlossariesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDetailedWithResponseAsync(String glossaryGuid, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDetailedWithResponseAsync(String glossaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getDetailed(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), glossaryGuid, accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), glossaryId, accept, requestOptions, context));
     }
 
     /**
@@ -7307,9 +7271,9 @@ public final class GlossariesImpl {
      * 
      * Recommend to fetch terms/categories details separately using
      * 
-     * GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/terms and
+     * GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms and
      * 
-     * GET /datamap/api/atlas/v2/glossary/{glossaryGuid}/categories.
+     * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -7530,7 +7494,7 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7539,10 +7503,10 @@ public final class GlossariesImpl {
      * @return a specific glossary with detailed information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDetailedWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+    public Response<BinaryData> getDetailedWithResponse(String glossaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getDetailedSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            glossaryGuid, accept, requestOptions, Context.NONE);
+            glossaryId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -7577,7 +7541,9 @@ public final class GlossariesImpl {
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
-     * Object
+     * {
+     *     String: String (Required)
+     * }
      * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
@@ -7638,8 +7604,8 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param glossaryId The globally unique identifier for glossary.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7649,12 +7615,11 @@ public final class GlossariesImpl {
      * @return the glossary object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> partialUpdateWithResponseAsync(String glossaryGuid, BinaryData partialUpdates,
+    public Mono<Response<BinaryData>> partialUpdateWithResponseAsync(String glossaryId, BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.partialUpdate(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                glossaryGuid, accept, partialUpdates, requestOptions, context));
+        return FluxUtil.withContext(context -> service.partialUpdate(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), glossaryId, accept, body, requestOptions, context));
     }
 
     /**
@@ -7689,7 +7654,9 @@ public final class GlossariesImpl {
      * <strong>Request Body Schema</strong>
      * </p>
      * <pre>{@code
-     * Object
+     * {
+     *     String: String (Required)
+     * }
      * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
@@ -7750,8 +7717,8 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute
+     * @param glossaryId The globally unique identifier for glossary.
+     * @param body A map containing keys as attribute names and values as corresponding attribute
      * values.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7761,11 +7728,11 @@ public final class GlossariesImpl {
      * @return the glossary object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> partialUpdateWithResponse(String glossaryGuid, BinaryData partialUpdates,
+    public Response<BinaryData> partialUpdateWithResponse(String glossaryId, BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.partialUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            glossaryGuid, accept, partialUpdates, requestOptions, Context.NONE);
+            glossaryId, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -7968,7 +7935,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7978,10 +7945,10 @@ public final class GlossariesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listTermsWithResponseAsync(String glossaryGuid, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTermsWithResponseAsync(String glossaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listTerms(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), glossaryGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getTerms(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), glossaryId, accept, requestOptions, context));
     }
 
     /**
@@ -8184,7 +8151,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -8193,10 +8160,10 @@ public final class GlossariesImpl {
      * @return terms belonging to a specific glossary along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listTermsWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+    public Response<BinaryData> getTermsWithResponse(String glossaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listTermsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            glossaryGuid, accept, requestOptions, Context.NONE);
+        return service.getTermsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), glossaryId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -8250,7 +8217,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -8260,11 +8227,11 @@ public final class GlossariesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listTermHeadersWithResponseAsync(String glossaryGuid,
+    public Mono<Response<BinaryData>> getTermHeadersWithResponseAsync(String glossaryId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listTermHeaders(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), glossaryGuid, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getTermHeaders(this.client.getEndpoint(), glossaryId, accept, requestOptions, context));
     }
 
     /**
@@ -8318,7 +8285,7 @@ public final class GlossariesImpl {
      * ]
      * }</pre>
      * 
-     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -8327,9 +8294,8 @@ public final class GlossariesImpl {
      * @return term headers belonging to a specific glossary along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listTermHeadersWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+    public Response<BinaryData> getTermHeadersWithResponse(String glossaryId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listTermHeadersSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            glossaryGuid, accept, requestOptions, Context.NONE);
+        return service.getTermHeadersSync(this.client.getEndpoint(), glossaryId, accept, requestOptions, Context.NONE);
     }
 }

@@ -39,24 +39,24 @@ public final class LineagesImpl {
     /**
      * The service client containing this operation class.
      */
-    private final PurviewDataMapClientImpl client;
+    private final DataMapClientImpl client;
 
     /**
      * Initializes an instance of LineagesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    LineagesImpl(PurviewDataMapClientImpl client) {
+    LineagesImpl(DataMapClientImpl client) {
         this.service = RestProxy.create(LineagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PurviewDataMapClientLineages to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for DataMapClientLineages to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "PurviewDataMapClient")
+    @ServiceInterface(name = "DataMapClientLineage")
     public interface LineagesService {
         @Get("/atlas/v2/lineage/{guid}")
         @ExpectedResponses({ 200 })
@@ -64,8 +64,7 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
+        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
             @QueryParam("direction") String direction, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -75,8 +74,7 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
+        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
             @QueryParam("direction") String direction, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -109,9 +107,8 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getByUniqueAttribute(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("typeName") String typeName,
-            @QueryParam("direction") String direction, @HeaderParam("accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("typeName") String typeName, @QueryParam("direction") String direction,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/lineage/uniqueAttribute/type/{typeName}")
         @ExpectedResponses({ 200 })
@@ -120,9 +117,8 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getByUniqueAttributeSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("typeName") String typeName,
-            @QueryParam("direction") String direction, @HeaderParam("accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("typeName") String typeName, @QueryParam("direction") String direction,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -247,8 +243,8 @@ public final class LineagesImpl {
     public Mono<Response<BinaryData>> getWithResponseAsync(String guid, String direction,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), guid, direction, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.get(this.client.getEndpoint(), guid, direction, accept, requestOptions, context));
     }
 
     /**
@@ -371,8 +367,7 @@ public final class LineagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String guid, String direction, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), guid, direction,
-            accept, requestOptions, Context.NONE);
+        return service.getSync(this.client.getEndpoint(), guid, direction, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -779,8 +774,8 @@ public final class LineagesImpl {
     public Mono<Response<BinaryData>> getByUniqueAttributeWithResponseAsync(String typeName, String direction,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getByUniqueAttribute(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), typeName, direction, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getByUniqueAttribute(this.client.getEndpoint(), typeName,
+            direction, accept, requestOptions, context));
     }
 
     /**
@@ -926,7 +921,7 @@ public final class LineagesImpl {
     public Response<BinaryData> getByUniqueAttributeWithResponse(String typeName, String direction,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getByUniqueAttributeSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            typeName, direction, accept, requestOptions, Context.NONE);
+        return service.getByUniqueAttributeSync(this.client.getEndpoint(), typeName, direction, accept, requestOptions,
+            Context.NONE);
     }
 }

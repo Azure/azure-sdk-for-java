@@ -13,7 +13,7 @@ import java.util.List;
  * Taxonomy setting for search request.
  */
 @Fluent
-public final class SearchRequestTaxonomySetting {
+public final class SearchTaxonomySetting {
     /*
      * Asset types
      */
@@ -29,10 +29,10 @@ public final class SearchRequestTaxonomySetting {
     private SearchFacetItem facet;
 
     /**
-     * Creates an instance of SearchRequestTaxonomySetting class.
+     * Creates an instance of SearchTaxonomySetting class.
      */
     @Generated
-    public SearchRequestTaxonomySetting() {
+    public SearchTaxonomySetting() {
     }
 
     /**
@@ -49,10 +49,10 @@ public final class SearchRequestTaxonomySetting {
      * Set the assetTypes property: Asset types.
      * 
      * @param assetTypes the assetTypes value to set.
-     * @return the SearchRequestTaxonomySetting object itself.
+     * @return the SearchTaxonomySetting object itself.
      */
     @Generated
-    public SearchRequestTaxonomySetting setAssetTypes(List<String> assetTypes) {
+    public SearchTaxonomySetting setAssetTypes(List<String> assetTypes) {
         this.assetTypes = assetTypes;
         return this;
     }
@@ -71,10 +71,10 @@ public final class SearchRequestTaxonomySetting {
      * Set the facet property: The content of a search facet result item.
      * 
      * @param facet the facet value to set.
-     * @return the SearchRequestTaxonomySetting object itself.
+     * @return the SearchTaxonomySetting object itself.
      */
     @Generated
-    public SearchRequestTaxonomySetting setFacet(SearchFacetItem facet) {
+    public SearchTaxonomySetting setFacet(SearchFacetItem facet) {
         this.facet = facet;
         return this;
     }

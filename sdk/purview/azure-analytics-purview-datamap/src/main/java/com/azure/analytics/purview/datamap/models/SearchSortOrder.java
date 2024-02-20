@@ -17,13 +17,13 @@ public final class SearchSortOrder extends ExpandableStringEnum<SearchSortOrder>
      * Use ascending order for sorting.
      */
     @Generated
-    public static final SearchSortOrder ASC = fromString("asc");
+    public static final SearchSortOrder ASCEND = fromString("asc");
 
     /**
      * Use descending order for sorting.
      */
     @Generated
-    public static final SearchSortOrder DESC = fromString("desc");
+    public static final SearchSortOrder DESCEND = fromString("desc");
 
     /**
      * Creates a new instance of SearchSortOrder value.

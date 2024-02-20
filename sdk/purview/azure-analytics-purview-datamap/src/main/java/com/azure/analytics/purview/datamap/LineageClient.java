@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.LineageClientImpl;
+import com.azure.analytics.purview.datamap.implementation.LineagesImpl;
 import com.azure.analytics.purview.datamap.models.AtlasLineageInfo;
 import com.azure.analytics.purview.datamap.models.LineageDirection;
 import com.azure.core.annotation.Generated;
@@ -20,12 +20,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
 /**
- * Initializes a new instance of the synchronous LineageClient type.
+ * Initializes a new instance of the synchronous DataMapClient type.
  */
-@ServiceClient(builder = LineageClientBuilder.class)
+@ServiceClient(builder = DataMapClientBuilder.class)
 public final class LineageClient {
     @Generated
-    private final LineageClientImpl serviceClient;
+    private final LineagesImpl serviceClient;
 
     /**
      * Initializes an instance of LineageClient class.
@@ -33,7 +33,7 @@ public final class LineageClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    LineageClient(LineageClientImpl serviceClient) {
+    LineageClient(LineagesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -554,7 +554,7 @@ public final class LineageClient {
      * @param typeName The name of the type.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
      * @param depth The number of hops for lineage.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -567,14 +567,14 @@ public final class LineageClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AtlasLineageInfo getByUniqueAttribute(String typeName, LineageDirection direction, Integer depth,
-        String attr) {
+        String attribute) {
         // Generated convenience method for getByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (depth != null) {
             requestOptions.addQueryParam("depth", String.valueOf(depth), false);
         }
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
         return getByUniqueAttributeWithResponse(typeName, direction.toString(), requestOptions).getValue()
             .toObject(AtlasLineageInfo.class);

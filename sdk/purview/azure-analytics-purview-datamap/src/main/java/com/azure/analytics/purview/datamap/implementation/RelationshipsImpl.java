@@ -14,7 +14,6 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
@@ -43,25 +42,25 @@ public final class RelationshipsImpl {
     /**
      * The service client containing this operation class.
      */
-    private final PurviewDataMapClientImpl client;
+    private final DataMapClientImpl client;
 
     /**
      * Initializes an instance of RelationshipsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    RelationshipsImpl(PurviewDataMapClientImpl client) {
+    RelationshipsImpl(DataMapClientImpl client) {
         this.service
             = RestProxy.create(RelationshipsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PurviewDataMapClientRelationships to be used by the proxy service to
+     * The interface defining all the services for DataMapClientRelationships to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "PurviewDataMapClient")
+    @ServiceInterface(name = "DataMapClientRelatio")
     public interface RelationshipsService {
         @Post("/atlas/v2/relationship")
         @ExpectedResponses({ 200 })
@@ -69,9 +68,9 @@ public final class RelationshipsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData relationship, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData atlasRelationship, RequestOptions requestOptions,
+            Context context);
 
         @Post("/atlas/v2/relationship")
         @ExpectedResponses({ 200 })
@@ -79,69 +78,65 @@ public final class RelationshipsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData relationship, RequestOptions requestOptions, Context context);
-
-        @Put("/atlas/v2/relationship")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> update(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData relationship, RequestOptions requestOptions, Context context);
-
-        @Put("/atlas/v2/relationship")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData relationship, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/relationship/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/atlas/v2/relationship/guid/{guid}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Delete("/atlas/v2/relationship/guid/{guid}")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Delete("/atlas/v2/relationship/guid/{guid}")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+        Response<BinaryData> createSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData atlasRelationship, RequestOptions requestOptions,
             Context context);
+
+        @Put("/atlas/v2/relationship")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> update(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData atlasRelationship, RequestOptions requestOptions,
+            Context context);
+
+        @Put("/atlas/v2/relationship")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData atlasRelationship, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/atlas/v2/relationship/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/atlas/v2/relationship/guid/{guid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/atlas/v2/relationship/guid/{guid}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/atlas/v2/relationship/guid/{guid}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -207,8 +202,7 @@ public final class RelationshipsImpl {
      * }
      * }</pre>
      * 
-     * @param relationship The AtlasRelationship object containing the information for the relationship to
-     * be created.
+     * @param atlasRelationship Atlas relationship instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -217,10 +211,11 @@ public final class RelationshipsImpl {
      * @return atlas relationship instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData relationship, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData atlasRelationship,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, relationship, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.create(this.client.getEndpoint(), accept, atlasRelationship, requestOptions, context));
     }
 
     /**
@@ -286,8 +281,7 @@ public final class RelationshipsImpl {
      * }
      * }</pre>
      * 
-     * @param relationship The AtlasRelationship object containing the information for the relationship to
-     * be created.
+     * @param atlasRelationship Atlas relationship instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -296,10 +290,9 @@ public final class RelationshipsImpl {
      * @return atlas relationship instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(BinaryData relationship, RequestOptions requestOptions) {
+    public Response<BinaryData> createWithResponse(BinaryData atlasRelationship, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
-            relationship, requestOptions, Context.NONE);
+        return service.createSync(this.client.getEndpoint(), accept, atlasRelationship, requestOptions, Context.NONE);
     }
 
     /**
@@ -365,8 +358,7 @@ public final class RelationshipsImpl {
      * }
      * }</pre>
      * 
-     * @param relationship The AtlasRelationship object containing the information for the relationship to
-     * be created.
+     * @param atlasRelationship Atlas relationship instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -375,10 +367,11 @@ public final class RelationshipsImpl {
      * @return atlas relationship instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWithResponseAsync(BinaryData relationship, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateWithResponseAsync(BinaryData atlasRelationship,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, relationship, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.update(this.client.getEndpoint(), accept, atlasRelationship, requestOptions, context));
     }
 
     /**
@@ -444,8 +437,7 @@ public final class RelationshipsImpl {
      * }
      * }</pre>
      * 
-     * @param relationship The AtlasRelationship object containing the information for the relationship to
-     * be created.
+     * @param atlasRelationship Atlas relationship instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -454,10 +446,9 @@ public final class RelationshipsImpl {
      * @return atlas relationship instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(BinaryData relationship, RequestOptions requestOptions) {
+    public Response<BinaryData> updateWithResponse(BinaryData atlasRelationship, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept,
-            relationship, requestOptions, Context.NONE);
+        return service.updateSync(this.client.getEndpoint(), accept, atlasRelationship, requestOptions, Context.NONE);
     }
 
     /**
@@ -580,8 +571,8 @@ public final class RelationshipsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), guid, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -703,8 +694,7 @@ public final class RelationshipsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), guid, accept,
-            requestOptions, Context.NONE);
+        return service.getSync(this.client.getEndpoint(), guid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -721,8 +711,8 @@ public final class RelationshipsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), guid, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -739,7 +729,6 @@ public final class RelationshipsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String guid, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), guid, accept,
-            requestOptions, Context.NONE);
+        return service.deleteSync(this.client.getEndpoint(), guid, accept, requestOptions, Context.NONE);
     }
 }

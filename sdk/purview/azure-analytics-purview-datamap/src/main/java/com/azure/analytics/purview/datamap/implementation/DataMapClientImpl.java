@@ -13,9 +13,9 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
 /**
- * Initializes a new instance of the PurviewDataMapClient type.
+ * Initializes a new instance of the DataMapClient type.
  */
-public final class PurviewDataMapClientImpl {
+public final class DataMapClientImpl {
     /**
      */
     private final String endpoint;
@@ -142,51 +142,50 @@ public final class PurviewDataMapClientImpl {
     }
 
     /**
-     * The TypesImpl object to access its operations.
+     * The TypeDefinitionsImpl object to access its operations.
      */
-    private final TypesImpl types;
+    private final TypeDefinitionsImpl typeDefinitions;
 
     /**
-     * Gets the TypesImpl object to access its operations.
+     * Gets the TypeDefinitionsImpl object to access its operations.
      * 
-     * @return the TypesImpl object.
+     * @return the TypeDefinitionsImpl object.
      */
-    public TypesImpl getTypes() {
-        return this.types;
+    public TypeDefinitionsImpl getTypeDefinitions() {
+        return this.typeDefinitions;
     }
 
     /**
-     * Initializes an instance of PurviewDataMapClient client.
+     * Initializes an instance of DataMapClient client.
      * 
      * @param endpoint
      * @param serviceVersion Service version.
      */
-    public PurviewDataMapClientImpl(String endpoint, PurviewDataMapServiceVersion serviceVersion) {
+    public DataMapClientImpl(String endpoint, PurviewDataMapServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of PurviewDataMapClient client.
+     * Initializes an instance of DataMapClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint
      * @param serviceVersion Service version.
      */
-    public PurviewDataMapClientImpl(HttpPipeline httpPipeline, String endpoint,
-        PurviewDataMapServiceVersion serviceVersion) {
+    public DataMapClientImpl(HttpPipeline httpPipeline, String endpoint, PurviewDataMapServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of PurviewDataMapClient client.
+     * Initializes an instance of DataMapClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint
      * @param serviceVersion Service version.
      */
-    public PurviewDataMapClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+    public DataMapClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
         PurviewDataMapServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
@@ -197,6 +196,6 @@ public final class PurviewDataMapClientImpl {
         this.discoveries = new DiscoveriesImpl(this);
         this.lineages = new LineagesImpl(this);
         this.relationships = new RelationshipsImpl(this);
-        this.types = new TypesImpl(this);
+        this.typeDefinitions = new TypeDefinitionsImpl(this);
     }
 }

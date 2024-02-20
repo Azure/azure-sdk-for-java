@@ -13,7 +13,7 @@ import java.util.List;
  * The search query of advanced search request.
  */
 @Fluent
-public final class SearchContent {
+public final class QueryOptions {
     /*
      * The keywords applied to all searchable fields.
      */
@@ -63,13 +63,13 @@ public final class SearchContent {
      */
     @Generated
     @JsonProperty(value = "taxonomySetting")
-    private SearchRequestTaxonomySetting taxonomySetting;
+    private SearchTaxonomySetting taxonomySetting;
 
     /**
-     * Creates an instance of SearchContent class.
+     * Creates an instance of QueryOptions class.
      */
     @Generated
-    public SearchContent() {
+    public QueryOptions() {
     }
 
     /**
@@ -86,10 +86,10 @@ public final class SearchContent {
      * Set the keywords property: The keywords applied to all searchable fields.
      * 
      * @param keywords the keywords value to set.
-     * @return the SearchContent object itself.
+     * @return the QueryOptions object itself.
      */
     @Generated
-    public SearchContent setKeywords(String keywords) {
+    public QueryOptions setKeywords(String keywords) {
         this.keywords = keywords;
         return this;
     }
@@ -110,10 +110,10 @@ public final class SearchContent {
      * value is 1000.
      * 
      * @param limit the limit value to set.
-     * @return the SearchContent object itself.
+     * @return the QueryOptions object itself.
      */
     @Generated
-    public SearchContent setLimit(Integer limit) {
+    public QueryOptions setLimit(Integer limit) {
         this.limit = limit;
         return this;
     }
@@ -134,10 +134,10 @@ public final class SearchContent {
      * batch, and will return new token in each response unless there's no more data.
      * 
      * @param continuationToken the continuationToken value to set.
-     * @return the SearchContent object itself.
+     * @return the QueryOptions object itself.
      */
     @Generated
-    public SearchContent setContinuationToken(String continuationToken) {
+    public QueryOptions setContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;
         return this;
     }
@@ -156,10 +156,10 @@ public final class SearchContent {
      * Set the orderby property: The sort order of search results, can specify multiple fields.
      * 
      * @param orderby the orderby value to set.
-     * @return the SearchContent object itself.
+     * @return the QueryOptions object itself.
      */
     @Generated
-    public SearchContent setOrderby(List<Object> orderby) {
+    public QueryOptions setOrderby(List<Object> orderby) {
         this.orderby = orderby;
         return this;
     }
@@ -178,10 +178,10 @@ public final class SearchContent {
      * Set the filter property: The filter for the search. See examples for the usage of supported filters.
      * 
      * @param filter the filter value to set.
-     * @return the SearchContent object itself.
+     * @return the QueryOptions object itself.
      */
     @Generated
-    public SearchContent setFilter(Object filter) {
+    public QueryOptions setFilter(Object filter) {
         this.filter = filter;
         return this;
     }
@@ -200,10 +200,10 @@ public final class SearchContent {
      * Set the facets property: The facets for search. See examples for the usage of supported facets.
      * 
      * @param facets the facets value to set.
-     * @return the SearchContent object itself.
+     * @return the QueryOptions object itself.
      */
     @Generated
-    public SearchContent setFacets(List<SearchFacetItem> facets) {
+    public QueryOptions setFacets(List<SearchFacetItem> facets) {
         this.facets = facets;
         return this;
     }
@@ -214,7 +214,7 @@ public final class SearchContent {
      * @return the taxonomySetting value.
      */
     @Generated
-    public SearchRequestTaxonomySetting getTaxonomySetting() {
+    public SearchTaxonomySetting getTaxonomySetting() {
         return this.taxonomySetting;
     }
 
@@ -222,10 +222,10 @@ public final class SearchContent {
      * Set the taxonomySetting property: The taxonomy setting for search.
      * 
      * @param taxonomySetting the taxonomySetting value to set.
-     * @return the SearchContent object itself.
+     * @return the QueryOptions object itself.
      */
     @Generated
-    public SearchContent setTaxonomySetting(SearchRequestTaxonomySetting taxonomySetting) {
+    public QueryOptions setTaxonomySetting(SearchTaxonomySetting taxonomySetting) {
         this.taxonomySetting = taxonomySetting;
         return this;
     }

@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.EntityClientImpl;
+import com.azure.analytics.purview.datamap.implementation.EntitiesImpl;
 import com.azure.analytics.purview.datamap.models.AtlasClassification;
 import com.azure.analytics.purview.datamap.models.AtlasClassifications;
 import com.azure.analytics.purview.datamap.models.AtlasEntitiesWithExtInfo;
@@ -12,9 +12,9 @@ import com.azure.analytics.purview.datamap.models.AtlasEntityHeader;
 import com.azure.analytics.purview.datamap.models.AtlasEntityHeaders;
 import com.azure.analytics.purview.datamap.models.AtlasEntityWithExtInfo;
 import com.azure.analytics.purview.datamap.models.BusinessAttributeUpdateBehavior;
-import com.azure.analytics.purview.datamap.models.ClassificationAssociateContent;
+import com.azure.analytics.purview.datamap.models.ClassificationAssociateOptions;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
-import com.azure.analytics.purview.datamap.models.MoveEntitiesContent;
+import com.azure.analytics.purview.datamap.models.MoveEntitiesOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -31,12 +31,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Initializes a new instance of the synchronous EntityClient type.
+ * Initializes a new instance of the synchronous DataMapClient type.
  */
-@ServiceClient(builder = EntityClientBuilder.class)
+@ServiceClient(builder = DataMapClientBuilder.class)
 public final class EntityClient {
     @Generated
-    private final EntityClientImpl serviceClient;
+    private final EntitiesImpl serviceClient;
 
     /**
      * Initializes an instance of EntityClient class.
@@ -44,7 +44,7 @@ public final class EntityClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    EntityClient(EntityClientImpl serviceClient) {
+    EntityClient(EntitiesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -234,7 +234,8 @@ public final class EntityClient {
      * }
      * }</pre>
      * 
-     * @param entity Atlas entity with extended information.
+     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -244,8 +245,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(BinaryData entity, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponse(entity, requestOptions);
+    public Response<BinaryData> createOrUpdateWithResponse(BinaryData atlasEntityWithExtInfo,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponse(atlasEntityWithExtInfo, requestOptions);
     }
 
     /**
@@ -370,8 +372,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listByGuidsWithResponse(List<String> guid, RequestOptions requestOptions) {
-        return this.serviceClient.listByGuidsWithResponse(guid, requestOptions);
+    public Response<BinaryData> getByIdsWithResponse(List<String> guid, RequestOptions requestOptions) {
+        return this.serviceClient.getByIdsWithResponse(guid, requestOptions);
     }
 
     /**
@@ -563,7 +565,8 @@ public final class EntityClient {
      * }
      * }</pre>
      * 
-     * @param entities An array of entities to create or update.
+     * @param atlasEntitiesWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -573,8 +576,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> bulkCreateOrUpdateWithResponse(BinaryData entities, RequestOptions requestOptions) {
-        return this.serviceClient.bulkCreateOrUpdateWithResponse(entities, requestOptions);
+    public Response<BinaryData> batchCreateOrUpdateWithResponse(BinaryData atlasEntitiesWithExtInfo,
+        RequestOptions requestOptions) {
+        return this.serviceClient.batchCreateOrUpdateWithResponse(atlasEntitiesWithExtInfo, requestOptions);
     }
 
     /**
@@ -660,8 +664,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> bulkDeleteWithResponse(List<String> guid, RequestOptions requestOptions) {
-        return this.serviceClient.bulkDeleteWithResponse(guid, requestOptions);
+    public Response<BinaryData> batchDeleteWithResponse(List<String> guid, RequestOptions requestOptions) {
+        return this.serviceClient.batchDeleteWithResponse(guid, requestOptions);
     }
 
     /**
@@ -694,7 +698,7 @@ public final class EntityClient {
      * }
      * }</pre>
      * 
-     * @param request The request to associate a classification to multiple entities.
+     * @param classificationAssociateOptions The request payload for classification association.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -704,8 +708,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addClassificationWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.serviceClient.addClassificationWithResponse(request, requestOptions);
+    public Response<Void> addClassificationWithResponse(BinaryData classificationAssociateOptions,
+        RequestOptions requestOptions) {
+        return this.serviceClient.addClassificationWithResponse(classificationAssociateOptions, requestOptions);
     }
 
     /**
@@ -925,9 +930,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> partialUpdateAttributeByGuidWithResponse(String guid, String name, BinaryData body,
+    public Response<BinaryData> updateAttributeByIdWithResponse(String guid, String name, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateAttributeByGuidWithResponse(guid, name, body, requestOptions);
+        return this.serviceClient.updateAttributeByIdWithResponse(guid, name, body, requestOptions);
     }
 
     /**
@@ -1136,7 +1141,7 @@ public final class EntityClient {
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param classifications An array of classifications to be added.
+     * @param body An array of classifications to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1146,9 +1151,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addClassificationsWithResponse(String guid, BinaryData classifications,
-        RequestOptions requestOptions) {
-        return this.serviceClient.addClassificationsWithResponse(guid, classifications, requestOptions);
+    public Response<Void> addClassificationsWithResponse(String guid, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.addClassificationsWithResponse(guid, body, requestOptions);
     }
 
     /**
@@ -1179,7 +1183,7 @@ public final class EntityClient {
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param classifications An array of classifications to be updated.
+     * @param body An array of classifications to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1189,9 +1193,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateClassificationsWithResponse(String guid, BinaryData classifications,
+    public Response<Void> updateClassificationsWithResponse(String guid, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateClassificationsWithResponse(guid, classifications, requestOptions);
+        return this.serviceClient.updateClassificationsWithResponse(guid, body, requestOptions);
     }
 
     /**
@@ -1346,8 +1350,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getByUniqueAttributesWithResponse(String typeName, RequestOptions requestOptions) {
-        return this.serviceClient.getByUniqueAttributesWithResponse(typeName, requestOptions);
+    public Response<BinaryData> getByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.getByUniqueAttributeWithResponse(typeName, requestOptions);
     }
 
     /**
@@ -1539,7 +1543,8 @@ public final class EntityClient {
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param atlasEntityWithExtInfo Atlas entity with extended information.
+     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1549,10 +1554,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> partialUpdateByUniqueAttributesWithResponse(String typeName,
-        BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateByUniqueAttributesWithResponse(typeName, atlasEntityWithExtInfo,
-            requestOptions);
+    public Response<BinaryData> updateByUniqueAttributeWithResponse(String typeName, BinaryData atlasEntityWithExtInfo,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateByUniqueAttributeWithResponse(typeName, atlasEntityWithExtInfo, requestOptions);
     }
 
     /**
@@ -1761,7 +1765,7 @@ public final class EntityClient {
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param atlasClassificationArray An array of classification to be added.
+     * @param body An array of classification to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1771,10 +1775,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addClassificationsByUniqueAttributeWithResponse(String typeName,
-        BinaryData atlasClassificationArray, RequestOptions requestOptions) {
-        return this.serviceClient.addClassificationsByUniqueAttributeWithResponse(typeName, atlasClassificationArray,
-            requestOptions);
+    public Response<Void> addClassificationsByUniqueAttributeWithResponse(String typeName, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.addClassificationsByUniqueAttributeWithResponse(typeName, body, requestOptions);
     }
 
     /**
@@ -1825,7 +1828,7 @@ public final class EntityClient {
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param atlasClassificationArray An array of classification to be updated.
+     * @param body An array of classification to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1835,10 +1838,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateClassificationsByUniqueAttributeWithResponse(String typeName,
-        BinaryData atlasClassificationArray, RequestOptions requestOptions) {
-        return this.serviceClient.updateClassificationsByUniqueAttributeWithResponse(typeName, atlasClassificationArray,
-            requestOptions);
+    public Response<Void> updateClassificationsUniqueByAttributeWithResponse(String typeName, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateClassificationsUniqueByAttributeWithResponse(typeName, body, requestOptions);
     }
 
     /**
@@ -1913,7 +1915,7 @@ public final class EntityClient {
      * ]
      * }</pre>
      * 
-     * @param entityHeaders Atlas entity headers.
+     * @param atlasEntityHeaders An instance of an entity header map.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1923,9 +1925,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> bulkSetClassificationsWithResponse(BinaryData entityHeaders,
+    public Response<BinaryData> batchSetClassificationsWithResponse(BinaryData atlasEntityHeaders,
         RequestOptions requestOptions) {
-        return this.serviceClient.bulkSetClassificationsWithResponse(entityHeaders, requestOptions);
+        return this.serviceClient.batchSetClassificationsWithResponse(atlasEntityHeaders, requestOptions);
     }
 
     /**
@@ -2075,8 +2077,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listByUniqueAttributesWithResponse(String typeName, RequestOptions requestOptions) {
-        return this.serviceClient.listByUniqueAttributesWithResponse(typeName, requestOptions);
+    public Response<BinaryData> batchGetByUniqueAttributesWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.batchGetByUniqueAttributesWithResponse(typeName, requestOptions);
     }
 
     /**
@@ -2167,7 +2169,7 @@ public final class EntityClient {
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadata Business metadata payload.
+     * @param body Business metadata payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2177,9 +2179,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeBusinessMetadataWithResponse(String guid, BinaryData businessMetadata,
+    public Response<Void> removeBusinessMetadataWithResponse(String guid, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.removeBusinessMetadataWithResponse(guid, businessMetadata, requestOptions);
+        return this.serviceClient.removeBusinessMetadataWithResponse(guid, body, requestOptions);
     }
 
     /**
@@ -2216,7 +2218,7 @@ public final class EntityClient {
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadata BusinessMetadata payload.
+     * @param body BusinessMetadata payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2226,9 +2228,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addOrUpdateBusinessMetadataWithResponse(String guid, BinaryData businessMetadata,
+    public Response<Void> addOrUpdateBusinessMetadataWithResponse(String guid, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.addOrUpdateBusinessMetadataWithResponse(guid, businessMetadata, requestOptions);
+        return this.serviceClient.addOrUpdateBusinessMetadataWithResponse(guid, body, requestOptions);
     }
 
     /**
@@ -2242,9 +2244,9 @@ public final class EntityClient {
      * }
      * }</pre>
      * 
-     * @param bmName BusinessMetadata name.
+     * @param businessMetadataName BusinessMetadata name.
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadataAttributes Business metadata attribute payload.
+     * @param body Business metadata attribute payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2254,9 +2256,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeBusinessMetadataAttributesWithResponse(String bmName, String guid,
-        BinaryData businessMetadataAttributes, RequestOptions requestOptions) {
-        return this.serviceClient.removeBusinessMetadataAttributesWithResponse(bmName, guid, businessMetadataAttributes,
+    public Response<Void> removeBusinessMetadataAttributesWithResponse(String businessMetadataName, String guid,
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.removeBusinessMetadataAttributesWithResponse(businessMetadataName, guid, body,
             requestOptions);
     }
 
@@ -2271,9 +2273,9 @@ public final class EntityClient {
      * }
      * }</pre>
      * 
-     * @param bmName BusinessMetadata name.
+     * @param businessMetadataName BusinessMetadata name.
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadataAttributes Business metadata attribute payload.
+     * @param body Business metadata attribute payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2283,10 +2285,10 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addOrUpdateBusinessMetadataAttributesWithResponse(String bmName, String guid,
-        BinaryData businessMetadataAttributes, RequestOptions requestOptions) {
-        return this.serviceClient.addOrUpdateBusinessMetadataAttributesWithResponse(bmName, guid,
-            businessMetadataAttributes, requestOptions);
+    public Response<Void> addOrUpdateBusinessMetadataAttributesWithResponse(String businessMetadataName, String guid,
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.addOrUpdateBusinessMetadataAttributesWithResponse(businessMetadataName, guid, body,
+            requestOptions);
     }
 
     /**
@@ -2307,8 +2309,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSampleBusinessMetadataTemplateWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getSampleBusinessMetadataTemplateWithResponse(requestOptions);
+    public Response<BinaryData> getBusinessMetadataTemplateWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getBusinessMetadataTemplateWithResponse(requestOptions);
     }
 
     /**
@@ -2318,7 +2320,7 @@ public final class EntityClient {
      * </p>
      * <pre>{@code
      * {
-     *     uploadedInputStream: byte[] (Required)
+     *     file: byte[] (Required)
      * }
      * }</pre>
      * <p>
@@ -2363,12 +2365,11 @@ public final class EntityClient {
      * </p>
      * <pre>{@code
      * [
-     *     String (Required)
+     *     String (Optional)
      * ]
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param body set of labels to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2378,8 +2379,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeLabelsWithResponse(String guid, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.removeLabelsWithResponse(guid, body, requestOptions);
+    public Response<Void> removeLabelsWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.removeLabelsWithResponse(guid, requestOptions);
     }
 
     /**
@@ -2389,12 +2390,11 @@ public final class EntityClient {
      * </p>
      * <pre>{@code
      * [
-     *     String (Required)
+     *     String (Optional)
      * ]
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param body set of labels to be set to the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2404,8 +2404,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setLabelsWithResponse(String guid, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.setLabelsWithResponse(guid, body, requestOptions);
+    public Response<Void> setLabelsWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.setLabelsWithResponse(guid, requestOptions);
     }
 
     /**
@@ -2415,12 +2415,11 @@ public final class EntityClient {
      * </p>
      * <pre>{@code
      * [
-     *     String (Required)
+     *     String (Optional)
      * ]
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param body set of labels to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2430,8 +2429,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addLabelWithResponse(String guid, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.addLabelWithResponse(guid, body, requestOptions);
+    public Response<Void> addLabelWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.addLabelWithResponse(guid, requestOptions);
     }
 
     /**
@@ -2473,12 +2472,11 @@ public final class EntityClient {
      * </p>
      * <pre>{@code
      * [
-     *     String (Required)
+     *     String (Optional)
      * ]
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2488,9 +2486,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeLabelsByUniqueAttributeWithResponse(String typeName, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.removeLabelsByUniqueAttributeWithResponse(typeName, body, requestOptions);
+    public Response<Void> removeLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.removeLabelsByUniqueAttributeWithResponse(typeName, requestOptions);
     }
 
     /**
@@ -2534,12 +2531,11 @@ public final class EntityClient {
      * </p>
      * <pre>{@code
      * [
-     *     String (Required)
+     *     String (Optional)
      * ]
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be set.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2549,9 +2545,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setLabelsByUniqueAttributeWithResponse(String typeName, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.setLabelsByUniqueAttributeWithResponse(typeName, body, requestOptions);
+    public Response<Void> setLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.setLabelsByUniqueAttributeWithResponse(typeName, requestOptions);
     }
 
     /**
@@ -2595,12 +2590,11 @@ public final class EntityClient {
      * </p>
      * <pre>{@code
      * [
-     *     String (Required)
+     *     String (Optional)
      * ]
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2610,9 +2604,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addLabelsByUniqueAttributeWithResponse(String typeName, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.addLabelsByUniqueAttributeWithResponse(typeName, body, requestOptions);
+    public Response<Void> addLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.addLabelsByUniqueAttributeWithResponse(typeName, requestOptions);
     }
 
     /**
@@ -2698,7 +2691,7 @@ public final class EntityClient {
      * }</pre>
      * 
      * @param collectionId The collection where entities will be moved to.
-     * @param moveEntitiesRequest Entity guids to be moved to target collection.
+     * @param moveEntitiesOptions MoveEntitiesOptions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2709,8 +2702,8 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> moveEntitiesToCollectionWithResponse(String collectionId,
-        BinaryData moveEntitiesRequest, RequestOptions requestOptions) {
-        return this.serviceClient.moveEntitiesToCollectionWithResponse(collectionId, moveEntitiesRequest,
+        BinaryData moveEntitiesOptions, RequestOptions requestOptions) {
+        return this.serviceClient.moveEntitiesToCollectionWithResponse(collectionId, moveEntitiesOptions,
             requestOptions);
     }
 
@@ -2723,7 +2716,8 @@ public final class EntityClient {
      * int&gt;&gt;.
      * For each contact type, the maximum number of contacts is 20.
      * 
-     * @param entity Atlas entity with extended information.
+     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @param businessAttributeUpdateBehavior Used to define the update behavior for business attributes when updating
      * entities.
      * @param collectionId The collection where entities will be moved to. Only specify a value if you
@@ -2738,7 +2732,7 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityMutationResult createOrUpdate(AtlasEntityWithExtInfo entity,
+    public EntityMutationResult createOrUpdate(AtlasEntityWithExtInfo atlasEntityWithExtInfo,
         BusinessAttributeUpdateBehavior businessAttributeUpdateBehavior, String collectionId) {
         // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2749,7 +2743,7 @@ public final class EntityClient {
         if (collectionId != null) {
             requestOptions.addQueryParam("collectionId", collectionId, false);
         }
-        return createOrUpdateWithResponse(BinaryData.fromObject(entity), requestOptions).getValue()
+        return createOrUpdateWithResponse(BinaryData.fromObject(atlasEntityWithExtInfo), requestOptions).getValue()
             .toObject(EntityMutationResult.class);
     }
 
@@ -2762,7 +2756,8 @@ public final class EntityClient {
      * int&gt;&gt;.
      * For each contact type, the maximum number of contacts is 20.
      * 
-     * @param entity Atlas entity with extended information.
+     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2773,10 +2768,10 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityMutationResult createOrUpdate(AtlasEntityWithExtInfo entity) {
+    public EntityMutationResult createOrUpdate(AtlasEntityWithExtInfo atlasEntityWithExtInfo) {
         // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrUpdateWithResponse(BinaryData.fromObject(entity), requestOptions).getValue()
+        return createOrUpdateWithResponse(BinaryData.fromObject(atlasEntityWithExtInfo), requestOptions).getValue()
             .toObject(EntityMutationResult.class);
     }
 
@@ -2797,8 +2792,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasEntitiesWithExtInfo listByGuids(List<String> guid, Boolean minExtInfo, Boolean ignoreRelationships) {
-        // Generated convenience method for listByGuidsWithResponse
+    public AtlasEntitiesWithExtInfo getByIds(List<String> guid, Boolean minExtInfo, Boolean ignoreRelationships) {
+        // Generated convenience method for getByIdsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (minExtInfo != null) {
             requestOptions.addQueryParam("minExtInfo", String.valueOf(minExtInfo), false);
@@ -2806,7 +2801,7 @@ public final class EntityClient {
         if (ignoreRelationships != null) {
             requestOptions.addQueryParam("ignoreRelationships", String.valueOf(ignoreRelationships), false);
         }
-        return listByGuidsWithResponse(guid, requestOptions).getValue().toObject(AtlasEntitiesWithExtInfo.class);
+        return getByIdsWithResponse(guid, requestOptions).getValue().toObject(AtlasEntitiesWithExtInfo.class);
     }
 
     /**
@@ -2824,10 +2819,10 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasEntitiesWithExtInfo listByGuids(List<String> guid) {
-        // Generated convenience method for listByGuidsWithResponse
+    public AtlasEntitiesWithExtInfo getByIds(List<String> guid) {
+        // Generated convenience method for getByIdsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listByGuidsWithResponse(guid, requestOptions).getValue().toObject(AtlasEntitiesWithExtInfo.class);
+        return getByIdsWithResponse(guid, requestOptions).getValue().toObject(AtlasEntitiesWithExtInfo.class);
     }
 
     /**
@@ -2840,7 +2835,8 @@ public final class EntityClient {
      * For each contact type, the maximum number of contacts
      * is 20.
      * 
-     * @param entities An array of entities to create or update.
+     * @param atlasEntitiesWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @param collectionId The collection where entities will be moved to. Only specify a value if you
      * need to move an entity to another collection.
      * @param businessAttributeUpdateBehavior Used to define the update behavior for business attributes when updating
@@ -2855,9 +2851,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityMutationResult bulkCreateOrUpdate(AtlasEntitiesWithExtInfo entities, String collectionId,
-        BusinessAttributeUpdateBehavior businessAttributeUpdateBehavior) {
-        // Generated convenience method for bulkCreateOrUpdateWithResponse
+    public EntityMutationResult batchCreateOrUpdate(AtlasEntitiesWithExtInfo atlasEntitiesWithExtInfo,
+        String collectionId, BusinessAttributeUpdateBehavior businessAttributeUpdateBehavior) {
+        // Generated convenience method for batchCreateOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (collectionId != null) {
             requestOptions.addQueryParam("collectionId", collectionId, false);
@@ -2866,8 +2862,8 @@ public final class EntityClient {
             requestOptions.addQueryParam("businessAttributeUpdateBehavior", businessAttributeUpdateBehavior.toString(),
                 false);
         }
-        return bulkCreateOrUpdateWithResponse(BinaryData.fromObject(entities), requestOptions).getValue()
-            .toObject(EntityMutationResult.class);
+        return batchCreateOrUpdateWithResponse(BinaryData.fromObject(atlasEntitiesWithExtInfo), requestOptions)
+            .getValue().toObject(EntityMutationResult.class);
     }
 
     /**
@@ -2880,7 +2876,8 @@ public final class EntityClient {
      * For each contact type, the maximum number of contacts
      * is 20.
      * 
-     * @param entities An array of entities to create or update.
+     * @param atlasEntitiesWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2891,11 +2888,11 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityMutationResult bulkCreateOrUpdate(AtlasEntitiesWithExtInfo entities) {
-        // Generated convenience method for bulkCreateOrUpdateWithResponse
+    public EntityMutationResult batchCreateOrUpdate(AtlasEntitiesWithExtInfo atlasEntitiesWithExtInfo) {
+        // Generated convenience method for batchCreateOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return bulkCreateOrUpdateWithResponse(BinaryData.fromObject(entities), requestOptions).getValue()
-            .toObject(EntityMutationResult.class);
+        return batchCreateOrUpdateWithResponse(BinaryData.fromObject(atlasEntitiesWithExtInfo), requestOptions)
+            .getValue().toObject(EntityMutationResult.class);
     }
 
     /**
@@ -2913,16 +2910,16 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityMutationResult bulkDelete(List<String> guid) {
-        // Generated convenience method for bulkDeleteWithResponse
+    public EntityMutationResult batchDelete(List<String> guid) {
+        // Generated convenience method for batchDeleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return bulkDeleteWithResponse(guid, requestOptions).getValue().toObject(EntityMutationResult.class);
+        return batchDeleteWithResponse(guid, requestOptions).getValue().toObject(EntityMutationResult.class);
     }
 
     /**
      * Associate a classification to multiple entities in bulk.
      * 
-     * @param request The request to associate a classification to multiple entities.
+     * @param classificationAssociateOptions The request payload for classification association.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2932,10 +2929,10 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addClassification(ClassificationAssociateContent request) {
+    public void addClassification(ClassificationAssociateOptions classificationAssociateOptions) {
         // Generated convenience method for addClassificationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        addClassificationWithResponse(BinaryData.fromObject(request), requestOptions).getValue();
+        addClassificationWithResponse(BinaryData.fromObject(classificationAssociateOptions), requestOptions).getValue();
     }
 
     /**
@@ -3006,11 +3003,11 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityMutationResult partialUpdateAttributeByGuid(String guid, String name, Object body) {
-        // Generated convenience method for partialUpdateAttributeByGuidWithResponse
+    public EntityMutationResult updateAttributeById(String guid, String name, Object body) {
+        // Generated convenience method for updateAttributeByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return partialUpdateAttributeByGuidWithResponse(guid, name, BinaryData.fromObject(body), requestOptions)
-            .getValue().toObject(EntityMutationResult.class);
+        return updateAttributeByIdWithResponse(guid, name, BinaryData.fromObject(body), requestOptions).getValue()
+            .toObject(EntityMutationResult.class);
     }
 
     /**
@@ -3099,7 +3096,7 @@ public final class EntityClient {
      * Add classifications to an existing entity represented by a GUID.
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param classifications An array of classifications to be added.
+     * @param body An array of classifications to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3109,17 +3106,17 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addClassifications(String guid, List<AtlasClassification> classifications) {
+    public void addClassifications(String guid, List<AtlasClassification> body) {
         // Generated convenience method for addClassificationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        addClassificationsWithResponse(guid, BinaryData.fromObject(classifications), requestOptions).getValue();
+        addClassificationsWithResponse(guid, BinaryData.fromObject(body), requestOptions).getValue();
     }
 
     /**
      * Update classifications to an existing entity represented by a guid.
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param classifications An array of classifications to be updated.
+     * @param body An array of classifications to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3129,10 +3126,10 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateClassifications(String guid, List<AtlasClassification> classifications) {
+    public void updateClassifications(String guid, List<AtlasClassification> body) {
         // Generated convenience method for updateClassificationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        updateClassificationsWithResponse(guid, BinaryData.fromObject(classifications), requestOptions).getValue();
+        updateClassificationsWithResponse(guid, BinaryData.fromObject(body), requestOptions).getValue();
     }
 
     /**
@@ -3154,7 +3151,7 @@ public final class EntityClient {
      * @param typeName The name of the type.
      * @param minExtInfo Whether to return minimal information for referred entities.
      * @param ignoreRelationships Whether to ignore relationship attributes.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3179,9 +3176,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasEntityWithExtInfo getByUniqueAttributes(String typeName, Boolean minExtInfo,
-        Boolean ignoreRelationships, String attr) {
-        // Generated convenience method for getByUniqueAttributesWithResponse
+    public AtlasEntityWithExtInfo getByUniqueAttribute(String typeName, Boolean minExtInfo, Boolean ignoreRelationships,
+        String attribute) {
+        // Generated convenience method for getByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (minExtInfo != null) {
             requestOptions.addQueryParam("minExtInfo", String.valueOf(minExtInfo), false);
@@ -3189,10 +3186,10 @@ public final class EntityClient {
         if (ignoreRelationships != null) {
             requestOptions.addQueryParam("ignoreRelationships", String.valueOf(ignoreRelationships), false);
         }
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        return getByUniqueAttributesWithResponse(typeName, requestOptions).getValue()
+        return getByUniqueAttributeWithResponse(typeName, requestOptions).getValue()
             .toObject(AtlasEntityWithExtInfo.class);
     }
 
@@ -3236,10 +3233,10 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasEntityWithExtInfo getByUniqueAttributes(String typeName) {
-        // Generated convenience method for getByUniqueAttributesWithResponse
+    public AtlasEntityWithExtInfo getByUniqueAttribute(String typeName) {
+        // Generated convenience method for getByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getByUniqueAttributesWithResponse(typeName, requestOptions).getValue()
+        return getByUniqueAttributeWithResponse(typeName, requestOptions).getValue()
             .toObject(AtlasEntityWithExtInfo.class);
     }
 
@@ -3262,8 +3259,9 @@ public final class EntityClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param atlasEntityWithExtInfo Atlas entity with extended information.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3275,14 +3273,14 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityMutationResult partialUpdateByUniqueAttributes(String typeName,
-        AtlasEntityWithExtInfo atlasEntityWithExtInfo, String attr) {
-        // Generated convenience method for partialUpdateByUniqueAttributesWithResponse
+    public EntityMutationResult updateByUniqueAttribute(String typeName, AtlasEntityWithExtInfo atlasEntityWithExtInfo,
+        String attribute) {
+        // Generated convenience method for updateByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        return partialUpdateByUniqueAttributesWithResponse(typeName, BinaryData.fromObject(atlasEntityWithExtInfo),
+        return updateByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(atlasEntityWithExtInfo),
             requestOptions).getValue().toObject(EntityMutationResult.class);
     }
 
@@ -3305,7 +3303,8 @@ public final class EntityClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param atlasEntityWithExtInfo Atlas entity with extended information.
+     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
+     * hive_database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3316,11 +3315,11 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityMutationResult partialUpdateByUniqueAttributes(String typeName,
+    public EntityMutationResult updateByUniqueAttribute(String typeName,
         AtlasEntityWithExtInfo atlasEntityWithExtInfo) {
-        // Generated convenience method for partialUpdateByUniqueAttributesWithResponse
+        // Generated convenience method for updateByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return partialUpdateByUniqueAttributesWithResponse(typeName, BinaryData.fromObject(atlasEntityWithExtInfo),
+        return updateByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(atlasEntityWithExtInfo),
             requestOptions).getValue().toObject(EntityMutationResult.class);
     }
 
@@ -3339,7 +3338,7 @@ public final class EntityClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3351,11 +3350,11 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityMutationResult deleteByUniqueAttribute(String typeName, String attr) {
+    public EntityMutationResult deleteByUniqueAttribute(String typeName, String attribute) {
         // Generated convenience method for deleteByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
         return deleteByUniqueAttributeWithResponse(typeName, requestOptions).getValue()
             .toObject(EntityMutationResult.class);
@@ -3399,7 +3398,7 @@ public final class EntityClient {
      * 
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3410,11 +3409,11 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeClassificationByUniqueAttribute(String typeName, String classificationName, String attr) {
+    public void removeClassificationByUniqueAttribute(String typeName, String classificationName, String attribute) {
         // Generated convenience method for removeClassificationByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
         removeClassificationByUniqueAttributeWithResponse(typeName, classificationName, requestOptions).getValue();
     }
@@ -3444,8 +3443,8 @@ public final class EntityClient {
      * Add classification to the entity identified by its type and unique attributes.
      * 
      * @param typeName The name of the type.
-     * @param atlasClassificationArray An array of classification to be added.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param body An array of classification to be added.
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3456,22 +3455,21 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addClassificationsByUniqueAttribute(String typeName, List<AtlasClassification> atlasClassificationArray,
-        String attr) {
+    public void addClassificationsByUniqueAttribute(String typeName, List<AtlasClassification> body, String attribute) {
         // Generated convenience method for addClassificationsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        addClassificationsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(atlasClassificationArray),
-            requestOptions).getValue();
+        addClassificationsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
+            .getValue();
     }
 
     /**
      * Add classification to the entity identified by its type and unique attributes.
      * 
      * @param typeName The name of the type.
-     * @param atlasClassificationArray An array of classification to be added.
+     * @param body An array of classification to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3481,20 +3479,19 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addClassificationsByUniqueAttribute(String typeName,
-        List<AtlasClassification> atlasClassificationArray) {
+    public void addClassificationsByUniqueAttribute(String typeName, List<AtlasClassification> body) {
         // Generated convenience method for addClassificationsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        addClassificationsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(atlasClassificationArray),
-            requestOptions).getValue();
+        addClassificationsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
+            .getValue();
     }
 
     /**
      * Update classification on an entity identified by its type and unique attributes.
      * 
      * @param typeName The name of the type.
-     * @param atlasClassificationArray An array of classification to be updated.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param body An array of classification to be updated.
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3505,22 +3502,22 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateClassificationsByUniqueAttribute(String typeName,
-        List<AtlasClassification> atlasClassificationArray, String attr) {
-        // Generated convenience method for updateClassificationsByUniqueAttributeWithResponse
+    public void updateClassificationsUniqueByAttribute(String typeName, List<AtlasClassification> body,
+        String attribute) {
+        // Generated convenience method for updateClassificationsUniqueByAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        updateClassificationsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(atlasClassificationArray),
-            requestOptions).getValue();
+        updateClassificationsUniqueByAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
+            .getValue();
     }
 
     /**
      * Update classification on an entity identified by its type and unique attributes.
      * 
      * @param typeName The name of the type.
-     * @param atlasClassificationArray An array of classification to be updated.
+     * @param body An array of classification to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3530,18 +3527,17 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateClassificationsByUniqueAttribute(String typeName,
-        List<AtlasClassification> atlasClassificationArray) {
-        // Generated convenience method for updateClassificationsByUniqueAttributeWithResponse
+    public void updateClassificationsUniqueByAttribute(String typeName, List<AtlasClassification> body) {
+        // Generated convenience method for updateClassificationsUniqueByAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        updateClassificationsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(atlasClassificationArray),
-            requestOptions).getValue();
+        updateClassificationsUniqueByAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
+            .getValue();
     }
 
     /**
      * Set classifications on entities in bulk.
      * 
-     * @param entityHeaders Atlas entity headers.
+     * @param atlasEntityHeaders An instance of an entity header map.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3552,10 +3548,10 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<String> bulkSetClassifications(AtlasEntityHeaders entityHeaders) {
-        // Generated convenience method for bulkSetClassificationsWithResponse
+    public List<String> batchSetClassifications(AtlasEntityHeaders atlasEntityHeaders) {
+        // Generated convenience method for batchSetClassificationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return bulkSetClassificationsWithResponse(BinaryData.fromObject(entityHeaders), requestOptions).getValue()
+        return batchSetClassificationsWithResponse(BinaryData.fromObject(atlasEntityHeaders), requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_STRING);
     }
 
@@ -3596,9 +3592,9 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasEntitiesWithExtInfo listByUniqueAttributes(String typeName, Boolean minExtInfo,
+    public AtlasEntitiesWithExtInfo batchGetByUniqueAttributes(String typeName, Boolean minExtInfo,
         Boolean ignoreRelationships, String attrNQualifiedName) {
-        // Generated convenience method for listByUniqueAttributesWithResponse
+        // Generated convenience method for batchGetByUniqueAttributesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (minExtInfo != null) {
             requestOptions.addQueryParam("minExtInfo", String.valueOf(minExtInfo), false);
@@ -3609,7 +3605,7 @@ public final class EntityClient {
         if (attrNQualifiedName != null) {
             requestOptions.addQueryParam("attr_N:qualifiedName", attrNQualifiedName, false);
         }
-        return listByUniqueAttributesWithResponse(typeName, requestOptions).getValue()
+        return batchGetByUniqueAttributesWithResponse(typeName, requestOptions).getValue()
             .toObject(AtlasEntitiesWithExtInfo.class);
     }
 
@@ -3645,10 +3641,10 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasEntitiesWithExtInfo listByUniqueAttributes(String typeName) {
-        // Generated convenience method for listByUniqueAttributesWithResponse
+    public AtlasEntitiesWithExtInfo batchGetByUniqueAttributes(String typeName) {
+        // Generated convenience method for batchGetByUniqueAttributesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listByUniqueAttributesWithResponse(typeName, requestOptions).getValue()
+        return batchGetByUniqueAttributesWithResponse(typeName, requestOptions).getValue()
             .toObject(AtlasEntitiesWithExtInfo.class);
     }
 
@@ -3676,7 +3672,7 @@ public final class EntityClient {
      * Remove business metadata from an entity.
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadata Business metadata payload.
+     * @param body Business metadata payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3686,18 +3682,18 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeBusinessMetadata(String guid, Map<String, Map<String, Object>> businessMetadata) {
+    public void removeBusinessMetadata(String guid, Map<String, Map<String, Object>> body) {
         // Generated convenience method for removeBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        removeBusinessMetadataWithResponse(guid, BinaryData.fromObject(businessMetadata), requestOptions).getValue();
+        removeBusinessMetadataWithResponse(guid, BinaryData.fromObject(body), requestOptions).getValue();
     }
 
     /**
      * Add business metadata to an entity.
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadata BusinessMetadata payload.
-     * @param isOverwrite Whether to overwrite the existing business metadata on the entity or not,
+     * @param body BusinessMetadata payload.
+     * @param overwrite Whether to overwrite the existing business metadata on the entity or not,
      * default is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3708,22 +3704,20 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, Object>> businessMetadata,
-        Boolean isOverwrite) {
+    public void addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, Object>> body, Boolean overwrite) {
         // Generated convenience method for addOrUpdateBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (isOverwrite != null) {
-            requestOptions.addQueryParam("isOverwrite", String.valueOf(isOverwrite), false);
+        if (overwrite != null) {
+            requestOptions.addQueryParam("isOverwrite", String.valueOf(overwrite), false);
         }
-        addOrUpdateBusinessMetadataWithResponse(guid, BinaryData.fromObject(businessMetadata), requestOptions)
-            .getValue();
+        addOrUpdateBusinessMetadataWithResponse(guid, BinaryData.fromObject(body), requestOptions).getValue();
     }
 
     /**
      * Add business metadata to an entity.
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadata BusinessMetadata payload.
+     * @param body BusinessMetadata payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3733,19 +3727,18 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, Object>> businessMetadata) {
+    public void addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, Object>> body) {
         // Generated convenience method for addOrUpdateBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        addOrUpdateBusinessMetadataWithResponse(guid, BinaryData.fromObject(businessMetadata), requestOptions)
-            .getValue();
+        addOrUpdateBusinessMetadataWithResponse(guid, BinaryData.fromObject(body), requestOptions).getValue();
     }
 
     /**
      * Delete business metadata attributes from an entity.
      * 
-     * @param bmName BusinessMetadata name.
+     * @param businessMetadataName BusinessMetadata name.
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadataAttributes Business metadata attribute payload.
+     * @param body Business metadata attribute payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3755,20 +3748,19 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeBusinessMetadataAttributes(String bmName, String guid,
-        Map<String, Object> businessMetadataAttributes) {
+    public void removeBusinessMetadataAttributes(String businessMetadataName, String guid, Map<String, Object> body) {
         // Generated convenience method for removeBusinessMetadataAttributesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        removeBusinessMetadataAttributesWithResponse(bmName, guid, BinaryData.fromObject(businessMetadataAttributes),
+        removeBusinessMetadataAttributesWithResponse(businessMetadataName, guid, BinaryData.fromObject(body),
             requestOptions).getValue();
     }
 
     /**
      * Add or update business metadata attributes.
      * 
-     * @param bmName BusinessMetadata name.
+     * @param businessMetadataName BusinessMetadata name.
      * @param guid The globally unique identifier of the entity.
-     * @param businessMetadataAttributes Business metadata attribute payload.
+     * @param body Business metadata attribute payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3778,12 +3770,12 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addOrUpdateBusinessMetadataAttributes(String bmName, String guid,
-        Map<String, Object> businessMetadataAttributes) {
+    public void addOrUpdateBusinessMetadataAttributes(String businessMetadataName, String guid,
+        Map<String, Object> body) {
         // Generated convenience method for addOrUpdateBusinessMetadataAttributesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        addOrUpdateBusinessMetadataAttributesWithResponse(bmName, guid,
-            BinaryData.fromObject(businessMetadataAttributes), requestOptions).getValue();
+        addOrUpdateBusinessMetadataAttributesWithResponse(businessMetadataName, guid, BinaryData.fromObject(body),
+            requestOptions).getValue();
     }
 
     /**
@@ -3798,10 +3790,10 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getSampleBusinessMetadataTemplate() {
-        // Generated convenience method for getSampleBusinessMetadataTemplateWithResponse
+    public BinaryData getBusinessMetadataTemplate() {
+        // Generated convenience method for getBusinessMetadataTemplateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSampleBusinessMetadataTemplateWithResponse(requestOptions).getValue();
+        return getBusinessMetadataTemplateWithResponse(requestOptions).getValue();
     }
 
     /**
@@ -3821,7 +3813,29 @@ public final class EntityClient {
     public void removeLabels(String guid, List<String> body) {
         // Generated convenience method for removeLabelsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        removeLabelsWithResponse(guid, BinaryData.fromObject(body), requestOptions).getValue();
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        removeLabelsWithResponse(guid, requestOptions).getValue();
+    }
+
+    /**
+     * Delete given labels to a given entity.
+     * 
+     * @param guid The globally unique identifier of the entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void removeLabels(String guid) {
+        // Generated convenience method for removeLabelsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        removeLabelsWithResponse(guid, requestOptions).getValue();
     }
 
     /**
@@ -3841,7 +3855,29 @@ public final class EntityClient {
     public void setLabels(String guid, List<String> body) {
         // Generated convenience method for setLabelsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        setLabelsWithResponse(guid, BinaryData.fromObject(body), requestOptions).getValue();
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        setLabelsWithResponse(guid, requestOptions).getValue();
+    }
+
+    /**
+     * Set labels to a given entity.
+     * 
+     * @param guid The globally unique identifier of the entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setLabels(String guid) {
+        // Generated convenience method for setLabelsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        setLabelsWithResponse(guid, requestOptions).getValue();
     }
 
     /**
@@ -3861,44 +3897,29 @@ public final class EntityClient {
     public void addLabel(String guid, List<String> body) {
         // Generated convenience method for addLabelWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        addLabelWithResponse(guid, BinaryData.fromObject(body), requestOptions).getValue();
-    }
-
-    /**
-     * Delete given labels to a given entity identified by its type and unique
-     * attribute.
-     * 
-     * If labels is null/empty, no labels will be removed.
-     * 
-     * If any labels
-     * in labels set are non-existing labels, they will be ignored, only existing
-     * labels will be removed. In addition to the typeName path parameter, attribute
-     * key-value pair(s) can be provided in the following format:
-     * attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be unique
-     * across entities, eg. qualifiedName. The REST request would look something like
-     * this: DELETE
-     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
-     * 
-     * @param typeName The name of the type.
-     * @param body set of labels to be deleted.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
-     * be changed to other unique attributes).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeLabelsByUniqueAttribute(String typeName, List<String> body, String attr) {
-        // Generated convenience method for removeLabelsByUniqueAttributeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
         }
-        removeLabelsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions).getValue();
+        addLabelWithResponse(guid, requestOptions).getValue();
+    }
+
+    /**
+     * Add given labels to a given entity.
+     * 
+     * @param guid The globally unique identifier of the entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void addLabel(String guid) {
+        // Generated convenience method for addLabelWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        addLabelWithResponse(guid, requestOptions).getValue();
     }
 
     /**
@@ -3917,6 +3938,8 @@ public final class EntityClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
+     * be changed to other unique attributes).
      * @param body set of labels to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3927,10 +3950,47 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeLabelsByUniqueAttribute(String typeName, List<String> body) {
+    public void removeLabelsByUniqueAttribute(String typeName, String attribute, List<String> body) {
         // Generated convenience method for removeLabelsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        removeLabelsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions).getValue();
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
+        }
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        removeLabelsByUniqueAttributeWithResponse(typeName, requestOptions).getValue();
+    }
+
+    /**
+     * Delete given labels to a given entity identified by its type and unique
+     * attribute.
+     * 
+     * If labels is null/empty, no labels will be removed.
+     * 
+     * If any labels
+     * in labels set are non-existing labels, they will be ignored, only existing
+     * labels will be removed. In addition to the typeName path parameter, attribute
+     * key-value pair(s) can be provided in the following format:
+     * attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be unique
+     * across entities, eg. qualifiedName. The REST request would look something like
+     * this: DELETE
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     * 
+     * @param typeName The name of the type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void removeLabelsByUniqueAttribute(String typeName) {
+        // Generated convenience method for removeLabelsByUniqueAttributeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        removeLabelsByUniqueAttributeWithResponse(typeName, requestOptions).getValue();
     }
 
     /**
@@ -3951,9 +4011,9 @@ public final class EntityClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be set.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
+     * @param body set of labels to be set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3963,13 +4023,16 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setLabelsByUniqueAttribute(String typeName, List<String> body, String attr) {
+    public void setLabelsByUniqueAttribute(String typeName, String attribute, List<String> body) {
         // Generated convenience method for setLabelsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        setLabelsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions).getValue();
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        setLabelsByUniqueAttributeWithResponse(typeName, requestOptions).getValue();
     }
 
     /**
@@ -3990,7 +4053,6 @@ public final class EntityClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4000,10 +4062,10 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setLabelsByUniqueAttribute(String typeName, List<String> body) {
+    public void setLabelsByUniqueAttribute(String typeName) {
         // Generated convenience method for setLabelsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        setLabelsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions).getValue();
+        setLabelsByUniqueAttributeWithResponse(typeName, requestOptions).getValue();
     }
 
     /**
@@ -4024,9 +4086,9 @@ public final class EntityClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be added.
-     * @param attr The qualified name of the entity. (This is only an example. qualifiedName can
+     * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
+     * @param body set of labels to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4036,13 +4098,16 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addLabelsByUniqueAttribute(String typeName, List<String> body, String attr) {
+    public void addLabelsByUniqueAttribute(String typeName, String attribute, List<String> body) {
         // Generated convenience method for addLabelsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (attr != null) {
-            requestOptions.addQueryParam("attr:qualifiedName", attr, false);
+        if (attribute != null) {
+            requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        addLabelsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions).getValue();
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        addLabelsByUniqueAttributeWithResponse(typeName, requestOptions).getValue();
     }
 
     /**
@@ -4063,7 +4128,6 @@ public final class EntityClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param body set of labels to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4073,17 +4137,17 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addLabelsByUniqueAttribute(String typeName, List<String> body) {
+    public void addLabelsByUniqueAttribute(String typeName) {
         // Generated convenience method for addLabelsByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        addLabelsByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions).getValue();
+        addLabelsByUniqueAttributeWithResponse(typeName, requestOptions).getValue();
     }
 
     /**
      * Move existing entities to the target collection.
      * 
      * @param collectionId The collection where entities will be moved to.
-     * @param moveEntitiesRequest Entity guids to be moved to target collection.
+     * @param moveEntitiesOptions MoveEntitiesOptions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4094,10 +4158,10 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityMutationResult moveEntitiesToCollection(String collectionId, MoveEntitiesContent moveEntitiesRequest) {
+    public EntityMutationResult moveEntitiesToCollection(String collectionId, MoveEntitiesOptions moveEntitiesOptions) {
         // Generated convenience method for moveEntitiesToCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return moveEntitiesToCollectionWithResponse(collectionId, BinaryData.fromObject(moveEntitiesRequest),
+        return moveEntitiesToCollectionWithResponse(collectionId, BinaryData.fromObject(moveEntitiesOptions),
             requestOptions).getValue().toObject(EntityMutationResult.class);
     }
 

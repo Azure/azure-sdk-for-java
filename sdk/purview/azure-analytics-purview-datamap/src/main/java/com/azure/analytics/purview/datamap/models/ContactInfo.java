@@ -9,10 +9,10 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * ContactBasic.
+ * ContactInfo.
  */
 @Fluent
-public final class ContactBasic {
+public final class ContactInfo {
     /*
      * Azure Active Directory object Id.
      */
@@ -28,10 +28,10 @@ public final class ContactBasic {
     private String info;
 
     /**
-     * Creates an instance of ContactBasic class.
+     * Creates an instance of ContactInfo class.
      */
     @Generated
-    public ContactBasic() {
+    public ContactInfo() {
     }
 
     /**
@@ -48,10 +48,10 @@ public final class ContactBasic {
      * Set the id property: Azure Active Directory object Id.
      * 
      * @param id the id value to set.
-     * @return the ContactBasic object itself.
+     * @return the ContactInfo object itself.
      */
     @Generated
-    public ContactBasic setId(String id) {
+    public ContactInfo setId(String id) {
         this.id = id;
         return this;
     }
@@ -70,10 +70,10 @@ public final class ContactBasic {
      * Set the info property: additional information to describe this contact.
      * 
      * @param info the info value to set.
-     * @return the ContactBasic object itself.
+     * @return the ContactInfo object itself.
      */
     @Generated
-    public ContactBasic setInfo(String info) {
+    public ContactInfo setInfo(String info) {
         this.info = info;
         return this;
     }

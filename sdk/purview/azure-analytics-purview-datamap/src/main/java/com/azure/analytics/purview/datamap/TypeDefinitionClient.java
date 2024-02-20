@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.TypeClientImpl;
+import com.azure.analytics.purview.datamap.implementation.TypeDefinitionsImpl;
 import com.azure.analytics.purview.datamap.models.AtlasBusinessMetadataDef;
 import com.azure.analytics.purview.datamap.models.AtlasClassificationDef;
 import com.azure.analytics.purview.datamap.models.AtlasEntityDef;
@@ -15,7 +15,7 @@ import com.azure.analytics.purview.datamap.models.AtlasTypeDef;
 import com.azure.analytics.purview.datamap.models.AtlasTypeDefHeader;
 import com.azure.analytics.purview.datamap.models.AtlasTypesDef;
 import com.azure.analytics.purview.datamap.models.TermTemplateDef;
-import com.azure.analytics.purview.datamap.models.TypeDef;
+import com.azure.analytics.purview.datamap.models.TypeCategory;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -31,20 +31,20 @@ import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
 
 /**
- * Initializes a new instance of the synchronous TypeClient type.
+ * Initializes a new instance of the synchronous DataMapClient type.
  */
-@ServiceClient(builder = TypeClientBuilder.class)
-public final class TypeClient {
+@ServiceClient(builder = DataMapClientBuilder.class)
+public final class TypeDefinitionClient {
     @Generated
-    private final TypeClientImpl serviceClient;
+    private final TypeDefinitionsImpl serviceClient;
 
     /**
-     * Initializes an instance of TypeClient class.
+     * Initializes an instance of TypeDefinitionClient class.
      * 
      * @param serviceClient the service client implementation.
      */
     @Generated
-    TypeClient(TypeClientImpl serviceClient) {
+    TypeDefinitionClient(TypeDefinitionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -148,8 +148,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBusinessMetadataDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getBusinessMetadataDefByGuidWithResponse(guid, requestOptions);
+    public Response<BinaryData> getBusinessMetadataByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getBusinessMetadataByIdWithResponse(guid, requestOptions);
     }
 
     /**
@@ -252,8 +252,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBusinessMetadataDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getBusinessMetadataDefByNameWithResponse(name, requestOptions);
+    public Response<BinaryData> getBusinessMetadataByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getBusinessMetadataByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -365,8 +365,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getClassificationDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getClassificationDefByGuidWithResponse(guid, requestOptions);
+    public Response<BinaryData> getClassificationByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getClassificationByIdWithResponse(guid, requestOptions);
     }
 
     /**
@@ -478,8 +478,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getClassificationDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getClassificationDefByNameWithResponse(name, requestOptions);
+    public Response<BinaryData> getClassificationByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getClassificationByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -611,8 +611,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEntityDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getEntityDefByGuidWithResponse(guid, requestOptions);
+    public Response<BinaryData> getEntityByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getEntityByIdWithResponse(guid, requestOptions);
     }
 
     /**
@@ -744,8 +744,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEntityDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getEntityDefByNameWithResponse(name, requestOptions);
+    public Response<BinaryData> getEntityByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getEntityByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -830,8 +830,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEnumDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getEnumDefByGuidWithResponse(guid, requestOptions);
+    public Response<BinaryData> getEnumByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getEnumByIdWithResponse(guid, requestOptions);
     }
 
     /**
@@ -916,8 +916,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEnumDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getEnumDefByNameWithResponse(name, requestOptions);
+    public Response<BinaryData> getEnumByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getEnumByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -1031,8 +1031,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRelationshipDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getRelationshipDefByGuidWithResponse(guid, requestOptions);
+    public Response<BinaryData> getRelationshipByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getRelationshipByIdWithResponse(guid, requestOptions);
     }
 
     /**
@@ -1146,8 +1146,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRelationshipDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getRelationshipDefByNameWithResponse(name, requestOptions);
+    public Response<BinaryData> getRelationshipByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getRelationshipByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -1250,8 +1250,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getStructDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getStructDefByGuidWithResponse(guid, requestOptions);
+    public Response<BinaryData> getStructByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getStructByIdWithResponse(guid, requestOptions);
     }
 
     /**
@@ -1354,8 +1354,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getStructDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getStructDefByNameWithResponse(name, requestOptions);
+    public Response<BinaryData> getStructByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getStructByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -1509,8 +1509,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getByGuidWithResponse(guid, requestOptions);
+    public Response<BinaryData> getByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getByIdWithResponse(guid, requestOptions);
     }
 
     /**
@@ -1710,8 +1710,8 @@ public final class TypeClient {
      * <td>type</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Typedef name as search filter when get typedefs. Allowed values: "enum", "entity", "classification",
-     * "relationship", "struct", "term_template".</td>
+     * <td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM",
+     * "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2008,8 +2008,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listWithResponse(requestOptions);
+    public Response<BinaryData> getWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponse(requestOptions);
     }
 
     /**
@@ -2583,7 +2583,7 @@ public final class TypeClient {
      * }
      * }</pre>
      * 
-     * @param typesDef A composite wrapper object with corresponding lists of the type definition.
+     * @param atlasTypesDef The definitions of types.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2593,8 +2593,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> bulkCreateWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.serviceClient.bulkCreateWithResponse(typesDef, requestOptions);
+    public Response<BinaryData> batchCreateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
+        return this.serviceClient.batchCreateWithResponse(atlasTypesDef, requestOptions);
     }
 
     /**
@@ -3167,7 +3167,7 @@ public final class TypeClient {
      * }
      * }</pre>
      * 
-     * @param typesDef A composite object that captures all type definition changes.
+     * @param atlasTypesDef The definitions of types.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3177,8 +3177,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> bulkUpdateWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.serviceClient.bulkUpdateWithResponse(typesDef, requestOptions);
+    public Response<BinaryData> batchUpdateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
+        return this.serviceClient.batchUpdateWithResponse(atlasTypesDef, requestOptions);
     }
 
     /**
@@ -3467,7 +3467,7 @@ public final class TypeClient {
      * }
      * }</pre>
      * 
-     * @param typesDef A composite object that captures all types to be deleted.
+     * @param atlasTypesDef The definitions of types.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3477,8 +3477,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> bulkDeleteWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.serviceClient.bulkDeleteWithResponse(typesDef, requestOptions);
+    public Response<Void> batchDeleteWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
+        return this.serviceClient.batchDeleteWithResponse(atlasTypesDef, requestOptions);
     }
 
     /**
@@ -3506,8 +3506,8 @@ public final class TypeClient {
      * <td>type</td>
      * <td>String</td>
      * <td>No</td>
-     * <td>Typedef name as search filter when get typedefs. Allowed values: "enum", "entity", "classification",
-     * "relationship", "struct", "term_template".</td>
+     * <td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM",
+     * "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -3533,8 +3533,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listHeadersWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listHeadersWithResponse(requestOptions);
+    public Response<BinaryData> getHeadersWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getHeadersWithResponse(requestOptions);
     }
 
     /**
@@ -3637,8 +3637,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTermTemplateDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getTermTemplateDefByGuidWithResponse(guid, requestOptions);
+    public Response<BinaryData> getTermTemplateByIdWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getTermTemplateByIdWithResponse(guid, requestOptions);
     }
 
     /**
@@ -3741,8 +3741,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTermTemplateDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getTermTemplateDefByNameWithResponse(name, requestOptions);
+    public Response<BinaryData> getTermTemplateByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getTermTemplateByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -3759,10 +3759,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasBusinessMetadataDef getBusinessMetadataDefByGuid(String guid) {
-        // Generated convenience method for getBusinessMetadataDefByGuidWithResponse
+    public AtlasBusinessMetadataDef getBusinessMetadataById(String guid) {
+        // Generated convenience method for getBusinessMetadataByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getBusinessMetadataDefByGuidWithResponse(guid, requestOptions).getValue()
+        return getBusinessMetadataByIdWithResponse(guid, requestOptions).getValue()
             .toObject(AtlasBusinessMetadataDef.class);
     }
 
@@ -3780,10 +3780,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasBusinessMetadataDef getBusinessMetadataDefByName(String name) {
-        // Generated convenience method for getBusinessMetadataDefByNameWithResponse
+    public AtlasBusinessMetadataDef getBusinessMetadataByName(String name) {
+        // Generated convenience method for getBusinessMetadataByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getBusinessMetadataDefByNameWithResponse(name, requestOptions).getValue()
+        return getBusinessMetadataByNameWithResponse(name, requestOptions).getValue()
             .toObject(AtlasBusinessMetadataDef.class);
     }
 
@@ -3801,10 +3801,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasClassificationDef getClassificationDefByGuid(String guid) {
-        // Generated convenience method for getClassificationDefByGuidWithResponse
+    public AtlasClassificationDef getClassificationById(String guid) {
+        // Generated convenience method for getClassificationByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getClassificationDefByGuidWithResponse(guid, requestOptions).getValue()
+        return getClassificationByIdWithResponse(guid, requestOptions).getValue()
             .toObject(AtlasClassificationDef.class);
     }
 
@@ -3822,10 +3822,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasClassificationDef getClassificationDefByName(String name) {
-        // Generated convenience method for getClassificationDefByNameWithResponse
+    public AtlasClassificationDef getClassificationByName(String name) {
+        // Generated convenience method for getClassificationByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getClassificationDefByNameWithResponse(name, requestOptions).getValue()
+        return getClassificationByNameWithResponse(name, requestOptions).getValue()
             .toObject(AtlasClassificationDef.class);
     }
 
@@ -3843,10 +3843,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasEntityDef getEntityDefByGuid(String guid) {
-        // Generated convenience method for getEntityDefByGuidWithResponse
+    public AtlasEntityDef getEntityById(String guid) {
+        // Generated convenience method for getEntityByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEntityDefByGuidWithResponse(guid, requestOptions).getValue().toObject(AtlasEntityDef.class);
+        return getEntityByIdWithResponse(guid, requestOptions).getValue().toObject(AtlasEntityDef.class);
     }
 
     /**
@@ -3863,10 +3863,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasEntityDef getEntityDefByName(String name) {
-        // Generated convenience method for getEntityDefByNameWithResponse
+    public AtlasEntityDef getEntityByName(String name) {
+        // Generated convenience method for getEntityByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEntityDefByNameWithResponse(name, requestOptions).getValue().toObject(AtlasEntityDef.class);
+        return getEntityByNameWithResponse(name, requestOptions).getValue().toObject(AtlasEntityDef.class);
     }
 
     /**
@@ -3883,10 +3883,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasEnumDef getEnumDefByGuid(String guid) {
-        // Generated convenience method for getEnumDefByGuidWithResponse
+    public AtlasEnumDef getEnumById(String guid) {
+        // Generated convenience method for getEnumByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEnumDefByGuidWithResponse(guid, requestOptions).getValue().toObject(AtlasEnumDef.class);
+        return getEnumByIdWithResponse(guid, requestOptions).getValue().toObject(AtlasEnumDef.class);
     }
 
     /**
@@ -3903,10 +3903,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasEnumDef getEnumDefByName(String name) {
-        // Generated convenience method for getEnumDefByNameWithResponse
+    public AtlasEnumDef getEnumByName(String name) {
+        // Generated convenience method for getEnumByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEnumDefByNameWithResponse(name, requestOptions).getValue().toObject(AtlasEnumDef.class);
+        return getEnumByNameWithResponse(name, requestOptions).getValue().toObject(AtlasEnumDef.class);
     }
 
     /**
@@ -3923,11 +3923,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasRelationshipDef getRelationshipDefByGuid(String guid) {
-        // Generated convenience method for getRelationshipDefByGuidWithResponse
+    public AtlasRelationshipDef getRelationshipById(String guid) {
+        // Generated convenience method for getRelationshipByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getRelationshipDefByGuidWithResponse(guid, requestOptions).getValue()
-            .toObject(AtlasRelationshipDef.class);
+        return getRelationshipByIdWithResponse(guid, requestOptions).getValue().toObject(AtlasRelationshipDef.class);
     }
 
     /**
@@ -3944,11 +3943,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasRelationshipDef getRelationshipDefByName(String name) {
-        // Generated convenience method for getRelationshipDefByNameWithResponse
+    public AtlasRelationshipDef getRelationshipByName(String name) {
+        // Generated convenience method for getRelationshipByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getRelationshipDefByNameWithResponse(name, requestOptions).getValue()
-            .toObject(AtlasRelationshipDef.class);
+        return getRelationshipByNameWithResponse(name, requestOptions).getValue().toObject(AtlasRelationshipDef.class);
     }
 
     /**
@@ -3965,10 +3963,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasStructDef getStructDefByGuid(String guid) {
-        // Generated convenience method for getStructDefByGuidWithResponse
+    public AtlasStructDef getStructById(String guid) {
+        // Generated convenience method for getStructByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getStructDefByGuidWithResponse(guid, requestOptions).getValue().toObject(AtlasStructDef.class);
+        return getStructByIdWithResponse(guid, requestOptions).getValue().toObject(AtlasStructDef.class);
     }
 
     /**
@@ -3985,10 +3983,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasStructDef getStructDefByName(String name) {
-        // Generated convenience method for getStructDefByNameWithResponse
+    public AtlasStructDef getStructByName(String name) {
+        // Generated convenience method for getStructByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getStructDefByNameWithResponse(name, requestOptions).getValue().toObject(AtlasStructDef.class);
+        return getStructByNameWithResponse(name, requestOptions).getValue().toObject(AtlasStructDef.class);
     }
 
     /**
@@ -4005,10 +4003,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasTypeDef getByGuid(String guid) {
-        // Generated convenience method for getByGuidWithResponse
+    public AtlasTypeDef getById(String guid) {
+        // Generated convenience method for getByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getByGuidWithResponse(guid, requestOptions).getValue().toObject(AtlasTypeDef.class);
+        return getByIdWithResponse(guid, requestOptions).getValue().toObject(AtlasTypeDef.class);
     }
 
     /**
@@ -4067,8 +4065,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasTypesDef list(Boolean includeTermTemplate, TypeDef type) {
-        // Generated convenience method for listWithResponse
+    public AtlasTypesDef get(Boolean includeTermTemplate, TypeCategory type) {
+        // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeTermTemplate != null) {
             requestOptions.addQueryParam("includeTermTemplate", String.valueOf(includeTermTemplate), false);
@@ -4076,7 +4074,7 @@ public final class TypeClient {
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
         }
-        return listWithResponse(requestOptions).getValue().toObject(AtlasTypesDef.class);
+        return getWithResponse(requestOptions).getValue().toObject(AtlasTypesDef.class);
     }
 
     /**
@@ -4091,10 +4089,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasTypesDef list() {
-        // Generated convenience method for listWithResponse
+    public AtlasTypesDef get() {
+        // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listWithResponse(requestOptions).getValue().toObject(AtlasTypesDef.class);
+        return getWithResponse(requestOptions).getValue().toObject(AtlasTypesDef.class);
     }
 
     /**
@@ -4102,7 +4100,7 @@ public final class TypeClient {
      * created.
      * Any changes to the existing definitions will be discarded.
      * 
-     * @param typesDef A composite wrapper object with corresponding lists of the type definition.
+     * @param atlasTypesDef The definitions of types.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4113,10 +4111,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasTypesDef bulkCreate(AtlasTypesDef typesDef) {
-        // Generated convenience method for bulkCreateWithResponse
+    public AtlasTypesDef batchCreate(AtlasTypesDef atlasTypesDef) {
+        // Generated convenience method for batchCreateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return bulkCreateWithResponse(BinaryData.fromObject(typesDef), requestOptions).getValue()
+        return batchCreateWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).getValue()
             .toObject(AtlasTypesDef.class);
     }
 
@@ -4124,7 +4122,7 @@ public final class TypeClient {
      * Update all types in bulk, changes detected in the type definitions would be
      * persisted.
      * 
-     * @param typesDef A composite object that captures all type definition changes.
+     * @param atlasTypesDef The definitions of types.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4135,17 +4133,17 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasTypesDef bulkUpdate(AtlasTypesDef typesDef) {
-        // Generated convenience method for bulkUpdateWithResponse
+    public AtlasTypesDef batchUpdate(AtlasTypesDef atlasTypesDef) {
+        // Generated convenience method for batchUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return bulkUpdateWithResponse(BinaryData.fromObject(typesDef), requestOptions).getValue()
+        return batchUpdateWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).getValue()
             .toObject(AtlasTypesDef.class);
     }
 
     /**
      * Delete API for all types in bulk.
      * 
-     * @param typesDef A composite object that captures all types to be deleted.
+     * @param atlasTypesDef The definitions of types.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4155,10 +4153,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void bulkDelete(AtlasTypesDef typesDef) {
-        // Generated convenience method for bulkDeleteWithResponse
+    public void batchDelete(AtlasTypesDef atlasTypesDef) {
+        // Generated convenience method for batchDeleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        bulkDeleteWithResponse(BinaryData.fromObject(typesDef), requestOptions).getValue();
+        batchDeleteWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).getValue();
     }
 
     /**
@@ -4178,8 +4176,8 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasTypeDefHeader> listHeaders(Boolean includeTermTemplate, TypeDef type) {
-        // Generated convenience method for listHeadersWithResponse
+    public List<AtlasTypeDefHeader> getHeaders(Boolean includeTermTemplate, TypeCategory type) {
+        // Generated convenience method for getHeadersWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeTermTemplate != null) {
             requestOptions.addQueryParam("includeTermTemplate", String.valueOf(includeTermTemplate), false);
@@ -4187,7 +4185,7 @@ public final class TypeClient {
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
         }
-        return listHeadersWithResponse(requestOptions).getValue().toObject(TYPE_REFERENCE_LIST_ATLAS_TYPE_DEF_HEADER);
+        return getHeadersWithResponse(requestOptions).getValue().toObject(TYPE_REFERENCE_LIST_ATLAS_TYPE_DEF_HEADER);
     }
 
     /**
@@ -4202,10 +4200,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AtlasTypeDefHeader> listHeaders() {
-        // Generated convenience method for listHeadersWithResponse
+    public List<AtlasTypeDefHeader> getHeaders() {
+        // Generated convenience method for getHeadersWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listHeadersWithResponse(requestOptions).getValue().toObject(TYPE_REFERENCE_LIST_ATLAS_TYPE_DEF_HEADER);
+        return getHeadersWithResponse(requestOptions).getValue().toObject(TYPE_REFERENCE_LIST_ATLAS_TYPE_DEF_HEADER);
     }
 
     /**
@@ -4222,10 +4220,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TermTemplateDef getTermTemplateDefByGuid(String guid) {
-        // Generated convenience method for getTermTemplateDefByGuidWithResponse
+    public TermTemplateDef getTermTemplateById(String guid) {
+        // Generated convenience method for getTermTemplateByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTermTemplateDefByGuidWithResponse(guid, requestOptions).getValue().toObject(TermTemplateDef.class);
+        return getTermTemplateByIdWithResponse(guid, requestOptions).getValue().toObject(TermTemplateDef.class);
     }
 
     /**
@@ -4242,10 +4240,10 @@ public final class TypeClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TermTemplateDef getTermTemplateDefByName(String name) {
-        // Generated convenience method for getTermTemplateDefByNameWithResponse
+    public TermTemplateDef getTermTemplateByName(String name) {
+        // Generated convenience method for getTermTemplateByNameWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTermTemplateDefByNameWithResponse(name, requestOptions).getValue().toObject(TermTemplateDef.class);
+        return getTermTemplateByNameWithResponse(name, requestOptions).getValue().toObject(TermTemplateDef.class);
     }
 
     @Generated

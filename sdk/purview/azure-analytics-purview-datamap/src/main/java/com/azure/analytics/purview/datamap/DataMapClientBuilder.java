@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap;
 
-import com.azure.analytics.purview.datamap.implementation.RelationshipClientImpl;
+import com.azure.analytics.purview.datamap.implementation.DataMapClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -42,12 +42,25 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A builder for creating a new instance of the RelationshipClient type.
+ * A builder for creating a new instance of the DataMapClient type.
  */
-@ServiceClientBuilder(serviceClients = { RelationshipClient.class, RelationshipAsyncClient.class })
-public final class RelationshipClientBuilder
-    implements HttpTrait<RelationshipClientBuilder>, ConfigurationTrait<RelationshipClientBuilder>,
-    TokenCredentialTrait<RelationshipClientBuilder>, EndpointTrait<RelationshipClientBuilder> {
+@ServiceClientBuilder(
+    serviceClients = {
+        EntityClient.class,
+        GlossaryClient.class,
+        DiscoveryClient.class,
+        LineageClient.class,
+        RelationshipClient.class,
+        TypeDefinitionClient.class,
+        EntityAsyncClient.class,
+        GlossaryAsyncClient.class,
+        DiscoveryAsyncClient.class,
+        LineageAsyncClient.class,
+        RelationshipAsyncClient.class,
+        TypeDefinitionAsyncClient.class })
+public final class DataMapClientBuilder
+    implements HttpTrait<DataMapClientBuilder>, ConfigurationTrait<DataMapClientBuilder>,
+    TokenCredentialTrait<DataMapClientBuilder>, EndpointTrait<DataMapClientBuilder> {
     @Generated
     private static final String SDK_NAME = "name";
 
@@ -65,10 +78,10 @@ public final class RelationshipClientBuilder
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
-     * Create an instance of the RelationshipClientBuilder.
+     * Create an instance of the DataMapClientBuilder.
      */
     @Generated
-    public RelationshipClientBuilder() {
+    public DataMapClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -83,7 +96,7 @@ public final class RelationshipClientBuilder
      */
     @Generated
     @Override
-    public RelationshipClientBuilder pipeline(HttpPipeline pipeline) {
+    public DataMapClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -102,7 +115,7 @@ public final class RelationshipClientBuilder
      */
     @Generated
     @Override
-    public RelationshipClientBuilder httpClient(HttpClient httpClient) {
+    public DataMapClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -118,7 +131,7 @@ public final class RelationshipClientBuilder
      */
     @Generated
     @Override
-    public RelationshipClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public DataMapClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -134,7 +147,7 @@ public final class RelationshipClientBuilder
      */
     @Generated
     @Override
-    public RelationshipClientBuilder clientOptions(ClientOptions clientOptions) {
+    public DataMapClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -150,7 +163,7 @@ public final class RelationshipClientBuilder
      */
     @Generated
     @Override
-    public RelationshipClientBuilder retryOptions(RetryOptions retryOptions) {
+    public DataMapClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -160,7 +173,7 @@ public final class RelationshipClientBuilder
      */
     @Generated
     @Override
-    public RelationshipClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public DataMapClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
@@ -177,7 +190,7 @@ public final class RelationshipClientBuilder
      */
     @Generated
     @Override
-    public RelationshipClientBuilder configuration(Configuration configuration) {
+    public DataMapClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -193,7 +206,7 @@ public final class RelationshipClientBuilder
      */
     @Generated
     @Override
-    public RelationshipClientBuilder credential(TokenCredential tokenCredential) {
+    public DataMapClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -209,7 +222,7 @@ public final class RelationshipClientBuilder
      */
     @Generated
     @Override
-    public RelationshipClientBuilder endpoint(String endpoint) {
+    public DataMapClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -224,10 +237,10 @@ public final class RelationshipClientBuilder
      * Sets Service version.
      * 
      * @param serviceVersion the serviceVersion value.
-     * @return the RelationshipClientBuilder.
+     * @return the DataMapClientBuilder.
      */
     @Generated
-    public RelationshipClientBuilder serviceVersion(PurviewDataMapServiceVersion serviceVersion) {
+    public DataMapClientBuilder serviceVersion(PurviewDataMapServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -242,26 +255,26 @@ public final class RelationshipClientBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      * 
      * @param retryPolicy the retryPolicy value.
-     * @return the RelationshipClientBuilder.
+     * @return the DataMapClientBuilder.
      */
     @Generated
-    public RelationshipClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public DataMapClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
-     * Builds an instance of RelationshipClientImpl with the provided parameters.
+     * Builds an instance of DataMapClientImpl with the provided parameters.
      * 
-     * @return an instance of RelationshipClientImpl.
+     * @return an instance of DataMapClientImpl.
      */
     @Generated
-    private RelationshipClientImpl buildInnerClient() {
+    private DataMapClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         PurviewDataMapServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : PurviewDataMapServiceVersion.getLatest();
-        RelationshipClientImpl client = new RelationshipClientImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
+        DataMapClientImpl client = new DataMapClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
+            this.endpoint, localServiceVersion);
         return client;
     }
 
@@ -302,13 +315,103 @@ public final class RelationshipClientBuilder
     }
 
     /**
+     * Builds an instance of EntityAsyncClient class.
+     * 
+     * @return an instance of EntityAsyncClient.
+     */
+    @Generated
+    public EntityAsyncClient buildEntityAsyncClient() {
+        return new EntityAsyncClient(buildInnerClient().getEntities());
+    }
+
+    /**
+     * Builds an instance of GlossaryAsyncClient class.
+     * 
+     * @return an instance of GlossaryAsyncClient.
+     */
+    @Generated
+    public GlossaryAsyncClient buildGlossaryAsyncClient() {
+        return new GlossaryAsyncClient(buildInnerClient().getGlossaries());
+    }
+
+    /**
+     * Builds an instance of DiscoveryAsyncClient class.
+     * 
+     * @return an instance of DiscoveryAsyncClient.
+     */
+    @Generated
+    public DiscoveryAsyncClient buildDiscoveryAsyncClient() {
+        return new DiscoveryAsyncClient(buildInnerClient().getDiscoveries());
+    }
+
+    /**
+     * Builds an instance of LineageAsyncClient class.
+     * 
+     * @return an instance of LineageAsyncClient.
+     */
+    @Generated
+    public LineageAsyncClient buildLineageAsyncClient() {
+        return new LineageAsyncClient(buildInnerClient().getLineages());
+    }
+
+    /**
      * Builds an instance of RelationshipAsyncClient class.
      * 
      * @return an instance of RelationshipAsyncClient.
      */
     @Generated
-    public RelationshipAsyncClient buildAsyncClient() {
-        return new RelationshipAsyncClient(buildInnerClient());
+    public RelationshipAsyncClient buildRelationshipAsyncClient() {
+        return new RelationshipAsyncClient(buildInnerClient().getRelationships());
+    }
+
+    /**
+     * Builds an instance of TypeDefinitionAsyncClient class.
+     * 
+     * @return an instance of TypeDefinitionAsyncClient.
+     */
+    @Generated
+    public TypeDefinitionAsyncClient buildTypeDefinitionAsyncClient() {
+        return new TypeDefinitionAsyncClient(buildInnerClient().getTypeDefinitions());
+    }
+
+    /**
+     * Builds an instance of EntityClient class.
+     * 
+     * @return an instance of EntityClient.
+     */
+    @Generated
+    public EntityClient buildEntityClient() {
+        return new EntityClient(buildInnerClient().getEntities());
+    }
+
+    /**
+     * Builds an instance of GlossaryClient class.
+     * 
+     * @return an instance of GlossaryClient.
+     */
+    @Generated
+    public GlossaryClient buildGlossaryClient() {
+        return new GlossaryClient(buildInnerClient().getGlossaries());
+    }
+
+    /**
+     * Builds an instance of DiscoveryClient class.
+     * 
+     * @return an instance of DiscoveryClient.
+     */
+    @Generated
+    public DiscoveryClient buildDiscoveryClient() {
+        return new DiscoveryClient(buildInnerClient().getDiscoveries());
+    }
+
+    /**
+     * Builds an instance of LineageClient class.
+     * 
+     * @return an instance of LineageClient.
+     */
+    @Generated
+    public LineageClient buildLineageClient() {
+        return new LineageClient(buildInnerClient().getLineages());
     }
 
     /**
@@ -317,9 +420,19 @@ public final class RelationshipClientBuilder
      * @return an instance of RelationshipClient.
      */
     @Generated
-    public RelationshipClient buildClient() {
-        return new RelationshipClient(buildInnerClient());
+    public RelationshipClient buildRelationshipClient() {
+        return new RelationshipClient(buildInnerClient().getRelationships());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(RelationshipClientBuilder.class);
+    /**
+     * Builds an instance of TypeDefinitionClient class.
+     * 
+     * @return an instance of TypeDefinitionClient.
+     */
+    @Generated
+    public TypeDefinitionClient buildTypeDefinitionClient() {
+        return new TypeDefinitionClient(buildInnerClient().getTypeDefinitions());
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataMapClientBuilder.class);
 }
