@@ -52,8 +52,8 @@ final class BinaryDataSerializer extends JsonSerializer<BinaryData> {
                 break;
 
             default:
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "Unsupported BinaryData content type: " + content.getClass().getName()));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("Unsupported BinaryData content type: " + content.getClass().getName()));
         }
     }
 }

@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VmSkuProfileInner extends ProxyResource {
     /*
-     * Extended Location definition
+     * Extended location pointing to the underlying infrastructure
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
@@ -41,7 +41,7 @@ public final class VmSkuProfileInner extends ProxyResource {
     }
 
     /**
-     * Get the extendedLocation property: Extended Location definition.
+     * Get the extendedLocation property: Extended location pointing to the underlying infrastructure.
      * 
      * @return the extendedLocation value.
      */
@@ -50,7 +50,7 @@ public final class VmSkuProfileInner extends ProxyResource {
     }
 
     /**
-     * Set the extendedLocation property: Extended Location definition.
+     * Set the extendedLocation property: Extended location pointing to the underlying infrastructure.
      * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the VmSkuProfileInner object itself.

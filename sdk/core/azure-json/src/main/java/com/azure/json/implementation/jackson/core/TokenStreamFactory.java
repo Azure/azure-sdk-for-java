@@ -14,16 +14,13 @@ import com.azure.json.implementation.jackson.core.io.DataOutputAsStream;
  *
  * @since 2.10
  */
-public abstract class TokenStreamFactory
-    implements Versioned,
-    java.io.Serializable
-{
+public abstract class TokenStreamFactory implements Versioned, java.io.Serializable {
     private static final long serialVersionUID = 2;
 
     /*
-    /**********************************************************************
-    /* Capability introspection
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Capability introspection
+     * /**********************************************************************
      */
 
     /**
@@ -93,9 +90,9 @@ public abstract class TokenStreamFactory
     public abstract Class<? extends FormatFeature> getFormatWriteFeatureType();
 
     /*
-    /**********************************************************************
-    /* Format detection functionality
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Format detection functionality
+     * /**********************************************************************
      */
 
     /**
@@ -124,61 +121,79 @@ public abstract class TokenStreamFactory
     public abstract String getFormatName();
 
     /*
-    /**********************************************************************
-    /* Configuration access
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Configuration access
+     * /**********************************************************************
      */
 
     public abstract boolean isEnabled(JsonParser.Feature f);
+
     public abstract boolean isEnabled(JsonGenerator.Feature f);
 
     public abstract int getParserFeatures();
+
     public abstract int getGeneratorFeatures();
 
     public abstract int getFormatParserFeatures();
+
     public abstract int getFormatGeneratorFeatures();
 
     /*
-    /**********************************************************************
-    /* Factory methods, parsers
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Factory methods, parsers
+     * /**********************************************************************
      */
 
     public abstract JsonParser createParser(byte[] data) throws IOException;
+
     public abstract JsonParser createParser(byte[] data, int offset, int len) throws IOException;
+
     public abstract JsonParser createParser(char[] content) throws IOException;
+
     public abstract JsonParser createParser(char[] content, int offset, int len) throws IOException;
+
     public abstract JsonParser createParser(DataInput in) throws IOException;
+
     public abstract JsonParser createParser(File f) throws IOException;
+
     public abstract JsonParser createParser(InputStream in) throws IOException;
+
     public abstract JsonParser createParser(Reader r) throws IOException;
+
     public abstract JsonParser createParser(String content) throws IOException;
+
     public abstract JsonParser createParser(URL url) throws IOException;
 
     public abstract JsonParser createNonBlockingByteArrayParser() throws IOException;
 
     /*
-    /**********************************************************************
-    /* Factory methods, generators
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Factory methods, generators
+     * /**********************************************************************
      */
 
     public abstract JsonGenerator createGenerator(DataOutput out, JsonEncoding enc) throws IOException;
+
     public abstract JsonGenerator createGenerator(DataOutput out) throws IOException;
+
     public abstract JsonGenerator createGenerator(File f, JsonEncoding enc) throws IOException;
+
     public abstract JsonGenerator createGenerator(OutputStream out) throws IOException;
+
     public abstract JsonGenerator createGenerator(OutputStream out, JsonEncoding enc) throws IOException;
+
     public abstract JsonGenerator createGenerator(Writer w) throws IOException;
 
     /*
-    /**********************************************************************
-    /* Internal factory methods, other
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Internal factory methods, other
+     * /**********************************************************************
      */
 
     protected OutputStream _createDataOutputWrapper(DataOutput out) {
         return new DataOutputAsStream(out);
     }
+
     /**
      * Helper methods used for constructing an optimal stream for
      * parsers to use, when input is to be read from an URL.
@@ -192,7 +207,8 @@ public abstract class TokenStreamFactory
      */
     protected InputStream _optimizedStreamFromURL(URL url) throws IOException {
         if ("file".equals(url.getProtocol())) {
-            /* Can not do this if the path refers
+            /*
+             * Can not do this if the path refers
              * to a network drive on windows. This fixes the problem;
              * might not be needed on all platforms (NFS?), but should not
              * matter a lot: performance penalty of extra wrapping is more

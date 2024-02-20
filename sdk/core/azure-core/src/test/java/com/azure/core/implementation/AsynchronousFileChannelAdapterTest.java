@@ -73,8 +73,8 @@ public class AsynchronousFileChannelAdapterTest {
         Path tempFile = prepareForReading(data);
 
         ByteBuffer readData = ByteBuffer.allocate(data.length);
-        try (AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0)) {
+        try (AsynchronousByteChannel channel
+            = new AsynchronousFileChannelAdapter(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0)) {
             CountDownLatch latch = new CountDownLatch(1);
             readWithCallback(channel, readData, latch);
             latch.await(60, TimeUnit.SECONDS);
@@ -131,8 +131,8 @@ public class AsynchronousFileChannelAdapterTest {
         Path tempFile = prepareForReading(data);
 
         ByteBuffer readData = ByteBuffer.allocate(data.length);
-        try (AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0)) {
+        try (AsynchronousByteChannel channel
+            = new AsynchronousFileChannelAdapter(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0)) {
             int read;
             do {
                 ByteBuffer buffer = ByteBuffer.allocate(1 + ThreadLocalRandom.current().nextInt(127));
@@ -174,8 +174,8 @@ public class AsynchronousFileChannelAdapterTest {
         Path tempFile = prepareForWriting();
 
         ByteBuffer writeData = ByteBuffer.wrap(data);
-        try (AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
+        try (AsynchronousByteChannel channel
+            = new AsynchronousFileChannelAdapter(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
             CountDownLatch latch = new CountDownLatch(1);
             writeWithCallback(channel, writeData, latch);
             latch.await(60, TimeUnit.SECONDS);
@@ -202,7 +202,6 @@ public class AsynchronousFileChannelAdapterTest {
             writeWithCallback(channel, writeData, latch);
             latch.await(60, TimeUnit.SECONDS);
         }
-
 
         assertArraysEqual(expectedData.array(), Files.readAllBytes(tempFile));
     }
@@ -236,8 +235,8 @@ public class AsynchronousFileChannelAdapterTest {
         Path tempFile = prepareForWriting();
 
         ByteBuffer writeData = ByteBuffer.wrap(data);
-        try (AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
+        try (AsynchronousByteChannel channel
+            = new AsynchronousFileChannelAdapter(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
             while (writeData.hasRemaining()) {
                 byte[] buffer = new byte[Math.min(1 + ThreadLocalRandom.current().nextInt(127), writeData.remaining())];
                 writeData.get(buffer);
@@ -268,7 +267,6 @@ public class AsynchronousFileChannelAdapterTest {
                 channel.write(ByteBuffer.wrap(buffer)).get();
             }
         }
-
 
         assertArraysEqual(expectedData.array(), Files.readAllBytes(tempFile));
     }

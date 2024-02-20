@@ -18,25 +18,8 @@ class ImageAnalysisOptionsTest {
 
         assert options.getSmartCropsAspectRatios() == null;
         assert options.getLanguage() == null;
-        assert options.getGenderNeutralCaption() == null;
+        assert options.isGenderNeutralCaption() == null;
         assert options.getModelVersion() == null;
-    }
-
-    @Test
-    public void testAllOptionsAssignedAtOnce() {
-
-        Boolean genderNeutralCaption = true;
-        String language = "de";
-        List<Double> aspectRatios = Arrays.asList(0.9, 1.33);
-        String modelVersion = "latest";
-
-        ImageAnalysisOptions options = new ImageAnalysisOptions(
-            language, genderNeutralCaption, aspectRatios, modelVersion);
-
-        assert options.getSmartCropsAspectRatios() == aspectRatios;
-        assert options.getLanguage() == language;
-        assert options.getGenderNeutralCaption() == genderNeutralCaption;
-        assert options.getModelVersion() == modelVersion;
     }
 
     @Test
@@ -55,7 +38,7 @@ class ImageAnalysisOptionsTest {
 
         assert options.getSmartCropsAspectRatios() == aspectRatios;
         assert options.getLanguage() == language;
-        assert options.getGenderNeutralCaption() == genderNeutralCaption;
+        assert options.isGenderNeutralCaption() == genderNeutralCaption;
         assert options.getModelVersion() == modelVersion;
     }
 
@@ -71,7 +54,7 @@ class ImageAnalysisOptionsTest {
 
         assert options.getSmartCropsAspectRatios() == null;
         assert options.getLanguage() == language;
-        assert options.getGenderNeutralCaption() == genderNeutralCaption;
+        assert options.isGenderNeutralCaption() == genderNeutralCaption;
         assert options.getModelVersion() == null;
     }
 }

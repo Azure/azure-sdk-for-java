@@ -6,12 +6,14 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of ValidateOperations. */
+/**
+ * Resource collection API of ValidateOperations.
+ */
 public interface ValidateOperations {
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -19,12 +21,12 @@ public interface ValidateOperations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void trigger(String vaultName, String resourceGroupName, ValidateOperationRequest parameters);
+    void trigger(String vaultName, String resourceGroupName, ValidateOperationRequestResource parameters);
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -33,5 +35,6 @@ public interface ValidateOperations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void trigger(String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context);
+    void trigger(String vaultName, String resourceGroupName, ValidateOperationRequestResource parameters,
+        Context context);
 }

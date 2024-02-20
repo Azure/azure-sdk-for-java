@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the credential parameters for accessing the source registry. */
+/**
+ * Describes the credential parameters for accessing the source registry.
+ */
 @Fluent
 public final class SourceRegistryCredentials {
     /*
@@ -19,15 +21,18 @@ public final class SourceRegistryCredentials {
     @JsonProperty(value = "loginMode")
     private SourceRegistryLoginMode loginMode;
 
-    /** Creates an instance of SourceRegistryCredentials class. */
+    /**
+     * Creates an instance of SourceRegistryCredentials class.
+     */
     public SourceRegistryCredentials() {
     }
 
     /**
      * Get the loginMode property: The authentication mode which determines the source registry login scope. The
-     * credentials for the source registry will be generated using the given scope. These credentials will be used to
-     * login to the source registry during the run.
-     *
+     * credentials for the source registry
+     * will be generated using the given scope. These credentials will be used to login to
+     * the source registry during the run.
+     * 
      * @return the loginMode value.
      */
     public SourceRegistryLoginMode loginMode() {
@@ -36,9 +41,10 @@ public final class SourceRegistryCredentials {
 
     /**
      * Set the loginMode property: The authentication mode which determines the source registry login scope. The
-     * credentials for the source registry will be generated using the given scope. These credentials will be used to
-     * login to the source registry during the run.
-     *
+     * credentials for the source registry
+     * will be generated using the given scope. These credentials will be used to login to
+     * the source registry during the run.
+     * 
      * @param loginMode the loginMode value to set.
      * @return the SourceRegistryCredentials object itself.
      */
@@ -49,7 +55,7 @@ public final class SourceRegistryCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

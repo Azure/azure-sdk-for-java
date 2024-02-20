@@ -56,6 +56,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.CREATED;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -946,7 +947,7 @@ public final class DiagnosticsProvider {
                 if (eventIterator != null) {
                     while (eventIterator.hasNext()) {
                         RequestTimeline.Event event = eventIterator.next();
-                        if (event.getName().equals("created")) {
+                        if (event.getName().equals(CREATED.getEventName())) {
                             requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
                             break;
                         }
@@ -967,7 +968,7 @@ public final class DiagnosticsProvider {
                 if (statistics.getStoreResult() != null) {
                     for (RequestTimeline.Event event :
                         statistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline()) {
-                        if (event.getName().equals("created")) {
+                        if (event.getName().equals(CREATED.getEventName())) {
                             requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
                             break;
                         }
@@ -984,7 +985,7 @@ public final class DiagnosticsProvider {
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC);
                 if (gatewayStats.getRequestTimeline() != null) {
                     for (RequestTimeline.Event event : gatewayStats.getRequestTimeline()) {
-                        if (event.getName().equals("created")) {
+                        if (event.getName().equals(CREATED.getEventName())) {
                             requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
                             break;
                         }

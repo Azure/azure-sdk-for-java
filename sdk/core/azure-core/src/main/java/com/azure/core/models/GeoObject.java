@@ -29,8 +29,7 @@ import java.util.Objects;
     @JsonSubTypes.Type(name = "MultiPoint", value = GeoPointCollection.class),
     @JsonSubTypes.Type(name = "MultiLineString", value = GeoLineStringCollection.class),
     @JsonSubTypes.Type(name = "MultiPolygon", value = GeoPolygonCollection.class),
-    @JsonSubTypes.Type(name = "GeometryCollection", value = GeoCollection.class)
-})
+    @JsonSubTypes.Type(name = "GeometryCollection", value = GeoCollection.class) })
 @Immutable
 public abstract class GeoObject implements JsonSerializable<GeoObject> {
     private final GeoBoundingBox boundingBox;
@@ -99,8 +98,8 @@ public abstract class GeoObject implements JsonSerializable<GeoObject> {
 
         GeoObject other = (GeoObject) obj;
 
-        return Objects.equals(boundingBox, other.boundingBox) && Objects.equals(
-            customProperties, other.customProperties);
+        return Objects.equals(boundingBox, other.boundingBox)
+            && Objects.equals(customProperties, other.customProperties);
     }
 
     @Override

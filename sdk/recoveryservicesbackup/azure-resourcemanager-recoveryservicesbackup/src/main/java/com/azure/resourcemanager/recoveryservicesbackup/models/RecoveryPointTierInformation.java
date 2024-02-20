@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Recovery point tier information. */
+/**
+ * Recovery point tier information.
+ */
 @Fluent
 public class RecoveryPointTierInformation {
     /*
@@ -31,13 +33,15 @@ public class RecoveryPointTierInformation {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> extendedInfo;
 
-    /** Creates an instance of RecoveryPointTierInformation class. */
+    /**
+     * Creates an instance of RecoveryPointTierInformation class.
+     */
     public RecoveryPointTierInformation() {
     }
 
     /**
      * Get the type property: Recovery point tier type.
-     *
+     * 
      * @return the type value.
      */
     public RecoveryPointTierType type() {
@@ -46,7 +50,7 @@ public class RecoveryPointTierInformation {
 
     /**
      * Set the type property: Recovery point tier type.
-     *
+     * 
      * @param type the type value to set.
      * @return the RecoveryPointTierInformation object itself.
      */
@@ -57,7 +61,7 @@ public class RecoveryPointTierInformation {
 
     /**
      * Get the status property: Recovery point tier status.
-     *
+     * 
      * @return the status value.
      */
     public RecoveryPointTierStatus status() {
@@ -66,7 +70,7 @@ public class RecoveryPointTierInformation {
 
     /**
      * Set the status property: Recovery point tier status.
-     *
+     * 
      * @param status the status value to set.
      * @return the RecoveryPointTierInformation object itself.
      */
@@ -77,7 +81,7 @@ public class RecoveryPointTierInformation {
 
     /**
      * Get the extendedInfo property: Recovery point tier status.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public Map<String, String> extendedInfo() {
@@ -86,7 +90,7 @@ public class RecoveryPointTierInformation {
 
     /**
      * Set the extendedInfo property: Recovery point tier status.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the RecoveryPointTierInformation object itself.
      */
@@ -97,7 +101,7 @@ public class RecoveryPointTierInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

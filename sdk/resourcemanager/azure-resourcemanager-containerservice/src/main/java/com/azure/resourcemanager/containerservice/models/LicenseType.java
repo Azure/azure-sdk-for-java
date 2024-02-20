@@ -13,15 +13,19 @@ import java.util.Collection;
  * Benefits](https://azure.microsoft.com/pricing/hybrid-benefit/faq/) for more details.
  */
 public final class LicenseType extends ExpandableStringEnum<LicenseType> {
-    /** Static value None for LicenseType. */
+    /**
+     * Static value None for LicenseType.
+     */
     public static final LicenseType NONE = fromString("None");
 
-    /** Static value Windows_Server for LicenseType. */
+    /**
+     * Static value Windows_Server for LicenseType.
+     */
     public static final LicenseType WINDOWS_SERVER = fromString("Windows_Server");
 
     /**
      * Creates a new instance of LicenseType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class LicenseType extends ExpandableStringEnum<LicenseType> {
 
     /**
      * Creates or finds a LicenseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LicenseType.
      */
@@ -41,7 +45,7 @@ public final class LicenseType extends ExpandableStringEnum<LicenseType> {
 
     /**
      * Gets known LicenseType values.
-     *
+     * 
      * @return known LicenseType values.
      */
     public static Collection<LicenseType> values() {

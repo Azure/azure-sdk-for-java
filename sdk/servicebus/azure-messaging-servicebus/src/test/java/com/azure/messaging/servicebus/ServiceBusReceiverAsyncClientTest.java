@@ -95,6 +95,7 @@ import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -1142,7 +1143,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void getSessionIdTests() {
         // Act & Assert
-        Assertions.assertNull(receiver.getSessionId(), "Non-null session Id for a non-session receiver");
+        assertNull(receiver.getSessionId(), "Non-null session Id for a non-session receiver");
         Assertions.assertEquals(SESSION_ID, sessionReceiver.getSessionId());
     }
 
@@ -1471,10 +1472,10 @@ class ServiceBusReceiverAsyncClientTest {
         assertEquals(5000d, measurement.getValue(), 5000d);
 
         Map<String, Object> attributes = measurement.getAttributes();
-        assertEquals(5, attributes.size());
+        assertEquals(4, attributes.size());
         assertCommonMetricAttributes(attributes, SUBSCRIPTION_NAME);
         assertEquals(status.getValue(), attributes.get("dispositionStatus"));
-        assertEquals("ok", attributes.get("status"));
+        assertNull(attributes.get("status"));
 
         TestGauge settlementSeqNo = meter.getGauges().get("messaging.servicebus.settlement.sequence_number");
 
@@ -1488,15 +1489,17 @@ class ServiceBusReceiverAsyncClientTest {
             assertEquals(1, subs.getMeasurements().size());
             TestMeasurement<Long> seqNoMeasurement = subs.getMeasurements().get(0);
 
+            Object statusAttr = seqNoMeasurement.getAttributes().get("status");
             if (seqNoMeasurement.getAttributes().get("dispositionStatus").equals(status.getValue())
-                && seqNoMeasurement.getAttributes().get("status").equals("ok")) {
+                && statusAttr == null) {
                 measurementFound = true;
                 assertEquals(42, seqNoMeasurement.getValue());
-                assertEquals(5, seqNoMeasurement.getAttributes().size());
+                assertEquals(4, seqNoMeasurement.getAttributes().size());
                 assertCommonMetricAttributes(seqNoMeasurement.getAttributes(), SUBSCRIPTION_NAME);
-            } else {
+            } else if (statusAttr != null) {
                 assertEquals(0, seqNoMeasurement.getValue());
                 assertEquals(5, seqNoMeasurement.getAttributes().size());
+                assertEquals(statusAttr, seqNoMeasurement.getAttributes().get("status"));
                 assertCommonMetricAttributes(seqNoMeasurement.getAttributes(), SUBSCRIPTION_NAME);
             }
         }

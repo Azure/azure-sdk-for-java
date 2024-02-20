@@ -260,6 +260,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         entities.forEach(entity -> {
+            generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
             JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
             PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
@@ -750,7 +751,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         entities.forEach(entity -> {
             JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
-            PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
             applyBulkVersioning(domainType, originalItem, options);
             cosmosItemOperations.add(CosmosBulkOperations.getDeleteItemOperation(String.valueOf(information.getId(entity)),

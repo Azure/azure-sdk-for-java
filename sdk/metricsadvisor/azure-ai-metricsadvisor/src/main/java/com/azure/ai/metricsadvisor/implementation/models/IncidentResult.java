@@ -11,7 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.Objects;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
@@ -208,8 +208,10 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("incidentId", this.incidentId);
-        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
-        jsonWriter.writeStringField("lastTime", Objects.toString(this.lastTime, null));
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("lastTime",
+            this.lastTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastTime));
         jsonWriter.writeJsonField("rootNode", this.rootNode);
         jsonWriter.writeJsonField("property", this.property);
         return jsonWriter.writeEndObject();

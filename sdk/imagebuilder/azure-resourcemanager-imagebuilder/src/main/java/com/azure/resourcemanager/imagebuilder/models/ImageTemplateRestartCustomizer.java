@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Reboots a VM and waits for it to come back online (Windows). Corresponds to Packer windows-restart provisioner. */
+/**
+ * Reboots a VM and waits for it to come back online (Windows). Corresponds to Packer windows-restart provisioner.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("WindowsRestart")
 @Fluent
@@ -33,14 +35,16 @@ public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomize
     @JsonProperty(value = "restartTimeout")
     private String restartTimeout;
 
-    /** Creates an instance of ImageTemplateRestartCustomizer class. */
+    /**
+     * Creates an instance of ImageTemplateRestartCustomizer class.
+     */
     public ImageTemplateRestartCustomizer() {
     }
 
     /**
      * Get the restartCommand property: Command to execute the restart [Default: 'shutdown /r /f /t 0 /c "packer
      * restart"'].
-     *
+     * 
      * @return the restartCommand value.
      */
     public String restartCommand() {
@@ -50,7 +54,7 @@ public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomize
     /**
      * Set the restartCommand property: Command to execute the restart [Default: 'shutdown /r /f /t 0 /c "packer
      * restart"'].
-     *
+     * 
      * @param restartCommand the restartCommand value to set.
      * @return the ImageTemplateRestartCustomizer object itself.
      */
@@ -61,7 +65,7 @@ public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomize
 
     /**
      * Get the restartCheckCommand property: Command to check if restart succeeded [Default: ''].
-     *
+     * 
      * @return the restartCheckCommand value.
      */
     public String restartCheckCommand() {
@@ -70,7 +74,7 @@ public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomize
 
     /**
      * Set the restartCheckCommand property: Command to check if restart succeeded [Default: ''].
-     *
+     * 
      * @param restartCheckCommand the restartCheckCommand value to set.
      * @return the ImageTemplateRestartCustomizer object itself.
      */
@@ -82,7 +86,7 @@ public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomize
     /**
      * Get the restartTimeout property: Restart timeout specified as a string of magnitude and unit, e.g. '5m' (5
      * minutes) or '2h' (2 hours) [Default: '5m'].
-     *
+     * 
      * @return the restartTimeout value.
      */
     public String restartTimeout() {
@@ -92,7 +96,7 @@ public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomize
     /**
      * Set the restartTimeout property: Restart timeout specified as a string of magnitude and unit, e.g. '5m' (5
      * minutes) or '2h' (2 hours) [Default: '5m'].
-     *
+     * 
      * @param restartTimeout the restartTimeout value to set.
      * @return the ImageTemplateRestartCustomizer object itself.
      */
@@ -101,7 +105,9 @@ public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomize
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateRestartCustomizer withName(String name) {
         super.withName(name);
@@ -110,7 +116,7 @@ public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomize
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

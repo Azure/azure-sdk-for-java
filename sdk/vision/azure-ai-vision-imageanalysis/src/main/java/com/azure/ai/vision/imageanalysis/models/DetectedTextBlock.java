@@ -24,7 +24,7 @@ public final class DetectedTextBlock {
 
     /**
      * Creates an instance of DetectedTextBlock class.
-     * 
+     *
      * @param lines the lines value to set.
      */
     @Generated
@@ -35,7 +35,7 @@ public final class DetectedTextBlock {
 
     /**
      * Get the lines property: A list of text lines in this block.
-     * 
+     *
      * @return the lines value.
      */
     @Generated

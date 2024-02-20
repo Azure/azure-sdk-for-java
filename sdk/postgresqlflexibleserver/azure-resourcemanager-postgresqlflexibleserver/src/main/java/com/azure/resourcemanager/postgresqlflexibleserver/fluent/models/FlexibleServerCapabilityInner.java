@@ -19,7 +19,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ZoneRedundantHa
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Capability for the PostgreSQL server. */
+/**
+ * Capability for the PostgreSQL server.
+ */
 @Fluent
 public final class FlexibleServerCapabilityInner extends CapabilityBase {
     /*
@@ -96,13 +98,15 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
     @JsonProperty(value = "restricted", access = JsonProperty.Access.WRITE_ONLY)
     private RestrictedEnum restricted;
 
-    /** Creates an instance of FlexibleServerCapabilityInner class. */
+    /**
+     * Creates an instance of FlexibleServerCapabilityInner class.
+     */
     public FlexibleServerCapabilityInner() {
     }
 
     /**
      * Get the name property: Name of flexible servers capability.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -111,7 +115,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Set the name property: Name of flexible servers capability.
-     *
+     * 
      * @param name the name value to set.
      * @return the FlexibleServerCapabilityInner object itself.
      */
@@ -122,7 +126,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Get the supportedServerEditions property: List of supported flexible server editions.
-     *
+     * 
      * @return the supportedServerEditions value.
      */
     public List<FlexibleServerEditionCapability> supportedServerEditions() {
@@ -131,7 +135,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Get the supportedServerVersions property: The list of server versions supported for this capability.
-     *
+     * 
      * @return the supportedServerVersions value.
      */
     public List<ServerVersionCapability> supportedServerVersions() {
@@ -141,7 +145,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
     /**
      * Get the fastProvisioningSupported property: Gets a value indicating whether fast provisioning is supported.
      * "Enabled" means fast provisioning is supported. "Disabled" stands for fast provisioning is not supported.
-     *
+     * 
      * @return the fastProvisioningSupported value.
      */
     public FastProvisioningSupportedEnum fastProvisioningSupported() {
@@ -150,7 +154,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Get the supportedFastProvisioningEditions property: List of supported server editions for fast provisioning.
-     *
+     * 
      * @return the supportedFastProvisioningEditions value.
      */
     public List<FastProvisioningEditionCapability> supportedFastProvisioningEditions() {
@@ -160,7 +164,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
     /**
      * Get the geoBackupSupported property: Determines if geo-backup is supported in this region. "Enabled" means
      * geo-backup is supported. "Disabled" stands for geo-back is not supported.
-     *
+     * 
      * @return the geoBackupSupported value.
      */
     public GeoBackupSupportedEnum geoBackupSupported() {
@@ -169,8 +173,9 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Get the zoneRedundantHaSupported property: A value indicating whether Zone Redundant HA is supported in this
-     * region. "Enabled" means zone redundant HA is supported. "Disabled" stands for zone redundant HA is not supported.
-     *
+     * region. "Enabled" means zone redundant HA is supported. "Disabled" stands for zone redundant HA is not
+     * supported.
+     * 
      * @return the zoneRedundantHaSupported value.
      */
     public ZoneRedundantHaSupportedEnum zoneRedundantHaSupported() {
@@ -179,9 +184,9 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Get the zoneRedundantHaAndGeoBackupSupported property: A value indicating whether Zone Redundant HA and
-     * Geo-backup is supported in this region. "Enabled" means zone redundant HA and geo-backup is supported. "Disabled"
-     * stands for zone redundant HA and geo-backup is not supported.
-     *
+     * Geo-backup is supported in this region. "Enabled" means zone redundant HA and geo-backup is supported.
+     * "Disabled" stands for zone redundant HA and geo-backup is not supported.
+     * 
      * @return the zoneRedundantHaAndGeoBackupSupported value.
      */
     public ZoneRedundantHaAndGeoBackupSupportedEnum zoneRedundantHaAndGeoBackupSupported() {
@@ -190,8 +195,9 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Get the storageAutoGrowthSupported property: A value indicating whether storage auto-grow is supported in this
-     * region. "Enabled" means storage auto-grow is supported. "Disabled" stands for storage auto-grow is not supported.
-     *
+     * region. "Enabled" means storage auto-grow is supported. "Disabled" stands for storage auto-grow is not
+     * supported.
+     * 
      * @return the storageAutoGrowthSupported value.
      */
     public StorageAutoGrowthSupportedEnum storageAutoGrowthSupported() {
@@ -202,7 +208,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
      * Get the onlineResizeSupported property: A value indicating whether online resize is supported in this region for
      * the given subscription. "Enabled" means storage online resize is supported. "Disabled" means storage online
      * resize is not supported.
-     *
+     * 
      * @return the onlineResizeSupported value.
      */
     public OnlineResizeSupportedEnum onlineResizeSupported() {
@@ -212,7 +218,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
     /**
      * Get the restricted property: A value indicating whether this region is restricted. "Enabled" means region is
      * restricted. "Disabled" stands for region is not restricted.
-     *
+     * 
      * @return the restricted value.
      */
     public RestrictedEnum restricted() {
@@ -221,7 +227,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

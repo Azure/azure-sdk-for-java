@@ -30,7 +30,7 @@ public final class IntegrationRuntimesStartMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"name\":\"timy\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"dogn\",\"state\":\"Online\",\"\":{\"zjiyk\":\"dataowkakdjn\",\"fe\":\"databytuzhcpxtdvyfxv\",\"lvea\":\"datalyoiyovcrmo\",\"ezrajpedowmh\":\"datauz\"}}}";
+            = "{\"name\":\"pkjyo\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"wcxedkkd\",\"state\":\"Offline\",\"\":{\"piqeisjboghjdih\":\"datasrehgyfif\"}}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,7 +48,7 @@ public final class IntegrationRuntimesStartMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeStatusResponse response
-            = manager.integrationRuntimes().start("azbgcbd", "q", "y", com.azure.core.util.Context.NONE);
+            = manager.integrationRuntimes().start("jubjqjxobmv", "jtzatr", "arneug", com.azure.core.util.Context.NONE);
 
     }
 }

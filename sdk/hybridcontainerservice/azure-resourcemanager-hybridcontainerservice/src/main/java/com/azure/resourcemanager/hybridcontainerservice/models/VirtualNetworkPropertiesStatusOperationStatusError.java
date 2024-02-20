@@ -8,18 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The VirtualNetworkPropertiesStatusOperationStatusError model.
+ * The error if any from the operation.
  */
 @Fluent
 public final class VirtualNetworkPropertiesStatusOperationStatusError {
     /*
-     * The code property.
+     * The error code from the operation.
      */
     @JsonProperty(value = "code")
     private String code;
 
     /*
-     * The message property.
+     * The error message from the operation.
      */
     @JsonProperty(value = "message")
     private String message;
@@ -31,7 +31,7 @@ public final class VirtualNetworkPropertiesStatusOperationStatusError {
     }
 
     /**
-     * Get the code property: The code property.
+     * Get the code property: The error code from the operation.
      * 
      * @return the code value.
      */
@@ -40,7 +40,7 @@ public final class VirtualNetworkPropertiesStatusOperationStatusError {
     }
 
     /**
-     * Set the code property: The code property.
+     * Set the code property: The error code from the operation.
      * 
      * @param code the code value to set.
      * @return the VirtualNetworkPropertiesStatusOperationStatusError object itself.
@@ -51,7 +51,7 @@ public final class VirtualNetworkPropertiesStatusOperationStatusError {
     }
 
     /**
-     * Get the message property: The message property.
+     * Get the message property: The error message from the operation.
      * 
      * @return the message value.
      */
@@ -60,7 +60,7 @@ public final class VirtualNetworkPropertiesStatusOperationStatusError {
     }
 
     /**
-     * Set the message property: The message property.
+     * Set the message property: The error message from the operation.
      * 
      * @param message the message value to set.
      * @return the VirtualNetworkPropertiesStatusOperationStatusError object itself.

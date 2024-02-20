@@ -77,24 +77,45 @@ final class GsonJsonReader extends JsonReader {
             Class<?> gsonJsonReaderClass = Class.forName("com.google.gson.stream.JsonReader");
             gsonJsonTokenEnum = Class.forName("com.google.gson.stream.JsonToken");
 
-            MethodHandle gsonReaderConstructor = lookup.findConstructor(gsonJsonReaderClass, methodType(void.class, Reader.class));
-            jsonReaderConstructor = (JsonReaderConstructor) LambdaMetafactory.metafactory(lookup, "createJsonReader", methodType(JsonReaderConstructor.class), methodType(Object.class, Reader.class), gsonReaderConstructor, gsonReaderConstructor.type()).getTarget().invoke();
+            MethodHandle gsonReaderConstructor
+                = lookup.findConstructor(gsonJsonReaderClass, methodType(void.class, Reader.class));
+            jsonReaderConstructor = (JsonReaderConstructor) LambdaMetafactory
+                .metafactory(lookup, "createJsonReader", methodType(JsonReaderConstructor.class),
+                    methodType(Object.class, Reader.class), gsonReaderConstructor, gsonReaderConstructor.type())
+                .getTarget()
+                .invoke();
 
-            jsonReaderSetLenient = createMetaFactory("setLenient", gsonJsonReaderClass, methodType(void.class, boolean.class), JsonReaderSetLenient.class, methodType(void.class, Object.class, boolean.class), lookup);
-            jsonReaderClose = createMetaFactory("close", gsonJsonReaderClass, voidMT, JsonReaderClose.class, voidObjectMT, lookup);
-            jsonReaderPeek = createMetaFactory("peek", gsonJsonReaderClass, methodType(gsonJsonTokenEnum), JsonReaderPeek.class, methodType(Object.class, Object.class), lookup);
-            jsonReaderBeginObject = createMetaFactory("beginObject", gsonJsonReaderClass, voidMT, JsonReaderBeginObject.class, voidObjectMT, lookup);
-            jsonReaderEndObject = createMetaFactory("endObject", gsonJsonReaderClass, voidMT, JsonReaderEndObject.class, voidObjectMT, lookup);
-            jsonReaderBeginArray = createMetaFactory("beginArray", gsonJsonReaderClass, voidMT, JsonReaderBeginArray.class, voidObjectMT, lookup);
-            jsonReaderEndArray = createMetaFactory("endArray", gsonJsonReaderClass, voidMT, JsonReaderEndArray.class, voidObjectMT, lookup);
-            jsonReaderNextNull = createMetaFactory("nextNull", gsonJsonReaderClass, voidMT, JsonReaderNextNull.class, voidObjectMT, lookup);
-            jsonReaderNextName = createMetaFactory("nextName", gsonJsonReaderClass, methodType(String.class), JsonReaderNextName.class, methodType(String.class, Object.class), lookup);
-            jsonReaderNextString = createMetaFactory("nextString", gsonJsonReaderClass, methodType(String.class), JsonReaderNextString.class, methodType(String.class, Object.class), lookup);
-            jsonReaderNextBoolean = createMetaFactory("nextBoolean", gsonJsonReaderClass, methodType(boolean.class), JsonReaderNextBoolean.class, methodType(boolean.class, Object.class), lookup);
-            jsonReaderNextInt = createMetaFactory("nextInt", gsonJsonReaderClass, methodType(int.class), JsonReaderNextInt.class, methodType(int.class, Object.class), lookup);
-            jsonReaderNextLong = createMetaFactory("nextLong", gsonJsonReaderClass, methodType(long.class), JsonReaderNextLong.class, methodType(long.class, Object.class), lookup);
-            jsonReaderNextDouble = createMetaFactory("nextDouble", gsonJsonReaderClass, methodType(double.class), JsonReaderNextDouble.class, methodType(double.class, Object.class), lookup);
-            jsonReaderSkipValue = createMetaFactory("skipValue", gsonJsonReaderClass, voidMT, JsonReaderSkipValue.class, voidObjectMT, lookup);
+            jsonReaderSetLenient
+                = createMetaFactory("setLenient", gsonJsonReaderClass, methodType(void.class, boolean.class),
+                    JsonReaderSetLenient.class, methodType(void.class, Object.class, boolean.class), lookup);
+            jsonReaderClose
+                = createMetaFactory("close", gsonJsonReaderClass, voidMT, JsonReaderClose.class, voidObjectMT, lookup);
+            jsonReaderPeek = createMetaFactory("peek", gsonJsonReaderClass, methodType(gsonJsonTokenEnum),
+                JsonReaderPeek.class, methodType(Object.class, Object.class), lookup);
+            jsonReaderBeginObject = createMetaFactory("beginObject", gsonJsonReaderClass, voidMT,
+                JsonReaderBeginObject.class, voidObjectMT, lookup);
+            jsonReaderEndObject = createMetaFactory("endObject", gsonJsonReaderClass, voidMT, JsonReaderEndObject.class,
+                voidObjectMT, lookup);
+            jsonReaderBeginArray = createMetaFactory("beginArray", gsonJsonReaderClass, voidMT,
+                JsonReaderBeginArray.class, voidObjectMT, lookup);
+            jsonReaderEndArray = createMetaFactory("endArray", gsonJsonReaderClass, voidMT, JsonReaderEndArray.class,
+                voidObjectMT, lookup);
+            jsonReaderNextNull = createMetaFactory("nextNull", gsonJsonReaderClass, voidMT, JsonReaderNextNull.class,
+                voidObjectMT, lookup);
+            jsonReaderNextName = createMetaFactory("nextName", gsonJsonReaderClass, methodType(String.class),
+                JsonReaderNextName.class, methodType(String.class, Object.class), lookup);
+            jsonReaderNextString = createMetaFactory("nextString", gsonJsonReaderClass, methodType(String.class),
+                JsonReaderNextString.class, methodType(String.class, Object.class), lookup);
+            jsonReaderNextBoolean = createMetaFactory("nextBoolean", gsonJsonReaderClass, methodType(boolean.class),
+                JsonReaderNextBoolean.class, methodType(boolean.class, Object.class), lookup);
+            jsonReaderNextInt = createMetaFactory("nextInt", gsonJsonReaderClass, methodType(int.class),
+                JsonReaderNextInt.class, methodType(int.class, Object.class), lookup);
+            jsonReaderNextLong = createMetaFactory("nextLong", gsonJsonReaderClass, methodType(long.class),
+                JsonReaderNextLong.class, methodType(long.class, Object.class), lookup);
+            jsonReaderNextDouble = createMetaFactory("nextDouble", gsonJsonReaderClass, methodType(double.class),
+                JsonReaderNextDouble.class, methodType(double.class, Object.class), lookup);
+            jsonReaderSkipValue = createMetaFactory("skipValue", gsonJsonReaderClass, voidMT, JsonReaderSkipValue.class,
+                voidObjectMT, lookup);
 
             initialized = true;
         } catch (Throwable e) {
@@ -140,7 +161,8 @@ final class GsonJsonReader extends JsonReader {
 
     static JsonReader fromBytes(byte[] json, JsonOptions options) {
         Objects.requireNonNull(json, "'json' cannot be null.");
-        return new GsonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8), true, json, null, options);
+        return new GsonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8), true,
+            json, null, options);
     }
 
     static JsonReader fromString(String json, JsonOptions options) {
@@ -150,7 +172,8 @@ final class GsonJsonReader extends JsonReader {
 
     static JsonReader fromStream(InputStream json, JsonOptions options) {
         Objects.requireNonNull(json, "'json' cannot be null.");
-        return new GsonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), json.markSupported(), null, null, options);
+        return new GsonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), json.markSupported(), null, null,
+            options);
     }
 
     static JsonReader fromReader(Reader json, JsonOptions options) {
@@ -158,11 +181,13 @@ final class GsonJsonReader extends JsonReader {
         return new GsonJsonReader(json, json.markSupported(), null, null, options);
     }
 
-    private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, JsonOptions options) {
+    private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
+        JsonOptions options) {
         this(reader, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported());
     }
 
-    private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, boolean nonNumericNumbersSupported) {
+    private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
+        boolean nonNumericNumbersSupported) {
         if (!INITIALIZED) {
             throw new IllegalStateException("No compatible version of Gson is present on the classpath.");
         }
@@ -187,8 +212,8 @@ final class GsonJsonReader extends JsonReader {
             return currentToken;
         }
 
-    // GSON requires explicitly beginning and ending arrays and objects and consuming null values.
-    // The contract of JsonReader implicitly overlooks these properties.
+        // GSON requires explicitly beginning and ending arrays and objects and consuming null values.
+        // The contract of JsonReader implicitly overlooks these properties.
         if (currentToken == JsonToken.START_OBJECT) {
             JSON_READER_BEGIN_OBJECT.beginObject(gsonJsonReader);
         } else if (currentToken == JsonToken.END_OBJECT) {
@@ -323,7 +348,9 @@ final class GsonJsonReader extends JsonReader {
         }
 
         if (jsonBytes != null) {
-            return new GsonJsonReader(new InputStreamReader(new ByteArrayInputStream(jsonBytes), StandardCharsets.UTF_8), true, jsonBytes, null, nonNumericNumbersSupported);
+            return new GsonJsonReader(
+                new InputStreamReader(new ByteArrayInputStream(jsonBytes), StandardCharsets.UTF_8), true, jsonBytes,
+                null, nonNumericNumbersSupported);
         } else {
             return new GsonJsonReader(new StringReader(jsonString), true, null, jsonString, nonNumericNumbersSupported);
         }
@@ -351,22 +378,28 @@ final class GsonJsonReader extends JsonReader {
         switch (token.name()) {
             case "BEGIN_OBJECT":
                 return JsonToken.START_OBJECT;
+
             case "END_OBJECT":
                 return JsonToken.END_OBJECT;
 
             case "BEGIN_ARRAY":
                 return JsonToken.START_ARRAY;
+
             case "END_ARRAY":
                 return JsonToken.END_ARRAY;
 
             case "NAME":
                 return JsonToken.FIELD_NAME;
+
             case "STRING":
                 return JsonToken.STRING;
+
             case "NUMBER":
                 return JsonToken.NUMBER;
+
             case "BOOLEAN":
                 return JsonToken.BOOLEAN;
+
             case "NULL":
                 return JsonToken.NULL;
 

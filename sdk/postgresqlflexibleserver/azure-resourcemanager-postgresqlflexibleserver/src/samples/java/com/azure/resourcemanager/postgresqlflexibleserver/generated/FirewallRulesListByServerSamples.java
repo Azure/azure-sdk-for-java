@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
-/** Samples for FirewallRules ListByServer. */
+/**
+ * Samples for FirewallRules ListByServer.
+ */
 public final class FirewallRulesListByServerSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/FirewallRuleListByServer.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
+     * FirewallRuleListByServer.json
      */
     /**
      * Sample code: FirewallRuleList.
-     *
+     * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void firewallRuleList(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Properties of certificate imported from key vault. */
+/**
+ * Properties of certificate imported from key vault.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("KeyVaultCertificate")
 @Fluent
@@ -39,9 +41,21 @@ public final class KeyVaultCertificateProperties extends CertificateProperties {
     @JsonProperty(value = "excludePrivateKey")
     private Boolean excludePrivateKey;
 
+    /*
+     * Indicates whether to automatically synchronize certificate from key vault or not.
+     */
+    @JsonProperty(value = "autoSync")
+    private KeyVaultCertificateAutoSync autoSync;
+
+    /**
+     * Creates an instance of KeyVaultCertificateProperties class.
+     */
+    public KeyVaultCertificateProperties() {
+    }
+
     /**
      * Get the vaultUri property: The vault uri of user key vault.
-     *
+     * 
      * @return the vaultUri value.
      */
     public String vaultUri() {
@@ -50,7 +64,7 @@ public final class KeyVaultCertificateProperties extends CertificateProperties {
 
     /**
      * Set the vaultUri property: The vault uri of user key vault.
-     *
+     * 
      * @param vaultUri the vaultUri value to set.
      * @return the KeyVaultCertificateProperties object itself.
      */
@@ -61,7 +75,7 @@ public final class KeyVaultCertificateProperties extends CertificateProperties {
 
     /**
      * Get the keyVaultCertName property: The certificate name of key vault.
-     *
+     * 
      * @return the keyVaultCertName value.
      */
     public String keyVaultCertName() {
@@ -70,7 +84,7 @@ public final class KeyVaultCertificateProperties extends CertificateProperties {
 
     /**
      * Set the keyVaultCertName property: The certificate name of key vault.
-     *
+     * 
      * @param keyVaultCertName the keyVaultCertName value to set.
      * @return the KeyVaultCertificateProperties object itself.
      */
@@ -81,7 +95,7 @@ public final class KeyVaultCertificateProperties extends CertificateProperties {
 
     /**
      * Get the certVersion property: The certificate version of key vault.
-     *
+     * 
      * @return the certVersion value.
      */
     public String certVersion() {
@@ -90,7 +104,7 @@ public final class KeyVaultCertificateProperties extends CertificateProperties {
 
     /**
      * Set the certVersion property: The certificate version of key vault.
-     *
+     * 
      * @param certVersion the certVersion value to set.
      * @return the KeyVaultCertificateProperties object itself.
      */
@@ -101,7 +115,7 @@ public final class KeyVaultCertificateProperties extends CertificateProperties {
 
     /**
      * Get the excludePrivateKey property: Optional. If set to true, it will not import private key from key vault.
-     *
+     * 
      * @return the excludePrivateKey value.
      */
     public Boolean excludePrivateKey() {
@@ -110,7 +124,7 @@ public final class KeyVaultCertificateProperties extends CertificateProperties {
 
     /**
      * Set the excludePrivateKey property: Optional. If set to true, it will not import private key from key vault.
-     *
+     * 
      * @param excludePrivateKey the excludePrivateKey value to set.
      * @return the KeyVaultCertificateProperties object itself.
      */
@@ -120,24 +134,40 @@ public final class KeyVaultCertificateProperties extends CertificateProperties {
     }
 
     /**
+     * Get the autoSync property: Indicates whether to automatically synchronize certificate from key vault or not.
+     * 
+     * @return the autoSync value.
+     */
+    public KeyVaultCertificateAutoSync autoSync() {
+        return this.autoSync;
+    }
+
+    /**
+     * Set the autoSync property: Indicates whether to automatically synchronize certificate from key vault or not.
+     * 
+     * @param autoSync the autoSync value to set.
+     * @return the KeyVaultCertificateProperties object itself.
+     */
+    public KeyVaultCertificateProperties withAutoSync(KeyVaultCertificateAutoSync autoSync) {
+        this.autoSync = autoSync;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (vaultUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vaultUri in model KeyVaultCertificateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property vaultUri in model KeyVaultCertificateProperties"));
         }
         if (keyVaultCertName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultCertName in model KeyVaultCertificateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyVaultCertName in model KeyVaultCertificateProperties"));
         }
     }
 

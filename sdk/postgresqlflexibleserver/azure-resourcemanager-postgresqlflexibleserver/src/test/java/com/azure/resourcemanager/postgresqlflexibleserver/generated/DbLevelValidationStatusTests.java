@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DbLevelValidationStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DbLevelValidationStatus model =
-            BinaryData
-                .fromString(
-                    "{\"databaseName\":\"ujmqlgkfbtndoa\",\"startedOn\":\"2021-04-16T00:49:55Z\",\"endedOn\":\"2021-06-02T01:39:29Z\",\"summary\":[{\"type\":\"ujitcjedftww\",\"state\":\"Warning\",\"messages\":[{\"state\":\"Warning\",\"message\":\"c\"},{\"state\":\"Succeeded\",\"message\":\"qouicybxarzgsz\"},{\"state\":\"Succeeded\",\"message\":\"ciqopidoa\"}]},{\"type\":\"iodhkhazxkhnz\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Succeeded\",\"message\":\"egokdwbwhkszzcmr\"},{\"state\":\"Warning\",\"message\":\"tvb\"},{\"state\":\"Failed\",\"message\":\"frao\"},{\"state\":\"Failed\",\"message\":\"owtlmnguxawqald\"}]}]}")
-                .toObject(DbLevelValidationStatus.class);
+        DbLevelValidationStatus model = BinaryData.fromString(
+            "{\"databaseName\":\"ujmqlgkfbtndoa\",\"startedOn\":\"2021-04-16T00:49:55Z\",\"endedOn\":\"2021-06-02T01:39:29Z\",\"summary\":[{\"type\":\"ujitcjedftww\",\"state\":\"Warning\",\"messages\":[{\"state\":\"Warning\",\"message\":\"c\"},{\"state\":\"Succeeded\",\"message\":\"qouicybxarzgsz\"},{\"state\":\"Succeeded\",\"message\":\"ciqopidoa\"}]},{\"type\":\"iodhkhazxkhnz\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Succeeded\",\"message\":\"egokdwbwhkszzcmr\"},{\"state\":\"Warning\",\"message\":\"tvb\"},{\"state\":\"Failed\",\"message\":\"frao\"},{\"state\":\"Failed\",\"message\":\"owtlmnguxawqald\"}]}]}")
+            .toObject(DbLevelValidationStatus.class);
         Assertions.assertEquals("ujmqlgkfbtndoa", model.databaseName());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T00:49:55Z"), model.startedOn());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T01:39:29Z"), model.endedOn());
@@ -32,45 +30,26 @@ public final class DbLevelValidationStatusTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DbLevelValidationStatus model =
-            new DbLevelValidationStatus()
-                .withDatabaseName("ujmqlgkfbtndoa")
-                .withStartedOn(OffsetDateTime.parse("2021-04-16T00:49:55Z"))
-                .withEndedOn(OffsetDateTime.parse("2021-06-02T01:39:29Z"))
-                .withSummary(
-                    Arrays
-                        .asList(
-                            new ValidationSummaryItem()
-                                .withType("ujitcjedftww")
-                                .withState(ValidationState.WARNING)
-                                .withMessages(
-                                    Arrays
-                                        .asList(
-                                            new ValidationMessage().withState(ValidationState.WARNING).withMessage("c"),
-                                            new ValidationMessage()
-                                                .withState(ValidationState.SUCCEEDED)
-                                                .withMessage("qouicybxarzgsz"),
-                                            new ValidationMessage()
-                                                .withState(ValidationState.SUCCEEDED)
-                                                .withMessage("ciqopidoa"))),
-                            new ValidationSummaryItem()
-                                .withType("iodhkhazxkhnz")
-                                .withState(ValidationState.SUCCEEDED)
-                                .withMessages(
-                                    Arrays
-                                        .asList(
-                                            new ValidationMessage()
-                                                .withState(ValidationState.SUCCEEDED)
-                                                .withMessage("egokdwbwhkszzcmr"),
-                                            new ValidationMessage()
-                                                .withState(ValidationState.WARNING)
-                                                .withMessage("tvb"),
-                                            new ValidationMessage()
-                                                .withState(ValidationState.FAILED)
-                                                .withMessage("frao"),
-                                            new ValidationMessage()
-                                                .withState(ValidationState.FAILED)
-                                                .withMessage("owtlmnguxawqald")))));
+        DbLevelValidationStatus model = new DbLevelValidationStatus().withDatabaseName("ujmqlgkfbtndoa")
+            .withStartedOn(OffsetDateTime.parse("2021-04-16T00:49:55Z")).withEndedOn(
+                OffsetDateTime.parse("2021-06-02T01:39:29Z"))
+            .withSummary(
+                Arrays
+                    .asList(
+                        new ValidationSummaryItem().withType("ujitcjedftww").withState(ValidationState.WARNING)
+                            .withMessages(Arrays.asList(
+                                new ValidationMessage().withState(ValidationState.WARNING).withMessage("c"),
+                                new ValidationMessage().withState(ValidationState.SUCCEEDED)
+                                    .withMessage("qouicybxarzgsz"),
+                                new ValidationMessage().withState(ValidationState.SUCCEEDED).withMessage("ciqopidoa"))),
+                        new ValidationSummaryItem().withType("iodhkhazxkhnz").withState(ValidationState.SUCCEEDED)
+                            .withMessages(Arrays.asList(
+                                new ValidationMessage().withState(ValidationState.SUCCEEDED)
+                                    .withMessage("egokdwbwhkszzcmr"),
+                                new ValidationMessage().withState(ValidationState.WARNING).withMessage("tvb"),
+                                new ValidationMessage().withState(ValidationState.FAILED).withMessage("frao"),
+                                new ValidationMessage().withState(ValidationState.FAILED)
+                                    .withMessage("owtlmnguxawqald")))));
         model = BinaryData.fromObject(model).toObject(DbLevelValidationStatus.class);
         Assertions.assertEquals("ujmqlgkfbtndoa", model.databaseName());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T00:49:55Z"), model.startedOn());

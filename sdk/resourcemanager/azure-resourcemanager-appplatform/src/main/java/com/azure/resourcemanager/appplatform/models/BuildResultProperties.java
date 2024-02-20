@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Build result resource properties payload. */
+/**
+ * Build result resource properties payload.
+ */
 @Fluent
 public final class BuildResultProperties {
     /*
@@ -24,21 +26,38 @@ public final class BuildResultProperties {
     private BuildResultProvisioningState provisioningState;
 
     /*
+     * Error when build is failed.
+     */
+    @JsonProperty(value = "error")
+    private Error error;
+
+    /*
      * The build pod name which can be used to get the build log streaming.
      */
     @JsonProperty(value = "buildPodName")
     private String buildPodName;
 
     /*
-     * All of the build stage (init-container and container) resources in build
-     * pod.
+     * All of the build stage (init-container and container) resources in build pod.
      */
     @JsonProperty(value = "buildStages", access = JsonProperty.Access.WRITE_ONLY)
     private List<BuildStageProperties> buildStages;
 
+    /*
+     * The container registry image of this build result.
+     */
+    @JsonProperty(value = "image", access = JsonProperty.Access.WRITE_ONLY)
+    private String image;
+
+    /**
+     * Creates an instance of BuildResultProperties class.
+     */
+    public BuildResultProperties() {
+    }
+
     /**
      * Get the name property: The name of this build result.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -47,7 +66,7 @@ public final class BuildResultProperties {
 
     /**
      * Set the name property: The name of this build result.
-     *
+     * 
      * @param name the name value to set.
      * @return the BuildResultProperties object itself.
      */
@@ -58,7 +77,7 @@ public final class BuildResultProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the KPack build result.
-     *
+     * 
      * @return the provisioningState value.
      */
     public BuildResultProvisioningState provisioningState() {
@@ -66,8 +85,28 @@ public final class BuildResultProperties {
     }
 
     /**
+     * Get the error property: Error when build is failed.
+     * 
+     * @return the error value.
+     */
+    public Error error() {
+        return this.error;
+    }
+
+    /**
+     * Set the error property: Error when build is failed.
+     * 
+     * @param error the error value to set.
+     * @return the BuildResultProperties object itself.
+     */
+    public BuildResultProperties withError(Error error) {
+        this.error = error;
+        return this;
+    }
+
+    /**
      * Get the buildPodName property: The build pod name which can be used to get the build log streaming.
-     *
+     * 
      * @return the buildPodName value.
      */
     public String buildPodName() {
@@ -76,7 +115,7 @@ public final class BuildResultProperties {
 
     /**
      * Set the buildPodName property: The build pod name which can be used to get the build log streaming.
-     *
+     * 
      * @param buildPodName the buildPodName value to set.
      * @return the BuildResultProperties object itself.
      */
@@ -87,7 +126,7 @@ public final class BuildResultProperties {
 
     /**
      * Get the buildStages property: All of the build stage (init-container and container) resources in build pod.
-     *
+     * 
      * @return the buildStages value.
      */
     public List<BuildStageProperties> buildStages() {
@@ -95,11 +134,23 @@ public final class BuildResultProperties {
     }
 
     /**
+     * Get the image property: The container registry image of this build result.
+     * 
+     * @return the image value.
+     */
+    public String image() {
+        return this.image;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (error() != null) {
+            error().validate();
+        }
         if (buildStages() != null) {
             buildStages().forEach(e -> e.validate());
         }

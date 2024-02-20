@@ -13,18 +13,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /**
- * The virtualNetworks resource definition.
+ * The Virtual Network resource definition.
  */
 @Fluent
 public final class VirtualNetworkInner extends Resource {
     /*
-     * HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork
+     * Properties of the virtual network resource
      */
     @JsonProperty(value = "properties")
     private VirtualNetworkProperties properties;
 
     /*
-     * The extendedLocation property.
+     * Extended location pointing to the underlying infrastructure
      */
     @JsonProperty(value = "extendedLocation")
     private VirtualNetworkExtendedLocation extendedLocation;
@@ -42,7 +42,7 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the properties property: HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork.
+     * Get the properties property: Properties of the virtual network resource.
      * 
      * @return the properties value.
      */
@@ -51,7 +51,7 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the properties property: HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork.
+     * Set the properties property: Properties of the virtual network resource.
      * 
      * @param properties the properties value to set.
      * @return the VirtualNetworkInner object itself.
@@ -62,7 +62,7 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the extendedLocation property: The extendedLocation property.
+     * Get the extendedLocation property: Extended location pointing to the underlying infrastructure.
      * 
      * @return the extendedLocation value.
      */
@@ -71,7 +71,7 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the extendedLocation property: The extendedLocation property.
+     * Set the extendedLocation property: Extended location pointing to the underlying infrastructure.
      * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the VirtualNetworkInner object itself.

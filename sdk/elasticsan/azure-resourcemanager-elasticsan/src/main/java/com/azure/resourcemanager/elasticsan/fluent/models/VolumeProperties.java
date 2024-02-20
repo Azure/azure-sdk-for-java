@@ -11,7 +11,9 @@ import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Volume response properties. */
+/**
+ * Volume response properties.
+ */
 @Fluent
 public final class VolumeProperties {
     /*
@@ -50,13 +52,15 @@ public final class VolumeProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
-    /** Creates an instance of VolumeProperties class. */
+    /**
+     * Creates an instance of VolumeProperties class.
+     */
     public VolumeProperties() {
     }
 
     /**
      * Get the volumeId property: Unique Id of the volume in GUID format.
-     *
+     * 
      * @return the volumeId value.
      */
     public String volumeId() {
@@ -65,7 +69,7 @@ public final class VolumeProperties {
 
     /**
      * Get the creationData property: State of the operation on the resource.
-     *
+     * 
      * @return the creationData value.
      */
     public SourceCreationData creationData() {
@@ -74,7 +78,7 @@ public final class VolumeProperties {
 
     /**
      * Set the creationData property: State of the operation on the resource.
-     *
+     * 
      * @param creationData the creationData value to set.
      * @return the VolumeProperties object itself.
      */
@@ -85,7 +89,7 @@ public final class VolumeProperties {
 
     /**
      * Get the sizeGiB property: Volume size.
-     *
+     * 
      * @return the sizeGiB value.
      */
     public long sizeGiB() {
@@ -94,7 +98,7 @@ public final class VolumeProperties {
 
     /**
      * Set the sizeGiB property: Volume size.
-     *
+     * 
      * @param sizeGiB the sizeGiB value to set.
      * @return the VolumeProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class VolumeProperties {
 
     /**
      * Get the storageTarget property: Storage target information.
-     *
+     * 
      * @return the storageTarget value.
      */
     public IscsiTargetInfo storageTarget() {
@@ -114,7 +118,7 @@ public final class VolumeProperties {
 
     /**
      * Get the managedBy property: Parent resource information.
-     *
+     * 
      * @return the managedBy value.
      */
     public ManagedByInfo managedBy() {
@@ -123,7 +127,7 @@ public final class VolumeProperties {
 
     /**
      * Set the managedBy property: Parent resource information.
-     *
+     * 
      * @param managedBy the managedBy value to set.
      * @return the VolumeProperties object itself.
      */
@@ -134,7 +138,7 @@ public final class VolumeProperties {
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -143,7 +147,7 @@ public final class VolumeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

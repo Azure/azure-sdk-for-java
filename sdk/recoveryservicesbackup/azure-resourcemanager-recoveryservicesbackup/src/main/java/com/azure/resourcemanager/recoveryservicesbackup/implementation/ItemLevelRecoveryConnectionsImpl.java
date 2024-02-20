@@ -18,79 +18,35 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ItemLevelRecoveryConnectionsImpl(
-        ItemLevelRecoveryConnectionsClient innerClient,
+    public ItemLevelRecoveryConnectionsImpl(ItemLevelRecoveryConnectionsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> provisionWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        IlrRequestResource parameters,
+    public Response<Void> provisionWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String recoveryPointId, IlrRequestResource parameters,
         Context context) {
-        return this
-            .serviceClient()
-            .provisionWithResponse(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                context);
+        return this.serviceClient().provisionWithResponse(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, recoveryPointId, parameters, context);
     }
 
-    public void provision(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        IlrRequestResource parameters) {
-        this
-            .serviceClient()
-            .provision(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters);
+    public void provision(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, IlrRequestResource parameters) {
+        this.serviceClient().provision(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters);
     }
 
-    public Response<Void> revokeWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        Context context) {
-        return this
-            .serviceClient()
-            .revokeWithResponse(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, context);
+    public Response<Void> revokeWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String recoveryPointId, Context context) {
+        return this.serviceClient().revokeWithResponse(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, recoveryPointId, context);
     }
 
-    public void revoke(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId) {
-        this
-            .serviceClient()
-            .revoke(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId);
+    public void revoke(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId) {
+        this.serviceClient().revoke(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId);
     }
 
     private ItemLevelRecoveryConnectionsClient serviceClient() {

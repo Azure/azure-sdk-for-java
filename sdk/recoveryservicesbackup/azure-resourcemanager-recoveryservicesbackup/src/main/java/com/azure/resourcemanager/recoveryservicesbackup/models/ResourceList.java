@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Base for all lists of resources. */
+/**
+ * Base for all lists of resources.
+ */
 @Fluent
 public class ResourceList {
     /*
@@ -16,14 +18,16 @@ public class ResourceList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ResourceList class. */
+    /**
+     * Creates an instance of ResourceList class.
+     */
     public ResourceList() {
     }
 
     /**
      * Get the nextLink property: The uri to fetch the next page of resources. Call ListNext() fetches next page of
      * resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -33,7 +37,7 @@ public class ResourceList {
     /**
      * Set the nextLink property: The uri to fetch the next page of resources. Call ListNext() fetches next page of
      * resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ResourceList object itself.
      */
@@ -44,7 +48,7 @@ public class ResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

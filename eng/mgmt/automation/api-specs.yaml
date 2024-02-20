@@ -76,6 +76,8 @@ network:
   suffix: generated
 newrelic:
   service: newrelicobservability
+offazurespringboot:
+  service: springappdiscovery
 operationalinsights:
   service: loganalytics
 paloaltonetworks:

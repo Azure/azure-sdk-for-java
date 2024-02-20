@@ -7,6 +7,7 @@ import com.azure.communication.callautomation.CallConnection;
 import com.azure.communication.callautomation.CallConnectionAsync;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.CreateCallFailed;
 import com.azure.core.annotation.Immutable;
 import reactor.core.publisher.Mono;
 
@@ -71,10 +72,10 @@ public final class CreateCallResult extends CallResult {
 
         return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
             && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallConnected.class))
+            && (event.getClass() == CallConnected.class || event.getClass() == CreateCallFailed.class))
             : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
             && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallConnected.class), timeout)
+            && (event.getClass() == CallConnected.class || event.getClass() == CreateCallFailed.class), timeout)
         ).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 
@@ -85,6 +86,14 @@ public final class CreateCallResult extends CallResult {
      * @return the result of the event processing
      */
     private CreateCallEventResult getReturnedEvent(CallAutomationEventBase event) {
-        return new CreateCallEventResult(true, (CallConnected) event);
+        if (event.getClass() == CallConnected.class) {
+            return new CreateCallEventResult(true, (CallConnected) event, null);
+        }
+
+        if (event.getClass() == CreateCallFailed.class) {
+            return new CreateCallEventResult(false, null, (CreateCallFailed) event);
+        }
+        
+        return null;
     }
 }

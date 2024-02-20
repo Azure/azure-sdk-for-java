@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the configuration of the identity providers to be used in the OpenShift cluster. */
+/**
+ * Defines the configuration of the identity providers to be used in the OpenShift cluster.
+ */
 @Fluent
 public final class OpenShiftManagedClusterIdentityProvider {
     /*
@@ -22,13 +24,15 @@ public final class OpenShiftManagedClusterIdentityProvider {
     @JsonProperty(value = "provider")
     private OpenShiftManagedClusterBaseIdentityProvider provider;
 
-    /** Creates an instance of OpenShiftManagedClusterIdentityProvider class. */
+    /**
+     * Creates an instance of OpenShiftManagedClusterIdentityProvider class.
+     */
     public OpenShiftManagedClusterIdentityProvider() {
     }
 
     /**
      * Get the name property: Name of the provider.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class OpenShiftManagedClusterIdentityProvider {
 
     /**
      * Set the name property: Name of the provider.
-     *
+     * 
      * @param name the name value to set.
      * @return the OpenShiftManagedClusterIdentityProvider object itself.
      */
@@ -48,7 +52,7 @@ public final class OpenShiftManagedClusterIdentityProvider {
 
     /**
      * Get the provider property: Configuration of the provider.
-     *
+     * 
      * @return the provider value.
      */
     public OpenShiftManagedClusterBaseIdentityProvider provider() {
@@ -57,7 +61,7 @@ public final class OpenShiftManagedClusterIdentityProvider {
 
     /**
      * Set the provider property: Configuration of the provider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the OpenShiftManagedClusterIdentityProvider object itself.
      */
@@ -68,7 +72,7 @@ public final class OpenShiftManagedClusterIdentityProvider {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

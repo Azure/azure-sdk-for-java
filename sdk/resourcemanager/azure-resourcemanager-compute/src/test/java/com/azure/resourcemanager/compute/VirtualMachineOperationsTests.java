@@ -1849,6 +1849,86 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(2, pageCount);
     }
 
+    @Test
+    public void canCreateVMWithEncryptionAtHost() {
+        VirtualMachine vm = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .withEncryptionAtHost()
+            .create();
+
+        Assertions.assertNotNull(vm.innerModel().securityProfile());
+        Assertions.assertTrue(vm.isEncryptionAtHost());
+    }
+
+    @Test
+    public void canUpdateVMWithEncryptionAtHost() {
+        VirtualMachine vm = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .create();
+
+        vm.deallocate();
+        vm.update().withEncryptionAtHost().apply();
+
+        Assertions.assertNotNull(vm.innerModel().securityProfile());
+        Assertions.assertTrue(vm.isEncryptionAtHost());
+    }
+
+    @Test
+    public void canUpdateVMWithoutEncryptionAtHost() {
+        VirtualMachine vm = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .withEncryptionAtHost()
+            .create();
+
+        vm.deallocate();
+        vm.update().withoutEncryptionAtHost().apply();
+
+        Assertions.assertNotNull(vm.innerModel().securityProfile());
+        Assertions.assertFalse(vm.isEncryptionAtHost());
+    }
+
     // *********************************** helper methods ***********************************
 
     private CreatablesInfo prepareCreatableVirtualMachines(

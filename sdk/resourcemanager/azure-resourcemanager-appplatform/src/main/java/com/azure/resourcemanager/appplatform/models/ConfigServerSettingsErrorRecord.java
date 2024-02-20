@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Error record of the config server settings. */
+/**
+ * Error record of the config server settings.
+ */
 @Fluent
 public final class ConfigServerSettingsErrorRecord {
     /*
@@ -30,8 +32,14 @@ public final class ConfigServerSettingsErrorRecord {
     private List<String> messages;
 
     /**
+     * Creates an instance of ConfigServerSettingsErrorRecord class.
+     */
+    public ConfigServerSettingsErrorRecord() {
+    }
+
+    /**
      * Get the name property: The name of the config server settings error record.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -40,7 +48,7 @@ public final class ConfigServerSettingsErrorRecord {
 
     /**
      * Set the name property: The name of the config server settings error record.
-     *
+     * 
      * @param name the name value to set.
      * @return the ConfigServerSettingsErrorRecord object itself.
      */
@@ -51,7 +59,7 @@ public final class ConfigServerSettingsErrorRecord {
 
     /**
      * Get the uri property: The uri of the config server settings error record.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -60,7 +68,7 @@ public final class ConfigServerSettingsErrorRecord {
 
     /**
      * Set the uri property: The uri of the config server settings error record.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ConfigServerSettingsErrorRecord object itself.
      */
@@ -71,7 +79,7 @@ public final class ConfigServerSettingsErrorRecord {
 
     /**
      * Get the messages property: The detail error messages of the record.
-     *
+     * 
      * @return the messages value.
      */
     public List<String> messages() {
@@ -80,7 +88,7 @@ public final class ConfigServerSettingsErrorRecord {
 
     /**
      * Set the messages property: The detail error messages of the record.
-     *
+     * 
      * @param messages the messages value to set.
      * @return the ConfigServerSettingsErrorRecord object itself.
      */
@@ -91,7 +99,7 @@ public final class ConfigServerSettingsErrorRecord {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

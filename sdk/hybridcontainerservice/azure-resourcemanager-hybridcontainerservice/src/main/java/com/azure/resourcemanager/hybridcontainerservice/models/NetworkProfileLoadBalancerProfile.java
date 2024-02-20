@@ -8,12 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * LoadBalancerProfile - Profile of the cluster load balancer.
+ * Profile of the HA Proxy load balancer.
  */
 @Fluent
 public final class NetworkProfileLoadBalancerProfile {
     /*
-     * Count - Number of load balancer VMs. The default value is 0.
+     * Number of HA Proxy load balancer VMs. The default value is 0.
      */
     @JsonProperty(value = "count")
     private Integer count;
@@ -25,7 +25,7 @@ public final class NetworkProfileLoadBalancerProfile {
     }
 
     /**
-     * Get the count property: Count - Number of load balancer VMs. The default value is 0.
+     * Get the count property: Number of HA Proxy load balancer VMs. The default value is 0.
      * 
      * @return the count value.
      */
@@ -34,7 +34,7 @@ public final class NetworkProfileLoadBalancerProfile {
     }
 
     /**
-     * Set the count property: Count - Number of load balancer VMs. The default value is 0.
+     * Set the count property: Number of HA Proxy load balancer VMs. The default value is 0.
      * 
      * @param count the count value to set.
      * @return the NetworkProfileLoadBalancerProfile object itself.

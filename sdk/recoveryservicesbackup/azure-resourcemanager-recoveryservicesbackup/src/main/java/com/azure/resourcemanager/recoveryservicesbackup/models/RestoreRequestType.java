@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Restore Type (FullShareRestore or ItemLevelRestore). */
+/**
+ * Restore Type (FullShareRestore or ItemLevelRestore).
+ */
 public final class RestoreRequestType extends ExpandableStringEnum<RestoreRequestType> {
-    /** Static value Invalid for RestoreRequestType. */
+    /**
+     * Static value Invalid for RestoreRequestType.
+     */
     public static final RestoreRequestType INVALID = fromString("Invalid");
 
-    /** Static value FullShareRestore for RestoreRequestType. */
+    /**
+     * Static value FullShareRestore for RestoreRequestType.
+     */
     public static final RestoreRequestType FULL_SHARE_RESTORE = fromString("FullShareRestore");
 
-    /** Static value ItemLevelRestore for RestoreRequestType. */
+    /**
+     * Static value ItemLevelRestore for RestoreRequestType.
+     */
     public static final RestoreRequestType ITEM_LEVEL_RESTORE = fromString("ItemLevelRestore");
 
     /**
      * Creates a new instance of RestoreRequestType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class RestoreRequestType extends ExpandableStringEnum<RestoreReques
 
     /**
      * Creates or finds a RestoreRequestType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RestoreRequestType.
      */
@@ -41,7 +49,7 @@ public final class RestoreRequestType extends ExpandableStringEnum<RestoreReques
 
     /**
      * Gets known RestoreRequestType values.
-     *
+     * 
      * @return known RestoreRequestType values.
      */
     public static Collection<RestoreRequestType> values() {

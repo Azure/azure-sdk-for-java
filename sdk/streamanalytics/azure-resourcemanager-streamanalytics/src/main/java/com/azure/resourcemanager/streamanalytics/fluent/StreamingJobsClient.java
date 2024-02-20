@@ -16,81 +16,56 @@ import com.azure.resourcemanager.streamanalytics.models.StartStreamingJobParamet
 import com.azure.resourcemanager.streamanalytics.models.StreamingJobsGetByResourceGroupResponse;
 import com.azure.resourcemanager.streamanalytics.models.StreamingJobsUpdateResponse;
 
-/** An instance of this class provides access to all the operations defined in StreamingJobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StreamingJobsClient.
+ */
 public interface StreamingJobsClient {
     /**
      * Creates a streaming job or replaces an already existing streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param streamingJob The definition of the streaming job that will be used to create a new streaming job or
-     *     replace the existing one.
-     * @param ifMatch The ETag of the streaming job. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new streaming job to be created, but to prevent updating an existing
-     *     record set. Other values will result in a 412 Pre-condition Failed response.
+     * replace the existing one.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a streaming job object, containing all information associated with the named streaming job.
+     * @return the {@link SyncPoller} for polling of a streaming job object, containing all information associated with
+     * the named streaming job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StreamingJobInner>, StreamingJobInner> beginCreateOrReplace(
-        String resourceGroupName, String jobName, StreamingJobInner streamingJob, String ifMatch, String ifNoneMatch);
+    SyncPoller<PollResult<StreamingJobInner>, StreamingJobInner> beginCreateOrReplace(String resourceGroupName,
+        String jobName, StreamingJobInner streamingJob);
 
     /**
      * Creates a streaming job or replaces an already existing streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param streamingJob The definition of the streaming job that will be used to create a new streaming job or
-     *     replace the existing one.
+     * replace the existing one.
      * @param ifMatch The ETag of the streaming job. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new streaming job to be created, but to prevent updating an existing
-     *     record set. Other values will result in a 412 Pre-condition Failed response.
+     * record set. Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a streaming job object, containing all information associated with the named streaming job.
+     * @return the {@link SyncPoller} for polling of a streaming job object, containing all information associated with
+     * the named streaming job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StreamingJobInner>, StreamingJobInner> beginCreateOrReplace(
-        String resourceGroupName,
-        String jobName,
-        StreamingJobInner streamingJob,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    SyncPoller<PollResult<StreamingJobInner>, StreamingJobInner> beginCreateOrReplace(String resourceGroupName,
+        String jobName, StreamingJobInner streamingJob, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Creates a streaming job or replaces an already existing streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param streamingJob The definition of the streaming job that will be used to create a new streaming job or
-     *     replace the existing one.
-     * @param ifMatch The ETag of the streaming job. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new streaming job to be created, but to prevent updating an existing
-     *     record set. Other values will result in a 412 Pre-condition Failed response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a streaming job object, containing all information associated with the named streaming job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingJobInner createOrReplace(
-        String resourceGroupName, String jobName, StreamingJobInner streamingJob, String ifMatch, String ifNoneMatch);
-
-    /**
-     * Creates a streaming job or replaces an already existing streaming job.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param streamingJob The definition of the streaming job that will be used to create a new streaming job or
-     *     replace the existing one.
+     * replace the existing one.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -101,15 +76,15 @@ public interface StreamingJobsClient {
 
     /**
      * Creates a streaming job or replaces an already existing streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param streamingJob The definition of the streaming job that will be used to create a new streaming job or
-     *     replace the existing one.
+     * replace the existing one.
      * @param ifMatch The ETag of the streaming job. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new streaming job to be created, but to prevent updating an existing
-     *     record set. Other values will result in a 412 Pre-condition Failed response.
+     * record set. Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -117,24 +92,41 @@ public interface StreamingJobsClient {
      * @return a streaming job object, containing all information associated with the named streaming job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingJobInner createOrReplace(
-        String resourceGroupName,
-        String jobName,
-        StreamingJobInner streamingJob,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    StreamingJobInner createOrReplace(String resourceGroupName, String jobName, StreamingJobInner streamingJob,
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Updates an existing streaming job. This can be used to partially update (ie. update one or two properties) a
      * streaming job without affecting the rest the job definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param streamingJob A streaming job object. The properties specified here will overwrite the corresponding
-     *     properties in the existing streaming job (ie. Those properties will be updated). Any properties that are set
-     *     to null here will mean that the corresponding property in the existing input will remain the same and not
-     *     change as a result of this PATCH operation.
+     * properties in the existing streaming job (ie. Those properties will be updated). Any properties that are set to
+     * null here will mean that the corresponding property in the existing input will remain the same and not change as
+     * a result of this PATCH operation.
+     * @param ifMatch The ETag of the streaming job. Omit this value to always overwrite the current record set. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming job object, containing all information associated with the named streaming job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StreamingJobsUpdateResponse updateWithResponse(String resourceGroupName, String jobName,
+        StreamingJobInner streamingJob, String ifMatch, Context context);
+
+    /**
+     * Updates an existing streaming job. This can be used to partially update (ie. update one or two properties) a
+     * streaming job without affecting the rest the job definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param streamingJob A streaming job object. The properties specified here will overwrite the corresponding
+     * properties in the existing streaming job (ie. Those properties will be updated). Any properties that are set to
+     * null here will mean that the corresponding property in the existing input will remain the same and not change as
+     * a result of this PATCH operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -144,57 +136,35 @@ public interface StreamingJobsClient {
     StreamingJobInner update(String resourceGroupName, String jobName, StreamingJobInner streamingJob);
 
     /**
-     * Updates an existing streaming job. This can be used to partially update (ie. update one or two properties) a
-     * streaming job without affecting the rest the job definition.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param streamingJob A streaming job object. The properties specified here will overwrite the corresponding
-     *     properties in the existing streaming job (ie. Those properties will be updated). Any properties that are set
-     *     to null here will mean that the corresponding property in the existing input will remain the same and not
-     *     change as a result of this PATCH operation.
-     * @param ifMatch The ETag of the streaming job. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a streaming job object, containing all information associated with the named streaming job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingJobsUpdateResponse updateWithResponse(
-        String resourceGroupName, String jobName, StreamingJobInner streamingJob, String ifMatch, Context context);
-
-    /**
      * Deletes a streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String jobName);
 
     /**
      * Deletes a streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String jobName, Context context);
 
     /**
      * Deletes a streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +176,7 @@ public interface StreamingJobsClient {
 
     /**
      * Deletes a streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param context The context to associate with this operation.
@@ -219,7 +189,25 @@ public interface StreamingJobsClient {
 
     /**
      * Gets details about the specified streaming job.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param expand The $expand OData query parameter. This is a comma-separated list of additional streaming job
+     * properties to include in the response, beyond the default set returned when this parameter is absent. The default
+     * set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and 'functions'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about the specified streaming job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StreamingJobsGetByResourceGroupResponse getByResourceGroupWithResponse(String resourceGroupName, String jobName,
+        String expand, Context context);
+
+    /**
+     * Gets details about the specified streaming job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,97 +219,74 @@ public interface StreamingJobsClient {
     StreamingJobInner getByResourceGroup(String resourceGroupName, String jobName);
 
     /**
-     * Gets details about the specified streaming job.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param expand The $expand OData query parameter. This is a comma-separated list of additional streaming job
-     *     properties to include in the response, beyond the default set returned when this parameter is absent. The
-     *     default set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and
-     *     'functions'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified streaming job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingJobsGetByResourceGroupResponse getByResourceGroupWithResponse(
-        String resourceGroupName, String jobName, String expand, Context context);
-
-    /**
      * Lists all of the streaming jobs in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of streaming jobs.
+     * @return object containing a list of streaming jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StreamingJobInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all of the streaming jobs in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param expand The $expand OData query parameter. This is a comma-separated list of additional streaming job
-     *     properties to include in the response, beyond the default set returned when this parameter is absent. The
-     *     default set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and
-     *     'functions'.
+     * properties to include in the response, beyond the default set returned when this parameter is absent. The default
+     * set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and 'functions'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of streaming jobs.
+     * @return object containing a list of streaming jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StreamingJobInner> listByResourceGroup(String resourceGroupName, String expand, Context context);
 
     /**
      * Lists all of the streaming jobs in the given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of streaming jobs.
+     * @return object containing a list of streaming jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StreamingJobInner> list();
 
     /**
      * Lists all of the streaming jobs in the given subscription.
-     *
+     * 
      * @param expand The $expand OData query parameter. This is a comma-separated list of additional streaming job
-     *     properties to include in the response, beyond the default set returned when this parameter is absent. The
-     *     default set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and
-     *     'functions'.
+     * properties to include in the response, beyond the default set returned when this parameter is absent. The default
+     * set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and 'functions'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of streaming jobs.
+     * @return object containing a list of streaming jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StreamingJobInner> list(String expand, Context context);
 
     /**
      * Starts a streaming job. Once a job is started it will start processing input events and produce output.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
-     * @param startJobParameters Parameters applicable to a start streaming job operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String jobName);
 
     /**
      * Starts a streaming job. Once a job is started it will start processing input events and produce output.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param startJobParameters Parameters applicable to a start streaming job operation.
@@ -329,28 +294,15 @@ public interface StreamingJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String jobName,
+        StartStreamingJobParameters startJobParameters, Context context);
 
     /**
      * Starts a streaming job. Once a job is started it will start processing input events and produce output.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param startJobParameters Parameters applicable to a start streaming job operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void start(String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters);
-
-    /**
-     * Starts a streaming job. Once a job is started it will start processing input events and produce output.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -362,7 +314,7 @@ public interface StreamingJobsClient {
 
     /**
      * Starts a streaming job. Once a job is started it will start processing input events and produce output.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param startJobParameters Parameters applicable to a start streaming job operation.
@@ -372,19 +324,19 @@ public interface StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void start(
-        String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters, Context context);
+    void start(String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters,
+        Context context);
 
     /**
      * Stops a running streaming job. This will cause a running streaming job to stop processing input events and
      * producing output.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String jobName);
@@ -392,14 +344,14 @@ public interface StreamingJobsClient {
     /**
      * Stops a running streaming job. This will cause a running streaming job to stop processing input events and
      * producing output.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String jobName, Context context);
@@ -407,7 +359,7 @@ public interface StreamingJobsClient {
     /**
      * Stops a running streaming job. This will cause a running streaming job to stop processing input events and
      * producing output.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -420,7 +372,7 @@ public interface StreamingJobsClient {
     /**
      * Stops a running streaming job. This will cause a running streaming job to stop processing input events and
      * producing output.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param context The context to associate with this operation.
@@ -433,22 +385,20 @@ public interface StreamingJobsClient {
 
     /**
      * Scales a streaming job when the job is running.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
-     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginScale(
-        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters);
+    SyncPoller<PollResult<Void>, Void> beginScale(String resourceGroupName, String jobName);
 
     /**
      * Scales a streaming job when the job is running.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
@@ -456,28 +406,15 @@ public interface StreamingJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginScale(
-        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginScale(String resourceGroupName, String jobName,
+        ScaleStreamingJobParameters scaleJobParameters, Context context);
 
     /**
      * Scales a streaming job when the job is running.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void scale(String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters);
-
-    /**
-     * Scales a streaming job when the job is running.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -489,7 +426,7 @@ public interface StreamingJobsClient {
 
     /**
      * Scales a streaming job when the job is running.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
@@ -499,6 +436,6 @@ public interface StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void scale(
-        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context);
+    void scale(String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters,
+        Context context);
 }

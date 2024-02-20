@@ -30,7 +30,7 @@ public final class ImageMetadata {
 
     /**
      * Creates an instance of ImageMetadata class.
-     * 
+     *
      * @param height the height value to set.
      * @param width the width value to set.
      */
@@ -43,7 +43,7 @@ public final class ImageMetadata {
 
     /**
      * Get the height property: The height of the image in pixels.
-     * 
+     *
      * @return the height value.
      */
     @Generated
@@ -53,7 +53,7 @@ public final class ImageMetadata {
 
     /**
      * Get the width property: The width of the image in pixels.
-     * 
+     *
      * @return the width value.
      */
     @Generated

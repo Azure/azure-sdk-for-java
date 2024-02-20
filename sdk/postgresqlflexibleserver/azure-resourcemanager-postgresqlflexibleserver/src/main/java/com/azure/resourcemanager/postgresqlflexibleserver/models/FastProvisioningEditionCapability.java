@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents capability of a fast provisioning edition. */
+/**
+ * Represents capability of a fast provisioning edition.
+ */
 @Immutable
 public final class FastProvisioningEditionCapability extends CapabilityBase {
     /*
@@ -40,13 +42,15 @@ public final class FastProvisioningEditionCapability extends CapabilityBase {
     @JsonProperty(value = "serverCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer serverCount;
 
-    /** Creates an instance of FastProvisioningEditionCapability class. */
+    /**
+     * Creates an instance of FastProvisioningEditionCapability class.
+     */
     public FastProvisioningEditionCapability() {
     }
 
     /**
      * Get the supportedTier property: Fast provisioning supported tier name.
-     *
+     * 
      * @return the supportedTier value.
      */
     public String supportedTier() {
@@ -55,7 +59,7 @@ public final class FastProvisioningEditionCapability extends CapabilityBase {
 
     /**
      * Get the supportedSku property: Fast provisioning supported sku name.
-     *
+     * 
      * @return the supportedSku value.
      */
     public String supportedSku() {
@@ -64,7 +68,7 @@ public final class FastProvisioningEditionCapability extends CapabilityBase {
 
     /**
      * Get the supportedStorageGb property: Fast provisioning supported storage in Gb.
-     *
+     * 
      * @return the supportedStorageGb value.
      */
     public Integer supportedStorageGb() {
@@ -73,7 +77,7 @@ public final class FastProvisioningEditionCapability extends CapabilityBase {
 
     /**
      * Get the supportedServerVersions property: Fast provisioning supported version.
-     *
+     * 
      * @return the supportedServerVersions value.
      */
     public String supportedServerVersions() {
@@ -82,7 +86,7 @@ public final class FastProvisioningEditionCapability extends CapabilityBase {
 
     /**
      * Get the serverCount property: Count of servers in cache matching the spec.
-     *
+     * 
      * @return the serverCount value.
      */
     public Integer serverCount() {
@@ -91,7 +95,7 @@ public final class FastProvisioningEditionCapability extends CapabilityBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

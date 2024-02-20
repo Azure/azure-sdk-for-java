@@ -10,7 +10,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadItem;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Base class for backup item. Workload-specific backup items are derived from this class. */
+/**
+ * Base class for backup item. Workload-specific backup items are derived from this class.
+ */
 @Fluent
 public final class WorkloadItemResourceInner extends Resource {
     /*
@@ -25,13 +27,15 @@ public final class WorkloadItemResourceInner extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
-    /** Creates an instance of WorkloadItemResourceInner class. */
+    /**
+     * Creates an instance of WorkloadItemResourceInner class.
+     */
     public WorkloadItemResourceInner() {
     }
 
     /**
      * Get the properties property: WorkloadItemResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public WorkloadItem properties() {
@@ -40,7 +44,7 @@ public final class WorkloadItemResourceInner extends Resource {
 
     /**
      * Set the properties property: WorkloadItemResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the WorkloadItemResourceInner object itself.
      */
@@ -51,7 +55,7 @@ public final class WorkloadItemResourceInner extends Resource {
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -60,7 +64,7 @@ public final class WorkloadItemResourceInner extends Resource {
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the WorkloadItemResourceInner object itself.
      */
@@ -69,14 +73,18 @@ public final class WorkloadItemResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkloadItemResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkloadItemResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -85,7 +93,7 @@ public final class WorkloadItemResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

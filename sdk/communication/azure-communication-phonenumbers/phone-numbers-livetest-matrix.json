@@ -14,7 +14,7 @@
             "macos-11": {
                 "OSVmImage": "macos-11",
                 "Pool": "Azure Pipelines",
-                "JavaTestVersion": "1.17",
+                "JavaTestVersion": "1.21",
                 "AZURE_TEST_HTTP_CLIENTS": "netty",
                 "AZURE_TEST_AGENT": "MACOS_1015_JAVA11"
             }
@@ -34,7 +34,7 @@
                     "Pool": "azsdk-pool-mms-ubuntu-2004-general"
                 }
             },
-            "JavaTestVersion": "1.17",
+            "JavaTestVersion": "1.21",
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": true,
             "TestGoals": "verify",
@@ -51,7 +51,7 @@
                     "Pool": "azsdk-pool-mms-win-2022-general"
                 }
             },
-            "JavaTestVersion": "1.17",
+            "JavaTestVersion": "1.21",
             "RunAggregateReports": true,
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": false,

@@ -12,25 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class TargetRegionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetRegion model =
-            BinaryData
-                .fromString("{\"name\":\"dpydn\",\"replicaCount\":1880549577,\"storageAccountType\":\"Premium_LRS\"}")
-                .toObject(TargetRegion.class);
-        Assertions.assertEquals("dpydn", model.name());
-        Assertions.assertEquals(1880549577, model.replicaCount());
-        Assertions.assertEquals(SharedImageStorageAccountType.PREMIUM_LRS, model.storageAccountType());
+        TargetRegion model = BinaryData
+            .fromString("{\"name\":\"bin\",\"replicaCount\":491108548,\"storageAccountType\":\"Standard_LRS\"}")
+            .toObject(TargetRegion.class);
+        Assertions.assertEquals("bin", model.name());
+        Assertions.assertEquals(491108548, model.replicaCount());
+        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_LRS, model.storageAccountType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetRegion model =
-            new TargetRegion()
-                .withName("dpydn")
-                .withReplicaCount(1880549577)
-                .withStorageAccountType(SharedImageStorageAccountType.PREMIUM_LRS);
+        TargetRegion model = new TargetRegion().withName("bin").withReplicaCount(491108548)
+            .withStorageAccountType(SharedImageStorageAccountType.STANDARD_LRS);
         model = BinaryData.fromObject(model).toObject(TargetRegion.class);
-        Assertions.assertEquals("dpydn", model.name());
-        Assertions.assertEquals(1880549577, model.replicaCount());
-        Assertions.assertEquals(SharedImageStorageAccountType.PREMIUM_LRS, model.storageAccountType());
+        Assertions.assertEquals("bin", model.name());
+        Assertions.assertEquals(491108548, model.replicaCount());
+        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_LRS, model.storageAccountType());
     }
 }

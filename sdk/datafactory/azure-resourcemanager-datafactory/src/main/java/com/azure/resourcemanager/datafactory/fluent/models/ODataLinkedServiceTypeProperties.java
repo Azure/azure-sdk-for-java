@@ -41,8 +41,8 @@ public final class ODataLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression
-     * with resultType object).
+     * The additional HTTP headers in the request to RESTful API used for authorization. Type: key value pairs (value
+     * should be string type).
      */
     @JsonProperty(value = "authHeaders")
     private Object authHeaders;
@@ -200,7 +200,7 @@ public final class ODataLinkedServiceTypeProperties {
 
     /**
      * Get the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
-     * Type: object (or Expression with resultType object).
+     * Type: key value pairs (value should be string type).
      * 
      * @return the authHeaders value.
      */
@@ -210,7 +210,7 @@ public final class ODataLinkedServiceTypeProperties {
 
     /**
      * Set the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
-     * Type: object (or Expression with resultType object).
+     * Type: key value pairs (value should be string type).
      * 
      * @param authHeaders the authHeaders value to set.
      * @return the ODataLinkedServiceTypeProperties object itself.

@@ -32,7 +32,7 @@ public final class DetectedTag {
 
     /**
      * Creates an instance of DetectedTag class.
-     * 
+     *
      * @param confidence the confidence value to set.
      * @param name the name value to set.
      */
@@ -48,7 +48,7 @@ public final class DetectedTag {
      * Get the confidence property: A score, in the range of 0 to 1 (inclusive), representing the confidence that this
      * entity was observed.
      * Higher values indicating higher confidence.
-     * 
+     *
      * @return the confidence value.
      */
     @Generated
@@ -58,7 +58,7 @@ public final class DetectedTag {
 
     /**
      * Get the name property: Name of the entity.
-     * 
+     *
      * @return the name value.
      */
     @Generated

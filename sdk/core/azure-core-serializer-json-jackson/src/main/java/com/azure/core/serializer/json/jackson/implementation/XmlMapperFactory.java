@@ -13,6 +13,9 @@ import com.fasterxml.jackson.databind.cfg.PackageVersion;
 
 import java.lang.reflect.Array;
 
+/**
+ * Constructs and configures {@link ObjectMapper} instances that handle XML.
+ */
 public final class XmlMapperFactory {
     private static final ClientLogger LOGGER = new ClientLogger(XmlMapperFactory.class);
 
@@ -45,8 +48,8 @@ public final class XmlMapperFactory {
             Class<?> fromXmlParser = Class.forName(FROM_XML_PARSER);
             Class<?> toXmlGenerator = Class.forName(TO_XML_GENERATOR);
 
-            createXmlMapperBuilder = ReflectionUtils.getMethodInvoker(xmlMapper,
-                xmlMapper.getDeclaredMethod("builder"), false);
+            createXmlMapperBuilder
+                = ReflectionUtils.getMethodInvoker(xmlMapper, xmlMapper.getDeclaredMethod("builder"), false);
             defaultUseWrapper = ReflectionUtils.getMethodInvoker(xmlMapperBuilder,
                 xmlMapperBuilder.getDeclaredMethod("defaultUseWrapper", boolean.class), false);
 
@@ -79,6 +82,12 @@ public final class XmlMapperFactory {
         this.useJackson212 = PackageVersion.VERSION.getMinorVersion() >= 12;
     }
 
+    /**
+     * Creates a new {@link ObjectMapper} instance that can handle XML.
+     *
+     * @return A new {@link ObjectMapper} instance that can handle XML.
+     * @throws IllegalStateException If the {@link ObjectMapper} cannot be created.
+     */
     public ObjectMapper createXmlMapper() {
         ObjectMapper xmlMapper;
         try {
@@ -95,7 +104,7 @@ public final class XmlMapperFactory {
             enableEmptyElementAsNull.invokeWithArguments(xmlMapperBuilder, emptyElementAsNull);
 
             xmlMapper = xmlMapperBuilder.build();
-        }  catch (Exception ex) {
+        } catch (Exception ex) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Unable to create XmlMapper instance.", ex));
         }
 

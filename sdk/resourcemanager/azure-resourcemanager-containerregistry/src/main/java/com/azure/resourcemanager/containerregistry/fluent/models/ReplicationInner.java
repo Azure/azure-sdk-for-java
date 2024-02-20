@@ -13,7 +13,9 @@ import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An object that represents a replication for a container registry. */
+/**
+ * An object that represents a replication for a container registry.
+ */
 @Fluent
 public final class ReplicationInner extends Resource {
     /*
@@ -28,13 +30,15 @@ public final class ReplicationInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ReplicationInner class. */
+    /**
+     * Creates an instance of ReplicationInner class.
+     */
     public ReplicationInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the replication.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ReplicationProperties innerProperties() {
@@ -43,21 +47,25 @@ public final class ReplicationInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ReplicationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ReplicationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -67,7 +75,7 @@ public final class ReplicationInner extends Resource {
     /**
      * Get the provisioningState property: The provisioning state of the replication at the time the operation was
      * called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -76,7 +84,7 @@ public final class ReplicationInner extends Resource {
 
     /**
      * Get the status property: The status of the replication at the time the operation was called.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -87,7 +95,7 @@ public final class ReplicationInner extends Resource {
      * Get the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     *
+     * 
      * @return the regionEndpointEnabled value.
      */
     public Boolean regionEndpointEnabled() {
@@ -98,7 +106,7 @@ public final class ReplicationInner extends Resource {
      * Set the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     *
+     * 
      * @param regionEndpointEnabled the regionEndpointEnabled value to set.
      * @return the ReplicationInner object itself.
      */
@@ -113,7 +121,7 @@ public final class ReplicationInner extends Resource {
     /**
      * Get the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry
      * replication.
-     *
+     * 
      * @return the zoneRedundancy value.
      */
     public ZoneRedundancy zoneRedundancy() {
@@ -123,7 +131,7 @@ public final class ReplicationInner extends Resource {
     /**
      * Set the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry
      * replication.
-     *
+     * 
      * @param zoneRedundancy the zoneRedundancy value to set.
      * @return the ReplicationInner object itself.
      */
@@ -137,7 +145,7 @@ public final class ReplicationInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

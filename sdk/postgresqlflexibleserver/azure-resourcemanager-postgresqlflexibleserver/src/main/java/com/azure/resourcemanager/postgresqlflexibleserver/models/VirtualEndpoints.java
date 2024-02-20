@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VirtualEndpoints. */
+/**
+ * Resource collection API of VirtualEndpoints.
+ */
 public interface VirtualEndpoints {
     /**
      * Deletes a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -24,7 +26,7 @@ public interface VirtualEndpoints {
 
     /**
      * Deletes a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -37,7 +39,7 @@ public interface VirtualEndpoints {
 
     /**
      * Gets information about a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -47,12 +49,12 @@ public interface VirtualEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a virtual endpoint along with {@link Response}.
      */
-    Response<VirtualEndpointResource> getWithResponse(
-        String resourceGroupName, String serverName, String virtualEndpointName, Context context);
+    Response<VirtualEndpointResource> getWithResponse(String resourceGroupName, String serverName,
+        String virtualEndpointName, Context context);
 
     /**
      * Gets information about a virtual endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualEndpointName The name of the virtual endpoint.
@@ -65,7 +67,7 @@ public interface VirtualEndpoints {
 
     /**
      * List all the servers in a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,7 +79,7 @@ public interface VirtualEndpoints {
 
     /**
      * List all the servers in a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -90,7 +92,7 @@ public interface VirtualEndpoints {
 
     /**
      * Gets information about a virtual endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -101,7 +103,7 @@ public interface VirtualEndpoints {
 
     /**
      * Gets information about a virtual endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,7 +115,7 @@ public interface VirtualEndpoints {
 
     /**
      * Deletes a virtual endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,7 +125,7 @@ public interface VirtualEndpoints {
 
     /**
      * Deletes a virtual endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +136,7 @@ public interface VirtualEndpoints {
 
     /**
      * Begins definition for a new VirtualEndpointResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new VirtualEndpointResource definition.
      */

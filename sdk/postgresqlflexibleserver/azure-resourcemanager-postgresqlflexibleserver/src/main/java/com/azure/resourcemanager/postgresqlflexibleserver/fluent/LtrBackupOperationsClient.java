@@ -13,27 +13,29 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.LtrServerBackupOperationInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LtrBackupOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LtrBackupOperationsClient.
+ */
 public interface LtrBackupOperationsClient {
     /**
      * Gets the result of the give long term retention backup operation for the flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the give long term retention backup operation for the flexible server along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the result of the give long term retention backup operation for the flexible server along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LtrServerBackupOperationInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String backupName);
+    Mono<Response<LtrServerBackupOperationInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String backupName);
 
     /**
      * Gets the result of the give long term retention backup operation for the flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -41,14 +43,14 @@ public interface LtrBackupOperationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the give long term retention backup operation for the flexible server on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LtrServerBackupOperationInner> getAsync(String resourceGroupName, String serverName, String backupName);
 
     /**
      * Gets the result of the give long term retention backup operation for the flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -56,16 +58,16 @@ public interface LtrBackupOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the give long term retention backup operation for the flexible server along with {@link
-     *     Response}.
+     * @return the result of the give long term retention backup operation for the flexible server along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LtrServerBackupOperationInner> getWithResponse(
-        String resourceGroupName, String serverName, String backupName, Context context);
+    Response<LtrServerBackupOperationInner> getWithResponse(String resourceGroupName, String serverName,
+        String backupName, Context context);
 
     /**
      * Gets the result of the give long term retention backup operation for the flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param backupName The name of the backup.
@@ -79,35 +81,35 @@ public interface LtrBackupOperationsClient {
 
     /**
      * Gets the result of the give long term retention backup operations for the flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the give long term retention backup operations for the flexible server as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LtrServerBackupOperationInner> listByServerAsync(String resourceGroupName, String serverName);
 
     /**
      * Gets the result of the give long term retention backup operations for the flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the give long term retention backup operations for the flexible server as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LtrServerBackupOperationInner> listByServer(String resourceGroupName, String serverName);
 
     /**
      * Gets the result of the give long term retention backup operations for the flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -115,9 +117,9 @@ public interface LtrBackupOperationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the give long term retention backup operations for the flexible server as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LtrServerBackupOperationInner> listByServer(
-        String resourceGroupName, String serverName, Context context);
+    PagedIterable<LtrServerBackupOperationInner> listByServer(String resourceGroupName, String serverName,
+        Context context);
 }

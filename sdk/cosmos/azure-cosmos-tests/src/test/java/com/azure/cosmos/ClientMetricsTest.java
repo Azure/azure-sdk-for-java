@@ -1193,6 +1193,11 @@ public class ClientMetricsTest extends BatchTestBase {
         assertThat(CosmosMetricName.fromString("cosmos.client.op.REGIONScontacted"))
             .isSameAs(CosmosMetricName.OPERATION_DETAILS_REGIONS_CONTACTED);
 
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.reqPaylOADSize"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_SIZE_REQUEST);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.rspPayloadSIZE"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_SIZE_RESPONSE);
+
         assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.backendLatency"))
             .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_BACKEND_LATENCY);
         assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.LAtency"))
@@ -1307,6 +1312,19 @@ public class ClientMetricsTest extends BatchTestBase {
                 true,
                 Tag.of(TagName.RegionName.toString(), this.preferredRegion));
         }
+
+        if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
+            this.assertMetrics(
+                "cosmos.client.req.reqPayloadSize",
+                true,
+                expectedOperationTag);
+
+            this.assertMetrics(
+                "cosmos.client.req.rspPayloadSize",
+                true,
+                expectedOperationTag);
+        }
+
 
         if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
             this.assertMetrics("cosmos.client.req.rntbd.latency", true, expectedRequestTag);

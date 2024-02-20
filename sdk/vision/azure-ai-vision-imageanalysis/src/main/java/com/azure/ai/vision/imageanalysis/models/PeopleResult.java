@@ -24,7 +24,7 @@ public final class PeopleResult {
 
     /**
      * Creates an instance of PeopleResult class.
-     * 
+     *
      * @param values the values value to set.
      */
     @Generated
@@ -35,7 +35,7 @@ public final class PeopleResult {
 
     /**
      * Get the values property: A list of people detected in an image and their location.
-     * 
+     *
      * @return the values value.
      */
     @Generated

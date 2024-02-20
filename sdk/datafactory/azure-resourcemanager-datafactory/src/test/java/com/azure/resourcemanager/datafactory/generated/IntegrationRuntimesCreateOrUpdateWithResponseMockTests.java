@@ -34,7 +34,7 @@ public final class IntegrationRuntimesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"kpo\",\"\":{\"hcvssmlw\":\"datagvtjrobo\",\"mu\":\"datadstlxrg\",\"ulwvezthgwqqtb\":\"datahxoldmhypptfpp\",\"yipzehitdqmb\":\"datab\"}},\"name\":\"wuaj\",\"type\":\"tgpz\",\"etag\":\"lkcvkme\",\"id\":\"kolpnebnrafvkskj\"}";
+            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"rdhxamjhpqfj\",\"\":{\"cillfq\":\"datairjkinofw\"}},\"name\":\"yifdrbkprblwsb\",\"type\":\"ekqqtsrupogtrwku\",\"etag\":\"abfjeoqwng\",\"id\":\"y\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,13 +51,14 @@ public final class IntegrationRuntimesCreateOrUpdateWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IntegrationRuntimeResource response = manager.integrationRuntimes().define("mjgtjckf")
-            .withExistingFactory("fb", "fkzpf").withProperties(new IntegrationRuntime().withDescription("jrlrkvhgnmsx")
-                .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))
-            .withIfMatch("x").create();
+        IntegrationRuntimeResource response
+            = manager.integrationRuntimes().define("qivvpvuy").withExistingFactory("rjdpzvh", "ssn")
+                .withProperties(new IntegrationRuntime().withDescription("n")
+                    .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))
+                .withIfMatch("litcydgesflnzibg").create();
 
-        Assertions.assertEquals("kolpnebnrafvkskj", response.id());
-        Assertions.assertEquals("kpo", response.properties().description());
+        Assertions.assertEquals("y", response.id());
+        Assertions.assertEquals("rdhxamjhpqfj", response.properties().description());
     }
 
     // Use "Map.of" if available

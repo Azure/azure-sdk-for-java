@@ -11,15 +11,16 @@ public final class TabularSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TabularSource model = BinaryData.fromString(
-            "{\"type\":\"TabularSource\",\"queryTimeout\":\"datar\",\"additionalColumns\":\"datah\",\"sourceRetryCount\":\"dataqfl\",\"sourceRetryWait\":\"dataqcxyiqppa\",\"maxConcurrentConnections\":\"dataiqrlla\",\"disableMetricsCollection\":\"datalbtkx\",\"\":{\"aaxttexaugojv\":\"datazgn\",\"bo\":\"datajezr\"}}")
+            "{\"type\":\"TabularSource\",\"queryTimeout\":\"datanycchpcjztz\",\"additionalColumns\":\"datauuyvpcfvinjxc\",\"sourceRetryCount\":\"datanetcxgdgqkletlw\",\"sourceRetryWait\":\"datatzbphxxvftj\",\"maxConcurrentConnections\":\"dataqg\",\"disableMetricsCollection\":\"datanmok\",\"\":{\"eeyskbqlcakle\":\"datatdnym\",\"okhbqmx\":\"datajgxdhgezyhph\",\"tyx\":\"dataglkqitpbyn\"}}")
             .toObject(TabularSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TabularSource model = new TabularSource().withSourceRetryCount("dataqfl").withSourceRetryWait("dataqcxyiqppa")
-            .withMaxConcurrentConnections("dataiqrlla").withDisableMetricsCollection("datalbtkx")
-            .withQueryTimeout("datar").withAdditionalColumns("datah");
+        TabularSource model
+            = new TabularSource().withSourceRetryCount("datanetcxgdgqkletlw").withSourceRetryWait("datatzbphxxvftj")
+                .withMaxConcurrentConnections("dataqg").withDisableMetricsCollection("datanmok")
+                .withQueryTimeout("datanycchpcjztz").withAdditionalColumns("datauuyvpcfvinjxc");
         model = BinaryData.fromObject(model).toObject(TabularSource.class);
     }
 }

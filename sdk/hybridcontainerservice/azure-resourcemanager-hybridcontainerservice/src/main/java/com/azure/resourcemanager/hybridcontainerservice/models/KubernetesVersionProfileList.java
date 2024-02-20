@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A list of kubernetes version resources.
+ * List of supported kubernetes versions.
  */
 @Fluent
 public final class KubernetesVersionProfileList {

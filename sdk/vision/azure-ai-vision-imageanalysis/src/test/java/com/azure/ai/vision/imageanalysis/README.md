@@ -28,7 +28,7 @@ Other supported values for this enviroment variable are `RECORD` and `PLAYBACK`.
 
 ### Run tests
 
-To run all tests, chande directory to the folder `sdk\vision\azure-ai-vision-imageanalysis` and run:
+To run all tests, change directory to the folder `sdk\vision\azure-ai-vision-imageanalysis` and run:
 ```
 mvn clean test
 ```
