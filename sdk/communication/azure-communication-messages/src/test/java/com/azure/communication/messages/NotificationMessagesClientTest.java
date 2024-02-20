@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.messages;
 
 import com.azure.communication.messages.models.*;
@@ -29,7 +32,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldSendSimpleTextMessage(HttpClient httpClient){
+    public void shouldSendSimpleTextMessage(HttpClient httpClient) {
         messagesClient = buildNotificationMessagesClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
@@ -44,7 +47,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldSendImageMessage(HttpClient httpClient){
+    public void shouldSendImageMessage(HttpClient httpClient) {
         messagesClient = buildNotificationMessagesClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
@@ -58,7 +61,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldSendMessageTemplateWithImage(HttpClient httpClient){
+    public void shouldSendMessageTemplateWithImage(HttpClient httpClient) {
         messagesClient = buildNotificationMessagesClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
@@ -74,7 +77,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         //Update template parameter binding
         List<WhatsAppMessageTemplateBindingsComponent> components = new ArrayList<>();
         components.add(new WhatsAppMessageTemplateBindingsComponent("Days"));
-        MessageTemplateBindings bindings =new WhatsAppMessageTemplateBindings()
+        MessageTemplateBindings bindings = new WhatsAppMessageTemplateBindings()
             .setBody(components);
         template.setBindings(bindings);
 
@@ -87,7 +90,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldSendMessageImageTemplateWithTokenCredential(HttpClient httpClient){
+    public void shouldSendMessageImageTemplateWithTokenCredential(HttpClient httpClient) {
         messagesClient = buildNotificationMessagesClientWithTokenCredential(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
@@ -103,7 +106,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         //Update template parameter binding
         List<WhatsAppMessageTemplateBindingsComponent> components = new ArrayList<>();
         components.add(new WhatsAppMessageTemplateBindingsComponent("Days"));
-        MessageTemplateBindings bindings =new WhatsAppMessageTemplateBindings()
+        MessageTemplateBindings bindings = new WhatsAppMessageTemplateBindings()
             .setBody(components);
         template.setBindings(bindings);
 
@@ -116,7 +119,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldSendMessageTemplateWithVideo(HttpClient httpClient){
+    public void shouldSendMessageTemplateWithVideo(HttpClient httpClient) {
         messagesClient = buildNotificationMessagesClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
@@ -156,7 +159,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldSendMessageTemplateWithQuickAction(HttpClient httpClient){
+    public void shouldSendMessageTemplateWithQuickAction(HttpClient httpClient) {
         messagesClient = buildNotificationMessagesClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
@@ -173,8 +176,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
         // Add parameter binding for template buttons in a list
         List<WhatsAppMessageTemplateBindingsButton> templateButtonBindings = new ArrayList<>();
-        templateButtonBindings.add( new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "Yes"));
-        templateButtonBindings.add( new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "No"));
+        templateButtonBindings.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "Yes"));
+        templateButtonBindings.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "No"));
 
         MessageTemplateBindings templateBindings = new WhatsAppMessageTemplateBindings()
             .setBody(templateBodyBindings) // Set the parameter binding for template body
@@ -193,7 +196,7 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldSendMessageTemplateWithDocument(HttpClient httpClient){
+    public void shouldSendMessageTemplateWithDocument(HttpClient httpClient) {
         messagesClient = buildNotificationMessagesClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);

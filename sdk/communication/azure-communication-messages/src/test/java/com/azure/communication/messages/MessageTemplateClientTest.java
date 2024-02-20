@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.messages;
 
 import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateItem;
@@ -16,7 +19,7 @@ public class MessageTemplateClientTest extends CommunicationMessagesTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldReturnWhatsTemplateList(HttpClient httpClient){
+    public void shouldReturnWhatsTemplateList(HttpClient httpClient) {
         messageTemplateClient = buildMessageTemplateClient(httpClient);
 
         messageTemplateClient.listTemplates(CHANNEL_REGISTRATION_ID)
