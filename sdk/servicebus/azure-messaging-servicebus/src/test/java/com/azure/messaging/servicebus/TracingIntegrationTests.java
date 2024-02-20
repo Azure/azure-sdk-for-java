@@ -579,7 +579,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<ReadableSpan> completed = findSpans(spans, "ServiceBus.complete").stream()
             .filter(c -> {
                 List<LinkData> links = c.toSpanData().getLinks();
-                return links.size() > 0 && links.get(0).getSpanContext().getSpanId().equals(message1SpanId);
+                return !links.isEmpty() && links.get(0).getSpanContext().getSpanId().equals(message1SpanId);
             })
             .collect(Collectors.toList());
         assertEquals(1, completed.size());
@@ -813,12 +813,13 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             String.format("Expected at least as many completed spans as processed spans, but found %d completed and %d processed", settled.size(), processed.size()));
 
         int processedFound = 0;
-        for (int i = 0; i < settled.size(); i ++) {
-            ReadableSpan parent = findParent(settled.get(i), processed);
+        for (ReadableSpan readableSpan : settled) {
+            ReadableSpan parent = findParent(readableSpan, processed);
             if (parent != null) {
                 processedFound++;
-                assertTrue(settled.get(i).getLatencyNanos() <= parent.getLatencyNanos(),
-                    String.format("Expected settled span to have less latency than processed span, but found %d vs %d", settled.get(i).getLatencyNanos(), parent.getLatencyNanos()));
+                assertTrue(readableSpan.getLatencyNanos() <= parent.getLatencyNanos(), () ->
+                    String.format("Expected settled span to have less latency than processed span, but found %d vs %d",
+                        readableSpan.getLatencyNanos(), parent.getLatencyNanos()));
             }
         }
 

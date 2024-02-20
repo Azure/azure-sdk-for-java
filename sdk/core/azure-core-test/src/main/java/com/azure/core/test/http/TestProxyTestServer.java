@@ -23,6 +23,7 @@ public class TestProxyTestServer implements Closeable {
     private static final String TEST_XML_RESPONSE_BODY = "{\"Body\":\"<UserDelegationKey>"
         + "<SignedTid>sensitiveInformation=</SignedTid></UserDelegationKey>\",\"primaryKey\":"
         + "\"<PrimaryKey>fakePrimaryKey</PrimaryKey>\", \"TableName\":\"listtable09bf2a3d\"}";
+
     /**
      * Constructor for TestProxyTestServer
      */
@@ -49,12 +50,14 @@ public class TestProxyTestServer implements Closeable {
                             "https://resourceInfo.cognitiveservices.azure.com/fr/models//905a58f9-131e-42b8-8410-493ab1517d62")
                         .sendString(Mono.just(TEST_JSON_RESPONSE_BODY));
                 })
-                .get("/fr/path/2", (req, res) -> res.status(HttpResponseStatus.OK)
-                    .addHeader("Content-Type", "application/json")
-                    .sendString(Mono.just(TEST_XML_RESPONSE_BODY)))
-                .get("/getRedirect", (req, res) -> res.status(HttpResponseStatus.TEMPORARY_REDIRECT)
-                    .addHeader("Content-Type", "application/json")
-                    .addHeader("Location", "http://localhost:" + port() + "/echoheaders")))
+                .get("/fr/path/2",
+                    (req, res) -> res.status(HttpResponseStatus.OK)
+                        .addHeader("Content-Type", "application/json")
+                        .sendString(Mono.just(TEST_XML_RESPONSE_BODY)))
+                .get("/getRedirect",
+                    (req, res) -> res.status(HttpResponseStatus.TEMPORARY_REDIRECT)
+                        .addHeader("Content-Type", "application/json")
+                        .addHeader("Location", "http://localhost:" + port() + "/echoheaders")))
 
             .bindNow();
     }
