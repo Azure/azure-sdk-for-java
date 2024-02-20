@@ -7,7 +7,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
@@ -26,7 +25,6 @@ import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.proxy.HttpProxyHandler;
@@ -56,14 +54,32 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
- * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of this
- * class can be achieved by using the {@link NettyAsyncHttpClientBuilder} class, which offers Netty-specific API for
- * features such as {@link NettyAsyncHttpClientBuilder#eventLoopGroup(EventLoopGroup) thread pooling},
- * {@link NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping},
- * {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions) setProxy configuration}, and much more.
+ * <p>The NettyAsyncHttpClient class is an implementation of the {@link HttpClient} interface using the
+ * Reactor Netty library. This class is designed to handle HTTP requests and responses asynchronously, leveraging
+ * the non-blocking and backpressure-ready nature of Reactor Netty.</p>
  *
- * @see HttpClient
+ * <p>This class is typically instantiated using the {@link NettyAsyncHttpClientBuilder} class, which provides a
+ * fluent API for configuring various aspects of the HTTP client, such as the port, whether to enable wiretapping, and
+ * proxy configuration.</p>
+ *
+ * <p><strong>Sample: Construct NettyAsyncHttpClient with Default Configuration</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a Netty HttpClient that uses port 80 and has no proxy.</p>
+ *
+ * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.netty.instantiation-simple -->
+ *
+ * <p>For more ways to instantiate NettyAsyncHttpClient, refer to {@link NettyAsyncHttpClientBuilder}.</p>
+ *
+ * @see com.azure.core.http.netty
  * @see NettyAsyncHttpClientBuilder
+ * @see HttpClient
  */
 class NettyAsyncHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClient.class);

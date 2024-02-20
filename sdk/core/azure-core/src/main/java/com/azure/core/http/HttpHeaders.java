@@ -57,8 +57,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
 
     HttpHeaders(HttpHeaders headers) {
         this.headers = new HashMap<>((int) (headers.headers.size() / 0.75f));
-        headers.headers.forEach((key, value) ->
-            this.headers.put(key, new HttpHeader(value.getName(), value.getValuesList())));
+        headers.headers
+            .forEach((key, value) -> this.headers.put(key, new HttpHeader(value.getName(), value.getValuesList())));
     }
 
     /**
@@ -251,8 +251,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public HttpHeaders setAllHttpHeaders(HttpHeaders headers) {
         if (headers != null) {
-            headers.headers.forEach((headerName, header) ->
-                setInternal(headerName, header.getName(), header.getValuesList()));
+            headers.headers
+                .forEach((headerName, header) -> setInternal(headerName, header.getName(), header.getValuesList()));
         }
 
         return this;
@@ -431,8 +431,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
 
     @Override
     public String toString() {
-        return this.stream()
-            .map(header -> header.getName() + "=" + header.getValue())
+        return this.stream().map(header -> header.getName() + "=" + header.getValue())
             .collect(Collectors.joining(", "));
     }
 

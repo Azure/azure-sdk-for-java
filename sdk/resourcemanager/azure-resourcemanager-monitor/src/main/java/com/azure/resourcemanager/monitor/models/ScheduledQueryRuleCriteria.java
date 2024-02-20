@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The rule criteria that defines the conditions of the scheduled query rule. */
+/**
+ * The rule criteria that defines the conditions of the scheduled query rule.
+ */
 @Fluent
 public final class ScheduledQueryRuleCriteria {
     /*
@@ -17,13 +19,15 @@ public final class ScheduledQueryRuleCriteria {
     @JsonProperty(value = "allOf")
     private List<Condition> allOf;
 
-    /** Creates an instance of ScheduledQueryRuleCriteria class. */
+    /**
+     * Creates an instance of ScheduledQueryRuleCriteria class.
+     */
     public ScheduledQueryRuleCriteria() {
     }
 
     /**
      * Get the allOf property: A list of conditions to evaluate against the specified scopes.
-     *
+     * 
      * @return the allOf value.
      */
     public List<Condition> allOf() {
@@ -32,7 +36,7 @@ public final class ScheduledQueryRuleCriteria {
 
     /**
      * Set the allOf property: A list of conditions to evaluate against the specified scopes.
-     *
+     * 
      * @param allOf the allOf value to set.
      * @return the ScheduledQueryRuleCriteria object itself.
      */
@@ -43,7 +47,7 @@ public final class ScheduledQueryRuleCriteria {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

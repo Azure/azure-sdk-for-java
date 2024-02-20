@@ -105,24 +105,38 @@ public class DataSourceCredentialPatch implements JsonSerializable<DataSourceCre
                     readerToUse.skipChildren();
                 }
             }
-
-            if (discriminatorValue != null) {
-                readerToUse = readerToUse.reset();
-            }
             // Use the discriminator value to determine which subtype should be deserialized.
             if ("AzureSQLConnectionString".equals(discriminatorValue)) {
-                return AzureSQLConnectionStringCredentialPatch.fromJson(readerToUse);
+                return AzureSQLConnectionStringCredentialPatch.fromJson(readerToUse.reset());
             } else if ("DataLakeGen2SharedKey".equals(discriminatorValue)) {
-                return DataLakeGen2SharedKeyCredentialPatch.fromJson(readerToUse);
+                return DataLakeGen2SharedKeyCredentialPatch.fromJson(readerToUse.reset());
             } else if ("ServicePrincipal".equals(discriminatorValue)) {
-                return ServicePrincipalCredentialPatch.fromJson(readerToUse);
+                return ServicePrincipalCredentialPatch.fromJson(readerToUse.reset());
             } else if ("ServicePrincipalInKV".equals(discriminatorValue)) {
-                return ServicePrincipalInKVCredentialPatch.fromJson(readerToUse);
+                return ServicePrincipalInKVCredentialPatch.fromJson(readerToUse.reset());
             } else {
-                throw new IllegalStateException(
-                    "Discriminator field 'dataSourceCredentialType' didn't match one of the expected values 'AzureSQLConnectionString', 'DataLakeGen2SharedKey', 'ServicePrincipal', or 'ServicePrincipalInKV'. It was: '"
-                        + discriminatorValue + "'.");
+                return fromJsonKnownDiscriminator(readerToUse.reset());
             }
+        });
+    }
+
+    static DataSourceCredentialPatch fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataSourceCredentialPatch deserializedDataSourceCredentialPatch = new DataSourceCredentialPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataSourceCredentialName".equals(fieldName)) {
+                    deserializedDataSourceCredentialPatch.dataSourceCredentialName = reader.getString();
+                } else if ("dataSourceCredentialDescription".equals(fieldName)) {
+                    deserializedDataSourceCredentialPatch.dataSourceCredentialDescription = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataSourceCredentialPatch;
         });
     }
 }

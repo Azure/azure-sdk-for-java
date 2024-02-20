@@ -9,6 +9,7 @@ import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.AzureSdkHandler;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.HttpProxyHandler;
+import com.azure.core.http.netty.implementation.Utility;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -45,10 +46,10 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
 import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
- * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
- * Please be aware that client built from this builder can support synchronously and asynchronously call of sending
- * request. Use {@link com.azure.core.http.HttpClient#sendSync(HttpRequest, Context)} to send the provided request
- * synchronously with contextual information.
+ * <p>Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
+ * The client built from this builder can support sending requests synchronously and asynchronously.
+ * Use {@link com.azure.core.http.HttpClient#sendSync(HttpRequest, Context)} to send the provided request
+ * synchronously with contextual information.</p>
  *
  * <p><strong>Building a new HttpClient instance</strong></p>
  *
@@ -61,7 +62,44 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
+ * <p><strong>Building a new HttpClient instance using http proxy.</strong></p>
+ *
+ * <p>Configuring the Netty client with a proxy is relevant when your application needs to communicate with Azure
+ * services through a proxy server.</p>
+ *
+ * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.netty.instantiation-simple -->
+ *
+ * <p><strong>Building a new HttpClient instance with HTTP/2 Support.</strong></p>
+ *
+ * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.netty.instantiation-simple -->
+ *
+ * <p>It is also possible to create a Netty HttpClient that only supports HTTP/2.</p>
+ *
+ * <!-- src_embed readme-sample-useHttp2OnlyWithConfiguredNettyClient -->
+ * <pre>
+ * &#47;&#47; Constructs an HttpClient that only supports HTTP&#47;2.
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;reactor.netty.http.client.HttpClient.create&#40;&#41;
+ *     .protocol&#40;HttpProtocol.H2&#41;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-useHttp2OnlyWithConfiguredNettyClient  -->
+ *
  * @see HttpClient
+ * @see NettyAsyncHttpClient
  */
 public class NettyAsyncHttpClientBuilder {
     private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
@@ -84,6 +122,8 @@ public class NettyAsyncHttpClientBuilder {
             PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER).toMillis();
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
             Duration.ofSeconds(60), LOGGER).toMillis();
+
+        Utility.validateNettyVersions();
     }
 
     private final HttpClient baseHttpClient;

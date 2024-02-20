@@ -4,29 +4,24 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleResourcePatch;
 
-/** Samples for ScheduledQueryRules Update. */
+/**
+ * Samples for ScheduledQueryRules Update.
+ */
 public final class ScheduledQueryRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/patchScheduledQueryRule.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/patchScheduledQueryRule.json
      */
     /**
      * Sample code: Create or update a scheduled query rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAScheduledQueryRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
-            .manager()
-            .serviceClient()
-            .getScheduledQueryRules()
-            .updateWithResponse(
-                "QueryResourceGroupName",
-                "heartbeat",
-                new ScheduledQueryRuleResourcePatch().withEnabled(false),
-                Context.NONE);
+        azure.diagnosticSettings().manager().serviceClient().getScheduledQueryRules().updateWithResponse(
+            "QueryResourceGroupName", "heartbeat", new ScheduledQueryRuleResourcePatch().withEnabled(false),
+            com.azure.core.util.Context.NONE);
     }
 }

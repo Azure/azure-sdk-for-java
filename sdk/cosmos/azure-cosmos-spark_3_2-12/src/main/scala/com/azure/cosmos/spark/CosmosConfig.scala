@@ -330,10 +330,10 @@ private case class CosmosAccountConfig(endpoint: String,
                                        subscriptionId: Option[String],
                                        tenantId: Option[String],
                                        resourceGroupName: Option[String],
-                                       azureEnvironment: AzureEnvironment)
+                                       azureEnvironmentEndpoints: java.util.Map[String, String])
 
 private object CosmosAccountConfig {
-  private val DefaultAzureEnvironmentType = AzureEnvironmentType.Azure
+  private val DefaultAzureEnvironmentEndpoints = AzureEnvironmentType.Azure
 
   private val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
     mandatory = true,
@@ -436,16 +436,16 @@ private object CosmosAccountConfig {
       parseFromStringFunction = resourceGroupName => resourceGroupName,
       helpMessage = "The resource group of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
-  private val AzureEnvironmentTypeEnum = CosmosConfigEntry[AzureEnvironment](key = CosmosConfigNames.AzureEnvironment,
-      defaultValue = Option.apply(AzureEnvironment.AZURE),
+  private val AzureEnvironmentTypeEnum = CosmosConfigEntry[java.util.Map[String, String]](key = CosmosConfigNames.AzureEnvironment,
+      defaultValue = Option.apply(AzureEnvironment.AZURE.getEndpoints),
       mandatory = false,
       parseFromStringFunction = azureEnvironmentTypeAsString => {
           val azureEnvironmentType = CosmosConfigEntry.parseEnumeration(azureEnvironmentTypeAsString, AzureEnvironmentType)
           azureEnvironmentType match {
-              case AzureEnvironmentType.Azure => AzureEnvironment.AZURE
-              case AzureEnvironmentType.AzureChina => AzureEnvironment.AZURE_CHINA
-              case AzureEnvironmentType.AzureGermany => AzureEnvironment.AZURE_GERMANY
-              case AzureEnvironmentType.AzureUsGovernment => AzureEnvironment.AZURE_US_GOVERNMENT
+              case AzureEnvironmentType.Azure => AzureEnvironment.AZURE.getEndpoints
+              case AzureEnvironmentType.AzureChina => AzureEnvironment.AZURE_CHINA.getEndpoints
+              case AzureEnvironmentType.AzureGermany => AzureEnvironment.AZURE_GERMANY.getEndpoints
+              case AzureEnvironmentType.AzureUsGovernment => AzureEnvironment.AZURE_US_GOVERNMENT.getEndpoints
               case _ => throw new IllegalArgumentException(s"Azure environment type ${azureEnvironmentType} is not supported")
           }
       },
@@ -1297,7 +1297,7 @@ protected case class CosmosReadManyFilteringConfig(readManyFilteringEnabled: Boo
 
 private object CosmosReadManyFilteringConfig {
   // For now,we use a hardcoded name, if there are requirements to make it more dynamic, can open it to be configurable
-  private val defaultReadManyFilterProperty = "_itemIdentity"
+  private val defaultReadManyFilterProperty = CosmosConstants.Properties.ItemIdentity
 
   private val readManyFilteringEnabled = CosmosConfigEntry[Boolean](
     key = CosmosConfigNames.ReadManyFilteringEnabled,

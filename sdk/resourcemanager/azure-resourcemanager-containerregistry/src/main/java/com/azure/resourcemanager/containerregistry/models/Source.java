@@ -26,14 +26,16 @@ public final class Source {
     @JsonProperty(value = "instanceID")
     private String instanceId;
 
-    /** Creates an instance of Source class. */
+    /**
+     * Creates an instance of Source class.
+     */
     public Source() {
     }
 
     /**
      * Get the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
      * this will be resolved by os.Hostname() along with the running port.
-     *
+     * 
      * @return the addr value.
      */
     public String addr() {
@@ -43,7 +45,7 @@ public final class Source {
     /**
      * Set the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
      * this will be resolved by os.Hostname() along with the running port.
-     *
+     * 
      * @param addr the addr value to set.
      * @return the Source object itself.
      */
@@ -54,7 +56,7 @@ public final class Source {
 
     /**
      * Get the instanceId property: The running instance of an application. Changes after each restart.
-     *
+     * 
      * @return the instanceId value.
      */
     public String instanceId() {
@@ -63,7 +65,7 @@ public final class Source {
 
     /**
      * Set the instanceId property: The running instance of an application. Changes after each restart.
-     *
+     * 
      * @param instanceId the instanceId value to set.
      * @return the Source object itself.
      */
@@ -74,7 +76,7 @@ public final class Source {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

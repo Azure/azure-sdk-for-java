@@ -52,7 +52,7 @@
               "allowCustom": true
             },
             "value": {
-              "durationMs": 86400000
+              "durationMs": 1800000
             }
           },
           {
@@ -86,7 +86,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet roleName = strcat(\"java-template-\", runId);\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" and cloud_RoleName endswith \"{runId}\";\r\nlet testSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" and cloud_RoleName endswith \"{runId}\";\r\nlet errors = metrics\r\n| where name == \"test.run.duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| summarize error_by_type=sum(valueCount) by errorType\r\n| summarize test_errors=make_bag(bag_pack(errorType, error_by_type))\r\n| evaluate narrow();\r\nlet runs = metrics \r\n| where name == \"test.run.duration\" \r\n| summarize successful_runs=sumif(valueCount, customDimensions[\"error.type\"] == \"\"), total_runs=sum(valueCount)\r\n| evaluate narrow();\r\nlet parameters = testSpans \r\n| where name == \"before run\"\r\n| project params_pod=customDimensions[\"hostname\"], params_scenarioName=customDimensions[\"scenarioName\"], params_durationSec=customDimensions[\"durationSec\"], params_concurrency=customDimensions[\"concurrency\"], params_sync=customDimensions[\"sync\"], params_httpClient=customDimensions[\"httpClientProvider\"], params_JRE=strcat(tostring(customDimensions[\"jreVendor\"]), \" \", tostring(customDimensions[\"jreVersion\"]))\r\n| evaluate narrow();\r\nlet actualDuration = metrics\r\n| where name == \"test.run.duration\"\r\n| summarize maxTs = max(timestamp), minTs = min(timestamp)\r\n| project actual_durationSec=(maxTs-minTs)/1s\r\n| evaluate narrow();\r\nlet avgThroughput = metrics \r\n| where name == \"test.run.duration\" \r\n| summarize throughputPerMin=sum(valueCount) by bin(timestamp, 1m) // in case AppInsights ingestion drops something\r\n| summarize avg_throughtputPerSec=avg(throughputPerMin/60)\r\n| evaluate narrow();\r\nparameters \r\n| union runs, errors, actualDuration, avgThroughput\r\n| project Property = Column, Value\r\n",
+        "query": "let runId = \"{runId}\";\r\nlet roleName = strcat(\"java-template-\", runId);\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == roleName;\r\nlet testSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == roleName;\r\nlet errors = metrics\r\n| where name == \"test.run.duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| summarize error_by_type=sum(valueCount) by errorType\r\n| summarize test_errors=make_bag(bag_pack(errorType, error_by_type))\r\n| evaluate narrow();\r\nlet runs = metrics \r\n| where name == \"test.run.duration\" \r\n| summarize successful_runs=sumif(valueCount, customDimensions[\"error.type\"] == \"\"), total_runs=sum(valueCount)\r\n| evaluate narrow();\r\nlet parameters = testSpans \r\n| where name == \"before run\"\r\n| project params_pod=customDimensions[\"hostname\"], params_scenarioName=customDimensions[\"scenarioName\"], params_durationSec=customDimensions[\"durationSec\"], params_concurrency=customDimensions[\"concurrency\"], params_sync=customDimensions[\"sync\"], params_httpClient=strcat(tostring(customDimensions[\"httpClientPackage\"]), \":\", tostring(customDimensions[\"httpClientPackageVersion\"])), params_JRE=strcat(tostring(customDimensions[\"jreVendor\"]), \" \", tostring(customDimensions[\"jreVersion\"]))\r\n| evaluate narrow();\r\nlet actualDuration = metrics\r\n| where name == \"test.run.duration\"\r\n| summarize maxTs = max(timestamp), minTs = min(timestamp)\r\n| project actual_durationSec=(maxTs-minTs)/1s\r\n| evaluate narrow();\r\nlet avgThroughput = metrics \r\n| where name == \"test.run.duration\" \r\n| summarize throughputPerMin=sum(valueCount) by bin(timestamp, 1m) // in case AppInsights ingestion drops something\r\n| summarize avg_throughtputPerSec=avg(throughputPerMin/60)\r\n| evaluate narrow();\r\nparameters \r\n| union runs, errors, actualDuration, avgThroughput\r\n| project Property = Column, Value\r\n",
         "size": 0,
         "showAnalytics": true,
         "title": "Test summary",
@@ -118,7 +118,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runs = customMetrics \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" \r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| summarize start=min(timestamp), end=max(timestamp) by runId\r\n| project start, duration= end-start, runId;\r\nlet runSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\"  and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| distinct runId, pod=tostring(customDimensions[\"hostname\"]);\r\nruns \r\n| join kind = innerunique runSpans on runId\r\n| order by start desc\r\n| project-away runId1\r\n",
+        "query": "let runs = customMetrics \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" \r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| summarize start=min(timestamp), end=max(timestamp) by runId\r\n| project start, duration= end-start, runId;\r\nlet runSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\"  and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| distinct runId, pod=tostring(customDimensions[\"hostname\"]), client=strcat(tostring(customDimensions[\"httpClientPackage\"]), \":\", tostring(customDimensions[\"httpClientPackageVersion\"]));\r\nruns \r\n| join kind = innerunique runSpans on runId\r\n| order by start desc\r\n| project-away runId1\r\n",
         "size": 0,
         "title": "Runs in {timeRange:label}",
         "noDataMessageStyle": 5,
@@ -205,7 +205,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.memory.usage\" and customDimensions[\"type\"]==\"heap\"\r\n| summarize heap_memory_used=sum(valueSum/valueCount) by bin(timestamp, 1m)\r\n| render areachart",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"jvm.memory.used\" and customDimensions[\"jvm.memory.type\"]==\"heap\"\r\n| summarize heap_memory_used=sum(valueSum/valueCount) by bin(timestamp, 1m)\r\n| render areachart",
         "size": 0,
         "aggregation": 3,
         "title": "Heap memory used (MB)",
@@ -222,7 +222,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.cpu.utilization\"\r\n| summarize cpu_time_percent=avg(value) * 100 by bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"jvm.cpu.recent_utilization\"\r\n| summarize cpu_time_percent=avg(value) * 100 by bin(timestamp, 1m)\r\n| render timechart\r\n",
         "size": 0,
         "aggregation": 3,
         "title": "CPU %",
@@ -239,7 +239,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.threads.count\"\r\n| summarize max_thread_count=max(valueMax) by bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"jvm.thread.count\"\r\n| summarize max_thread_count=max(valueMax) by bin(timestamp, 1m)\r\n| render timechart\r\n",
         "size": 0,
         "aggregation": 3,
         "title": "Thread count",
@@ -257,7 +257,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.gc.duration\" \r\n| extend gc_type=tostring(customDimensions[\"gc\"])\r\n| summarize gc_percentage=sum(valueSum) / 60 * 100 by gc_type, bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"jvm.gc.duration\" \r\n| extend gc_type=tostring(customDimensions[\"jvm.gc.name\"])\r\n| summarize gc_percentage=sum(valueSum) / 60 * 100 by gc_type, bin(timestamp, 1m)\r\n| render timechart\r\n",
         "size": 0,
         "aggregation": 3,
         "title": "% of time spent in GC",
@@ -294,7 +294,7 @@
         "version": "KqlItem/1.0",
         "query": "traces \r\n| union exceptions\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-template\" and cloud_RoleName endswith \"{runId}\" and severityLevel > 1\r\n| extend severity = case(severityLevel == 2, \"Warning\", severityLevel == 3, \"Error\", \"\")\r\n| summarize warnings = countif(severityLevel==2), errors = countif(severityLevel==3) by bin(timestamp, 1m)\r\n| render timechart\r\n",
         "size": 0,
-        "title": "Errors and warnings in log s(sampled, 0.001%) over time",
+        "title": "Errors and warnings in logs (sampled, 0.001%) over time",
         "queryType": 0,
         "resourceType": "microsoft.insights/components"
       },

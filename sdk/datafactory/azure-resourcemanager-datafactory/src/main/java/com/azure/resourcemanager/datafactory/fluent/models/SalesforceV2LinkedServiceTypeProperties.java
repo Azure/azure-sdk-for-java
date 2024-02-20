@@ -21,6 +21,13 @@ public final class SalesforceV2LinkedServiceTypeProperties {
     private Object environmentUrl;
 
     /*
+     * The authentication type to be used to connect to the Salesforce. Currently, we only support
+     * OAuth2ClientCredentials, it is also the default value
+     */
+    @JsonProperty(value = "authenticationType")
+    private Object authenticationType;
+
+    /*
      * The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance. Type: string (or
      * Expression with resultType string).
      */
@@ -72,6 +79,28 @@ public final class SalesforceV2LinkedServiceTypeProperties {
      */
     public SalesforceV2LinkedServiceTypeProperties withEnvironmentUrl(Object environmentUrl) {
         this.environmentUrl = environmentUrl;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The authentication type to be used to connect to the Salesforce. Currently,
+     * we only support OAuth2ClientCredentials, it is also the default value.
+     * 
+     * @return the authenticationType value.
+     */
+    public Object authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to be used to connect to the Salesforce. Currently,
+     * we only support OAuth2ClientCredentials, it is also the default value.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the SalesforceV2LinkedServiceTypeProperties object itself.
+     */
+    public SalesforceV2LinkedServiceTypeProperties withAuthenticationType(Object authenticationType) {
+        this.authenticationType = authenticationType;
         return this;
     }
 

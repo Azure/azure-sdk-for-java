@@ -3,7 +3,6 @@ $LanguageDisplayName = "Java"
 $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
-$BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
 $GithubUri = "https://github.com/Azure/azure-sdk-for-java"
 $PackageRepositoryUri = "https://repo1.maven.org/maven2"
@@ -222,7 +221,13 @@ function Get-java-GithubIoDocIndex()
   $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and !$clientPackages.Package.Contains($_.Package) }
   $uniquePackages = $clientPackages + $nonClientPackages
   # Get the artifacts name from blob storage
-  $artifacts =  Get-BlobStorage-Artifacts -blobStorageUrl $BlobStorageUrl -blobDirectoryRegex "^java/(.*)/$" -blobArtifactsReplacement '$1'
+  $artifacts =  Get-BlobStorage-Artifacts `
+    -blobDirectoryRegex "^java/(.*)/$" `
+    -blobArtifactsReplacement '$1' `
+    -storageAccountName 'azuresdkdocs' `
+    -storageContainerName '$web' `
+    -storagePrefix 'java/'
+
   # Build up the artifact to service name mapping for GithubIo toc.
   $tocContent = Get-TocMapping -metadata $uniquePackages -artifacts $artifacts
   # Generate yml/md toc files and build site.

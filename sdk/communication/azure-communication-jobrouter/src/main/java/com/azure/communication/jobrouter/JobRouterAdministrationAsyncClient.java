@@ -314,9 +314,9 @@ public final class JobRouterAdministrationAsyncClient {
             = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(),
             BinaryData.fromObject(distributionPolicy), requestOptions)
-                .map(response -> new SimpleResponse<DistributionPolicy>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), DistributionPolicyConstructorProxy
-                        .create(response.getValue().toObject(DistributionPolicyInternal.class))));
+            .map(response -> new SimpleResponse<DistributionPolicy>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), DistributionPolicyConstructorProxy
+                    .create(response.getValue().toObject(DistributionPolicyInternal.class))));
     }
 
     /**
@@ -717,9 +717,9 @@ public final class JobRouterAdministrationAsyncClient {
             .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
         return upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getClassificationPolicyId(),
             BinaryData.fromObject(classificationPolicy), requestOptions)
-                .map(response -> new SimpleResponse<ClassificationPolicy>(response.getRequest(),
-                    response.getStatusCode(), response.getHeaders(), ClassificationPolicyConstructorProxy
-                        .create(response.getValue().toObject(ClassificationPolicyInternal.class))));
+            .map(response -> new SimpleResponse<ClassificationPolicy>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), ClassificationPolicyConstructorProxy
+                    .create(response.getValue().toObject(ClassificationPolicyInternal.class))));
     }
 
     /**
@@ -1129,9 +1129,9 @@ public final class JobRouterAdministrationAsyncClient {
             = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
             BinaryData.fromObject(exceptionPolicy), requestOptions)
-                .map(response -> new SimpleResponse<ExceptionPolicy>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), ExceptionPolicyConstructorProxy
-                        .create(response.getValue().toObject(ExceptionPolicyInternal.class))));
+            .map(response -> new SimpleResponse<ExceptionPolicy>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(),
+                ExceptionPolicyConstructorProxy.create(response.getValue().toObject(ExceptionPolicyInternal.class))));
     }
 
     /**
