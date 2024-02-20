@@ -76,7 +76,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * @param retryOptions The {@link RetryOptions} used to configure this {@link RetryPolicy}.
      * @throws NullPointerException If {@code retryOptions} is null.
      */
-    RetryPolicy(RetryOptions retryOptions) {
+    public RetryPolicy(RetryOptions retryOptions) {
         this(ImplUtils.getRetryStrategyFromOptions(retryOptions), retryOptions.getMaxRetries(),
             retryOptions.getDelayFromHeaders());
     }

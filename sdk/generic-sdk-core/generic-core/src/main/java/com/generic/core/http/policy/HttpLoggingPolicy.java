@@ -11,7 +11,9 @@ import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.implementation.http.policy.HttpRequestLogger;
 import com.generic.core.implementation.http.policy.HttpResponseLogger;
 import com.generic.core.implementation.util.CoreUtils;
+import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.implementation.util.LoggingKeys;
+import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
@@ -23,9 +25,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static com.generic.core.models.HeaderName.CLIENT_REQUEST_ID;
@@ -38,16 +38,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
     private static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
-
-    // Use a cache to retain the caller method ClientLogger.
-    //
-    // The same method may be called thousands or millions of times, so it is wasteful to create a new logger instance
-    // each time the method is called. Instead, retain the created ClientLogger until a certain number of unique method
-    // calls have been made and then clear the cache and rebuild it. Long term, this should be replaced with an LRU,
-    // or another type of cache, for better cache management.
-    private static final int LOGGER_CACHE_MAX_SIZE = 1000;
-    private static final Map<String, ClientLogger> CALLER_METHOD_LOGGER_CACHE = new ConcurrentHashMap<>();
-
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
     private final HttpLogOptions.HttpLogDetailLevel httpLogDetailLevel;
     private final Set<String> allowedHeaderNames;
@@ -172,7 +162,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLength);
 
             if (httpLogDetailLevel.shouldLogBody() && shouldBodyBeLogged(contentType, contentLength)) {
-                logBody(request, (int) contentLength, logBuilder, logger, contentType);
+                logBody(request, logBuilder);
                 return;
             }
 
@@ -180,26 +170,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private void logBody(HttpRequest request, int contentLength, ClientLogger.LoggingEventBuilder logBuilder, ClientLogger logger,
-                         String contentType) {
-        BinaryData data = request.getBody();
-        // BinaryDataContent content = BinaryDataHelper.getContent(data);
-        // if (content instanceof StringContent
-        //     || content instanceof ByteBufferContent
-        //     || content instanceof SerializableContent
-        //     || content instanceof ByteArrayContent) {
-        //     logBody(logBuilder, logger, contentType, content.toString());
-        // } else if (content instanceof InputStreamContent) {
-        //     // TODO (limolkova) Implement sync version with logging stream wrapper
-        //     byte[] contentBytes = content.toBytes();
-        //     request.setBody(contentBytes);
-        //     logBody(logBuilder, logger, contentType, new String(contentBytes, StandardCharsets.UTF_8));
-        // }
-    }
-
-    private void logBody(ClientLogger.LoggingEventBuilder logBuilder, ClientLogger logger, String contentType, String data) {
-        // logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentType, data))
-        //     .log(REQUEST_LOG_MESSAGE);
+    private void logBody(HttpRequest request, ClientLogger.LoggingEventBuilder logBuilder) {
+        logBuilder.addKeyValue(LoggingKeys.BODY_KEY, request.getBody().toString())
+                .log(REQUEST_LOG_MESSAGE);
     }
 
 
@@ -266,7 +239,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     private static String getRedactedUrl(URL url, Set<String> allowedQueryParameterNames) {
         String query = url.getQuery();
-
         if (CoreUtils.isNullOrEmpty(query)) {
             // URL doesn't have a query string, just return the URL as-is.
             return url.toString();
@@ -274,18 +246,17 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         // URL does have a query string that may need redactions.
         // Use UrlBuilder to break apart the URL, clear the query string, and add the redacted query string.
-        // UrlBuilder urlBuilder = ImplUtils.parseUrl(url, false);
-        //
-        // CoreUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
-        //     if (allowedQueryParameterNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
-        //         urlBuilder.addQueryParameter(queryParam.getKey(), queryParam.getValue());
-        //     } else {
-        //         urlBuilder.addQueryParameter(queryParam.getKey(), REDACTED_PLACEHOLDER);
-        //     }
-        // });
+        UrlBuilder urlBuilder = ImplUtils.parseUrl(url, false);
 
-        // return urlBuilder.toString();
-        return null;
+        CoreUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
+            if (allowedQueryParameterNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
+                urlBuilder.addQueryParameter(queryParam.getKey(), queryParam.getValue());
+            } else {
+                urlBuilder.addQueryParameter(queryParam.getKey(), REDACTED_PLACEHOLDER);
+            }
+        });
+
+        return urlBuilder.toString();
     }
 
     /*
@@ -324,7 +295,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             contentLength = Long.parseLong(contentLengthString);
         } catch (NumberFormatException | NullPointerException e) {
-            // logger.warning("Could not parse the HTTP header content-length: '{}'.", contentLengthString, e);
+            logger.log(ClientLogger.LogLevel.INFORMATIONAL,
+                    () -> "Could not parse the HTTP header content-length: '" + contentLengthString + "'.", e);
         }
 
         return contentLength;
@@ -354,17 +326,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return request.getMetadata().getRetryCount();
     }
 
-    /*
-     * Get or create the ClientLogger for the method having its request and response logged.
-     */
-    private static ClientLogger getOrCreateMethodLogger(String methodName) {
-        if (CALLER_METHOD_LOGGER_CACHE.size() > LOGGER_CACHE_MAX_SIZE) {
-            CALLER_METHOD_LOGGER_CACHE.clear();
-        }
-
-        return CALLER_METHOD_LOGGER_CACHE.computeIfAbsent(methodName, ClientLogger::new);
-    }
-
     private static ClientLogger.LoggingEventBuilder getLogBuilder(ClientLogger.LogLevel logLevel, ClientLogger logger) {
         switch (logLevel) {
             case ERROR:
@@ -382,9 +343,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final class LoggingHttpResponse extends HttpResponse {
         private final HttpResponse actualResponse;
         private final ClientLogger.LoggingEventBuilder logBuilder;
-        private final int contentLength;
-        private final ClientLogger logger;
-        private final String contentTypeHeader;
 
         private LoggingHttpResponse(HttpResponse actualResponse, ClientLogger.LoggingEventBuilder logBuilder,
                                     ClientLogger logger, int contentLength, String contentTypeHeader) {
@@ -392,9 +350,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             this.actualResponse = actualResponse;
             this.logBuilder = logBuilder;
-            this.logger = logger;
-            this.contentLength = contentLength;
-            this.contentTypeHeader = contentTypeHeader;
         }
 
         @Override

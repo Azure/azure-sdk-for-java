@@ -1,15 +1,16 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+package com.generic.core.util;// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
-package com.generic.core.util;
 
 import com.generic.core.annotation.Metadata;
 import com.generic.core.implementation.util.CoreUtils;
+import com.generic.core.implementation.util.DefaultLogger;
 import com.generic.core.util.configuration.Configuration;
+import com.generic.json.implementation.jackson.core.io.JsonStringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
+import org.slf4j.helpers.NOPLogger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,13 +37,15 @@ import static com.generic.core.annotation.TypeConditions.FLUENT;
  *
  * <p>The logger is capable of producing json-formatted messages enriched with key value pairs.
  * Context can be provided in the constructor and populated on every message or added per each log record.</p>
- *
  * @see Configuration
  */
 public class ClientLogger {
     private final Logger logger;
     private final String globalContextSerialized;
     private final boolean hasGlobalContext;
+
+    private static final char CR = '\r';
+    private static final char LF = '\n';
 
     /**
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.
@@ -57,7 +60,6 @@ public class ClientLogger {
      * Retrieves a logger for the passed class name using the {@link LoggerFactory}.
      *
      * @param className Class name creating the logger.
-     *
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className) {
@@ -69,7 +71,7 @@ public class ClientLogger {
      *
      * @param clazz Class creating the logger.
      * @param context Context to be populated on every log record written with this logger.
-     * Objects are serialized with {@code toString()} method.
+     *                Objects are serialized with {@code toString()} method.
      */
     public ClientLogger(Class<?> clazz, Map<String, Object> context) {
         this(clazz.getName(), context);
@@ -79,29 +81,24 @@ public class ClientLogger {
      * Retrieves a logger for the passed class name using the {@link LoggerFactory} with
      * context that will be populated on all log records produced with this logger.
      *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <p>Logging with context.</p>
-     *
      * <!-- src_embed com.generic.core.util.logging.clientlogger#globalcontext -->
      * <pre>
      * Map&lt;String, Object&gt; context = new HashMap&lt;&gt;&#40;&#41;;
      * context.put&#40;&quot;connectionId&quot;, &quot;95a47cf&quot;&#41;;
      *
      * ClientLogger loggerWithContext = new ClientLogger&#40;ClientLoggerJavaDocCodeSnippets.class, context&#41;;
-     * loggerWithContext.atInfo&#40;&#41;.log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * loggerWithContext.info&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger#globalcontext -->
      *
      * @param className Class name creating the logger.
      * @param context Context to be populated on every log record written with this logger.
-     * Objects are serialized with {@code toString()} method.
-     *
+     *                Objects are serialized with {@code toString()} method.
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className, Map<String, Object> context) {
         Logger initLogger = LoggerFactory.getLogger(className);
-        logger = initLogger;
+        logger = initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
         globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
         hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContextSerialized);
     }
@@ -115,7 +112,7 @@ public class ClientLogger {
      *
      * <!-- src_embed com.generic.core.util.logging.clientlogger.log -->
      * <pre>
-     * logger.log&#40;ClientLogger.LogLevel.VERBOSE,
+     * logger.log&#40;LogLevel.VERBOSE,
      *     &#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.log -->
@@ -137,7 +134,7 @@ public class ClientLogger {
      * <!-- src_embed com.generic.core.util.logging.clientlogger.log#throwable -->
      * <pre>
      * Throwable illegalArgumentException = new IllegalArgumentException&#40;&quot;An invalid argument was encountered.&quot;&#41;;
-     * logger.log&#40;ClientLogger.LogLevel.VERBOSE,
+     * logger.log&#40;LogLevel.VERBOSE,
      *     &#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;,
      *     illegalArgumentException&#41;;
      * </pre>
@@ -149,7 +146,8 @@ public class ClientLogger {
      */
     public void log(LogLevel logLevel, Supplier<String> message, Throwable throwable) {
         if (message != null && canLogAtLevel(logLevel)) {
-            performDeferredLogging(logLevel, message, throwable);
+            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
+                .log(message, throwable);
         }
     }
 
@@ -166,7 +164,8 @@ public class ClientLogger {
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
         if (logger.isWarnEnabled()) {
-            performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
+            LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContextSerialized, true)
+                .log(throwable::getMessage, throwable);
         }
 
         return throwable;
@@ -184,122 +183,11 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsError(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        if (!logger.isErrorEnabled()) {
-            return throwable;
+        if (logger.isErrorEnabled()) {
+            LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized, true)
+                .log(throwable::getMessage, throwable);
         }
-
-        performLogging(LogLevel.ERROR, true, throwable.getMessage(), throwable);
         return throwable;
-    }
-
-    /*
-     * Performs the logging. Call only if logging at this level is enabled.
-     *
-     * @param format format-able message.
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
-     */
-    private void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
-        if (hasGlobalContext) {
-            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
-                .log(format, args);
-            return;
-        }
-
-        // If the logging level is less granular than verbose remove the potential throwable from the args.
-        // String throwableMessage = "";
-        // if (LoggingUtils.doesArgsHaveThrowable(args)) {
-        //     // If we are logging an exception the format string is already the exception message, don't append it.
-        //     if (!isExceptionLogging) {
-        //         Object throwable = args[args.length - 1];
-        //
-        //         // This is true from before but is needed to appease SpotBugs.
-        //         if (throwable instanceof Throwable) {
-        //             throwableMessage = ((Throwable) throwable).getMessage();
-        //         }
-        //     }
-        //
-        //     /*
-        //      * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
-        //      * stack trace which is only expected when logging at a verbose level.
-        //      */
-        //     if (!logger.isDebugEnabled()) {
-        //         args = LoggingUtils.removeThrowable(args);
-        //     }
-        // }
-        //
-        // format = LoggingUtils.removeNewLinesFromLogMessage(format);
-        //
-        // switch (logLevel) {
-        //     case VERBOSE:
-        //         logger.debug(format, args);
-        //         break;
-        //     case INFORMATIONAL:
-        //         logger.info(format, args);
-        //         break;
-        //     case WARNING:
-        //         if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
-        //             format += System.lineSeparator() + throwableMessage;
-        //         }
-        //         logger.warn(format, args);
-        //         break;
-        //     case ERROR:
-        //         if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
-        //             format += System.lineSeparator() + throwableMessage;
-        //         }
-        //         logger.error(format, args);
-        //         break;
-        //     default:
-        //         // Don't do anything, this state shouldn't be possible.
-        //         break;
-        // }
-    }
-
-    /*
-     * Performs deferred logging. Call only if logging at this level is enabled.
-     *
-     * @param logLevel sets the logging level
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
-     */
-    private void performDeferredLogging(LogLevel logLevel, Supplier<String> messageSupplier, Throwable throwable) {
-
-        if (hasGlobalContext) {
-            // LoggingEventBuilder writes log messages as json and performs all necessary escaping, i.e. no
-            // sanitization needed
-            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
-                .log(messageSupplier, throwable);
-            return;
-        }
-
-        // String message = LoggingUtils.removeNewLinesFromLogMessage(messageSupplier.get());
-        // String throwableMessage = (throwable != null) ? throwable.getMessage() : "";
-        //
-        // switch (logLevel) {
-        //     case VERBOSE:
-        //         if (throwable != null) {
-        //             logger.debug(message, throwable);
-        //         } else {
-        //             logger.debug(message);
-        //         }
-        //         break;
-        //     case INFORMATIONAL:
-        //         logger.info(message);
-        //         break;
-        //     case WARNING:
-        //         if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
-        //             message += System.lineSeparator() + throwableMessage;
-        //         }
-        //         logger.warn(message);
-        //         break;
-        //     case ERROR:
-        //         if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
-        //             message += System.lineSeparator() + throwableMessage;
-        //         }
-        //         logger.error(message);
-        //         break;
-        //     default:
-        //         // Don't do anything, this state shouldn't be possible.
-        //         break;
-        // }
     }
 
     /*
@@ -364,14 +252,13 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
      */
     public LoggingEventBuilder atError() {
-        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized,
-            canLogAtLevel(LogLevel.ERROR));
+        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized, canLogAtLevel(LogLevel.ERROR));
     }
 
     /**
      * Creates {@link LoggingEventBuilder} for {@code warning} log level that can be
      * used to enrich log with additional context.
-     *
+
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context at warning level.</p>
@@ -446,8 +333,7 @@ public class ClientLogger {
      *
      * <!-- src_embed com.generic.core.util.logging.clientlogger.atLevel -->
      * <pre>
-     * ClientLogger.LogLevel level = response.getStatusCode&#40;&#41; == 200
-     *     ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;
+     * LogLevel level = response.getStatusCode&#40;&#41; == 200 ? LogLevel.INFORMATIONAL : LogLevel.WARNING;
      * logger.atLevel&#40;level&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .log&#40;&quot;message&quot;&#41;;
@@ -455,7 +341,6 @@ public class ClientLogger {
      * <!-- end com.generic.core.util.logging.clientlogger.atLevel -->
      *
      * @param level log level.
-     *
      * @return instance of {@link LoggingEventBuilder} or no-op if logging at provided level is disabled.
      */
     public LoggingEventBuilder atLevel(LogLevel level) {
@@ -464,7 +349,8 @@ public class ClientLogger {
     }
 
     /**
-     * This class provides fluent API to write logs using {@link ClientLogger} and enrich them with additional context.
+     * This class provides fluent API to write logs using {@link ClientLogger} and
+     * enrich them with additional context.
      *
      * <p><strong>Code samples</strong></p>
      *
@@ -482,8 +368,9 @@ public class ClientLogger {
      */
     @Metadata(conditions = FLUENT)
     public static final class LoggingEventBuilder {
+        private static final JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
         private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, null, false);
-        private static final String SDK_LOG_MESSAGE_KEY = "sdk.message";
+        private static final String SDK_LOG_MESSAGE_KEY = "{\"sdk.message\":\"";
 
         private final Logger logger;
         private final LogLevel level;
@@ -494,7 +381,7 @@ public class ClientLogger {
         private final boolean isEnabled;
 
         /**
-         * Creates {@link LoggingEventBuilder} for provided level and  {@link ClientLogger}.
+         * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
          * If level is disabled, returns no-op instance.
          */
         static LoggingEventBuilder create(Logger logger, LogLevel level, String globalContextSerialized,
@@ -510,17 +397,16 @@ public class ClientLogger {
             this.logger = logger;
             this.level = level;
             this.isEnabled = isEnabled;
-            this.context = Collections.emptyList();
             this.globalContextCached = globalContextSerialized == null ? "" : globalContextSerialized;
             this.hasGlobalContext = !this.globalContextCached.isEmpty();
         }
 
         /**
-         * Adds a key with a {@link String} value pair to the context of current log being created.
+         * Adds key with String value pair to the context of current log being created.
          *
          * <p><strong>Code samples</strong></p>
          *
-         * <p>Adding a String value to the logging event context.</p>
+         * <p>Adding string value to logging event context.</p>
          *
          * <!-- src_embed com.generic.core.util.logging.clientlogger.atInfo -->
          * <pre>
@@ -530,9 +416,9 @@ public class ClientLogger {
          * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
          *
-         * @param key Key to associate the provided {@code value} with.
-         * @param value The {@link String} value.
-         * @return The updated {@link LoggingEventBuilder} object.
+         * @param key String key.
+         * @param value String value.
+         * @return The updated {@code LoggingEventBuilder} object.
          */
         public LoggingEventBuilder addKeyValue(String key, String value) {
             if (this.isEnabled) {
@@ -543,13 +429,13 @@ public class ClientLogger {
         }
 
         /**
-         * Adds a key with an {@link Object} value to the context of current log being created. If logging is enabled at
-         * the given level, and {@code value} is not {@code null}, it uses {@link Object#toString()} to serialize the
-         * provided {@code value}.
+         * Adds key with Object value to the context of current log being created.
+         * If logging is enabled at given level, and object is not null, uses {@code value.toString()} to
+         * serialize object.
          *
          * <p><strong>Code samples</strong></p>
          *
-         * <p>Adding a String value to the logging event context.</p>
+         * <p>Adding string value to logging event context.</p>
          *
          * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
          * <pre>
@@ -560,13 +446,15 @@ public class ClientLogger {
          * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
          *
-         * @param key Key to associate the provided {@code value} with.
-         * @param value The {@link Object} value.
-         * @return The updated {@link LoggingEventBuilder} object.
+         * @param key String key.
+         * @param value Object value.
+         * @return The updated {@code LoggingEventBuilder} object.
          */
         public LoggingEventBuilder addKeyValue(String key, Object value) {
             if (this.isEnabled) {
-                addKeyValueInternal(key, value == null ? null : value.toString());
+                // Previously this eagerly called toString() on the value, but that can be expensive and unnecessary.
+                // This is now deferred until the value is being logged, which was calling toString() anyway.
+                addKeyValueInternal(key, value);
             }
 
             return this;
@@ -583,12 +471,11 @@ public class ClientLogger {
             if (this.isEnabled) {
                 addKeyValueInternal(key, value);
             }
-
             return this;
         }
 
         /**
-         * Adds a key with a long value to the context of current log event being created.
+         * Adds key with long value to the context of current log event being created.
          *
          * <p><strong>Code samples</strong></p>
          *
@@ -610,72 +497,59 @@ public class ClientLogger {
             if (this.isEnabled) {
                 addKeyValueInternal(key, value);
             }
-
             return this;
         }
 
         /**
-         * Adds a key with a {@link String} value {@link Supplier} to the context of the current log event being
-         * created.
+         * Adds key with String value supplier to the context of current log event being created.
          *
-         * @param key Key to associate the provided {@code value} with.
-         * @param valueSupplier The {@link String} value {@link Supplier} function.
-         * @return The updated {@link LoggingEventBuilder} object.
+         * @param key String key.
+         * @param valueSupplier String value supplier function.
+         * @return The updated {@code LoggingEventBuilder} object.
          */
         public LoggingEventBuilder addKeyValue(String key, Supplier<String> valueSupplier) {
             if (this.isEnabled) {
-                if (this.context.isEmpty()) {
+                if (this.context == null) {
                     this.context = new ArrayList<>();
                 }
 
                 this.context.add(new ContextKeyValuePair(key, valueSupplier));
             }
-
             return this;
         }
 
         /**
-         * Logs a message annotated with context.
+         * Logs message annotated with context.
          *
-         * @param message The message to log.
-         */
-        public void log(String message) {
-            if (this.isEnabled) {
-                performLogging(level, message);
-            }
-        }
-
-        /**
-         * Logs a message annotated with context.
-         *
-         * @param messageSupplier {@link String} message {@link Supplier}.
+         * @param messageSupplier string message supplier.
          */
         public void log(Supplier<String> messageSupplier) {
             if (this.isEnabled) {
                 String message = messageSupplier != null ? messageSupplier.get() : null;
-                performLogging(level, message);
+                performLogging(level, getMessageWithContext(message, null), (Throwable) null);
             }
         }
 
         /**
-         * Logs a message annotated with context.
+         * Logs message annotated with context.
          *
-         * @param messageSupplier {@link String} message {@link Supplier}.
+         * @param messageSupplier string message supplier.
          * @param throwable {@link Throwable} for the message.
          */
         public void log(Supplier<String> messageSupplier, Throwable throwable) {
             if (this.isEnabled) {
                 String message = messageSupplier != null ? messageSupplier.get() : null;
-                performLogging(level, message, throwable);
+                performLogging(level, getMessageWithContext(message, throwable),
+                    logger.isDebugEnabled() ? throwable : null);
             }
         }
 
         /**
-         * Logs a formattable message that uses {@code {}} as the placeholder at the {@code warning} log level.
+         * Logs a format-able message that uses {@code {}} as the placeholder at {@code warning} log level.
          *
-         * @param format The formattable message to log.
-         * @param args Arguments for the message. If an exception is being logged, the last argument should be the
-         * {@link Throwable}.
+         * @param format The format-able message to log.
+         * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
+         * Throwable}.
          */
         public void log(String format, Object... args) {
             if (this.isEnabled) {
@@ -686,7 +560,7 @@ public class ClientLogger {
         /**
          * Logs the {@link Throwable} and returns it to be thrown.
          *
-         * @param throwable {@link Throwable} to be logged and returned.
+         * @param throwable Throwable to be logged and returned.
          * @return The passed {@link Throwable}.
          * @throws NullPointerException If {@code throwable} is {@code null}.
          */
@@ -694,17 +568,17 @@ public class ClientLogger {
             Objects.requireNonNull(throwable, "'throwable' cannot be null.");
 
             if (this.isEnabled) {
-                performLogging(level, null, throwable);
+                performLogging(level, getMessageWithContext(null, throwable), logger.isDebugEnabled() ? throwable : null);
             }
 
             return throwable;
         }
 
         /**
-         * Logs the {@link RuntimeException} and returns it to be thrown. This API covers the cases where a checked
-         * exception type needs to be thrown and logged.
+         * Logs the {@link RuntimeException} and returns it to be thrown.
+         * This API covers the cases where a checked exception type needs to be thrown and logged.
          *
-         * @param runtimeException {@link RuntimeException} to be logged and returned.
+         * @param runtimeException RuntimeException to be logged and returned.
          * @return The passed {@link RuntimeException}.
          * @throws NullPointerException If {@code runtimeException} is {@code null}.
          */
@@ -712,9 +586,10 @@ public class ClientLogger {
             Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
             if (this.isEnabled) {
-                performLogging(level, null, runtimeException);
-            }
+                performLogging(level, getMessageWithContext(null, runtimeException),
+                    logger.isDebugEnabled() ? runtimeException : null);
 
+            }
             return runtimeException;
         }
 
@@ -723,53 +598,50 @@ public class ClientLogger {
                 message = "";
             }
 
-            StringBuilder sb = new StringBuilder(20 + context.size() * 20 + message.length()
+            StringBuilder sb = new StringBuilder(20 + (context == null ? 0 : context.size()) * 20 + message.length()
                 + globalContextCached.length());
-
-            sb.append("{\"")
-                // message must be first for log parsing tooling to work, key also works as a
-                // marker for SDK logs, so we'll write it even if there is no message
-                .append(SDK_LOG_MESSAGE_KEY)
-                .append("\":\"");
-            //JSON_STRING_ENCODER.quoteAsString(message, sb);
-            sb.append("\"");
+            // message must be first for log parsing tooling to work, key also works as a
+            // marker for SDK logs so we'll write it even if there is no message
+            sb.append(SDK_LOG_MESSAGE_KEY);
+            JSON_STRING_ENCODER.quoteAsString(message, sb);
+            sb.append('"');
 
             if (throwable != null) {
                 sb.append(",\"exception\":");
 
                 String exceptionMessage = throwable.getMessage();
-
                 if (exceptionMessage != null) {
-                    sb.append("\"");
-                    //JSON_STRING_ENCODER.quoteAsString(exceptionMessage, sb);
-                    sb.append("\"");
+                    sb.append('"');
+                    JSON_STRING_ENCODER.quoteAsString(exceptionMessage, sb);
+                    sb.append('"');
                 } else {
                     sb.append("null");
                 }
             }
 
             if (hasGlobalContext) {
-                sb.append(",").append(globalContextCached);
+                sb.append(',').append(globalContextCached);
             }
 
-            for (ContextKeyValuePair contextKeyValuePair : context) {
-                contextKeyValuePair.write(sb.append(","));
+            if (context != null) {
+                for (ContextKeyValuePair contextKeyValuePair : context) {
+                    contextKeyValuePair.write(sb.append(','));
+                }
             }
 
-            sb.append("}");
-
+            sb.append('}');
             return sb.toString();
         }
 
         private void addKeyValueInternal(String key, Object value) {
-            if (this.context.isEmpty()) {
+            if (this.context == null) {
                 this.context = new ArrayList<>();
             }
 
             this.context.add(new ContextKeyValuePair(key, value));
         }
 
-        /**
+        /*
          * Performs the logging.
          *
          * @param format Formattable message.
@@ -778,7 +650,6 @@ public class ClientLogger {
          */
         private void performLogging(LogLevel logLevel, String format, Object... args) {
             Throwable throwable = null;
-
             if (doesArgsHaveThrowable(args)) {
                 Object throwableObj = args[args.length - 1];
 
@@ -799,18 +670,22 @@ public class ClientLogger {
             FormattingTuple tuple = MessageFormatter.arrayFormat(format, args);
             String message = getMessageWithContext(tuple.getMessage(), throwable);
 
+            performLogging(logLevel, message, tuple.getThrowable());
+        }
+
+        private void performLogging(LogLevel logLevel, String message, Throwable throwable) {
             switch (logLevel) {
                 case VERBOSE:
-                    logger.debug(message, tuple.getThrowable());
+                    logger.debug(message, throwable);
                     break;
                 case INFORMATIONAL:
-                    logger.info(message, tuple.getThrowable());
+                    logger.info(message, throwable);
                     break;
                 case WARNING:
-                    logger.warn(message, tuple.getThrowable());
+                    logger.warn(message, throwable);
                     break;
                 case ERROR:
-                    logger.error(message, tuple.getThrowable());
+                    logger.error(message, throwable);
                     break;
                 default:
                     // Don't do anything, this state shouldn't be possible.
@@ -819,12 +694,13 @@ public class ClientLogger {
         }
 
         /**
-         * Serializes passed map to string containing valid JSON fragment: e.g. "k1":"v1","k2":"v2", properly escaped
-         * and without a trailing comma.
+         * Serializes passed map to string containing valid JSON fragment:
+         * e.g. "k1":"v1","k2":"v2", properly escaped and without trailing comma.
+         * <p>
+         * For complex object serialization, it calls {@code toString()} guarded with null check.
          *
-         * <p>For complex object serialization, it calls {@code toString()} guarded with null check.</p>
+         * @param context to serialize.
          *
-         * @param context Context to serialize.
          * @return Serialized JSON fragment or an empty string.
          */
         static String writeJsonFragment(Map<String, Object> context) {
@@ -833,48 +709,45 @@ public class ClientLogger {
             }
 
             StringBuilder formatter = new StringBuilder(context.size() * 20);
+
+            // Keep track of whether we've written a value yet so we don't write a trailing comma.
+            // The previous implementation would delete the trailing comma, but internally this causes StringBuilder to
+            // copy the entirety of the string to a new buffer, which is very expensive.
+            boolean firstValueWritten = false;
             for (Map.Entry<String, Object> pair : context.entrySet()) {
-                writeKeyAndValue(pair.getKey(), pair.getValue(), formatter).append(",");
+                if (firstValueWritten) {
+                    formatter.append(',');
+                } else {
+                    firstValueWritten = true;
+                }
+
+                writeKeyAndValue(pair.getKey(), pair.getValue(), formatter);
             }
 
-            // Remove trailing comma just in case
-            return formatter.deleteCharAt(formatter.length() - 1).toString();
+            return formatter.toString();
         }
 
-        private static StringBuilder writeKeyAndValue(String key, Object value, StringBuilder formatter) {
-            formatter.append("\"");
-            //JSON_STRING_ENCODER.quoteAsString(key, formatter);
+        private static void writeKeyAndValue(String key, Object value, StringBuilder formatter) {
+            formatter.append('"');
+            JSON_STRING_ENCODER.quoteAsString(key, formatter);
             formatter.append("\":");
 
             if (value == null) {
-                return formatter.append("null");
+                formatter.append("null");
+            } else if (isUnquotedType(value)) {
+                JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
+            } else {
+                formatter.append('"');
+                JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
+                formatter.append('"');
             }
-
-            if (isPrimitive(value)) {
-                //JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
-                return formatter;
-            }
-
-            formatter.append("\"");
-            //JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
-            return formatter.append("\"");
         }
 
         /**
-         * Returns true if the value is an instance of a primitive type and false otherwise.
+         *  Returns true if the value is an unquoted JSON type (boolean, number, null).
          */
-        private static boolean isPrimitive(Object value) {
-            // Most of the time values are strings
-            if (value instanceof String) {
-                return false;
-            }
-
-            return value instanceof Boolean
-                || value instanceof Integer
-                || value instanceof Long
-                || value instanceof Byte
-                || value instanceof Double
-                || value instanceof Float;
+        private static boolean isUnquotedType(Object value) {
+            return value instanceof Boolean || value instanceof Number;
         }
 
         private static final class ContextKeyValuePair {
@@ -895,64 +768,40 @@ public class ClientLogger {
             }
 
             /**
-             * Writes a "key":"value" JSON string to the provided StringBuilder.
+             * Writes "key":"value" json string to provided StringBuilder.
              */
-            public StringBuilder write(StringBuilder formatter) {
+            public void write(StringBuilder formatter) {
                 if (valueSupplier == null) {
-                    return writeKeyAndValue(key, value, formatter);
+                    writeKeyAndValue(key, value, formatter);
+                } else {
+                    writeKeyAndValue(key, valueSupplier.get(), formatter);
                 }
-
-                return writeKeyAndValue(key, valueSupplier.get(), formatter);
             }
-        }
-
-        /**
-         * Determines if the arguments contain a throwable that should be logged, SLF4J logs a throwable if it is the
-         * last element in the argument list.
-         *
-         * @param args The arguments passed to format the log message.
-         * @return {@code true} if the last element is a {@link Throwable}, {@code false} otherwise.
-         */
-        private static boolean doesArgsHaveThrowable(Object... args) {
-            if (args.length == 0) {
-                return false;
-            }
-
-            return args[args.length - 1] instanceof Throwable;
-        }
-
-        /**
-         * Removes the last element from the arguments as it is a {@link Throwable}.
-         *
-         * @param args The arguments passed to format the log message.
-         * @return The arguments with the last element removed.
-         */
-        private static Object[] removeThrowable(Object... args) {
-            return Arrays.copyOf(args, args.length - 1);
         }
     }
 
+
     /**
-     * Enum which represent logging levels used in Core SDKs.
+     * Enum which represent logging levels used in Azure SDKs.
      */
     public enum LogLevel {
         /**
-         * Indicates that the log level is at the verbose level.
+         * Indicates that log level is at verbose level.
          */
         VERBOSE(1, "1", "verbose", "debug"),
 
         /**
-         * Indicates that the log level is at the information level.
+         * Indicates that log level is at information level.
          */
         INFORMATIONAL(2, "2", "info", "information", "informational"),
 
         /**
-         * Indicates that the log level is at the warning level.
+         * Indicates that log level is at warning level.
          */
         WARNING(3, "3", "warn", "warning"),
 
         /**
-         * Indicates that the log level is at the error level.
+         * Indicates that log level is at error level.
          */
         ERROR(4, "4", "err", "error"),
 
@@ -966,8 +815,8 @@ public class ClientLogger {
         private static final HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();
 
         static {
-            for (LogLevel logLevel : LogLevel.values()) {
-                for (String val : logLevel.allowedLogLevelVariables) {
+            for (LogLevel logLevel: LogLevel.values()) {
+                for (String val: logLevel.allowedLogLevelVariables) {
                     LOG_LEVEL_STRING_MAPPER.put(val, logLevel);
                 }
             }
@@ -990,34 +839,88 @@ public class ClientLogger {
         /**
          * Converts the passed log level string to the corresponding {@link LogLevel}.
          *
-         * <p>The valid strings for {@link LogLevel} are:</p>
-         *
+         * @param logLevelVal The log level value which needs to convert
+         * @return The LogLevel Enum if pass in the valid string.
+         * The valid strings for {@link LogLevel} are:
          * <ul>
-         *     <li>VERBOSE: "verbose", "debug"</li>
-         *     <li>INFO: "info", "information", "informational"</li>
-         *     <li>WARNING: "warn", "warning"</li>
-         *     <li>ERROR: "err", "error"</li>
+         * <li>VERBOSE: "verbose", "debug"</li>
+         * <li>INFO: "info", "information", "informational"</li>
+         * <li>WARNING: "warn", "warning"</li>
+         * <li>ERROR: "err", "error"</li>
          * </ul>
-         *
-         * <p>Returns NOT_SET if {@code null} is passed in.</p>
-         *
-         * @param logLevelVal The log level value which needs to be converted.
-         * @return The {@link LogLevel} enum if a valid string was provided.
-         * @throws IllegalArgumentException If the log level value is invalid.
+         * Returns NOT_SET if null is passed in.
+         * @throws IllegalArgumentException if the log level value is invalid.
          */
         public static LogLevel fromString(String logLevelVal) {
             if (logLevelVal == null) {
                 return LogLevel.NOT_SET;
             }
-
             String caseInsensitiveLogLevel = logLevelVal.toLowerCase(Locale.ROOT);
-
             if (!LOG_LEVEL_STRING_MAPPER.containsKey(caseInsensitiveLogLevel)) {
                 throw new IllegalArgumentException("We currently do not support the log level you set. LogLevel: "
                     + logLevelVal);
             }
-
             return LOG_LEVEL_STRING_MAPPER.get(caseInsensitiveLogLevel);
         }
     }
+
+    /**
+     * Removes CR, LF or CRLF pattern in the {@code logMessage}.
+     *
+     * @param logMessage The log message to sanitize.
+     * @return The updated logMessage.
+     */
+    public static String removeNewLinesFromLogMessage(String logMessage) {
+        if (CoreUtils.isNullOrEmpty(logMessage)) {
+            return logMessage;
+        }
+
+        StringBuilder sb = null;
+        int prevStart = 0;
+
+        for (int i = 0; i < logMessage.length(); i++) {
+            if (logMessage.charAt(i) == CR || logMessage.charAt(i) == LF) {
+                if (sb == null) {
+                    sb = new StringBuilder(logMessage.length());
+                }
+
+                if (prevStart != i) {
+                    sb.append(logMessage, prevStart, i);
+                }
+                prevStart = i + 1;
+            }
+        }
+
+        if (sb == null) {
+            return logMessage;
+        }
+        sb.append(logMessage, prevStart, logMessage.length());
+        return sb.toString();
+    }
+
+    /**
+     * Determines if the arguments contains a throwable that would be logged, SLF4J logs a throwable if it is the last
+     * element in the argument list.
+     *
+     * @param args The arguments passed to format the log message.
+     * @return True if the last element is a throwable, false otherwise.
+     */
+    public static boolean doesArgsHaveThrowable(Object... args) {
+        if (args.length == 0) {
+            return false;
+        }
+
+        return args[args.length - 1] instanceof Throwable;
+    }
+
+    /**
+     * Removes the last element from the arguments as it is a throwable.
+     *
+     * @param args The arguments passed to format the log message.
+     * @return The arguments with the last element removed.
+     */
+    public static Object[] removeThrowable(Object... args) {
+        return Arrays.copyOf(args, args.length - 1);
+    }
+
 }
