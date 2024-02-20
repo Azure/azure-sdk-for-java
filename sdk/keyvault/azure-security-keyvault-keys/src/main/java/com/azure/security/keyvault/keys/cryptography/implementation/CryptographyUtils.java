@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.keys.cryptography.implementation;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
@@ -97,6 +98,19 @@ public final class CryptographyUtils {
                     keyOperation.toString().toLowerCase(Locale.ROOT), jsonWebKey.getId()));
         }
     }
+
+   public static boolean isThrowableRetryable(Throwable e) {
+       if (e instanceof HttpResponseException) {
+           int statusCode = ((HttpResponseException) e).getResponse().getStatusCode();
+
+           // Not a retriable error code.
+           return statusCode != 501 && statusCode != 505
+               && (statusCode >= 500 || statusCode == 408 || statusCode == 429);
+       } else {
+           // Not a service-related transient error.
+           return false;
+       }
+   }
 
     /*
      * Determines whether the key is valid and of required size.
