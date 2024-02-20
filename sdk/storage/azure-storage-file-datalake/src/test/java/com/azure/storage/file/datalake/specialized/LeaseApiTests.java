@@ -9,6 +9,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeTestBase;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
@@ -46,7 +47,7 @@ public class LeaseApiTests extends DataLakeTestBase {
 
         assertEquals(leaseId, leaseClient.getLeaseId());
 
-        Response<PathProperties> response = fc.getPropertiesWithResponse(null, null, null);
+        Response<PathProperties> response = fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
 
         assertEquals(leaseStateType, response.getValue().getLeaseState());
         assertEquals(leaseDurationType, response.getValue().getLeaseDuration());
