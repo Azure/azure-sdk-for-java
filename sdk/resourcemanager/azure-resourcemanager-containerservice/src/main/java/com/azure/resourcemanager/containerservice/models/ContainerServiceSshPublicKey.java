@@ -29,7 +29,7 @@ public final class ContainerServiceSshPublicKey {
     /**
      * Get the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
      * be in PEM format with or without headers.
-     *
+     * 
      * @return the keyData value.
      */
     public String keyData() {
@@ -39,7 +39,7 @@ public final class ContainerServiceSshPublicKey {
     /**
      * Set the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
      * be in PEM format with or without headers.
-     *
+     * 
      * @param keyData the keyData value to set.
      * @return the ContainerServiceSshPublicKey object itself.
      */
@@ -50,7 +50,7 @@ public final class ContainerServiceSshPublicKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

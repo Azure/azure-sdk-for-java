@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.fluent.models.ScheduledQueryRuleResourc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a collection of scheduled query rule resources. */
+/**
+ * Represents a collection of scheduled query rule resources.
+ */
 @Fluent
 public final class ScheduledQueryRuleResourceCollection {
     /*
@@ -24,13 +26,15 @@ public final class ScheduledQueryRuleResourceCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ScheduledQueryRuleResourceCollection class. */
+    /**
+     * Creates an instance of ScheduledQueryRuleResourceCollection class.
+     */
     public ScheduledQueryRuleResourceCollection() {
     }
 
     /**
      * Get the value property: The values for the scheduled query rule resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ScheduledQueryRuleResourceInner> value() {
@@ -39,7 +43,7 @@ public final class ScheduledQueryRuleResourceCollection {
 
     /**
      * Set the value property: The values for the scheduled query rule resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ScheduledQueryRuleResourceCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class ScheduledQueryRuleResourceCollection {
 
     /**
      * Get the nextLink property: Provides the link to retrieve the next set of elements.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ScheduledQueryRuleResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

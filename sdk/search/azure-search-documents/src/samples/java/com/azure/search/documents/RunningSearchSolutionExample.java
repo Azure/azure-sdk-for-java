@@ -27,12 +27,12 @@ import java.util.Iterator;
 
 /**
  * This scenario assumes an existing search solution, with index and an indexer setup (see LifecycleSetupExample)
- * <a href="https://github.com/Azure-Samples/azure-search-sample-data">Azure Cognitive Search Sample Data</a>.
+ * <a href="https://github.com/Azure-Samples/azure-search-sample-data">Azure AI Search Sample Data</a>.
  */
 public class RunningSearchSolutionExample {
 
     /**
-     * From the Azure portal, get your Azure Cognitive Search service URL and API admin key, and set the values of these
+     * From the Azure portal, get your Azure AI Search service URL and API admin key, and set the values of these
      * environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");

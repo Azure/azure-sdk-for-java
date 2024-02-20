@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.models.OS;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of agent pool. */
+/**
+ * The properties of agent pool.
+ */
 @Fluent
 public final class AgentPoolProperties {
     /*
@@ -42,13 +44,15 @@ public final class AgentPoolProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of AgentPoolProperties class. */
+    /**
+     * Creates an instance of AgentPoolProperties class.
+     */
     public AgentPoolProperties() {
     }
 
     /**
      * Get the count property: The count of agent machine.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -57,7 +61,7 @@ public final class AgentPoolProperties {
 
     /**
      * Set the count property: The count of agent machine.
-     *
+     * 
      * @param count the count value to set.
      * @return the AgentPoolProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class AgentPoolProperties {
 
     /**
      * Get the tier property: The Tier of agent machine.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -77,7 +81,7 @@ public final class AgentPoolProperties {
 
     /**
      * Set the tier property: The Tier of agent machine.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the AgentPoolProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class AgentPoolProperties {
 
     /**
      * Get the os property: The OS of agent machine.
-     *
+     * 
      * @return the os value.
      */
     public OS os() {
@@ -97,7 +101,7 @@ public final class AgentPoolProperties {
 
     /**
      * Set the os property: The OS of agent machine.
-     *
+     * 
      * @param os the os value to set.
      * @return the AgentPoolProperties object itself.
      */
@@ -108,7 +112,7 @@ public final class AgentPoolProperties {
 
     /**
      * Get the virtualNetworkSubnetResourceId property: The Virtual Network Subnet Resource Id of the agent machine.
-     *
+     * 
      * @return the virtualNetworkSubnetResourceId value.
      */
     public String virtualNetworkSubnetResourceId() {
@@ -117,7 +121,7 @@ public final class AgentPoolProperties {
 
     /**
      * Set the virtualNetworkSubnetResourceId property: The Virtual Network Subnet Resource Id of the agent machine.
-     *
+     * 
      * @param virtualNetworkSubnetResourceId the virtualNetworkSubnetResourceId value to set.
      * @return the AgentPoolProperties object itself.
      */
@@ -128,7 +132,7 @@ public final class AgentPoolProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of this agent pool.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -137,7 +141,7 @@ public final class AgentPoolProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

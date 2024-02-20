@@ -122,8 +122,10 @@ public final class GeoPosition implements JsonSerializable<GeoPosition> {
         switch (index) {
             case 0:
                 return longitude;
+
             case 1:
                 return latitude;
+
             case 2:
                 if (altitude == null) {
                     throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("Index out of range: " + index));
@@ -152,23 +154,19 @@ public final class GeoPosition implements JsonSerializable<GeoPosition> {
         }
 
         GeoPosition other = (GeoPosition) obj;
-        return Double.compare(longitude, other.longitude) == 0
-            && Double.compare(latitude, other.latitude) == 0
+        return Double.compare(longitude, other.longitude) == 0 && Double.compare(latitude, other.latitude) == 0
             && Objects.equals(altitude, other.altitude);
     }
 
     @Override
     public String toString() {
-        return (altitude != null)
-            ? String.format("[%s, %s, %s]", longitude, latitude, altitude)
+        return (altitude != null) ? String.format("[%s, %s, %s]", longitude, latitude, altitude)
             : String.format("[%s, %s]", longitude, latitude);
     }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartArray()
-            .writeDouble(longitude)
-            .writeDouble(latitude);
+        jsonWriter.writeStartArray().writeDouble(longitude).writeDouble(latitude);
 
         if (altitude != null) {
             jsonWriter.writeDouble(altitude);

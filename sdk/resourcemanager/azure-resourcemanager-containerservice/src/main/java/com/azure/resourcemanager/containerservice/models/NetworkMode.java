@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  * The network mode Azure CNI is configured with.
- *
+ * 
  * This cannot be specified if networkPlugin is anything other than 'azure'.
  */
 public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
@@ -26,7 +26,7 @@ public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
 
     /**
      * Creates a new instance of NetworkMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,7 +35,7 @@ public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
 
     /**
      * Creates or finds a NetworkMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkMode.
      */
@@ -46,7 +46,7 @@ public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
 
     /**
      * Gets known NetworkMode values.
-     *
+     * 
      * @return known NetworkMode values.
      */
     public static Collection<NetworkMode> values() {

@@ -32,7 +32,7 @@ public final class AbsoluteMonthlySchedule {
 
     /**
      * Get the intervalMonths property: Specifies the number of months between each set of occurrences.
-     *
+     * 
      * @return the intervalMonths value.
      */
     public int intervalMonths() {
@@ -41,7 +41,7 @@ public final class AbsoluteMonthlySchedule {
 
     /**
      * Set the intervalMonths property: Specifies the number of months between each set of occurrences.
-     *
+     * 
      * @param intervalMonths the intervalMonths value to set.
      * @return the AbsoluteMonthlySchedule object itself.
      */
@@ -52,7 +52,7 @@ public final class AbsoluteMonthlySchedule {
 
     /**
      * Get the dayOfMonth property: The date of the month.
-     *
+     * 
      * @return the dayOfMonth value.
      */
     public int dayOfMonth() {
@@ -61,7 +61,7 @@ public final class AbsoluteMonthlySchedule {
 
     /**
      * Set the dayOfMonth property: The date of the month.
-     *
+     * 
      * @param dayOfMonth the dayOfMonth value to set.
      * @return the AbsoluteMonthlySchedule object itself.
      */
@@ -72,7 +72,7 @@ public final class AbsoluteMonthlySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

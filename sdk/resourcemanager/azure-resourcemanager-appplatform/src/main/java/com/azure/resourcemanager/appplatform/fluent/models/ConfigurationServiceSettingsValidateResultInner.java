@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitPropertyValidateResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Validation result for configuration service settings. */
+/**
+ * Validation result for configuration service settings.
+ */
 @Fluent
 public final class ConfigurationServiceSettingsValidateResultInner {
     /*
@@ -18,8 +20,14 @@ public final class ConfigurationServiceSettingsValidateResultInner {
     private ConfigurationServiceGitPropertyValidateResult gitPropertyValidationResult;
 
     /**
+     * Creates an instance of ConfigurationServiceSettingsValidateResultInner class.
+     */
+    public ConfigurationServiceSettingsValidateResultInner() {
+    }
+
+    /**
      * Get the gitPropertyValidationResult property: Validation result for configuration service settings.
-     *
+     * 
      * @return the gitPropertyValidationResult value.
      */
     public ConfigurationServiceGitPropertyValidateResult gitPropertyValidationResult() {
@@ -28,19 +36,19 @@ public final class ConfigurationServiceSettingsValidateResultInner {
 
     /**
      * Set the gitPropertyValidationResult property: Validation result for configuration service settings.
-     *
+     * 
      * @param gitPropertyValidationResult the gitPropertyValidationResult value to set.
      * @return the ConfigurationServiceSettingsValidateResultInner object itself.
      */
-    public ConfigurationServiceSettingsValidateResultInner withGitPropertyValidationResult(
-        ConfigurationServiceGitPropertyValidateResult gitPropertyValidationResult) {
+    public ConfigurationServiceSettingsValidateResultInner
+        withGitPropertyValidationResult(ConfigurationServiceGitPropertyValidateResult gitPropertyValidationResult) {
         this.gitPropertyValidationResult = gitPropertyValidationResult;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

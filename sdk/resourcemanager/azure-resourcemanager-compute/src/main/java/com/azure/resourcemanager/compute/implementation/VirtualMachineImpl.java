@@ -1740,6 +1740,11 @@ class VirtualMachineImpl
     }
 
     @Override
+    public boolean isEncryptionAtHost() {
+        return !Objects.isNull(this.innerModel().securityProfile()) && this.innerModel().securityProfile().encryptionAtHost();
+    }
+
+    @Override
     public Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks() {
         Map<Integer, VirtualMachineUnmanagedDataDisk> dataDisks = new HashMap<>();
         if (!isManagedDiskEnabled()) {
@@ -2919,6 +2924,12 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withEncryptionAtHost() {
         ensureSecurityProfile().withEncryptionAtHost(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withoutEncryptionAtHost() {
+        ensureSecurityProfile().withEncryptionAtHost(false);
         return this;
     }
 

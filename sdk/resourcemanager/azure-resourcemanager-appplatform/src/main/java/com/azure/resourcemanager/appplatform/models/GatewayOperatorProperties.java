@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the Spring Cloud Gateway Operator. */
+/**
+ * Properties of the Spring Cloud Gateway Operator.
+ */
 @Immutable
 public final class GatewayOperatorProperties {
     /*
@@ -24,8 +26,14 @@ public final class GatewayOperatorProperties {
     private List<GatewayInstance> instances;
 
     /**
+     * Creates an instance of GatewayOperatorProperties class.
+     */
+    public GatewayOperatorProperties() {
+    }
+
+    /**
      * Get the resourceRequests property: The requested resource quantity for required CPU and Memory.
-     *
+     * 
      * @return the resourceRequests value.
      */
     public GatewayOperatorResourceRequests resourceRequests() {
@@ -34,7 +42,7 @@ public final class GatewayOperatorProperties {
 
     /**
      * Get the instances property: Collection of instances belong to Spring Cloud Gateway operator.
-     *
+     * 
      * @return the instances value.
      */
     public List<GatewayInstance> instances() {
@@ -43,7 +51,7 @@ public final class GatewayOperatorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

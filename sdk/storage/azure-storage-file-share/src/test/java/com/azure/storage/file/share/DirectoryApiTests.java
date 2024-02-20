@@ -125,6 +125,25 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertInstanceOf(ShareFileClient.class, fileClient);
     }
 
+    private static Stream<Arguments> getNonEncodedFileNameSupplier() {
+        return Stream.of(
+            Arguments.of("test%test"),
+            Arguments.of("%Россия 한국 中国!"),
+            Arguments.of("%E6%96%91%E9%BB%9E"),
+            Arguments.of("斑點")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getNonEncodedFileNameSupplier")
+    public void getNonEncodedFileName(String fileName) {
+        primaryDirectoryClient.create();
+        ShareFileClient fileClient = primaryDirectoryClient.getFileClient(fileName);
+        assertEquals(primaryDirectoryClient.getDirectoryPath() + "/" + fileName, fileClient.getFilePath());
+        fileClient.create(1024);
+        assertTrue(fileClient.exists());
+    }
+
     @Test
     public void exists() {
         primaryDirectoryClient.create();

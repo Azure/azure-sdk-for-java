@@ -42,6 +42,7 @@ private object CosmosConstants {
   object Properties {
     val Id = "id"
     val ETag = "_etag"
+    val ItemIdentity = "_itemIdentity"
   }
 
   object StatusCodes {

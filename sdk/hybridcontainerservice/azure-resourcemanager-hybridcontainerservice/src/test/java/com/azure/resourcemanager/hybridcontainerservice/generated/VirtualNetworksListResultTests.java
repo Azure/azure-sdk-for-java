@@ -6,11 +6,11 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.VirtualNetworkInner;
+import com.azure.resourcemanager.hybridcontainerservice.models.ExtendedLocationTypes;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworkExtendedLocation;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworkProperties;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworkPropertiesInfraVnetProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworkPropertiesInfraVnetProfileHci;
-import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworkPropertiesInfraVnetProfileVmware;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworkPropertiesVipPoolItem;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworkPropertiesVmipPoolItem;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksListResult;
@@ -23,79 +23,83 @@ public final class VirtualNetworksListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworksListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"infraVnetProfile\":{\"hci\":{\"mocGroup\":\"atpxl\",\"mocLocation\":\"xcyjmoadsuvarmy\",\"mocVnetName\":\"mjsjqb\"},\"vmware\":{\"segmentName\":\"yxxrwlycoduh\"}},\"vipPool\":[{\"endIP\":\"gymare\",\"startIP\":\"ajxq\"},{\"endIP\":\"jhkycub\",\"startIP\":\"dgssofwqmzqal\"},{\"endIP\":\"mnjijpxacqqudf\",\"startIP\":\"yxbaaabjyvayf\"},{\"endIP\":\"m\",\"startIP\":\"rtuzqogs\"}],\"vmipPool\":[{\"endIP\":\"vfdnwnwmewzsyyce\",\"startIP\":\"soibjudpfrx\"},{\"endIP\":\"thzvaytdwkqbrqu\",\"startIP\":\"axhexiilivp\"}],\"dhcpServers\":[\"irqtdqoa\",\"oruzfgsquyfxrxx\"],\"dnsServers\":[\"tramxjez\",\"lwnwxuqlcvydyp\"],\"gateway\":\"dooaojkniodko\",\"ipAddressPrefix\":\"bw\",\"vlanID\":1480895301,\"provisioningState\":\"Deleting\",\"status\":{\"operationStatus\":{\"error\":{},\"operationId\":\"vdkcrodtj\",\"phase\":\"fw\",\"status\":\"fltkacjv\"}}},\"extendedLocation\":{\"type\":\"dlfoakggkfp\",\"name\":\"ao\"},\"location\":\"ulpqblylsyxkqjn\",\"tags\":{\"tiagx\":\"r\",\"psbzkfzbeyvpn\":\"dszue\",\"v\":\"icvi\"},\"id\":\"jjxd\",\"name\":\"rbuukzclewyhmlwp\",\"type\":\"ztzp\"}],\"nextLink\":\"ncckw\"}")
+            "{\"value\":[{\"properties\":{\"infraVnetProfile\":{\"hci\":{\"mocGroup\":\"iswac\",\"mocLocation\":\"gdkz\",\"mocVnetName\":\"wkfvhqcrailvp\"}},\"vipPool\":[{\"endIP\":\"uflrwd\",\"startIP\":\"dlxyjrxs\"},{\"endIP\":\"afcnih\",\"startIP\":\"qapnedgfbcv\"}],\"vmipPool\":[{\"endIP\":\"vpk\",\"startIP\":\"dcvd\"}],\"dnsServers\":[\"ood\"],\"gateway\":\"tbobz\",\"ipAddressPrefix\":\"pcjwv\",\"vlanID\":2011097883,\"provisioningState\":\"Succeeded\",\"status\":{\"operationStatus\":{\"error\":{},\"operationId\":\"cxrslpmutwuoe\",\"status\":\"pkhjwni\"}}},\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"i\"},\"location\":\"dggkzzlvmbmpa\",\"tags\":{\"yw\":\"dfvue\",\"yhrfouyftaakcpw\":\"bpfvm\",\"nubexk\":\"yzvqt\"},\"id\":\"zksmondj\",\"name\":\"quxvypomgkop\",\"type\":\"whojvp\"},{\"properties\":{\"infraVnetProfile\":{\"hci\":{\"mocGroup\":\"ysmocmbqfqvmkcxo\",\"mocLocation\":\"pvhelxprg\",\"mocVnetName\":\"atddc\"}},\"vipPool\":[{\"endIP\":\"uejrjxgc\",\"startIP\":\"ibrhosxsdqr\"},{\"endIP\":\"o\",\"startIP\":\"i\"},{\"endIP\":\"rq\",\"startIP\":\"bahwfl\"}],\"vmipPool\":[{\"endIP\":\"tmhrkwofyyvoqacp\",\"startIP\":\"xpbtgiwbwo\"},{\"endIP\":\"washr\",\"startIP\":\"tkcnqxwb\"},{\"endIP\":\"kulpiujwaasi\",\"startIP\":\"i\"}],\"dnsServers\":[\"yuq\",\"rpqlp\",\"wcciuqgbdbu\"],\"gateway\":\"uvfbtkuwh\",\"ipAddressPrefix\":\"hykojoxafnndlpic\",\"vlanID\":171305753,\"provisioningState\":\"Accepted\",\"status\":{\"operationStatus\":{\"error\":{},\"operationId\":\"h\",\"status\":\"kkpwdreqnovvq\"}}},\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"xywsuws\"},\"location\":\"s\",\"tags\":{\"nzar\":\"ytgadgvraeaene\",\"iipfpubj\":\"wlquuijfqkace\",\"hqkvpuvksgplsak\":\"bwwift\"},\"id\":\"ynfs\",\"name\":\"n\",\"type\":\"jphuopxodlqi\"}],\"nextLink\":\"torzih\"}")
             .toObject(VirtualNetworksListResult.class);
-        Assertions.assertEquals("ulpqblylsyxkqjn", model.value().get(0).location());
-        Assertions.assertEquals("r", model.value().get(0).tags().get("tiagx"));
-        Assertions.assertEquals("atpxl", model.value().get(0).properties().infraVnetProfile().hci().mocGroup());
-        Assertions.assertEquals("xcyjmoadsuvarmy",
-            model.value().get(0).properties().infraVnetProfile().hci().mocLocation());
-        Assertions.assertEquals("mjsjqb", model.value().get(0).properties().infraVnetProfile().hci().mocVnetName());
-        Assertions.assertEquals("yxxrwlycoduh",
-            model.value().get(0).properties().infraVnetProfile().vmware().segmentName());
-        Assertions.assertEquals("gymare", model.value().get(0).properties().vipPool().get(0).endIp());
-        Assertions.assertEquals("ajxq", model.value().get(0).properties().vipPool().get(0).startIp());
-        Assertions.assertEquals("vfdnwnwmewzsyyce", model.value().get(0).properties().vmipPool().get(0).endIp());
-        Assertions.assertEquals("soibjudpfrx", model.value().get(0).properties().vmipPool().get(0).startIp());
-        Assertions.assertEquals("irqtdqoa", model.value().get(0).properties().dhcpServers().get(0));
-        Assertions.assertEquals("tramxjez", model.value().get(0).properties().dnsServers().get(0));
-        Assertions.assertEquals("dooaojkniodko", model.value().get(0).properties().gateway());
-        Assertions.assertEquals("bw", model.value().get(0).properties().ipAddressPrefix());
-        Assertions.assertEquals(1480895301, model.value().get(0).properties().vlanId());
-        Assertions.assertEquals("dlfoakggkfp", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("ao", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("ncckw", model.nextLink());
+        Assertions.assertEquals("dggkzzlvmbmpa", model.value().get(0).location());
+        Assertions.assertEquals("dfvue", model.value().get(0).tags().get("yw"));
+        Assertions.assertEquals("iswac", model.value().get(0).properties().infraVnetProfile().hci().mocGroup());
+        Assertions.assertEquals("gdkz", model.value().get(0).properties().infraVnetProfile().hci().mocLocation());
+        Assertions.assertEquals("wkfvhqcrailvp",
+            model.value().get(0).properties().infraVnetProfile().hci().mocVnetName());
+        Assertions.assertEquals("uflrwd", model.value().get(0).properties().vipPool().get(0).endIp());
+        Assertions.assertEquals("dlxyjrxs", model.value().get(0).properties().vipPool().get(0).startIp());
+        Assertions.assertEquals("vpk", model.value().get(0).properties().vmipPool().get(0).endIp());
+        Assertions.assertEquals("dcvd", model.value().get(0).properties().vmipPool().get(0).startIp());
+        Assertions.assertEquals("ood", model.value().get(0).properties().dnsServers().get(0));
+        Assertions.assertEquals("tbobz", model.value().get(0).properties().gateway());
+        Assertions.assertEquals("pcjwv", model.value().get(0).properties().ipAddressPrefix());
+        Assertions.assertEquals(2011097883, model.value().get(0).properties().vlanId());
+        Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("i", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("torzih", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworksListResult model
-            = new VirtualNetworksListResult()
-                .withValue(Arrays.asList(new VirtualNetworkInner().withLocation("ulpqblylsyxkqjn")
-                    .withTags(mapOf("tiagx", "r", "psbzkfzbeyvpn", "dszue", "v", "icvi"))
-                    .withProperties(new VirtualNetworkProperties()
-                        .withInfraVnetProfile(new VirtualNetworkPropertiesInfraVnetProfile()
-                            .withHci(new VirtualNetworkPropertiesInfraVnetProfileHci().withMocGroup("atpxl")
-                                .withMocLocation("xcyjmoadsuvarmy").withMocVnetName("mjsjqb"))
-                            .withVmware(
-                                new VirtualNetworkPropertiesInfraVnetProfileVmware().withSegmentName("yxxrwlycoduh")))
-                        .withVipPool(Arrays.asList(
-                            new VirtualNetworkPropertiesVipPoolItem().withEndIp("gymare").withStartIp("ajxq"),
-                            new VirtualNetworkPropertiesVipPoolItem().withEndIp("jhkycub").withStartIp("dgssofwqmzqal"),
-                            new VirtualNetworkPropertiesVipPoolItem().withEndIp("mnjijpxacqqudf")
-                                .withStartIp("yxbaaabjyvayf"),
-                            new VirtualNetworkPropertiesVipPoolItem().withEndIp("m").withStartIp("rtuzqogs")))
-                        .withVmipPool(Arrays.asList(
-                            new VirtualNetworkPropertiesVmipPoolItem().withEndIp("vfdnwnwmewzsyyce")
-                                .withStartIp("soibjudpfrx"),
-                            new VirtualNetworkPropertiesVmipPoolItem().withEndIp("thzvaytdwkqbrqu")
-                                .withStartIp("axhexiilivp")))
-                        .withDhcpServers(Arrays.asList("irqtdqoa", "oruzfgsquyfxrxx"))
-                        .withDnsServers(Arrays.asList("tramxjez", "lwnwxuqlcvydyp")).withGateway("dooaojkniodko")
-                        .withIpAddressPrefix("bw").withVlanId(1480895301))
-                    .withExtendedLocation(new VirtualNetworkExtendedLocation().withType("dlfoakggkfp").withName("ao"))))
-                .withNextLink("ncckw");
+        VirtualNetworksListResult model = new VirtualNetworksListResult().withValue(Arrays.asList(
+            new VirtualNetworkInner().withLocation("dggkzzlvmbmpa")
+                .withTags(mapOf("yw", "dfvue", "yhrfouyftaakcpw", "bpfvm", "nubexk", "yzvqt"))
+                .withProperties(new VirtualNetworkProperties()
+                    .withInfraVnetProfile(new VirtualNetworkPropertiesInfraVnetProfile()
+                        .withHci(new VirtualNetworkPropertiesInfraVnetProfileHci().withMocGroup("iswac")
+                            .withMocLocation("gdkz").withMocVnetName("wkfvhqcrailvp")))
+                    .withVipPool(Arrays.asList(
+                        new VirtualNetworkPropertiesVipPoolItem().withEndIp("uflrwd").withStartIp("dlxyjrxs"),
+                        new VirtualNetworkPropertiesVipPoolItem().withEndIp("afcnih").withStartIp("qapnedgfbcv")))
+                    .withVmipPool(
+                        Arrays.asList(new VirtualNetworkPropertiesVmipPoolItem().withEndIp("vpk").withStartIp("dcvd")))
+                    .withDnsServers(Arrays.asList("ood")).withGateway("tbobz").withIpAddressPrefix("pcjwv")
+                    .withVlanId(2011097883))
+                .withExtendedLocation(
+                    new VirtualNetworkExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("i")),
+            new VirtualNetworkInner().withLocation("s")
+                .withTags(mapOf("nzar", "ytgadgvraeaene", "iipfpubj", "wlquuijfqkace", "hqkvpuvksgplsak", "bwwift"))
+                .withProperties(new VirtualNetworkProperties()
+                    .withInfraVnetProfile(new VirtualNetworkPropertiesInfraVnetProfile()
+                        .withHci(new VirtualNetworkPropertiesInfraVnetProfileHci().withMocGroup("ysmocmbqfqvmkcxo")
+                            .withMocLocation("pvhelxprg").withMocVnetName("atddc")))
+                    .withVipPool(Arrays.asList(
+                        new VirtualNetworkPropertiesVipPoolItem().withEndIp("uejrjxgc").withStartIp("ibrhosxsdqr"),
+                        new VirtualNetworkPropertiesVipPoolItem().withEndIp("o").withStartIp("i"),
+                        new VirtualNetworkPropertiesVipPoolItem().withEndIp("rq").withStartIp("bahwfl")))
+                    .withVmipPool(Arrays.asList(
+                        new VirtualNetworkPropertiesVmipPoolItem().withEndIp("tmhrkwofyyvoqacp")
+                            .withStartIp("xpbtgiwbwo"),
+                        new VirtualNetworkPropertiesVmipPoolItem().withEndIp("washr").withStartIp("tkcnqxwb"),
+                        new VirtualNetworkPropertiesVmipPoolItem().withEndIp("kulpiujwaasi").withStartIp("i")))
+                    .withDnsServers(Arrays.asList("yuq", "rpqlp", "wcciuqgbdbu")).withGateway("uvfbtkuwh")
+                    .withIpAddressPrefix("hykojoxafnndlpic").withVlanId(171305753))
+                .withExtendedLocation(new VirtualNetworkExtendedLocation()
+                    .withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("xywsuws"))))
+            .withNextLink("torzih");
         model = BinaryData.fromObject(model).toObject(VirtualNetworksListResult.class);
-        Assertions.assertEquals("ulpqblylsyxkqjn", model.value().get(0).location());
-        Assertions.assertEquals("r", model.value().get(0).tags().get("tiagx"));
-        Assertions.assertEquals("atpxl", model.value().get(0).properties().infraVnetProfile().hci().mocGroup());
-        Assertions.assertEquals("xcyjmoadsuvarmy",
-            model.value().get(0).properties().infraVnetProfile().hci().mocLocation());
-        Assertions.assertEquals("mjsjqb", model.value().get(0).properties().infraVnetProfile().hci().mocVnetName());
-        Assertions.assertEquals("yxxrwlycoduh",
-            model.value().get(0).properties().infraVnetProfile().vmware().segmentName());
-        Assertions.assertEquals("gymare", model.value().get(0).properties().vipPool().get(0).endIp());
-        Assertions.assertEquals("ajxq", model.value().get(0).properties().vipPool().get(0).startIp());
-        Assertions.assertEquals("vfdnwnwmewzsyyce", model.value().get(0).properties().vmipPool().get(0).endIp());
-        Assertions.assertEquals("soibjudpfrx", model.value().get(0).properties().vmipPool().get(0).startIp());
-        Assertions.assertEquals("irqtdqoa", model.value().get(0).properties().dhcpServers().get(0));
-        Assertions.assertEquals("tramxjez", model.value().get(0).properties().dnsServers().get(0));
-        Assertions.assertEquals("dooaojkniodko", model.value().get(0).properties().gateway());
-        Assertions.assertEquals("bw", model.value().get(0).properties().ipAddressPrefix());
-        Assertions.assertEquals(1480895301, model.value().get(0).properties().vlanId());
-        Assertions.assertEquals("dlfoakggkfp", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("ao", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("ncckw", model.nextLink());
+        Assertions.assertEquals("dggkzzlvmbmpa", model.value().get(0).location());
+        Assertions.assertEquals("dfvue", model.value().get(0).tags().get("yw"));
+        Assertions.assertEquals("iswac", model.value().get(0).properties().infraVnetProfile().hci().mocGroup());
+        Assertions.assertEquals("gdkz", model.value().get(0).properties().infraVnetProfile().hci().mocLocation());
+        Assertions.assertEquals("wkfvhqcrailvp",
+            model.value().get(0).properties().infraVnetProfile().hci().mocVnetName());
+        Assertions.assertEquals("uflrwd", model.value().get(0).properties().vipPool().get(0).endIp());
+        Assertions.assertEquals("dlxyjrxs", model.value().get(0).properties().vipPool().get(0).startIp());
+        Assertions.assertEquals("vpk", model.value().get(0).properties().vmipPool().get(0).endIp());
+        Assertions.assertEquals("dcvd", model.value().get(0).properties().vmipPool().get(0).startIp());
+        Assertions.assertEquals("ood", model.value().get(0).properties().dnsServers().get(0));
+        Assertions.assertEquals("tbobz", model.value().get(0).properties().gateway());
+        Assertions.assertEquals("pcjwv", model.value().get(0).properties().ipAddressPrefix());
+        Assertions.assertEquals(2011097883, model.value().get(0).properties().vlanId());
+        Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("i", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("torzih", model.nextLink());
     }
 
     // Use "Map.of" if available

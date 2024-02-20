@@ -10,8 +10,8 @@ import com.azure.resourcemanager.hybridcontainerservice.models.VmSkuCapabilities
 public final class VmSkuCapabilitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmSkuCapabilities model
-            = BinaryData.fromString("{\"name\":\"fovasr\",\"value\":\"v\"}").toObject(VmSkuCapabilities.class);
+        VmSkuCapabilities model = BinaryData.fromString("{\"name\":\"sgzvahapjyzhpv\",\"value\":\"zcjrvxdjzlmwlx\"}")
+            .toObject(VmSkuCapabilities.class);
     }
 
     @org.junit.jupiter.api.Test

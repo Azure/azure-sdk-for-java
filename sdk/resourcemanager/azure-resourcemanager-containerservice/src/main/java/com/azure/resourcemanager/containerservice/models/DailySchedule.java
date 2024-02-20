@@ -26,7 +26,7 @@ public final class DailySchedule {
 
     /**
      * Get the intervalDays property: Specifies the number of days between each set of occurrences.
-     *
+     * 
      * @return the intervalDays value.
      */
     public int intervalDays() {
@@ -35,7 +35,7 @@ public final class DailySchedule {
 
     /**
      * Set the intervalDays property: Specifies the number of days between each set of occurrences.
-     *
+     * 
      * @param intervalDays the intervalDays value to set.
      * @return the DailySchedule object itself.
      */
@@ -46,7 +46,7 @@ public final class DailySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

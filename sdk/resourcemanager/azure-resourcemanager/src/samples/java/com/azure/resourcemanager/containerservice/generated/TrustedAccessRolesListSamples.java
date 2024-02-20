@@ -10,12 +10,12 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class TrustedAccessRolesListSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
      * TrustedAccessRoles_List.json
      */
     /**
      * Sample code: List trusted access roles.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listTrustedAccessRoles(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The ServicePrincipalInKVCredentialPatch model.
@@ -69,8 +68,8 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceCredentialType",
-            Objects.toString(DataSourceCredentialType.SERVICE_PRINCIPAL_IN_KV, null));
+        jsonWriter.writeStringField("dataSourceCredentialType", DataSourceCredentialType.SERVICE_PRINCIPAL_IN_KV == null
+            ? null : DataSourceCredentialType.SERVICE_PRINCIPAL_IN_KV.toString());
         jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
         jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());
         jsonWriter.writeJsonField("parameters", this.parameters);

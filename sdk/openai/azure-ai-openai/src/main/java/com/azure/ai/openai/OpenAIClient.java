@@ -674,7 +674,7 @@ public final class OpenAIClient {
         } else {
             return getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
                 BinaryData.fromObject(chatCompletionsOptions), requestOptions).getValue()
-                    .toObject(ChatCompletions.class);
+                .toObject(ChatCompletions.class);
         }
     }
 

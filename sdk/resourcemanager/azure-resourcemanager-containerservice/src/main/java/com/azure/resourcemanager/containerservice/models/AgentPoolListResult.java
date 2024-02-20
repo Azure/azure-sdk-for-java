@@ -34,7 +34,7 @@ public final class AgentPoolListResult {
 
     /**
      * Get the value property: The list of agent pools.
-     *
+     * 
      * @return the value value.
      */
     public List<AgentPoolInner> value() {
@@ -43,7 +43,7 @@ public final class AgentPoolListResult {
 
     /**
      * Set the value property: The list of agent pools.
-     *
+     * 
      * @param value the value value to set.
      * @return the AgentPoolListResult object itself.
      */
@@ -54,7 +54,7 @@ public final class AgentPoolListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of agent pool results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +63,7 @@ public final class AgentPoolListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

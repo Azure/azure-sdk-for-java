@@ -16,7 +16,7 @@ public final class ManagedClustersGetCommandResultResponse
     extends ResponseBase<ManagedClustersGetCommandResultHeaders, RunCommandResultInner> {
     /**
      * Creates an instance of ManagedClustersGetCommandResultResponse.
-     *
+     * 
      * @param request the request which resulted in this ManagedClustersGetCommandResultResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -30,7 +30,7 @@ public final class ManagedClustersGetCommandResultResponse
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

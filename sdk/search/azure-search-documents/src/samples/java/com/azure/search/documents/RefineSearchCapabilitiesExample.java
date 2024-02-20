@@ -31,13 +31,13 @@ import java.util.List;
 
 /**
  * This scenario assumes an existing search solution, with index and an indexer setup (see LifecycleSetupExample) For
- * more information visit <a href="https://github.com/Azure-Samples/azure-search-sample-data">Azure Cognitive Search
+ * more information visit <a href="https://github.com/Azure-Samples/azure-search-sample-data">Azure AI Search
  * Sample Data</a>.
  */
 public class RefineSearchCapabilitiesExample {
 
     /**
-     * From the Azure portal, get your Azure Cognitive Search service URL and API admin key, and set the values of these
+     * From the Azure portal, get your Azure AI Search service URL and API admin key, and set the values of these
      * environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");

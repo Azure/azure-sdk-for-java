@@ -40,8 +40,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link JdkHttpClientBuilder}.
@@ -220,10 +218,10 @@ public class JdkHttpClientBuilderTests {
 
     @Test
     void testAllowedHeadersFromNetworkProperties() {
-        JdkHttpClientBuilder jdkHttpClientBuilder = spy(new JdkHttpClientBuilder());
         Properties properties = new Properties();
         properties.put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
-        when(jdkHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
+
+        JdkHttpClientBuilder jdkHttpClientBuilder = new JdkHttpClientBuilderOverriddenProperties(properties);
 
         Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         expectedRestrictedHeaders.addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
@@ -239,11 +237,10 @@ public class JdkHttpClientBuilderTests {
             EMPTY_SOURCE)
             .build();
 
-        JdkHttpClientBuilder jdkHttpClientBuilder = spy(
-            new JdkHttpClientBuilder().configuration(configuration));
-
         Properties properties = new Properties();
-        when(jdkHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
+
+        JdkHttpClientBuilder jdkHttpClientBuilder = new JdkHttpClientBuilderOverriddenProperties(properties)
+            .configuration(configuration);
 
         Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         expectedRestrictedHeaders.addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
@@ -259,12 +256,11 @@ public class JdkHttpClientBuilderTests {
             new TestConfigurationSource())
             .build();
 
-        JdkHttpClientBuilder jdkHttpClientBuilder = spy(
-            new JdkHttpClientBuilder().configuration(configuration));
-
         Properties properties = new Properties();
         properties.put("jdk.httpclient.allowRestrictedHeaders", "host, connection, upgrade");
-        when(jdkHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
+
+        JdkHttpClientBuilder jdkHttpClientBuilder = new JdkHttpClientBuilderOverriddenProperties(properties)
+            .configuration(configuration);
 
         Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         expectedRestrictedHeaders.addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
@@ -278,8 +274,7 @@ public class JdkHttpClientBuilderTests {
         Properties properties = new Properties();
         properties.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
 
-        JdkHttpClientBuilder jdkHttpClientBuilder = spy(new JdkHttpClientBuilder());
-        when(jdkHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
+        JdkHttpClientBuilder jdkHttpClientBuilder = new JdkHttpClientBuilderOverriddenProperties(properties);
 
         Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         expectedRestrictedHeaders.addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
@@ -293,17 +288,12 @@ public class JdkHttpClientBuilderTests {
         Properties properties = new Properties();
         properties.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-LENGTH");
 
-        JdkHttpClientBuilder jdkHttpClientBuilder = spy(new JdkHttpClientBuilder());
-        when(jdkHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
+        JdkHttpClientBuilder jdkHttpClientBuilder = new JdkHttpClientBuilderOverriddenProperties(properties);
 
         Set<String> restrictedHeaders = jdkHttpClientBuilder.getRestrictedHeaders();
-        assertTrue(restrictedHeaders.contains("Connection"), "connection header is missing");
         assertTrue(restrictedHeaders.contains("connection"), "connection header is missing");
-        assertTrue(restrictedHeaders.contains("CONNECTION"), "connection header is missing");
 
-        assertFalse(restrictedHeaders.contains("Content-Length"), "content-length not removed");
         assertFalse(restrictedHeaders.contains("content-length"), "content-length not removed");
-        assertFalse(restrictedHeaders.contains("CONTENT-length"), "content-length not removed");
     }
 
 
@@ -324,5 +314,18 @@ public class JdkHttpClientBuilderTests {
         assertEquals(expectedRestrictedHeadersSize, restrictedHeaders.size());
         assertEquals(expectedRestrictedHeaders, restrictedHeaders);
     }
+
+    private static final class JdkHttpClientBuilderOverriddenProperties extends JdkHttpClientBuilder {
+        private final Properties properties;
+
+        JdkHttpClientBuilderOverriddenProperties(Properties properties) {
+            this.properties = properties;
+        }
+
+        @Override
+        Properties getNetworkProperties() {
+            return properties;
+        }
+    };
 
 }

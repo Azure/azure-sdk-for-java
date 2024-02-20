@@ -27,7 +27,7 @@ public final class CreationData {
     /**
      * Get the sourceResourceId property: This is the ARM ID of the source object to be used to create the target
      * object.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -37,7 +37,7 @@ public final class CreationData {
     /**
      * Set the sourceResourceId property: This is the ARM ID of the source object to be used to create the target
      * object.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the CreationData object itself.
      */
@@ -48,7 +48,7 @@ public final class CreationData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

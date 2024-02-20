@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.26 (Unreleased)
+## 1.0.0-beta.27 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,44 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.26 (2024-01-29)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SalesforceV2Source` was modified
+
+* `readBehavior()` was removed
+* `withReadBehavior(java.lang.Object)` was removed
+
+#### `models.SalesforceServiceCloudV2Source` was modified
+
+* `readBehavior()` was removed
+* `withReadBehavior(java.lang.Object)` was removed
+
+### Features Added
+
+#### `models.SalesforceV2Source` was modified
+
+* `withIncludeDeletedObjects(java.lang.Object)` was added
+* `includeDeletedObjects()` was added
+
+#### `models.SalesforceServiceCloudV2LinkedService` was modified
+
+* `authenticationType()` was added
+* `withAuthenticationType(java.lang.Object)` was added
+
+#### `models.SalesforceServiceCloudV2Source` was modified
+
+* `withIncludeDeletedObjects(java.lang.Object)` was added
+* `includeDeletedObjects()` was added
+
+#### `models.SalesforceV2LinkedService` was modified
+
+* `authenticationType()` was added
+* `withAuthenticationType(java.lang.Object)` was added
 
 ## 1.0.0-beta.25 (2024-01-22)
 

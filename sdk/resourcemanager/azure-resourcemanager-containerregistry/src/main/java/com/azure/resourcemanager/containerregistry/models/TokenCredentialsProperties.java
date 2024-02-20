@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of the credentials that can be used for authenticating the token. */
+/**
+ * The properties of the credentials that can be used for authenticating the token.
+ */
 @Fluent
 public final class TokenCredentialsProperties {
     /*
@@ -23,13 +25,15 @@ public final class TokenCredentialsProperties {
     @JsonProperty(value = "passwords")
     private List<TokenPassword> passwords;
 
-    /** Creates an instance of TokenCredentialsProperties class. */
+    /**
+     * Creates an instance of TokenCredentialsProperties class.
+     */
     public TokenCredentialsProperties() {
     }
 
     /**
      * Get the certificates property: The certificates property.
-     *
+     * 
      * @return the certificates value.
      */
     public List<TokenCertificate> certificates() {
@@ -38,7 +42,7 @@ public final class TokenCredentialsProperties {
 
     /**
      * Set the certificates property: The certificates property.
-     *
+     * 
      * @param certificates the certificates value to set.
      * @return the TokenCredentialsProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class TokenCredentialsProperties {
 
     /**
      * Get the passwords property: The passwords property.
-     *
+     * 
      * @return the passwords value.
      */
     public List<TokenPassword> passwords() {
@@ -58,7 +62,7 @@ public final class TokenCredentialsProperties {
 
     /**
      * Set the passwords property: The passwords property.
-     *
+     * 
      * @param passwords the passwords value to set.
      * @return the TokenCredentialsProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class TokenCredentialsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

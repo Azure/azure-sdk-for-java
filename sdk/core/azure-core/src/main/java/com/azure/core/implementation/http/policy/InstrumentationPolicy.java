@@ -40,7 +40,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     // TODO (limolkova):
     // following attributes are kept for backward compatibility with current ApplicationInsights agent.
     // We'll need to update them to stable semconv attribute names (as an optimization) prior to tracing stability
-    // and after new azure-core-tracing-opentelemetry is released and OTel/ApplicationInsights agents are updated to used it.
+    // and after new azure-core-tracing-opentelemetry is released and OTel/ApplicationInsights agents are updated to
+    // used it.
     private static final String HTTP_METHOD = "http.method";
     private static final String HTTP_URL = "http.url";
     private static final String HTTP_STATUS_CODE = "http.status_code";
@@ -78,8 +79,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         return Mono.defer(() -> {
             Context span = startSpan(context);
-            return next.process()
-                .doOnSuccess(response -> onResponseCode(response, span))
+            return next.process().doOnSuccess(response -> onResponseCode(response, span))
                 // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
                 .map(response -> new TraceableResponse(response, span))
                 .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
@@ -115,8 +115,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         // Build new child span representing this outgoing request.
         String methodName = request.getHttpMethod().toString();
-        StartSpanOptions spanOptions = new StartSpanOptions(SpanKind.CLIENT)
-            .setAttribute(HTTP_METHOD, methodName)
+        StartSpanOptions spanOptions = new StartSpanOptions(SpanKind.CLIENT).setAttribute(HTTP_METHOD, methodName)
             .setAttribute(HTTP_URL, request.getUrl().toString())
             .setAttribute(SERVER_ADDRESS, request.getUrl().getHost())
             .setAttribute(SERVER_PORT, getPort(request.getUrl()));
@@ -161,8 +160,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     private boolean isTracingEnabled(HttpPipelineCallContext context) {
-        return tracer != null && tracer.isEnabled()
-            && !((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false));
+        return tracer != null && tracer.isEnabled() && !((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false));
     }
 
     private final class TraceableResponse extends HttpResponse {
@@ -170,6 +168,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         private final Context span;
         private Throwable exception;
         private String errorType;
+
         TraceableResponse(HttpResponse response, Context span) {
             super(response.getRequest());
             this.response = response;
@@ -199,23 +198,19 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         @Override
         public Flux<ByteBuffer> getBody() {
-            return response.getBody()
-                    .doOnError(e -> exception = e)
-                    .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
+            return response.getBody().doOnError(e -> exception = e).doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
         }
 
         @Override
         public Mono<byte[]> getBodyAsByteArray() {
-            return response.getBodyAsByteArray()
-                    .doOnError(e -> exception = e)
-                    .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
+            return response.getBodyAsByteArray().doOnError(e -> exception = e)
+                .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
         }
 
         @Override
         public Mono<String> getBodyAsString() {
-            return response.getBodyAsString()
-                    .doOnError(e -> exception = e)
-                    .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
+            return response.getBodyAsString().doOnError(e -> exception = e)
+                .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
         }
 
         @Override
@@ -230,16 +225,14 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
-            return response.getBodyAsString(charset)
-                    .doOnError(e -> exception = e)
-                    .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
+            return response.getBodyAsString(charset).doOnError(e -> exception = e)
+                .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
         }
 
         @Override
         public Mono<InputStream> getBodyAsInputStream() {
-            return response.getBodyAsInputStream()
-                    .doOnError(e -> exception = e)
-                    .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
+            return response.getBodyAsInputStream().doOnError(e -> exception = e)
+                .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
         }
 
         @Override

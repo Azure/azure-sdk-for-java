@@ -24,16 +24,14 @@ public class HostPolicy implements HttpPipelinePolicy {
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            LOGGER.atVerbose()
-                .addKeyValue("host", host)
-                .log("Setting host");
+            LOGGER.atVerbose().addKeyValue("host", host).log("Setting host");
 
             final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             try {
                 context.getHttpRequest().setUrl(urlBuilder.setHost(host).toUrl());
             } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(String.format("Host URL '%s' is invalid.", host),
-                    e));
+                throw LOGGER
+                    .logExceptionAsError(new RuntimeException(String.format("Host URL '%s' is invalid.", host), e));
             }
         }
     };

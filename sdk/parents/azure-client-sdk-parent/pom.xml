@@ -239,6 +239,16 @@
     <!-- In the future this should be removed once maven-shade-plugin no longer as a possibility of deadlocking in parallel builds. -->
     <!-- See https://issues.apache.org/jira/projects/MSHADE/issues/MSHADE-384 -->
     <shade.skip>false</shade.skip>
+
+    <!-- Disables Spotless linting. -->
+    <!-- Spotless is disabled by default until all libraries are manually updated, after that this setting will be removed. -->
+    <spotless.skip>true</spotless.skip>
+
+    <!-- Skips Spotless applying code style formatting. -->
+    <spotless.apply.skip>false</spotless.apply.skip>
+
+    <!-- Skips Spotless running code style formatting verification. -->
+    <spotless.check.skip>false</spotless.check.skip>
   </properties>
 
   <build>
@@ -588,6 +598,16 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <applySkip>${spotless.apply.skip}</applySkip>
+          <checkSkip>${spotless.check.skip}</checkSkip>
+        </configuration>
       </plugin>
     </plugins>
 
@@ -958,6 +978,38 @@
           <configuration>
             <skip>${shade.skip}</skip>
           </configuration>
+        </plugin>
+
+        <!-- This plugin formats source code. -->
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+          <configuration>
+            <skip>${spotless.skip}</skip>
+            <java>
+              <eclipse>
+                <version>4.21.0</version> <!-- 4.21.0 is the last version of the Eclipse formatter supporting Java 8. -->
+                <file>${project.basedir}/${relative.path.to.eng.folder}/.vscode/eclipse-format-azure-sdk-for-java.xml</file>
+              </eclipse>
+            </java>
+          </configuration>
+          <executions>
+            <execution>
+              <id>spotless-apply</id>
+              <goals>
+                <goal>apply</goal>
+              </goals>
+              <phase>validate</phase>
+            </execution>
+            <execution>
+              <id>spotless-check</id>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <phase>verify</phase>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>

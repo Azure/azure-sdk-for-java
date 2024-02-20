@@ -218,7 +218,7 @@ class ItemsScanITest
       CosmosItemIdentityHelper
         .getCosmosItemIdentityValueString(
           objectNode.get(idProperty).asText(),
-          objectNode.get(partitionKeyProperty).asText())
+          List(objectNode.get(partitionKeyProperty).asText()))
     } else {
       objectNode.get(idProperty).asText()
     }

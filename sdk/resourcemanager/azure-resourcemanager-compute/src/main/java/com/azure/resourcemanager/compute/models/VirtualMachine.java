@@ -290,6 +290,9 @@ public interface VirtualMachine
     /** @return whether the os disk is ephemeral*/
     boolean isOSDiskEphemeral();
 
+    /** @return whether encryption at host*/
+    boolean isEncryptionAtHost();
+
     /** @return the unmanaged data disks associated with this virtual machine, indexed by LUN number */
     Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
 
@@ -1945,7 +1948,7 @@ public interface VirtualMachine
         interface WithSecurityProfile {
 
             /**
-             * Request to enable the Host Encryption for the virtual machine.
+             * Enables the Host Encryption for the virtual machine.
              *
              * @return the next stage of the definition
              */
@@ -2539,6 +2542,24 @@ public interface VirtualMachine
             Update withoutVTpm();
         }
 
+        /** The stage of the VM update allowing to change security profile. */
+        interface WithSecurityProfile {
+
+            /**
+             * Enables the Host Encryption for the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            Update withEncryptionAtHost();
+
+            /**
+             * Disables the Host Encryption for the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            Update withoutEncryptionAtHost();
+        }
+
         /** The stage of the VM update allowing to change delete options of resources attached to this VM . */
         interface WithDeleteOptions {
             /**
@@ -2610,6 +2631,7 @@ public interface VirtualMachine
             UpdateStages.WithOSDisk,
             UpdateStages.WithSecurityFeatures,
             UpdateStages.WithDeleteOptions,
+            UpdateStages.WithSecurityProfile,
             UpdateStages.WithUserData {
         /**
          * Specifies the encryption settings for the OS Disk.

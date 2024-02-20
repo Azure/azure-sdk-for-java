@@ -10,12 +10,12 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class AgentPoolsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
      * AgentPoolsDelete.json
      */
     /**
      * Sample code: Delete Agent Pool.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAgentPool(com.azure.resourcemanager.AzureResourceManager azure) {

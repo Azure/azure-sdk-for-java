@@ -33,7 +33,7 @@ public final class ManagedClusterSecurityProfileImageCleaner {
 
     /**
      * Get the enabled property: Whether to enable Image Cleaner on AKS cluster.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -42,7 +42,7 @@ public final class ManagedClusterSecurityProfileImageCleaner {
 
     /**
      * Set the enabled property: Whether to enable Image Cleaner on AKS cluster.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterSecurityProfileImageCleaner object itself.
      */
@@ -53,7 +53,7 @@ public final class ManagedClusterSecurityProfileImageCleaner {
 
     /**
      * Get the intervalHours property: Image Cleaner scanning interval in hours.
-     *
+     * 
      * @return the intervalHours value.
      */
     public Integer intervalHours() {
@@ -62,7 +62,7 @@ public final class ManagedClusterSecurityProfileImageCleaner {
 
     /**
      * Set the intervalHours property: Image Cleaner scanning interval in hours.
-     *
+     * 
      * @param intervalHours the intervalHours value to set.
      * @return the ManagedClusterSecurityProfileImageCleaner object itself.
      */
@@ -73,7 +73,7 @@ public final class ManagedClusterSecurityProfileImageCleaner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

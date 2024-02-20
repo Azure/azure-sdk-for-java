@@ -41,7 +41,7 @@ public final class PortRange {
     /**
      * Get the portStart property: The minimum port that is included in the range. It should be ranged from 1 to 65535,
      * and be less than or equal to portEnd.
-     *
+     * 
      * @return the portStart value.
      */
     public Integer portStart() {
@@ -51,7 +51,7 @@ public final class PortRange {
     /**
      * Set the portStart property: The minimum port that is included in the range. It should be ranged from 1 to 65535,
      * and be less than or equal to portEnd.
-     *
+     * 
      * @param portStart the portStart value to set.
      * @return the PortRange object itself.
      */
@@ -63,7 +63,7 @@ public final class PortRange {
     /**
      * Get the portEnd property: The maximum port that is included in the range. It should be ranged from 1 to 65535,
      * and be greater than or equal to portStart.
-     *
+     * 
      * @return the portEnd value.
      */
     public Integer portEnd() {
@@ -73,7 +73,7 @@ public final class PortRange {
     /**
      * Set the portEnd property: The maximum port that is included in the range. It should be ranged from 1 to 65535,
      * and be greater than or equal to portStart.
-     *
+     * 
      * @param portEnd the portEnd value to set.
      * @return the PortRange object itself.
      */
@@ -84,7 +84,7 @@ public final class PortRange {
 
     /**
      * Get the protocol property: The network protocol of the port.
-     *
+     * 
      * @return the protocol value.
      */
     public Protocol protocol() {
@@ -93,7 +93,7 @@ public final class PortRange {
 
     /**
      * Set the protocol property: The network protocol of the port.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the PortRange object itself.
      */
@@ -104,7 +104,7 @@ public final class PortRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

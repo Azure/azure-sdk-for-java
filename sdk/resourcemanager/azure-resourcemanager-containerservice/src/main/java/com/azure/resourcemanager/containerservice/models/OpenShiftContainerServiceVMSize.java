@@ -179,7 +179,7 @@ public final class OpenShiftContainerServiceVMSize extends ExpandableStringEnum<
 
     /**
      * Creates a new instance of OpenShiftContainerServiceVMSize value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -188,7 +188,7 @@ public final class OpenShiftContainerServiceVMSize extends ExpandableStringEnum<
 
     /**
      * Creates or finds a OpenShiftContainerServiceVMSize from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OpenShiftContainerServiceVMSize.
      */
@@ -199,7 +199,7 @@ public final class OpenShiftContainerServiceVMSize extends ExpandableStringEnum<
 
     /**
      * Gets known OpenShiftContainerServiceVMSize values.
-     *
+     * 
      * @return known OpenShiftContainerServiceVMSize values.
      */
     public static Collection<OpenShiftContainerServiceVMSize> values() {

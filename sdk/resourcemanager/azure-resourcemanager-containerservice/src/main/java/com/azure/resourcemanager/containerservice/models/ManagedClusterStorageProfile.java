@@ -44,7 +44,7 @@ public final class ManagedClusterStorageProfile {
 
     /**
      * Get the diskCsiDriver property: AzureDisk CSI Driver settings for the storage profile.
-     *
+     * 
      * @return the diskCsiDriver value.
      */
     public ManagedClusterStorageProfileDiskCsiDriver diskCsiDriver() {
@@ -53,7 +53,7 @@ public final class ManagedClusterStorageProfile {
 
     /**
      * Set the diskCsiDriver property: AzureDisk CSI Driver settings for the storage profile.
-     *
+     * 
      * @param diskCsiDriver the diskCsiDriver value to set.
      * @return the ManagedClusterStorageProfile object itself.
      */
@@ -64,7 +64,7 @@ public final class ManagedClusterStorageProfile {
 
     /**
      * Get the fileCsiDriver property: AzureFile CSI Driver settings for the storage profile.
-     *
+     * 
      * @return the fileCsiDriver value.
      */
     public ManagedClusterStorageProfileFileCsiDriver fileCsiDriver() {
@@ -73,7 +73,7 @@ public final class ManagedClusterStorageProfile {
 
     /**
      * Set the fileCsiDriver property: AzureFile CSI Driver settings for the storage profile.
-     *
+     * 
      * @param fileCsiDriver the fileCsiDriver value to set.
      * @return the ManagedClusterStorageProfile object itself.
      */
@@ -84,7 +84,7 @@ public final class ManagedClusterStorageProfile {
 
     /**
      * Get the snapshotController property: Snapshot Controller settings for the storage profile.
-     *
+     * 
      * @return the snapshotController value.
      */
     public ManagedClusterStorageProfileSnapshotController snapshotController() {
@@ -93,7 +93,7 @@ public final class ManagedClusterStorageProfile {
 
     /**
      * Set the snapshotController property: Snapshot Controller settings for the storage profile.
-     *
+     * 
      * @param snapshotController the snapshotController value to set.
      * @return the ManagedClusterStorageProfile object itself.
      */
@@ -105,7 +105,7 @@ public final class ManagedClusterStorageProfile {
 
     /**
      * Get the blobCsiDriver property: AzureBlob CSI Driver settings for the storage profile.
-     *
+     * 
      * @return the blobCsiDriver value.
      */
     public ManagedClusterStorageProfileBlobCsiDriver blobCsiDriver() {
@@ -114,7 +114,7 @@ public final class ManagedClusterStorageProfile {
 
     /**
      * Set the blobCsiDriver property: AzureBlob CSI Driver settings for the storage profile.
-     *
+     * 
      * @param blobCsiDriver the blobCsiDriver value to set.
      * @return the ManagedClusterStorageProfile object itself.
      */
@@ -125,7 +125,7 @@ public final class ManagedClusterStorageProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

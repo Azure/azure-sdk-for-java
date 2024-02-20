@@ -32,6 +32,10 @@ public class ChatCompletionsToolCallCustomizations extends Customization {
                     "this.type = type;"));
         JavadocCustomization constructorJavadocCustomization = constructorCustomization.getJavadoc()
             .setParam("type", "the type value to set.");
+
+        // remove unused class (no reference to them, after partial-update)
+        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/models/FileDetails.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/implementation/MultipartFormDataHelper.java");
     }
 
     private static String joinWithNewline(String... lines) {

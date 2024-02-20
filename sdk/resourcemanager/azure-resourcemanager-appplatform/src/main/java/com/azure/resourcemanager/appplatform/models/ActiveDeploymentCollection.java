@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object that includes an array of Deployment resource name and set them as active. */
+/**
+ * Object that includes an array of Deployment resource name and set them as active.
+ */
 @Fluent
 public final class ActiveDeploymentCollection {
     /*
@@ -18,8 +20,14 @@ public final class ActiveDeploymentCollection {
     private List<String> activeDeploymentNames;
 
     /**
+     * Creates an instance of ActiveDeploymentCollection class.
+     */
+    public ActiveDeploymentCollection() {
+    }
+
+    /**
      * Get the activeDeploymentNames property: Collection of Deployment name.
-     *
+     * 
      * @return the activeDeploymentNames value.
      */
     public List<String> activeDeploymentNames() {
@@ -28,7 +36,7 @@ public final class ActiveDeploymentCollection {
 
     /**
      * Set the activeDeploymentNames property: Collection of Deployment name.
-     *
+     * 
      * @param activeDeploymentNames the activeDeploymentNames value to set.
      * @return the ActiveDeploymentCollection object itself.
      */
@@ -39,7 +47,7 @@ public final class ActiveDeploymentCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

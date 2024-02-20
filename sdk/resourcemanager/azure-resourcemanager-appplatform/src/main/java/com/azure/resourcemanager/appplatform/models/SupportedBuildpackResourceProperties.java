@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Supported buildpack resource properties. */
+/**
+ * Supported buildpack resource properties.
+ */
 @Fluent
 public final class SupportedBuildpackResourceProperties {
     /*
@@ -17,8 +19,14 @@ public final class SupportedBuildpackResourceProperties {
     private String buildpackId;
 
     /**
+     * Creates an instance of SupportedBuildpackResourceProperties class.
+     */
+    public SupportedBuildpackResourceProperties() {
+    }
+
+    /**
      * Get the buildpackId property: The id of supported buildpack.
-     *
+     * 
      * @return the buildpackId value.
      */
     public String buildpackId() {
@@ -27,7 +35,7 @@ public final class SupportedBuildpackResourceProperties {
 
     /**
      * Set the buildpackId property: The id of supported buildpack.
-     *
+     * 
      * @param buildpackId the buildpackId value to set.
      * @return the SupportedBuildpackResourceProperties object itself.
      */
@@ -38,7 +46,7 @@ public final class SupportedBuildpackResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

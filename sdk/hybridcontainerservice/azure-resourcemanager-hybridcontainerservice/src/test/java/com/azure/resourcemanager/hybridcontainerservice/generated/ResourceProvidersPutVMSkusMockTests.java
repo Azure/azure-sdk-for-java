@@ -34,7 +34,7 @@ public final class ResourceProvidersPutVMSkusMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"frymsgaojfmwnc\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"values\":[{\"resourceType\":\"rctym\",\"capabilities\":[{},{},{}],\"name\":\"tpipiwyczuhx\",\"tier\":\"pqjlihhyusps\",\"size\":\"sdvlmfwdgzxulucv\"},{\"resourceType\":\"mrsreuzvxurisjnh\",\"capabilities\":[{},{}],\"name\":\"ifqjz\",\"tier\":\"mrhublwpc\",\"size\":\"utr\"},{\"resourceType\":\"upauut\",\"capabilities\":[{}],\"name\":\"hihejqgwzpnfqn\",\"tier\":\"ypsxjvfoim\",\"size\":\"slirciz\"},{\"resourceType\":\"vydfceacvlhvygdy\",\"capabilities\":[{},{},{}],\"name\":\"rtwnawjslbi\",\"tier\":\"ojgcyzt\",\"size\":\"mznbaeqphch\"}]},\"id\":\"rn\",\"name\":\"pxehuwrykqga\",\"type\":\"fmviklby\"}";
+            = "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"m\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"values\":[{\"resourceType\":\"gplcrpwjxeznoigb\",\"capabilities\":[{},{},{}],\"name\":\"mw\",\"tier\":\"nbsazejjoqkag\",\"size\":\"sxtta\"},{\"resourceType\":\"zxnfaaz\",\"capabilities\":[{},{}],\"name\":\"n\",\"tier\":\"mkqjj\",\"size\":\"uenvrkp\"}]},\"id\":\"uaibrebqaaysj\",\"name\":\"ixqtn\",\"type\":\"ttezlw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,12 +51,12 @@ public final class ResourceProvidersPutVMSkusMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        VmSkuProfile response = manager.resourceProviders().putVMSkus("yaomtb",
+        VmSkuProfile response = manager.resourceProviders().putVMSkus("ioolvrwxkvtkkgll",
             new VmSkuProfileInner().withExtendedLocation(
-                new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("grvk")),
+                new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("vjayvblmhvkzu")),
             com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, response.extendedLocation().type());
-        Assertions.assertEquals("frymsgaojfmwnc", response.extendedLocation().name());
+        Assertions.assertEquals("m", response.extendedLocation().name());
     }
 }

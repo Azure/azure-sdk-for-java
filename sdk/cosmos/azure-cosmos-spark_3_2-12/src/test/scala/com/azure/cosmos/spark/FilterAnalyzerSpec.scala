@@ -256,8 +256,8 @@ class FilterAnalyzerSpec extends UnitSpec {
         CosmosReadManyFilteringConfig(true, "_itemIdentity"))
 
     val filterAnalyzer = FilterAnalyzer(readConfigWithReadManyFilterEnabled, partitionKeyDefinition)
-    val itemIdentityOne = CosmosItemIdentityHelper.getCosmosItemIdentityValueString("1", "1")
-    val itemIdentityTwo = CosmosItemIdentityHelper.getCosmosItemIdentityValueString("2", "2")
+    val itemIdentityOne = CosmosItemIdentityHelper.getCosmosItemIdentityValueString("1", List("1"))
+    val itemIdentityTwo = CosmosItemIdentityHelper.getCosmosItemIdentityValueString("2", List("2"))
 
     val filters = Array[Filter](
       In("_itemIdentity", Array(itemIdentityOne, itemIdentityTwo)),
