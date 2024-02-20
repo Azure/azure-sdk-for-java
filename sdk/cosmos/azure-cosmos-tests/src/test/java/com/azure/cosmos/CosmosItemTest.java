@@ -303,6 +303,9 @@ public class CosmosItemTest extends TestSuiteBase {
             logger.info("Exception handled", e);
             assertThat(timeoutFired.get()).isTrue();
         }
+        finally {
+            transitTimeout.disable();
+        }
     }
 
     @Test(groups = { "fast" }, timeOut = 100 * TIMEOUT)
@@ -368,17 +371,22 @@ public class CosmosItemTest extends TestSuiteBase {
                 new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(70)).build()
             );
 
-        FeedResponse<ObjectNode> feedResponse = container
-            .asyncContainer
-            .readMany(cosmosItemIdentities, requestOptionsWith5SecondsTimeout, ObjectNode.class)
-            .onErrorMap(throwable -> {
-                logger.error("Error observed.", throwable);
+        try {
+            FeedResponse<ObjectNode> feedResponse = container
+                .asyncContainer
+                .readMany(cosmosItemIdentities, requestOptionsWith5SecondsTimeout, ObjectNode.class)
+                .onErrorMap(throwable -> {
+                    logger.error("Error observed.", throwable);
 
-                return throwable;
-            })
-            .block();
+                    return throwable;
+                })
+                .block();
 
-        logger.info("Cosmos Diagnostics: {}", feedResponse.getCosmosDiagnostics().getDiagnosticsContext().toJson());
+            logger.info("Cosmos Diagnostics: {}", feedResponse.getCosmosDiagnostics().getDiagnosticsContext().toJson());
+        }
+        finally {
+            connectTimeout.disable();
+        }
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
