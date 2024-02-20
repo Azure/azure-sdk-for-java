@@ -12,15 +12,20 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.eventgrid.namespaces.http.implementation.EventGridClientImpl;
-import com.azure.messaging.eventgrid.namespaces.http.implementation.models.CloudEvent;
-import com.azure.messaging.eventgrid.namespaces.http.implementation.models.PublishResult;
-import com.azure.messaging.eventgrid.namespaces.http.implementation.models.ReceiveResult;
 import com.azure.messaging.eventgrid.namespaces.http.models.AcknowledgeOptions;
 import com.azure.messaging.eventgrid.namespaces.http.models.AcknowledgeResult;
+import com.azure.messaging.eventgrid.namespaces.http.models.PublishResult;
+import com.azure.messaging.eventgrid.namespaces.http.models.ReceiveResult;
 import com.azure.messaging.eventgrid.namespaces.http.models.RejectOptions;
 import com.azure.messaging.eventgrid.namespaces.http.models.RejectResult;
 import com.azure.messaging.eventgrid.namespaces.http.models.ReleaseDelay;
@@ -28,8 +33,16 @@ import com.azure.messaging.eventgrid.namespaces.http.models.ReleaseOptions;
 import com.azure.messaging.eventgrid.namespaces.http.models.ReleaseResult;
 import com.azure.messaging.eventgrid.namespaces.http.models.RenewCloudEventLocksResult;
 import com.azure.messaging.eventgrid.namespaces.http.models.RenewLockOptions;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URI;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.List;
+
 
 /**
  * Initializes a new instance of the synchronous EventGridClient type.
@@ -38,10 +51,13 @@ import java.util.List;
 public final class EventGridClient {
     @Generated
     private final EventGridClientImpl serviceClient;
+    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
+    private final ClientLogger logger = new ClientLogger(EventGridClient.class);
+
 
     /**
      * Initializes an instance of EventGridClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -78,7 +94,7 @@ public final class EventGridClient {
      * {
      * }
      * }</pre>
-     * 
+     *
      * @param topicName Topic Name.
      * @param event Single Cloud Event being published.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -126,7 +142,7 @@ public final class EventGridClient {
      * {
      * }
      * }</pre>
-     * 
+     *
      * @param topicName Topic Name.
      * @param events Array of Cloud Events being published.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -201,7 +217,7 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -260,7 +276,7 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param acknowledgeOptions AcknowledgeOptions.
@@ -339,7 +355,7 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param releaseOptions ReleaseOptions.
@@ -399,7 +415,7 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param rejectOptions RejectOptions.
@@ -459,7 +475,7 @@ public final class EventGridClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param renewLockOptions RenewLockOptions.
@@ -483,7 +499,7 @@ public final class EventGridClient {
      * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
-     * 
+     *
      * @param topicName Topic Name.
      * @param event Single Cloud Event being published.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -494,12 +510,86 @@ public final class EventGridClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Publish operation.
      */
-    @Generated
+    //@Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PublishResult publishCloudEvent(String topicName, CloudEvent event) {
+    public PublishResult publishCloudEvent(String topicName, CloudEvent event) {
         // Generated convenience method for publishCloudEventWithResponse
+        return publishCloudEvent(topicName, event, false);
+    }
+
+    /**
+     * Publish Single Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
+     * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
+     * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
+     * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
+     *
+     * @param topicName Topic Name.
+     * @param event Single Cloud Event being published.
+     * @param binaryMode If true, the event will be published in binary mode.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws UncheckedIOException failed to format the event properly.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the Publish operation.
+     */
+    public PublishResult publishCloudEvent(String topicName, CloudEvent event, boolean binaryMode) {
         RequestOptions requestOptions = new RequestOptions();
-        return publishCloudEventWithResponse(topicName, event, requestOptions).getValue().toObject(PublishResult.class);
+
+        if (binaryMode) {
+            if (event.getDataContentType() != null) {
+                requestOptions.setHeader(HttpHeaderName.fromString("content-type"), event.getDataContentType());
+            }
+
+            requestOptions.setHeader(HttpHeaderName.fromString("ce-id"), event.getId());
+            requestOptions.setHeader(HttpHeaderName.fromString("ce-specversion"), "1.0");
+            requestOptions.setHeader(HttpHeaderName.fromString("ce-time"), event.getTime().format(DateTimeFormatter.ISO_DATE_TIME));
+            requestOptions.setHeader(HttpHeaderName.fromString("ce-source"), event.getSource());
+
+            if (event.getSubject() != null) {
+                requestOptions.setHeader(HttpHeaderName.fromString("ce-subject"), event.getSubject());
+            }
+
+            requestOptions.setHeader(HttpHeaderName.fromString("ce-type"), event.getType());
+
+            if (event.getDataSchema() != null) {
+                requestOptions.setHeader(HttpHeaderName.fromString("ce-dataschema"), event.getDataSchema());
+            }
+
+            event.getExtensionAttributes().forEach((key, value) -> {
+                Class<?> clazz = value.getClass();
+                HttpHeaderName headerName = HttpHeaderName.fromString("ce-" + key);
+                String headerValue = null;
+                if (clazz == String.class) {
+                    headerValue = (String) value;
+                } else if (clazz == Integer.class) {
+                    headerValue = ((Integer) value).toString();
+                } else if (clazz == Boolean.class) {
+                    headerValue = ((Boolean) value).toString();
+                } else if (clazz == URI.class) {
+                    headerValue = ((URI) value).toString();
+                } else if (clazz == OffsetDateTime.class) {
+                    headerValue = ((OffsetDateTime) value).toString();
+                } else if (clazz == byte[].class) {
+                    headerValue = Base64.getEncoder().encodeToString((byte[]) value);
+                }
+                requestOptions.setHeader(headerName, headerValue);
+            });
+
+            return publishCloudEventWithResponse(topicName, event.getData(), requestOptions)
+                    .getValue()
+                    .toObject(PublishResult.class);
+        }
+        try {
+            BinaryData binaryEvent = BinaryData.fromString(SERIALIZER.serialize(BinaryData.fromObject(event).toObject(CloudEvent.class), SerializerEncoding.JSON));
+            return publishCloudEventWithResponse(topicName, binaryEvent, requestOptions)
+                    .getValue()
+                    .toObject(PublishResult.class);
+        } catch (IOException e) {
+            throw logger.logThrowableAsError(new UncheckedIOException(e));
+        }
     }
 
     /**
@@ -507,7 +597,7 @@ public final class EventGridClient {
      * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
      * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
      * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
-     * 
+     *
      * @param topicName Topic Name.
      * @param events Array of Cloud Events being published.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -518,18 +608,18 @@ public final class EventGridClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Publish operation.
      */
-    @Generated
+
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PublishResult publishCloudEvents(String topicName, List<CloudEvent> events) {
+    public PublishResult publishCloudEvents(String topicName, List<CloudEvent> events) {
         // Generated convenience method for publishCloudEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return publishCloudEventsWithResponse(topicName, events, requestOptions).getValue()
+        return publishCloudEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions).getValue()
             .toObject(PublishResult.class);
     }
 
     /**
      * Receive Batch of Cloud Events from the Event Subscription.
-     * 
+     *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param maxEvents Max Events count to be received. Minimum value is 1, while maximum value is 100 events. If not
@@ -546,9 +636,9 @@ public final class EventGridClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the Receive operation response.
      */
-    @Generated
+//    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReceiveResult receiveCloudEvents(String topicName, String eventSubscriptionName, Integer maxEvents,
+    public ReceiveResult receiveCloudEvents(String topicName, String eventSubscriptionName, Integer maxEvents,
         Duration maxWaitTime) {
         // Generated convenience method for receiveCloudEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -564,7 +654,7 @@ public final class EventGridClient {
 
     /**
      * Receive Batch of Cloud Events from the Event Subscription.
-     * 
+     *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -589,7 +679,7 @@ public final class EventGridClient {
      * successfully accepted. The response body will include the set of successfully acknowledged lockTokens, along with
      * other failed lockTokens with their corresponding error information. Successfully acknowledged events will no
      * longer be available to any consumer.
-     * 
+     *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param acknowledgeOptions AcknowledgeOptions.
@@ -615,7 +705,7 @@ public final class EventGridClient {
      * Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
      * accepted. The response body will include the set of successfully released lockTokens, along with other failed
      * lockTokens with their corresponding error information.
-     * 
+     *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param releaseOptions ReleaseOptions.
@@ -635,7 +725,7 @@ public final class EventGridClient {
         // Generated convenience method for releaseCloudEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (releaseDelayInSeconds != null) {
-            requestOptions.addQueryParam("releaseDelayInSeconds", String.valueOf(releaseDelayInSeconds.toLong()),
+            requestOptions.addQueryParam("releaseDelayInSeconds", String.valueOf(releaseDelayInSeconds),
                 false);
         }
         return releaseCloudEventsWithResponse(topicName, eventSubscriptionName, BinaryData.fromObject(releaseOptions),
@@ -646,7 +736,7 @@ public final class EventGridClient {
      * Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
      * accepted. The response body will include the set of successfully released lockTokens, along with other failed
      * lockTokens with their corresponding error information.
-     * 
+     *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param releaseOptions ReleaseOptions.
@@ -672,7 +762,7 @@ public final class EventGridClient {
      * Reject batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
      * accepted. The response body will include the set of successfully rejected lockTokens, along with other failed
      * lockTokens with their corresponding error information.
-     * 
+     *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param rejectOptions RejectOptions.
@@ -697,7 +787,7 @@ public final class EventGridClient {
      * Renew lock for batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
      * successfully accepted. The response body will include the set of successfully renewed lockTokens, along with
      * other failed lockTokens with their corresponding error information.
-     * 
+     *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
      * @param renewLockOptions RenewLockOptions.
