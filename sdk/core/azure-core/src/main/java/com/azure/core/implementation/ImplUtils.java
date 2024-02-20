@@ -324,11 +324,11 @@ public final class ImplUtils {
 
         if (count >= 3 && bytes[offset] == EF && bytes[offset + 1] == BB && bytes[offset + 2] == BF) {
             return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
-        } else if (count >= 4 && bytes[offset] == ZERO && bytes[offset + 1] == ZERO
-            && bytes[offset + 2] == FE && bytes[offset + 3] == FF) {
+        } else if (count >= 4 && bytes[offset] == ZERO && bytes[offset + 1] == ZERO && bytes[offset + 2] == FE
+            && bytes[offset + 3] == FF) {
             return new String(bytes, 4, bytes.length - 4, UTF_32BE);
-        } else if (count >= 4 && bytes[offset] == FF && bytes[offset + 1] == FE
-            && bytes[offset + 2] == ZERO && bytes[offset + 3] == ZERO) {
+        } else if (count >= 4 && bytes[offset] == FF && bytes[offset + 1] == FE && bytes[offset + 2] == ZERO
+            && bytes[offset + 3] == ZERO) {
             return new String(bytes, 4, bytes.length - 4, UTF_32LE);
         } else if (count >= 2 && bytes[offset] == FE && bytes[offset + 1] == FF) {
             return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
@@ -389,8 +389,8 @@ public final class ImplUtils {
         try {
             return (Class<? extends T>) Class.forName(className, false, ImplUtils.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(
-                "Class '" + className + "' is not found on the classpath.", e));
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("Class '" + className + "' is not found on the classpath.", e));
         }
     }
 
@@ -409,7 +409,8 @@ public final class ImplUtils {
             return ExponentialBackoffAccessHelper.create(retryOptions.getExponentialBackoffOptions(),
                 retryOptions.getShouldRetryCondition());
         } else if (retryOptions.getFixedDelayOptions() != null) {
-            return FixedDelayAccessHelper.create(retryOptions.getFixedDelayOptions(), retryOptions.getShouldRetryCondition());
+            return FixedDelayAccessHelper.create(retryOptions.getFixedDelayOptions(),
+                retryOptions.getShouldRetryCondition());
         } else {
             // This should never happen.
             throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");

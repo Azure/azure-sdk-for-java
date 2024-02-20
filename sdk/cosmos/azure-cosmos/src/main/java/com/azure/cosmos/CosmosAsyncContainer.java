@@ -55,6 +55,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -93,6 +94,7 @@ public class CosmosAsyncContainer {
         ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
     private static final ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor itemOptionsAccessor =
         ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
 
@@ -1382,7 +1384,7 @@ public class CosmosAsyncContainer {
         List<CosmosItemIdentity> itemIdentityList,
         Class<T> classType) {
 
-        return this.readMany(itemIdentityList, new CosmosQueryRequestOptions(), classType);
+        return this.readMany(itemIdentityList, new CosmosReadManyRequestOptions(), classType);
     }
 
     /**
@@ -1416,13 +1418,11 @@ public class CosmosAsyncContainer {
         String sessionToken,
         Class<T> classType) {
 
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        CosmosReadManyRequestOptions options = new CosmosReadManyRequestOptions();
 
         if (!StringUtils.isNotEmpty(sessionToken)) {
             options = options.setSessionToken(sessionToken);
         }
-
-        options.setMaxDegreeOfParallelism(-1);
 
         return this.readMany(itemIdentityList, options, classType);
     }
@@ -1453,12 +1453,16 @@ public class CosmosAsyncContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items or error
      */
-    <T> Mono<FeedResponse<T>> readMany(
+    public <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
-        CosmosQueryRequestOptions requestOptions,
+        CosmosReadManyRequestOptions requestOptions,
         Class<T> classType) {
 
-        requestOptions.setMaxDegreeOfParallelism(-1);
+        CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
+            ? new CosmosQueryRequestOptions()
+            : queryOptionsAccessor.clone(requestOptions);
+        queryRequestOptions.setMaxDegreeOfParallelism(-1);
+        queryRequestOptions.setQueryName("readMany");
 
         CosmosAsyncClient client = this.getDatabase().getClient();
         CosmosPagedFluxOptions fluxOptions = new CosmosPagedFluxOptions();
@@ -1470,8 +1474,8 @@ public class CosmosAsyncContainer {
             this.getId(),
             ResourceType.Document,
             OperationType.Query,
-            queryOptionsAccessor.getQueryNameOrDefault(requestOptions, this.readManyItemsSpanName),
-            requestOptions,
+            queryOptionsAccessor.getQueryNameOrDefault(queryRequestOptions, this.readManyItemsSpanName),
+            queryRequestOptions,
             fluxOptions
         );
 
@@ -2739,7 +2743,7 @@ public class CosmosAsyncContainer {
                 public <T> Mono<FeedResponse<T>> readMany(
                     CosmosAsyncContainer cosmosAsyncContainer,
                     List<CosmosItemIdentity> itemIdentityList,
-                    CosmosQueryRequestOptions requestOptions,
+                    CosmosReadManyRequestOptions requestOptions,
                     Class<T> classType) {
 
                     return cosmosAsyncContainer.readMany(itemIdentityList, requestOptions, classType);

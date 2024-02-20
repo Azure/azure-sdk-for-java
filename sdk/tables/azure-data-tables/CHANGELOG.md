@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Removed the 409 status-code error-level log message "TableAlreadyExists" that was printed when calling `TableServiceClient.createTableIfNotExists()` on a table that already exists.
+
 ### Other Changes
 
 ## 12.3.18 (2023-12-04)

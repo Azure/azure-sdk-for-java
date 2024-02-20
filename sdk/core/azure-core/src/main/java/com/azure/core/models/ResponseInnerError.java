@@ -3,7 +3,6 @@
 
 package com.azure.core.models;
 
-
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -65,9 +64,7 @@ final class ResponseInnerError implements JsonSerializable<ResponseInnerError> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("code", code)
-            .writeJsonField("innererror", innerError)
+        return jsonWriter.writeStartObject().writeStringField("code", code).writeJsonField("innererror", innerError)
             .writeEndObject();
     }
 
