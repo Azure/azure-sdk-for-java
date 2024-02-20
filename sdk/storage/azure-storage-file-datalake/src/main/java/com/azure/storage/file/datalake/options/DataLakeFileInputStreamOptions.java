@@ -18,6 +18,7 @@ public final class DataLakeFileInputStreamOptions {
     private DataLakeRequestConditions requestConditions;
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
+    private Boolean upn;
 
     /**
      * @return {@link FileRange}
@@ -84,6 +85,22 @@ public final class DataLakeFileInputStreamOptions {
      */
     public DataLakeFileInputStreamOptions setConsistentReadControl(ConsistentReadControl consistentReadControl) {
         this.consistentReadControl = consistentReadControl;
+        return this;
+    }
+
+    /**
+     * @return The value for the x-ms-upn header.
+     */
+    public Boolean isUpn() {
+        return upn;
+    }
+
+    /**
+     * @param upn The value for the x-ms-upn header.
+     * @return The updated options.
+     */
+    public DataLakeFileInputStreamOptions setUpn(Boolean upn) {
+        this.upn = upn;
         return this;
     }
 }

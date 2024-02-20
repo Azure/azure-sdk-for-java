@@ -21,6 +21,7 @@ import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -165,17 +166,26 @@ public class PathClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakePathClient#getProperties()}
+     * Code snippets for {@link DataLakePathClient#getProperties()} and {@link DataLakePathClient#getProperties(PathGetPropertiesOptions)}
      */
     public void getPropertiesCodeSnippet() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getProperties
         System.out.printf("Creation Time: %s, Size: %d%n", client.getProperties().getCreationTime(),
             client.getProperties().getFileSize());
         // END: com.azure.storage.file.datalake.DataLakePathClient.getProperties
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getProperties#PathGetPropertiesOptions
+        PathGetPropertiesOptions options = new PathGetPropertiesOptions().setUpn(true);
+
+        System.out.printf("Creation Time: %s, Size: %d%n", client.getProperties(options).getCreationTime(),
+            client.getProperties(options).getFileSize());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.getProperties#PathGetPropertiesOptions
+
     }
 
     /**
      * Code snippets for {@link DataLakePathClient#getPropertiesWithResponse(DataLakeRequestConditions, Duration, Context)}
+     * and {@link DataLakePathClient#getPropertiesWithResponse(PathGetPropertiesOptions, Duration, Context)}
      */
     public void getPropertiesWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#DataLakeRequestConditions-Duration-Context
@@ -187,6 +197,18 @@ public class PathClientJavaDocCodeSamples {
         System.out.printf("Creation Time: %s, Size: %d%n", response.getValue().getCreationTime(),
             response.getValue().getFileSize());
         // END: com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#DataLakeRequestConditions-Duration-Context
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#PathGetPropertiesOptions-Duration-Context
+        PathGetPropertiesOptions options = new PathGetPropertiesOptions().setUpn(true);
+
+        Response<PathProperties> response2 = client.getPropertiesWithResponse(options, timeout,
+            new Context(key2, value2));
+
+        System.out.printf("Creation Time: %s, Size: %d%n", response2.getValue().getCreationTime(),
+            response2.getValue().getFileSize());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#PathGetPropertiesOptions-Duration-Context
+
+
     }
 
     /**

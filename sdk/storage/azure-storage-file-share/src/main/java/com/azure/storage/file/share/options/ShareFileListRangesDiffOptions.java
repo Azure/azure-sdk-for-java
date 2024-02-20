@@ -17,6 +17,7 @@ public class ShareFileListRangesDiffOptions {
     private ShareFileRange range;
     private final String previousSnapshot;
     private ShareRequestConditions requestConditions;
+    private Boolean supportRename;
 
     /**
      * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
@@ -64,6 +65,29 @@ public class ShareFileListRangesDiffOptions {
      */
     public ShareFileListRangesDiffOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * Gets the supportRename value.
+     *
+     * @return Whether the changed ranges for a file that has been renamed or moved between the target snapshot
+     * (or the live file) and the previous snapshot should be listed.
+     */
+    public Boolean isRenameSupported() {
+        return supportRename;
+    }
+
+    /**
+     * Sets the value for whether the changed ranges for a file that has been renamed or moved should appear in the
+     * snapshot dif.
+     *
+     * @param renameSupported Whether the changed ranges for a file that has been renamed or moved between the target
+     * snapshot (or the live file) and the previous snapshot should be listed.
+     * @return The updated options.
+     */
+    public ShareFileListRangesDiffOptions setRenameSupported(Boolean renameSupported) {
+        this.supportRename = renameSupported;
         return this;
     }
 }
