@@ -17,8 +17,8 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid-namespaces-http;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for EventGrid</name>
-  <description>This package contains Microsoft Azure EventGrid client library.</description>
+  <name>Microsoft Azure SDK for EventGrid Namespaces HTTP</name>
+  <description>This package contains Microsoft Azure EventGrid Namespaces HTTP client library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
