@@ -484,5 +484,5 @@ the main ServiceBusClientBuilder. -->
   <!-- Exceptions thrown here are caught in the calling method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.security.keyvault.keys.cryptography.CryptographyClient.java"
-            lines="1283,1286,1293"/>
+            lines="1234,1237,1243"/>
 </suppressions>

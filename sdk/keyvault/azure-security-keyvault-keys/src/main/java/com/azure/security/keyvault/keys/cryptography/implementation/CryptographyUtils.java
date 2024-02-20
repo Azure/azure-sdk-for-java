@@ -99,18 +99,18 @@ public final class CryptographyUtils {
         }
     }
 
-   public static boolean isThrowableRetryable(Throwable e) {
-       if (e instanceof HttpResponseException) {
-           int statusCode = ((HttpResponseException) e).getResponse().getStatusCode();
+    public static boolean isThrowableRetryable(Throwable e) {
+        if (e instanceof HttpResponseException) {
+            int statusCode = ((HttpResponseException) e).getResponse().getStatusCode();
 
-           // Not a retriable error code.
-           return statusCode != 501 && statusCode != 505
-               && (statusCode >= 500 || statusCode == 408 || statusCode == 429);
-       } else {
-           // Not a service-related transient error.
-           return false;
-       }
-   }
+            // Not a retriable error code.
+            return statusCode != 501 && statusCode != 505
+                && (statusCode >= 500 || statusCode == 408 || statusCode == 429);
+        } else {
+            // Not a service-related transient error.
+            return false;
+        }
+    }
 
     /*
      * Determines whether the key is valid and of required size.
