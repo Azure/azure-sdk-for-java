@@ -39,7 +39,15 @@ Various documentation is available to help you get started
 ## Examples
 
 ```java com.azure.analytics.purview.datamap.readme
-Purview
+ClientSecretCredential cred = new ClientSecretCredentialBuilder()
+            .tenantId(Configuration.getGlobalConfiguration().get("TENANT_ID"))
+            .authorityHost(Configuration.getGlobalConfiguration().get("AUTHORITY_HOST"))
+            .clientId(Configuration.getGlobalConfiguration().get("CLIENT_ID"))
+            .clientSecret(Configuration.getGlobalConfiguration().get("CLIENT_SECRET"))
+            .build();
+        DataMapClientBuilder clientBuilder = new DataMapClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+            .credential(cred);
 ```
 
 ## Troubleshooting
