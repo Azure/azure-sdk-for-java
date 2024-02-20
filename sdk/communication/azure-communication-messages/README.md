@@ -239,7 +239,7 @@ response.stream().forEach(t -> {
 ## Next steps
 
 - [Read more about Advance Messaging in Azure Communication Services][azure_communication_messaging_qs].
-- Please take a look at the [samples](./src/samples) directory for detailed examples on how to use this library.
+- Please take a look at the samples (src/samples) directory for detailed examples on how to use this library.
 
 
 ## Contributing
@@ -259,10 +259,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://central.sonatype.com/artifact/com.azure/azure-communication-messages
 [api_documentation]: https://aka.ms/java-docs
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-sms/src
-[azure_communication_messaging_qs]: https://learn.microsoft.com/en-us/azure/communication-services/concepts/advanced-messaging/whatsapp/whatsapp-overview
-[handle_advance_messaging_events]: https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/advanced-messaging/whatsapp/handle-advanced-messaging-events
-[register_whatsapp_business_account]: https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/advanced-messaging/whatsapp/connect-whatsapp-business-account
+[azure_communication_messaging_qs]: https://learn.microsoft.com/azure/communication-services/concepts/advanced-messaging/whatsapp/whatsapp-overview
+[handle_advance_messaging_events]: https://learn.microsoft.com/azure/communication-services/quickstarts/advanced-messaging/whatsapp/handle-advanced-messaging-events
+[register_whatsapp_business_account]: https://learn.microsoft.com/azure/communication-services/quickstarts/advanced-messaging/whatsapp/connect-whatsapp-business-account
 [create-manage-whatsapp-template]: https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [defaultazurecredential]: https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/identity/identity#defaultazurecredential
