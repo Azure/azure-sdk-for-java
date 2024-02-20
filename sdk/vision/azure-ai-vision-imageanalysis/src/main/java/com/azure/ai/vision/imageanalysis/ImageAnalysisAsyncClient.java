@@ -30,18 +30,6 @@ import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the asynchronous ImageAnalysisClient type.
- *
- * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client -->
- * <pre>
- * &#47;&#47;
- * &#47;&#47; Create an asynchronous Image Analysis client.
- * &#47;&#47;
- * ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.ai.vision.imageanalysis.async-client -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class, isAsync = true)
 public final class ImageAnalysisAsyncClient {
@@ -220,7 +208,7 @@ public final class ImageAnalysisAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a> on successful
+     * @return represents the outcome of an Image Analysis operation along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @Generated
@@ -473,7 +461,7 @@ public final class ImageAnalysisAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a> on successful
+     * @return represents the outcome of an Image Analysis operation along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @Generated

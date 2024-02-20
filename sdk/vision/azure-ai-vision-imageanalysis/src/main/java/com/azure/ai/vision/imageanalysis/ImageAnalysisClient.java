@@ -28,18 +28,6 @@ import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous ImageAnalysisClient type.
- *
- * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-client -->
- * <pre>
- * &#47;&#47;
- * &#47;&#47; Create a synchronous Image Analysis client.
- * &#47;&#47;
- * ImageAnalysisClient client = new ImageAnalysisClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.ai.vision.imageanalysis.sync-client -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class)
 public final class ImageAnalysisClient {
@@ -218,7 +206,7 @@ public final class ImageAnalysisClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>.
+     * @return represents the outcome of an Image Analysis operation along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -468,7 +456,7 @@ public final class ImageAnalysisClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>.
+     * @return represents the outcome of an Image Analysis operation along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
