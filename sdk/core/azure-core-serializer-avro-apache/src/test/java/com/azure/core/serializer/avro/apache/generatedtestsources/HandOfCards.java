@@ -26,11 +26,9 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase
 
     private static final SpecificData MODEL$ = new SpecificData();
 
-    private static final BinaryMessageEncoder<HandOfCards> ENCODER
-        = new BinaryMessageEncoder<HandOfCards>(MODEL$, SCHEMA$);
+    private static final BinaryMessageEncoder<HandOfCards> ENCODER = new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
-    private static final BinaryMessageDecoder<HandOfCards> DECODER
-        = new BinaryMessageDecoder<HandOfCards>(MODEL$, SCHEMA$);
+    private static final BinaryMessageDecoder<HandOfCards> DECODER = new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
     /**
      * Return the BinaryMessageEncoder instance used by this class.
@@ -54,7 +52,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase
      * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
      */
     public static BinaryMessageDecoder<HandOfCards> createDecoder(SchemaStore resolver) {
-        return new BinaryMessageDecoder<HandOfCards>(MODEL$, SCHEMA$, resolver);
+        return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
     }
 
     /**
@@ -94,15 +92,18 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase
         this.cards = cards;
     }
 
+    @Override
     public org.apache.avro.specific.SpecificData getSpecificData() {
         return MODEL$;
     }
 
+    @Override
     public org.apache.avro.Schema getSchema() {
         return SCHEMA$;
     }
 
-    // Used by DatumWriter. Applications should not call.
+    // Used by DatumWriter.  Applications should not call.
+    @Override
     public java.lang.Object get(int field$) {
         switch (field$) {
             case 0:
@@ -113,7 +114,8 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase
         }
     }
 
-    // Used by DatumReader. Applications should not call.
+    // Used by DatumReader.  Applications should not call.
+    @Override
     @SuppressWarnings(value = "unchecked")
     public void put(int field$, java.lang.Object value$) {
         switch (field$) {

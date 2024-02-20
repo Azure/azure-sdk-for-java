@@ -16,6 +16,7 @@ public enum PlayingCardSuit implements org.apache.avro.generic.GenericEnumSymbol
         return SCHEMA$;
     }
 
+    @Override
     public org.apache.avro.Schema getSchema() {
         return SCHEMA$;
     }

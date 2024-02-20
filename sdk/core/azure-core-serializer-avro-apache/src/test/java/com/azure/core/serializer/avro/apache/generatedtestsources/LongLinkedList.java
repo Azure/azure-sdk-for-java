@@ -26,11 +26,9 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase
 
     private static final SpecificData MODEL$ = new SpecificData();
 
-    private static final BinaryMessageEncoder<LongLinkedList> ENCODER
-        = new BinaryMessageEncoder<LongLinkedList>(MODEL$, SCHEMA$);
+    private static final BinaryMessageEncoder<LongLinkedList> ENCODER = new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
-    private static final BinaryMessageDecoder<LongLinkedList> DECODER
-        = new BinaryMessageDecoder<LongLinkedList>(MODEL$, SCHEMA$);
+    private static final BinaryMessageDecoder<LongLinkedList> DECODER = new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
     /**
      * Return the BinaryMessageEncoder instance used by this class.
@@ -54,7 +52,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase
      * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
      */
     public static BinaryMessageDecoder<LongLinkedList> createDecoder(SchemaStore resolver) {
-        return new BinaryMessageDecoder<LongLinkedList>(MODEL$, SCHEMA$, resolver);
+        return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
     }
 
     /**
@@ -98,15 +96,18 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase
         this.next = next;
     }
 
+    @Override
     public org.apache.avro.specific.SpecificData getSpecificData() {
         return MODEL$;
     }
 
+    @Override
     public org.apache.avro.Schema getSchema() {
         return SCHEMA$;
     }
 
-    // Used by DatumWriter. Applications should not call.
+    // Used by DatumWriter.  Applications should not call.
+    @Override
     public java.lang.Object get(int field$) {
         switch (field$) {
             case 0:
@@ -120,7 +121,8 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase
         }
     }
 
-    // Used by DatumReader. Applications should not call.
+    // Used by DatumReader.  Applications should not call.
+    @Override
     @SuppressWarnings(value = "unchecked")
     public void put(int field$, java.lang.Object value$) {
         switch (field$) {
