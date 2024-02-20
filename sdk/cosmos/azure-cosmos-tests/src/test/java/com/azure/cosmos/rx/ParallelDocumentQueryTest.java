@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -745,10 +746,10 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         }
 
         Function<JsonNode, String> factoryMethod = (objectNode) -> objectNode.get("id").asText();
-        CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+        CosmosReadManyRequestOptions queryRequestOptions = new CosmosReadManyRequestOptions();
         ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
+                .CosmosQueryRequestOptionsBaseHelper
+                .getCosmosQueryRequestOptionsBaseAccessor()
                 .setItemFactoryMethod(queryRequestOptions, factoryMethod);
 
         FeedResponse<String> documentFeedResponse =

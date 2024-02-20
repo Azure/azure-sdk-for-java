@@ -11,7 +11,7 @@ import com.azure.search.documents.models.SearchResult;
 import reactor.core.publisher.Flux;
 
 /**
- * This example shows how to perform basic searches using the Azure Cognitive Search SDK for Java
+ * This example shows how to perform basic searches using the Azure AI Search SDK for Java
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
  * See https://docs.microsoft.com/azure/search/search-get-started-portal
@@ -19,7 +19,7 @@ import reactor.core.publisher.Flux;
 public class SearchForDynamicDocumentsExample {
 
     /**
-     * From the Azure portal, get your Azure Cognitive Search service URL and API key,
+     * From the Azure portal, get your Azure AI Search service URL and API key,
      * and set the values of these environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");

@@ -124,5 +124,8 @@ $temp =  ConvertTo-Json @($serviceDirectories | Sort-Object | Get-Unique) -Compr
 Write-Host "setting env variable ServiceDirectories = $temp"
 Write-Host "##vso[task.setvariable variable=ServiceDirectories;]$temp"
 $ElapsedTime = $(get-date) - $StartTime
+if ($ElapsedTime -lt 0) {
+    $ElapsedTime = [datetime]0
+}
 $TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
 Write-Host "Total run time=$($TotalRunTime)"

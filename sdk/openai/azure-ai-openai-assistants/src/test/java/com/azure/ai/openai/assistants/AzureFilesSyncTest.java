@@ -3,8 +3,8 @@
 
 package com.azure.ai.openai.assistants;
 
+import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
-import com.azure.ai.openai.assistants.models.FileListResponse;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.core.http.HttpClient;
@@ -14,6 +14,8 @@ import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.List;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,8 +41,8 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            FileListResponse files = client.listFiles(filePurpose);
-            assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
+            List<OpenAIFile> files = client.listFiles(filePurpose);
+            assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
             FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
@@ -64,8 +66,8 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            FileListResponse files = client.listFiles(filePurpose);
-            assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
+            List<OpenAIFile> files = client.listFiles(filePurpose);
+            assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
             FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
@@ -90,8 +92,8 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            FileListResponse files = client.listFiles(filePurpose);
-            assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
+            List<OpenAIFile> files = client.listFiles(filePurpose);
+            assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
             FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
@@ -121,8 +123,9 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             requestOptions.addQueryParam("purpose", FilePurpose.ASSISTANTS.toString());
             Response<BinaryData> listFilesResponse = client.listFilesWithResponse(requestOptions);
             assertEquals(200, listFilesResponse.getStatusCode());
-            FileListResponse files = listFilesResponse.getValue().toObject(FileListResponse.class);
-            assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
+            List<OpenAIFile> files = listFilesResponse.getValue()
+                .toObject(FileListResponse.class).getData();
+            assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
             Response<BinaryData> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
@@ -154,8 +157,9 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             requestOptions.addQueryParam("purpose", FilePurpose.ASSISTANTS.toString());
             Response<BinaryData> listFilesResponse = client.listFilesWithResponse(requestOptions);
             assertEquals(200, listFilesResponse.getStatusCode());
-            FileListResponse files = listFilesResponse.getValue().toObject(FileListResponse.class);
-            assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
+            List<OpenAIFile> files = listFilesResponse.getValue()
+                .toObject(FileListResponse.class).getData();
+            assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
             Response<BinaryData> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
@@ -188,8 +192,9 @@ public class AzureFilesSyncTest extends AssistantsClientTestBase {
             requestOptions.addQueryParam("purpose", FilePurpose.FINE_TUNE.toString());
             Response<BinaryData> listFilesResponse = client.listFilesWithResponse(requestOptions);
             assertEquals(200, listFilesResponse.getStatusCode());
-            FileListResponse files = listFilesResponse.getValue().toObject(FileListResponse.class);
-            assertTrue(files.getData().stream().anyMatch(f -> f.getId().equals(file.getId())));
+            List<OpenAIFile> files = listFilesResponse.getValue()
+                .toObject(FileListResponse.class).getData();
+            assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
             Response<BinaryData> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());

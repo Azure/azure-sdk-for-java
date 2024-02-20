@@ -181,8 +181,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
     @Override
     public Stream<HttpHeader> stream() {
-        return nettyHeaders.names().stream()
-            .map(name -> new NettyHttpHeader(this, name, nettyHeaders.getAll(name)));
+        return nettyHeaders.names().stream().map(name -> new NettyHttpHeader(this, name, nettyHeaders.getAll(name)));
     }
 
     static class NettyHttpHeader extends HttpHeader {
@@ -213,7 +212,6 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
             this.allHeaders = allHeaders;
             this.headerNames = allHeaders.nettyHeaders.names().iterator();
         }
-
 
         @Override
         public boolean hasNext() {

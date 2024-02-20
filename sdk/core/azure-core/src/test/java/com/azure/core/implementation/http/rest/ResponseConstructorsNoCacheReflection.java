@@ -43,8 +43,7 @@ class ResponseConstructorsNoCacheReflection {
     }
 
     Mono<Response<?>> invoke(final Constructor<? extends Response<?>> constructor,
-        final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
-        final Object bodyAsObject) {
+        final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
         final HttpResponse httpResponse = decodedResponse.getSourceResponse();
         final HttpRequest httpRequest = httpResponse.getRequest();
         final int responseStatusCode = httpResponse.getStatusCode();
@@ -54,11 +53,14 @@ class ResponseConstructorsNoCacheReflection {
         switch (paramCount) {
             case 3:
                 return constructResponse(constructor, httpRequest, responseStatusCode, responseHeaders);
+
             case 4:
                 return constructResponse(constructor, httpRequest, responseStatusCode, responseHeaders, bodyAsObject);
+
             case 5:
                 return constructResponse(constructor, httpRequest, responseStatusCode, responseHeaders, bodyAsObject,
                     decodedResponse.getDecodedHeaders());
+
             default:
                 throw logger.logExceptionAsError(
                     new IllegalStateException("Response constructor with expected parameters not found."));

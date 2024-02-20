@@ -58,7 +58,7 @@ class CosmosClientCacheITest
           subscriptionId = None,
           tenantId = None,
           resourceGroupName = None,
-          azureEnvironment = AzureEnvironment.AZURE,
+          azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
           sparkEnvironmentInfo = "")
       ),
       (
@@ -79,7 +79,7 @@ class CosmosClientCacheITest
           subscriptionId = None,
           tenantId = None,
           resourceGroupName = None,
-          azureEnvironment = AzureEnvironment.AZURE,
+          azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
           sparkEnvironmentInfo = "")
       ),
       (
@@ -100,7 +100,7 @@ class CosmosClientCacheITest
           subscriptionId = None,
           tenantId = None,
           resourceGroupName = None,
-          azureEnvironment = AzureEnvironment.AZURE,
+          azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
           sparkEnvironmentInfo = "")
       ),
       (
@@ -121,7 +121,7 @@ class CosmosClientCacheITest
           subscriptionId = None,
           tenantId = None,
           resourceGroupName = None,
-          azureEnvironment = AzureEnvironment.AZURE,
+          azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
           sparkEnvironmentInfo = "")
       )
     )
@@ -149,7 +149,7 @@ class CosmosClientCacheITest
         userConfig.subscriptionId,
         userConfig.tenantId,
         userConfig.resourceGroupName,
-        userConfig.azureEnvironment,
+        userConfig.azureEnvironmentEndpoints,
         sparkEnvironmentInfo = ""
       )
 

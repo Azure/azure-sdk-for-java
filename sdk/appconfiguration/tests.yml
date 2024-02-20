@@ -14,3 +14,8 @@ stages:
         AZURE_CLIENT_ID: $(APPCONFIGURATION_CLIENT_ID)
         AZURE_CLIENT_SECRET: $(APPCONFIGURATION_CLIENT_SECRET)
         AZURE_TENANT_ID: $(APPCONFIGURATION_TENANT_ID)
+      MatrixConfigs:
+        - Name: App_Configuration_live_test
+          Path: sdk/appconfiguration/platform-matrix.json
+          Selection: sparse
+          GenerateVMJobs: true

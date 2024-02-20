@@ -14,7 +14,6 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 
-
 class JacksonJsonProvider implements JsonProvider {
     static final boolean INITIALIZED = JacksonJsonReader.INITIALIZED && JacksonJsonWriter.INITIALIZED;
 

@@ -93,8 +93,7 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
      */
     public SyncLocationPollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
         Context context) {
-        this(new PollingStrategyOptions(httpPipeline)
-            .setEndpoint(endpoint)
+        this(new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint)
             .setSerializer(serializer)
             .setContext(context));
     }
@@ -109,7 +108,9 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
         Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
         this.httpPipeline = pollingStrategyOptions.getHttpPipeline();
         this.endpoint = pollingStrategyOptions.getEndpoint();
-        this.serializer = (pollingStrategyOptions.getSerializer() == null) ? DEFAULT_SERIALIZER : pollingStrategyOptions.getSerializer();
+        this.serializer = (pollingStrategyOptions.getSerializer() == null)
+            ? DEFAULT_SERIALIZER
+            : pollingStrategyOptions.getSerializer();
         this.serviceVersion = pollingStrategyOptions.getServiceVersion();
         this.context = pollingStrategyOptions.getContext() == null ? Context.NONE : pollingStrategyOptions.getContext();
     }
@@ -130,8 +131,10 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
         pollingContext.setData(PollingConstants.HTTP_METHOD, response.getRequest().getHttpMethod().name());
         pollingContext.setData(PollingConstants.REQUEST_URL, response.getRequest().getUrl().toString());
 
-        if (response.getStatusCode() == 200 || response.getStatusCode() == 201
-            || response.getStatusCode() == 202 || response.getStatusCode() == 204) {
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
+            || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                 PollingUtils.convertResponseSync(response.getValue(), serializer, pollResponseType), retryAfter);
@@ -147,7 +150,6 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
         String url = pollingContext.getData(PollingConstants.LOCATION);
         url = setServiceVersionQueryParam(url);
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-
 
         try (HttpResponse response = httpPipeline.sendSync(request, context)) {
             HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);

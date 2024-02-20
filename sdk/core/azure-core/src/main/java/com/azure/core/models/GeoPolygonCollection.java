@@ -130,8 +130,8 @@ public final class GeoPolygonCollection extends GeoObject {
                             + "'MultiPolygon'. The found 'type' was '" + type + "'.");
                     }
                 } else if ("coordinates".equals(fieldName)) {
-                    List<List<GeoLinearRing>> polygonRings =
-                        reader.readArray(polygon -> polygon.readArray(GeoLinearRing::fromJson));
+                    List<List<GeoLinearRing>> polygonRings
+                        = reader.readArray(polygon -> polygon.readArray(GeoLinearRing::fromJson));
                     polygons = new ArrayList<>(polygonRings.size());
                     for (List<GeoLinearRing> rings : polygonRings) {
                         polygons.add(new GeoPolygon(rings));

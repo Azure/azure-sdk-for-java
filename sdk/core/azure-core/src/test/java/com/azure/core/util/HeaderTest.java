@@ -54,7 +54,7 @@ public class HeaderTest {
     public void testGetValues() {
         // Arrange
         String name = "a";
-        String[] values = {"b", "c"};
+        String[] values = { "b", "c" };
 
         // Act
         final Header header = new Header(name, values[0]);
@@ -65,9 +65,6 @@ public class HeaderTest {
     }
 
     private static Stream<Arguments> testNullArgsConstructor() {
-        return Stream.of(
-            Arguments.arguments(null, "a"),
-            Arguments.arguments(null, null)
-        );
+        return Stream.of(Arguments.arguments(null, "a"), Arguments.arguments(null, null));
     }
 }
