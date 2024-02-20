@@ -48,8 +48,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class OkHttpAsyncHttpClientTests {
-    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
-        .initialRequest(0);
+    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS
+        = StepVerifierOptions.create().initialRequest(0);
 
     private static final String SERVER_HTTP_URI = OkHttpClientLocalTestServer.getServer().getHttpUri();
 
@@ -85,14 +85,10 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
-        StepVerifier.create(getResponse("/error")
-                .flatMap(response -> {
-                    assertEquals(500, response.getStatusCode());
-                    return response.getBodyAsString();
-                }))
-            .expectNext("error")
-            .expectComplete()
-            .verify(Duration.ofSeconds(20));
+        StepVerifier.create(getResponse("/error").flatMap(response -> {
+            assertEquals(500, response.getStatusCode());
+            return response.getBodyAsString();
+        })).expectNext("error").expectComplete().verify(Duration.ofSeconds(20));
     }
 
     @Test
@@ -110,24 +106,22 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
-        HttpClient client = new OkHttpAsyncHttpClientBuilder()
-            .dispatcher(createQuietDispatcher(RuntimeException.class, "boo"))
-            .build();
+        HttpClient client
+            = new OkHttpAsyncHttpClientBuilder().dispatcher(createQuietDispatcher(RuntimeException.class, "boo"))
+                .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
-            .setBody(Flux.error(new RuntimeException("boo")));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, url("/shortPost")).setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
+                .setBody(Flux.error(new RuntimeException("boo")));
 
-        StepVerifier.create(client.send(request))
-            .expectErrorMatches(e -> e.getMessage().contains("boo"))
-            .verify();
+        StepVerifier.create(client.send(request)).expectErrorMatches(e -> e.getMessage().contains("boo")).verify();
     }
 
     @Test
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
-        HttpClient client = new OkHttpAsyncHttpClientBuilder()
-            .dispatcher(createQuietDispatcher(RuntimeException.class, "boo"))
-            .build();
+        HttpClient client
+            = new OkHttpAsyncHttpClientBuilder().dispatcher(createQuietDispatcher(RuntimeException.class, "boo"))
+                .build();
 
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
@@ -165,16 +159,12 @@ public class OkHttpAsyncHttpClientTests {
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
             .parallel()
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> doRequest(client, "/long")
-                .flatMap(HttpResponse::getBodyAsByteArray));
+            .flatMap(ignored -> doRequest(client, "/long").flatMap(HttpResponse::getBodyAsByteArray));
 
-        StepVerifier.create(responses)
-            .thenConsumeWhile(response -> {
-                com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, response);
-                return true;
-            })
-            .expectComplete()
-            .verify(Duration.ofSeconds(60));
+        StepVerifier.create(responses).thenConsumeWhile(response -> {
+            com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, response);
+            return true;
+        }).expectComplete().verify(Duration.ofSeconds(60));
     }
 
     @Test
@@ -212,12 +202,11 @@ public class OkHttpAsyncHttpClientTests {
         HttpHeaderName multiValueHeaderName = HttpHeaderName.fromString("Multi-value");
         final List<String> multiValueHeaderValue = Arrays.asList("value1", "value2");
 
-        HttpHeaders headers = new HttpHeaders()
-            .set(singleValueHeaderName, singleValueHeaderValue)
+        HttpHeaders headers = new HttpHeaders().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, url(RETURN_HEADERS_AS_IS_PATH),
-                headers, Flux.empty())))
+        StepVerifier
+            .create(client.send(new HttpRequest(HttpMethod.GET, url(RETURN_HEADERS_AS_IS_PATH), headers, Flux.empty())))
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
 

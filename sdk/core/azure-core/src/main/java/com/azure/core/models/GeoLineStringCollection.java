@@ -96,7 +96,8 @@ public final class GeoLineStringCollection extends GeoObject {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject().writeStringField("type", GeoObjectType.MULTI_LINE_STRING.toString())
+        jsonWriter.writeStartObject()
+            .writeStringField("type", GeoObjectType.MULTI_LINE_STRING.toString())
             .writeArrayField("coordinates", lines,
                 (writer, geoLineString) -> writer.writeArray(geoLineString.getCoordinates(), JsonWriter::writeJson))
             .writeJsonField("bbox", getBoundingBox());

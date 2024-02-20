@@ -125,8 +125,10 @@ public final class GeoPolygon extends GeoObject {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject().writeStringField("type", GeoObjectType.POLYGON.toString())
-            .writeArrayField("coordinates", getRings(), JsonWriter::writeJson).writeJsonField("bbox", getBoundingBox());
+        jsonWriter.writeStartObject()
+            .writeStringField("type", GeoObjectType.POLYGON.toString())
+            .writeArrayField("coordinates", getRings(), JsonWriter::writeJson)
+            .writeJsonField("bbox", getBoundingBox());
 
         return writeCustomProperties(jsonWriter).writeEndObject();
     }

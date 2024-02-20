@@ -35,8 +35,9 @@ public class HttpPipelineNextSyncPolicy {
     public HttpResponse processSync() {
         HttpPipelinePolicy nextPolicy = state.getNextPolicy();
         if (nextPolicy == null) {
-            return this.state.getPipeline().getHttpClient().sendSync(this.state.getCallContext().getHttpRequest(),
-                this.state.getCallContext().getContext());
+            return this.state.getPipeline()
+                .getHttpClient()
+                .sendSync(this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext());
         } else {
             return nextPolicy.processSync(this.state.getCallContext(), this);
         }

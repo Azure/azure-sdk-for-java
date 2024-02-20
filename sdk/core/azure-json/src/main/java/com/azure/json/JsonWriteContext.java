@@ -83,7 +83,9 @@ public final class JsonWriteContext {
                     + " 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '" + token + "'.");
             }
         } else if (context == JsonWriteState.OBJECT) {
-            if (token == JsonToken.START_OBJECT || token == JsonToken.START_ARRAY || token == JsonToken.END_ARRAY
+            if (token == JsonToken.START_OBJECT
+                || token == JsonToken.START_ARRAY
+                || token == JsonToken.END_ARRAY
                 || isSimpleValue(token)) {
                 throw new IllegalStateException("Writing context is 'OBJECT', only 'END_OBJECT' and 'FIELD_NAME'"
                     + " tokens are allowed. Attempted: '" + token + "'.");
@@ -91,8 +93,8 @@ public final class JsonWriteContext {
         } else if (context == JsonWriteState.ARRAY) {
             if (token == JsonToken.END_OBJECT || token == JsonToken.FIELD_NAME) {
                 throw new IllegalStateException("Writing context is 'ARRAY', only 'START_OBJECT', 'START_ARRAY',"
-                    + ", 'END_ARRAY', 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '"
-                    + token + "'.");
+                    + ", 'END_ARRAY', 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '" + token
+                    + "'.");
             }
         } else if (context == JsonWriteState.FIELD) {
             if (token == JsonToken.END_OBJECT || token == JsonToken.END_ARRAY || token == JsonToken.FIELD_NAME) {
@@ -100,8 +102,8 @@ public final class JsonWriteContext {
                     + " 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '" + token + "'.");
             }
         } else {
-            throw new IllegalStateException("Writing context is 'COMPLETED', no further tokens are allowed. "
-                + "Attempted: '" + token + "'.");
+            throw new IllegalStateException(
+                "Writing context is 'COMPLETED', no further tokens are allowed. " + "Attempted: '" + token + "'.");
         }
     }
 
@@ -134,7 +136,7 @@ public final class JsonWriteContext {
         // Simple value has three scenarios:
         //
         // - Current context is the root, writing a simple value completes the JSON stream and the writing context
-        //   becomes COMPLETE.
+        // becomes COMPLETE.
         // - Current context isn't the root, writing context becomes the parent context and the context is completed.
         // - Current context is ARRAY, writing context stays the same.
         if (isSimpleValue(token)) {
@@ -151,9 +153,9 @@ public final class JsonWriteContext {
         // completed. The scenarios are:
         //
         // - Parent context is the root, closing the array or object completes the JSON stream and the writing context
-        //   becomes complete.
+        // becomes complete.
         // - Parent context is a FIELD_VALUE, closing the array or object completes the field value and the writing
-        //   context becomes the grandparent context.
+        // context becomes the grandparent context.
         // - The parent context is a wrapping array or object, return the parent context.
         if (token == JsonToken.END_ARRAY || token == JsonToken.END_OBJECT) {
             JsonWriteContext toReturn = parent;

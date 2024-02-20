@@ -433,12 +433,17 @@ public class PagedIterableTest {
     }
 
     private void createPagedResponse(int numberOfPages) {
-        pagedResponses = IntStream.range(0, numberOfPages).boxed().map(
-            i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, numberOfPages, this::getItems, i))
+        pagedResponses = IntStream.range(0, numberOfPages)
+            .boxed()
+            .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, numberOfPages, this::getItems,
+                i))
             .collect(Collectors.toList());
 
-        pagedStringResponses = IntStream.range(0, numberOfPages).boxed().map(i -> createPagedResponse(httpRequest,
-            httpHeaders, deserializedHeaders, numberOfPages, this::getStringItems, i)).collect(Collectors.toList());
+        pagedStringResponses = IntStream.range(0, numberOfPages)
+            .boxed()
+            .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, numberOfPages,
+                this::getStringItems, i))
+            .collect(Collectors.toList());
     }
 
     private <T> PagedResponseBase<String, T> createPagedResponse(HttpRequest httpRequest, HttpHeaders headers,
@@ -765,7 +770,8 @@ public class PagedIterableTest {
     public <C, T, P extends ContinuablePage<C, T>> void
         streamingByPageTerminatesOn(ContinuablePagedFlux<C, T, P> pagedFlux, List<T> expectedItems) {
         List<T> actualItems = new ArrayList<>();
-        new ContinuablePagedIterable<>(pagedFlux).streamByPage().map(page -> page.getElements())
+        new ContinuablePagedIterable<>(pagedFlux).streamByPage()
+            .map(page -> page.getElements())
             .forEach(iterableStream -> iterableStream.forEach(actualItems::add));
         assertEquals(expectedItems.size(), actualItems.size());
         for (int i = 0; i < expectedItems.size(); i++) {
@@ -778,7 +784,8 @@ public class PagedIterableTest {
     public <C, T, P extends ContinuablePage<C, T>> void
         iteratingByPageTerminatesOn(ContinuablePagedFlux<C, T, P> pagedFlux, List<T> expectedItems) {
         List<T> actualItems = new ArrayList<>();
-        new ContinuablePagedIterable<>(pagedFlux).iterableByPage().iterator()
+        new ContinuablePagedIterable<>(pagedFlux).iterableByPage()
+            .iterator()
             .forEachRemaining(page -> page.getElements().forEach(actualItems::add));
         assertEquals(expectedItems.size(), actualItems.size());
         for (int i = 0; i < expectedItems.size(); i++) {

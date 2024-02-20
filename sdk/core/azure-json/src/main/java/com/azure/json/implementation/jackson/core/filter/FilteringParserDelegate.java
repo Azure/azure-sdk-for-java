@@ -19,12 +19,11 @@ import static com.azure.json.implementation.jackson.core.JsonTokenId.*;
  *
  * @since 2.6
  */
-public class FilteringParserDelegate extends JsonParserDelegate
-{
+public class FilteringParserDelegate extends JsonParserDelegate {
     /*
-    /**********************************************************
-    /* Configuration
-    /**********************************************************
+     * /**********************************************************
+     * /* Configuration
+     * /**********************************************************
      */
 
     /**
@@ -51,9 +50,9 @@ public class FilteringParserDelegate extends JsonParserDelegate
     protected TokenFilter.Inclusion _inclusion;
 
     /*
-    /**********************************************************
-    /* State
-    /**********************************************************
+     * /**********************************************************
+     * /* State
+     * /**********************************************************
      */
 
     /**
@@ -97,15 +96,13 @@ public class FilteringParserDelegate extends JsonParserDelegate
     protected int _matchCount;
 
     /*
-    /**********************************************************
-    /* Construction, initialization
-    /**********************************************************
+     * /**********************************************************
+     * /* Construction, initialization
+     * /**********************************************************
      */
 
     @Deprecated
-    public FilteringParserDelegate(JsonParser p, TokenFilter f,
-            boolean includePath, boolean allowMultipleMatches)
-    {
+    public FilteringParserDelegate(JsonParser p, TokenFilter f, boolean includePath, boolean allowMultipleMatches) {
         this(p, f, includePath ? Inclusion.INCLUDE_ALL_AND_PATH : Inclusion.ONLY_INCLUDE_ALL, allowMultipleMatches);
     }
 
@@ -115,9 +112,8 @@ public class FilteringParserDelegate extends JsonParserDelegate
      * @param inclusion Definition of inclusion criteria
      * @param allowMultipleMatches Whether to allow multiple matches
      */
-    public FilteringParserDelegate(JsonParser p, TokenFilter f,
-            TokenFilter.Inclusion inclusion, boolean allowMultipleMatches)
-    {
+    public FilteringParserDelegate(JsonParser p, TokenFilter f, TokenFilter.Inclusion inclusion,
+        boolean allowMultipleMatches) {
         super(p);
         rootFilter = f;
         // and this is the currently active filter for root values
@@ -128,12 +124,14 @@ public class FilteringParserDelegate extends JsonParserDelegate
     }
 
     /*
-    /**********************************************************
-    /* Extended API
-    /**********************************************************
+     * /**********************************************************
+     * /* Extended API
+     * /**********************************************************
      */
 
-    public TokenFilter getFilter() { return rootFilter; }
+    public TokenFilter getFilter() {
+        return rootFilter;
+    }
 
     /**
      * Accessor for finding number of matches, where specific token and sub-tree
@@ -146,25 +144,40 @@ public class FilteringParserDelegate extends JsonParserDelegate
     }
 
     /*
-    /**********************************************************
-    /* Public API, token accessors
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, token accessors
+     * /**********************************************************
      */
 
-    @Override public JsonToken getCurrentToken() { return _currToken; }
-    @Override public JsonToken currentToken() { return _currToken; }
+    @Override
+    public JsonToken getCurrentToken() {
+        return _currToken;
+    }
+
+    @Override
+    public JsonToken currentToken() {
+        return _currToken;
+    }
 
     @Deprecated // since 2.12
-    @Override public final int getCurrentTokenId() {
+    @Override
+    public final int getCurrentTokenId() {
         return currentTokenId();
     }
-    @Override public final int currentTokenId() {
+
+    @Override
+    public final int currentTokenId() {
         final JsonToken t = _currToken;
         return (t == null) ? ID_NO_TOKEN : t.id();
     }
 
-    @Override public boolean hasCurrentToken() { return _currToken != null; }
-    @Override public boolean hasTokenId(int id) {
+    @Override
+    public boolean hasCurrentToken() {
+        return _currToken != null;
+    }
+
+    @Override
+    public boolean hasTokenId(int id) {
         final JsonToken t = _currToken;
         if (t == null) {
             return (ID_NO_TOKEN == id);
@@ -172,14 +185,25 @@ public class FilteringParserDelegate extends JsonParserDelegate
         return t.id() == id;
     }
 
-    @Override public final boolean hasToken(JsonToken t) {
+    @Override
+    public final boolean hasToken(JsonToken t) {
         return (_currToken == t);
     }
 
-    @Override public boolean isExpectedStartArrayToken() { return _currToken == JsonToken.START_ARRAY; }
-    @Override public boolean isExpectedStartObjectToken() { return _currToken == JsonToken.START_OBJECT; }
+    @Override
+    public boolean isExpectedStartArrayToken() {
+        return _currToken == JsonToken.START_ARRAY;
+    }
 
-    @Override public JsonLocation getCurrentLocation() { return delegate.getCurrentLocation(); }
+    @Override
+    public boolean isExpectedStartObjectToken() {
+        return _currToken == JsonToken.START_OBJECT;
+    }
+
+    @Override
+    public JsonLocation getCurrentLocation() {
+        return delegate.getCurrentLocation();
+    }
 
     @Override
     public JsonStreamContext getParsingContext() {
@@ -209,9 +233,9 @@ public class FilteringParserDelegate extends JsonParserDelegate
     }
 
     /*
-    /**********************************************************
-    /* Public API, token state overrides
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, token state overrides
+     * /**********************************************************
      */
 
     @Override
@@ -223,28 +247,29 @@ public class FilteringParserDelegate extends JsonParserDelegate
     }
 
     @Override
-    public JsonToken getLastClearedToken() { return _lastClearedToken; }
+    public JsonToken getLastClearedToken() {
+        return _lastClearedToken;
+    }
 
     @Override
     public void overrideCurrentName(String name) {
         // 14-Apr-2015, tatu: Not sure whether this can be supported, and if so,
-        //    what to do with it... Delegation won't work for sure, so let's for
-        //    now throw an exception
+        // what to do with it... Delegation won't work for sure, so let's for
+        // now throw an exception
         throw new UnsupportedOperationException("Can not currently override name during filtering read");
     }
 
     /*
-    /**********************************************************
-    /* Public API, traversal
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, traversal
+     * /**********************************************************
      */
 
     @Override
-    public JsonToken nextToken() throws IOException
-    {
+    public JsonToken nextToken() throws IOException {
         // 23-May-2017, tatu: To be honest, code here is rather hairy and I don't like all
-        //    conditionals; and it seems odd to return `null` but NOT considering input
-        //    as closed... would love a rewrite to simplify/clear up logic here.
+        // conditionals; and it seems odd to return `null` but NOT considering input
+        // as closed... would love a rewrite to simplify/clear up logic here.
 
         // Check for _allowMultipleMatches - false and at least there is one token - which is _currToken
         // check for no buffered context _exposedContext - null
@@ -253,9 +278,10 @@ public class FilteringParserDelegate extends JsonParserDelegate
         if (!_allowMultipleMatches && (_currToken != null) && (_exposedContext == null)) {
             // if scalar, and scalar not present in obj/array and _inclusion == ONLY_INCLUDE_ALL
             // and INCLUDE_ALL matched once, return null
-            if (_currToken.isScalarValue() && !_headContext.isStartHandled()
-                    && _inclusion == Inclusion.ONLY_INCLUDE_ALL
-                    && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
+            if (_currToken.isScalarValue()
+                && !_headContext.isStartHandled()
+                && _inclusion == Inclusion.ONLY_INCLUDE_ALL
+                && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
                 return (_currToken = null);
             }
         }
@@ -274,8 +300,8 @@ public class FilteringParserDelegate extends JsonParserDelegate
                     _exposedContext = null;
                     if (ctxt.inArray()) {
                         t = delegate.getCurrentToken();
-// Is this guaranteed to work without further checks?
-//                        if (t != JsonToken.START_ARRAY) {
+                        // Is this guaranteed to work without further checks?
+                        // if (t != JsonToken.START_ARRAY) {
                         _currToken = t;
                         return t;
                     }
@@ -311,90 +337,89 @@ public class FilteringParserDelegate extends JsonParserDelegate
         TokenFilter f;
 
         switch (t.id()) {
-        case ID_START_ARRAY:
-            f = _itemFilter;
-            if (f == TokenFilter.INCLUDE_ALL) {
-                _headContext = _headContext.createChildArrayContext(f, true);
-                return (_currToken = t);
-            }
-            if (f == null) { // does this occur?
-                delegate.skipChildren();
-                break;
-            }
-            // Otherwise still iffy, need to check
-            f = _headContext.checkValue(f);
-            if (f == null) {
-                delegate.skipChildren();
-                break;
-            }
-            if (f != TokenFilter.INCLUDE_ALL) {
-                f = f.filterStartArray();
-            }
-            _itemFilter = f;
-            if (f == TokenFilter.INCLUDE_ALL) {
-                _headContext = _headContext.createChildArrayContext(f, true);
-                return (_currToken = t);
-            } else if (f != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
-                // TODO don't count as match?
-                _headContext = _headContext.createChildArrayContext(f, true);
-                return (_currToken = t);
-            }
-            _headContext = _headContext.createChildArrayContext(f, false);
-
-            // Also: only need buffering if parent path to be included
-            if (_inclusion == Inclusion.INCLUDE_ALL_AND_PATH) {
-                t = _nextTokenWithBuffering(_headContext);
-                if (t != null) {
-                    _currToken = t;
-                    return t;
+            case ID_START_ARRAY:
+                f = _itemFilter;
+                if (f == TokenFilter.INCLUDE_ALL) {
+                    _headContext = _headContext.createChildArrayContext(f, true);
+                    return (_currToken = t);
                 }
-            }
-            break;
-
-        case ID_START_OBJECT:
-            f = _itemFilter;
-            if (f == TokenFilter.INCLUDE_ALL) {
-                _headContext = _headContext.createChildObjectContext(f, true);
-                return (_currToken = t);
-            }
-            if (f == null) { // does this occur?
-                delegate.skipChildren();
-                break;
-            }
-            // Otherwise still iffy, need to check
-            f = _headContext.checkValue(f);
-            if (f == null) {
-                delegate.skipChildren();
-                break;
-            }
-            if (f != TokenFilter.INCLUDE_ALL) {
-                f = f.filterStartObject();
-            }
-            _itemFilter = f;
-            if (f == TokenFilter.INCLUDE_ALL) {
-                _headContext = _headContext.createChildObjectContext(f, true);
-                return (_currToken = t);
-            } else if (f != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
-                // TODO don't count as match?
-                _headContext = _headContext.createChildObjectContext(f, true);
-                return (_currToken = t);
-            }
-            _headContext = _headContext.createChildObjectContext(f, false);
-            // Also: only need buffering if parent path to be included
-            if (_inclusion == Inclusion.INCLUDE_ALL_AND_PATH) {
-                t = _nextTokenWithBuffering(_headContext);
-                if (t != null) {
-                    _currToken = t;
-                    return t;
+                if (f == null) { // does this occur?
+                    delegate.skipChildren();
+                    break;
                 }
-            }
-            // note: inclusion of surrounding Object handled separately via
-            // FIELD_NAME
-            break;
+                // Otherwise still iffy, need to check
+                f = _headContext.checkValue(f);
+                if (f == null) {
+                    delegate.skipChildren();
+                    break;
+                }
+                if (f != TokenFilter.INCLUDE_ALL) {
+                    f = f.filterStartArray();
+                }
+                _itemFilter = f;
+                if (f == TokenFilter.INCLUDE_ALL) {
+                    _headContext = _headContext.createChildArrayContext(f, true);
+                    return (_currToken = t);
+                } else if (f != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
+                    // TODO don't count as match?
+                    _headContext = _headContext.createChildArrayContext(f, true);
+                    return (_currToken = t);
+                }
+                _headContext = _headContext.createChildArrayContext(f, false);
 
-        case ID_END_ARRAY:
-        case ID_END_OBJECT:
-            {
+                // Also: only need buffering if parent path to be included
+                if (_inclusion == Inclusion.INCLUDE_ALL_AND_PATH) {
+                    t = _nextTokenWithBuffering(_headContext);
+                    if (t != null) {
+                        _currToken = t;
+                        return t;
+                    }
+                }
+                break;
+
+            case ID_START_OBJECT:
+                f = _itemFilter;
+                if (f == TokenFilter.INCLUDE_ALL) {
+                    _headContext = _headContext.createChildObjectContext(f, true);
+                    return (_currToken = t);
+                }
+                if (f == null) { // does this occur?
+                    delegate.skipChildren();
+                    break;
+                }
+                // Otherwise still iffy, need to check
+                f = _headContext.checkValue(f);
+                if (f == null) {
+                    delegate.skipChildren();
+                    break;
+                }
+                if (f != TokenFilter.INCLUDE_ALL) {
+                    f = f.filterStartObject();
+                }
+                _itemFilter = f;
+                if (f == TokenFilter.INCLUDE_ALL) {
+                    _headContext = _headContext.createChildObjectContext(f, true);
+                    return (_currToken = t);
+                } else if (f != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
+                    // TODO don't count as match?
+                    _headContext = _headContext.createChildObjectContext(f, true);
+                    return (_currToken = t);
+                }
+                _headContext = _headContext.createChildObjectContext(f, false);
+                // Also: only need buffering if parent path to be included
+                if (_inclusion == Inclusion.INCLUDE_ALL_AND_PATH) {
+                    t = _nextTokenWithBuffering(_headContext);
+                    if (t != null) {
+                        _currToken = t;
+                        return t;
+                    }
+                }
+                // note: inclusion of surrounding Object handled separately via
+                // FIELD_NAME
+                break;
+
+            case ID_END_ARRAY:
+            case ID_END_OBJECT: {
                 boolean returnEnd = _headContext.isStartHandled();
                 f = _headContext.getFilter();
                 if ((f != null) && (f != TokenFilter.INCLUDE_ALL)) {
@@ -406,10 +431,9 @@ public class FilteringParserDelegate extends JsonParserDelegate
                     return (_currToken = t);
                 }
             }
-            break;
+                break;
 
-        case ID_FIELD_NAME:
-            {
+            case ID_FIELD_NAME: {
                 final String name = delegate.getCurrentName();
                 // note: this will also set 'needToHandleName'
                 f = _headContext.setFieldName(name);
@@ -449,22 +473,21 @@ public class FilteringParserDelegate extends JsonParserDelegate
                 break;
             }
 
-        default: // scalar value
-            f = _itemFilter;
-            if (f == TokenFilter.INCLUDE_ALL) {
-                return (_currToken = t);
-            }
-            if (f != null) {
-                f = _headContext.checkValue(f);
-                if ((f == TokenFilter.INCLUDE_ALL)
-                        || ((f != null) && f.includeValue(delegate))) {
-                    if (_verifyAllowedMatches()) {
-                        return (_currToken = t);
+            default: // scalar value
+                f = _itemFilter;
+                if (f == TokenFilter.INCLUDE_ALL) {
+                    return (_currToken = t);
+                }
+                if (f != null) {
+                    f = _headContext.checkValue(f);
+                    if ((f == TokenFilter.INCLUDE_ALL) || ((f != null) && f.includeValue(delegate))) {
+                        if (_verifyAllowedMatches()) {
+                            return (_currToken = t);
+                        }
                     }
                 }
-            }
-            // Otherwise not included (leaves must be explicitly included)
-            break;
+                // Otherwise not included (leaves must be explicitly included)
+                break;
         }
 
         // We get here if token was not yet found; offlined handling
@@ -475,10 +498,8 @@ public class FilteringParserDelegate extends JsonParserDelegate
     // return, and the token read next could not be returned as-is,
     // at least not yet, but where we have not yet established that
     // buffering is needed.
-    protected final JsonToken _nextToken2() throws IOException
-    {
-        main_loop:
-        while (true) {
+    protected final JsonToken _nextToken2() throws IOException {
+        main_loop: while (true) {
             JsonToken t = delegate.nextToken();
             if (t == null) { // is this even legal?
                 _currToken = t;
@@ -487,84 +508,83 @@ public class FilteringParserDelegate extends JsonParserDelegate
             TokenFilter f;
 
             switch (t.id()) {
-            case ID_START_ARRAY:
-                f = _itemFilter;
-                if (f == TokenFilter.INCLUDE_ALL) {
-                    _headContext = _headContext.createChildArrayContext(f, true);
-                    return (_currToken = t);
-                }
-                if (f == null) { // does this occur?
-                    delegate.skipChildren();
-                    continue main_loop;
-                }
-                // Otherwise still iffy, need to check
-                f = _headContext.checkValue(f);
-                if (f == null) {
-                    delegate.skipChildren();
-                    continue main_loop;
-                }
-                if (f != TokenFilter.INCLUDE_ALL) {
-                    f = f.filterStartArray();
-                }
-                _itemFilter = f;
-                if (f == TokenFilter.INCLUDE_ALL) {
-                    _headContext = _headContext.createChildArrayContext(f, true);
-                    return (_currToken = t);
-                } else if (f != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
-                    _headContext = _headContext.createChildArrayContext(f, true);
-                    return (_currToken = t);
-                }
-                _headContext = _headContext.createChildArrayContext(f, false);
-                // but if we didn't figure it out yet, need to buffer possible events
-                if (_inclusion == Inclusion.INCLUDE_ALL_AND_PATH) {
-                    t = _nextTokenWithBuffering(_headContext);
-                    if (t != null) {
-                        _currToken = t;
-                        return t;
+                case ID_START_ARRAY:
+                    f = _itemFilter;
+                    if (f == TokenFilter.INCLUDE_ALL) {
+                        _headContext = _headContext.createChildArrayContext(f, true);
+                        return (_currToken = t);
                     }
-                }
-                continue main_loop;
-
-            case ID_START_OBJECT:
-                f = _itemFilter;
-                if (f == TokenFilter.INCLUDE_ALL) {
-                    _headContext = _headContext.createChildObjectContext(f, true);
-                    return (_currToken = t);
-                }
-                if (f == null) { // does this occur?
-                    delegate.skipChildren();
-                    continue main_loop;
-                }
-                // Otherwise still iffy, need to check
-                f = _headContext.checkValue(f);
-                if (f == null) {
-                    delegate.skipChildren();
-                    continue main_loop;
-                }
-                if (f != TokenFilter.INCLUDE_ALL) {
-                    f = f.filterStartObject();
-                }
-                _itemFilter = f;
-                if (f == TokenFilter.INCLUDE_ALL) {
-                    _headContext = _headContext.createChildObjectContext(f, true);
-                    return (_currToken = t);
-                } else if (f != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
-                    _headContext = _headContext.createChildObjectContext(f, true);
-                    return (_currToken = t);
-                }
-                _headContext = _headContext.createChildObjectContext(f, false);
-                if (_inclusion == Inclusion.INCLUDE_ALL_AND_PATH) {
-                    t = _nextTokenWithBuffering(_headContext);
-                    if (t != null) {
-                        _currToken = t;
-                        return t;
+                    if (f == null) { // does this occur?
+                        delegate.skipChildren();
+                        continue main_loop;
                     }
-                }
-                continue main_loop;
+                    // Otherwise still iffy, need to check
+                    f = _headContext.checkValue(f);
+                    if (f == null) {
+                        delegate.skipChildren();
+                        continue main_loop;
+                    }
+                    if (f != TokenFilter.INCLUDE_ALL) {
+                        f = f.filterStartArray();
+                    }
+                    _itemFilter = f;
+                    if (f == TokenFilter.INCLUDE_ALL) {
+                        _headContext = _headContext.createChildArrayContext(f, true);
+                        return (_currToken = t);
+                    } else if (f != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
+                        _headContext = _headContext.createChildArrayContext(f, true);
+                        return (_currToken = t);
+                    }
+                    _headContext = _headContext.createChildArrayContext(f, false);
+                    // but if we didn't figure it out yet, need to buffer possible events
+                    if (_inclusion == Inclusion.INCLUDE_ALL_AND_PATH) {
+                        t = _nextTokenWithBuffering(_headContext);
+                        if (t != null) {
+                            _currToken = t;
+                            return t;
+                        }
+                    }
+                    continue main_loop;
 
-            case ID_END_ARRAY:
-            case ID_END_OBJECT:
-                {
+                case ID_START_OBJECT:
+                    f = _itemFilter;
+                    if (f == TokenFilter.INCLUDE_ALL) {
+                        _headContext = _headContext.createChildObjectContext(f, true);
+                        return (_currToken = t);
+                    }
+                    if (f == null) { // does this occur?
+                        delegate.skipChildren();
+                        continue main_loop;
+                    }
+                    // Otherwise still iffy, need to check
+                    f = _headContext.checkValue(f);
+                    if (f == null) {
+                        delegate.skipChildren();
+                        continue main_loop;
+                    }
+                    if (f != TokenFilter.INCLUDE_ALL) {
+                        f = f.filterStartObject();
+                    }
+                    _itemFilter = f;
+                    if (f == TokenFilter.INCLUDE_ALL) {
+                        _headContext = _headContext.createChildObjectContext(f, true);
+                        return (_currToken = t);
+                    } else if (f != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
+                        _headContext = _headContext.createChildObjectContext(f, true);
+                        return (_currToken = t);
+                    }
+                    _headContext = _headContext.createChildObjectContext(f, false);
+                    if (_inclusion == Inclusion.INCLUDE_ALL_AND_PATH) {
+                        t = _nextTokenWithBuffering(_headContext);
+                        if (t != null) {
+                            _currToken = t;
+                            return t;
+                        }
+                    }
+                    continue main_loop;
+
+                case ID_END_ARRAY:
+                case ID_END_OBJECT: {
                     boolean returnEnd = _headContext.isStartHandled();
                     f = _headContext.getFilter();
                     if ((f != null) && (f != TokenFilter.INCLUDE_ALL)) {
@@ -576,10 +596,9 @@ public class FilteringParserDelegate extends JsonParserDelegate
                         return (_currToken = t);
                     }
                 }
-                continue main_loop;
+                    continue main_loop;
 
-            case ID_FIELD_NAME:
-                {
+                case ID_FIELD_NAME: {
                     final String name = delegate.getCurrentName();
                     f = _headContext.setFieldName(name);
                     if (f == TokenFilter.INCLUDE_ALL) {
@@ -617,34 +636,30 @@ public class FilteringParserDelegate extends JsonParserDelegate
                         }
                     }
                 }
-                continue main_loop;
+                    continue main_loop;
 
-            default: // scalar value
-                f = _itemFilter;
-                if (f == TokenFilter.INCLUDE_ALL) {
-                    return (_currToken = t);
-                }
-                if (f != null) {
-                    f = _headContext.checkValue(f);
-                    if ((f == TokenFilter.INCLUDE_ALL)
-                            || ((f != null) && f.includeValue(delegate))) {
-                        if (_verifyAllowedMatches()) {
-                            return (_currToken = t);
+                default: // scalar value
+                    f = _itemFilter;
+                    if (f == TokenFilter.INCLUDE_ALL) {
+                        return (_currToken = t);
+                    }
+                    if (f != null) {
+                        f = _headContext.checkValue(f);
+                        if ((f == TokenFilter.INCLUDE_ALL) || ((f != null) && f.includeValue(delegate))) {
+                            if (_verifyAllowedMatches()) {
+                                return (_currToken = t);
+                            }
                         }
                     }
-                }
-                // Otherwise not included (leaves must be explicitly included)
-                break;
+                    // Otherwise not included (leaves must be explicitly included)
+                    break;
             }
         }
     }
 
     // Method called when a new potentially included context is found.
-    protected final JsonToken _nextTokenWithBuffering(final TokenFilterContext buffRoot)
-        throws IOException
-    {
-        main_loop:
-        while (true) {
+    protected final JsonToken _nextTokenWithBuffering(final TokenFilterContext buffRoot) throws IOException {
+        main_loop: while (true) {
             JsonToken t = delegate.nextToken();
             if (t == null) { // is this even legal?
                 return t;
@@ -656,61 +671,60 @@ public class FilteringParserDelegate extends JsonParserDelegate
             // being FIELD_NAME handling
 
             switch (t.id()) {
-            case ID_START_ARRAY:
-                f = _headContext.checkValue(_itemFilter);
-                if (f == null) {
-                    delegate.skipChildren();
+                case ID_START_ARRAY:
+                    f = _headContext.checkValue(_itemFilter);
+                    if (f == null) {
+                        delegate.skipChildren();
+                        continue main_loop;
+                    }
+                    if (f != TokenFilter.INCLUDE_ALL) {
+                        f = f.filterStartArray();
+                    }
+                    _itemFilter = f;
+                    if (f == TokenFilter.INCLUDE_ALL) {
+                        _headContext = _headContext.createChildArrayContext(f, true);
+                        return _nextBuffered(buffRoot);
+                    } else if (f != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
+                        // TODO don't count as match?
+                        _headContext = _headContext.createChildArrayContext(f, true);
+                        return _nextBuffered(buffRoot);
+                    }
+                    _headContext = _headContext.createChildArrayContext(f, false);
                     continue main_loop;
-                }
-                if (f != TokenFilter.INCLUDE_ALL) {
-                    f = f.filterStartArray();
-                }
-                _itemFilter = f;
-                if (f == TokenFilter.INCLUDE_ALL) {
-                    _headContext = _headContext.createChildArrayContext(f, true);
-                    return _nextBuffered(buffRoot);
-                } else if (f != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
-                    // TODO don't count as match?
-                    _headContext = _headContext.createChildArrayContext(f, true);
-                    return _nextBuffered(buffRoot);
-                }
-                _headContext = _headContext.createChildArrayContext(f, false);
-                continue main_loop;
 
-            case ID_START_OBJECT:
-                f = _itemFilter;
-                if (f == TokenFilter.INCLUDE_ALL) {
-                    _headContext = _headContext.createChildObjectContext(f, true);
-                    return t;
-                }
-                if (f == null) { // does this occur?
-                    delegate.skipChildren();
+                case ID_START_OBJECT:
+                    f = _itemFilter;
+                    if (f == TokenFilter.INCLUDE_ALL) {
+                        _headContext = _headContext.createChildObjectContext(f, true);
+                        return t;
+                    }
+                    if (f == null) { // does this occur?
+                        delegate.skipChildren();
+                        continue main_loop;
+                    }
+                    // Otherwise still iffy, need to check
+                    f = _headContext.checkValue(f);
+                    if (f == null) {
+                        delegate.skipChildren();
+                        continue main_loop;
+                    }
+                    if (f != TokenFilter.INCLUDE_ALL) {
+                        f = f.filterStartObject();
+                    }
+                    _itemFilter = f;
+                    if (f == TokenFilter.INCLUDE_ALL) {
+                        _headContext = _headContext.createChildObjectContext(f, true);
+                        return _nextBuffered(buffRoot);
+                    } else if (f != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
+                        // TODO don't count as match?
+                        _headContext = _headContext.createChildArrayContext(f, true);
+                        return _nextBuffered(buffRoot);
+                    }
+                    _headContext = _headContext.createChildObjectContext(f, false);
                     continue main_loop;
-                }
-                // Otherwise still iffy, need to check
-                f = _headContext.checkValue(f);
-                if (f == null) {
-                    delegate.skipChildren();
-                    continue main_loop;
-                }
-                if (f != TokenFilter.INCLUDE_ALL) {
-                    f = f.filterStartObject();
-                }
-                _itemFilter = f;
-                if (f == TokenFilter.INCLUDE_ALL) {
-                    _headContext = _headContext.createChildObjectContext(f, true);
-                    return _nextBuffered(buffRoot);
-                } else if (f != null && _inclusion == Inclusion.INCLUDE_NON_NULL) {
-                    // TODO don't count as match?
-                    _headContext = _headContext.createChildArrayContext(f, true);
-                    return _nextBuffered(buffRoot);
-                }
-                _headContext = _headContext.createChildObjectContext(f, false);
-                continue main_loop;
 
-            case ID_END_ARRAY:
-            case ID_END_OBJECT:
-                {
+                case ID_END_ARRAY:
+                case ID_END_OBJECT: {
                     // Unlike with other loops, here we know that content was NOT
                     // included (won't get this far otherwise)
                     f = _headContext.getFilter();
@@ -727,10 +741,9 @@ public class FilteringParserDelegate extends JsonParserDelegate
                         return t;
                     }
                 }
-                continue main_loop;
+                    continue main_loop;
 
-            case ID_FIELD_NAME:
-                {
+                case ID_FIELD_NAME: {
                     final String name = delegate.getCurrentName();
                     f = _headContext.setFieldName(name);
                     if (f == TokenFilter.INCLUDE_ALL) {
@@ -759,30 +772,28 @@ public class FilteringParserDelegate extends JsonParserDelegate
                         }
                     }
                 }
-                continue main_loop;
+                    continue main_loop;
 
-            default: // scalar value
-                f = _itemFilter;
-                if (f == TokenFilter.INCLUDE_ALL) {
-                    return _nextBuffered(buffRoot);
-                }
-                if (f != null) {
-                    f = _headContext.checkValue(f);
-                    if ((f == TokenFilter.INCLUDE_ALL)
-                            || ((f != null) && f.includeValue(delegate))) {
-                        if (_verifyAllowedMatches()) {
-                            return _nextBuffered(buffRoot);
+                default: // scalar value
+                    f = _itemFilter;
+                    if (f == TokenFilter.INCLUDE_ALL) {
+                        return _nextBuffered(buffRoot);
+                    }
+                    if (f != null) {
+                        f = _headContext.checkValue(f);
+                        if ((f == TokenFilter.INCLUDE_ALL) || ((f != null) && f.includeValue(delegate))) {
+                            if (_verifyAllowedMatches()) {
+                                return _nextBuffered(buffRoot);
+                            }
                         }
                     }
-                }
-                // Otherwise not included (leaves must be explicitly included)
-                continue main_loop;
+                    // Otherwise not included (leaves must be explicitly included)
+                    continue main_loop;
             }
         }
     }
 
-    private JsonToken _nextBuffered(TokenFilterContext buffRoot) throws IOException
-    {
+    private JsonToken _nextBuffered(TokenFilterContext buffRoot) throws IOException {
         _exposedContext = buffRoot;
         TokenFilterContext ctxt = buffRoot;
         JsonToken t = ctxt.nextTokenToRead();
@@ -794,9 +805,9 @@ public class FilteringParserDelegate extends JsonParserDelegate
             if (ctxt == _headContext) {
                 throw _constructError("Internal error: failed to locate expected buffered tokens");
                 /*
-                _exposedContext = null;
-                break;
-                */
+                 * _exposedContext = null;
+                 * break;
+                 */
             }
             // If not, traverse down the context chain
             ctxt = _exposedContext.findChildOf(ctxt);
@@ -835,10 +846,8 @@ public class FilteringParserDelegate extends JsonParserDelegate
      * state correct here.
      */
     @Override
-    public JsonParser skipChildren() throws IOException
-    {
-        if ((_currToken != JsonToken.START_OBJECT)
-            && (_currToken != JsonToken.START_ARRAY)) {
+    public JsonParser skipChildren() throws IOException {
+        if ((_currToken != JsonToken.START_OBJECT) && (_currToken != JsonToken.START_ARRAY)) {
             return this;
         }
         int open = 1;
@@ -861,29 +870,32 @@ public class FilteringParserDelegate extends JsonParserDelegate
     }
 
     /*
-    /**********************************************************
-    /* Public API, access to token information, text
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, access to token information, text
+     * /**********************************************************
      */
 
     // 19-Jul-2021, tatu: Cannot quite just delegate these methods due to oddity
-    //   of property name token, which may be buffered.
+    // of property name token, which may be buffered.
 
-    @Override public String getText() throws IOException {
+    @Override
+    public String getText() throws IOException {
         if (_currToken == JsonToken.FIELD_NAME) {
             return currentName();
         }
         return delegate.getText();
     }
 
-    @Override public boolean hasTextCharacters() {
+    @Override
+    public boolean hasTextCharacters() {
         if (_currToken == JsonToken.FIELD_NAME) {
             return false;
         }
         return delegate.hasTextCharacters();
     }
 
-    @Override public char[] getTextCharacters() throws IOException {
+    @Override
+    public char[] getTextCharacters() throws IOException {
         // Not optimal but is correct, unlike delegating (as underlying stream
         // may point to something else due to buffering)
         if (_currToken == JsonToken.FIELD_NAME) {
@@ -892,13 +904,16 @@ public class FilteringParserDelegate extends JsonParserDelegate
         return delegate.getTextCharacters();
     }
 
-    @Override public int getTextLength() throws IOException {
+    @Override
+    public int getTextLength() throws IOException {
         if (_currToken == JsonToken.FIELD_NAME) {
             return currentName().length();
         }
         return delegate.getTextLength();
     }
-    @Override public int getTextOffset() throws IOException {
+
+    @Override
+    public int getTextOffset() throws IOException {
         if (_currToken == JsonToken.FIELD_NAME) {
             return 0;
         }
@@ -906,66 +921,122 @@ public class FilteringParserDelegate extends JsonParserDelegate
     }
 
     /*
-    /**********************************************************
-    /* Public API, access to token information, numeric
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, access to token information, numeric
+     * /**********************************************************
      */
 
     @Override
-    public BigInteger getBigIntegerValue() throws IOException { return delegate.getBigIntegerValue(); }
+    public BigInteger getBigIntegerValue() throws IOException {
+        return delegate.getBigIntegerValue();
+    }
 
     @Override
-    public boolean getBooleanValue() throws IOException { return delegate.getBooleanValue(); }
+    public boolean getBooleanValue() throws IOException {
+        return delegate.getBooleanValue();
+    }
 
     @Override
-    public byte getByteValue() throws IOException { return delegate.getByteValue(); }
+    public byte getByteValue() throws IOException {
+        return delegate.getByteValue();
+    }
 
     @Override
-    public short getShortValue() throws IOException { return delegate.getShortValue(); }
+    public short getShortValue() throws IOException {
+        return delegate.getShortValue();
+    }
 
     @Override
-    public BigDecimal getDecimalValue() throws IOException { return delegate.getDecimalValue(); }
+    public BigDecimal getDecimalValue() throws IOException {
+        return delegate.getDecimalValue();
+    }
 
     @Override
-    public double getDoubleValue() throws IOException { return delegate.getDoubleValue(); }
+    public double getDoubleValue() throws IOException {
+        return delegate.getDoubleValue();
+    }
 
     @Override
-    public float getFloatValue() throws IOException { return delegate.getFloatValue(); }
+    public float getFloatValue() throws IOException {
+        return delegate.getFloatValue();
+    }
 
     @Override
-    public int getIntValue() throws IOException { return delegate.getIntValue(); }
+    public int getIntValue() throws IOException {
+        return delegate.getIntValue();
+    }
 
     @Override
-    public long getLongValue() throws IOException { return delegate.getLongValue(); }
+    public long getLongValue() throws IOException {
+        return delegate.getLongValue();
+    }
 
     @Override
-    public NumberType getNumberType() throws IOException { return delegate.getNumberType(); }
+    public NumberType getNumberType() throws IOException {
+        return delegate.getNumberType();
+    }
 
     @Override
-    public Number getNumberValue() throws IOException { return delegate.getNumberValue(); }
+    public Number getNumberValue() throws IOException {
+        return delegate.getNumberValue();
+    }
 
     /*
-    /**********************************************************
-    /* Public API, access to token information, coercion/conversion
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, access to token information, coercion/conversion
+     * /**********************************************************
      */
 
-    @Override public int getValueAsInt() throws IOException { return delegate.getValueAsInt(); }
-    @Override public int getValueAsInt(int defaultValue) throws IOException { return delegate.getValueAsInt(defaultValue); }
-    @Override public long getValueAsLong() throws IOException { return delegate.getValueAsLong(); }
-    @Override public long getValueAsLong(long defaultValue) throws IOException { return delegate.getValueAsLong(defaultValue); }
-    @Override public double getValueAsDouble() throws IOException { return delegate.getValueAsDouble(); }
-    @Override public double getValueAsDouble(double defaultValue) throws IOException { return delegate.getValueAsDouble(defaultValue); }
-    @Override public boolean getValueAsBoolean() throws IOException { return delegate.getValueAsBoolean(); }
-    @Override public boolean getValueAsBoolean(boolean defaultValue) throws IOException { return delegate.getValueAsBoolean(defaultValue); }
+    @Override
+    public int getValueAsInt() throws IOException {
+        return delegate.getValueAsInt();
+    }
 
-    @Override public String getValueAsString() throws IOException {
+    @Override
+    public int getValueAsInt(int defaultValue) throws IOException {
+        return delegate.getValueAsInt(defaultValue);
+    }
+
+    @Override
+    public long getValueAsLong() throws IOException {
+        return delegate.getValueAsLong();
+    }
+
+    @Override
+    public long getValueAsLong(long defaultValue) throws IOException {
+        return delegate.getValueAsLong(defaultValue);
+    }
+
+    @Override
+    public double getValueAsDouble() throws IOException {
+        return delegate.getValueAsDouble();
+    }
+
+    @Override
+    public double getValueAsDouble(double defaultValue) throws IOException {
+        return delegate.getValueAsDouble(defaultValue);
+    }
+
+    @Override
+    public boolean getValueAsBoolean() throws IOException {
+        return delegate.getValueAsBoolean();
+    }
+
+    @Override
+    public boolean getValueAsBoolean(boolean defaultValue) throws IOException {
+        return delegate.getValueAsBoolean(defaultValue);
+    }
+
+    @Override
+    public String getValueAsString() throws IOException {
         if (_currToken == JsonToken.FIELD_NAME) {
             return currentName();
         }
         return delegate.getValueAsString();
     }
-    @Override public String getValueAsString(String defaultValue) throws IOException {
+
+    @Override
+    public String getValueAsString(String defaultValue) throws IOException {
         if (_currToken == JsonToken.FIELD_NAME) {
             return currentName();
         }
@@ -973,20 +1044,35 @@ public class FilteringParserDelegate extends JsonParserDelegate
     }
 
     /*
-    /**********************************************************
-    /* Public API, access to token values, other
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, access to token values, other
+     * /**********************************************************
      */
 
-    @Override public Object getEmbeddedObject() throws IOException { return delegate.getEmbeddedObject(); }
-    @Override public byte[] getBinaryValue(Base64Variant b64variant) throws IOException { return delegate.getBinaryValue(b64variant); }
-    @Override public int readBinaryValue(Base64Variant b64variant, OutputStream out) throws IOException { return delegate.readBinaryValue(b64variant, out); }
-    @Override public JsonLocation getTokenLocation() { return delegate.getTokenLocation(); }
+    @Override
+    public Object getEmbeddedObject() throws IOException {
+        return delegate.getEmbeddedObject();
+    }
+
+    @Override
+    public byte[] getBinaryValue(Base64Variant b64variant) throws IOException {
+        return delegate.getBinaryValue(b64variant);
+    }
+
+    @Override
+    public int readBinaryValue(Base64Variant b64variant, OutputStream out) throws IOException {
+        return delegate.readBinaryValue(b64variant, out);
+    }
+
+    @Override
+    public JsonLocation getTokenLocation() {
+        return delegate.getTokenLocation();
+    }
 
     /*
-    /**********************************************************
-    /* Internal helper methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal helper methods
+     * /**********************************************************
      */
 
     protected JsonStreamContext _filterContext() {

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
 import com.azure.cosmos.models.{CosmosContainerProperties, CosmosItemRequestOptions, PartitionKey, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -109,7 +110,8 @@ abstract class SparkE2EQueryITestBase
     val clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
       .getCosmosClientFromCache(cfg)
       .getClient
-    val dbResponse = clientFromCache .getDatabase(cosmosDatabase).read().block()
+      .asInstanceOf[CosmosAsyncClient]
+    val dbResponse = clientFromCache.getDatabase(cosmosDatabase).read().block()
 
     dbResponse.getProperties.getId shouldEqual cosmosDatabase
     clientFromCache.close()

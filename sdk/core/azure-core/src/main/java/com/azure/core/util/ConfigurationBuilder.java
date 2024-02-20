@@ -227,7 +227,8 @@ public final class ConfigurationBuilder {
             }
 
             if (additionalConfigurations.containsKey(key)) {
-                LOGGER.atWarning().addKeyValue("name", key)
+                LOGGER.atWarning()
+                    .addKeyValue("name", key)
                     .log("Property with the same name already exists, value will be overwritten.");
             }
 
@@ -247,7 +248,8 @@ public final class ConfigurationBuilder {
             Map<String, String> allConfigurations = new HashMap<>(original);
             for (Map.Entry<String, String> prop : additionalConfigurations.entrySet()) {
                 if (allConfigurations.containsKey(prop.getKey())) {
-                    LOGGER.atWarning().addKeyValue("name", prop.getKey())
+                    LOGGER.atWarning()
+                        .addKeyValue("name", prop.getKey())
                         .log("Property with the same name already exists, value will be overwritten.");
                 }
 

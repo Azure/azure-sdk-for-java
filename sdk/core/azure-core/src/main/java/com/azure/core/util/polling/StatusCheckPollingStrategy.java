@@ -21,7 +21,7 @@ import java.time.OffsetDateTime;
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *        kept
+ * kept
  */
 public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final ObjectSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
@@ -51,7 +51,9 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
         TypeReference<T> pollResponseType) {
-        if (response.getStatusCode() == 200 || response.getStatusCode() == 201 || response.getStatusCode() == 202
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
             || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)

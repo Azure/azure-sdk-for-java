@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -10,14 +11,14 @@ package com.azure.json.implementation.jackson.core;
  * Enumeration for basic token types used for returning results
  * of parsing JSON content.
  */
-public enum JsonToken
-{
-    /* Some notes on implementation:
+public enum JsonToken {
+    /*
+     * Some notes on implementation:
      *
      * - Entries are to be ordered such that start/end array/object
-     *   markers come first, then field name marker (if any), and
-     *   finally scalar value tokens. This is assumed by some
-     *   typing checks.
+     * markers come first, then field name marker (if any), and
+     * finally scalar value tokens. This is assumed by some
+     * typing checks.
      */
 
     /**
@@ -36,7 +37,7 @@ public enum JsonToken
      * which signals starting of an Object value.
      */
     START_OBJECT("{", JsonTokenId.ID_START_OBJECT),
-        
+
     /**
      * END_OBJECT is returned when encountering '}'
      * which signals ending of an Object value
@@ -54,13 +55,13 @@ public enum JsonToken
      * which signals ending of an Array value
      */
     END_ARRAY("]", JsonTokenId.ID_END_ARRAY),
-        
+
     /**
      * FIELD_NAME is returned when a String token is encountered
      * as a field name (same lexical value, different function)
      */
     FIELD_NAME(null, JsonTokenId.ID_FIELD_NAME),
-    
+
     /**
      * Placeholder token returned when the input source has a concept
      * of embedded Object that are not accessible as usual structure
@@ -98,7 +99,7 @@ public enum JsonToken
      * has internal floating-point representation).
      */
     VALUE_NUMBER_FLOAT(null, JsonTokenId.ID_NUMBER_FLOAT),
-    
+
     /**
      * VALUE_TRUE is returned when encountering literal "true" in
      * value context
@@ -115,9 +116,8 @@ public enum JsonToken
      * VALUE_NULL is returned when encountering literal "null" in
      * value context
      */
-    VALUE_NULL("null", JsonTokenId.ID_NULL),
-        ;
-    
+    VALUE_NULL("null", JsonTokenId.ID_NULL),;
+
     final String _serialized;
 
     final char[] _serializedChars;
@@ -125,7 +125,7 @@ public enum JsonToken
     final byte[] _serializedBytes;
 
     final int _id;
-    
+
     final boolean _isStructStart, _isStructEnd;
 
     final boolean _isNumber;
@@ -139,8 +139,7 @@ public enum JsonToken
      *   single static representation; null otherwise
      * @param id Numeric id from {@link JsonTokenId}
      */
-    JsonToken(String token, int id)
-    {
+    JsonToken(String token, int id) {
         if (token == null) {
             _serialized = null;
             _serializedChars = null;
@@ -156,29 +155,42 @@ public enum JsonToken
             }
         }
         _id = id;
-        
+
         _isBoolean = (id == JsonTokenId.ID_FALSE || id == JsonTokenId.ID_TRUE);
         _isNumber = (id == JsonTokenId.ID_NUMBER_INT || id == JsonTokenId.ID_NUMBER_FLOAT);
 
         _isStructStart = (id == JsonTokenId.ID_START_OBJECT || id == JsonTokenId.ID_START_ARRAY);
         _isStructEnd = (id == JsonTokenId.ID_END_OBJECT || id == JsonTokenId.ID_END_ARRAY);
 
-        _isScalar = !_isStructStart && !_isStructEnd
-                && (id != JsonTokenId.ID_FIELD_NAME)
-                && (id != JsonTokenId.ID_NOT_AVAILABLE);
+        _isScalar = !_isStructStart
+            && !_isStructEnd
+            && (id != JsonTokenId.ID_FIELD_NAME)
+            && (id != JsonTokenId.ID_NOT_AVAILABLE);
     }
 
-    public final int id() { return _id; }
-    
-    public final String asString() { return _serialized; }
-    public final char[] asCharArray() { return _serializedChars; }
-    public final byte[] asByteArray() { return _serializedBytes; }
+    public final int id() {
+        return _id;
+    }
+
+    public final String asString() {
+        return _serialized;
+    }
+
+    public final char[] asCharArray() {
+        return _serializedChars;
+    }
+
+    public final byte[] asByteArray() {
+        return _serializedBytes;
+    }
 
     /**
      * @return {@code True} if this token is {@code VALUE_NUMBER_INT} or {@code VALUE_NUMBER_FLOAT},
      *   {@code false} otherwise
      */
-    public final boolean isNumeric() { return _isNumber; }
+    public final boolean isNumeric() {
+        return _isNumber;
+    }
 
     /**
      * Accessor that is functionally equivalent to:
@@ -191,7 +203,9 @@ public enum JsonToken
      *
      * @since 2.3
      */
-    public final boolean isStructStart() { return _isStructStart; }
+    public final boolean isStructStart() {
+        return _isStructStart;
+    }
 
     /**
      * Accessor that is functionally equivalent to:
@@ -204,7 +218,9 @@ public enum JsonToken
      * 
      * @since 2.3
      */
-    public final boolean isStructEnd() { return _isStructEnd; }
+    public final boolean isStructEnd() {
+        return _isStructEnd;
+    }
 
     /**
      * Method that can be used to check whether this token represents
@@ -215,11 +231,15 @@ public enum JsonToken
      * @return {@code True} if this token is a scalar value token (one of
      *   {@code VALUE_xxx} tokens), {@code false} otherwise
      */
-    public final boolean isScalarValue() { return _isScalar; }
+    public final boolean isScalarValue() {
+        return _isScalar;
+    }
 
     /**
      * @return {@code True} if this token is {@code VALUE_TRUE} or {@code VALUE_FALSE},
      *   {@code false} otherwise
      */
-    public final boolean isBoolean() { return _isBoolean; }
+    public final boolean isBoolean() {
+        return _isBoolean;
+    }
 }

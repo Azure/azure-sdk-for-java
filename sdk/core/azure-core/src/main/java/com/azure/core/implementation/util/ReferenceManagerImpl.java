@@ -34,8 +34,8 @@ public final class ReferenceManagerImpl implements ReferenceManager {
         ReflectiveInvoker cleanerRegister = null;
         try {
             Class<?> cleanerClass = Class.forName("java.lang.ref.Cleaner");
-            cleaner = cleanerClass.getDeclaredMethod("create", ThreadFactory.class).invoke(null,
-                (ThreadFactory) r -> new Thread(r, BASE_THREAD_NAME));
+            cleaner = cleanerClass.getDeclaredMethod("create", ThreadFactory.class)
+                .invoke(null, (ThreadFactory) r -> new Thread(r, BASE_THREAD_NAME));
             cleanerRegister = ReflectionUtils.getMethodInvoker(cleanerClass,
                 cleanerClass.getDeclaredMethod("register", Object.class, Runnable.class), false);
         } catch (Exception ex) {

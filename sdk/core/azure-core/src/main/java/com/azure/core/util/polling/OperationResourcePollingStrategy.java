@@ -38,7 +38,7 @@ import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolut
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *        kept
+ * kept
  */
 public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final ClientLogger LOGGER = new ClientLogger(OperationResourcePollingStrategy.class);
@@ -99,7 +99,8 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
         String operationLocationHeaderName, Context context) {
         this(operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
-            new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint).setSerializer(serializer)
+            new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint)
+                .setSerializer(serializer)
                 .setContext(context));
     }
 
@@ -115,7 +116,8 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
         this.httpPipeline = pollingStrategyOptions.getHttpPipeline();
         this.endpoint = pollingStrategyOptions.getEndpoint();
-        this.serializer = pollingStrategyOptions.getSerializer() != null ? pollingStrategyOptions.getSerializer()
+        this.serializer = pollingStrategyOptions.getSerializer() != null
+            ? pollingStrategyOptions.getSerializer()
             : new DefaultJsonSerializer();
         this.operationLocationHeaderName
             = (operationLocationHeaderName == null) ? DEFAULT_OPERATION_LOCATION_HEADER : operationLocationHeaderName;
@@ -146,7 +148,9 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         pollingContext.setData(PollingConstants.HTTP_METHOD, response.getRequest().getHttpMethod().name());
         pollingContext.setData(PollingConstants.REQUEST_URL, response.getRequest().getUrl().toString());
 
-        if (response.getStatusCode() == 200 || response.getStatusCode() == 201 || response.getStatusCode() == 202
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
             || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
@@ -170,21 +174,25 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         return FluxUtil
             .withContext(context1 -> httpPipeline.send(request, CoreUtils.mergeContexts(context1, this.context)))
             .flatMap(
-                response -> response.getBodyAsByteArray().map(BinaryData::fromBytes).flatMap(binaryData -> PollingUtils
-                    .deserializeResponse(binaryData, serializer, POLL_RESULT_TYPE_REFERENCE).map(pollResult -> {
-                        final String resourceLocation = pollResult.getResourceLocation();
-                        if (resourceLocation != null) {
-                            pollingContext.setData(PollingConstants.RESOURCE_LOCATION,
-                                getAbsolutePath(resourceLocation, endpoint, LOGGER));
-                        }
-                        pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
-                        return pollResult.getStatus();
-                    }).flatMap(status -> {
-                        Duration retryAfter
-                            = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-                        return PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType)
-                            .map(value -> new PollResponse<>(status, value, retryAfter));
-                    })));
+                response -> response.getBodyAsByteArray()
+                    .map(BinaryData::fromBytes)
+                    .flatMap(binaryData -> PollingUtils
+                        .deserializeResponse(binaryData, serializer, POLL_RESULT_TYPE_REFERENCE)
+                        .map(pollResult -> {
+                            final String resourceLocation = pollResult.getResourceLocation();
+                            if (resourceLocation != null) {
+                                pollingContext.setData(PollingConstants.RESOURCE_LOCATION,
+                                    getAbsolutePath(resourceLocation, endpoint, LOGGER));
+                            }
+                            pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
+                            return pollResult.getStatus();
+                        })
+                        .flatMap(status -> {
+                            Duration retryAfter
+                                = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
+                            return PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType)
+                                .map(value -> new PollResponse<>(status, value, retryAfter));
+                        })));
     }
 
     private String setServiceVersionQueryParam(String url) {
@@ -224,7 +232,8 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
             return FluxUtil
                 .withContext(context1 -> httpPipeline.send(request, CoreUtils.mergeContexts(context1, this.context)))
-                .flatMap(HttpResponse::getBodyAsByteArray).map(BinaryData::fromBytes)
+                .flatMap(HttpResponse::getBodyAsByteArray)
+                .map(BinaryData::fromBytes)
                 .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, serializer, resultType));
         }
     }

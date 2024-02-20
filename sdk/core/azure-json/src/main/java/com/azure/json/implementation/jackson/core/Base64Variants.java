@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -31,8 +32,7 @@ package com.azure.json.implementation.jackson.core;
  *
  * @author Tatu Saloranta
  */
-public final class Base64Variants
-{
+public final class Base64Variants {
     final static String STD_BASE64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     /**
@@ -93,7 +93,8 @@ public final class Base64Variants
         sb.setCharAt(sb.indexOf("+"), '-');
         sb.setCharAt(sb.indexOf("/"), '_');
         // And finally, let's not split lines either, wouldn't work too well with URLs
-        MODIFIED_FOR_URL = new Base64Variant("MODIFIED-FOR-URL", sb.toString(), false, Base64Variant.PADDING_CHAR_NONE, Integer.MAX_VALUE);
+        MODIFIED_FOR_URL = new Base64Variant("MODIFIED-FOR-URL", sb.toString(), false, Base64Variant.PADDING_CHAR_NONE,
+            Integer.MAX_VALUE);
     }
 
     /**
@@ -119,8 +120,7 @@ public final class Base64Variants
      *
      * @throws IllegalArgumentException if no standard variant with given name exists
      */
-    public static Base64Variant valueOf(String name) throws IllegalArgumentException
-    {
+    public static Base64Variant valueOf(String name) throws IllegalArgumentException {
         if (MIME._name.equals(name)) {
             return MIME;
         }
@@ -136,8 +136,8 @@ public final class Base64Variants
         if (name == null) {
             name = "<null>";
         } else {
-            name = "'"+name+"'";
+            name = "'" + name + "'";
         }
-        throw new IllegalArgumentException("No Base64Variant with name "+name);
+        throw new IllegalArgumentException("No Base64Variant with name " + name);
     }
 }
