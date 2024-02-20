@@ -5,6 +5,7 @@
 module com.azure.communication.messages {
     requires transitive com.azure.core;
     requires transitive com.azure.communication.common;
+    requires transitive java.desktop;
     exports com.azure.communication.messages;
     exports com.azure.communication.messages.models.channels;
     exports com.azure.communication.messages.models;
