@@ -29,8 +29,12 @@ public class IdentityTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
             List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-            customSanitizers.add(new TestProxySanitizer("$..AccessToken", null, INVALID_DUMMY_TOKEN,
+            customSanitizers.add(new TestProxySanitizer("$..access_token", null, INVALID_DUMMY_TOKEN,
                 TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(new TestProxySanitizer(null, "(client_id=)[^&]+", "$1Dummy-Id",
+                TestProxySanitizerType.BODY_REGEX));
+            customSanitizers.add(new TestProxySanitizer(null, "(client_secret=)[^&]+", "$1Dummy-Secret",
+                TestProxySanitizerType.BODY_REGEX));
             interceptorManager.addSanitizers(customSanitizers);
         }
 
