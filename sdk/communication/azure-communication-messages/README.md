@@ -7,7 +7,7 @@ Various documentation is available to help you get started
 - [Quick Start][azure_communication_messaging_qs]
 - [API reference documentation][api_documentation]
 - [Product documentation][product_docs]
-- [Register WhatsApp Business Account][register_whatsapp_waba]
+- [Register WhatsApp Business Account][register_whatsapp_business_account]
 - [WhatsApp Template Creation][create-manage-whatsapp-template]
 
 ## Getting started
@@ -18,7 +18,7 @@ Various documentation is available to help you get started
 - [Apache Maven](https://maven.apache.org/download.cgi).
 - You must have an [Azure subscription][azure_sub] to use this package.
 - An existing Communication Services resource. If you need to create the resource, you can use the [Azure Portal][azure_portal], the [Azure PowerShell][azure_powershell], or the [Azure CLI][azure_cli].
-- See [how to register whatsapp business account & create a channel][register_whatsapp_waba] for registering whatsapp channel to your Communication Services resource.
+- See [how to register whatsapp business account & create a channel][register_whatsapp_business_account] for registering whatsapp channel to your Communication Services resource.
 
 ### Adding the package to your product
 
@@ -262,7 +262,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-sms/src
 [azure_communication_messaging_qs]: https://learn.microsoft.com/en-us/azure/communication-services/concepts/advanced-messaging/whatsapp/whatsapp-overview
 [handle_advance_messaging_events]: https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/advanced-messaging/whatsapp/handle-advanced-messaging-events
-[register_whatsapp_waba]: https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/advanced-messaging/whatsapp/connect-whatsapp-business-account
+[register_whatsapp_business_account]: https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/advanced-messaging/whatsapp/connect-whatsapp-business-account
 [create-manage-whatsapp-template]: https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [defaultazurecredential]: https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/identity/identity#defaultazurecredential
