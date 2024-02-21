@@ -8,18 +8,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/**
- * The CreateChatThreadResult model.
- */
+/** The CreateChatThreadResult model. */
 @Fluent
 public final class CreateChatThreadResult {
-    /**
+    /*
      * The thread property.
      */
     @JsonProperty(value = "chatThread")
     private ChatThreadProperties chatThreadProperties;
 
-    /**
+    /*
      * The participants that failed to be added to the chat thread.
      */
     @JsonProperty(value = "invalidParticipants", access = JsonProperty.Access.WRITE_ONLY)
