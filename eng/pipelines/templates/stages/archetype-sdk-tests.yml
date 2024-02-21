@@ -113,6 +113,7 @@ parameters:
 
 resources:
   repositories:
+    - repository: self
     - ${{ if eq(parameters.CalledFromClient, false) }}:
       - repository: 1ESPipelineTemplates
         type: git
