@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for Azure Communication Services - Messaging application</name>
-  <description>The Azure Communication Message Service is used to send messages (text, template and media) to different channels (e.g. WhatsApp).</description>
+  <description>This package contains a Java SDK for Azure Communication Messages Services.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

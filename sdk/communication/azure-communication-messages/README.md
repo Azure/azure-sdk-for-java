@@ -1,5 +1,5 @@
 # Azure Messages client library for Java
-The Azure Communication Message Service is used to send messages (text, template & media) to different channels (e.g. WhatsApp). Current supported channel is WhatsApp.
+This package contains a Java SDK for Azure Communication Messages Services.
 
 ## Documentation
 
