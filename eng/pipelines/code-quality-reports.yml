@@ -113,9 +113,19 @@ jobs:
         displayName: 'Generate Linting Reports'
         condition: and(always(), ne(variables['LintingGoals'], ''))
 
+      - pwsh: |
+          $artifactZip = "$(Build.ArtifactStagingDirectory)/linting-reports.zip"
+          $destinationDir = "$(Build.ArtifactStagingDirectory)/zipped-linting-reports"
+          if (Test-Path $artifactZip) {
+            New-Item -ItemType Directory -Path "$destinationDir"
+            Move-Item -Path $artifactZip -Destination "$destinationDir"
+          }
+        displayName: Move linting report zip to individual directory for artifact upload
+        condition: succeededOrFailed()
+
       - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
         parameters:
-          ArtifactPath: '$(Build.ArtifactStagingDirectory)/linting-reports.zip'
+          ArtifactPath: '$(Build.ArtifactStagingDirectory)/zipped-linting-reports'
           ArtifactName: 'linting-reports'
 
       - pwsh: |

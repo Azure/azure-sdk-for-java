@@ -21,11 +21,13 @@ steps:
         Move-Item -Path $fileFullName -Destination $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}/$fileName -ErrorAction SilentlyContinue
       }
       [System.IO.Compression.ZipFile]::CreateFromDirectory("$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}","$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}.zip")
+      New-Item -ItemType Directory -Path $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}-zipped
+      Move-Item -Path "$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}.zip" -Destination "$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}-zipped/${{ parameters.OomArtifactName }}.zip"
     displayName: 'Copy OOM hprofs'
     condition: eq(variables['HAS_OOM_PROFS'], 'true')
 
   - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
     parameters:
-      ArtifactPath: '$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}.zip'
+      ArtifactPath: '$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}-zipped'
       ArtifactName: '${{ parameters.OomArtifactName }}-$(System.StageName)-$(System.JobName)'
       CustomCondition: eq(variables['HAS_OOM_PROFS'], 'true')
