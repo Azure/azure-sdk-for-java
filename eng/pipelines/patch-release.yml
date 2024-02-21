@@ -12,10 +12,6 @@ extends:
       groupId: com.azure
       safeName: azuremonitoringestion
       ServiceDirectory: monitor
-    - name: azure-mixedreality-remoterendering
-      groupId: com.azure
-      safeName: azuremixedrealityremoterendering
-      ServiceDirectory: remoterendering
     - name: azure-data-schemaregistry-apacheavro
       groupId: com.azure
       safeName: azuredataschemaregistryapacheavro
@@ -44,18 +40,10 @@ extends:
       groupId: com.azure
       safeName: azuresearch
       ServiceDirectory: search
-    - name: azure-ai-formrecognizer
-      groupId: com.azure
-      safeName: azureaiformrecognizer
-      ServiceDirectory: formrecognizer
     - name: azure-data-schemaregistry
       groupId: com.azure
       safeName: azuredataschemaregistry
       ServiceDirectory: schemaregistry
-    - name: azure-mixedreality-authentication
-      groupId: com.azure
-      safeName: azuremixedrealityauthentication
-      ServiceDirectory: mixedreality
     - name: azure-data-appconfiguration
       groupId: com.azure
       safeName: azuredataappconfiguration
@@ -64,10 +52,6 @@ extends:
       groupId: com.azure
       safeName: azuremonitorquery
       ServiceDirectory: monitor
-    - name: azure-messaging-webpubsub
-      groupId: com.azure
-      safeName: azuremessagingwebpubsub
-      ServiceDirectory: webpubsub
     - name: azure-identity-extensions
       groupId: com.azure
       safeName: azureidentityextensions
