@@ -53,7 +53,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-metricsadvisor</artifactId>
-    <version>1.1.21</version>
+    <version>1.1.22</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -21,7 +21,7 @@ This package contains a Java SDK for Azure Communication Call Automation Service
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callautomation</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
