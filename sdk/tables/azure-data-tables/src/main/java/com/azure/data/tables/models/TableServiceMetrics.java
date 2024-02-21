@@ -30,14 +30,6 @@ public final class TableServiceMetrics {
      */
     private TableServiceRetentionPolicy retentionPolicy;
 
-    // empty constructor necessary due to Javadoc warnings
-    /**
-     * Creates a {@link TableServiceMetrics}.
-     */
-    public TableServiceMetrics() {
-
-    }
-
     /**
      * Get the version of Analytics to configure.
      *
