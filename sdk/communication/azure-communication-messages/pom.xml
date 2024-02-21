@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for Azure Communication Services - Messaging application</name>
-  <description>The Advance Messaging in Azure Communication Service is used to send messages (text, template and media) to different channels (e.g. WhatsApp).</description>
+  <description>The Azure Communication Message Service is used to send messages (text, template and media) to different channels (e.g. WhatsApp).</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -43,8 +43,8 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.4</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.4</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.6</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.6</jacoco.min.branchcoverage>
     <jacoco.skip>true</jacoco.skip>
   </properties>
   <dependencies>

@@ -1,5 +1,5 @@
 # Azure Messages client library for Java
-The Advance Messaging in Azure Communication Service is used to send messages (text, template & media) to different channels (e.g. WhatsApp). Current supported channel is WhatsApp.
+The Azure Communication Message Service is used to send messages (text, template & media) to different channels (e.g. WhatsApp). Current supported channel is WhatsApp.
 
 ## Documentation
 
