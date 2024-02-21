@@ -5,39 +5,40 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The TasksStateTasks model. */
 @Fluent
-public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> {
+public final class TasksStateTasks {
     /*
      * The completed property.
      */
+    @JsonProperty(value = "completed", required = true)
     private int completed;
 
     /*
      * The failed property.
      */
+    @JsonProperty(value = "failed", required = true)
     private int failed;
 
     /*
      * The inProgress property.
      */
+    @JsonProperty(value = "inProgress", required = true)
     private int inProgress;
 
     /*
      * The total property.
      */
+    @JsonProperty(value = "total", required = true)
     private int total;
 
     /*
      * The items property.
      */
+    @JsonProperty(value = "items")
     private List<AnalyzeTextLROResult> items;
 
     /** Creates an instance of TasksStateTasks class. */
@@ -141,54 +142,5 @@ public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> 
     public TasksStateTasks setItems(List<AnalyzeTextLROResult> items) {
         this.items = items;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("completed", this.completed);
-        jsonWriter.writeIntField("failed", this.failed);
-        jsonWriter.writeIntField("inProgress", this.inProgress);
-        jsonWriter.writeIntField("total", this.total);
-        jsonWriter.writeArrayField("items", this.items, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TasksStateTasks from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TasksStateTasks if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TasksStateTasks.
-     */
-    public static TasksStateTasks fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    TasksStateTasks deserializedTasksStateTasks = new TasksStateTasks();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("completed".equals(fieldName)) {
-                            deserializedTasksStateTasks.completed = reader.getInt();
-                        } else if ("failed".equals(fieldName)) {
-                            deserializedTasksStateTasks.failed = reader.getInt();
-                        } else if ("inProgress".equals(fieldName)) {
-                            deserializedTasksStateTasks.inProgress = reader.getInt();
-                        } else if ("total".equals(fieldName)) {
-                            deserializedTasksStateTasks.total = reader.getInt();
-                        } else if ("items".equals(fieldName)) {
-                            List<AnalyzeTextLROResult> items =
-                                    reader.readArray(reader1 -> AnalyzeTextLROResult.fromJson(reader1));
-                            deserializedTasksStateTasks.items = items;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedTasksStateTasks;
-                });
     }
 }

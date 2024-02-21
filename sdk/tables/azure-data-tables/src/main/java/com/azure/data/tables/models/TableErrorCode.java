@@ -265,14 +265,6 @@ public final class TableErrorCode extends ExpandableStringEnum<TableErrorCode> {
      */
     public static final TableErrorCode FORBIDDEN = fromString("Forbidden");
 
-    // empty constructor necessary due to Javadoc warnings
-    /**
-     * Creates an instance of {@link TableErrorCode}.
-     */
-    public TableErrorCode() {
-
-    }
-
     /**
      * Returns the {@code TableErrorCode} constant with the provided name, or {@code null} if no {@code TableErrorCode}
      * has the provided name.

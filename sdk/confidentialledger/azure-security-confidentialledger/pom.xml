@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-confidentialledger</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-confidentialledger;current} -->
+  <version>1.0.17</version> <!-- {x-version-update;com.azure:azure-security-confidentialledger;current} -->
 
   <name>Microsoft Azure client library for Confidential Ledger</name>
   <description>This package contains Microsoft Azure Confidential Ledger client library.</description>
@@ -32,10 +32,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javaModulesSurefireArgLine>
-      --add-exports com.azure.core/com.azure.core.implementation=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-
       --add-exports com.azure.http.netty/com.azure.core.http.netty=com.azure.security.confidentialledger
 
       --add-reads com.azure.security.confidentialledger=com.azure.http.netty

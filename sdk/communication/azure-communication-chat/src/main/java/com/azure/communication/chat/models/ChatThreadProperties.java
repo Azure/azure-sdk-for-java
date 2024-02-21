@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
 
-/**
- * The ChatThread model.
- */
+/** The ChatThread model. */
 @Fluent
 public final class ChatThreadProperties {
 

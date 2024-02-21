@@ -4,63 +4,65 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-/**
- * Document classifier info.
- */
-@Fluent
-public final class DocumentClassifierDetails implements JsonSerializable<DocumentClassifierDetails> {
+/** Document classifier info. */
+@Immutable
+public final class DocumentClassifierDetails {
     /*
      * Unique document classifier name.
      */
-    private final String classifierId;
+    @JsonProperty(value = "classifierId", required = true)
+    private String classifierId;
 
     /*
      * Document classifier description.
      */
+    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Date and time (UTC) when the document classifier was created.
      */
-    private final OffsetDateTime createdDateTime;
+    @JsonProperty(value = "createdDateTime", required = true)
+    private OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the document classifier will expire.
      */
+    @JsonProperty(value = "expirationDateTime")
     private OffsetDateTime expirationDateTime;
 
     /*
      * API version used to create this document classifier.
      */
-    private final String apiVersion;
+    @JsonProperty(value = "apiVersion", required = true)
+    private String apiVersion;
 
     /*
      * List of document types to classify against.
      */
-    private final Map<String, ClassifierDocumentTypeDetails> docTypes;
+    @JsonProperty(value = "docTypes", required = true)
+    private Map<String, ClassifierDocumentTypeDetails> docTypes;
 
     /**
      * Creates an instance of DocumentClassifierDetails class.
-     * 
+     *
      * @param classifierId the classifierId value to set.
      * @param createdDateTime the createdDateTime value to set.
      * @param apiVersion the apiVersion value to set.
      * @param docTypes the docTypes value to set.
      */
-    public DocumentClassifierDetails(String classifierId, OffsetDateTime createdDateTime, String apiVersion,
-        Map<String, ClassifierDocumentTypeDetails> docTypes) {
+    @JsonCreator
+    private DocumentClassifierDetails(
+            @JsonProperty(value = "classifierId", required = true) String classifierId,
+            @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
+            @JsonProperty(value = "apiVersion", required = true) String apiVersion,
+            @JsonProperty(value = "docTypes", required = true) Map<String, ClassifierDocumentTypeDetails> docTypes) {
         this.classifierId = classifierId;
         this.createdDateTime = createdDateTime;
         this.apiVersion = apiVersion;
@@ -69,7 +71,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Get the classifierId property: Unique document classifier name.
-     * 
+     *
      * @return the classifierId value.
      */
     public String getClassifierId() {
@@ -78,7 +80,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Get the description property: Document classifier description.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -86,19 +88,8 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
     }
 
     /**
-     * Set the description property: Document classifier description.
-     * 
-     * @param description the description value to set.
-     * @return the DocumentClassifierDetails object itself.
-     */
-    public DocumentClassifierDetails setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
      * Get the createdDateTime property: Date and time (UTC) when the document classifier was created.
-     * 
+     *
      * @return the createdDateTime value.
      */
     public OffsetDateTime getCreatedDateTime() {
@@ -107,7 +98,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Get the expirationDateTime property: Date and time (UTC) when the document classifier will expire.
-     * 
+     *
      * @return the expirationDateTime value.
      */
     public OffsetDateTime getExpirationDateTime() {
@@ -115,19 +106,8 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
     }
 
     /**
-     * Set the expirationDateTime property: Date and time (UTC) when the document classifier will expire.
-     * 
-     * @param expirationDateTime the expirationDateTime value to set.
-     * @return the DocumentClassifierDetails object itself.
-     */
-    public DocumentClassifierDetails setExpirationDateTime(OffsetDateTime expirationDateTime) {
-        this.expirationDateTime = expirationDateTime;
-        return this;
-    }
-
-    /**
      * Get the apiVersion property: API version used to create this document classifier.
-     * 
+     *
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -136,98 +116,10 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Get the docTypes property: List of document types to classify against.
-     * 
+     *
      * @return the docTypes value.
      */
     public Map<String, ClassifierDocumentTypeDetails> getDocTypes() {
         return this.docTypes;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("classifierId", this.classifierId);
-        jsonWriter.writeStringField("createdDateTime",
-            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
-        jsonWriter.writeStringField("apiVersion", this.apiVersion);
-        jsonWriter.writeMapField("docTypes", this.docTypes, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("expirationDateTime", this.expirationDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DocumentClassifierDetails from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentClassifierDetails if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DocumentClassifierDetails.
-     */
-    public static DocumentClassifierDetails fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean classifierIdFound = false;
-            String classifierId = null;
-            boolean createdDateTimeFound = false;
-            OffsetDateTime createdDateTime = null;
-            boolean apiVersionFound = false;
-            String apiVersion = null;
-            boolean docTypesFound = false;
-            Map<String, ClassifierDocumentTypeDetails> docTypes = null;
-            String description = null;
-            OffsetDateTime expirationDateTime = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("classifierId".equals(fieldName)) {
-                    classifierId = reader.getString();
-                    classifierIdFound = true;
-                } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                    createdDateTimeFound = true;
-                } else if ("apiVersion".equals(fieldName)) {
-                    apiVersion = reader.getString();
-                    apiVersionFound = true;
-                } else if ("docTypes".equals(fieldName)) {
-                    docTypes = reader.readMap(reader1 -> ClassifierDocumentTypeDetails.fromJson(reader1));
-                    docTypesFound = true;
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("expirationDateTime".equals(fieldName)) {
-                    expirationDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (classifierIdFound && createdDateTimeFound && apiVersionFound && docTypesFound) {
-                DocumentClassifierDetails deserializedDocumentClassifierDetails
-                    = new DocumentClassifierDetails(classifierId, createdDateTime, apiVersion, docTypes);
-                deserializedDocumentClassifierDetails.description = description;
-                deserializedDocumentClassifierDetails.expirationDateTime = expirationDateTime;
-
-                return deserializedDocumentClassifierDetails;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!classifierIdFound) {
-                missingProperties.add("classifierId");
-            }
-            if (!createdDateTimeFound) {
-                missingProperties.add("createdDateTime");
-            }
-            if (!apiVersionFound) {
-                missingProperties.add("apiVersion");
-            }
-            if (!docTypesFound) {
-                missingProperties.add("docTypes");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
     }
 }

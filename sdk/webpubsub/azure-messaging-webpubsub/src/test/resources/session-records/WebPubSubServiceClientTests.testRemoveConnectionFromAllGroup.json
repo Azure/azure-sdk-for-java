@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.webpubsub.azure.com/api/hubs/test/connections/test_connection/groups?api-version=2022-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-messaging-webpubsub/1.2.0 (17.0.4.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2022-11-01",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 04 Jan 2023 02:33:39 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -27,7 +27,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-developer-loadtesting</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.10</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

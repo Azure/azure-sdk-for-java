@@ -27,13 +27,6 @@ public final class CreateRoomRequest {
     private OffsetDateTime validUntil;
 
     /*
-     * Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. By
-     * default, this flag is set to false.
-     */
-    @JsonProperty(value = "pstnDialOutEnabled")
-    private Boolean pstnDialOutEnabled;
-
-    /*
      * (Optional) Participants to be invited to the room.
      */
     @JsonProperty(value = "participants")
@@ -83,28 +76,6 @@ public final class CreateRoomRequest {
      */
     public CreateRoomRequest setValidUntil(OffsetDateTime validUntil) {
         this.validUntil = validUntil;
-        return this;
-    }
-
-    /**
-     * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
-     * is enabled in a particular room. By default, this flag is set to false.
-     *
-     * @return the pstnDialOutEnabled value.
-     */
-    public Boolean isPstnDialOutEnabled() {
-        return this.pstnDialOutEnabled;
-    }
-
-    /**
-     * Set the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
-     * is enabled in a particular room. By default, this flag is set to false.
-     *
-     * @param pstnDialOutEnabled the pstnDialOutEnabled value to set.
-     * @return the CreateRoomRequest object itself.
-     */
-    public CreateRoomRequest setPstnDialOutEnabled(Boolean pstnDialOutEnabled) {
-        this.pstnDialOutEnabled = pstnDialOutEnabled;
         return this;
     }
 

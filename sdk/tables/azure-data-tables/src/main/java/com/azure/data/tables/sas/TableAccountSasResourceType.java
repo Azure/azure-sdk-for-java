@@ -20,14 +20,6 @@ public final class TableAccountSasResourceType {
     private boolean container;
     private boolean object;
 
-    // empty constructor necessary due to Javadoc warnings
-    /**
-     * Creates a {@link TableAccountSasResourceType} with all fields set to false.
-     */
-    public TableAccountSasResourceType() {
-
-    }
-
     /**
      * Creates an {@link TableAccountSasResourceType} from the specified resource types string. This method will throw an
      * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid resource type.

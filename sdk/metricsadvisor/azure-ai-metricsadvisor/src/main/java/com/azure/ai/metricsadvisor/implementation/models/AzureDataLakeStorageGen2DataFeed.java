@@ -5,34 +5,29 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 
-/**
- * The AzureDataLakeStorageGen2DataFeed model.
- */
+/** The AzureDataLakeStorageGen2DataFeed model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
+@JsonTypeName("AzureDataLakeStorageGen2")
 @Fluent
 public final class AzureDataLakeStorageGen2DataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
+    @JsonProperty(value = "dataSourceParameter", required = true)
     private AzureDataLakeStorageGen2Parameter dataSourceParameter;
 
-    /**
-     * Creates an instance of AzureDataLakeStorageGen2DataFeed class.
-     */
-    public AzureDataLakeStorageGen2DataFeed() {
-    }
+    /** Creates an instance of AzureDataLakeStorageGen2DataFeed class. */
+    public AzureDataLakeStorageGen2DataFeed() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
-     * 
+     *
      * @return the dataSourceParameter value.
      */
     public AzureDataLakeStorageGen2Parameter getDataSourceParameter() {
@@ -41,382 +36,181 @@ public final class AzureDataLakeStorageGen2DataFeed extends DataFeedDetail {
 
     /**
      * Set the dataSourceParameter property: The dataSourceParameter property.
-     * 
+     *
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureDataLakeStorageGen2DataFeed object itself.
      */
-    public AzureDataLakeStorageGen2DataFeed
-        setDataSourceParameter(AzureDataLakeStorageGen2Parameter dataSourceParameter) {
+    public AzureDataLakeStorageGen2DataFeed setDataSourceParameter(
+            AzureDataLakeStorageGen2Parameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setGranularityName(Granularity granularityName) {
         super.setGranularityName(granularityName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setGranularityAmount(Integer granularityAmount) {
         super.setGranularityAmount(granularityAmount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setMetrics(List<DataFeedMetric> metrics) {
         super.setMetrics(metrics);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setDimension(List<DataFeedDimension> dimension) {
         super.setDimension(dimension);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setAdmins(List<String> admins) {
         super.setAdmins(admins);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setViewers(List<String> viewers) {
         super.setViewers(viewers);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStorageGen2DataFeed setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType", DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2 == null ? null
-            : DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2.toString());
-        jsonWriter.writeStringField("dataFeedName", getDataFeedName());
-        jsonWriter.writeStringField("granularityName",
-            getGranularityName() == null ? null : getGranularityName().toString());
-        jsonWriter.writeArrayField("metrics", getMetrics(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("dataStartFrom",
-            getDataStartFrom() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getDataStartFrom()));
-        jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
-        jsonWriter.writeNumberField("granularityAmount", getGranularityAmount());
-        jsonWriter.writeArrayField("dimension", getDimension(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
-        jsonWriter.writeNumberField("startOffsetInSeconds", getStartOffsetInSeconds());
-        jsonWriter.writeNumberField("maxConcurrency", getMaxConcurrency());
-        jsonWriter.writeNumberField("minRetryIntervalInSeconds", getMinRetryIntervalInSeconds());
-        jsonWriter.writeNumberField("stopRetryAfterInSeconds", getStopRetryAfterInSeconds());
-        jsonWriter.writeStringField("needRollup", getNeedRollup() == null ? null : getNeedRollup().toString());
-        jsonWriter.writeStringField("rollUpMethod", getRollUpMethod() == null ? null : getRollUpMethod().toString());
-        jsonWriter.writeArrayField("rollUpColumns", getRollUpColumns(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("allUpIdentification", getAllUpIdentification());
-        jsonWriter.writeStringField("fillMissingPointType",
-            getFillMissingPointType() == null ? null : getFillMissingPointType().toString());
-        jsonWriter.writeNumberField("fillMissingPointValue", getFillMissingPointValue());
-        jsonWriter.writeStringField("viewMode", getViewMode() == null ? null : getViewMode().toString());
-        jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("viewers", getViewers(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("actionLinkTemplate", getActionLinkTemplate());
-        jsonWriter.writeStringField("authenticationType",
-            getAuthenticationType() == null ? null : getAuthenticationType().toString());
-        jsonWriter.writeStringField("credentialId", getCredentialId());
-        jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureDataLakeStorageGen2DataFeed from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureDataLakeStorageGen2DataFeed if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the AzureDataLakeStorageGen2DataFeed.
-     */
-    public static AzureDataLakeStorageGen2DataFeed fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AzureDataLakeStorageGen2DataFeed deserializedAzureDataLakeStorageGen2DataFeed
-                = new AzureDataLakeStorageGen2DataFeed();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("dataSourceType".equals(fieldName)) {
-                    String dataSourceType = reader.getString();
-                    if (!"AzureDataLakeStorageGen2".equals(dataSourceType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceType' was expected to be non-null and equal to 'AzureDataLakeStorageGen2'. The found 'dataSourceType' was '"
-                                + dataSourceType + "'.");
-                    }
-                } else if ("dataFeedName".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.setDataFeedName(reader.getString());
-                } else if ("granularityName".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed
-                        .setGranularityName(Granularity.fromString(reader.getString()));
-                } else if ("metrics".equals(fieldName)) {
-                    List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
-                    deserializedAzureDataLakeStorageGen2DataFeed.setMetrics(metrics);
-                } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.setDataStartFrom(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                } else if ("dataFeedId".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed
-                        .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
-                } else if ("dataFeedDescription".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.setDataFeedDescription(reader.getString());
-                } else if ("granularityAmount".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed
-                        .setGranularityAmount(reader.getNullable(JsonReader::getInt));
-                } else if ("dimension".equals(fieldName)) {
-                    List<DataFeedDimension> dimension
-                        = reader.readArray(reader1 -> DataFeedDimension.fromJson(reader1));
-                    deserializedAzureDataLakeStorageGen2DataFeed.setDimension(dimension);
-                } else if ("timestampColumn".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.setTimestampColumn(reader.getString());
-                } else if ("startOffsetInSeconds".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed
-                        .setStartOffsetInSeconds(reader.getNullable(JsonReader::getLong));
-                } else if ("maxConcurrency".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed
-                        .setMaxConcurrency(reader.getNullable(JsonReader::getInt));
-                } else if ("minRetryIntervalInSeconds".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed
-                        .setMinRetryIntervalInSeconds(reader.getNullable(JsonReader::getLong));
-                } else if ("stopRetryAfterInSeconds".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed
-                        .setStopRetryAfterInSeconds(reader.getNullable(JsonReader::getLong));
-                } else if ("needRollup".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed
-                        .setNeedRollup(NeedRollupEnum.fromString(reader.getString()));
-                } else if ("rollUpMethod".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed
-                        .setRollUpMethod(RollUpMethod.fromString(reader.getString()));
-                } else if ("rollUpColumns".equals(fieldName)) {
-                    List<String> rollUpColumns = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureDataLakeStorageGen2DataFeed.setRollUpColumns(rollUpColumns);
-                } else if ("allUpIdentification".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.setAllUpIdentification(reader.getString());
-                } else if ("fillMissingPointType".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed
-                        .setFillMissingPointType(FillMissingPointType.fromString(reader.getString()));
-                } else if ("fillMissingPointValue".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed
-                        .setFillMissingPointValue(reader.getNullable(JsonReader::getDouble));
-                } else if ("viewMode".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.setViewMode(ViewMode.fromString(reader.getString()));
-                } else if ("admins".equals(fieldName)) {
-                    List<String> admins = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureDataLakeStorageGen2DataFeed.setAdmins(admins);
-                } else if ("viewers".equals(fieldName)) {
-                    List<String> viewers = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureDataLakeStorageGen2DataFeed.setViewers(viewers);
-                } else if ("isAdmin".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.setIsAdmin(reader.getNullable(JsonReader::getBoolean));
-                } else if ("creator".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.setCreator(reader.getString());
-                } else if ("status".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.setStatus(EntityStatus.fromString(reader.getString()));
-                } else if ("createdTime".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.setCreatedTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                } else if ("actionLinkTemplate".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.setActionLinkTemplate(reader.getString());
-                } else if ("authenticationType".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed
-                        .setAuthenticationType(AuthenticationTypeEnum.fromString(reader.getString()));
-                } else if ("credentialId".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.setCredentialId(reader.getString());
-                } else if ("dataSourceParameter".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeed.dataSourceParameter
-                        = AzureDataLakeStorageGen2Parameter.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAzureDataLakeStorageGen2DataFeed;
-        });
     }
 }

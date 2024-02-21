@@ -30,13 +30,15 @@ public final class SendDtmfTonesRequestInternal {
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
+
+    /** Creates an instance of SendDtmfTonesRequestInternal class. */
+    public SendDtmfTonesRequestInternal() {}
 
     /**
      * Get the tones property: List of tones to be sent to target participant.

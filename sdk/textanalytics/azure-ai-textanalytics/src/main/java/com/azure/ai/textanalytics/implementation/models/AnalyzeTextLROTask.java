@@ -5,12 +5,30 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The AnalyzeTextLROTask model. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "kind",
+        defaultImpl = AnalyzeTextLROTask.class)
+@JsonTypeName("AnalyzeTextLROTask")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "CustomEntityRecognition", value = CustomEntitiesLROTask.class),
+    @JsonSubTypes.Type(name = "CustomSingleLabelClassification", value = CustomSingleLabelClassificationLROTask.class),
+    @JsonSubTypes.Type(name = "CustomMultiLabelClassification", value = CustomMultiLabelClassificationLROTask.class),
+    @JsonSubTypes.Type(name = "Healthcare", value = HealthcareLROTask.class),
+    @JsonSubTypes.Type(name = "SentimentAnalysis", value = SentimentAnalysisLROTask.class),
+    @JsonSubTypes.Type(name = "EntityRecognition", value = EntitiesLROTask.class),
+    @JsonSubTypes.Type(name = "EntityLinking", value = EntityLinkingLROTask.class),
+    @JsonSubTypes.Type(name = "PiiEntityRecognition", value = PiiLROTask.class),
+    @JsonSubTypes.Type(name = "ExtractiveSummarization", value = ExtractiveSummarizationLROTask.class),
+    @JsonSubTypes.Type(name = "KeyPhraseExtraction", value = KeyPhraseLROTask.class),
+    @JsonSubTypes.Type(name = "AbstractiveSummarization", value = AbstractiveSummarizationLROTask.class)
+})
 @Fluent
 public class AnalyzeTextLROTask extends TaskIdentifier {
     /** Creates an instance of AnalyzeTextLROTask class. */
@@ -21,74 +39,5 @@ public class AnalyzeTextLROTask extends TaskIdentifier {
     public AnalyzeTextLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("taskName", getTaskName());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnalyzeTextLROTask from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeTextLROTask if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the AnalyzeTextLROTask.
-     */
-    public static AnalyzeTextLROTask fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    String discriminatorValue = null;
-                    JsonReader readerToUse = reader.bufferObject();
-
-                    readerToUse.nextToken(); // Prepare for reading
-                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = readerToUse.getFieldName();
-                        readerToUse.nextToken();
-                        if ("kind".equals(fieldName)) {
-                            discriminatorValue = readerToUse.getString();
-                            break;
-                        } else {
-                            readerToUse.skipChildren();
-                        }
-                    }
-
-                    if (discriminatorValue != null) {
-                        readerToUse = readerToUse.reset();
-                    }
-                    // Use the discriminator value to determine which subtype should be deserialized.
-                    if ("CustomEntityRecognition".equals(discriminatorValue)) {
-                        return CustomEntitiesLROTask.fromJson(readerToUse);
-                    } else if ("CustomSingleLabelClassification".equals(discriminatorValue)) {
-                        return CustomSingleLabelClassificationLROTask.fromJson(readerToUse);
-                    } else if ("CustomMultiLabelClassification".equals(discriminatorValue)) {
-                        return CustomMultiLabelClassificationLROTask.fromJson(readerToUse);
-                    } else if ("Healthcare".equals(discriminatorValue)) {
-                        return HealthcareLROTask.fromJson(readerToUse);
-                    } else if ("SentimentAnalysis".equals(discriminatorValue)) {
-                        return SentimentAnalysisLROTask.fromJson(readerToUse);
-                    } else if ("EntityRecognition".equals(discriminatorValue)) {
-                        return EntitiesLROTask.fromJson(readerToUse);
-                    } else if ("EntityLinking".equals(discriminatorValue)) {
-                        return EntityLinkingLROTask.fromJson(readerToUse);
-                    } else if ("PiiEntityRecognition".equals(discriminatorValue)) {
-                        return PiiLROTask.fromJson(readerToUse);
-                    } else if ("ExtractiveSummarization".equals(discriminatorValue)) {
-                        return ExtractiveSummarizationLROTask.fromJson(readerToUse);
-                    } else if ("KeyPhraseExtraction".equals(discriminatorValue)) {
-                        return KeyPhraseLROTask.fromJson(readerToUse);
-                    } else if ("AbstractiveSummarization".equals(discriminatorValue)) {
-                        return AbstractiveSummarizationLROTask.fromJson(readerToUse);
-                    } else {
-                        throw new IllegalStateException(
-                                "Discriminator field 'kind' didn't match one of the expected values 'CustomEntityRecognition', 'CustomSingleLabelClassification', 'CustomMultiLabelClassification', 'Healthcare', 'SentimentAnalysis', 'EntityRecognition', 'EntityLinking', 'PiiEntityRecognition', 'ExtractiveSummarization', 'KeyPhraseExtraction', or 'AbstractiveSummarization'. It was: '"
-                                        + discriminatorValue
-                                        + "'.");
-                    }
-                });
     }
 }

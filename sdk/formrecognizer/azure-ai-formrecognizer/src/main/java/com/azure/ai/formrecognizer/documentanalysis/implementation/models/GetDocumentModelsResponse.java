@@ -4,41 +4,40 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * List document models response object.
- */
-@Fluent
-public final class GetDocumentModelsResponse implements JsonSerializable<GetDocumentModelsResponse> {
+/** List document models response object. */
+@Immutable
+public final class GetDocumentModelsResponse {
     /*
      * List of document models.
      */
-    private final List<DocumentModelSummary> value;
+    @JsonProperty(value = "value", required = true)
+    private List<DocumentModelSummary> value;
 
     /*
      * Link to the next page of document models.
      */
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
      * Creates an instance of GetDocumentModelsResponse class.
-     * 
+     *
      * @param value the value value to set.
      */
-    public GetDocumentModelsResponse(List<DocumentModelSummary> value) {
+    @JsonCreator
+    private GetDocumentModelsResponse(
+            @JsonProperty(value = "value", required = true) List<DocumentModelSummary> value) {
         this.value = value;
     }
 
     /**
      * Get the value property: List of document models.
-     * 
+     *
      * @return the value value.
      */
     public List<DocumentModelSummary> getValue() {
@@ -47,66 +46,10 @@ public final class GetDocumentModelsResponse implements JsonSerializable<GetDocu
 
     /**
      * Get the nextLink property: Link to the next page of document models.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: Link to the next page of document models.
-     * 
-     * @param nextLink the nextLink value to set.
-     * @return the GetDocumentModelsResponse object itself.
-     */
-    public GetDocumentModelsResponse setNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("nextLink", this.nextLink);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of GetDocumentModelsResponse from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of GetDocumentModelsResponse if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the GetDocumentModelsResponse.
-     */
-    public static GetDocumentModelsResponse fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean valueFound = false;
-            List<DocumentModelSummary> value = null;
-            String nextLink = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("value".equals(fieldName)) {
-                    value = reader.readArray(reader1 -> DocumentModelSummary.fromJson(reader1));
-                    valueFound = true;
-                } else if ("nextLink".equals(fieldName)) {
-                    nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (valueFound) {
-                GetDocumentModelsResponse deserializedGetDocumentModelsResponse = new GetDocumentModelsResponse(value);
-                deserializedGetDocumentModelsResponse.nextLink = nextLink;
-
-                return deserializedGetDocumentModelsResponse;
-            }
-            throw new IllegalStateException("Missing required property: value");
-        });
     }
 }

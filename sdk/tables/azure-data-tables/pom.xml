@@ -14,7 +14,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+  <version>12.3.19</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
   <name>Microsoft Azure client library for Azure Tables</name>
   <description>This package contains the client library for Microsoft Azure Tables.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -40,7 +40,6 @@ Licensed under the MIT License.
       --add-opens com.azure.data.tables/com.azure.data.tables.implementation.models=ALL-UNNAMED
       --add-opens com.azure.data.tables/com.azure.data.tables.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <javadoc.excludePackageNames>com.azure.json:com.azure.core.*</javadoc.excludePackageNames>
   </properties>
 
   <dependencies>
@@ -99,20 +98,6 @@ Licensed under the MIT License.
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
-    <!-- of Mockito supporting Java 8 as a baseline. -->
-    <dependency>
-      <groupId>net.bytebuddy</groupId>
-      <artifactId>byte-buddy</artifactId>
-      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.bytebuddy</groupId>
-      <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

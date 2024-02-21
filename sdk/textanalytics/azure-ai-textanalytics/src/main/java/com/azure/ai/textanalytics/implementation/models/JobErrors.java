@@ -5,19 +5,16 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JobErrors model. */
 @Fluent
-public final class JobErrors implements JsonSerializable<JobErrors> {
+public final class JobErrors {
     /*
      * The errors property.
      */
+    @JsonProperty(value = "errors")
     private List<Error> errors;
 
     /** Creates an instance of JobErrors class. */
@@ -41,40 +38,5 @@ public final class JobErrors implements JsonSerializable<JobErrors> {
     public JobErrors setErrors(List<Error> errors) {
         this.errors = errors;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of JobErrors from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of JobErrors if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
-     * @throws IOException If an error occurs while reading the JobErrors.
-     */
-    public static JobErrors fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    JobErrors deserializedJobErrors = new JobErrors();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("errors".equals(fieldName)) {
-                            List<Error> errors = reader.readArray(reader1 -> Error.fromJson(reader1));
-                            deserializedJobErrors.errors = errors;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedJobErrors;
-                });
     }
 }

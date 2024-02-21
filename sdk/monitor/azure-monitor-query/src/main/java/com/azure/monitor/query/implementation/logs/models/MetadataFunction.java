@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A stored function.
- * 
- * Functions are stored Kusto queries that can be specified as part of queries by using their name.
+ *
+ * <p>Functions are stored Kusto queries that can be specified as part of queries by using their name.
  */
 @Fluent
 public final class MetadataFunction {
@@ -71,15 +71,16 @@ public final class MetadataFunction {
 
     /**
      * Creates an instance of MetadataFunction class.
-     * 
+     *
      * @param id the id value to set.
      * @param name the name value to set.
      * @param body the body value to set.
      */
     @JsonCreator
-    public MetadataFunction(@JsonProperty(value = "id", required = true) String id,
-        @JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "body", required = true) String body) {
+    public MetadataFunction(
+            @JsonProperty(value = "id", required = true) String id,
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "body", required = true) String body) {
         this.id = id;
         this.name = name;
         this.body = body;
@@ -87,7 +88,7 @@ public final class MetadataFunction {
 
     /**
      * Get the id property: The ID of the function.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -96,7 +97,7 @@ public final class MetadataFunction {
 
     /**
      * Get the name property: The name of the function, to be used in queries.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -105,7 +106,7 @@ public final class MetadataFunction {
 
     /**
      * Get the parameters property: The parameters/arguments of the function, if any.
-     * 
+     *
      * @return the parameters value.
      */
     public String getParameters() {
@@ -114,7 +115,7 @@ public final class MetadataFunction {
 
     /**
      * Set the parameters property: The parameters/arguments of the function, if any.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the MetadataFunction object itself.
      */
@@ -125,7 +126,7 @@ public final class MetadataFunction {
 
     /**
      * Get the displayName property: The display name of the function.
-     * 
+     *
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -134,7 +135,7 @@ public final class MetadataFunction {
 
     /**
      * Set the displayName property: The display name of the function.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the MetadataFunction object itself.
      */
@@ -145,7 +146,7 @@ public final class MetadataFunction {
 
     /**
      * Get the description property: The description of the function.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -154,7 +155,7 @@ public final class MetadataFunction {
 
     /**
      * Set the description property: The description of the function.
-     * 
+     *
      * @param description the description value to set.
      * @return the MetadataFunction object itself.
      */
@@ -165,7 +166,7 @@ public final class MetadataFunction {
 
     /**
      * Get the body property: The KQL body of the function.
-     * 
+     *
      * @return the body value.
      */
     public String getBody() {
@@ -174,7 +175,7 @@ public final class MetadataFunction {
 
     /**
      * Get the tags property: The tags associated with the function.
-     * 
+     *
      * @return the tags value.
      */
     public Object getTags() {
@@ -183,7 +184,7 @@ public final class MetadataFunction {
 
     /**
      * Set the tags property: The tags associated with the function.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the MetadataFunction object itself.
      */
@@ -194,7 +195,7 @@ public final class MetadataFunction {
 
     /**
      * Get the properties property: The properties of the function.
-     * 
+     *
      * @return the properties value.
      */
     public Object getProperties() {
@@ -203,7 +204,7 @@ public final class MetadataFunction {
 
     /**
      * Set the properties property: The properties of the function.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the MetadataFunction object itself.
      */
@@ -214,7 +215,7 @@ public final class MetadataFunction {
 
     /**
      * Get the related property: The related metadata items for the function.
-     * 
+     *
      * @return the related value.
      */
     public MetadataFunctionRelated getRelated() {
@@ -223,12 +224,32 @@ public final class MetadataFunction {
 
     /**
      * Set the related property: The related metadata items for the function.
-     * 
+     *
      * @param related the related value to set.
      * @return the MetadataFunction object itself.
      */
     public MetadataFunction setRelated(MetadataFunctionRelated related) {
         this.related = related;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getId() == null) {
+            throw new IllegalArgumentException("Missing required property id in model MetadataFunction");
+        }
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model MetadataFunction");
+        }
+        if (getBody() == null) {
+            throw new IllegalArgumentException("Missing required property body in model MetadataFunction");
+        }
+        if (getRelated() != null) {
+            getRelated().validate();
+        }
     }
 }

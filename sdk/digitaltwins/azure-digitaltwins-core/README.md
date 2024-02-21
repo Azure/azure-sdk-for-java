@@ -2,7 +2,7 @@
 
 This library provides access to the Azure Digital Twins service for managing twins, models, relationships, etc.
 
-  [Source code][source] | [Package](https://central.sonatype.com/artifact/com.azure/azure-digitaltwins-core)
+  [Source code][source] | [Package](https://search.maven.org/artifact/com.azure/azure-digitaltwins-core)
 
 ## Getting started
 
@@ -51,7 +51,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-digitaltwins-core</artifactId>
-  <version>1.3.11</version>
+  <version>1.3.17</version>
 </dependency>
 ```
 

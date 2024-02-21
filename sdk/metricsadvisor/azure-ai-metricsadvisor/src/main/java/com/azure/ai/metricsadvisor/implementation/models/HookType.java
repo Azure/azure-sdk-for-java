@@ -5,44 +5,39 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * hook type.
- */
+/** hook type. */
 public final class HookType extends ExpandableStringEnum<HookType> {
-    /**
-     * Static value Webhook for HookType.
-     */
+    /** Static value Webhook for HookType. */
     public static final HookType WEBHOOK = fromString("Webhook");
 
-    /**
-     * Static value Email for HookType.
-     */
+    /** Static value Email for HookType. */
     public static final HookType EMAIL = fromString("Email");
 
     /**
      * Creates a new instance of HookType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public HookType() {
-    }
+    public HookType() {}
 
     /**
      * Creates or finds a HookType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding HookType.
      */
+    @JsonCreator
     public static HookType fromString(String name) {
         return fromString(name, HookType.class);
     }
 
     /**
      * Gets known HookType values.
-     * 
+     *
      * @return known HookType values.
      */
     public static Collection<HookType> values() {
