@@ -46,9 +46,6 @@
     <jacoco.min.linecoverage>0.4</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.4</jacoco.min.branchcoverage>
     <jacoco.skip>true</jacoco.skip>
-    <javaModulesSurefireArgLine>
-      --add-reads com.azure.communication.messages=java.desktop
-    </javaModulesSurefireArgLine>
   </properties>
   <dependencies>
     <dependency>
