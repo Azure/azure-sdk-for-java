@@ -4,7 +4,7 @@
 
 ### Features Added
 
-The public release of the Azure Communication Services SDK for Advance Messaging has the following features:
+The public release of the Java SDK for Azure Communication Messages Services has the following features:
 - Send Template, Text or Media message to WhatsApp Channel.
 - List WhatsApp Templates for given Channel Registration Id.
 - Download Media files from WhatsApp for incoming media message from WhatsApp.
