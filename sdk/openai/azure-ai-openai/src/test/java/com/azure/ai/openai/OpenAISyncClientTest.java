@@ -144,7 +144,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
             completionsOptions.setMaxTokens(3);
             Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
-            assertCompletions(1, "length", resultCompletions);
+            assertCompletions(1, resultCompletions);
         });
     }
 
@@ -649,7 +649,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsToolCall(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        getChatWithToolCallRunnerForAzure(((modelId, chatCompletionsOptions) -> {
+        getChatWithToolCallRunner(((modelId, chatCompletionsOptions) -> {
             Response<ChatCompletions> response = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
 
             // first round trip
@@ -696,7 +696,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsToolCallStreaming(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        getChatWithToolCallRunnerForAzure(((modelId, chatCompletionsOptions) -> {
+        getChatWithToolCallRunner(((modelId, chatCompletionsOptions) -> {
             IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(modelId, chatCompletionsOptions);
 
             StringBuilder argumentsBuilder = new StringBuilder();

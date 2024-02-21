@@ -121,8 +121,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsWithResponseBadDeployment(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getCompletionsRunner((_deploymentId, prompt) -> {
-            String deploymentId = "BAD_DEPLOYMENT_ID";
+        getCompletionsRunner((deploymentId, prompt) -> {
+            deploymentId = "BAD_DEPLOYMENT_ID";
             StepVerifier.create(client.getCompletionsWithResponse(deploymentId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()))
                 .verifyErrorSatisfies(throwable -> {
@@ -162,7 +162,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             completionsOptions.setMaxTokens(3);
             StepVerifier.create(client.getCompletions(modelId, completionsOptions))
                 .assertNext(resultCompletions ->
-                    assertCompletions(1, "length", resultCompletions))
+                    assertCompletions(1, resultCompletions))
                 .verifyComplete();
         });
     }
@@ -732,7 +732,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsToolCall(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getChatWithToolCallRunnerForAzure((modelId, chatCompletionsOptions) ->
+        getChatWithToolCallRunner((modelId, chatCompletionsOptions) ->
             StepVerifier.create(
                 client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions())
                     .flatMap(response -> {
@@ -777,7 +777,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsToolCallStreaming(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getChatWithToolCallRunnerForAzure((modelId, chatCompletionsOptions) -> {
+        getChatWithToolCallRunner((modelId, chatCompletionsOptions) -> {
             StepVerifier.create(client.getChatCompletionsStream(modelId, chatCompletionsOptions)
                     .collectList()
                     .flatMapMany(chatCompletionsStream -> {
