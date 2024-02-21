@@ -103,7 +103,6 @@ private[spark] case class ItemsPartitionReaderWithReadMany
       containerTargetConfig,
       clientCacheItem,
       throughputControlClientCacheItemOpt)
-  SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
   private val partitionKeyDefinition: PartitionKeyDefinition = {
     TransientErrorsRetryPolicy.executeWithRetry(() => {
