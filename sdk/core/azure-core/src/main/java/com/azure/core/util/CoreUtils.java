@@ -24,13 +24,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -43,6 +49,27 @@ public final class CoreUtils {
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
 
     private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
+
+    // The thread pool size for the shared executor service.
+    //
+    // This uses the configuration setting 'azure.sdk.threadPoolSize' if set, otherwise it defaults to 10 times the
+    // number of available processors.
+    // If 'azure.sdk.threadPoolSize' is set to a non-integer, negative value, or zero, the default value is used.
+    private static final int THREAD_POOL_SIZE
+        = Configuration.getGlobalConfiguration().get("azure.sdk.threadPoolSize", config -> {
+        try {
+            int size = Integer.parseInt(config);
+            if (size <= 0) {
+                return 10 * Runtime.getRuntime().availableProcessors();
+            } else {
+                return size;
+            }
+        } catch (NumberFormatException ignored) {
+            return 10 * Runtime.getRuntime().availableProcessors();
+        }
+    });
+
+    private static final AtomicReference<ExecutorService> SHARED_EXECUTOR_SERVICE = new AtomicReference<>();
 
     private CoreUtils() {
         // Exists only to defeat instantiation.
@@ -580,6 +607,33 @@ public final class CoreUtils {
         }
 
         return ImplUtils.getResultWithTimeout(future, timeout.toMillis());
+    }
+
+    /**
+     * Submits a task for execution on the shared executor service.
+     *
+     * @param <T> The type of value returned by the {@code callable}.
+     * @param callable The task to submit for execution.
+     * @return A {@link Future} representing the pending completion of the task.
+     */
+    public static <T> Future<T> submit(Callable<T> callable) {
+        ExecutorService executorService = SHARED_EXECUTOR_SERVICE.updateAndGet(
+            service -> (service == null) ? createSharedExecutor() : service);
+
+        return executorService.submit(callable);
+    }
+
+    private static ExecutorService createSharedExecutor() {
+        AtomicLong threadCounter = new AtomicLong();
+        ThreadFactory threadFactory = r -> {
+            Thread thread = new Thread(r, "azure-sdk-global-pool-" + threadCounter.getAndIncrement());
+            thread.setDaemon(true);
+
+            return thread;
+        };
+
+        return addShutdownHookSafely(new ThreadPoolExecutor(0, THREAD_POOL_SIZE, 60L, TimeUnit.SECONDS,
+            new SynchronousQueue<>(), threadFactory), Duration.ofSeconds(5));
     }
 
     /**
