@@ -75,7 +75,7 @@ public final class CosmosReadManyRequestOptions {
      * Sets the session token for use with session consistency.
      *
      * @param sessionToken the session token.
-     * @return the CosmosQueryRequestOptions.
+     * @return the CosmosReadManyRequestOptions.
      */
     public CosmosReadManyRequestOptions setSessionToken(String sessionToken) {
         this.actualRequestOptions.setSessionToken(sessionToken);
