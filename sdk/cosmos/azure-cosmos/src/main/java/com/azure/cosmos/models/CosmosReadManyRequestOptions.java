@@ -137,7 +137,7 @@ public final class CosmosReadManyRequestOptions {
      * These regions will be excluded from the preferred regions list
      *
      * @param excludeRegions the regions to exclude
-     * @return the {@link CosmosQueryRequestOptions}
+     * @return the {@link CosmosReadManyRequestOptions}
      */
     public CosmosReadManyRequestOptions setExcludedRegions(List<String> excludeRegions) {
         this.actualRequestOptions.setExcludedRegions(excludeRegions);
@@ -168,7 +168,7 @@ public final class CosmosReadManyRequestOptions {
      * By default query metrics are enabled.
      *
      * @param queryMetricsEnabled whether to enable or disable query metrics
-     * @return the CosmosQueryRequestOptions.
+     * @return the CosmosReadManyRequestOptions.
      */
     public CosmosReadManyRequestOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
         this.actualRequestOptions.setQueryMetricsEnabled(queryMetricsEnabled);
@@ -187,7 +187,7 @@ public final class CosmosReadManyRequestOptions {
      * Set the throughput control group name.
      *
      * @param throughputControlGroupName The throughput control group name.
-     * @return A {@link CosmosQueryRequestOptions}.
+     * @return A {@link CosmosReadManyRequestOptions}.
      */
     public CosmosReadManyRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.actualRequestOptions.setThroughputControlGroupName(throughputControlGroupName);
@@ -205,7 +205,7 @@ public final class CosmosReadManyRequestOptions {
     /**
      * Sets the Dedicated Gateway Request Options
      * @param dedicatedGatewayRequestOptions Dedicated Gateway Request Options
-     * @return the CosmosQueryRequestOptions
+     * @return the CosmosReadManyRequestOptions
      */
     public CosmosReadManyRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
         this.actualRequestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
@@ -231,7 +231,7 @@ public final class CosmosReadManyRequestOptions {
      * Default is 500 ms
      *
      * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
-     * @return the CosmosQueryRequestOptions
+     * @return the CosmosReadManyRequestOptions
      */
     public CosmosReadManyRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
         this.actualRequestOptions.setThresholdForDiagnosticsOnTracer(thresholdForDiagnosticsOnTracer);
@@ -242,7 +242,7 @@ public final class CosmosReadManyRequestOptions {
     /**
      * Allows overriding the diagnostic thresholds for a specific operation.
      * @param operationSpecificThresholds the diagnostic threshold override for this operation
-     * @return the CosmosQueryRequestOptions.
+     * @return the CosmosReadManyRequestOptions.
      */
     public CosmosReadManyRequestOptions setDiagnosticsThresholds(
         CosmosDiagnosticsThresholds operationSpecificThresholds) {
