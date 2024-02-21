@@ -111,7 +111,7 @@ parameters:
   type: boolean
   default: false
 
-${{ if eq(parameters.CalledFromClient, false) }}:
+- ${{ if eq(parameters.CalledFromClient, false) }}:
   resources:
     repositories:
       - repository: 1ESPipelineTemplates
