@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Log Analytics solution.
- * 
- * Solutions can group tables and functions that are associated with a certain Azure Log Analytics offering.
+ *
+ * <p>Solutions can group tables and functions that are associated with a certain Azure Log Analytics offering.
  */
 @Fluent
 public final class MetadataSolution {
@@ -59,15 +59,16 @@ public final class MetadataSolution {
 
     /**
      * Creates an instance of MetadataSolution class.
-     * 
+     *
      * @param id the id value to set.
      * @param name the name value to set.
      * @param related the related value to set.
      */
     @JsonCreator
-    public MetadataSolution(@JsonProperty(value = "id", required = true) String id,
-        @JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "related", required = true) MetadataSolutionRelated related) {
+    public MetadataSolution(
+            @JsonProperty(value = "id", required = true) String id,
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "related", required = true) MetadataSolutionRelated related) {
         this.id = id;
         this.name = name;
         this.related = related;
@@ -75,7 +76,7 @@ public final class MetadataSolution {
 
     /**
      * Get the id property: The ID of the Log Analytics solution.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -84,7 +85,7 @@ public final class MetadataSolution {
 
     /**
      * Get the name property: The name of the Log Analytics solution.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -93,7 +94,7 @@ public final class MetadataSolution {
 
     /**
      * Get the displayName property: The display name of the Log Analytics solution.
-     * 
+     *
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -102,7 +103,7 @@ public final class MetadataSolution {
 
     /**
      * Set the displayName property: The display name of the Log Analytics solution.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the MetadataSolution object itself.
      */
@@ -113,7 +114,7 @@ public final class MetadataSolution {
 
     /**
      * Get the description property: The description of the Log Analytics solution.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -122,7 +123,7 @@ public final class MetadataSolution {
 
     /**
      * Set the description property: The description of the Log Analytics solution.
-     * 
+     *
      * @param description the description value to set.
      * @return the MetadataSolution object itself.
      */
@@ -133,7 +134,7 @@ public final class MetadataSolution {
 
     /**
      * Get the tags property: The tags that are associated with the Log Analytics solution.
-     * 
+     *
      * @return the tags value.
      */
     public Object getTags() {
@@ -142,7 +143,7 @@ public final class MetadataSolution {
 
     /**
      * Set the tags property: The tags that are associated with the Log Analytics solution.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the MetadataSolution object itself.
      */
@@ -153,7 +154,7 @@ public final class MetadataSolution {
 
     /**
      * Get the properties property: The properties of the Log Analytics solution.
-     * 
+     *
      * @return the properties value.
      */
     public Object getProperties() {
@@ -162,7 +163,7 @@ public final class MetadataSolution {
 
     /**
      * Set the properties property: The properties of the Log Analytics solution.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the MetadataSolution object itself.
      */
@@ -173,10 +174,29 @@ public final class MetadataSolution {
 
     /**
      * Get the related property: The related metadata items for the Log Analytics solution.
-     * 
+     *
      * @return the related value.
      */
     public MetadataSolutionRelated getRelated() {
         return this.related;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getId() == null) {
+            throw new IllegalArgumentException("Missing required property id in model MetadataSolution");
+        }
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model MetadataSolution");
+        }
+        if (getRelated() == null) {
+            throw new IllegalArgumentException("Missing required property related in model MetadataSolution");
+        } else {
+            getRelated().validate();
+        }
     }
 }

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MetadataTableColumnsItem model.
- */
+/** The MetadataTableColumnsItem model. */
 @Fluent
 public final class MetadataTableColumnsItem {
     /*
@@ -46,20 +44,21 @@ public final class MetadataTableColumnsItem {
 
     /**
      * Creates an instance of MetadataTableColumnsItem class.
-     * 
+     *
      * @param name the name value to set.
      * @param type the type value to set.
      */
     @JsonCreator
-    public MetadataTableColumnsItem(@JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "type", required = true) MetadataColumnDataType type) {
+    public MetadataTableColumnsItem(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "type", required = true) MetadataColumnDataType type) {
         this.name = name;
         this.type = type;
     }
 
     /**
      * Get the name property: The name of the column.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -68,7 +67,7 @@ public final class MetadataTableColumnsItem {
 
     /**
      * Get the description property: The description of the column.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -77,7 +76,7 @@ public final class MetadataTableColumnsItem {
 
     /**
      * Set the description property: The description of the column.
-     * 
+     *
      * @param description the description value to set.
      * @return the MetadataTableColumnsItem object itself.
      */
@@ -88,7 +87,7 @@ public final class MetadataTableColumnsItem {
 
     /**
      * Get the type property: The data type of the column.
-     * 
+     *
      * @return the type value.
      */
     public MetadataColumnDataType getType() {
@@ -97,7 +96,7 @@ public final class MetadataTableColumnsItem {
 
     /**
      * Get the isPreferredFacet property: A flag indicating this column is a preferred facet.
-     * 
+     *
      * @return the isPreferredFacet value.
      */
     public Boolean isPreferredFacet() {
@@ -106,7 +105,7 @@ public final class MetadataTableColumnsItem {
 
     /**
      * Set the isPreferredFacet property: A flag indicating this column is a preferred facet.
-     * 
+     *
      * @param isPreferredFacet the isPreferredFacet value to set.
      * @return the MetadataTableColumnsItem object itself.
      */
@@ -118,7 +117,7 @@ public final class MetadataTableColumnsItem {
     /**
      * Get the source property: an indication of the source of the column, used only when multiple workspaces have
      * conflicting definition for the column.
-     * 
+     *
      * @return the source value.
      */
     public Object getSource() {
@@ -128,12 +127,26 @@ public final class MetadataTableColumnsItem {
     /**
      * Set the source property: an indication of the source of the column, used only when multiple workspaces have
      * conflicting definition for the column.
-     * 
+     *
      * @param source the source value to set.
      * @return the MetadataTableColumnsItem object itself.
      */
     public MetadataTableColumnsItem setSource(Object source) {
         this.source = source;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model MetadataTableColumnsItem");
+        }
+        if (getType() == null) {
+            throw new IllegalArgumentException("Missing required property type in model MetadataTableColumnsItem");
+        }
     }
 }

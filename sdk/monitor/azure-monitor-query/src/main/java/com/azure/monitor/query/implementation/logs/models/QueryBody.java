@@ -22,21 +22,21 @@ public final class QueryBody {
     private String query;
 
     /*
-     * Optional. The timespan over which to query data. This is an ISO8601 time period value. This timespan is applied
+     * Optional. The timespan over which to query data. This is an ISO8601 time period value.  This timespan is applied
      * in addition to any that are specified in the query expression.
      */
     @JsonProperty(value = "timespan")
     private String timespan;
 
     /*
-     * A list of workspaces to query in addition to the primary workspace.
+     * A list of workspaces that are included in the query.
      */
     @JsonProperty(value = "workspaces")
     private List<String> workspaces;
 
     /**
      * Creates an instance of QueryBody class.
-     * 
+     *
      * @param query the query value to set.
      */
     @JsonCreator
@@ -46,7 +46,7 @@ public final class QueryBody {
 
     /**
      * Get the query property: The query to execute.
-     * 
+     *
      * @return the query value.
      */
     public String getQuery() {
@@ -54,9 +54,9 @@ public final class QueryBody {
     }
 
     /**
-     * Get the timespan property: Optional. The timespan over which to query data. This is an ISO8601 time period
-     * value. This timespan is applied in addition to any that are specified in the query expression.
-     * 
+     * Get the timespan property: Optional. The timespan over which to query data. This is an ISO8601 time period value.
+     * This timespan is applied in addition to any that are specified in the query expression.
+     *
      * @return the timespan value.
      */
     public String getTimespan() {
@@ -64,9 +64,9 @@ public final class QueryBody {
     }
 
     /**
-     * Set the timespan property: Optional. The timespan over which to query data. This is an ISO8601 time period
-     * value. This timespan is applied in addition to any that are specified in the query expression.
-     * 
+     * Set the timespan property: Optional. The timespan over which to query data. This is an ISO8601 time period value.
+     * This timespan is applied in addition to any that are specified in the query expression.
+     *
      * @param timespan the timespan value to set.
      * @return the QueryBody object itself.
      */
@@ -76,8 +76,8 @@ public final class QueryBody {
     }
 
     /**
-     * Get the workspaces property: A list of workspaces to query in addition to the primary workspace.
-     * 
+     * Get the workspaces property: A list of workspaces that are included in the query.
+     *
      * @return the workspaces value.
      */
     public List<String> getWorkspaces() {
@@ -85,13 +85,24 @@ public final class QueryBody {
     }
 
     /**
-     * Set the workspaces property: A list of workspaces to query in addition to the primary workspace.
-     * 
+     * Set the workspaces property: A list of workspaces that are included in the query.
+     *
      * @param workspaces the workspaces value to set.
      * @return the QueryBody object itself.
      */
     public QueryBody setWorkspaces(List<String> workspaces) {
         this.workspaces = workspaces;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getQuery() == null) {
+            throw new IllegalArgumentException("Missing required property query in model QueryBody");
+        }
     }
 }
