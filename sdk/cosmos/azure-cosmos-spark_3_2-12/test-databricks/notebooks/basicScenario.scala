@@ -10,7 +10,10 @@ val cosmosDatabaseName = dbutils.widgets.get("cosmosDatabaseName")
 val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
   "spark.cosmos.accountKey" -> cosmosMasterKey,
   "spark.cosmos.database" -> cosmosDatabaseName,
-  "spark.cosmos.container" -> cosmosContainerName
+  "spark.cosmos.container" -> cosmosContainerName,
+  "spark.cosmos.preferredRegionsList" -> "West US 2",
+  "spark.cosmos.proactiveConnectionInitialization" -> s"$cosmosDatabaseName/$cosmosContainerName",
+  "spark.cosmos.proactiveConnectionInitializationDurationInSeconds" -> "10"
 )
 
 val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,

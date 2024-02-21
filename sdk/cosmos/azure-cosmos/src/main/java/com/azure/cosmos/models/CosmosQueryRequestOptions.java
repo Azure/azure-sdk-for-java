@@ -413,6 +413,16 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
+     * Gets the diagnostic thresholds used as an override for a specific operation. If no operation specific
+     * diagnostic threshold has been specified, this method will return null, although at runtime the default
+     * thresholds specified at the client-level will be used.
+     * @return the diagnostic thresholds used as an override for a specific operation.
+     */
+    public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
+        return this.actualRequestOptions.getThresholds();
+    }
+
+    /**
      * Gets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
      * indexes and could use potential new indexes.
      * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
