@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-ingestion</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -76,7 +76,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.11.2</version>
+    <version>1.10.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -152,7 +152,7 @@ client library.
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 LogsIngestionClient client = new LogsIngestionClientBuilder()
-        .endpoint("<data-collection-endpoint>")
+        .endpoint("<data-collection-endpoint")
         .credential(tokenCredential)
         .buildClient();
 
@@ -171,7 +171,7 @@ can be concurrently sent to the service as shown in the example below.
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 LogsIngestionClient client = new LogsIngestionClientBuilder()
-        .endpoint("<data-collection-endpoint>")
+        .endpoint("<data-collection-endpoint")
         .credential(tokenCredential)
         .buildClient();
 
@@ -194,7 +194,7 @@ not provided, the upload method will throw an aggregate exception that includes 
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 LogsIngestionClient client = new LogsIngestionClientBuilder()
-        .endpoint("<data-collection-endpoint>")
+        .endpoint("<data-collection-endpoint")
         .credential(tokenCredential)
         .buildClient();
 

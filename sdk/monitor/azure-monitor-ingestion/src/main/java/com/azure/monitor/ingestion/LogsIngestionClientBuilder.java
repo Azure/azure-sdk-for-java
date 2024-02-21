@@ -66,15 +66,6 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     private String endpoint;
     private TokenCredential tokenCredential;
 
-
-    /**
-     * Creates a new instance of {@link LogsIngestionClientBuilder}.
-     */
-    public LogsIngestionClientBuilder() {
-
-    }
-
-
     /**
      * Sets the <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-endpoint-overview?tabs=portal#create-a-data-collection-endpoint">data collection endpoint</a>.
      * @param endpoint the data collection endpoint.
