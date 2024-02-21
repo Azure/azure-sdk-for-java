@@ -50,10 +50,11 @@ parameters:
     type: string
 
 jobs:
-  - job: ''
+  - job: 
+    displayName: 'Test'
     dependsOn: 
       - ${{ parameters.DependsOn }}
-    condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
+    condition: and(succeeded(), ne(variables['Skip.Test'], 'true'), ne(${{ parameters.Matrix }}, '{}'))
 
     strategy:
       matrix: $[ ${{ parameters.Matrix }} ]
