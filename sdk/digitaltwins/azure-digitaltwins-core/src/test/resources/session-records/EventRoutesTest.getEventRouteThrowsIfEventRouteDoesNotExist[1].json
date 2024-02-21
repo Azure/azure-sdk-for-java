@@ -1,0 +1,42 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/eventroutes?api-version=2022-05-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0 (12.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e412763c-85f8-4251-8713-e87182675a0a"
+    },
+    "Response" : {
+      "content-length" : "28",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "traceresponse" : "00-2da488726d68c98e8153489933de1abe-57d0e10d84815f46-01",
+      "mise-correlation-id" : "1dd23953-034d-40ea-aa08-337bff5fbb61",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[],\"nextLink\":null}",
+      "Date" : "Wed, 29 Jun 2022 13:43:35 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/eventroutes/cdaba615-9846-4b5d-9a23-d3852511d0ef?api-version=2022-05-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0 (12.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "11d3fa7d-c4a4-4371-825b-91a80eb40cbd"
+    },
+    "Response" : {
+      "content-length" : "223",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "traceresponse" : "00-ab7187e15ac32d2cd36f884b89367a14-d92ca7dddc5cc22a-01",
+      "mise-correlation-id" : "0397e901-fb2c-4891-98b0-5b65f2b5ec7a",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"EventRouteNotFound\",\"message\":\"There is no route available that matches the provided input. Check for all valid event routes by calling EventRoute_List. See Swagger example (https://aka.ms/RouteSwSmpl).\"}}",
+      "Date" : "Wed, 29 Jun 2022 13:43:35 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "cdaba615-9846-4b5d-9a23-d3852511d0ef" ]
+}
