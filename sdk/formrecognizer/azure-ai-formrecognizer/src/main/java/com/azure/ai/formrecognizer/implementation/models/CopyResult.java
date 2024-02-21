@@ -5,39 +5,31 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Custom model copy result.
- */
+/** Custom model copy result. */
 @Fluent
-public final class CopyResult implements JsonSerializable<CopyResult> {
+public final class CopyResult {
     /*
      * Identifier of the target model.
      */
+    @JsonProperty(value = "modelId", required = true)
     private UUID modelId;
 
     /*
      * Errors returned during the copy operation.
      */
+    @JsonProperty(value = "errors")
     private List<ErrorInformation> errors;
 
-    /**
-     * Creates an instance of CopyResult class.
-     */
-    public CopyResult() {
-    }
+    /** Creates an instance of CopyResult class. */
+    public CopyResult() {}
 
     /**
      * Get the modelId property: Identifier of the target model.
-     * 
+     *
      * @return the modelId value.
      */
     public UUID getModelId() {
@@ -46,7 +38,7 @@ public final class CopyResult implements JsonSerializable<CopyResult> {
 
     /**
      * Set the modelId property: Identifier of the target model.
-     * 
+     *
      * @param modelId the modelId value to set.
      * @return the CopyResult object itself.
      */
@@ -57,7 +49,7 @@ public final class CopyResult implements JsonSerializable<CopyResult> {
 
     /**
      * Get the errors property: Errors returned during the copy operation.
-     * 
+     *
      * @return the errors value.
      */
     public List<ErrorInformation> getErrors() {
@@ -66,51 +58,12 @@ public final class CopyResult implements JsonSerializable<CopyResult> {
 
     /**
      * Set the errors property: Errors returned during the copy operation.
-     * 
+     *
      * @param errors the errors value to set.
      * @return the CopyResult object itself.
      */
     public CopyResult setErrors(List<ErrorInformation> errors) {
         this.errors = errors;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("modelId", Objects.toString(this.modelId, null));
-        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CopyResult from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CopyResult if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CopyResult.
-     */
-    public static CopyResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CopyResult deserializedCopyResult = new CopyResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("modelId".equals(fieldName)) {
-                    deserializedCopyResult.modelId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("errors".equals(fieldName)) {
-                    List<ErrorInformation> errors = reader.readArray(reader1 -> ErrorInformation.fromJson(reader1));
-                    deserializedCopyResult.errors = errors;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCopyResult;
-        });
     }
 }

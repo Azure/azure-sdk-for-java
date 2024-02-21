@@ -5,104 +5,75 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Semantic data type of the field value.
- */
+/** Semantic data type of the field value. */
 public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldType> {
-    /**
-     * Plain text.
-     */
+    /** Static value string for DocumentFieldType. */
     public static final DocumentFieldType STRING = fromString("string");
 
-    /**
-     * Date, normalized to ISO 8601 (YYYY-MM-DD) format.
-     */
+    /** Static value date for DocumentFieldType. */
     public static final DocumentFieldType DATE = fromString("date");
 
-    /**
-     * Time, normalized to ISO 8601 (hh:mm:ss) format.
-     */
+    /** Static value time for DocumentFieldType. */
     public static final DocumentFieldType TIME = fromString("time");
 
-    /**
-     * Phone number, normalized to E.164 (+{CountryCode}{SubscriberNumber}) format.
-     */
+    /** Static value phoneNumber for DocumentFieldType. */
     public static final DocumentFieldType PHONE_NUMBER = fromString("phoneNumber");
 
-    /**
-     * Floating point number, normalized to double precision floating point.
-     */
+    /** Static value number for DocumentFieldType. */
     public static final DocumentFieldType NUMBER = fromString("number");
 
-    /**
-     * Integer number, normalized to 64-bit signed integer.
-     */
+    /** Static value integer for DocumentFieldType. */
     public static final DocumentFieldType INTEGER = fromString("integer");
 
-    /**
-     * Is field selected?.
-     */
+    /** Static value selectionMark for DocumentFieldType. */
     public static final DocumentFieldType SELECTION_MARK = fromString("selectionMark");
 
-    /**
-     * Country/region, normalized to ISO 3166-1 alpha-3 format (ex. USA).
-     */
+    /** Static value countryRegion for DocumentFieldType. */
     public static final DocumentFieldType COUNTRY_REGION = fromString("countryRegion");
 
-    /**
-     * Is signature present?.
-     */
+    /** Static value signature for DocumentFieldType. */
     public static final DocumentFieldType SIGNATURE = fromString("signature");
 
-    /**
-     * List of subfields of the same type.
-     */
+    /** Static value array for DocumentFieldType. */
     public static final DocumentFieldType ARRAY = fromString("array");
 
-    /**
-     * Named list of subfields of potentially different types.
-     */
+    /** Static value object for DocumentFieldType. */
     public static final DocumentFieldType OBJECT = fromString("object");
 
-    /**
-     * Currency amount with optional currency symbol and unit.
-     */
+    /** Static value currency for DocumentFieldType. */
     public static final DocumentFieldType CURRENCY = fromString("currency");
 
-    /**
-     * Parsed address.
-     */
+    /** Static value address for DocumentFieldType. */
     public static final DocumentFieldType ADDRESS = fromString("address");
 
-    /**
-     * Boolean value, normalized to true or false.
-     */
+    /** Static value boolean for DocumentFieldType. */
     public static final DocumentFieldType BOOLEAN = fromString("boolean");
 
     /**
      * Creates a new instance of DocumentFieldType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DocumentFieldType() {
-    }
+    public DocumentFieldType() {}
 
     /**
      * Creates or finds a DocumentFieldType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding DocumentFieldType.
      */
+    @JsonCreator
     public static DocumentFieldType fromString(String name) {
         return fromString(name, DocumentFieldType.class);
     }
 
     /**
      * Gets known DocumentFieldType values.
-     * 
+     *
      * @return known DocumentFieldType values.
      */
     public static Collection<DocumentFieldType> values() {
