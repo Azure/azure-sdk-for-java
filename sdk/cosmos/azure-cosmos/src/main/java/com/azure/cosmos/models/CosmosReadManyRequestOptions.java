@@ -21,7 +21,7 @@ public final class CosmosReadManyRequestOptions {
     private final CosmosReadManyRequestOptionsImpl actualRequestOptions;
 
     /**
-     * Instantiates a new query request options.
+     * Instantiates a new read many request options.
      */
     public CosmosReadManyRequestOptions() {
 
