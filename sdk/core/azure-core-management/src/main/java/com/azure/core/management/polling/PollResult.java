@@ -9,6 +9,7 @@ import java.util.Objects;
 
 /**
  * Type representing result (succeeded or failed result) of a long-running-poll operation.
+ * 
  * @param <T> the type of the value
  */
 public final class PollResult<T> {

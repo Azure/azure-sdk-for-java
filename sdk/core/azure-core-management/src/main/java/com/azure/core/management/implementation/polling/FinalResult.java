@@ -38,8 +38,8 @@ final class FinalResult implements JsonSerializable<FinalResult> {
      */
     FinalResult(URL resultFetchUri, String result) {
         if (resultFetchUri == null && result == null) {
-            throw
-                LOGGER.logExceptionAsError(new IllegalArgumentException("Either resultFetchUri or result is required"));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Either resultFetchUri or result is required"));
         }
         this.resultUri = resultFetchUri;
         this.result = result;

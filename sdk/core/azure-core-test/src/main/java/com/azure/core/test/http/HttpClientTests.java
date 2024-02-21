@@ -189,10 +189,8 @@ public abstract class HttpClientTests {
     public void plainResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = SyncAsyncExtension.execute(
-            () -> sendRequestSync(PLAIN_RESPONSE),
-            () -> sendRequest(PLAIN_RESPONSE)
-        );
+        String actual
+            = SyncAsyncExtension.execute(() -> sendRequestSync(PLAIN_RESPONSE), () -> sendRequest(PLAIN_RESPONSE));
 
         assertEquals(expected, actual);
     }
@@ -204,10 +202,8 @@ public abstract class HttpClientTests {
     public void headerResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
 
-        String actual = SyncAsyncExtension.execute(
-            () -> sendRequestSync(HEADER_RESPONSE),
-            () -> sendRequest(HEADER_RESPONSE)
-        );
+        String actual
+            = SyncAsyncExtension.execute(() -> sendRequestSync(HEADER_RESPONSE), () -> sendRequest(HEADER_RESPONSE));
 
         assertEquals(expected, actual);
     }
@@ -219,10 +215,8 @@ public abstract class HttpClientTests {
     public void invalidHeaderResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = SyncAsyncExtension.execute(
-            () -> sendRequestSync(INVALID_HEADER_RESPONSE),
-            () -> sendRequest(INVALID_HEADER_RESPONSE)
-        );
+        String actual = SyncAsyncExtension.execute(() -> sendRequestSync(INVALID_HEADER_RESPONSE),
+            () -> sendRequest(INVALID_HEADER_RESPONSE));
 
         assertEquals(expected, actual);
     }
@@ -234,10 +228,8 @@ public abstract class HttpClientTests {
     public void utf8BomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = SyncAsyncExtension.execute(
-            () -> sendRequestSync(UTF_8_BOM_RESPONSE),
-            () -> sendRequest(UTF_8_BOM_RESPONSE)
-        );
+        String actual = SyncAsyncExtension.execute(() -> sendRequestSync(UTF_8_BOM_RESPONSE),
+            () -> sendRequest(UTF_8_BOM_RESPONSE));
 
         assertEquals(expected, actual);
     }
@@ -249,10 +241,8 @@ public abstract class HttpClientTests {
     public void utf16BeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
 
-        String actual = SyncAsyncExtension.execute(
-            () -> sendRequestSync(UTF_16BE_BOM_RESPONSE),
-            () -> sendRequest(UTF_16BE_BOM_RESPONSE)
-        );
+        String actual = SyncAsyncExtension.execute(() -> sendRequestSync(UTF_16BE_BOM_RESPONSE),
+            () -> sendRequest(UTF_16BE_BOM_RESPONSE));
 
         assertEquals(expected, actual);
     }
@@ -264,10 +254,8 @@ public abstract class HttpClientTests {
     public void utf16LeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16LE);
 
-        String actual = SyncAsyncExtension.execute(
-            () -> sendRequestSync(UTF_16LE_BOM_RESPONSE),
-            () -> sendRequest(UTF_16LE_BOM_RESPONSE)
-        );
+        String actual = SyncAsyncExtension.execute(() -> sendRequestSync(UTF_16LE_BOM_RESPONSE),
+            () -> sendRequest(UTF_16LE_BOM_RESPONSE));
 
         assertEquals(expected, actual);
     }
@@ -279,10 +267,8 @@ public abstract class HttpClientTests {
     public void utf32BeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32BE"));
 
-        String actual = SyncAsyncExtension.execute(
-            () -> sendRequestSync(UTF_32BE_BOM_RESPONSE),
-            () -> sendRequest(UTF_32BE_BOM_RESPONSE)
-        );
+        String actual = SyncAsyncExtension.execute(() -> sendRequestSync(UTF_32BE_BOM_RESPONSE),
+            () -> sendRequest(UTF_32BE_BOM_RESPONSE));
 
         assertEquals(expected, actual);
     }
@@ -294,10 +280,8 @@ public abstract class HttpClientTests {
     public void utf32LeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32LE"));
 
-        String actual = SyncAsyncExtension.execute(
-            () -> sendRequestSync(UTF_32LE_BOM_RESPONSE),
-            () -> sendRequest(UTF_32LE_BOM_RESPONSE)
-        );
+        String actual = SyncAsyncExtension.execute(() -> sendRequestSync(UTF_32LE_BOM_RESPONSE),
+            () -> sendRequest(UTF_32LE_BOM_RESPONSE));
 
         assertEquals(expected, actual);
     }
@@ -309,10 +293,8 @@ public abstract class HttpClientTests {
     public void bomWithSameHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = SyncAsyncExtension.execute(
-            () -> sendRequestSync(BOM_WITH_SAME_HEADER),
-            () -> sendRequest(BOM_WITH_SAME_HEADER)
-        );
+        String actual = SyncAsyncExtension.execute(() -> sendRequestSync(BOM_WITH_SAME_HEADER),
+            () -> sendRequest(BOM_WITH_SAME_HEADER));
 
         assertEquals(expected, actual);
     }
@@ -324,10 +306,8 @@ public abstract class HttpClientTests {
     public void bomWithDifferentHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = SyncAsyncExtension.execute(
-            () -> sendRequestSync(BOM_WITH_DIFFERENT_HEADER),
-            () -> sendRequest(BOM_WITH_DIFFERENT_HEADER)
-        );
+        String actual = SyncAsyncExtension.execute(() -> sendRequestSync(BOM_WITH_DIFFERENT_HEADER),
+            () -> sendRequest(BOM_WITH_DIFFERENT_HEADER));
 
         assertEquals(expected, actual);
     }
@@ -340,20 +320,19 @@ public abstract class HttpClientTests {
     @SyncAsyncTest
     public void canAccessResponseBody() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
-            requestBody);
+        HttpRequest request
+            = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(), requestBody);
 
-        Supplier<HttpResponse> responseSupplier = () -> SyncAsyncExtension.execute(
-            () -> createHttpClient().sendSync(request, Context.NONE),
-            () -> createHttpClient().send(request)
-        );
+        Supplier<HttpResponse> responseSupplier = () -> SyncAsyncExtension
+            .execute(() -> createHttpClient().sendSync(request, Context.NONE), () -> createHttpClient().send(request));
 
         assertEquals(requestBody.toString(), responseSupplier.get().getBodyAsString().block());
         assertArraysEqual(requestBody.toBytes(), responseSupplier.get().getBodyAsByteArray().block());
         assertArraysEqual(requestBody.toBytes(), responseSupplier.get().getBodyAsBinaryData().toBytes());
-        assertArraysEqual(requestBody.toBytes(), responseSupplier.get().getBodyAsInputStream()
-            .map(s -> BinaryData.fromStream(s).toBytes()).block());
-        assertArraysEqual(requestBody.toBytes(), BinaryData.fromFlux(responseSupplier.get().getBody()).map(BinaryData::toBytes).block());
+        assertArraysEqual(requestBody.toBytes(),
+            responseSupplier.get().getBodyAsInputStream().map(s -> BinaryData.fromStream(s).toBytes()).block());
+        assertArraysEqual(requestBody.toBytes(),
+            BinaryData.fromFlux(responseSupplier.get().getBody()).map(BinaryData::toBytes).block());
         assertArraysEqual(requestBody.toBytes(), getResponseBytesViaWritableChannel(responseSupplier.get()));
         assertArraysEqual(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(responseSupplier.get()));
     }
@@ -368,10 +347,8 @@ public abstract class HttpClientTests {
 
         Context context = Context.NONE.addData("azure-eagerly-read-response", true);
 
-        HttpResponse response = SyncAsyncExtension.execute(
-            () -> createHttpClient().sendSync(request, context),
-            () -> createHttpClient().send(request, context)
-        );
+        HttpResponse response = SyncAsyncExtension.execute(() -> createHttpClient().sendSync(request, context),
+            () -> createHttpClient().send(request, context));
 
         // Buffering buffered response is identity transformation.
         HttpResponse bufferedResponse = response.buffer();
@@ -386,15 +363,13 @@ public abstract class HttpClientTests {
     @SyncAsyncTest
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
-            requestBody);
+        HttpRequest request
+            = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(), requestBody);
 
         Context context = Context.NONE.addData("azure-eagerly-read-response", true);
 
-        HttpResponse response = SyncAsyncExtension.execute(
-            () -> createHttpClient().sendSync(request, context),
-            () -> createHttpClient().send(request, context)
-        );
+        HttpResponse response = SyncAsyncExtension.execute(() -> createHttpClient().sendSync(request, context),
+            () -> createHttpClient().send(request, context));
 
         // Read response twice using all accessors.
         assertEquals(requestBody.toString(), response.getBodyAsString().block());
@@ -406,13 +381,15 @@ public abstract class HttpClientTests {
         assertArraysEqual(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
         assertArraysEqual(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
 
-        assertArraysEqual(requestBody.toBytes(), response.getBodyAsInputStream()
-            .map(s -> BinaryData.fromStream(s).toBytes()).block());
-        assertArraysEqual(requestBody.toBytes(), response.getBodyAsInputStream()
-            .map(s -> BinaryData.fromStream(s).toBytes()).block());
+        assertArraysEqual(requestBody.toBytes(),
+            response.getBodyAsInputStream().map(s -> BinaryData.fromStream(s).toBytes()).block());
+        assertArraysEqual(requestBody.toBytes(),
+            response.getBodyAsInputStream().map(s -> BinaryData.fromStream(s).toBytes()).block());
 
-        assertArraysEqual(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
-        assertArraysEqual(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
+        assertArraysEqual(requestBody.toBytes(),
+            BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
+        assertArraysEqual(requestBody.toBytes(),
+            BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
 
         assertArraysEqual(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
         assertArraysEqual(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
@@ -427,13 +404,12 @@ public abstract class HttpClientTests {
     @SyncAsyncTest
     public void eagerlyConvertedHeadersAreHttpHeaders() {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
-            requestBody);
+        HttpRequest request
+            = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(), requestBody);
 
         Context context = Context.NONE.addData("azure-eagerly-convert-headers", true);
 
-        try (HttpResponse response = SyncAsyncExtension.execute(
-            () -> createHttpClient().sendSync(request, context),
+        try (HttpResponse response = SyncAsyncExtension.execute(() -> createHttpClient().sendSync(request, context),
             () -> createHttpClient().send(request, context))) {
             // Validate getHttpHeaders type is HttpHeaders (not instanceof)
             assertEquals(HttpHeaders.class, response.getHeaders().getClass());
@@ -657,8 +633,8 @@ public abstract class HttpClientTests {
     }
 
     private static Stream<Arguments> createBinaryDataTestSet(Function<byte[], BinaryData> binaryDataCreator) {
-        return getChunks().flatMap(bytes -> getTestConsumers().map(consumer ->
-            Arguments.of(binaryDataCreator.apply(bytes), bytes, consumer)));
+        return getChunks().flatMap(
+            bytes -> getTestConsumers().map(consumer -> Arguments.of(binaryDataCreator.apply(bytes), bytes, consumer)));
     }
 
     /**
@@ -690,39 +666,44 @@ public abstract class HttpClientTests {
     }
 
     private static Stream<Arguments> streamBinaryData() {
-        return createBinaryDataTestSet(bytes -> BinaryData.fromStream(new ByteArrayInputStream(bytes),
-            (long) bytes.length));
+        return createBinaryDataTestSet(
+            bytes -> BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length));
     }
 
     private static List<ByteBuffer> getFluxByteBuffers(byte[] bytes) {
         List<ByteBuffer> bufferList = new ArrayList<>();
         int bufferSize = 1023;
         for (int startIndex = 0; startIndex < bytes.length; startIndex += bufferSize) {
-            bufferList.add(ByteBuffer.wrap(bytes, startIndex,
-                Math.min(bytes.length - startIndex, bufferSize)));
+            bufferList.add(ByteBuffer.wrap(bytes, startIndex, Math.min(bytes.length - startIndex, bufferSize)));
         }
 
         return bufferList;
     }
 
     private static Stream<Arguments> unknownLengthNoBufferFluxBinaryData() {
-        return createBinaryDataTestSet(bytes -> BinaryData.fromFlux(Flux.fromIterable(getFluxByteBuffers(bytes))
-            .map(ByteBuffer::duplicate), null, false).block());
+        return createBinaryDataTestSet(bytes -> BinaryData
+            .fromFlux(Flux.fromIterable(getFluxByteBuffers(bytes)).map(ByteBuffer::duplicate), null, false)
+            .block());
     }
 
     private static Stream<Arguments> knownLengthNoBufferFluxBinaryData() {
-        return createBinaryDataTestSet(bytes -> BinaryData.fromFlux(Flux.fromIterable(getFluxByteBuffers(bytes))
-            .map(ByteBuffer::duplicate), (long) bytes.length, false).block());
+        return createBinaryDataTestSet(
+            bytes -> BinaryData
+                .fromFlux(Flux.fromIterable(getFluxByteBuffers(bytes)).map(ByteBuffer::duplicate), (long) bytes.length,
+                    false)
+                .block());
     }
 
     private static Stream<Arguments> unknownLengthNoBufferAsyncFluxBinaryData() {
-        return createBinaryDataTestSet(bytes -> BinaryData.fromFlux(Flux.fromIterable(getFluxByteBuffers(bytes))
-            .map(ByteBuffer::duplicate).delayElements(Duration.ofNanos(10)), null, false).block());
+        return createBinaryDataTestSet(bytes -> BinaryData.fromFlux(
+            Flux.fromIterable(getFluxByteBuffers(bytes)).map(ByteBuffer::duplicate).delayElements(Duration.ofNanos(10)),
+            null, false).block());
     }
 
     private static Stream<Arguments> knownLengthNoBufferAsyncFluxBinaryData() {
-        return createBinaryDataTestSet(bytes -> BinaryData.fromFlux(Flux.fromIterable(getFluxByteBuffers(bytes))
-            .map(ByteBuffer::duplicate).delayElements(Duration.ofNanos(10)), (long) bytes.length, false).block());
+        return createBinaryDataTestSet(bytes -> BinaryData.fromFlux(
+            Flux.fromIterable(getFluxByteBuffers(bytes)).map(ByteBuffer::duplicate).delayElements(Duration.ofNanos(10)),
+            (long) bytes.length, false).block());
     }
 
     private static Stream<Arguments> objectBinaryData() {
@@ -760,6 +741,7 @@ public abstract class HttpClientTests {
     }
 
     private static final byte[] RANDOM_BYTES = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
+
     private static byte[] getBytes(int size) {
         byte[] bytes = new byte[size];
 
@@ -778,14 +760,13 @@ public abstract class HttpClientTests {
     }
 
     private Mono<String> sendRequest(String requestPath) {
-        return createHttpClient()
-            .send(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)))
+        return createHttpClient().send(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)))
             .flatMap(HttpResponse::getBodyAsString);
     }
 
     private String sendRequestSync(String requestPath) {
-        try (HttpResponse httpResponse = createHttpClient()
-            .sendSync(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)), Context.NONE)) {
+        try (HttpResponse httpResponse
+            = createHttpClient().sendSync(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)), Context.NONE)) {
             return httpResponse.getBodyAsString().block();
         }
     }
@@ -814,8 +795,8 @@ public abstract class HttpClientTests {
     private byte[] getResponseBytesViaAsynchronousChannel(HttpResponse response) {
         try {
             Path tempFile = Files.createTempFile("httpclienttestsasyncchannel", null);
-            try (AsynchronousByteChannel channel = IOUtils.toAsynchronousByteChannel(
-                AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
+            try (AsynchronousByteChannel channel = IOUtils
+                .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
                 response.writeBodyToAsync(channel).block();
             }
             return Files.readAllBytes(tempFile);
@@ -854,11 +835,11 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "Service1")
     private interface Service1 {
         @Get("bytes/100")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         byte[] getByteArray(@HostParam("url") String url);
 
         @Get("bytes/100")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<byte[]> getByteArrayAsync(@HostParam("url") String url);
 
         @Get("bytes/100")
@@ -900,12 +881,12 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "Service2")
     private interface Service2 {
         @Get("bytes/{numberOfBytes}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         byte[] getByteArray(@HostParam("scheme") String scheme, @HostParam("hostName") String host,
             @PathParam("numberOfBytes") int numberOfBytes);
 
         @Get("bytes/{numberOfBytes}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<byte[]> getByteArrayAsync(@HostParam("scheme") String scheme, @HostParam("hostName") String host,
             @PathParam("numberOfBytes") int numberOfBytes);
     }
@@ -946,11 +927,11 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "Service3")
     private interface Service3 {
         @Get("bytes/100")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void getNothing(@HostParam("url") String url);
 
         @Get("bytes/100")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Void> getNothingAsync(@HostParam("url") String url);
     }
 
@@ -967,32 +948,31 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncGetRequestWithNoReturn() {
-        StepVerifier.create(createService(Service3.class).getNothingAsync(getRequestUri()))
-            .verifyComplete();
+        StepVerifier.create(createService(Service3.class).getNothingAsync(getRequestUri())).verifyComplete();
     }
 
     @Host("{url}")
     @ServiceInterface(name = "Service5")
     private interface Service5 {
         @Get("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson getAnything(@HostParam("url") String url);
 
         @Get("anything/with+plus")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson getAnythingWithPlus(@HostParam("url") String url);
 
         @Get("anything/{path}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson getAnythingWithPathParam(@HostParam("url") String url, @PathParam("path") String pathParam);
 
         @Get("anything/{path}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson getAnythingWithEncodedPathParam(@HostParam("url") String url,
             @PathParam(value = "path", encoded = true) String pathParam);
 
         @Get("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<HttpBinJson> getAnythingAsync(@HostParam("url") String url);
     }
 
@@ -1023,8 +1003,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void syncGetRequestWithAnythingWithPathParam() {
-        final HttpBinJson json = createService(Service5.class).getAnythingWithPathParam(getRequestUri(),
-            "withpathparam");
+        final HttpBinJson json
+            = createService(Service5.class).getAnythingWithPathParam(getRequestUri(), "withpathparam");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/withpathparam", json.url());
@@ -1035,8 +1015,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void syncGetRequestWithAnythingWithPathParamWithSpace() {
-        final HttpBinJson json = createService(Service5.class).getAnythingWithPathParam(getRequestUri(),
-            "with path param");
+        final HttpBinJson json
+            = createService(Service5.class).getAnythingWithPathParam(getRequestUri(), "with path param");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/with path param", json.url());
@@ -1047,8 +1027,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void syncGetRequestWithAnythingWithPathParamWithPlus() {
-        final HttpBinJson json = createService(Service5.class).getAnythingWithPathParam(getRequestUri(),
-            "with+path+param");
+        final HttpBinJson json
+            = createService(Service5.class).getAnythingWithPathParam(getRequestUri(), "with+path+param");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/with+path+param", json.url());
@@ -1059,8 +1039,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void syncGetRequestWithAnythingWithEncodedPathParam() {
-        final HttpBinJson json = createService(Service5.class).getAnythingWithEncodedPathParam(getRequestUri(),
-            "withpathparam");
+        final HttpBinJson json
+            = createService(Service5.class).getAnythingWithEncodedPathParam(getRequestUri(), "withpathparam");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/withpathparam", json.url());
@@ -1071,8 +1051,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void syncGetRequestWithAnythingWithEncodedPathParamWithPercent20() {
-        final HttpBinJson json = createService(Service5.class).getAnythingWithEncodedPathParam(getRequestUri(),
-            "with%20path%20param");
+        final HttpBinJson json
+            = createService(Service5.class).getAnythingWithEncodedPathParam(getRequestUri(), "with%20path%20param");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/with path param", json.url());
@@ -1083,8 +1063,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void syncGetRequestWithAnythingWithEncodedPathParamWithPlus() {
-        final HttpBinJson json = createService(Service5.class).getAnythingWithEncodedPathParam(getRequestUri(),
-            "with+path+param");
+        final HttpBinJson json
+            = createService(Service5.class).getAnythingWithEncodedPathParam(getRequestUri(), "with+path+param");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/with+path+param", json.url());
@@ -1104,16 +1084,16 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "Service6")
     private interface Service6 {
         @Get("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson getAnything(@HostParam("url") String url, @QueryParam("a") String a, @QueryParam("b") int b);
 
         @Get("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson getAnythingWithEncoded(@HostParam("url") String url,
             @QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
 
         @Get("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<HttpBinJson> getAnythingAsync(@HostParam("url") String url, @QueryParam("a") String a,
             @QueryParam("b") int b);
     }
@@ -1178,11 +1158,11 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "Service7")
     private interface Service7 {
         @Get("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson getAnything(@HostParam("url") String url, @HeaderParam("a") String a, @HeaderParam("b") int b);
 
         @Get("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<HttpBinJson> getAnythingAsync(@HostParam("url") String url, @HeaderParam("a") String a,
             @HeaderParam("b") int b);
     }
@@ -1203,10 +1183,10 @@ public abstract class HttpClientTests {
         final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
 
         assertEquals("A", headers.getValue(HEADER_A));
-        assertArrayEquals(new String[]{"A"}, headers.getValues(HEADER_A));
+        assertArrayEquals(new String[] { "A" }, headers.getValues(HEADER_A));
 
         assertEquals("15", headers.getValue(HEADER_B));
-        assertArrayEquals(new String[]{"15"}, headers.getValues(HEADER_B));
+        assertArrayEquals(new String[] { "15" }, headers.getValues(HEADER_B));
     }
 
     /**
@@ -1221,10 +1201,10 @@ public abstract class HttpClientTests {
                 final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
 
                 assertEquals("A", headers.getValue(HEADER_A));
-                assertArrayEquals(new String[]{"A"}, headers.getValues(HEADER_A));
+                assertArrayEquals(new String[] { "A" }, headers.getValues(HEADER_A));
 
                 assertEquals("15", headers.getValue(HEADER_B));
-                assertArrayEquals(new String[]{"15"}, headers.getValues(HEADER_B));
+                assertArrayEquals(new String[] { "15" }, headers.getValues(HEADER_B));
             })
             .verifyComplete();
     }
@@ -1242,19 +1222,19 @@ public abstract class HttpClientTests {
         assertArrayEquals(null, headers.getValues(HEADER_A));
 
         assertEquals("15", headers.getValue(HEADER_B));
-        assertArrayEquals(new String[]{"15"}, headers.getValues(HEADER_B));
+        assertArrayEquals(new String[] { "15" }, headers.getValues(HEADER_B));
     }
 
     @Host("{url}")
     @ServiceInterface(name = "Service8")
     private interface Service8 {
         @Post("post")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson post(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
 
         @Post("post")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<HttpBinJson> postAsync(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
     }
@@ -1298,94 +1278,94 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "Service9")
     private interface Service9 {
         @Put("put")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson put(@HostParam("url") String url, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
         @Put("put")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<HttpBinJson> putAsync(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
         @Put("put")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(MyRestException.class)
         HttpBinJson putBodyAndContentLength(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
             @HeaderParam("Content-Length") long contentLength);
 
         @Put("put")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(MyRestException.class)
         Mono<HttpBinJson> putAsyncBodyAndContentLength(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuffer> body,
             @HeaderParam("Content-Length") long contentLength);
 
         @Put("put")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(MyRestException.class)
         Mono<HttpBinJson> putAsyncBodyAndContentLength(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) BinaryData body,
             @HeaderParam("Content-Length") long contentLength);
 
         @Put("put")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         HttpBinJson putWithUnexpectedResponse(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         Mono<HttpBinJson> putWithUnexpectedResponseAsync(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(MyRestException.class)
         HttpBinJson putWithUnexpectedResponseAndExceptionType(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(MyRestException.class)
         Mono<HttpBinJson> putWithUnexpectedResponseAndExceptionTypeAsync(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(code = {200}, value = MyRestException.class)
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(code = { 200 }, value = MyRestException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         HttpBinJson putWithUnexpectedResponseAndDeterminedExceptionType(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(code = {200}, value = MyRestException.class)
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(code = { 200 }, value = MyRestException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<HttpBinJson> putWithUnexpectedResponseAndDeterminedExceptionTypeAsync(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(code = {400}, value = HttpResponseException.class)
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(code = { 400 }, value = HttpResponseException.class)
         @UnexpectedResponseExceptionType(MyRestException.class)
         HttpBinJson putWithUnexpectedResponseAndFallthroughExceptionType(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(code = {400}, value = HttpResponseException.class)
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(code = { 400 }, value = HttpResponseException.class)
         @UnexpectedResponseExceptionType(MyRestException.class)
         Mono<HttpBinJson> putWithUnexpectedResponseAndFallthroughExceptionTypeAsync(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(code = {400}, value = MyRestException.class)
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(code = { 400 }, value = MyRestException.class)
         HttpBinJson putWithUnexpectedResponseAndNoFallthroughExceptionType(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(code = {400}, value = MyRestException.class)
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(code = { 400 }, value = MyRestException.class)
         Mono<HttpBinJson> putWithUnexpectedResponseAndNoFallthroughExceptionTypeAsync(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
     }
@@ -1406,11 +1386,10 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncPutRequestWithIntBody() {
-        StepVerifier.create(createService(Service9.class).putAsync(getRequestUri(), 42))
-            .assertNext(json -> {
-                assertEquals(String.class, json.data().getClass());
-                assertEquals("42", json.data());
-            }).verifyComplete();
+        StepVerifier.create(createService(Service9.class).putAsync(getRequestUri(), 42)).assertNext(json -> {
+            assertEquals(String.class, json.data().getClass());
+            assertEquals("42", json.data());
+        }).verifyComplete();
     }
 
     // Test all scenarios for the body length and content length comparison for sync API
@@ -1471,7 +1450,8 @@ public abstract class HttpClientTests {
                 assertEquals("test", json.data());
                 assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
                 assertEquals("4", json.getHeaderValue("Content-Length"));
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     /**
@@ -1485,7 +1465,7 @@ public abstract class HttpClientTests {
             .verifyErrorSatisfies(exception -> {
                 assertTrue(exception instanceof UnexpectedLengthException
                     || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("less than"));
             });
     }
@@ -1501,7 +1481,7 @@ public abstract class HttpClientTests {
             .verifyErrorSatisfies(exception -> {
                 assertTrue(exception instanceof UnexpectedLengthException
                     || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("more than"));
             });
     }
@@ -1512,16 +1492,17 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncPutRequestWithBinaryDataBodyAndEqualContentLength() {
-        Mono<BinaryData> bodyMono = BinaryData.fromFlux(
-            Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
-        StepVerifier.create(
-                bodyMono.flatMap(body ->
-                    createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 4L)))
+        Mono<BinaryData> bodyMono
+            = BinaryData.fromFlux(Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier
+            .create(bodyMono
+                .flatMap(body -> createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 4L)))
             .assertNext(json -> {
                 assertEquals("test", json.data());
                 assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
                 assertEquals("4", json.getHeaderValue("Content-Length"));
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     /**
@@ -1530,15 +1511,15 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncPutRequestWithBinaryDataBodyAndLessThanContentLength() {
-        Mono<BinaryData> bodyMono = BinaryData.fromFlux(
-            Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
-        StepVerifier.create(
-                bodyMono.flatMap(body ->
-                    createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 5L)))
+        Mono<BinaryData> bodyMono
+            = BinaryData.fromFlux(Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier
+            .create(bodyMono
+                .flatMap(body -> createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 5L)))
             .verifyErrorSatisfies(exception -> {
                 assertTrue(exception instanceof UnexpectedLengthException
                     || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("less than"));
             });
     }
@@ -1549,15 +1530,15 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncPutRequestWithStreamBinaryDataBodyAndLessThanContentLength() {
-        Mono<BinaryData> bodyMono = Mono.just(BinaryData.fromStream(
-            new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8))));
-        StepVerifier.create(
-                bodyMono.flatMap(body ->
-                    createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 5L)))
+        Mono<BinaryData> bodyMono
+            = Mono.just(BinaryData.fromStream(new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier
+            .create(bodyMono
+                .flatMap(body -> createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 5L)))
             .verifyErrorSatisfies(exception -> {
                 assertTrue(exception instanceof UnexpectedLengthException
                     || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("less than"));
             });
     }
@@ -1568,15 +1549,15 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncPutRequestWithBinaryDataBodyAndMoreThanContentLength() {
-        Mono<BinaryData> bodyMono = BinaryData.fromFlux(
-            Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
-        StepVerifier.create(
-                bodyMono.flatMap(body ->
-                    createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 3L)))
+        Mono<BinaryData> bodyMono
+            = BinaryData.fromFlux(Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier
+            .create(bodyMono
+                .flatMap(body -> createService(Service9.class).putAsyncBodyAndContentLength(getRequestUri(), body, 3L)))
             .verifyErrorSatisfies(exception -> {
                 assertTrue(exception instanceof UnexpectedLengthException
                     || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("more than"));
             });
     }
@@ -1592,7 +1573,7 @@ public abstract class HttpClientTests {
             .verifyErrorSatisfies(exception -> {
                 assertTrue(exception instanceof UnexpectedLengthException
                     || (exception.getSuppressed().length > 0
-                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("more than"));
             });
     }
@@ -1608,7 +1589,8 @@ public abstract class HttpClientTests {
         assertNotNull(e.getValue());
         assertInstanceOf(LinkedHashMap.class, e.getValue());
 
-        @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
+        @SuppressWarnings("unchecked")
+        final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
         assertEquals("I'm the body!", expectedBody.get("data"));
     }
 
@@ -1617,14 +1599,15 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncPutRequestWithUnexpectedResponse() {
-        StepVerifier.create(createService(Service9.class).putWithUnexpectedResponseAsync(getRequestUri(),
-                "I'm the body!"))
+        StepVerifier
+            .create(createService(Service9.class).putWithUnexpectedResponseAsync(getRequestUri(), "I'm the body!"))
             .verifyErrorSatisfies(throwable -> {
                 HttpResponseException exception = assertInstanceOf(HttpResponseException.class, throwable);
                 assertNotNull(exception.getValue());
                 assertInstanceOf(LinkedHashMap.class, exception.getValue());
 
-                @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) exception.getValue();
+                @SuppressWarnings("unchecked")
+                final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) exception.getValue();
                 assertEquals("I'm the body!", expectedBody.get("data"));
             });
     }
@@ -1634,8 +1617,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void syncPutRequestWithUnexpectedResponseAndExceptionType() {
-        MyRestException e = assertThrows(MyRestException.class, () ->
-            createService(Service9.class).putWithUnexpectedResponseAndExceptionType(getRequestUri(), "I'm the body!"));
+        MyRestException e = assertThrows(MyRestException.class, () -> createService(Service9.class)
+            .putWithUnexpectedResponseAndExceptionType(getRequestUri(), "I'm the body!"));
 
         assertNotNull(e.getValue());
         assertEquals("I'm the body!", e.getValue().data());
@@ -1646,8 +1629,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncPutRequestWithUnexpectedResponseAndExceptionType() {
-        StepVerifier.create(createService(Service9.class).putWithUnexpectedResponseAndExceptionTypeAsync(
-                getRequestUri(), "I'm the body!"))
+        StepVerifier.create(createService(Service9.class)
+            .putWithUnexpectedResponseAndExceptionTypeAsync(getRequestUri(), "I'm the body!"))
             .verifyErrorSatisfies(throwable -> {
                 MyRestException myRestException = assertInstanceOf(MyRestException.class, throwable,
                     "Expected MyRestException would be thrown. Instead got " + throwable.getClass().getSimpleName());
@@ -1661,9 +1644,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void syncPutRequestWithUnexpectedResponseAndDeterminedExceptionType() {
-        MyRestException e = assertThrows(MyRestException.class,
-            () -> createService(Service9.class).putWithUnexpectedResponseAndDeterminedExceptionType(getRequestUri(),
-                "I'm the body!"));
+        MyRestException e = assertThrows(MyRestException.class, () -> createService(Service9.class)
+            .putWithUnexpectedResponseAndDeterminedExceptionType(getRequestUri(), "I'm the body!"));
 
         assertNotNull(e.getValue());
         assertEquals("I'm the body!", e.getValue().data());
@@ -1674,8 +1656,9 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncPutRequestWithUnexpectedResponseAndDeterminedExceptionType() {
-        StepVerifier.create(createService(Service9.class).putWithUnexpectedResponseAndDeterminedExceptionTypeAsync(
-                getRequestUri(), "I'm the body!"))
+        StepVerifier
+            .create(createService(Service9.class)
+                .putWithUnexpectedResponseAndDeterminedExceptionTypeAsync(getRequestUri(), "I'm the body!"))
             .verifyErrorSatisfies(throwable -> {
                 MyRestException myRestException = assertInstanceOf(MyRestException.class, throwable,
                     "Expected MyRestException would be thrown. Instead got " + throwable.getClass().getSimpleName());
@@ -1689,9 +1672,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void syncPutRequestWithUnexpectedResponseAndFallthroughExceptionType() {
-        MyRestException e = assertThrows(MyRestException.class,
-            () -> createService(Service9.class).putWithUnexpectedResponseAndFallthroughExceptionType(getRequestUri(),
-                "I'm the body!"));
+        MyRestException e = assertThrows(MyRestException.class, () -> createService(Service9.class)
+            .putWithUnexpectedResponseAndFallthroughExceptionType(getRequestUri(), "I'm the body!"));
 
         assertNotNull(e.getValue());
         assertEquals("I'm the body!", e.getValue().data());
@@ -1702,8 +1684,9 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncPutRequestWithUnexpectedResponseAndFallthroughExceptionType() {
-        StepVerifier.create(createService(Service9.class).putWithUnexpectedResponseAndFallthroughExceptionTypeAsync(
-                getRequestUri(), "I'm the body!"))
+        StepVerifier
+            .create(createService(Service9.class)
+                .putWithUnexpectedResponseAndFallthroughExceptionTypeAsync(getRequestUri(), "I'm the body!"))
             .verifyErrorSatisfies(throwable -> {
                 MyRestException myRestException = assertInstanceOf(MyRestException.class, throwable,
                     "Expected MyRestException would be thrown. Instead got " + throwable.getClass().getSimpleName());
@@ -1718,14 +1701,14 @@ public abstract class HttpClientTests {
      */
     @Test
     public void syncPutRequestWithUnexpectedResponseAndNoFallthroughExceptionType() {
-        HttpResponseException e = assertThrows(HttpResponseException.class,
-            () -> createService(Service9.class).putWithUnexpectedResponseAndNoFallthroughExceptionType(getRequestUri(),
-                "I'm the body!"));
+        HttpResponseException e = assertThrows(HttpResponseException.class, () -> createService(Service9.class)
+            .putWithUnexpectedResponseAndNoFallthroughExceptionType(getRequestUri(), "I'm the body!"));
 
         assertNotNull(e.getValue());
         assertInstanceOf(LinkedHashMap.class, e.getValue());
 
-        @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
+        @SuppressWarnings("unchecked")
+        final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
         assertEquals("I'm the body!", expectedBody.get("data"));
     }
 
@@ -1735,8 +1718,9 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncPutRequestWithUnexpectedResponseAndNoFallthroughExceptionType() {
-        StepVerifier.create(createService(Service9.class).putWithUnexpectedResponseAndNoFallthroughExceptionTypeAsync(
-                getRequestUri(), "I'm the body!"))
+        StepVerifier
+            .create(createService(Service9.class)
+                .putWithUnexpectedResponseAndNoFallthroughExceptionTypeAsync(getRequestUri(), "I'm the body!"))
             .verifyErrorSatisfies(throwable -> {
                 HttpResponseException responseException = assertInstanceOf(HttpResponseException.class, throwable,
                     "Expected HttpResponseException would be thrown. Instead got "
@@ -1744,7 +1728,9 @@ public abstract class HttpClientTests {
                 assertNotNull(responseException.getValue());
                 assertInstanceOf(LinkedHashMap.class, responseException.getValue());
 
-                @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) responseException.getValue();
+                @SuppressWarnings("unchecked")
+                final LinkedHashMap<String, String> expectedBody
+                    = (LinkedHashMap<String, String>) responseException.getValue();
                 assertEquals("I'm the body!", expectedBody.get("data"));
             });
     }
@@ -1753,27 +1739,27 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "Service10")
     interface Service10 {
         @Head("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Response<Void> head(@HostParam("url") String url);
 
         @Head("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         boolean headBoolean(@HostParam("url") String url);
 
         @Head("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void voidHead(@HostParam("url") String url);
 
         @Head("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Response<Void>> headAsync(@HostParam("url") String url);
 
         @Head("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Boolean> headBooleanAsync(@HostParam("url") String url);
 
         @Head("anything")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Void> completableHeadAsync(@HostParam("url") String url);
     }
 
@@ -1828,20 +1814,19 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncCompletableHeadRequest() {
-        StepVerifier.create(createService(Service10.class).completableHeadAsync(getRequestUri()))
-            .verifyComplete();
+        StepVerifier.create(createService(Service10.class).completableHeadAsync(getRequestUri())).verifyComplete();
     }
 
     @Host("{url}")
     @ServiceInterface(name = "Service11")
     interface Service11 {
         @Delete("delete")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson delete(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) boolean bodyBoolean);
 
         @Delete("delete")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<HttpBinJson> deleteAsync(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) boolean bodyBoolean);
     }
@@ -1862,23 +1847,22 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncDeleteRequest() {
-        StepVerifier.create(createService(Service11.class).deleteAsync(getRequestUri(), false))
-            .assertNext(json -> {
-                assertEquals(String.class, json.data().getClass());
-                assertEquals("false", json.data());
-            }).verifyComplete();
+        StepVerifier.create(createService(Service11.class).deleteAsync(getRequestUri(), false)).assertNext(json -> {
+            assertEquals(String.class, json.data().getClass());
+            assertEquals("false", json.data());
+        }).verifyComplete();
     }
 
     @Host("{url}")
     @ServiceInterface(name = "Service12")
     interface Service12 {
         @Patch("patch")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson patch(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
 
         @Patch("patch")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<HttpBinJson> patchAsync(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
     }
@@ -1903,20 +1887,21 @@ public abstract class HttpClientTests {
             .assertNext(json -> {
                 assertEquals(String.class, json.data().getClass());
                 assertEquals("body-contents", json.data());
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     @Host("{url}")
     @ServiceInterface(name = "Service13")
     interface Service13 {
         @Get("anything")
-        @ExpectedResponses({200})
-        @Headers({"MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value"})
+        @ExpectedResponses({ 200 })
+        @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         HttpBinJson get(@HostParam("url") String url);
 
         @Get("anything")
-        @ExpectedResponses({200})
-        @Headers({"MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value"})
+        @ExpectedResponses({ 200 })
+        @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         Mono<HttpBinJson> getAsync(@HostParam("url") String url);
     }
 
@@ -1934,9 +1919,9 @@ public abstract class HttpClientTests {
         assertNotNull(json.headers());
         final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
         assertEquals("MyHeaderValue", headers.getValue(MY_HEADER));
-        assertArrayEquals(new String[]{"MyHeaderValue"}, headers.getValues(MY_HEADER));
+        assertArrayEquals(new String[] { "MyHeaderValue" }, headers.getValues(MY_HEADER));
         assertEquals("My,Header,Value", headers.getValue(MY_OTHER_HEADER));
-        assertArrayEquals(new String[]{"My", "Header", "Value"}, headers.getValues(MY_OTHER_HEADER));
+        assertArrayEquals(new String[] { "My", "Header", "Value" }, headers.getValues(MY_OTHER_HEADER));
     }
 
     /**
@@ -1944,28 +1929,27 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncHeadersRequest() {
-        StepVerifier.create(createService(Service13.class).getAsync(getRequestUri()))
-            .assertNext(json -> {
-                assertMatchWithHttpOrHttps("localhost/anything", json.url());
-                assertNotNull(json.headers());
-                final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+        StepVerifier.create(createService(Service13.class).getAsync(getRequestUri())).assertNext(json -> {
+            assertMatchWithHttpOrHttps("localhost/anything", json.url());
+            assertNotNull(json.headers());
+            final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
 
-                assertEquals("MyHeaderValue", headers.getValue(MY_HEADER));
-                assertArrayEquals(new String[]{"MyHeaderValue"}, headers.getValues(MY_HEADER));
-            }).verifyComplete();
+            assertEquals("MyHeaderValue", headers.getValue(MY_HEADER));
+            assertArrayEquals(new String[] { "MyHeaderValue" }, headers.getValues(MY_HEADER));
+        }).verifyComplete();
     }
 
     @Host("{url}")
     @ServiceInterface(name = "Service14")
     interface Service14 {
         @Get("anything")
-        @ExpectedResponses({200})
-        @Headers({"MyHeader:MyHeaderValue"})
+        @ExpectedResponses({ 200 })
+        @Headers({ "MyHeader:MyHeaderValue" })
         HttpBinJson get(@HostParam("url") String url);
 
         @Get("anything")
-        @ExpectedResponses({200})
-        @Headers({"MyHeader:MyHeaderValue"})
+        @ExpectedResponses({ 200 })
+        @Headers({ "MyHeader:MyHeaderValue" })
         Mono<HttpBinJson> getAsync(@HostParam("url") String url);
     }
 
@@ -1974,25 +1958,24 @@ public abstract class HttpClientTests {
      */
     @Test
     public void asyncHttpsHeadersRequest() {
-        StepVerifier.create(createService(Service14.class).getAsync(getRequestUri()))
-            .assertNext(json -> {
-                assertMatchWithHttpOrHttps("localhost/anything", json.url());
-                assertNotNull(json.headers());
-                final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
-                assertEquals("MyHeaderValue", headers.getValue(MY_HEADER));
-            }).verifyComplete();
+        StepVerifier.create(createService(Service14.class).getAsync(getRequestUri())).assertNext(json -> {
+            assertMatchWithHttpOrHttps("localhost/anything", json.url());
+            assertNotNull(json.headers());
+            final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+            assertEquals("MyHeaderValue", headers.getValue(MY_HEADER));
+        }).verifyComplete();
     }
 
     @Host("{url}")
     @ServiceInterface(name = "Service16")
     interface Service16 {
         @Put("put")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson putByteArray(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
 
         @Put("put")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<HttpBinJson> putByteArrayAsync(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
     }
@@ -2003,7 +1986,7 @@ public abstract class HttpClientTests {
     @Test
     public void service16Put() {
         final Service16 service16 = createService(Service16.class);
-        final byte[] expectedBytes = new byte[]{1, 2, 3, 4};
+        final byte[] expectedBytes = new byte[] { 1, 2, 3, 4 };
         final HttpBinJson httpBinJSON = service16.putByteArray(getRequestUri(), expectedBytes);
 
         // httpbin sends the data back as a string like "\u0001\u0002\u0003\u0004"
@@ -2019,24 +2002,25 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service16PutAsync() {
-        final byte[] expectedBytes = new byte[]{1, 2, 3, 4};
+        final byte[] expectedBytes = new byte[] { 1, 2, 3, 4 };
         StepVerifier.create(createService(Service16.class).putByteArrayAsync(getRequestUri(), expectedBytes))
             .assertNext(json -> {
                 assertInstanceOf(String.class, json.data());
                 assertArraysEqual(expectedBytes, ((String) json.data()).getBytes(StandardCharsets.UTF_8));
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     @Host("{scheme}://{hostPart1}{hostPart2}")
     @ServiceInterface(name = "Service17")
     interface Service17 {
         @Get("get")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson get(@HostParam("scheme") String scheme, @HostParam("hostPart1") String hostPart1,
             @HostParam("hostPart2") String hostPart2);
 
         @Get("get")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<HttpBinJson> getAsync(@HostParam("scheme") String scheme, @HostParam("hostPart1") String hostPart1,
             @HostParam("hostPart2") String hostPart2);
     }
@@ -2069,28 +2053,28 @@ public abstract class HttpClientTests {
         void getStatus200(@HostParam("url") String url);
 
         @Get("status/200")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void getStatus200WithExpectedResponse200(@HostParam("url") String url);
 
         @Get("status/300")
         void getStatus300(@HostParam("url") String url);
 
         @Get("status/300")
-        @ExpectedResponses({300})
+        @ExpectedResponses({ 300 })
         void getStatus300WithExpectedResponse300(@HostParam("url") String url);
 
         @Get("status/400")
         void getStatus400(@HostParam("url") String url);
 
         @Get("status/400")
-        @ExpectedResponses({400})
+        @ExpectedResponses({ 400 })
         void getStatus400WithExpectedResponse400(@HostParam("url") String url);
 
         @Get("status/500")
         void getStatus500(@HostParam("url") String url);
 
         @Get("status/500")
-        @ExpectedResponses({500})
+        @ExpectedResponses({ 500 })
         void getStatus500WithExpectedResponse500(@HostParam("url") String url);
     }
 
@@ -2174,22 +2158,22 @@ public abstract class HttpClientTests {
             @BodyParam(ContentType.APPLICATION_JSON) String body);
 
         @Put("put")
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         HttpBinJson putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
 
         @Put("put")
-        @Headers({"Content-Type: application/json; charset=utf-8"})
+        @Headers({ "Content-Type: application/json; charset=utf-8" })
         HttpBinJson putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @Put("put")
-        @Headers({"Content-Type: application/octet-stream"})
+        @Headers({ "Content-Type: application/octet-stream" })
         HttpBinJson putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @Put("put")
-        @Headers({"Content-Type: application/octet-stream"})
+        @Headers({ "Content-Type: application/octet-stream" })
         HttpBinJson putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 
@@ -2219,8 +2203,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithNullBody() {
-        final HttpBinJson result = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(),
-            null);
+        final HttpBinJson result
+            = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
@@ -2230,8 +2214,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithEmptyBody() {
-        final HttpBinJson result = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(),
-            "");
+        final HttpBinJson result
+            = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(), "");
 
         assertEquals("", result.data());
     }
@@ -2241,8 +2225,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithNonEmptyBody() {
-        final HttpBinJson result = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(),
-            "hello");
+        final HttpBinJson result
+            = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(), "hello");
 
         assertEquals("hello", result.data());
     }
@@ -2252,8 +2236,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithNullBody() {
-        final HttpBinJson result = createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(),
-            null);
+        final HttpBinJson result
+            = createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
@@ -2263,8 +2247,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithEmptyBody() {
-        final HttpBinJson result = createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(),
-            new byte[0]);
+        final HttpBinJson result
+            = createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(), new byte[0]);
 
         assertEquals("", result.data());
     }
@@ -2274,10 +2258,10 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithNonEmptyBody() {
-        final HttpBinJson result = createService(Service19.class)
-            .putWithNoContentTypeAndByteArrayBody(getRequestUri(), new byte[]{0, 1, 2, 3, 4});
+        final HttpBinJson result = createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(),
+            new byte[] { 0, 1, 2, 3, 4 });
 
-        assertEquals(new String(new byte[]{0, 1, 2, 3, 4}, StandardCharsets.UTF_8), result.data());
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }, StandardCharsets.UTF_8), result.data());
     }
 
     /**
@@ -2296,8 +2280,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithEmptyBody() {
-        final HttpBinJson result = createService(Service19.class)
-            .putWithHeaderApplicationJsonContentTypeAndStringBody(getRequestUri(), "");
+        final HttpBinJson result
+            = createService(Service19.class).putWithHeaderApplicationJsonContentTypeAndStringBody(getRequestUri(), "");
 
         assertEquals("\"\"", result.data());
     }
@@ -2341,7 +2325,7 @@ public abstract class HttpClientTests {
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithNonEmptyBody() {
         final HttpBinJson result = createService(Service19.class)
-            .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), new byte[]{0, 1, 2, 3, 4});
+            .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), new byte[] { 0, 1, 2, 3, 4 });
 
         assertEquals("\"AAECAwQ=\"", result.data());
     }
@@ -2439,11 +2423,11 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithNonEmptyBody() {
-        final HttpBinJson result = createService(Service19.class)
-            .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(getRequestUri(),
-                new byte[]{0, 1, 2, 3, 4});
+        final HttpBinJson result
+            = createService(Service19.class).putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(
+                getRequestUri(), new byte[] { 0, 1, 2, 3, 4 });
 
-        assertEquals(new String(new byte[]{0, 1, 2, 3, 4}, StandardCharsets.UTF_8), result.data());
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }, StandardCharsets.UTF_8), result.data());
     }
 
     /**
@@ -2540,7 +2524,7 @@ public abstract class HttpClientTests {
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithNonEmptyBody() {
         final HttpBinJson result = createService(Service19.class)
-            .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), new byte[]{0, 1, 2, 3, 4});
+            .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getRequestUri(), new byte[] { 0, 1, 2, 3, 4 });
 
         assertEquals("\"AAECAwQ=\"", result.data());
     }
@@ -2605,11 +2589,11 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithNonEmptyBody() {
-        final HttpBinJson result = createService(Service19.class)
-            .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(getRequestUri(),
-                new byte[]{0, 1, 2, 3, 4});
+        final HttpBinJson result
+            = createService(Service19.class).putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(
+                getRequestUri(), new byte[] { 0, 1, 2, 3, 4 });
 
-        assertEquals(new String(new byte[]{0, 1, 2, 3, 4}, StandardCharsets.UTF_8), result.data());
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }, StandardCharsets.UTF_8), result.data());
     }
 
     @Host("{url}")
@@ -2648,8 +2632,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service20GetBytes100OnlyHeaders() {
-        final ResponseBase<HttpBinHeaders, Void> response = createService(Service20.class)
-            .getBytes100OnlyHeaders(getRequestUri());
+        final ResponseBase<HttpBinHeaders, Void> response
+            = createService(Service20.class).getBytes100OnlyHeaders(getRequestUri());
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
@@ -2667,8 +2651,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service20GetBytes100BodyAndHeaders() {
-        final ResponseBase<HttpBinHeaders, byte[]> response = createService(Service20.class)
-            .getBytes100BodyAndHeaders(getRequestUri());
+        final ResponseBase<HttpBinHeaders, byte[]> response
+            = createService(Service20.class).getBytes100BodyAndHeaders(getRequestUri());
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
@@ -2719,8 +2703,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service20PutOnlyHeaders() {
-        final ResponseBase<HttpBinHeaders, Void> response = createService(Service20.class)
-            .putOnlyHeaders(getRequestUri(), "body string");
+        final ResponseBase<HttpBinHeaders, Void> response
+            = createService(Service20.class).putOnlyHeaders(getRequestUri(), "body string");
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
@@ -2738,8 +2722,8 @@ public abstract class HttpClientTests {
      */
     @Test
     public void service20PutBodyAndHeaders() {
-        final ResponseBase<HttpBinHeaders, HttpBinJson> response = createService(Service20.class)
-            .putBodyAndHeaders(getRequestUri(), "body string");
+        final ResponseBase<HttpBinHeaders, HttpBinJson> response
+            = createService(Service20.class).putBodyAndHeaders(getRequestUri(), "body string");
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
@@ -2789,7 +2773,7 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "UnexpectedOKService")
     interface UnexpectedOKService {
         @Get("/bytes/1024")
-        @ExpectedResponses({400})
+        @ExpectedResponses({ 400 })
         StreamResponse getBytes(@HostParam("url") String url);
     }
 
@@ -2808,7 +2792,7 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "Service21")
     private interface Service21 {
         @Get("/bytes/100")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         byte[] getBytes100(@HostParam("url") String url);
     }
 
@@ -2845,19 +2829,17 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
     public void simpleDownloadTest(Context context) {
-        Mono<Tuple3<Integer, String, String>> downloadData = Mono.using(
-            () -> createService(DownloadService.class).getBytes(getRequestUri(), context),
-            response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                .map(bytes -> Tuples.of(bytes.length, response.getHeaders().getValue(HttpHeaderName.ETAG),
-                    MessageDigestUtils.md5(bytes))),
-            StreamResponse::close);
+        Mono<Tuple3<Integer, String, String>> downloadData
+            = Mono.using(() -> createService(DownloadService.class).getBytes(getRequestUri(), context),
+                response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                    .map(bytes -> Tuples.of(bytes.length, response.getHeaders().getValue(HttpHeaderName.ETAG),
+                        MessageDigestUtils.md5(bytes))),
+                StreamResponse::close);
 
-        StepVerifier.create(downloadData)
-            .assertNext(tuple -> {
-                assertEquals(30720, tuple.getT1().intValue());
-                assertEquals(tuple.getT2(), tuple.getT3());
-            })
-            .verifyComplete();
+        StepVerifier.create(downloadData).assertNext(tuple -> {
+            assertEquals(30720, tuple.getT1().intValue());
+            assertEquals(tuple.getT2(), tuple.getT3());
+        }).verifyComplete();
     }
 
     /**
@@ -2868,15 +2850,19 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
     public void simpleDownloadTestAsync(Context context) {
-        StepVerifier.create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
-                .flatMap(response -> Mono.using(() -> response, r -> r.getValue().map(ByteBuffer::remaining)
-                    .reduce(0, Integer::sum), StreamResponse::close)))
+        StepVerifier
+            .create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
+                .flatMap(response -> Mono.using(() -> response,
+                    r -> r.getValue().map(ByteBuffer::remaining).reduce(0, Integer::sum), StreamResponse::close)))
             .assertNext(count -> assertEquals(30720, count))
             .verifyComplete();
 
-        StepVerifier.create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
-                .flatMap(response -> Mono.using(() -> response, r -> Mono.zip(MessageDigestUtils.md5(r.getValue()),
-                    Mono.just(r.getHeaders().getValue(HttpHeaderName.ETAG))), StreamResponse::close)))
+        StepVerifier
+            .create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
+                .flatMap(response -> Mono.using(() -> response,
+                    r -> Mono.zip(MessageDigestUtils.md5(r.getValue()),
+                        Mono.just(r.getHeaders().getValue(HttpHeaderName.ETAG))),
+                    StreamResponse::close)))
             .assertNext(hashTuple -> assertEquals(hashTuple.getT2(), hashTuple.getT1()))
             .verifyComplete();
     }
@@ -2901,15 +2887,15 @@ public abstract class HttpClientTests {
         tempFile.toFile().deleteOnExit();
         try (StreamResponse streamResponse = createService(DownloadService.class).getBytes(getRequestUri(), context)) {
             StepVerifier.create(Mono.using(
-                    () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-                    streamResponse::writeValueToAsync,
-                    channel -> {
-                        try {
-                            channel.close();
-                        } catch (IOException e) {
-                            throw Exceptions.propagate(e);
-                        }
-                    }).then(Mono.fromCallable(() -> MessageDigestUtils.md5(Files.readAllBytes(tempFile)))))
+                () -> IOUtils
+                    .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+                streamResponse::writeValueToAsync, channel -> {
+                    try {
+                        channel.close();
+                    } catch (IOException e) {
+                        throw Exceptions.propagate(e);
+                    }
+                }).then(Mono.fromCallable(() -> MessageDigestUtils.md5(Files.readAllBytes(tempFile)))))
                 .assertNext(hash -> assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG), hash))
                 .verifyComplete();
         }
@@ -2925,35 +2911,32 @@ public abstract class HttpClientTests {
     @MethodSource("downloadTestArgumentProvider")
     public void streamResponseCanTransferBodyAsync(Context context) throws IOException {
         StepVerifier.create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
-                .publishOn(Schedulers.boundedElastic())
-                .map(streamResponse -> {
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    try {
-                        streamResponse.writeValueTo(Channels.newChannel(bos));
-                    } finally {
-                        streamResponse.close();
-                    }
-                    return Tuples.of(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG),
-                        MessageDigestUtils.md5(bos.toByteArray()));
-                }))
-            .assertNext(hashTuple -> assertEquals(hashTuple.getT1(), hashTuple.getT2()))
-            .verifyComplete();
+            .publishOn(Schedulers.boundedElastic())
+            .map(streamResponse -> {
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                try {
+                    streamResponse.writeValueTo(Channels.newChannel(bos));
+                } finally {
+                    streamResponse.close();
+                }
+                return Tuples.of(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG),
+                    MessageDigestUtils.md5(bos.toByteArray()));
+            })).assertNext(hashTuple -> assertEquals(hashTuple.getT1(), hashTuple.getT2())).verifyComplete();
 
         Path tempFile = Files.createTempFile("streamResponseCanTransferBody", null);
         tempFile.toFile().deleteOnExit();
         StepVerifier.create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
-                .flatMap(streamResponse -> Mono.using(
-                        () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-                        streamResponse::writeValueToAsync,
-                        channel -> {
-                            streamResponse.close();
-                            try {
-                                channel.close();
-                            } catch (IOException e) {
-                                throw Exceptions.propagate(e);
-                            }
-                        })
-                    .then(Mono.just(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG)))))
+            .flatMap(streamResponse -> Mono.using(
+                () -> IOUtils
+                    .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+                streamResponse::writeValueToAsync, channel -> {
+                    streamResponse.close();
+                    try {
+                        channel.close();
+                    } catch (IOException e) {
+                        throw Exceptions.propagate(e);
+                    }
+                }).then(Mono.just(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG)))))
             .assertNext(hash -> {
                 try {
                     assertEquals(hash, MessageDigestUtils.md5(Files.readAllBytes(tempFile)));
@@ -2965,10 +2948,8 @@ public abstract class HttpClientTests {
     }
 
     private static Stream<Arguments> downloadTestArgumentProvider() {
-        return Stream.of(
-            Arguments.of(Named.named("default", Context.NONE)),
-            Arguments.of(Named.named("sync proxy enabled", Context.NONE
-                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))));
+        return Stream.of(Arguments.of(Named.named("default", Context.NONE)), Arguments
+            .of(Named.named("sync proxy enabled", Context.NONE.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))));
     }
 
     /**
@@ -2977,9 +2958,8 @@ public abstract class HttpClientTests {
     @Test
     public void rawFluxDownloadTest() {
         StepVerifier.create(createService(DownloadService.class).getBytesFlux(getRequestUri())
-                .map(ByteBuffer::remaining).reduce(0, Integer::sum))
-            .assertNext(count -> assertEquals(30720, count))
-            .verifyComplete();
+            .map(ByteBuffer::remaining)
+            .reduce(0, Integer::sum)).assertNext(count -> assertEquals(30720, count)).verifyComplete();
     }
 
     @Host("{url}")
@@ -3005,14 +2985,13 @@ public abstract class HttpClientTests {
         //
         // Order in which policies applied will be the order in which they added to builder
         //
-        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
             .policies(new PortPolicy(getPort(), true),
                 new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
         //
-        Response<HttpBinJson> response = RestProxy
-            .create(FluxUploadService.class, httpPipeline).put(getRequestUri(), stream, Files.size(filePath));
+        Response<HttpBinJson> response = RestProxy.create(FluxUploadService.class, httpPipeline)
+            .put(getRequestUri(), stream, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
     }
@@ -3026,8 +3005,8 @@ public abstract class HttpClientTests {
     public void segmentUploadTest() throws Exception {
         Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ);
-        Response<HttpBinJson> response = createService(FluxUploadService.class)
-            .put(getRequestUri(), FluxUtil.readFile(fileChannel, 4, 15), 15);
+        Response<HttpBinJson> response
+            = createService(FluxUploadService.class).put(getRequestUri(), FluxUtil.readFile(fileChannel, 4, 15), 15);
 
         assertEquals("quick brown fox", response.getValue().data());
     }
@@ -3055,8 +3034,7 @@ public abstract class HttpClientTests {
         //
         // Order in which policies applied will be the order in which they added to builder
         //
-        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
             .policies(new PortPolicy(getPort(), true),
                 new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
@@ -3184,12 +3162,12 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "Service27")
     interface Service27 {
         @Put("put")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         HttpBinJson put(@HostParam("url") String url, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
             RequestOptions requestOptions);
 
         @Put("put")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(MyRestException.class)
         HttpBinJson putBodyAndContentLength(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
@@ -3203,8 +3181,8 @@ public abstract class HttpClientTests {
     public void requestOptionsChangesBody() {
         Service27 service = createService(Service27.class);
 
-        HttpBinJson response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().setBody(BinaryData.fromString("24")));
+        HttpBinJson response
+            = service.put(getServerUri(isSecure()), 42, new RequestOptions().setBody(BinaryData.fromString("24")));
         assertNotNull(response);
         assertNotNull(response.data());
         assertInstanceOf(String.class, response.data());
@@ -3236,8 +3214,8 @@ public abstract class HttpClientTests {
     public void requestOptionsAddAHeader() {
         Service27 service = createService(Service27.class);
 
-        HttpBinJson response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().addHeader(RANDOM_HEADER, "randomValue"));
+        HttpBinJson response
+            = service.put(getServerUri(isSecure()), 42, new RequestOptions().addHeader(RANDOM_HEADER, "randomValue"));
         assertNotNull(response);
         assertNotNull(response.data());
         assertInstanceOf(String.class, response.data());
@@ -3265,31 +3243,31 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "Service28")
     interface Service28 {
         @Head("voideagerreadoom")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void headvoid(@HostParam("url") String url);
 
         @Head("voideagerreadoom")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Void headVoid(@HostParam("url") String url);
 
         @Head("voideagerreadoom")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Response<Void> headResponseVoid(@HostParam("url") String url);
 
         @Head("voideagerreadoom")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         ResponseBase<Void, Void> headResponseBaseVoid(@HostParam("url") String url);
 
         @Head("voideagerreadoom")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Void> headMonoVoid(@HostParam("url") String url);
 
         @Head("voideagerreadoom")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Response<Void>> headMonoResponseVoid(@HostParam("url") String url);
 
         @Head("voideagerreadoom")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<ResponseBase<Void, Void>> headMonoResponseBaseVoid(@HostParam("url") String url);
     }
 
@@ -3305,46 +3283,43 @@ public abstract class HttpClientTests {
     }
 
     private static Stream<BiConsumer<String, Service28>> voidDoesNotEagerlyReadResponseSupplier() {
-        return Stream.of(
-            (url, service28) -> service28.headvoid(url),
-            (url, service28) -> service28.headVoid(url),
+        return Stream.of((url, service28) -> service28.headvoid(url), (url, service28) -> service28.headVoid(url),
             (url, service28) -> service28.headResponseVoid(url),
             (url, service28) -> service28.headResponseBaseVoid(url),
             (url, service28) -> service28.headMonoVoid(url).block(),
             (url, service28) -> service28.headMonoResponseVoid(url).block(),
-            (url, service28) -> service28.headMonoResponseBaseVoid(url).block()
-        );
+            (url, service28) -> service28.headMonoResponseBaseVoid(url).block());
     }
 
     @Host("{url}")
     @ServiceInterface(name = "Service29")
     interface Service29 {
         @Put("voiderrorreturned")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void headvoid(@HostParam("url") String url);
 
         @Put("voiderrorreturned")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Void headVoid(@HostParam("url") String url);
 
         @Put("voiderrorreturned")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Response<Void> headResponseVoid(@HostParam("url") String url);
 
         @Put("voiderrorreturned")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         ResponseBase<Void, Void> headResponseBaseVoid(@HostParam("url") String url);
 
         @Put("voiderrorreturned")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Void> headMonoVoid(@HostParam("url") String url);
 
         @Put("voiderrorreturned")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<Response<Void>> headMonoResponseVoid(@HostParam("url") String url);
 
         @Put("voiderrorreturned")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         Mono<ResponseBase<Void, Void>> headMonoResponseBaseVoid(@HostParam("url") String url);
     }
 
@@ -3363,15 +3338,12 @@ public abstract class HttpClientTests {
     }
 
     private static Stream<BiConsumer<String, Service29>> voidErrorReturnsErrorBodySupplier() {
-        return Stream.of(
-            (url, service29) -> service29.headvoid(url),
-            (url, service29) -> service29.headVoid(url),
+        return Stream.of((url, service29) -> service29.headvoid(url), (url, service29) -> service29.headVoid(url),
             (url, service29) -> service29.headResponseVoid(url),
             (url, service29) -> service29.headResponseBaseVoid(url),
             (url, service29) -> service29.headMonoVoid(url).block(),
             (url, service29) -> service29.headMonoResponseVoid(url).block(),
-            (url, service29) -> service29.headMonoResponseBaseVoid(url).block()
-        );
+            (url, service29) -> service29.headMonoResponseBaseVoid(url).block());
     }
 
     // Helpers
@@ -3381,10 +3353,8 @@ public abstract class HttpClientTests {
     }
 
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
-        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .policies(new PortPolicy(getPort(), true))
-            .httpClient(httpClient)
-            .build();
+        final HttpPipeline httpPipeline
+            = new HttpPipelineBuilder().policies(new PortPolicy(getPort(), true)).httpClient(httpClient).build();
 
         return RestProxy.create(serviceClass, httpPipeline);
     }

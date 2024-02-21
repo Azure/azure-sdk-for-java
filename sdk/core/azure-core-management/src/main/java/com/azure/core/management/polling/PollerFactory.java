@@ -75,18 +75,17 @@ public final class PollerFactory {
         Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
         Objects.requireNonNull(lroInitMono, "'lroInitMono' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
-        Function<PollingContext<PollResult<T>>, Mono<PollResponse<PollResult<T>>>> defaultLroInitOperation =
-            pollingContext -> lroInitMono.flatMap(
-                response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                    .map(contentBytes -> {
-                        String content = new String(contentBytes, StandardCharsets.UTF_8);
-                        PollingState state = PollingState.create(serializerAdapter, response.getRequest(),
-                            response.getStatusCode(), response.getHeaders(), content);
-                        state.store(pollingContext);
-                        T result = PollOperation.deserialize(serializerAdapter, content, pollResultType);
-                        return new PollResponse<>(state.getOperationStatus(), new PollResult<>(result),
-                            state.getPollDelay());
-                    }));
+        Function<PollingContext<PollResult<T>>, Mono<PollResponse<PollResult<T>>>> defaultLroInitOperation
+            = pollingContext -> lroInitMono
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(contentBytes -> {
+                    String content = new String(contentBytes, StandardCharsets.UTF_8);
+                    PollingState state = PollingState.create(serializerAdapter, response.getRequest(),
+                        response.getStatusCode(), response.getHeaders(), content);
+                    state.store(pollingContext);
+                    T result = PollOperation.deserialize(serializerAdapter, content, pollResultType);
+                    return new PollResponse<>(state.getOperationStatus(), new PollResult<>(result),
+                        state.getPollDelay());
+                }));
         return PollerFlux.create(defaultPollInterval, defaultLroInitOperation,
             PollOperation.pollFunction(serializerAdapter, pipeline, pollResultType, context),
             PollOperation.cancelFunction(context),
@@ -138,8 +137,7 @@ public final class PollerFactory {
         Objects.requireNonNull(lroInitOperation, "'lroInitOperation' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
 
-        return new PollerFlux<>(defaultPollInterval,
-            lroInitOperation,
+        return new PollerFlux<>(defaultPollInterval, lroInitOperation,
             PollOperation.pollFunction(serializerAdapter, pipeline, pollResultType, context),
             PollOperation.cancelFunction(context),
             PollOperation.fetchResultFunction(serializerAdapter, pipeline, finalResultType, context));

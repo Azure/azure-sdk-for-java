@@ -223,8 +223,7 @@ public class NamespaceProperties implements XmlSerializable<NamespaceProperties>
                     }
                 }
 
-                return new NamespaceProperties()
-                    .setAlias(alias)
+                return new NamespaceProperties().setAlias(alias)
                     .setCreatedTime(createdTime)
                     .setMessagingSku(messagingSku)
                     .setMessagingUnits(messagingUnits)

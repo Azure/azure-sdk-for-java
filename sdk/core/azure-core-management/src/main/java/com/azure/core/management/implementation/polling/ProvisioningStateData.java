@@ -40,8 +40,7 @@ final class ProvisioningStateData implements JsonSerializable<ProvisioningStateD
      */
     ProvisioningStateData(URL pollUrl, String provisioningState) {
         this.pollUrl = Objects.requireNonNull(pollUrl, "'pollUrl' cannot be null.");
-        this.provisioningState
-            = Objects.requireNonNull(provisioningState, "'provisioningState' cannot be null.");
+        this.provisioningState = Objects.requireNonNull(provisioningState, "'provisioningState' cannot be null.");
     }
 
     /**
@@ -101,10 +100,8 @@ final class ProvisioningStateData implements JsonSerializable<ProvisioningStateD
         this.provisioningState = value;
         if (ProvisioningState.FAILED.equalsIgnoreCase(this.provisioningState)
             || ProvisioningState.CANCELED.equalsIgnoreCase(this.provisioningState)) {
-            this.pollError = new Error("Long running operation failed or cancelled.",
-                pollResponseStatusCode,
-                pollResponseHeaders.toMap(),
-                pollResponseBody);
+            this.pollError = new Error("Long running operation failed or cancelled.", pollResponseStatusCode,
+                pollResponseHeaders.toMap(), pollResponseBody);
         } else if (ProvisioningState.SUCCEEDED.equalsIgnoreCase(this.provisioningState)) {
             this.finalResult = new FinalResult(null, pollResponseBody);
         }
@@ -163,7 +160,6 @@ final class ProvisioningStateData implements JsonSerializable<ProvisioningStateD
         if (CoreUtils.isNullOrEmpty(value)) {
             return null;
         }
-
         try (JsonReader jsonReader = JsonProviders.createReader(value)) {
             ResourceWithProvisioningState resource = ResourceWithProvisioningState.fromJson(jsonReader);
 
@@ -172,6 +168,7 @@ final class ProvisioningStateData implements JsonSerializable<ProvisioningStateD
             return null;
         }
     }
+
     /**
      * Schema of an azure resource with provisioningState property.
      */
@@ -189,9 +186,7 @@ final class ProvisioningStateData implements JsonSerializable<ProvisioningStateD
 
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            return jsonWriter.writeStartObject()
-                .writeJsonField("properties", properties)
-                .writeEndObject();
+            return jsonWriter.writeStartObject().writeJsonField("properties", properties).writeEndObject();
         }
 
         /**
@@ -259,4 +254,3 @@ final class ProvisioningStateData implements JsonSerializable<ProvisioningStateD
         }
     }
 }
-

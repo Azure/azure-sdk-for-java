@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added support for `azure-json` by having serializable models implement `JsonSerializable`.
+- Added new Azure region `Region.ITALY_NORTH`.
 
 ### Breaking Changes
 

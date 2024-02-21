@@ -26,31 +26,37 @@ public class ManagementExceptionTests {
 
     @Test
     public void testDeserialization() throws IOException {
-        final String errorBody = "{\"error\":{\"code\":\"ResourceGroupNotFound\",\"message\":\"Resource group 'rg-not-exist' could not be found.\"}}";
+        final String errorBody
+            = "{\"error\":{\"code\":\"ResourceGroupNotFound\",\"message\":\"Resource group 'rg-not-exist' could not be found.\"}}";
 
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        ManagementError managementError = serializerAdapter.deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+        ManagementError managementError
+            = serializerAdapter.deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
         Assertions.assertEquals("ResourceGroupNotFound", managementError.getCode());
     }
 
     @Test
     public void testSubclassDeserialization() throws IOException {
-        final String errorBody = "{\"error\":{\"code\":\"WepAppError\",\"message\":\"Web app error.\",\"innererror\":\"Deployment error.\",\"details\":[{\"innererror\":\"Inner error.\"}]}}";
+        final String errorBody
+            = "{\"error\":{\"code\":\"WepAppError\",\"message\":\"Web app error.\",\"innererror\":\"Deployment error.\",\"details\":[{\"innererror\":\"Inner error.\"}]}}";
 
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         WebError webError = serializerAdapter.deserialize(errorBody, WebError.class, SerializerEncoding.JSON);
         Assertions.assertEquals("WepAppError", webError.getCode());
 
         // The response is actually not a valid management error response. But still accommodate.
-        final String errorBodyWithoutErrorProperty = "{\"code\":\"ResourceGroupNotFound\",\"message\":\"Resource group 'rg-not-exist' could not be found.\"}";
+        final String errorBodyWithoutErrorProperty
+            = "{\"code\":\"ResourceGroupNotFound\",\"message\":\"Resource group 'rg-not-exist' could not be found.\"}";
 
-        ManagementError managementError = serializerAdapter.deserialize(errorBodyWithoutErrorProperty, ManagementError.class, SerializerEncoding.JSON);
+        ManagementError managementError = serializerAdapter.deserialize(errorBodyWithoutErrorProperty,
+            ManagementError.class, SerializerEncoding.JSON);
         Assertions.assertEquals("ResourceGroupNotFound", managementError.getCode());
     }
 
     @Test
     public void testCaseInsensitiveSubclassDeserialization() throws IOException {
-        final String errorBody = "{\"error\":{\"Code\":\"WepAppError\",\"MESSAGE\":\"Web app error.\",\"Details\":[{\"code\":\"e\"}],\"TaRgeT\":\"foo\"}}";
+        final String errorBody
+            = "{\"error\":{\"Code\":\"WepAppError\",\"MESSAGE\":\"Web app error.\",\"Details\":[{\"code\":\"e\"}],\"TaRgeT\":\"foo\"}}";
 
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         WebError webError = serializerAdapter.deserialize(errorBody, WebError.class, SerializerEncoding.JSON);
@@ -62,10 +68,12 @@ public class ManagementExceptionTests {
 
     @Test
     public void testDeserializationInResource() throws IOException {
-        final String virtualMachineJson = "{\"properties\":{\"instanceView\":{\"patchStatus\":{\"availablePatchSummary\":{\"error\":{}}}}}}";
+        final String virtualMachineJson
+            = "{\"properties\":{\"instanceView\":{\"patchStatus\":{\"availablePatchSummary\":{\"error\":{}}}}}}";
 
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        VirtualMachine virtualMachine = serializerAdapter.deserialize(virtualMachineJson, VirtualMachine.class, SerializerEncoding.JSON);
+        VirtualMachine virtualMachine
+            = serializerAdapter.deserialize(virtualMachineJson, VirtualMachine.class, SerializerEncoding.JSON);
 
         Assertions.assertNotNull(virtualMachine.instanceView.patchStatus.availablePatchSummary.error);
     }
@@ -173,11 +181,8 @@ public class ManagementExceptionTests {
                 .writeMapField("tags", tags(), JsonWriter::writeString);
 
             if (instanceView != null) {
-                jsonWriter.writeStartObject("properties")
-                    .writeJsonField("instanceView", instanceView)
-                    .writeEndObject();
+                jsonWriter.writeStartObject("properties").writeJsonField("instanceView", instanceView).writeEndObject();
             }
-
 
             return jsonWriter.writeEndObject();
         }
@@ -235,9 +240,7 @@ public class ManagementExceptionTests {
 
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            return jsonWriter.writeStartObject()
-                .writeJsonField("patchStatus", patchStatus)
-                .writeEndObject();
+            return jsonWriter.writeStartObject().writeJsonField("patchStatus", patchStatus).writeEndObject();
         }
 
         /**
@@ -295,8 +298,8 @@ public class ManagementExceptionTests {
                     reader.nextToken();
 
                     if ("availablePatchSummary".equals(fieldName)) {
-                        virtualMachinePatchStatus.availablePatchSummary = reader.readObject(
-                            AvailablePatchSummary::fromJson);
+                        virtualMachinePatchStatus.availablePatchSummary
+                            = reader.readObject(AvailablePatchSummary::fromJson);
                     } else {
                         reader.skipChildren();
                     }

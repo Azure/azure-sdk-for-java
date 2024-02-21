@@ -53,10 +53,8 @@ final class AzureAsyncOperationData implements JsonSerializable<AzureAsyncOperat
      * @param locationUrl the value of the Location header, if exists
      */
     AzureAsyncOperationData(HttpMethod lroRequestMethod, URL lroOperationUri, URL pollUrl, URL locationUrl) {
-        this.lroRequestMethod = Objects.requireNonNull(lroRequestMethod,
-            "'lroRequestMethod' cannot be null.");
-        this.lroOperationUri = Objects.requireNonNull(lroOperationUri,
-            "'lroOperationUri' cannot be null.");
+        this.lroRequestMethod = Objects.requireNonNull(lroRequestMethod, "'lroRequestMethod' cannot be null.");
+        this.lroOperationUri = Objects.requireNonNull(lroOperationUri, "'lroOperationUri' cannot be null.");
         this.pollUrl = Objects.requireNonNull(pollUrl, "'pollUrl' cannot be null.");
         this.locationUrl = locationUrl;
         this.provisioningState = ProvisioningState.IN_PROGRESS;
@@ -123,14 +121,14 @@ final class AzureAsyncOperationData implements JsonSerializable<AzureAsyncOperat
                 if ("lroRequestMethod".equals(fieldName)) {
                     azureAsyncOperationData.lroRequestMethod = HttpMethod.valueOf(reader.getString());
                 } else if ("lroOperationUri".equals(fieldName)) {
-                    azureAsyncOperationData.lroOperationUri = reader.getNullable(nonNullReader ->
-                        new URL(nonNullReader.getString()));
+                    azureAsyncOperationData.lroOperationUri
+                        = reader.getNullable(nonNullReader -> new URL(nonNullReader.getString()));
                 } else if ("pollUrl".equals(fieldName)) {
-                    azureAsyncOperationData.pollUrl = reader.getNullable(nonNullReader ->
-                        new URL(nonNullReader.getString()));
+                    azureAsyncOperationData.pollUrl
+                        = reader.getNullable(nonNullReader -> new URL(nonNullReader.getString()));
                 } else if ("locationUrl".equals(fieldName)) {
-                    azureAsyncOperationData.locationUrl = reader.getNullable(nonNullReader ->
-                        new URL(nonNullReader.getString()));
+                    azureAsyncOperationData.locationUrl
+                        = reader.getNullable(nonNullReader -> new URL(nonNullReader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     azureAsyncOperationData.provisioningState = reader.getString();
                 } else if ("pollError".equals(fieldName)) {
@@ -246,9 +244,7 @@ final class AzureAsyncOperationData implements JsonSerializable<AzureAsyncOperat
 
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            return jsonWriter.writeStartObject()
-                .writeStringField("status", provisioningState)
-                .writeEndObject();
+            return jsonWriter.writeStartObject().writeStringField("status", provisioningState).writeEndObject();
         }
 
         /**
@@ -278,4 +274,3 @@ final class AzureAsyncOperationData implements JsonSerializable<AzureAsyncOperat
         }
     }
 }
-
