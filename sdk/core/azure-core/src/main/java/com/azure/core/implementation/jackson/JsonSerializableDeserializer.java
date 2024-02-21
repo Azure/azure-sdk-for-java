@@ -14,40 +14,17 @@ import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
-import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
 
-final class JsonSerializableDeserializer extends StdDeserializer<Object> implements ResolvableDeserializer {
-    private static final long serialVersionUID = -3097250410847767845L;
-
+final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializable<?>> {
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializableDeserializer.class);
-
-    /**
-     * The default mapperAdapter for the current type.
-     */
-    private final JsonDeserializer<?> defaultDeserializer;
 
     private final Class<? extends JsonSerializable<?>> jsonSerializableType;
     private final ReflectiveInvoker readJson;
-
-    @SuppressWarnings("unchecked")
-    private JsonSerializableDeserializer(Class<?> t, JsonDeserializer<?> defaultDeserializer) {
-        super(t);
-        this.defaultDeserializer = defaultDeserializer;
-
-        this.jsonSerializableType = (Class<? extends JsonSerializable<?>>) t;
-        try {
-            this.readJson = ReflectionUtils.getMethodInvoker(t, t.getDeclaredMethod("fromJson", JsonReader.class));
-        } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
-        }
-    }
 
     /**
      * Gets a module wrapping this deserializer as an adapter for the Jackson ObjectMapper.
@@ -56,14 +33,30 @@ final class JsonSerializableDeserializer extends StdDeserializer<Object> impleme
      */
     public static Module getModule() {
         return new SimpleModule().setDeserializerModifier(new BeanDeserializerModifier() {
+            @SuppressWarnings("unchecked")
             @Override
             public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
-                JsonDeserializer<?> serializer) {
+                JsonDeserializer<?> deserializer) {
                 return ReflectionSerializable.supportsJsonSerializable(beanDesc.getBeanClass())
-                    ? new JsonSerializableDeserializer(beanDesc.getBeanClass(), serializer)
-                    : serializer;
+                    ? new JsonSerializableDeserializer((Class<? extends JsonSerializable<?>>) beanDesc.getBeanClass())
+                    : deserializer;
             }
         });
+    }
+
+    /**
+     * Creates an instance of {@link JsonSerializableDeserializer}.
+     *
+     * @param jsonSerializableType The type implementing {@link JsonSerializable} being deserialized.
+     */
+    JsonSerializableDeserializer(Class<? extends JsonSerializable<?>> jsonSerializableType) {
+        this.jsonSerializableType = jsonSerializableType;
+        try {
+            this.readJson = ReflectionUtils.getMethodInvoker(jsonSerializableType,
+                jsonSerializableType.getDeclaredMethod("fromJson", JsonReader.class));
+        } catch (Exception e) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+        }
     }
 
     @Override
@@ -74,10 +67,5 @@ final class JsonSerializableDeserializer extends StdDeserializer<Object> impleme
             IOException ioException = (e instanceof IOException) ? (IOException) e : new IOException(e);
             throw LOGGER.logThrowableAsError(ioException);
         }
-    }
-
-    @Override
-    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
-        ((ResolvableDeserializer) defaultDeserializer).resolve(ctxt);
     }
 }
