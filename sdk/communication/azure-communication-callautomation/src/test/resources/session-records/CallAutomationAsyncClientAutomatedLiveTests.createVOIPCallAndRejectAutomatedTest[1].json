@@ -1,0 +1,122 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "4ed544e4-8e12-4541-b51c-d5760bb63462",
+      "user-agent" : "azsdk-java-azure-communication-identity/1.4.10 (20.0.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-azure-ref" : "20231026T073227Z-t8edrzupp17w99nx5xx1y1aztw00000005pg00000000r4y0",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01, 2023-10-01",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Thu, 26 Oct 2023 07:32:27 GMT",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "X-Processing-Time" : "15ms",
+      "MS-CV" : "Mj7x64U+a0SPh0MfM7CguQ.2.0",
+      "Content-Length" : "101",
+      "Body" : "{\"identity\":{\"id\":\"REDACTED\"}}",
+      "x-ms-client-request-id" : "4ed544e4-8e12-4541-b51c-d5760bb63462",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "863ac2cb-6123-47d5-b777-3007cb294413",
+      "user-agent" : "azsdk-java-azure-communication-identity/1.4.10 (20.0.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-azure-ref" : "20231026T073227Z-t8edrzupp17w99nx5xx1y1aztw00000005pg00000000r51u",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01, 2023-10-01",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Thu, 26 Oct 2023 07:32:29 GMT",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "X-Processing-Time" : "18ms",
+      "MS-CV" : "Xq50ITad2kWMp1xK6hhJlg.2.0",
+      "Content-Length" : "101",
+      "Body" : "{\"identity\":{\"id\":\"REDACTED\"}}",
+      "x-ms-client-request-id" : "863ac2cb-6123-47d5-b777-3007cb294413",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections?api-version=2023-10-15",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "95590aca-ea68-4b16-a7dd-28cb3c539604",
+      "user-agent" : "azsdk-java-azure-communication-callautomation/1.1.0 (20.0.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-azure-ref" : "20231026T073232Z-5xg90dtek91vvahf0h361c0d580000000ec0000000022z72",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Connection" : "keep-alive",
+      "X-Microsoft-Skype-Client" : "azsdk-java-azure-communication-callautomation/1.1.0 (20.0.1; Windows 11; 10.0)",
+      "retry-after" : "0",
+      "Content-Length" : "901",
+      "StatusCode" : "201",
+      "X-Microsoft-Skype-Chain-ID" : "05cbd59c-bd1a-4412-b930-a4d2ae64027f",
+      "Body" : "{\"callConnectionId\":\"411fc800-b7d1-4c17-b11b-78fdbaa1a4e5\",\"targets\":[{\"rawId\":\"REDACTED\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"REDACTED\"}}],\"callConnectionState\":\"connecting\",\"callbackUri\":\"REDACTED\",\"sourceDisplayName\":\"\",\"source\":{\"rawId\":\"REDACTED\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"REDACTED\"}},\"correlationId\":\"05cbd59c-bd1a-4412-b930-a4d2ae64027f\"}",
+      "Date" : "Thu, 26 Oct 2023 07:32:33 GMT",
+      "x-ms-client-request-id" : "95590aca-ea68-4b16-a7dd-28cb3c539604",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections:reject?api-version=2023-10-15",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "ee87e15b-19cd-417c-8a6b-fc8b7590f9d9",
+      "user-agent" : "azsdk-java-azure-communication-callautomation/1.1.0 (20.0.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-azure-ref" : "20231026T073236Z-5xg90dtek91vvahf0h361c0d580000000ec0000000023011",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Connection" : "keep-alive",
+      "X-Microsoft-Skype-Client" : "azsdk-java-azure-communication-callautomation/1.1.0 (20.0.1; Windows 11; 10.0)",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "X-Microsoft-Skype-Chain-ID" : "05cbd59c-bd1a-4412-b930-a4d2ae64027f",
+      "Date" : "Thu, 26 Oct 2023 07:32:36 GMT",
+      "x-ms-client-request-id" : "ee87e15b-19cd-417c-8a6b-fc8b7590f9d9"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/411fc800-b7d1-4c17-b11b-78fdbaa1a4e5?api-version=2023-10-15",
+    "Headers" : {
+      "x-ms-client-request-id" : "9b5cbfb4-68ad-40b4-a8c2-33a177d537e2",
+      "user-agent" : "azsdk-java-azure-communication-callautomation/1.1.0 (20.0.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-azure-ref" : "20231026T073237Z-rea5uwam7949bcf7tfst339vg0000000024000000000gg48",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Connection" : "keep-alive",
+      "X-Microsoft-Skype-Client" : "azsdk-java-azure-communication-callautomation/1.1.0 (20.0.1; Windows 11; 10.0)",
+      "retry-after" : "0",
+      "Content-Length" : "53",
+      "StatusCode" : "404",
+      "X-Microsoft-Skype-Chain-ID" : "32d948f3-a5f5-475d-90d9-028502e2ac87",
+      "Body" : "{\"error\":{\"code\":\"8522\",\"message\":\"Call not found.\"}}",
+      "Date" : "Thu, 26 Oct 2023 07:32:37 GMT",
+      "x-ms-client-request-id" : "9b5cbfb4-68ad-40b4-a8c2-33a177d537e2",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

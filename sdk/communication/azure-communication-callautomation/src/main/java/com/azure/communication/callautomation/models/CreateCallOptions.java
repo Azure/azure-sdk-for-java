@@ -3,8 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.util.HashMap;
-
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -32,22 +30,6 @@ public final class CreateCallOptions {
      */
     private String operationContext;
 
-   /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
-
-    /**
-     * Transcription Configuration.
-     */
-    private TranscriptionOptions transcriptionOptions;
-
-    /**
-     * Custom Context
-     */
-    private final CustomCallingContext customContext;
-
     /**
      * Constructor
      * @param callInvite Call invitee information.
@@ -56,7 +38,6 @@ public final class CreateCallOptions {
     public CreateCallOptions(CallInvite callInvite, String callbackUrl) {
         this.callInvite = callInvite;
         this.callbackUrl = callbackUrl;
-        this.customContext = new CustomCallingContext(new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     /**
@@ -69,16 +50,6 @@ public final class CreateCallOptions {
     }
 
     /**
-     * Get the Transcription configuration.
-     *
-     * @return the transcriptionConfiguration.
-     */
-    public TranscriptionOptions getTranscriptionConfiguration() {
-        return transcriptionOptions;
-    }
-
-
-    /**
      * Set the operationContext: A customer set value used to track the answering of a call.
      *
      * @param operationContext A customer set value used to track the answering of a call.
@@ -86,17 +57,6 @@ public final class CreateCallOptions {
      */
     public CreateCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Set the transcription configuration.
-     *
-     * @param transcriptionOptions The transcription configuration.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
-        this.transcriptionOptions = transcriptionOptions;
         return this;
     }
 
@@ -135,33 +95,5 @@ public final class CreateCallOptions {
     public CreateCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
-    }
-
-    /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming configuration.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
-    }
-
-    /**
-     *  get custom context
-     * @return custom context
-     */
-    public CustomCallingContext getCustomContext() {
-        return customContext;
     }
 }

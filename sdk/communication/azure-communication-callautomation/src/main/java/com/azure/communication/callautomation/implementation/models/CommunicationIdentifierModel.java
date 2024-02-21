@@ -44,6 +44,9 @@ public final class CommunicationIdentifierModel {
     @JsonProperty(value = "microsoftTeamsUser")
     private MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
 
+    /** Creates an instance of CommunicationIdentifierModel class. */
+    public CommunicationIdentifierModel() {}
+
     /**
      * Get the kind property: The identifier kind. Only required in responses.
      *

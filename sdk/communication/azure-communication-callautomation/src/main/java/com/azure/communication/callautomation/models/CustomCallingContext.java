@@ -58,7 +58,7 @@ public final class CustomCallingContext {
     public void addSipUui(String value) {
         if (sipHeaders == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Cannot add sip header, SipHeaders is null."));
+                "Cannot add sip uui header, SipHeaders is null."));
         }
         sipHeaders.put("User-To-User", value);
     }
@@ -74,7 +74,7 @@ public final class CustomCallingContext {
     public void addSipX(String key, String value) {
         if (sipHeaders == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Cannot add sip header, SipHeaders is null."));
+                "Cannot add sip x header, SipHeaders is null."));
         }
         sipHeaders.put("X-MS-Custom-" + key, value);
     }
@@ -88,9 +88,9 @@ public final class CustomCallingContext {
      * @throws IllegalStateException If voipHeaders is null
      */
     public void addVoip(String key, String value) {
-        if (sipHeaders == null) {
+        if (voipHeaders == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Cannot add sip header, VoipHeaders is null."));
+                "Cannot add voip header, VoipHeaders is null."));
         }
         voipHeaders.put(key, value);
     }
