@@ -318,9 +318,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAudioSpeech(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> generateSpeechFromText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData audioSpeechOptions,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData speechGenerationOptions,
             RequestOptions requestOptions, Context context);
 
         @Post("/deployments/{deploymentId}/audio/speech")
@@ -329,9 +329,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAudioSpeechSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> generateSpeechFromTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData audioSpeechOptions,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData speechGenerationOptions,
             RequestOptions requestOptions, Context context);
 
         @Post("/deployments/{deploymentId}/embeddings")
@@ -1557,8 +1557,8 @@ public final class OpenAIClientImpl {
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param audioSpeechOptions A representation of the request options that control the behavior of a text-to-speech
-     * operation.
+     * @param speechGenerationOptions A representation of the request options that control the behavior of a
+     * text-to-speech operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1567,12 +1567,12 @@ public final class OpenAIClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioSpeechWithResponseAsync(String deploymentOrModelName,
-        BinaryData audioSpeechOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> generateSpeechFromTextWithResponseAsync(String deploymentOrModelName,
+        BinaryData speechGenerationOptions, RequestOptions requestOptions) {
         final String accept = "application/octet-stream, application/json";
-        return FluxUtil
-            .withContext(context -> service.getAudioSpeech(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, audioSpeechOptions, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.generateSpeechFromText(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                deploymentOrModelName, accept, speechGenerationOptions, requestOptions, context));
     }
 
     /**
@@ -1597,8 +1597,8 @@ public final class OpenAIClientImpl {
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param audioSpeechOptions A representation of the request options that control the behavior of a text-to-speech
-     * operation.
+     * @param speechGenerationOptions A representation of the request options that control the behavior of a
+     * text-to-speech operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1607,11 +1607,11 @@ public final class OpenAIClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioSpeechWithResponse(String deploymentOrModelName, BinaryData audioSpeechOptions,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> generateSpeechFromTextWithResponse(String deploymentOrModelName,
+        BinaryData speechGenerationOptions, RequestOptions requestOptions) {
         final String accept = "application/octet-stream, application/json";
-        return service.getAudioSpeechSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, audioSpeechOptions, requestOptions, Context.NONE);
+        return service.generateSpeechFromTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            deploymentOrModelName, accept, speechGenerationOptions, requestOptions, Context.NONE);
     }
 
     /**

@@ -15,7 +15,6 @@ import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
-import com.azure.ai.openai.models.AudioSpeechOptions;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
@@ -28,6 +27,7 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
+import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -683,14 +683,8 @@ public final class OpenAIAsyncClient {
     public Mono<ChatCompletions> getChatCompletions(String deploymentOrModelName,
         ChatCompletionsOptions chatCompletionsOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
-            return getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions, requestOptions)
-                .flatMap(FluxUtil::toMono);
-        } else {
-            return getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
-                BinaryData.fromObject(chatCompletionsOptions), requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
-        }
+        return getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -715,16 +709,9 @@ public final class OpenAIAsyncClient {
         ChatCompletionsOptions chatCompletionsOptions) {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
-        Flux<ByteBuffer> responseStream;
-        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
-            responseStream
-                = getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
-                    requestOptions).flatMapMany(response -> response.getValue().toFluxByteBuffer());
-        } else {
-            responseStream = getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
-                BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                .flatMapMany(response -> response.getValue().toFluxByteBuffer());
-        }
+        Flux<ByteBuffer> responseStream
+            = getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
+                requestOptions).flatMapMany(response -> response.getValue().toFluxByteBuffer());
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream
             = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return chatCompletionsStream.getEvents();
@@ -1388,8 +1375,8 @@ public final class OpenAIAsyncClient {
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param audioSpeechOptions A representation of the request options that control the behavior of a text-to-speech
-     * operation.
+     * @param speechGenerationOptions A representation of the request options that control the behavior of a
+     * text-to-speech operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1399,10 +1386,10 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioSpeechWithResponse(String deploymentOrModelName,
-        BinaryData audioSpeechOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getAudioSpeechWithResponseAsync(deploymentOrModelName, audioSpeechOptions,
-            requestOptions);
+    public Mono<Response<BinaryData>> generateSpeechFromTextWithResponse(String deploymentOrModelName,
+        BinaryData speechGenerationOptions, RequestOptions requestOptions) {
+        return this.serviceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName,
+            speechGenerationOptions, requestOptions);
     }
 
     /**
@@ -1410,8 +1397,8 @@ public final class OpenAIAsyncClient {
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param audioSpeechOptions A representation of the request options that control the behavior of a text-to-speech
-     * operation.
+     * @param speechGenerationOptions A representation of the request options that control the behavior of a
+     * text-to-speech operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1422,10 +1409,11 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getAudioSpeech(String deploymentOrModelName, AudioSpeechOptions audioSpeechOptions) {
-        // Generated convenience method for getAudioSpeechWithResponse
+    public Mono<BinaryData> generateSpeechFromText(String deploymentOrModelName,
+        SpeechGenerationOptions speechGenerationOptions) {
+        // Generated convenience method for generateSpeechFromTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioSpeechWithResponse(deploymentOrModelName, BinaryData.fromObject(audioSpeechOptions),
+        return generateSpeechFromTextWithResponse(deploymentOrModelName, BinaryData.fromObject(speechGenerationOptions),
             requestOptions).flatMap(FluxUtil::toMono);
     }
 }

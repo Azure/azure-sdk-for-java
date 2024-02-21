@@ -7,8 +7,8 @@ import com.azure.ai.openai.functions.MyFunctionCallArguments;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranslationFormat;
-import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration;
-import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionParameters;
+import com.azure.ai.openai.models.AzureSearchChatExtensionConfiguration;
+import com.azure.ai.openai.models.AzureSearchChatExtensionParameters;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
@@ -121,8 +121,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsWithResponseBadDeployment(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getCompletionsRunner((_deploymentId, prompt) -> {
-            String deploymentId = "BAD_DEPLOYMENT_ID";
+        getCompletionsRunner((deploymentId, prompt) -> {
+            deploymentId = "BAD_DEPLOYMENT_ID";
             StepVerifier.create(client.getCompletionsWithResponse(deploymentId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()))
                 .verifyErrorSatisfies(throwable -> {
@@ -162,7 +162,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             completionsOptions.setMaxTokens(3);
             StepVerifier.create(client.getCompletions(modelId, completionsOptions))
                 .assertNext(resultCompletions ->
-                    assertCompletions(1, "length", resultCompletions))
+                    assertCompletions(1, resultCompletions))
                 .verifyComplete();
         });
     }
@@ -433,15 +433,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
-            AzureCognitiveSearchChatExtensionParameters searchParameters = new AzureCognitiveSearchChatExtensionParameters(
+            AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
                     "https://openaisdktestsearch.search.windows.net",
                     "openai-test-index-carbon-wiki"
             );
             searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
-            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-                    new AzureCognitiveSearchChatExtensionConfiguration(
-                            searchParameters
-                    );
+            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                    new AzureSearchChatExtensionConfiguration(searchParameters);
 
             chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
 
@@ -457,15 +455,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
-            AzureCognitiveSearchChatExtensionParameters searchParameters = new AzureCognitiveSearchChatExtensionParameters(
+            AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
                     "https://openaisdktestsearch.search.windows.net",
                     "openai-test-index-carbon-wiki"
             );
             searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
-            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-                    new AzureCognitiveSearchChatExtensionConfiguration(
-                            searchParameters
-                    );
+            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                    new AzureSearchChatExtensionConfiguration(searchParameters);
 
             chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
 
@@ -736,7 +732,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsToolCall(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getChatWithToolCallRunnerForAzure((modelId, chatCompletionsOptions) ->
+        getChatWithToolCallRunner((modelId, chatCompletionsOptions) ->
             StepVerifier.create(
                 client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions())
                     .flatMap(response -> {
@@ -781,7 +777,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsToolCallStreaming(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getChatWithToolCallRunnerForAzure((modelId, chatCompletionsOptions) -> {
+        getChatWithToolCallRunner((modelId, chatCompletionsOptions) -> {
             StepVerifier.create(client.getChatCompletionsStream(modelId, chatCompletionsOptions)
                     .collectList()
                     .flatMapMany(chatCompletionsStream -> {

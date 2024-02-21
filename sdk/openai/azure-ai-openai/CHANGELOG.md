@@ -4,12 +4,36 @@
 
 ### Features Added
 
+- Text-to-speech using OpenAI TTS models is now supported. See [OpenAI's API reference](https://platform.openai.com/docs/api-reference/audio/createSpeech) 
+  or the [Azure OpenAI quickstart](https://learn.microsoft.com/azure/ai-services/openai/text-to-speech-quickstart)
+  for detailed overview and background information. The new method `generateSpeechFromText` exposes this capability on 
+  `OpenAIClient`. Text-to-speech converts text into lifelike spoken audio in a chosen voice, together with other optional
+  configurations. This method works for both Azure OpenAI and non-Azure `api.openai.com` client configurations.
+
 ### Breaking Changes
 
+"On Your Data" changes:
+
+- Introduced a new type `AzureChatExtensionDataSourceResponseCitation` for a more structured representation of citation data.
+- Correspondingly, updated `AzureChatExtensionsMessageContext`:
+  - Replaced `messages` with `citations` of type `AzureChatExtensionDataSourceResponseCitation`.
+  - Added `intent` as a string type.
+- Renamed "AzureCognitiveSearch" to "AzureSearch":
+  - `AzureCognitiveSearchChatExtensionConfiguration` is now `AzureSearchChatExtensionConfiguration`.
+  - `AzureCognitiveSearchIndexFieldMappingOptions` is now `AzureSearchIndexFieldMappingOptions`.
+  - `AzureCognitiveSearchQueryType` is now `AzureSearchQueryType`.
+- Replaced `String` property `name` by `ChatCompletionsFunctionToolSelection` property `function` in `ChatCompletionsNamedFunctionToolSelection`
+
 ### Bugs Fixed
-- Made the `getContent` method in `ChatRequestUserMessage` class public.
 
 ### Other Changes
+
+- Made the `getContent` a public method in `ChatRequestUserMessage` class. ([#38805](https://github.com/Azure/azure-sdk-for-java/pull/38805))
+- Added a new property `logprobs` in `ChatChoice` class to support log probabilities for this chat choice.
+- Added new properties `logprobs` and `topLogprobs` in `ChatCompletionsOptions` class to support log probabilities for chat completions.
+- Added a new property `inputType` in `EmbeddingsOptions` class to support embeddings for different input types 
+  when using Azure OpenAI, specifies the input type to use for embedding search.
+- Dropped service API version support for `2023-08-01-preview`, `2023-09-01-preview` and `2023-12-01-preview`.
 
 ## 1.0.0-beta.6 (2023-12-11)
 
