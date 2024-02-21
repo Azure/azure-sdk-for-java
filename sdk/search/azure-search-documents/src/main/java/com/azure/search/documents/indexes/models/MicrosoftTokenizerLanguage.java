@@ -6,223 +6,135 @@
 
 package com.azure.search.documents.indexes.models;
 
-/**
- * Lists the languages supported by the Microsoft language tokenizer.
- */
+/** Lists the languages supported by the Microsoft language tokenizer. */
 public enum MicrosoftTokenizerLanguage {
-    /**
-     * Selects the Microsoft tokenizer for Bangla.
-     */
+    /** Selects the Microsoft tokenizer for Bangla. */
     BANGLA("bangla"),
 
-    /**
-     * Selects the Microsoft tokenizer for Bulgarian.
-     */
+    /** Selects the Microsoft tokenizer for Bulgarian. */
     BULGARIAN("bulgarian"),
 
-    /**
-     * Selects the Microsoft tokenizer for Catalan.
-     */
+    /** Selects the Microsoft tokenizer for Catalan. */
     CATALAN("catalan"),
 
-    /**
-     * Selects the Microsoft tokenizer for Chinese (Simplified).
-     */
+    /** Selects the Microsoft tokenizer for Chinese (Simplified). */
     CHINESE_SIMPLIFIED("chineseSimplified"),
 
-    /**
-     * Selects the Microsoft tokenizer for Chinese (Traditional).
-     */
+    /** Selects the Microsoft tokenizer for Chinese (Traditional). */
     CHINESE_TRADITIONAL("chineseTraditional"),
 
-    /**
-     * Selects the Microsoft tokenizer for Croatian.
-     */
+    /** Selects the Microsoft tokenizer for Croatian. */
     CROATIAN("croatian"),
 
-    /**
-     * Selects the Microsoft tokenizer for Czech.
-     */
+    /** Selects the Microsoft tokenizer for Czech. */
     CZECH("czech"),
 
-    /**
-     * Selects the Microsoft tokenizer for Danish.
-     */
+    /** Selects the Microsoft tokenizer for Danish. */
     DANISH("danish"),
 
-    /**
-     * Selects the Microsoft tokenizer for Dutch.
-     */
+    /** Selects the Microsoft tokenizer for Dutch. */
     DUTCH("dutch"),
 
-    /**
-     * Selects the Microsoft tokenizer for English.
-     */
+    /** Selects the Microsoft tokenizer for English. */
     ENGLISH("english"),
 
-    /**
-     * Selects the Microsoft tokenizer for French.
-     */
+    /** Selects the Microsoft tokenizer for French. */
     FRENCH("french"),
 
-    /**
-     * Selects the Microsoft tokenizer for German.
-     */
+    /** Selects the Microsoft tokenizer for German. */
     GERMAN("german"),
 
-    /**
-     * Selects the Microsoft tokenizer for Greek.
-     */
+    /** Selects the Microsoft tokenizer for Greek. */
     GREEK("greek"),
 
-    /**
-     * Selects the Microsoft tokenizer for Gujarati.
-     */
+    /** Selects the Microsoft tokenizer for Gujarati. */
     GUJARATI("gujarati"),
 
-    /**
-     * Selects the Microsoft tokenizer for Hindi.
-     */
+    /** Selects the Microsoft tokenizer for Hindi. */
     HINDI("hindi"),
 
-    /**
-     * Selects the Microsoft tokenizer for Icelandic.
-     */
+    /** Selects the Microsoft tokenizer for Icelandic. */
     ICELANDIC("icelandic"),
 
-    /**
-     * Selects the Microsoft tokenizer for Indonesian.
-     */
+    /** Selects the Microsoft tokenizer for Indonesian. */
     INDONESIAN("indonesian"),
 
-    /**
-     * Selects the Microsoft tokenizer for Italian.
-     */
+    /** Selects the Microsoft tokenizer for Italian. */
     ITALIAN("italian"),
 
-    /**
-     * Selects the Microsoft tokenizer for Japanese.
-     */
+    /** Selects the Microsoft tokenizer for Japanese. */
     JAPANESE("japanese"),
 
-    /**
-     * Selects the Microsoft tokenizer for Kannada.
-     */
+    /** Selects the Microsoft tokenizer for Kannada. */
     KANNADA("kannada"),
 
-    /**
-     * Selects the Microsoft tokenizer for Korean.
-     */
+    /** Selects the Microsoft tokenizer for Korean. */
     KOREAN("korean"),
 
-    /**
-     * Selects the Microsoft tokenizer for Malay.
-     */
+    /** Selects the Microsoft tokenizer for Malay. */
     MALAY("malay"),
 
-    /**
-     * Selects the Microsoft tokenizer for Malayalam.
-     */
+    /** Selects the Microsoft tokenizer for Malayalam. */
     MALAYALAM("malayalam"),
 
-    /**
-     * Selects the Microsoft tokenizer for Marathi.
-     */
+    /** Selects the Microsoft tokenizer for Marathi. */
     MARATHI("marathi"),
 
-    /**
-     * Selects the Microsoft tokenizer for Norwegian (Bokmål).
-     */
+    /** Selects the Microsoft tokenizer for Norwegian (Bokmål). */
     NORWEGIAN_BOKMAAL("norwegianBokmaal"),
 
-    /**
-     * Selects the Microsoft tokenizer for Polish.
-     */
+    /** Selects the Microsoft tokenizer for Polish. */
     POLISH("polish"),
 
-    /**
-     * Selects the Microsoft tokenizer for Portuguese.
-     */
+    /** Selects the Microsoft tokenizer for Portuguese. */
     PORTUGUESE("portuguese"),
 
-    /**
-     * Selects the Microsoft tokenizer for Portuguese (Brazil).
-     */
+    /** Selects the Microsoft tokenizer for Portuguese (Brazil). */
     PORTUGUESE_BRAZILIAN("portugueseBrazilian"),
 
-    /**
-     * Selects the Microsoft tokenizer for Punjabi.
-     */
+    /** Selects the Microsoft tokenizer for Punjabi. */
     PUNJABI("punjabi"),
 
-    /**
-     * Selects the Microsoft tokenizer for Romanian.
-     */
+    /** Selects the Microsoft tokenizer for Romanian. */
     ROMANIAN("romanian"),
 
-    /**
-     * Selects the Microsoft tokenizer for Russian.
-     */
+    /** Selects the Microsoft tokenizer for Russian. */
     RUSSIAN("russian"),
 
-    /**
-     * Selects the Microsoft tokenizer for Serbian (Cyrillic).
-     */
+    /** Selects the Microsoft tokenizer for Serbian (Cyrillic). */
     SERBIAN_CYRILLIC("serbianCyrillic"),
 
-    /**
-     * Selects the Microsoft tokenizer for Serbian (Latin).
-     */
+    /** Selects the Microsoft tokenizer for Serbian (Latin). */
     SERBIAN_LATIN("serbianLatin"),
 
-    /**
-     * Selects the Microsoft tokenizer for Slovenian.
-     */
+    /** Selects the Microsoft tokenizer for Slovenian. */
     SLOVENIAN("slovenian"),
 
-    /**
-     * Selects the Microsoft tokenizer for Spanish.
-     */
+    /** Selects the Microsoft tokenizer for Spanish. */
     SPANISH("spanish"),
 
-    /**
-     * Selects the Microsoft tokenizer for Swedish.
-     */
+    /** Selects the Microsoft tokenizer for Swedish. */
     SWEDISH("swedish"),
 
-    /**
-     * Selects the Microsoft tokenizer for Tamil.
-     */
+    /** Selects the Microsoft tokenizer for Tamil. */
     TAMIL("tamil"),
 
-    /**
-     * Selects the Microsoft tokenizer for Telugu.
-     */
+    /** Selects the Microsoft tokenizer for Telugu. */
     TELUGU("telugu"),
 
-    /**
-     * Selects the Microsoft tokenizer for Thai.
-     */
+    /** Selects the Microsoft tokenizer for Thai. */
     THAI("thai"),
 
-    /**
-     * Selects the Microsoft tokenizer for Ukrainian.
-     */
+    /** Selects the Microsoft tokenizer for Ukrainian. */
     UKRAINIAN("ukrainian"),
 
-    /**
-     * Selects the Microsoft tokenizer for Urdu.
-     */
+    /** Selects the Microsoft tokenizer for Urdu. */
     URDU("urdu"),
 
-    /**
-     * Selects the Microsoft tokenizer for Vietnamese.
-     */
+    /** Selects the Microsoft tokenizer for Vietnamese. */
     VIETNAMESE("vietnamese");
 
-    /**
-     * The actual serialized value for a MicrosoftTokenizerLanguage instance.
-     */
+    /** The actual serialized value for a MicrosoftTokenizerLanguage instance. */
     private final String value;
 
     MicrosoftTokenizerLanguage(String value) {
@@ -231,7 +143,7 @@ public enum MicrosoftTokenizerLanguage {
 
     /**
      * Parses a serialized value to a MicrosoftTokenizerLanguage instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed MicrosoftTokenizerLanguage object, or null if unable to parse.
      */
@@ -248,9 +160,7 @@ public enum MicrosoftTokenizerLanguage {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

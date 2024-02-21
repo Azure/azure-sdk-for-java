@@ -11,62 +11,51 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Projection definition for what data to store in Azure Files.
- */
+/** Projection definition for what data to store in Azure Files. */
 @Fluent
 public final class SearchIndexerKnowledgeStoreFileProjectionSelector
-    extends SearchIndexerKnowledgeStoreBlobProjectionSelector {
+        extends SearchIndexerKnowledgeStoreBlobProjectionSelector {
     /**
      * Creates an instance of SearchIndexerKnowledgeStoreFileProjectionSelector class.
-     * 
+     *
      * @param storageContainer the storageContainer value to set.
      */
     public SearchIndexerKnowledgeStoreFileProjectionSelector(String storageContainer) {
         super(storageContainer);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SearchIndexerKnowledgeStoreFileProjectionSelector setReferenceKeyName(String referenceKeyName) {
         super.setReferenceKeyName(referenceKeyName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SearchIndexerKnowledgeStoreFileProjectionSelector setGeneratedKeyName(String generatedKeyName) {
         super.setGeneratedKeyName(generatedKeyName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SearchIndexerKnowledgeStoreFileProjectionSelector setSource(String source) {
         super.setSource(source);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SearchIndexerKnowledgeStoreFileProjectionSelector setSourceContext(String sourceContext) {
         super.setSourceContext(sourceContext);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SearchIndexerKnowledgeStoreFileProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         super.setInputs(inputs);
@@ -87,55 +76,65 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
 
     /**
      * Reads an instance of SearchIndexerKnowledgeStoreFileProjectionSelector from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerKnowledgeStoreFileProjectionSelector if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
+     *     instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStoreFileProjectionSelector.
      */
     public static SearchIndexerKnowledgeStoreFileProjectionSelector fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean storageContainerFound = false;
-            String storageContainer = null;
-            String referenceKeyName = null;
-            String generatedKeyName = null;
-            String source = null;
-            String sourceContext = null;
-            List<InputFieldMappingEntry> inputs = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean storageContainerFound = false;
+                    String storageContainer = null;
+                    String referenceKeyName = null;
+                    String generatedKeyName = null;
+                    String source = null;
+                    String sourceContext = null;
+                    List<InputFieldMappingEntry> inputs = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("storageContainer".equals(fieldName)) {
-                    storageContainer = reader.getString();
-                    storageContainerFound = true;
-                } else if ("referenceKeyName".equals(fieldName)) {
-                    referenceKeyName = reader.getString();
-                } else if ("generatedKeyName".equals(fieldName)) {
-                    generatedKeyName = reader.getString();
-                } else if ("source".equals(fieldName)) {
-                    source = reader.getString();
-                } else if ("sourceContext".equals(fieldName)) {
-                    sourceContext = reader.getString();
-                } else if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (storageContainerFound) {
-                SearchIndexerKnowledgeStoreFileProjectionSelector deserializedSearchIndexerKnowledgeStoreFileProjectionSelector
-                    = new SearchIndexerKnowledgeStoreFileProjectionSelector(storageContainer);
-                deserializedSearchIndexerKnowledgeStoreFileProjectionSelector.setReferenceKeyName(referenceKeyName);
-                deserializedSearchIndexerKnowledgeStoreFileProjectionSelector.setGeneratedKeyName(generatedKeyName);
-                deserializedSearchIndexerKnowledgeStoreFileProjectionSelector.setSource(source);
-                deserializedSearchIndexerKnowledgeStoreFileProjectionSelector.setSourceContext(sourceContext);
-                deserializedSearchIndexerKnowledgeStoreFileProjectionSelector.setInputs(inputs);
+                        if ("storageContainer".equals(fieldName)) {
+                            storageContainer = reader.getString();
+                            storageContainerFound = true;
+                        } else if ("referenceKeyName".equals(fieldName)) {
+                            referenceKeyName = reader.getString();
+                        } else if ("generatedKeyName".equals(fieldName)) {
+                            generatedKeyName = reader.getString();
+                        } else if ("source".equals(fieldName)) {
+                            source = reader.getString();
+                        } else if ("sourceContext".equals(fieldName)) {
+                            sourceContext = reader.getString();
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (storageContainerFound) {
+                        SearchIndexerKnowledgeStoreFileProjectionSelector
+                                deserializedSearchIndexerKnowledgeStoreFileProjectionSelector =
+                                        new SearchIndexerKnowledgeStoreFileProjectionSelector(storageContainer);
+                        deserializedSearchIndexerKnowledgeStoreFileProjectionSelector.setReferenceKeyName(
+                                referenceKeyName);
+                        deserializedSearchIndexerKnowledgeStoreFileProjectionSelector.setGeneratedKeyName(
+                                generatedKeyName);
+                        deserializedSearchIndexerKnowledgeStoreFileProjectionSelector.setSource(source);
+                        deserializedSearchIndexerKnowledgeStoreFileProjectionSelector.setSourceContext(sourceContext);
+                        deserializedSearchIndexerKnowledgeStoreFileProjectionSelector.setInputs(inputs);
 
-                return deserializedSearchIndexerKnowledgeStoreFileProjectionSelector;
-            }
-            throw new IllegalStateException("Missing required property: storageContainer");
-        });
+                        return deserializedSearchIndexerKnowledgeStoreFileProjectionSelector;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!storageContainerFound) {
+                        missingProperties.add("storageContainer");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

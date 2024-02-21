@@ -12,10 +12,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Provides parameter values to a tag scoring function.
- */
+/** Provides parameter values to a tag scoring function. */
 @Immutable
 public final class TagScoringParameters implements JsonSerializable<TagScoringParameters> {
     /*
@@ -26,7 +26,7 @@ public final class TagScoringParameters implements JsonSerializable<TagScoringPa
 
     /**
      * Creates an instance of TagScoringParameters class.
-     * 
+     *
      * @param tagsParameter the tagsParameter value to set.
      */
     public TagScoringParameters(String tagsParameter) {
@@ -34,9 +34,9 @@ public final class TagScoringParameters implements JsonSerializable<TagScoringPa
     }
 
     /**
-     * Get the tagsParameter property: The name of the parameter passed in search queries to specify the list of tags
-     * to compare against the target field.
-     * 
+     * Get the tagsParameter property: The name of the parameter passed in search queries to specify the list of tags to
+     * compare against the target field.
+     *
      * @return the tagsParameter value.
      */
     public String getTagsParameter() {
@@ -52,32 +52,41 @@ public final class TagScoringParameters implements JsonSerializable<TagScoringPa
 
     /**
      * Reads an instance of TagScoringParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of TagScoringParameters if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TagScoringParameters.
      */
     public static TagScoringParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean tagsParameterFound = false;
-            String tagsParameter = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean tagsParameterFound = false;
+                    String tagsParameter = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("tagsParameter".equals(fieldName)) {
-                    tagsParameter = reader.getString();
-                    tagsParameterFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (tagsParameterFound) {
-                return new TagScoringParameters(tagsParameter);
-            }
-            throw new IllegalStateException("Missing required property: tagsParameter");
-        });
+                        if ("tagsParameter".equals(fieldName)) {
+                            tagsParameter = reader.getString();
+                            tagsParameterFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (tagsParameterFound) {
+                        TagScoringParameters deserializedTagScoringParameters = new TagScoringParameters(tagsParameter);
+
+                        return deserializedTagScoringParameters;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!tagsParameterFound) {
+                        missingProperties.add("tagsParameter");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

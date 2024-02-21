@@ -9,9 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * Defines the names of all token filters supported by the search engine.
- */
+/** Defines the names of all token filters supported by the search engine. */
 public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName> {
     /**
      * A token filter that applies the Arabic normalizer to normalize the orthography. See
@@ -114,7 +112,7 @@ public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName>
 
     /**
      * Normalizes token text to lower case. See
-     * https://lucene.apache.org/core/6_6_1/analyzers-common/org/apache/lucene/analysis/core/LowerCaseFilter.html.
+     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/core/LowerCaseFilter.htm.
      */
     public static final TokenFilterName LOWERCASE = fromString("lowercase");
 
@@ -210,27 +208,24 @@ public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName>
 
     /**
      * Normalizes token text to upper case. See
-     * https://lucene.apache.org/core/6_6_1/analyzers-common/org/apache/lucene/analysis/core/UpperCaseFilter.html.
+     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/core/UpperCaseFilter.html.
      */
     public static final TokenFilterName UPPERCASE = fromString("uppercase");
 
-    /**
-     * Splits words into subwords and performs optional transformations on subword groups.
-     */
+    /** Splits words into subwords and performs optional transformations on subword groups. */
     public static final TokenFilterName WORD_DELIMITER = fromString("word_delimiter");
 
     /**
      * Creates a new instance of TokenFilterName value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public TokenFilterName() {
-    }
+    public TokenFilterName() {}
 
     /**
      * Creates or finds a TokenFilterName from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding TokenFilterName.
      */
@@ -240,7 +235,7 @@ public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName>
 
     /**
      * Gets known TokenFilterName values.
-     * 
+     *
      * @return known TokenFilterName values.
      */
     public static Collection<TokenFilterName> values() {

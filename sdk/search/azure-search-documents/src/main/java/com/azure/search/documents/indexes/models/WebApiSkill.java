@@ -10,16 +10,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.indexes.implementation.CoreToCodegenBridgeUtils;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-/**
- * A skill that can call a Web API endpoint, allowing you to extend a skillset by having it call your custom code.
- */
+/** A skill that can call a Web API endpoint, allowing you to extend a skillset by having it call your custom code. */
 @Fluent
 public final class WebApiSkill extends SearchIndexerSkill {
     /*
@@ -51,22 +49,6 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * If set, the number of parallel calls that can be made to the Web API.
      */
     private Integer degreeOfParallelism;
-
-    /*
-     * Applies to custom skills that connect to external code in an Azure function or some other application that
-     * provides the transformations. This value should be the application ID created for the function or app when it
-     * was registered with Microsoft Entra ID. When specified, the custom skill connects to the function or app
-     * using a managed ID (either system or user-assigned) of the search service and the access token of the function
-     * or app, using this value as the resource id for creating the scope of the access token.
-     */
-    private String authResourceId;
-
-    /*
-     * The user-assigned managed identity used for outbound connections. If an authResourceId is provided and it's not
-     * specified, the system-assigned managed identity is used. On updates to the indexer, if the identity is
-     * unspecified, the value remains unchanged. If set to "none", the value of this property is cleared.
-     */
-    private SearchIndexerDataIdentity authIdentity;
 
     /**
      * Creates an instance of WebApiSkill class.
@@ -189,83 +171,21 @@ public final class WebApiSkill extends SearchIndexerSkill {
         return this;
     }
 
-    /**
-     * Get the authResourceId property: Applies to custom skills that connect to external code in an Azure function or
-     * some other application that provides the transformations. This value should be the application ID created for
-     * the function or app when it was registered with Microsoft Entra ID. When specified, the custom skill
-     * connects to the function or app using a managed ID (either system or user-assigned) of the search service and
-     * the access token of the function or app, using this value as the resource id for creating the scope of the
-     * access token.
-     *
-     * @return the authResourceId value.
-     */
-    public String getAuthResourceId() {
-        return this.authResourceId;
-    }
-
-    /**
-     * Set the authResourceId property: Applies to custom skills that connect to external code in an Azure function or
-     * some other application that provides the transformations. This value should be the application ID created for
-     * the function or app when it was registered with Microsoft Entra ID. When specified, the custom skill
-     * connects to the function or app using a managed ID (either system or user-assigned) of the search service and
-     * the access token of the function or app, using this value as the resource id for creating the scope of the
-     * access token.
-     *
-     * @param authResourceId the authResourceId value to set.
-     * @return the WebApiSkill object itself.
-     */
-    public WebApiSkill setAuthResourceId(String authResourceId) {
-        this.authResourceId = authResourceId;
-        return this;
-    }
-
-    /**
-     * Get the authIdentity property: The user-assigned managed identity used for outbound connections. If an
-     * authResourceId is provided and it's not specified, the system-assigned managed identity is used. On updates to
-     * the indexer, if the identity is unspecified, the value remains unchanged. If set to "none", the value of this
-     * property is cleared.
-     *
-     * @return the authIdentity value.
-     */
-    public SearchIndexerDataIdentity getAuthIdentity() {
-        return this.authIdentity;
-    }
-
-    /**
-     * Set the authIdentity property: The user-assigned managed identity used for outbound connections. If an
-     * authResourceId is provided and it's not specified, the system-assigned managed identity is used. On updates to
-     * the indexer, if the identity is unspecified, the value remains unchanged. If set to "none", the value of this
-     * property is cleared.
-     *
-     * @param authIdentity the authIdentity value to set.
-     * @return the WebApiSkill object itself.
-     */
-    public WebApiSkill setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
-        this.authIdentity = authIdentity;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebApiSkill setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebApiSkill setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebApiSkill setContext(String context) {
         super.setContext(context);
@@ -284,11 +204,9 @@ public final class WebApiSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("uri", this.uri);
         jsonWriter.writeMapField("httpHeaders", this.httpHeaders, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("httpMethod", this.httpMethod);
-        jsonWriter.writeStringField("timeout", CoreToCodegenBridgeUtils.durationToStringWithDays(this.timeout));
+        jsonWriter.writeStringField("timeout", Objects.toString(this.timeout, null));
         jsonWriter.writeNumberField("batchSize", this.batchSize);
         jsonWriter.writeNumberField("degreeOfParallelism", this.degreeOfParallelism);
-        jsonWriter.writeStringField("authResourceId", this.authResourceId);
-        jsonWriter.writeJsonField("authIdentity", this.authIdentity);
         return jsonWriter.writeEndObject();
     }
 
@@ -297,101 +215,95 @@ public final class WebApiSkill extends SearchIndexerSkill {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebApiSkill if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the WebApiSkill.
      */
     public static WebApiSkill fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean inputsFound = false;
-            List<InputFieldMappingEntry> inputs = null;
-            boolean outputsFound = false;
-            List<OutputFieldMappingEntry> outputs = null;
-            String name = null;
-            String description = null;
-            String context = null;
-            boolean uriFound = false;
-            String uri = null;
-            Map<String, String> httpHeaders = null;
-            String httpMethod = null;
-            Duration timeout = null;
-            Integer batchSize = null;
-            Integer degreeOfParallelism = null;
-            String authResourceId = null;
-            SearchIndexerDataIdentity authIdentity = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    boolean uriFound = false;
+                    String uri = null;
+                    Map<String, String> httpHeaders = null;
+                    String httpMethod = null;
+                    Duration timeout = null;
+                    Integer batchSize = null;
+                    Integer degreeOfParallelism = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Skills.Custom.WebApiSkill".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Custom.WebApiSkill'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Skills.Custom.WebApiSkill".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Custom.WebApiSkill'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getString();
+                        } else if ("uri".equals(fieldName)) {
+                            uri = reader.getString();
+                            uriFound = true;
+                        } else if ("httpHeaders".equals(fieldName)) {
+                            httpHeaders = reader.readMap(reader1 -> reader1.getString());
+                        } else if ("httpMethod".equals(fieldName)) {
+                            httpMethod = reader.getString();
+                        } else if ("timeout".equals(fieldName)) {
+                            timeout = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                        } else if ("batchSize".equals(fieldName)) {
+                            batchSize = reader.getNullable(JsonReader::getInt);
+                        } else if ("degreeOfParallelism".equals(fieldName)) {
+                            degreeOfParallelism = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                    inputsFound = true;
-                } else if ("outputs".equals(fieldName)) {
-                    outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                    outputsFound = true;
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("context".equals(fieldName)) {
-                    context = reader.getString();
-                } else if ("uri".equals(fieldName)) {
-                    uri = reader.getString();
-                    uriFound = true;
-                } else if ("httpHeaders".equals(fieldName)) {
-                    httpHeaders = reader.readMap(reader1 -> reader1.getString());
-                } else if ("httpMethod".equals(fieldName)) {
-                    httpMethod = reader.getString();
-                } else if ("timeout".equals(fieldName)) {
-                    timeout = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
-                } else if ("batchSize".equals(fieldName)) {
-                    batchSize = reader.getNullable(JsonReader::getInt);
-                } else if ("degreeOfParallelism".equals(fieldName)) {
-                    degreeOfParallelism = reader.getNullable(JsonReader::getInt);
-                } else if ("authResourceId".equals(fieldName)) {
-                    authResourceId = reader.getString();
-                } else if ("authIdentity".equals(fieldName)) {
-                    authIdentity = SearchIndexerDataIdentity.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (inputsFound && outputsFound && uriFound) {
-                WebApiSkill deserializedWebApiSkill = new WebApiSkill(inputs, outputs, uri);
-                deserializedWebApiSkill.setName(name);
-                deserializedWebApiSkill.setDescription(description);
-                deserializedWebApiSkill.setContext(context);
-                deserializedWebApiSkill.httpHeaders = httpHeaders;
-                deserializedWebApiSkill.httpMethod = httpMethod;
-                deserializedWebApiSkill.timeout = timeout;
-                deserializedWebApiSkill.batchSize = batchSize;
-                deserializedWebApiSkill.degreeOfParallelism = degreeOfParallelism;
-                deserializedWebApiSkill.authResourceId = authResourceId;
-                deserializedWebApiSkill.authIdentity = authIdentity;
+                    if (inputsFound && outputsFound && uriFound) {
+                        WebApiSkill deserializedWebApiSkill = new WebApiSkill(inputs, outputs, uri);
+                        deserializedWebApiSkill.setName(name);
+                        deserializedWebApiSkill.setDescription(description);
+                        deserializedWebApiSkill.setContext(context);
+                        deserializedWebApiSkill.httpHeaders = httpHeaders;
+                        deserializedWebApiSkill.httpMethod = httpMethod;
+                        deserializedWebApiSkill.timeout = timeout;
+                        deserializedWebApiSkill.batchSize = batchSize;
+                        deserializedWebApiSkill.degreeOfParallelism = degreeOfParallelism;
 
-                return deserializedWebApiSkill;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!inputsFound) {
-                missingProperties.add("inputs");
-            }
-            if (!outputsFound) {
-                missingProperties.add("outputs");
-            }
-            if (!uriFound) {
-                missingProperties.add("uri");
-            }
+                        return deserializedWebApiSkill;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
+                    if (!uriFound) {
+                        missingProperties.add("uri");
+                    }
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }
