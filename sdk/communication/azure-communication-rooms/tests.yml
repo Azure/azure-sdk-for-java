@@ -5,16 +5,3 @@ stages:
     parameters:
       PackageName: azure-communication-rooms
       SafeName: azurecommunicationrooms
-      CloudConfig:
-        Public:
-          SubscriptionConfigurations:
-            - $(sub-config-azure-cloud-test-resources)
-            - $(sub-config-communication-services-cloud-test-resources-common)
-            - $(sub-config-communication-services-cloud-test-resources-java)
-        PPE:
-          SubscriptionConfigurations:
-            - $(sub-config-communication-ppe-test-resources-common)
-            - $(sub-config-communication-ppe-test-resources-java)
-      Clouds: Public,PPE
-      TestResourceDirectories:
-        - communication/test-resources/

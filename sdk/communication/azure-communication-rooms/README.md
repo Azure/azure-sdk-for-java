@@ -25,7 +25,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-rooms</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -82,8 +82,7 @@ participants.add(participant2);
 CreateRoomOptions roomOptions = new CreateRoomOptions()
         .setValidFrom(validFrom)
         .setValidUntil(validUntil)
-        .setParticipants(participants)
-        .setPstnDialOutEnabled(true);
+        .setParticipants(participants);
 
 CommunicationRoom roomResult = roomsClient.createRoom(roomOptions);
 ```
@@ -97,8 +96,7 @@ OffsetDateTime validUntil = validFrom.plusDays(30);
 // Update Room options
 UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
         .setValidFrom(validFrom)
-        .setValidUntil(validUntil)
-        .setPstnDialOutEnabled(true);
+        .setValidUntil(validUntil);
 
 try {
     CommunicationRoom roomResult = roomsClient.updateRoom("<Room Id>", updateRoomOptions);
@@ -217,7 +215,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-rooms/src
-[package]: https://central.sonatype.com/artifact/com.azure/azure-communication-rooms
+[package]: https://search.maven.org/artifact/com.azure/azure-communication-rooms
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
