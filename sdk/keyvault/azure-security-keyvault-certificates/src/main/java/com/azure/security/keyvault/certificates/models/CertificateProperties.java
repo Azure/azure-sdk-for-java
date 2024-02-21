@@ -20,8 +20,8 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.util.CoreUtils.bytesToHexString;
 import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.getIdMetadata;
-import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.toHexString;
 
 /**
  * Represents base properties of a certificate.
@@ -290,24 +290,16 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
      * @return The x509Thumbprint.
      */
     public byte[] getX509Thumbprint() {
-        if (x509Thumbprint != null) {
-            return x509Thumbprint.decodedBytes();
-        }
-
-        return null;
+        return x509Thumbprint != null ? x509Thumbprint.decodedBytes() : null;
     }
 
     /**
-     * Gets the digital thumbprint of the certificate as a hexadecimal string which can be used to uniquely identify it.
+     * Gets the thumbprint of the certificate as a hex string which can be used to uniquely identify it.
      *
-     * @return The digital thumbprint of the certificate as a hexadecimal string.
+     * @return The thumbprint of the certificate as a hex string.
      */
-    public String getX509ThumbprintHexString() {
-        if (x509Thumbprint != null) {
-            return toHexString(x509Thumbprint.decodedBytes());
-        }
-
-        return null;
+    public String getX509ThumbprintString() {
+        return bytesToHexString(getX509Thumbprint());
     }
 
     @Override
