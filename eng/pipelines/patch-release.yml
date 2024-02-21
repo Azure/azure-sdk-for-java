@@ -4,16 +4,48 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-data-tables
       groupId: com.azure
-      safeName: azuresdktemplate
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
+      safeName: azuredatatables
+      ServiceDirectory: tables
+    - name: azure-ai-formrecognizer
       groupId: com.azure
-      safeName: azuresdktemplatetwo
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
+      safeName: azureaiformrecognizer
+      ServiceDirectory: formrecognizer
+    - name: azure-security-attestation
       groupId: com.azure
-      safeName: azuresdktemplatethree
-      ServiceDirectory: template
+      safeName: azuresecurityattestation
+      ServiceDirectory: attestation
+    - name: azure-ai-textanalytics
+      groupId: com.azure
+      safeName: azureaitextanalytics
+      ServiceDirectory: textanalytics
+    - name: azure-mixedreality-remoterendering
+      groupId: com.azure
+      safeName: azuremixedrealityremoterendering
+      ServiceDirectory: remoterendering
+    - name: azure-messaging-webpubsub
+      groupId: com.azure
+      safeName: azuremessagingwebpubsub
+      ServiceDirectory: webpubsub
+    - name: azure-security-confidentialledger
+      groupId: com.azure
+      safeName: azuresecurityconfidentialledger
+      ServiceDirectory: confidentialledger
+    - name: azure-iot-deviceupdate
+      groupId: com.azure
+      safeName: azureiotdeviceupdate
+      ServiceDirectory: deviceupdate
+    - name: azure-developer-loadtesting
+      groupId: com.azure
+      safeName: azuredeveloperloadtesting
+      ServiceDirectory: loadtesting
+    - name: azure-digitaltwins-core
+      groupId: com.azure
+      safeName: azuredigitaltwinscore
+      ServiceDirectory: digitaltwins
+    - name: azure-mixedreality-authentication
+      groupId: com.azure
+      safeName: azuremixedrealityauthentication
+      ServiceDirectory: mixedreality
 
