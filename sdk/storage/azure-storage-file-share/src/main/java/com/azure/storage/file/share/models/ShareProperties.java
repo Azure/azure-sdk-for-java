@@ -131,12 +131,6 @@ public final class ShareProperties {
      */
     private Integer provisionedBandwidthMiBps;
 
-    /*
-     * The EnableSnapshotVirtualDirectoryAccess property.
-     */
-    @JsonProperty(value = "EnableSnapshotVirtualDirectoryAccess")
-    private Boolean enableSnapshotVirtualDirectoryAccess;
-
     /**
      * Get the lastModified property: The lastModified property.
      *
@@ -574,32 +568,4 @@ public final class ShareProperties {
         this.metadata = metadata;
         return this;
     }
-
-    /**
-     * Get the enableSnapshotVirtualDirectoryAccess property:
-     * Optional. Supported in version 2023-08-03 and above.
-     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
-     * If not specified, the default is true.
-     *
-     * @return the enableSnapshotVirtualDirectoryAccess value.
-     */
-    public Boolean isEnableSnapshotVirtualDirectoryAccess() {
-        return this.enableSnapshotVirtualDirectoryAccess;
-    }
-
-    /**
-     * Set the enableSnapshotVirtualDirectoryAccess property:
-     * Optional. Supported in version 2023-08-03 and above.
-     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
-     * If not specified, the default is true.
-     *
-     * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
-     * @return the ShareProperties object itself.
-     */
-    public ShareProperties setEnableSnapshotVirtualDirectoryAccess(
-        Boolean enableSnapshotVirtualDirectoryAccess) {
-        this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
-        return this;
-    }
-
 }

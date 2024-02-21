@@ -147,7 +147,6 @@ public class ModelHelper {
         properties.setRootSquash(sharePropertiesInternal.getRootSquash());
         properties.setMetadata(sharePropertiesInternal.getMetadata());
         properties.setProvisionedBandwidthMiBps(sharePropertiesInternal.getProvisionedBandwidthMiBps());
-        properties.setEnableSnapshotVirtualDirectoryAccess(sharePropertiesInternal.isEnableSnapshotVirtualDirectoryAccess());
 
         return properties;
     }

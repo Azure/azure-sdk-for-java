@@ -5,12 +5,9 @@ package com.azure.storage.file.share;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
-import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
@@ -798,63 +795,4 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .assertNext(r -> assertNotNull(r))
             .verifyComplete();
     }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
-    @ParameterizedTest
-    @MethodSource("createEnableSnapshotVirtualDirectoryAccessSupplier")
-    public void createEnableSnapshotVirtualDirectoryAccess(Boolean enableSnapshotVirtualDirectoryAccess) {
-        ShareCreateOptions options = new ShareCreateOptions();
-        ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
-        options.setProtocols(protocols);
-        options.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
-
-        primaryShareAsyncClient.createWithResponse(options).block();
-
-        StepVerifier.create(primaryShareAsyncClient.getProperties())
-            .assertNext(r -> {
-                assertEquals(protocols.toString(), r.getProtocols().toString());
-                if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
-                    assertTrue(r.isEnableSnapshotVirtualDirectoryAccess());
-                } else {
-                    assertFalse(r.isEnableSnapshotVirtualDirectoryAccess());
-                }
-            })
-            .verifyComplete();
-    }
-
-    private static Stream<Arguments> createEnableSnapshotVirtualDirectoryAccessSupplier() {
-        return Stream.of(
-            Arguments.of(true),
-            Arguments.of(false),
-            Arguments.of((Boolean) null));
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
-    @ParameterizedTest
-    @MethodSource("createEnableSnapshotVirtualDirectoryAccessSupplier")
-    public void setPropertiesEnableSnapshotVirtualDirectoryAccess(Boolean enableSnapshotVirtualDirectoryAccess) {
-        ShareCreateOptions options = new ShareCreateOptions();
-        ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
-        options.setProtocols(protocols);
-
-        primaryShareAsyncClient.createWithResponse(options).block();
-
-        ShareSetPropertiesOptions setPropertiesOptions = new ShareSetPropertiesOptions();
-        setPropertiesOptions.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
-        setPropertiesOptions.setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED);
-
-        primaryShareAsyncClient.setProperties(setPropertiesOptions).block();
-
-        StepVerifier.create(primaryShareAsyncClient.getProperties())
-            .assertNext(r -> {
-                assertEquals(protocols.toString(), r.getProtocols().toString());
-                if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
-                    assertTrue(r.isEnableSnapshotVirtualDirectoryAccess());
-                } else {
-                    assertFalse(r.isEnableSnapshotVirtualDirectoryAccess());
-                }
-            })
-            .verifyComplete();
-    }
-
 }
