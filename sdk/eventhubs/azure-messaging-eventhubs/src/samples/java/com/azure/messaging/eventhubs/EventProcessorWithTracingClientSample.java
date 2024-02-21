@@ -29,8 +29,8 @@ import java.util.function.Consumer;
  * Sample code to demonstrate how to create per-message spans when processing batches with
  * {@link EventProcessorClient}.
  */
-public class EventProcessorClientSampleWithTracing {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventProcessorClientSampleWithTracing.class);
+public class EventProcessorWithTracingClientSample {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventProcessorWithTracingClientSample.class);
     private static final Tracer TRACER = initOpenTelemetry().getTracer("eventhubs-samples");
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = System.getenv("AZURE_EVENT_HUBS_CONNECTION_STRING");
 
@@ -72,7 +72,7 @@ public class EventProcessorClientSampleWithTracing {
 
             Span span = spanBuilder.startSpan();
             // making span current enables correlation with any child spans created under it
-            try(Scope s = span.makeCurrent()) {
+            try (Scope s = span.makeCurrent()) {
                 // we can also add custom attributes to the span
                 span.setAttribute("myapp.custom.attribute", "custom value");
                 // process message here
@@ -104,7 +104,7 @@ public class EventProcessorClientSampleWithTracing {
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .connectionString(AZURE_EVENT_HUBS_CONNECTION_STRING)
             .initialPartitionEventPosition(p -> EventPosition.latest())
-            .processEventBatch(EventProcessorClientSampleWithTracing::processBatch, 1)
+            .processEventBatch(EventProcessorWithTracingClientSample::processBatch, 1)
             .processError(processError)
             .checkpointStore(new SampleCheckpointStore());
 
