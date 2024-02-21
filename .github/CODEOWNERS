@@ -85,6 +85,9 @@
 # PRLabel: %Communication - Rooms
 /sdk/communication/azure-communication-rooms/       @minnieliu @paolamvhz @alexokun @Mrayyan @shwali-msft @allchiang-msft @mikehang-msft
 
+# PRLabel: %Communication - Messages
+/sdk/communication/azure-communication-messages/    @arifibrahim4 @juancamilor @Shamkh @glorialimicrosoft
+
 # AzureSdkOwners: @lmolkova
 # ServiceLabel: %Container Registry
 # PRLabel: %Container Registry
