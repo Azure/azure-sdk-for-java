@@ -125,7 +125,7 @@ public final class CosmosReadManyRequestOptions {
      *      * on the client, then this will override the client level config for this request
      *
      * @param cosmosEndToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
-     * @return the CosmosQueryRequestOptions
+     * @return the CosmosReadManyRequestOptions
      */
     public CosmosReadManyRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
         this.actualRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(cosmosEndToEndOperationLatencyPolicyConfig);
