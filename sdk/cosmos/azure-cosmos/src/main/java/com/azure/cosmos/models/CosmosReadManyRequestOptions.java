@@ -100,7 +100,7 @@ public final class CosmosReadManyRequestOptions {
      * size.
      *
      * @param limitInKb continuation token size limit.
-     * @return the CosmosQueryRequestOptions.
+     * @return the CosmosReadManyRequestOptions.
      */
     public CosmosReadManyRequestOptions setResponseContinuationTokenLimitInKb(int limitInKb) {
         this.actualRequestOptions.setResponseContinuationTokenLimitInKb(limitInKb);
