@@ -8,8 +8,8 @@ import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationFormat;
-import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration;
-import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionParameters;
+import com.azure.ai.openai.models.AzureSearchChatExtensionConfiguration;
+import com.azure.ai.openai.models.AzureSearchChatExtensionParameters;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
@@ -372,15 +372,13 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
-            AzureCognitiveSearchChatExtensionParameters searchParameters = new AzureCognitiveSearchChatExtensionParameters(
+            AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
                     "https://openaisdktestsearch.search.windows.net",
                     "openai-test-index-carbon-wiki"
             );
             searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
-            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-                new AzureCognitiveSearchChatExtensionConfiguration(
-                        searchParameters
-                );
+            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                new AzureSearchChatExtensionConfiguration(searchParameters);
 
             chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentName, chatCompletionsOptions);
@@ -395,15 +393,13 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
-            AzureCognitiveSearchChatExtensionParameters searchParameters = new AzureCognitiveSearchChatExtensionParameters(
+            AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
                     "https://openaisdktestsearch.search.windows.net",
                     "openai-test-index-carbon-wiki"
             );
             searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
-            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-                    new AzureCognitiveSearchChatExtensionConfiguration(
-                            searchParameters
-                    );
+            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                    new AzureSearchChatExtensionConfiguration(searchParameters);
 
             chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
             IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentName, chatCompletionsOptions);

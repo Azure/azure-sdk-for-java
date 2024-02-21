@@ -669,14 +669,7 @@ public final class OpenAIClient {
     public ChatCompletions getChatCompletions(String deploymentOrModelName,
         ChatCompletionsOptions chatCompletionsOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
-            return getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions, requestOptions)
-                .getValue();
-        } else {
-            return getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
-                BinaryData.fromObject(chatCompletionsOptions), requestOptions).getValue()
-                .toObject(ChatCompletions.class);
-        }
+        return getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions, requestOptions).getValue();
     }
 
     /**
@@ -701,14 +694,8 @@ public final class OpenAIClient {
         ChatCompletionsOptions chatCompletionsOptions) {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
-        Flux<ByteBuffer> responseStream;
-        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
-            responseStream = getChatCompletionsWithResponse(deploymentOrModelName,
-                BinaryData.fromObject(chatCompletionsOptions), requestOptions).getValue().toFluxByteBuffer();
-        } else {
-            responseStream = getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
-                BinaryData.fromObject(chatCompletionsOptions), requestOptions).getValue().toFluxByteBuffer();
-        }
+        Flux<ByteBuffer> responseStream = getChatCompletionsWithResponse(deploymentOrModelName,
+            BinaryData.fromObject(chatCompletionsOptions), requestOptions).getValue().toFluxByteBuffer();
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream
             = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return new IterableStream<>(chatCompletionsStream.getEvents());

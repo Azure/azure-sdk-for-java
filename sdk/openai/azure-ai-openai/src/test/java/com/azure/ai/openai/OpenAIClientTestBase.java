@@ -12,6 +12,7 @@ import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationOptions;
+import com.azure.ai.openai.models.AzureChatExtensionDataSourceResponseCitation;
 import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
@@ -27,7 +28,6 @@ import com.azure.ai.openai.models.ChatRequestMessage;
 import com.azure.ai.openai.models.ChatRequestSystemMessage;
 import com.azure.ai.openai.models.ChatRequestToolMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
-import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
@@ -535,17 +535,15 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     static void assertChatCompletionsCognitiveSearch(ChatCompletions chatCompletions) {
         List<ChatChoice> choices = chatCompletions.getChoices();
         assertNotNull(choices);
-        assertTrue(choices.size() > 0);
+        assertFalse(choices.isEmpty());
         assertChatChoices(1, CompletionsFinishReason.STOPPED.toString(), ChatRole.ASSISTANT, choices);
 
         AzureChatExtensionsMessageContext messageContext = choices.get(0).getMessage().getContext();
         assertNotNull(messageContext);
-        assertNotNull(messageContext.getMessages());
-        ChatResponseMessage firstMessage = messageContext.getMessages().get(0);
-        assertNotNull(firstMessage);
-        assertEquals(ChatRole.TOOL, firstMessage.getRole());
-        assertFalse(firstMessage.getContent().isEmpty());
-        assertTrue(firstMessage.getContent().contains("citations"));
+        assertNotNull(messageContext.getCitations());
+        assertNotNull(messageContext.getIntent());
+        AzureChatExtensionDataSourceResponseCitation firstResponseCitation = messageContext.getCitations().get(0);
+        assertNotNull(firstResponseCitation.getContent());
     }
 
     // Some of the quirks of stream ChatCompletions:
@@ -562,17 +560,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
             List<ChatChoice> choices = chatCompletion.getChoices();
 
             assertNotNull(choices);
-            assertTrue(choices.size() > 0);
+            assertFalse(choices.isEmpty());
 
             if (i == 0) {
                 AzureChatExtensionsMessageContext messageContext = choices.get(0).getDelta().getContext();
                 assertNotNull(messageContext);
-                assertNotNull(messageContext.getMessages());
-                ChatResponseMessage firstMessage = messageContext.getMessages().get(0);
-                assertNotNull(firstMessage);
-                assertEquals(ChatRole.TOOL, firstMessage.getRole());
-                assertFalse(firstMessage.getContent().isEmpty());
-                assertTrue(firstMessage.getContent().contains("citations"));
+                assertNotNull(messageContext.getCitations());
+                AzureChatExtensionDataSourceResponseCitation firstResponseCitation = messageContext.getCitations().get(0);
+                assertNotNull(firstResponseCitation.getContent());
             } else if (i == 1) {
                 assertNull(choices.get(0).getDelta().getContext());
                 assertEquals(choices.get(0).getDelta().getRole(), ChatRole.ASSISTANT);

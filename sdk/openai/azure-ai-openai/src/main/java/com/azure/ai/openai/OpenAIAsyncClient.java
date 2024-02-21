@@ -683,14 +683,8 @@ public final class OpenAIAsyncClient {
     public Mono<ChatCompletions> getChatCompletions(String deploymentOrModelName,
         ChatCompletionsOptions chatCompletionsOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
-            return getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions, requestOptions)
-                .flatMap(FluxUtil::toMono);
-        } else {
-            return getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
-                BinaryData.fromObject(chatCompletionsOptions), requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
-        }
+        return getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -715,16 +709,9 @@ public final class OpenAIAsyncClient {
         ChatCompletionsOptions chatCompletionsOptions) {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
-        Flux<ByteBuffer> responseStream;
-        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
-            responseStream
-                = getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
-                    requestOptions).flatMapMany(response -> response.getValue().toFluxByteBuffer());
-        } else {
-            responseStream = getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
-                BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                .flatMapMany(response -> response.getValue().toFluxByteBuffer());
-        }
+        Flux<ByteBuffer> responseStream
+            = getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
+                requestOptions).flatMapMany(response -> response.getValue().toFluxByteBuffer());
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream
             = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return chatCompletionsStream.getEvents();
