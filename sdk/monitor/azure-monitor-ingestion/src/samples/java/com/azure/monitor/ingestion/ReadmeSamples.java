@@ -53,7 +53,7 @@ public final class ReadmeSamples {
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         LogsIngestionClient client = new LogsIngestionClientBuilder()
-                .endpoint("<data-collection-endpoint>")
+                .endpoint("<data-collection-endpoint")
                 .credential(tokenCredential)
                 .buildClient();
 
@@ -71,7 +71,7 @@ public final class ReadmeSamples {
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         LogsIngestionClient client = new LogsIngestionClientBuilder()
-                .endpoint("<data-collection-endpoint>")
+                .endpoint("<data-collection-endpoint")
                 .credential(tokenCredential)
                 .buildClient();
 
@@ -93,7 +93,7 @@ public final class ReadmeSamples {
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         LogsIngestionClient client = new LogsIngestionClientBuilder()
-                .endpoint("<data-collection-endpoint>")
+                .endpoint("<data-collection-endpoint")
                 .credential(tokenCredential)
                 .buildClient();
 
@@ -120,7 +120,6 @@ public final class ReadmeSamples {
 
         // BEGIN: readme-sample-enablehttplogging
         LogsIngestionClient logsIngestionClient = new LogsIngestionClientBuilder()
-            .endpoint("<data-collection-endpoint>")
             .credential(credential)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
