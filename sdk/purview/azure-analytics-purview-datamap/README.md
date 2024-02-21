@@ -45,7 +45,7 @@ ClientSecretCredential cred = new ClientSecretCredentialBuilder()
             .clientId(Configuration.getGlobalConfiguration().get("CLIENT_ID"))
             .clientSecret(Configuration.getGlobalConfiguration().get("CLIENT_SECRET"))
             .build();
-        DataMapClientBuilder clientBuilder = new DataMapClientBuilder()
+DataMapClientBuilder clientBuilder = new DataMapClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
             .credential(cred);
 ```
