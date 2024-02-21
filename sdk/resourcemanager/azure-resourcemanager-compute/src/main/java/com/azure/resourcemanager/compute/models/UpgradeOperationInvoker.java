@@ -7,18 +7,28 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Invoker of the Upgrade Operation. */
+/**
+ * Invoker of the Upgrade Operation.
+ */
 public enum UpgradeOperationInvoker {
-    /** Enum value Unknown. */
+    /**
+     * Enum value Unknown.
+     */
     UNKNOWN("Unknown"),
 
-    /** Enum value User. */
+    /**
+     * Enum value User.
+     */
     USER("User"),
 
-    /** Enum value Platform. */
+    /**
+     * Enum value Platform.
+     */
     PLATFORM("Platform");
 
-    /** The actual serialized value for a UpgradeOperationInvoker instance. */
+    /**
+     * The actual serialized value for a UpgradeOperationInvoker instance.
+     */
     private final String value;
 
     UpgradeOperationInvoker(String value) {
@@ -27,7 +37,7 @@ public enum UpgradeOperationInvoker {
 
     /**
      * Parses a serialized value to a UpgradeOperationInvoker instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed UpgradeOperationInvoker object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum UpgradeOperationInvoker {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -13,8 +13,7 @@ public final class ServicesNameAvailabilityInfoImpl implements ServicesNameAvail
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
 
-    ServicesNameAvailabilityInfoImpl(
-        ServicesNameAvailabilityInfoInner innerObject,
+    ServicesNameAvailabilityInfoImpl(ServicesNameAvailabilityInfoInner innerObject,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceupdate.fluent.models.AccountInner;
 import com.azure.resourcemanager.deviceupdate.models.AccountUpdate;
 
-/** An instance of this class provides access to all the operations defined in AccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccountsClient.
+ */
 public interface AccountsClient {
     /**
      * Returns list of Accounts.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Accounts as paginated response with {@link PagedIterable}.
@@ -28,7 +30,7 @@ public interface AccountsClient {
 
     /**
      * Returns list of Accounts.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface AccountsClient {
 
     /**
      * Returns list of Accounts.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,7 +54,7 @@ public interface AccountsClient {
 
     /**
      * Returns list of Accounts.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +67,22 @@ public interface AccountsClient {
 
     /**
      * Returns account details for the given account name.
-     *
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return device Update account details along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AccountInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
+
+    /**
+     * Returns account details for the given account name.
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,35 +94,8 @@ public interface AccountsClient {
     AccountInner getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Returns account details for the given account name.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device Update account details along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
-
-    /**
      * Checks whether account exists.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void head(String resourceGroupName, String accountName);
-
-    /**
-     * Checks whether account exists.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -118,8 +108,20 @@ public interface AccountsClient {
     Response<Void> headWithResponse(String resourceGroupName, String accountName, Context context);
 
     /**
+     * Checks whether account exists.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void head(String resourceGroupName, String accountName);
+
+    /**
      * Creates or updates Account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param account Account details.
@@ -129,12 +131,12 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of device Update account details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
-        String resourceGroupName, String accountName, AccountInner account);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(String resourceGroupName, String accountName,
+        AccountInner account);
 
     /**
      * Creates or updates Account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param account Account details.
@@ -145,12 +147,12 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of device Update account details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
-        String resourceGroupName, String accountName, AccountInner account, Context context);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(String resourceGroupName, String accountName,
+        AccountInner account, Context context);
 
     /**
      * Creates or updates Account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param account Account details.
@@ -164,7 +166,7 @@ public interface AccountsClient {
 
     /**
      * Creates or updates Account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param account Account details.
@@ -179,7 +181,7 @@ public interface AccountsClient {
 
     /**
      * Deletes account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +194,7 @@ public interface AccountsClient {
 
     /**
      * Deletes account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -206,7 +208,7 @@ public interface AccountsClient {
 
     /**
      * Deletes account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,7 +220,7 @@ public interface AccountsClient {
 
     /**
      * Deletes account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -231,7 +233,7 @@ public interface AccountsClient {
 
     /**
      * Updates account's patchable properties.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param accountUpdatePayload Updated Account.
@@ -241,12 +243,12 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of device Update account details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
-        String resourceGroupName, String accountName, AccountUpdate accountUpdatePayload);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(String resourceGroupName, String accountName,
+        AccountUpdate accountUpdatePayload);
 
     /**
      * Updates account's patchable properties.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param accountUpdatePayload Updated Account.
@@ -257,12 +259,12 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of device Update account details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
-        String resourceGroupName, String accountName, AccountUpdate accountUpdatePayload, Context context);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(String resourceGroupName, String accountName,
+        AccountUpdate accountUpdatePayload, Context context);
 
     /**
      * Updates account's patchable properties.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param accountUpdatePayload Updated Account.
@@ -276,7 +278,7 @@ public interface AccountsClient {
 
     /**
      * Updates account's patchable properties.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param accountUpdatePayload Updated Account.
@@ -287,6 +289,6 @@ public interface AccountsClient {
      * @return device Update account details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccountInner update(
-        String resourceGroupName, String accountName, AccountUpdate accountUpdatePayload, Context context);
+    AccountInner update(String resourceGroupName, String accountName, AccountUpdate accountUpdatePayload,
+        Context context);
 }

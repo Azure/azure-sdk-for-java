@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-/** Samples for ProtectionPolicies Delete. */
+/**
+ * Samples for ProtectionPolicies Delete.
+ */
 public final class ProtectionPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/AzureIaasVm/ProtectionPolicies_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
+     * AzureIaasVm/ProtectionPolicies_Delete.json
      */
     /**
      * Sample code: Delete Azure Vm Protection Policy.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void deleteAzureVmProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies()
-            .delete("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", com.azure.core.util.Context.NONE);
+        manager.protectionPolicies().delete("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1",
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application gateway client authentication configuration. */
+/**
+ * Application gateway client authentication configuration.
+ */
 @Fluent
 public final class ApplicationGatewayClientAuthConfiguration {
     /*
@@ -22,13 +24,15 @@ public final class ApplicationGatewayClientAuthConfiguration {
     @JsonProperty(value = "verifyClientRevocation")
     private ApplicationGatewayClientRevocationOptions verifyClientRevocation;
 
-    /** Creates an instance of ApplicationGatewayClientAuthConfiguration class. */
+    /**
+     * Creates an instance of ApplicationGatewayClientAuthConfiguration class.
+     */
     public ApplicationGatewayClientAuthConfiguration() {
     }
 
     /**
      * Get the verifyClientCertIssuerDN property: Verify client certificate issuer name on the application gateway.
-     *
+     * 
      * @return the verifyClientCertIssuerDN value.
      */
     public Boolean verifyClientCertIssuerDN() {
@@ -37,7 +41,7 @@ public final class ApplicationGatewayClientAuthConfiguration {
 
     /**
      * Set the verifyClientCertIssuerDN property: Verify client certificate issuer name on the application gateway.
-     *
+     * 
      * @param verifyClientCertIssuerDN the verifyClientCertIssuerDN value to set.
      * @return the ApplicationGatewayClientAuthConfiguration object itself.
      */
@@ -48,7 +52,7 @@ public final class ApplicationGatewayClientAuthConfiguration {
 
     /**
      * Get the verifyClientRevocation property: Verify client certificate revocation status.
-     *
+     * 
      * @return the verifyClientRevocation value.
      */
     public ApplicationGatewayClientRevocationOptions verifyClientRevocation() {
@@ -57,19 +61,19 @@ public final class ApplicationGatewayClientAuthConfiguration {
 
     /**
      * Set the verifyClientRevocation property: Verify client certificate revocation status.
-     *
+     * 
      * @param verifyClientRevocation the verifyClientRevocation value to set.
      * @return the ApplicationGatewayClientAuthConfiguration object itself.
      */
-    public ApplicationGatewayClientAuthConfiguration withVerifyClientRevocation(
-        ApplicationGatewayClientRevocationOptions verifyClientRevocation) {
+    public ApplicationGatewayClientAuthConfiguration
+        withVerifyClientRevocation(ApplicationGatewayClientRevocationOptions verifyClientRevocation) {
         this.verifyClientRevocation = verifyClientRevocation;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

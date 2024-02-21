@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionGetProperti
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Cosmos DB userDefinedFunction. */
+/**
+ * An Azure Cosmos DB userDefinedFunction.
+ */
 @Fluent
 public final class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProperties {
     /*
@@ -19,27 +21,33 @@ public final class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProp
     @JsonProperty(value = "properties")
     private SqlUserDefinedFunctionGetProperties innerProperties;
 
-    /** Creates an instance of SqlUserDefinedFunctionGetResultsInner class. */
+    /**
+     * Creates an instance of SqlUserDefinedFunctionGetResultsInner class.
+     */
     public SqlUserDefinedFunctionGetResultsInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB userDefinedFunction.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlUserDefinedFunctionGetProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlUserDefinedFunctionGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlUserDefinedFunctionGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProp
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public SqlUserDefinedFunctionGetPropertiesResource resource() {
@@ -57,7 +65,7 @@ public final class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProp
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlUserDefinedFunctionGetResultsInner object itself.
      */
@@ -71,7 +79,7 @@ public final class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IotIdentityResolutionType. */
+/**
+ * The type of IoT identity resolution to use with the destination.
+ */
 public final class IotIdentityResolutionType extends ExpandableStringEnum<IotIdentityResolutionType> {
-    /** Static value Create for IotIdentityResolutionType. */
+    /**
+     * Static value Create for IotIdentityResolutionType.
+     */
     public static final IotIdentityResolutionType CREATE = fromString("Create");
 
-    /** Static value Lookup for IotIdentityResolutionType. */
+    /**
+     * Static value Lookup for IotIdentityResolutionType.
+     */
     public static final IotIdentityResolutionType LOOKUP = fromString("Lookup");
 
     /**
+     * Creates a new instance of IotIdentityResolutionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IotIdentityResolutionType() {
+    }
+
+    /**
      * Creates or finds a IotIdentityResolutionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IotIdentityResolutionType.
      */
@@ -27,7 +42,11 @@ public final class IotIdentityResolutionType extends ExpandableStringEnum<IotIde
         return fromString(name, IotIdentityResolutionType.class);
     }
 
-    /** @return known IotIdentityResolutionType values. */
+    /**
+     * Gets known IotIdentityResolutionType values.
+     * 
+     * @return known IotIdentityResolutionType values.
+     */
     public static Collection<IotIdentityResolutionType> values() {
         return values(IotIdentityResolutionType.class);
     }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Indicates the error details if the background copy of a resource created via the CopyStart operation fails. */
+/**
+ * Indicates the error details if the background copy of a resource created via the CopyStart operation fails.
+ */
 @Fluent
 public final class CopyCompletionError {
     /*
@@ -23,14 +25,16 @@ public final class CopyCompletionError {
     @JsonProperty(value = "errorMessage", required = true)
     private String errorMessage;
 
-    /** Creates an instance of CopyCompletionError class. */
+    /**
+     * Creates an instance of CopyCompletionError class.
+     */
     public CopyCompletionError() {
     }
 
     /**
      * Get the errorCode property: Indicates the error code if the background copy of a resource created via the
      * CopyStart operation fails.
-     *
+     * 
      * @return the errorCode value.
      */
     public CopyCompletionErrorReason errorCode() {
@@ -40,7 +44,7 @@ public final class CopyCompletionError {
     /**
      * Set the errorCode property: Indicates the error code if the background copy of a resource created via the
      * CopyStart operation fails.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the CopyCompletionError object itself.
      */
@@ -52,7 +56,7 @@ public final class CopyCompletionError {
     /**
      * Get the errorMessage property: Indicates the error message if the background copy of a resource created via the
      * CopyStart operation fails.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -62,7 +66,7 @@ public final class CopyCompletionError {
     /**
      * Set the errorMessage property: Indicates the error message if the background copy of a resource created via the
      * CopyStart operation fails.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the CopyCompletionError object itself.
      */
@@ -73,20 +77,17 @@ public final class CopyCompletionError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (errorCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property errorCode in model CopyCompletionError"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property errorCode in model CopyCompletionError"));
         }
         if (errorMessage() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property errorMessage in model CopyCompletionError"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property errorMessage in model CopyCompletionError"));
         }
     }
 

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.RestorableSqlContainerPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB SQL container event. */
+/**
+ * The properties of an Azure Cosmos DB SQL container event.
+ */
 @Fluent
 public final class RestorableSqlContainerProperties {
     /*
@@ -17,13 +19,15 @@ public final class RestorableSqlContainerProperties {
     @JsonProperty(value = "resource")
     private RestorableSqlContainerPropertiesResource resource;
 
-    /** Creates an instance of RestorableSqlContainerProperties class. */
+    /**
+     * Creates an instance of RestorableSqlContainerProperties class.
+     */
     public RestorableSqlContainerProperties() {
     }
 
     /**
      * Get the resource property: The resource of an Azure Cosmos DB SQL container event.
-     *
+     * 
      * @return the resource value.
      */
     public RestorableSqlContainerPropertiesResource resource() {
@@ -32,7 +36,7 @@ public final class RestorableSqlContainerProperties {
 
     /**
      * Set the resource property: The resource of an Azure Cosmos DB SQL container event.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the RestorableSqlContainerProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class RestorableSqlContainerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

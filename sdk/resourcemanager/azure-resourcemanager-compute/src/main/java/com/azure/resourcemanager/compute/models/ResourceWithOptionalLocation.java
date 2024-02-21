@@ -8,21 +8,29 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import java.util.Map;
 
-/** The Resource model definition with location property as optional. */
+/**
+ * The Resource model definition with location property as optional.
+ */
 @Fluent
 public class ResourceWithOptionalLocation extends Resource {
-    /** Creates an instance of ResourceWithOptionalLocation class. */
+    /**
+     * Creates an instance of ResourceWithOptionalLocation class.
+     */
     public ResourceWithOptionalLocation() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceWithOptionalLocation withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceWithOptionalLocation withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -31,7 +39,7 @@ public class ResourceWithOptionalLocation extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

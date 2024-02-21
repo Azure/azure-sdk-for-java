@@ -2,6 +2,8 @@
 
 ## 1.2.0-beta.1 (Unreleased)
 
+- Introduced `TeamsRecordingStateChanged` and `TeamsComplianceRecordingStateChanged` events.
+
 ### Features Added
 
 ### Breaking Changes
@@ -9,6 +11,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.1 (2023-12-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.2.14` to version `1.2.15`.
+- Upgraded `azure-core` from `1.44.0` to version `1.45.1`.
+
 
 ## 1.1.0 (2023-11-23)
 

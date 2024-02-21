@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.fluent.models.PrivateLinkResourceInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public interface PrivateLinkResourcesClient {
     /**
      * Lists all of the private link resources in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface PrivateLinkResourcesClient {
 
     /**
      * Lists all of the private link resources in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
@@ -39,12 +41,12 @@ public interface PrivateLinkResourcesClient {
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateLinkResourceInner> listByBatchAccount(
-        String resourceGroupName, String accountName, Integer maxresults, Context context);
+    PagedIterable<PrivateLinkResourceInner> listByBatchAccount(String resourceGroupName, String accountName,
+        Integer maxresults, Context context);
 
     /**
      * Gets information about the specified private link resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param privateLinkResourceName The private link resource name. This must be unique within the account.
@@ -55,12 +57,12 @@ public interface PrivateLinkResourcesClient {
      * @return information about the specified private link resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String accountName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String accountName,
+        String privateLinkResourceName, Context context);
 
     /**
      * Gets information about the specified private link resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param privateLinkResourceName The private link resource name. This must be unique within the account.

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Volume relocation properties. */
+/**
+ * Volume relocation properties.
+ */
 @Fluent
 public final class VolumeRelocationProperties {
     /*
@@ -22,13 +24,15 @@ public final class VolumeRelocationProperties {
     @JsonProperty(value = "readyToBeFinalized", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean readyToBeFinalized;
 
-    /** Creates an instance of VolumeRelocationProperties class. */
+    /**
+     * Creates an instance of VolumeRelocationProperties class.
+     */
     public VolumeRelocationProperties() {
     }
 
     /**
      * Get the relocationRequested property: Has relocation been requested for this volume.
-     *
+     * 
      * @return the relocationRequested value.
      */
     public Boolean relocationRequested() {
@@ -37,7 +41,7 @@ public final class VolumeRelocationProperties {
 
     /**
      * Set the relocationRequested property: Has relocation been requested for this volume.
-     *
+     * 
      * @param relocationRequested the relocationRequested value to set.
      * @return the VolumeRelocationProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class VolumeRelocationProperties {
 
     /**
      * Get the readyToBeFinalized property: Has relocation finished and is ready to be cleaned up.
-     *
+     * 
      * @return the readyToBeFinalized value.
      */
     public Boolean readyToBeFinalized() {
@@ -57,7 +61,7 @@ public final class VolumeRelocationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

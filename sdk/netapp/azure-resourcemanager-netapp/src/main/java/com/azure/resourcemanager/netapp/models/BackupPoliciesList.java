@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.fluent.models.BackupPolicyInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Backup Policies. */
+/**
+ * List of Backup Policies.
+ */
 @Fluent
 public final class BackupPoliciesList {
     /*
@@ -18,13 +20,15 @@ public final class BackupPoliciesList {
     @JsonProperty(value = "value")
     private List<BackupPolicyInner> value;
 
-    /** Creates an instance of BackupPoliciesList class. */
+    /**
+     * Creates an instance of BackupPoliciesList class.
+     */
     public BackupPoliciesList() {
     }
 
     /**
      * Get the value property: A list of backup policies.
-     *
+     * 
      * @return the value value.
      */
     public List<BackupPolicyInner> value() {
@@ -33,7 +37,7 @@ public final class BackupPoliciesList {
 
     /**
      * Set the value property: A list of backup policies.
-     *
+     * 
      * @param value the value value to set.
      * @return the BackupPoliciesList object itself.
      */
@@ -44,7 +48,7 @@ public final class BackupPoliciesList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

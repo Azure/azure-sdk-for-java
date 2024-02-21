@@ -10,22 +10,28 @@ import java.util.Collection;
 
 /**
  * Node OS Upgrade Channel
- *
- * <p>Manner in which the OS on your nodes is updated. The default is NodeImage.
+ * 
+ * Manner in which the OS on your nodes is updated. The default is NodeImage.
  */
 public final class NodeOSUpgradeChannel extends ExpandableStringEnum<NodeOSUpgradeChannel> {
-    /** Static value None for NodeOSUpgradeChannel. */
+    /**
+     * Static value None for NodeOSUpgradeChannel.
+     */
     public static final NodeOSUpgradeChannel NONE = fromString("None");
 
-    /** Static value Unmanaged for NodeOSUpgradeChannel. */
+    /**
+     * Static value Unmanaged for NodeOSUpgradeChannel.
+     */
     public static final NodeOSUpgradeChannel UNMANAGED = fromString("Unmanaged");
 
-    /** Static value NodeImage for NodeOSUpgradeChannel. */
+    /**
+     * Static value NodeImage for NodeOSUpgradeChannel.
+     */
     public static final NodeOSUpgradeChannel NODE_IMAGE = fromString("NodeImage");
 
     /**
      * Creates a new instance of NodeOSUpgradeChannel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +40,7 @@ public final class NodeOSUpgradeChannel extends ExpandableStringEnum<NodeOSUpgra
 
     /**
      * Creates or finds a NodeOSUpgradeChannel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NodeOSUpgradeChannel.
      */
@@ -45,7 +51,7 @@ public final class NodeOSUpgradeChannel extends ExpandableStringEnum<NodeOSUpgra
 
     /**
      * Gets known NodeOSUpgradeChannel values.
-     *
+     * 
      * @return known NodeOSUpgradeChannel values.
      */
     public static Collection<NodeOSUpgradeChannel> values() {

@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
 import com.azure.storage.file.datalake.models.AccessControlType;
@@ -32,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -97,7 +97,7 @@ public class PathClientJavaDocCodeSamples {
         String umask = "umask";
         String owner = "rwx";
         String group = "r--";
-        String leaseId = UUID.randomUUID().toString();
+        String leaseId = CoreUtils.randomUuid().toString();
         Integer duration = 15;
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions(permissions)

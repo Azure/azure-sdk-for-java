@@ -79,8 +79,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Get the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or
-     * Expression with resultType string).
+     * Get the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: int (or
+     * Expression with resultType int).
      * 
      * @return the clusterSize value.
      */
@@ -89,8 +89,8 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     /**
-     * Set the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or
-     * Expression with resultType string).
+     * Set the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: int (or
+     * Expression with resultType int).
      * 
      * @param clusterSize the clusterSize value to set.
      * @return the HDInsightOnDemandLinkedService object itself.

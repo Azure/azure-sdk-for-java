@@ -3,14 +3,13 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
-import com.azure.cosmos.implementation.guava25.collect.Maps;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.util.ReferenceCounted;
 
-import java.util.stream.Collector;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Map;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -20,17 +19,17 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements ReferenceCounted {
 
     final ByteBuf in;
-    final ImmutableMap<Short, T> headers;
-    final ImmutableMap<T, RntbdToken> tokens;
+    final Map<Short, T> headers;
+    final EnumMap<T, RntbdToken> tokens;
 
-    RntbdTokenStream(final ImmutableSet<T> headers, final ImmutableMap<Short, T> ids, final ByteBuf in) {
+    RntbdTokenStream(final EnumSet<T> headers, final Map<Short, T> ids, final ByteBuf in, final Class<T> classType) {
 
         checkNotNull(headers, "expected non-null headers");
         checkNotNull(ids, "expected non-null ids");
         checkNotNull(in, "expected non-null in");
 
-        final Collector<T, ?, ImmutableMap<T, RntbdToken>> collector = Maps.toImmutableEnumMap(h -> h, RntbdToken::create);
-        this.tokens = headers.stream().collect(collector);
+        this.tokens = new EnumMap<T, RntbdToken>(classType);
+        headers.stream().forEach(h -> tokens.put(h, RntbdToken.create(h)));
         this.headers = ids;
         this.in = in;
     }

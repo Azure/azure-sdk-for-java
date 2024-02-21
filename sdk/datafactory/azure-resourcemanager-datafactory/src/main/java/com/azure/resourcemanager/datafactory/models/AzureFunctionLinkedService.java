@@ -80,7 +80,7 @@ public final class AzureFunctionLinkedService extends LinkedService {
 
     /**
      * Get the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
-     * https://&lt;accountName&gt;.azurewebsites.net.
+     * https://&lt;accountName&gt;.azurewebsites.net. Type: string (or Expression with resultType string).
      * 
      * @return the functionAppUrl value.
      */
@@ -90,7 +90,7 @@ public final class AzureFunctionLinkedService extends LinkedService {
 
     /**
      * Set the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
-     * https://&lt;accountName&gt;.azurewebsites.net.
+     * https://&lt;accountName&gt;.azurewebsites.net. Type: string (or Expression with resultType string).
      * 
      * @param functionAppUrl the functionAppUrl value to set.
      * @return the AzureFunctionLinkedService object itself.
@@ -175,7 +175,8 @@ public final class AzureFunctionLinkedService extends LinkedService {
     }
 
     /**
-     * Get the resourceId property: Allowed token audiences for azure function.
+     * Get the resourceId property: Allowed token audiences for azure function. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the resourceId value.
      */
@@ -184,7 +185,8 @@ public final class AzureFunctionLinkedService extends LinkedService {
     }
 
     /**
-     * Set the resourceId property: Allowed token audiences for azure function.
+     * Set the resourceId property: Allowed token audiences for azure function. Type: string (or Expression with
+     * resultType string).
      * 
      * @param resourceId the resourceId value to set.
      * @return the AzureFunctionLinkedService object itself.

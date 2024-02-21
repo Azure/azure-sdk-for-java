@@ -10,10 +10,6 @@ module com.azure.resourcemanager.imagebuilder {
     exports com.azure.resourcemanager.imagebuilder.fluent.models;
     exports com.azure.resourcemanager.imagebuilder.models;
 
-    opens com.azure.resourcemanager.imagebuilder.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.imagebuilder.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.imagebuilder.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.imagebuilder.models to com.azure.core, com.fasterxml.jackson.databind;
 }

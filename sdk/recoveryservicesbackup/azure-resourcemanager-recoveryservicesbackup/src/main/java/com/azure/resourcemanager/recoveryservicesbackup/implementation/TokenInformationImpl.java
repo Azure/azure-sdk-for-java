@@ -12,8 +12,7 @@ public final class TokenInformationImpl implements TokenInformation {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    TokenInformationImpl(
-        TokenInformationInner innerObject,
+    TokenInformationImpl(TokenInformationInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

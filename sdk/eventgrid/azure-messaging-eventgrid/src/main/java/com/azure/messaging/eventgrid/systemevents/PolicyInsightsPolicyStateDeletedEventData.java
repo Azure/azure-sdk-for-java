@@ -5,63 +5,67 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.PolicyInsights.PolicyStateDeleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.PolicyInsights.PolicyStateDeleted event.
+ */
 @Fluent
-public final class PolicyInsightsPolicyStateDeletedEventData {
+public final class PolicyInsightsPolicyStateDeletedEventData
+    implements JsonSerializable<PolicyInsightsPolicyStateDeletedEventData> {
     /*
      * The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format
      * yyyy-MM-ddTHH:mm:ss.fffffffZ.
      */
-    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
      * The resource ID of the policy assignment.
      */
-    @JsonProperty(value = "policyAssignmentId")
     private String policyAssignmentId;
 
     /*
      * The resource ID of the policy definition.
      */
-    @JsonProperty(value = "policyDefinitionId")
     private String policyDefinitionId;
 
     /*
      * The reference ID for the policy definition inside the initiative definition, if the policy assignment is for an
      * initiative. May be empty.
      */
-    @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
 
     /*
      * The compliance state of the resource with respect to the policy assignment.
      */
-    @JsonProperty(value = "complianceState")
     private String complianceState;
 
     /*
      * The subscription ID of the resource.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * The compliance reason code. May be empty.
      */
-    @JsonProperty(value = "complianceReasonCode")
     private String complianceReasonCode;
 
-    /** Creates an instance of PolicyInsightsPolicyStateDeletedEventData class. */
-    public PolicyInsightsPolicyStateDeletedEventData() {}
+    /**
+     * Creates an instance of PolicyInsightsPolicyStateDeletedEventData class.
+     */
+    public PolicyInsightsPolicyStateDeletedEventData() {
+    }
 
     /**
      * Get the timestamp property: The time that the resource was scanned by Azure Policy in the Universal ISO 8601
      * DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime getTimestamp() {
@@ -71,7 +75,7 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
     /**
      * Set the timestamp property: The time that the resource was scanned by Azure Policy in the Universal ISO 8601
      * DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the PolicyInsightsPolicyStateDeletedEventData object itself.
      */
@@ -82,7 +86,7 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
 
     /**
      * Get the policyAssignmentId property: The resource ID of the policy assignment.
-     *
+     * 
      * @return the policyAssignmentId value.
      */
     public String getPolicyAssignmentId() {
@@ -91,7 +95,7 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
 
     /**
      * Set the policyAssignmentId property: The resource ID of the policy assignment.
-     *
+     * 
      * @param policyAssignmentId the policyAssignmentId value to set.
      * @return the PolicyInsightsPolicyStateDeletedEventData object itself.
      */
@@ -102,7 +106,7 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
 
     /**
      * Get the policyDefinitionId property: The resource ID of the policy definition.
-     *
+     * 
      * @return the policyDefinitionId value.
      */
     public String getPolicyDefinitionId() {
@@ -111,7 +115,7 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
 
     /**
      * Set the policyDefinitionId property: The resource ID of the policy definition.
-     *
+     * 
      * @param policyDefinitionId the policyDefinitionId value to set.
      * @return the PolicyInsightsPolicyStateDeletedEventData object itself.
      */
@@ -123,7 +127,7 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
     /**
      * Get the policyDefinitionReferenceId property: The reference ID for the policy definition inside the initiative
      * definition, if the policy assignment is for an initiative. May be empty.
-     *
+     * 
      * @return the policyDefinitionReferenceId value.
      */
     public String getPolicyDefinitionReferenceId() {
@@ -133,19 +137,19 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
     /**
      * Set the policyDefinitionReferenceId property: The reference ID for the policy definition inside the initiative
      * definition, if the policy assignment is for an initiative. May be empty.
-     *
+     * 
      * @param policyDefinitionReferenceId the policyDefinitionReferenceId value to set.
      * @return the PolicyInsightsPolicyStateDeletedEventData object itself.
      */
-    public PolicyInsightsPolicyStateDeletedEventData setPolicyDefinitionReferenceId(
-            String policyDefinitionReferenceId) {
+    public PolicyInsightsPolicyStateDeletedEventData
+        setPolicyDefinitionReferenceId(String policyDefinitionReferenceId) {
         this.policyDefinitionReferenceId = policyDefinitionReferenceId;
         return this;
     }
 
     /**
      * Get the complianceState property: The compliance state of the resource with respect to the policy assignment.
-     *
+     * 
      * @return the complianceState value.
      */
     public String getComplianceState() {
@@ -154,7 +158,7 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
 
     /**
      * Set the complianceState property: The compliance state of the resource with respect to the policy assignment.
-     *
+     * 
      * @param complianceState the complianceState value to set.
      * @return the PolicyInsightsPolicyStateDeletedEventData object itself.
      */
@@ -165,7 +169,7 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
 
     /**
      * Get the subscriptionId property: The subscription ID of the resource.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
@@ -174,7 +178,7 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
 
     /**
      * Set the subscriptionId property: The subscription ID of the resource.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the PolicyInsightsPolicyStateDeletedEventData object itself.
      */
@@ -185,7 +189,7 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
 
     /**
      * Get the complianceReasonCode property: The compliance reason code. May be empty.
-     *
+     * 
      * @return the complianceReasonCode value.
      */
     public String getComplianceReasonCode() {
@@ -194,12 +198,67 @@ public final class PolicyInsightsPolicyStateDeletedEventData {
 
     /**
      * Set the complianceReasonCode property: The compliance reason code. May be empty.
-     *
+     * 
      * @param complianceReasonCode the complianceReasonCode value to set.
      * @return the PolicyInsightsPolicyStateDeletedEventData object itself.
      */
     public PolicyInsightsPolicyStateDeletedEventData setComplianceReasonCode(String complianceReasonCode) {
         this.complianceReasonCode = complianceReasonCode;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeStringField("policyAssignmentId", this.policyAssignmentId);
+        jsonWriter.writeStringField("policyDefinitionId", this.policyDefinitionId);
+        jsonWriter.writeStringField("policyDefinitionReferenceId", this.policyDefinitionReferenceId);
+        jsonWriter.writeStringField("complianceState", this.complianceState);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("complianceReasonCode", this.complianceReasonCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyInsightsPolicyStateDeletedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyInsightsPolicyStateDeletedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyInsightsPolicyStateDeletedEventData.
+     */
+    public static PolicyInsightsPolicyStateDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyInsightsPolicyStateDeletedEventData deserializedPolicyInsightsPolicyStateDeletedEventData
+                = new PolicyInsightsPolicyStateDeletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timestamp".equals(fieldName)) {
+                    deserializedPolicyInsightsPolicyStateDeletedEventData.timestamp
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("policyAssignmentId".equals(fieldName)) {
+                    deserializedPolicyInsightsPolicyStateDeletedEventData.policyAssignmentId = reader.getString();
+                } else if ("policyDefinitionId".equals(fieldName)) {
+                    deserializedPolicyInsightsPolicyStateDeletedEventData.policyDefinitionId = reader.getString();
+                } else if ("policyDefinitionReferenceId".equals(fieldName)) {
+                    deserializedPolicyInsightsPolicyStateDeletedEventData.policyDefinitionReferenceId
+                        = reader.getString();
+                } else if ("complianceState".equals(fieldName)) {
+                    deserializedPolicyInsightsPolicyStateDeletedEventData.complianceState = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedPolicyInsightsPolicyStateDeletedEventData.subscriptionId = reader.getString();
+                } else if ("complianceReasonCode".equals(fieldName)) {
+                    deserializedPolicyInsightsPolicyStateDeletedEventData.complianceReasonCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyInsightsPolicyStateDeletedEventData;
+        });
     }
 }

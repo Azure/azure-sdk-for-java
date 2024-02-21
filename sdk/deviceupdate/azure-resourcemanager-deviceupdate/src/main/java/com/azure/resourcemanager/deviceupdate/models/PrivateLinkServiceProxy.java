@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Private link service proxy details. */
+/**
+ * Private link service proxy details.
+ */
 @Fluent
 public final class PrivateLinkServiceProxy {
     /*
@@ -36,8 +38,14 @@ public final class PrivateLinkServiceProxy {
     private List<GroupConnectivityInformation> groupConnectivityInformation;
 
     /**
+     * Creates an instance of PrivateLinkServiceProxy class.
+     */
+    public PrivateLinkServiceProxy() {
+    }
+
+    /**
      * Get the id property: NRP resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -46,7 +54,7 @@ public final class PrivateLinkServiceProxy {
 
     /**
      * Set the id property: NRP resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the PrivateLinkServiceProxy object itself.
      */
@@ -57,7 +65,7 @@ public final class PrivateLinkServiceProxy {
 
     /**
      * Get the remotePrivateLinkServiceConnectionState property: Remote private link service connection state.
-     *
+     * 
      * @return the remotePrivateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState remotePrivateLinkServiceConnectionState() {
@@ -66,7 +74,7 @@ public final class PrivateLinkServiceProxy {
 
     /**
      * Set the remotePrivateLinkServiceConnectionState property: Remote private link service connection state.
-     *
+     * 
      * @param remotePrivateLinkServiceConnectionState the remotePrivateLinkServiceConnectionState value to set.
      * @return the PrivateLinkServiceProxy object itself.
      */
@@ -78,7 +86,7 @@ public final class PrivateLinkServiceProxy {
 
     /**
      * Get the remotePrivateEndpointConnection property: Remote private endpoint connection details.
-     *
+     * 
      * @return the remotePrivateEndpointConnection value.
      */
     public PrivateLinkServiceProxyRemotePrivateEndpointConnection remotePrivateEndpointConnection() {
@@ -87,7 +95,7 @@ public final class PrivateLinkServiceProxy {
 
     /**
      * Set the remotePrivateEndpointConnection property: Remote private endpoint connection details.
-     *
+     * 
      * @param remotePrivateEndpointConnection the remotePrivateEndpointConnection value to set.
      * @return the PrivateLinkServiceProxy object itself.
      */
@@ -99,7 +107,7 @@ public final class PrivateLinkServiceProxy {
 
     /**
      * Get the groupConnectivityInformation property: Group connectivity information.
-     *
+     * 
      * @return the groupConnectivityInformation value.
      */
     public List<GroupConnectivityInformation> groupConnectivityInformation() {
@@ -108,19 +116,19 @@ public final class PrivateLinkServiceProxy {
 
     /**
      * Set the groupConnectivityInformation property: Group connectivity information.
-     *
+     * 
      * @param groupConnectivityInformation the groupConnectivityInformation value to set.
      * @return the PrivateLinkServiceProxy object itself.
      */
-    public PrivateLinkServiceProxy withGroupConnectivityInformation(
-        List<GroupConnectivityInformation> groupConnectivityInformation) {
+    public PrivateLinkServiceProxy
+        withGroupConnectivityInformation(List<GroupConnectivityInformation> groupConnectivityInformation) {
         this.groupConnectivityInformation = groupConnectivityInformation;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.RouteMapInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of RouteMaps and a URL nextLink to get the next set of results. */
+/**
+ * List of RouteMaps and a URL nextLink to get the next set of results.
+ */
 @Fluent
 public final class ListRouteMapsResult {
     /*
@@ -24,13 +26,15 @@ public final class ListRouteMapsResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListRouteMapsResult class. */
+    /**
+     * Creates an instance of ListRouteMapsResult class.
+     */
     public ListRouteMapsResult() {
     }
 
     /**
      * Get the value property: List of RouteMaps.
-     *
+     * 
      * @return the value value.
      */
     public List<RouteMapInner> value() {
@@ -39,7 +43,7 @@ public final class ListRouteMapsResult {
 
     /**
      * Set the value property: List of RouteMaps.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListRouteMapsResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ListRouteMapsResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ListRouteMapsResult {
 
     /**
      * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListRouteMapsResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ListRouteMapsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

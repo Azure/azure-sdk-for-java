@@ -28,14 +28,16 @@ public final class ApplicationDeltaHealthPolicy {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ServiceTypeDeltaHealthPolicy> serviceTypeDeltaHealthPolicies;
 
-    /** Creates an instance of ApplicationDeltaHealthPolicy class. */
+    /**
+     * Creates an instance of ApplicationDeltaHealthPolicy class.
+     */
     public ApplicationDeltaHealthPolicy() {
     }
 
     /**
      * Get the defaultServiceTypeDeltaHealthPolicy property: The delta health policy used by default to evaluate the
      * health of a service type when upgrading the cluster.
-     *
+     * 
      * @return the defaultServiceTypeDeltaHealthPolicy value.
      */
     public ServiceTypeDeltaHealthPolicy defaultServiceTypeDeltaHealthPolicy() {
@@ -45,12 +47,12 @@ public final class ApplicationDeltaHealthPolicy {
     /**
      * Set the defaultServiceTypeDeltaHealthPolicy property: The delta health policy used by default to evaluate the
      * health of a service type when upgrading the cluster.
-     *
+     * 
      * @param defaultServiceTypeDeltaHealthPolicy the defaultServiceTypeDeltaHealthPolicy value to set.
      * @return the ApplicationDeltaHealthPolicy object itself.
      */
-    public ApplicationDeltaHealthPolicy withDefaultServiceTypeDeltaHealthPolicy(
-        ServiceTypeDeltaHealthPolicy defaultServiceTypeDeltaHealthPolicy) {
+    public ApplicationDeltaHealthPolicy
+        withDefaultServiceTypeDeltaHealthPolicy(ServiceTypeDeltaHealthPolicy defaultServiceTypeDeltaHealthPolicy) {
         this.defaultServiceTypeDeltaHealthPolicy = defaultServiceTypeDeltaHealthPolicy;
         return this;
     }
@@ -58,7 +60,7 @@ public final class ApplicationDeltaHealthPolicy {
     /**
      * Get the serviceTypeDeltaHealthPolicies property: The map with service type delta health policy per service type
      * name. The map is empty by default.
-     *
+     * 
      * @return the serviceTypeDeltaHealthPolicies value.
      */
     public Map<String, ServiceTypeDeltaHealthPolicy> serviceTypeDeltaHealthPolicies() {
@@ -68,19 +70,19 @@ public final class ApplicationDeltaHealthPolicy {
     /**
      * Set the serviceTypeDeltaHealthPolicies property: The map with service type delta health policy per service type
      * name. The map is empty by default.
-     *
+     * 
      * @param serviceTypeDeltaHealthPolicies the serviceTypeDeltaHealthPolicies value to set.
      * @return the ApplicationDeltaHealthPolicy object itself.
      */
-    public ApplicationDeltaHealthPolicy withServiceTypeDeltaHealthPolicies(
-        Map<String, ServiceTypeDeltaHealthPolicy> serviceTypeDeltaHealthPolicies) {
+    public ApplicationDeltaHealthPolicy
+        withServiceTypeDeltaHealthPolicies(Map<String, ServiceTypeDeltaHealthPolicy> serviceTypeDeltaHealthPolicies) {
         this.serviceTypeDeltaHealthPolicies = serviceTypeDeltaHealthPolicies;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -88,14 +90,11 @@ public final class ApplicationDeltaHealthPolicy {
             defaultServiceTypeDeltaHealthPolicy().validate();
         }
         if (serviceTypeDeltaHealthPolicies() != null) {
-            serviceTypeDeltaHealthPolicies()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            serviceTypeDeltaHealthPolicies().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

@@ -10,20 +10,24 @@ import java.util.Collection;
 
 /**
  * encryptionType
- *
- * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it.
- * This value can only be set when creating new pool.
+ * 
+ * Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This
+ * value can only be set when creating new pool.
  */
 public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
-    /** Static value Single for EncryptionType. */
+    /**
+     * Static value Single for EncryptionType.
+     */
     public static final EncryptionType SINGLE = fromString("Single");
 
-    /** Static value Double for EncryptionType. */
+    /**
+     * Static value Double for EncryptionType.
+     */
     public static final EncryptionType DOUBLE = fromString("Double");
 
     /**
      * Creates a new instance of EncryptionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +36,7 @@ public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
 
     /**
      * Creates or finds a EncryptionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncryptionType.
      */
@@ -43,7 +47,7 @@ public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
 
     /**
      * Gets known EncryptionType values.
-     *
+     * 
      * @return known EncryptionType values.
      */
     public static Collection<EncryptionType> values() {

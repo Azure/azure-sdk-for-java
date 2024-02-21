@@ -24,14 +24,16 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings {
     @JsonProperty(value = "bypassPlatformSafetyChecksOnUserSchedule")
     private Boolean bypassPlatformSafetyChecksOnUserSchedule;
 
-    /** Creates an instance of LinuxVMGuestPatchAutomaticByPlatformSettings class. */
+    /**
+     * Creates an instance of LinuxVMGuestPatchAutomaticByPlatformSettings class.
+     */
     public LinuxVMGuestPatchAutomaticByPlatformSettings() {
     }
 
     /**
      * Get the rebootSetting property: Specifies the reboot setting for all AutomaticByPlatform patch installation
      * operations.
-     *
+     * 
      * @return the rebootSetting value.
      */
     public LinuxVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting() {
@@ -41,12 +43,12 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings {
     /**
      * Set the rebootSetting property: Specifies the reboot setting for all AutomaticByPlatform patch installation
      * operations.
-     *
+     * 
      * @param rebootSetting the rebootSetting value to set.
      * @return the LinuxVMGuestPatchAutomaticByPlatformSettings object itself.
      */
-    public LinuxVMGuestPatchAutomaticByPlatformSettings withRebootSetting(
-        LinuxVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting) {
+    public LinuxVMGuestPatchAutomaticByPlatformSettings
+        withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting) {
         this.rebootSetting = rebootSetting;
         return this;
     }
@@ -54,7 +56,7 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings {
     /**
      * Get the bypassPlatformSafetyChecksOnUserSchedule property: Enables customer to schedule patching without
      * accidental upgrades.
-     *
+     * 
      * @return the bypassPlatformSafetyChecksOnUserSchedule value.
      */
     public Boolean bypassPlatformSafetyChecksOnUserSchedule() {
@@ -64,19 +66,19 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings {
     /**
      * Set the bypassPlatformSafetyChecksOnUserSchedule property: Enables customer to schedule patching without
      * accidental upgrades.
-     *
+     * 
      * @param bypassPlatformSafetyChecksOnUserSchedule the bypassPlatformSafetyChecksOnUserSchedule value to set.
      * @return the LinuxVMGuestPatchAutomaticByPlatformSettings object itself.
      */
-    public LinuxVMGuestPatchAutomaticByPlatformSettings withBypassPlatformSafetyChecksOnUserSchedule(
-        Boolean bypassPlatformSafetyChecksOnUserSchedule) {
+    public LinuxVMGuestPatchAutomaticByPlatformSettings
+        withBypassPlatformSafetyChecksOnUserSchedule(Boolean bypassPlatformSafetyChecksOnUserSchedule) {
         this.bypassPlatformSafetyChecksOnUserSchedule = bypassPlatformSafetyChecksOnUserSchedule;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

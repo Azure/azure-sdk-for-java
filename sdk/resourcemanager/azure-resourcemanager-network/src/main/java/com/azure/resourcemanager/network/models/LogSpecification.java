@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of logging specification. */
+/**
+ * Description of logging specification.
+ */
 @Fluent
 public final class LogSpecification {
     /*
@@ -28,13 +30,15 @@ public final class LogSpecification {
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
-    /** Creates an instance of LogSpecification class. */
+    /**
+     * Creates an instance of LogSpecification class.
+     */
     public LogSpecification() {
     }
 
     /**
      * Get the name property: The name of the specification.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class LogSpecification {
 
     /**
      * Set the name property: The name of the specification.
-     *
+     * 
      * @param name the name value to set.
      * @return the LogSpecification object itself.
      */
@@ -54,7 +58,7 @@ public final class LogSpecification {
 
     /**
      * Get the displayName property: The display name of the specification.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -63,7 +67,7 @@ public final class LogSpecification {
 
     /**
      * Set the displayName property: The display name of the specification.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the LogSpecification object itself.
      */
@@ -74,7 +78,7 @@ public final class LogSpecification {
 
     /**
      * Get the blobDuration property: Duration of the blob.
-     *
+     * 
      * @return the blobDuration value.
      */
     public String blobDuration() {
@@ -83,7 +87,7 @@ public final class LogSpecification {
 
     /**
      * Set the blobDuration property: Duration of the blob.
-     *
+     * 
      * @param blobDuration the blobDuration value to set.
      * @return the LogSpecification object itself.
      */
@@ -94,7 +98,7 @@ public final class LogSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

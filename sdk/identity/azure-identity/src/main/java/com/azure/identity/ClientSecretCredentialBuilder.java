@@ -74,6 +74,13 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
     private String clientSecret;
 
     /**
+     * Constructs an instance of ClientSecretCredentialBuilder.
+     */
+    public ClientSecretCredentialBuilder() {
+        super();
+    }
+
+    /**
      * Sets the client secret for the authentication.
      * @param clientSecret the secret value of the Microsoft Entra application.
      * @return An updated instance of this builder.

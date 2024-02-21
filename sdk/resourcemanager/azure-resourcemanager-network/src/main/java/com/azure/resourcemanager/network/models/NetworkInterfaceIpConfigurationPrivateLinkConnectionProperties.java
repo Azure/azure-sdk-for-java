@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** PrivateLinkConnection properties for the network interface. */
+/**
+ * PrivateLinkConnection properties for the network interface.
+ */
 @Immutable
 public final class NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties {
     /*
@@ -29,13 +31,15 @@ public final class NetworkInterfaceIpConfigurationPrivateLinkConnectionPropertie
     @JsonProperty(value = "fqdns", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> fqdns;
 
-    /** Creates an instance of NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties class. */
+    /**
+     * Creates an instance of NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties class.
+     */
     public NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties() {
     }
 
     /**
      * Get the groupId property: The group ID for current private link connection.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -44,7 +48,7 @@ public final class NetworkInterfaceIpConfigurationPrivateLinkConnectionPropertie
 
     /**
      * Get the requiredMemberName property: The required member name for current private link connection.
-     *
+     * 
      * @return the requiredMemberName value.
      */
     public String requiredMemberName() {
@@ -53,7 +57,7 @@ public final class NetworkInterfaceIpConfigurationPrivateLinkConnectionPropertie
 
     /**
      * Get the fqdns property: List of FQDNs for current private link connection.
-     *
+     * 
      * @return the fqdns value.
      */
     public List<String> fqdns() {
@@ -62,7 +66,7 @@ public final class NetworkInterfaceIpConfigurationPrivateLinkConnectionPropertie
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

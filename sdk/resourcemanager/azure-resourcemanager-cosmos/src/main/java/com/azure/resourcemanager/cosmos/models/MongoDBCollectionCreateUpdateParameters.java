@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.MongoDBCollectionCreateUpd
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to create and update Cosmos DB MongoDB collection. */
+/**
+ * Parameters to create and update Cosmos DB MongoDB collection.
+ */
 @Fluent
 public final class MongoDBCollectionCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,27 +21,33 @@ public final class MongoDBCollectionCreateUpdateParameters extends ArmResourcePr
     @JsonProperty(value = "properties", required = true)
     private MongoDBCollectionCreateUpdateProperties innerProperties = new MongoDBCollectionCreateUpdateProperties();
 
-    /** Creates an instance of MongoDBCollectionCreateUpdateParameters class. */
+    /**
+     * Creates an instance of MongoDBCollectionCreateUpdateParameters class.
+     */
     public MongoDBCollectionCreateUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB MongoDB collection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MongoDBCollectionCreateUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class MongoDBCollectionCreateUpdateParameters extends ArmResourcePr
 
     /**
      * Get the resource property: The standard JSON format of a MongoDB collection.
-     *
+     * 
      * @return the resource value.
      */
     public MongoDBCollectionResource resource() {
@@ -57,7 +65,7 @@ public final class MongoDBCollectionCreateUpdateParameters extends ArmResourcePr
 
     /**
      * Set the resource property: The standard JSON format of a MongoDB collection.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the MongoDBCollectionCreateUpdateParameters object itself.
      */
@@ -72,7 +80,7 @@ public final class MongoDBCollectionCreateUpdateParameters extends ArmResourcePr
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -82,7 +90,7 @@ public final class MongoDBCollectionCreateUpdateParameters extends ArmResourcePr
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the MongoDBCollectionCreateUpdateParameters object itself.
      */
@@ -96,17 +104,15 @@ public final class MongoDBCollectionCreateUpdateParameters extends ArmResourcePr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model MongoDBCollectionCreateUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model MongoDBCollectionCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

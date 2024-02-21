@@ -10,7 +10,9 @@ import com.azure.resourcemanager.healthcareapis.fluent.models.PrivateLinkResourc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A private link resource. */
+/**
+ * A private link resource.
+ */
 @Fluent
 public class PrivateLinkResource extends ProxyResource {
     /*
@@ -20,8 +22,14 @@ public class PrivateLinkResource extends ProxyResource {
     private PrivateLinkResourceProperties innerProperties;
 
     /**
+     * Creates an instance of PrivateLinkResource class.
+     */
+    public PrivateLinkResource() {
+    }
+
+    /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateLinkResourceProperties innerProperties() {
@@ -30,7 +38,7 @@ public class PrivateLinkResource extends ProxyResource {
 
     /**
      * Get the groupId property: The private link resource group id.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -39,7 +47,7 @@ public class PrivateLinkResource extends ProxyResource {
 
     /**
      * Get the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -48,7 +56,7 @@ public class PrivateLinkResource extends ProxyResource {
 
     /**
      * Get the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -57,7 +65,7 @@ public class PrivateLinkResource extends ProxyResource {
 
     /**
      * Set the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
+     * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -71,7 +79,7 @@ public class PrivateLinkResource extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

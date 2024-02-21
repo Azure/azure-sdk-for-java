@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Monitoring Settings. */
+/**
+ * Monitoring Settings.
+ */
 @Fluent
 public final class MonitoringSettings {
     /*
@@ -16,13 +18,15 @@ public final class MonitoringSettings {
     @JsonProperty(value = "azureMonitorAlertSettings")
     private AzureMonitorAlertSettings azureMonitorAlertSettings;
 
-    /** Creates an instance of MonitoringSettings class. */
+    /**
+     * Creates an instance of MonitoringSettings class.
+     */
     public MonitoringSettings() {
     }
 
     /**
      * Get the azureMonitorAlertSettings property: Settings for Azure Monitor based alerts.
-     *
+     * 
      * @return the azureMonitorAlertSettings value.
      */
     public AzureMonitorAlertSettings azureMonitorAlertSettings() {
@@ -31,7 +35,7 @@ public final class MonitoringSettings {
 
     /**
      * Set the azureMonitorAlertSettings property: Settings for Azure Monitor based alerts.
-     *
+     * 
      * @param azureMonitorAlertSettings the azureMonitorAlertSettings value to set.
      * @return the MonitoringSettings object itself.
      */
@@ -42,7 +46,7 @@ public final class MonitoringSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

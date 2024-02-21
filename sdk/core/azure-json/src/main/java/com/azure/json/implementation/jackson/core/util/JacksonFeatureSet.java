@@ -9,8 +9,7 @@ package com.azure.json.implementation.jackson.core.util;
  *
  * @since 2.12
  */
-public final class JacksonFeatureSet<F extends JacksonFeature>
-{
+public final class JacksonFeatureSet<F extends JacksonFeature> {
     protected int _enabled;
 
     /**
@@ -40,10 +39,9 @@ public final class JacksonFeatureSet<F extends JacksonFeature>
         if (allFeatures.length > 31) {
             final String desc = allFeatures[0].getClass().getName();
             throw new IllegalArgumentException(String.format(
-"Can not use type `%s` with JacksonFeatureSet: too many entries (%d > 31)",
-desc, allFeatures.length));
+                "Can not use type `%s` with JacksonFeatureSet: too many entries (%d > 31)", desc, allFeatures.length));
         }
-        
+
         int flags = 0;
         for (F f : allFeatures) {
             if (f.enabledByDefault()) {

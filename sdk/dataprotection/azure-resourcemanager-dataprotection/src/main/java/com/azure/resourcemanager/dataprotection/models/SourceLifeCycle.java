@@ -11,14 +11,14 @@ import java.util.List;
 
 /**
  * SourceLifeCycle
- *
- * <p>Source LifeCycle.
+ * 
+ * Source LifeCycle.
  */
 @Fluent
 public final class SourceLifeCycle {
     /*
      * DeleteOption
-     *
+     * 
      * Delete Option
      */
     @JsonProperty(value = "deleteAfter", required = true)
@@ -26,7 +26,7 @@ public final class SourceLifeCycle {
 
     /*
      * DataStoreInfoBase
-     *
+     * 
      * DataStoreInfo base
      */
     @JsonProperty(value = "sourceDataStore", required = true)
@@ -38,15 +38,17 @@ public final class SourceLifeCycle {
     @JsonProperty(value = "targetDataStoreCopySettings")
     private List<TargetCopySetting> targetDataStoreCopySettings;
 
-    /** Creates an instance of SourceLifeCycle class. */
+    /**
+     * Creates an instance of SourceLifeCycle class.
+     */
     public SourceLifeCycle() {
     }
 
     /**
      * Get the deleteAfter property: DeleteOption
-     *
-     * <p>Delete Option.
-     *
+     * 
+     * Delete Option.
+     * 
      * @return the deleteAfter value.
      */
     public DeleteOption deleteAfter() {
@@ -55,9 +57,9 @@ public final class SourceLifeCycle {
 
     /**
      * Set the deleteAfter property: DeleteOption
-     *
-     * <p>Delete Option.
-     *
+     * 
+     * Delete Option.
+     * 
      * @param deleteAfter the deleteAfter value to set.
      * @return the SourceLifeCycle object itself.
      */
@@ -68,9 +70,9 @@ public final class SourceLifeCycle {
 
     /**
      * Get the sourceDataStore property: DataStoreInfoBase
-     *
-     * <p>DataStoreInfo base.
-     *
+     * 
+     * DataStoreInfo base.
+     * 
      * @return the sourceDataStore value.
      */
     public DataStoreInfoBase sourceDataStore() {
@@ -79,9 +81,9 @@ public final class SourceLifeCycle {
 
     /**
      * Set the sourceDataStore property: DataStoreInfoBase
-     *
-     * <p>DataStoreInfo base.
-     *
+     * 
+     * DataStoreInfo base.
+     * 
      * @param sourceDataStore the sourceDataStore value to set.
      * @return the SourceLifeCycle object itself.
      */
@@ -92,7 +94,7 @@ public final class SourceLifeCycle {
 
     /**
      * Get the targetDataStoreCopySettings property: The targetDataStoreCopySettings property.
-     *
+     * 
      * @return the targetDataStoreCopySettings value.
      */
     public List<TargetCopySetting> targetDataStoreCopySettings() {
@@ -101,7 +103,7 @@ public final class SourceLifeCycle {
 
     /**
      * Set the targetDataStoreCopySettings property: The targetDataStoreCopySettings property.
-     *
+     * 
      * @param targetDataStoreCopySettings the targetDataStoreCopySettings value to set.
      * @return the SourceLifeCycle object itself.
      */
@@ -112,21 +114,19 @@ public final class SourceLifeCycle {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deleteAfter() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property deleteAfter in model SourceLifeCycle"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property deleteAfter in model SourceLifeCycle"));
         } else {
             deleteAfter().validate();
         }
         if (sourceDataStore() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sourceDataStore in model SourceLifeCycle"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sourceDataStore in model SourceLifeCycle"));
         } else {
             sourceDataStore().validate();
         }

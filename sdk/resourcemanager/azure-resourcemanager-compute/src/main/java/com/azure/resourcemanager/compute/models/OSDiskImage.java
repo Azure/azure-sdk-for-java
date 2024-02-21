@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the os disk image information. */
+/**
+ * Contains the os disk image information.
+ */
 @Fluent
 public final class OSDiskImage {
     /*
@@ -17,13 +19,15 @@ public final class OSDiskImage {
     @JsonProperty(value = "operatingSystem", required = true)
     private OperatingSystemTypes operatingSystem;
 
-    /** Creates an instance of OSDiskImage class. */
+    /**
+     * Creates an instance of OSDiskImage class.
+     */
     public OSDiskImage() {
     }
 
     /**
      * Get the operatingSystem property: The operating system of the osDiskImage.
-     *
+     * 
      * @return the operatingSystem value.
      */
     public OperatingSystemTypes operatingSystem() {
@@ -32,7 +36,7 @@ public final class OSDiskImage {
 
     /**
      * Set the operatingSystem property: The operating system of the osDiskImage.
-     *
+     * 
      * @param operatingSystem the operatingSystem value to set.
      * @return the OSDiskImage object itself.
      */
@@ -43,14 +47,13 @@ public final class OSDiskImage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (operatingSystem() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operatingSystem in model OSDiskImage"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property operatingSystem in model OSDiskImage"));
         }
     }
 

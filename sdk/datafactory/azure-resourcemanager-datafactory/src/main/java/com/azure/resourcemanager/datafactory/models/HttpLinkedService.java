@@ -177,7 +177,7 @@ public final class HttpLinkedService extends LinkedService {
 
     /**
      * Get the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
-     * Type: object (or Expression with resultType object).
+     * Type: key value pairs (value should be string type).
      * 
      * @return the authHeaders value.
      */
@@ -187,7 +187,7 @@ public final class HttpLinkedService extends LinkedService {
 
     /**
      * Set the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
-     * Type: object (or Expression with resultType object).
+     * Type: key value pairs (value should be string type).
      * 
      * @param authHeaders the authHeaders value to set.
      * @return the HttpLinkedService object itself.

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Metric specification of operation. */
+/**
+ * Metric specification of operation.
+ */
 @Fluent
 public final class MetricSpecification {
     /*
@@ -107,13 +109,15 @@ public final class MetricSpecification {
     @JsonProperty(value = "isInternal")
     private Boolean isInternal;
 
-    /** Creates an instance of MetricSpecification class. */
+    /**
+     * Creates an instance of MetricSpecification class.
+     */
     public MetricSpecification() {
     }
 
     /**
      * Get the name property: Name of metric specification.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -122,7 +126,7 @@ public final class MetricSpecification {
 
     /**
      * Set the name property: Name of metric specification.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricSpecification object itself.
      */
@@ -133,7 +137,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayName property: Display name of metric specification.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -142,7 +146,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayName property: Display name of metric specification.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetricSpecification object itself.
      */
@@ -153,7 +157,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayDescription property: Display description of metric specification.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -162,7 +166,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayDescription property: Display description of metric specification.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the MetricSpecification object itself.
      */
@@ -173,7 +177,7 @@ public final class MetricSpecification {
 
     /**
      * Get the unit property: Unit could be Bytes or Count.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -182,7 +186,7 @@ public final class MetricSpecification {
 
     /**
      * Set the unit property: Unit could be Bytes or Count.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the MetricSpecification object itself.
      */
@@ -193,7 +197,7 @@ public final class MetricSpecification {
 
     /**
      * Get the supportedAggregationTypes property: Support metric aggregation type.
-     *
+     * 
      * @return the supportedAggregationTypes value.
      */
     public List<MetricAggregationType> supportedAggregationTypes() {
@@ -202,7 +206,7 @@ public final class MetricSpecification {
 
     /**
      * Set the supportedAggregationTypes property: Support metric aggregation type.
-     *
+     * 
      * @param supportedAggregationTypes the supportedAggregationTypes value to set.
      * @return the MetricSpecification object itself.
      */
@@ -213,7 +217,7 @@ public final class MetricSpecification {
 
     /**
      * Get the supportedTimeGrainTypes property: The supported time grain types for the metrics.
-     *
+     * 
      * @return the supportedTimeGrainTypes value.
      */
     public List<String> supportedTimeGrainTypes() {
@@ -222,7 +226,7 @@ public final class MetricSpecification {
 
     /**
      * Set the supportedTimeGrainTypes property: The supported time grain types for the metrics.
-     *
+     * 
      * @param supportedTimeGrainTypes the supportedTimeGrainTypes value to set.
      * @return the MetricSpecification object itself.
      */
@@ -233,7 +237,7 @@ public final class MetricSpecification {
 
     /**
      * Get the internalMetricName property: The internal metric name.
-     *
+     * 
      * @return the internalMetricName value.
      */
     public String internalMetricName() {
@@ -242,7 +246,7 @@ public final class MetricSpecification {
 
     /**
      * Set the internalMetricName property: The internal metric name.
-     *
+     * 
      * @param internalMetricName the internalMetricName value to set.
      * @return the MetricSpecification object itself.
      */
@@ -253,7 +257,7 @@ public final class MetricSpecification {
 
     /**
      * Get the enableRegionalMdmAccount property: Whether or not the service is using regional MDM accounts.
-     *
+     * 
      * @return the enableRegionalMdmAccount value.
      */
     public Boolean enableRegionalMdmAccount() {
@@ -262,7 +266,7 @@ public final class MetricSpecification {
 
     /**
      * Set the enableRegionalMdmAccount property: Whether or not the service is using regional MDM accounts.
-     *
+     * 
      * @param enableRegionalMdmAccount the enableRegionalMdmAccount value to set.
      * @return the MetricSpecification object itself.
      */
@@ -273,7 +277,7 @@ public final class MetricSpecification {
 
     /**
      * Get the sourceMdmAccount property: The source MDM account.
-     *
+     * 
      * @return the sourceMdmAccount value.
      */
     public String sourceMdmAccount() {
@@ -282,7 +286,7 @@ public final class MetricSpecification {
 
     /**
      * Set the sourceMdmAccount property: The source MDM account.
-     *
+     * 
      * @param sourceMdmAccount the sourceMdmAccount value to set.
      * @return the MetricSpecification object itself.
      */
@@ -293,7 +297,7 @@ public final class MetricSpecification {
 
     /**
      * Get the sourceMdmNamespace property: The source MDM namespace.
-     *
+     * 
      * @return the sourceMdmNamespace value.
      */
     public String sourceMdmNamespace() {
@@ -302,7 +306,7 @@ public final class MetricSpecification {
 
     /**
      * Set the sourceMdmNamespace property: The source MDM namespace.
-     *
+     * 
      * @param sourceMdmNamespace the sourceMdmNamespace value to set.
      * @return the MetricSpecification object itself.
      */
@@ -313,7 +317,7 @@ public final class MetricSpecification {
 
     /**
      * Get the dimensions property: Dimensions of blobs, including blob type and access tier.
-     *
+     * 
      * @return the dimensions value.
      */
     public List<Dimension> dimensions() {
@@ -322,7 +326,7 @@ public final class MetricSpecification {
 
     /**
      * Set the dimensions property: Dimensions of blobs, including blob type and access tier.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the MetricSpecification object itself.
      */
@@ -333,7 +337,7 @@ public final class MetricSpecification {
 
     /**
      * Get the aggregationType property: Aggregation type could be Average.
-     *
+     * 
      * @return the aggregationType value.
      */
     public String aggregationType() {
@@ -342,7 +346,7 @@ public final class MetricSpecification {
 
     /**
      * Set the aggregationType property: Aggregation type could be Average.
-     *
+     * 
      * @param aggregationType the aggregationType value to set.
      * @return the MetricSpecification object itself.
      */
@@ -353,7 +357,7 @@ public final class MetricSpecification {
 
     /**
      * Get the fillGapWithZero property: The property to decide fill gap with zero or not.
-     *
+     * 
      * @return the fillGapWithZero value.
      */
     public Boolean fillGapWithZero() {
@@ -362,7 +366,7 @@ public final class MetricSpecification {
 
     /**
      * Set the fillGapWithZero property: The property to decide fill gap with zero or not.
-     *
+     * 
      * @param fillGapWithZero the fillGapWithZero value to set.
      * @return the MetricSpecification object itself.
      */
@@ -373,7 +377,7 @@ public final class MetricSpecification {
 
     /**
      * Get the category property: The category this metric specification belong to, could be Capacity.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -382,7 +386,7 @@ public final class MetricSpecification {
 
     /**
      * Set the category property: The category this metric specification belong to, could be Capacity.
-     *
+     * 
      * @param category the category value to set.
      * @return the MetricSpecification object itself.
      */
@@ -393,7 +397,7 @@ public final class MetricSpecification {
 
     /**
      * Get the resourceIdDimensionNameOverride property: Account Resource Id.
-     *
+     * 
      * @return the resourceIdDimensionNameOverride value.
      */
     public String resourceIdDimensionNameOverride() {
@@ -402,7 +406,7 @@ public final class MetricSpecification {
 
     /**
      * Set the resourceIdDimensionNameOverride property: Account Resource Id.
-     *
+     * 
      * @param resourceIdDimensionNameOverride the resourceIdDimensionNameOverride value to set.
      * @return the MetricSpecification object itself.
      */
@@ -413,7 +417,7 @@ public final class MetricSpecification {
 
     /**
      * Get the isInternal property: Whether the metric is internal.
-     *
+     * 
      * @return the isInternal value.
      */
     public Boolean isInternal() {
@@ -422,7 +426,7 @@ public final class MetricSpecification {
 
     /**
      * Set the isInternal property: Whether the metric is internal.
-     *
+     * 
      * @param isInternal the isInternal value to set.
      * @return the MetricSpecification object itself.
      */
@@ -433,7 +437,7 @@ public final class MetricSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

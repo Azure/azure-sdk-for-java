@@ -68,7 +68,6 @@ private case class ChangeFeedPartitionReader
       containerTargetConfig,
       clientCacheItem,
       throughputControlClientCacheItemOpt)
-  SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
   private val partitionKeyDefinition: Option[PartitionKeyDefinition] =
     if (diagnosticsConfig.mode.isDefined &&

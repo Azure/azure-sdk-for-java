@@ -12,11 +12,13 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ResourceGu
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.UnlockDeleteResponseInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.UnlockDeleteRequest;
 
-/** An instance of this class provides access to all the operations defined in ResourceGuardProxyOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceGuardProxyOperationsClient.
+ */
 public interface ResourceGuardProxyOperationsClient {
     /**
      * Returns ResourceGuardProxy under vault and with the name referenced in request.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
@@ -27,12 +29,12 @@ public interface ResourceGuardProxyOperationsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceGuardProxyBaseResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context);
+    Response<ResourceGuardProxyBaseResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        String resourceGuardProxyName, Context context);
 
     /**
      * Returns ResourceGuardProxy under vault and with the name referenced in request.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
@@ -45,8 +47,9 @@ public interface ResourceGuardProxyOperationsClient {
     ResourceGuardProxyBaseResourceInner get(String vaultName, String resourceGroupName, String resourceGuardProxyName);
 
     /**
-     * Add or Update ResourceGuardProxy under vault Secures vault critical operations.
-     *
+     * Add or Update ResourceGuardProxy under vault
+     * Secures vault critical operations.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
@@ -58,16 +61,13 @@ public interface ResourceGuardProxyOperationsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceGuardProxyBaseResourceInner> putWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String resourceGuardProxyName,
-        ResourceGuardProxyBaseResourceInner parameters,
-        Context context);
+    Response<ResourceGuardProxyBaseResourceInner> putWithResponse(String vaultName, String resourceGroupName,
+        String resourceGuardProxyName, ResourceGuardProxyBaseResourceInner parameters, Context context);
 
     /**
-     * Add or Update ResourceGuardProxy under vault Secures vault critical operations.
-     *
+     * Add or Update ResourceGuardProxy under vault
+     * Secures vault critical operations.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
@@ -78,15 +78,12 @@ public interface ResourceGuardProxyOperationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceGuardProxyBaseResourceInner put(
-        String vaultName,
-        String resourceGroupName,
-        String resourceGuardProxyName,
+    ResourceGuardProxyBaseResourceInner put(String vaultName, String resourceGroupName, String resourceGuardProxyName,
         ResourceGuardProxyBaseResourceInner parameters);
 
     /**
      * Delete ResourceGuardProxy under vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
@@ -97,12 +94,12 @@ public interface ResourceGuardProxyOperationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context);
+    Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String resourceGuardProxyName,
+        Context context);
 
     /**
      * Delete ResourceGuardProxy under vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
@@ -115,7 +112,7 @@ public interface ResourceGuardProxyOperationsClient {
 
     /**
      * Secures delete ResourceGuardProxy operations.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
@@ -127,16 +124,12 @@ public interface ResourceGuardProxyOperationsClient {
      * @return response of Unlock Delete API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UnlockDeleteResponseInner> unlockDeleteWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String resourceGuardProxyName,
-        UnlockDeleteRequest parameters,
-        Context context);
+    Response<UnlockDeleteResponseInner> unlockDeleteWithResponse(String vaultName, String resourceGroupName,
+        String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context);
 
     /**
      * Secures delete ResourceGuardProxy operations.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
@@ -147,6 +140,6 @@ public interface ResourceGuardProxyOperationsClient {
      * @return response of Unlock Delete API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UnlockDeleteResponseInner unlockDelete(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, UnlockDeleteRequest parameters);
+    UnlockDeleteResponseInner unlockDelete(String vaultName, String resourceGroupName, String resourceGuardProxyName,
+        UnlockDeleteRequest parameters);
 }

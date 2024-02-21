@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The connection info for the given notebook workspace. */
+/**
+ * The connection info for the given notebook workspace.
+ */
 @Immutable
 public final class NotebookWorkspaceConnectionInfoResultInner {
     /*
@@ -22,13 +24,15 @@ public final class NotebookWorkspaceConnectionInfoResultInner {
     @JsonProperty(value = "notebookServerEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String notebookServerEndpoint;
 
-    /** Creates an instance of NotebookWorkspaceConnectionInfoResultInner class. */
+    /**
+     * Creates an instance of NotebookWorkspaceConnectionInfoResultInner class.
+     */
     public NotebookWorkspaceConnectionInfoResultInner() {
     }
 
     /**
      * Get the authToken property: Specifies auth token used for connecting to Notebook server (uses token-based auth).
-     *
+     * 
      * @return the authToken value.
      */
     public String authToken() {
@@ -37,7 +41,7 @@ public final class NotebookWorkspaceConnectionInfoResultInner {
 
     /**
      * Get the notebookServerEndpoint property: Specifies the endpoint of Notebook server.
-     *
+     * 
      * @return the notebookServerEndpoint value.
      */
     public String notebookServerEndpoint() {
@@ -46,7 +50,7 @@ public final class NotebookWorkspaceConnectionInfoResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

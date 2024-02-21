@@ -12,40 +12,30 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplatePlatformImageSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplatePlatformImageSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"PlatformImage\",\"publisher\":\"xlzevgbmqjqabcy\",\"offer\":\"ivkwlzuvccfwnfnb\",\"sku\":\"fionl\",\"version\":\"x\",\"exactVersion\":\"qgtz\",\"planInfo\":{\"planName\":\"pnqbqqwxrjfe\",\"planProduct\":\"llnwsubi\",\"planPublisher\":\"njampm\"}}")
-                .toObject(ImageTemplatePlatformImageSource.class);
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.publisher());
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.offer());
-        Assertions.assertEquals("fionl", model.sku());
-        Assertions.assertEquals("x", model.version());
-        Assertions.assertEquals("pnqbqqwxrjfe", model.planInfo().planName());
-        Assertions.assertEquals("llnwsubi", model.planInfo().planProduct());
-        Assertions.assertEquals("njampm", model.planInfo().planPublisher());
+        ImageTemplatePlatformImageSource model = BinaryData.fromString(
+            "{\"type\":\"PlatformImage\",\"publisher\":\"cynpwlbjnp\",\"offer\":\"cftadeh\",\"sku\":\"ltyfsop\",\"version\":\"suesnzw\",\"exactVersion\":\"jbavorxzdm\",\"planInfo\":{\"planName\":\"ctbqvudwx\",\"planProduct\":\"ndnvo\",\"planPublisher\":\"gujjugwdkcglh\"}}")
+            .toObject(ImageTemplatePlatformImageSource.class);
+        Assertions.assertEquals("cynpwlbjnp", model.publisher());
+        Assertions.assertEquals("cftadeh", model.offer());
+        Assertions.assertEquals("ltyfsop", model.sku());
+        Assertions.assertEquals("suesnzw", model.version());
+        Assertions.assertEquals("ctbqvudwx", model.planInfo().planName());
+        Assertions.assertEquals("ndnvo", model.planInfo().planProduct());
+        Assertions.assertEquals("gujjugwdkcglh", model.planInfo().planPublisher());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplatePlatformImageSource model =
-            new ImageTemplatePlatformImageSource()
-                .withPublisher("xlzevgbmqjqabcy")
-                .withOffer("ivkwlzuvccfwnfnb")
-                .withSku("fionl")
-                .withVersion("x")
-                .withPlanInfo(
-                    new PlatformImagePurchasePlan()
-                        .withPlanName("pnqbqqwxrjfe")
-                        .withPlanProduct("llnwsubi")
-                        .withPlanPublisher("njampm"));
+        ImageTemplatePlatformImageSource model = new ImageTemplatePlatformImageSource().withPublisher("cynpwlbjnp")
+            .withOffer("cftadeh").withSku("ltyfsop").withVersion("suesnzw").withPlanInfo(new PlatformImagePurchasePlan()
+                .withPlanName("ctbqvudwx").withPlanProduct("ndnvo").withPlanPublisher("gujjugwdkcglh"));
         model = BinaryData.fromObject(model).toObject(ImageTemplatePlatformImageSource.class);
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.publisher());
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.offer());
-        Assertions.assertEquals("fionl", model.sku());
-        Assertions.assertEquals("x", model.version());
-        Assertions.assertEquals("pnqbqqwxrjfe", model.planInfo().planName());
-        Assertions.assertEquals("llnwsubi", model.planInfo().planProduct());
-        Assertions.assertEquals("njampm", model.planInfo().planPublisher());
+        Assertions.assertEquals("cynpwlbjnp", model.publisher());
+        Assertions.assertEquals("cftadeh", model.offer());
+        Assertions.assertEquals("ltyfsop", model.sku());
+        Assertions.assertEquals("suesnzw", model.version());
+        Assertions.assertEquals("ctbqvudwx", model.planInfo().planName());
+        Assertions.assertEquals("ndnvo", model.planInfo().planProduct());
+        Assertions.assertEquals("gujjugwdkcglh", model.planInfo().planPublisher());
     }
 }

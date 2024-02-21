@@ -45,6 +45,13 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
     private String tenantId;
 
     /**
+     * Constructs an instance of AzurePowerShellCredentialBuilder.
+     */
+    public AzurePowerShellCredentialBuilder() {
+        super();
+    }
+
+    /**
      * Sets the tenant ID of the application.
      *
      * @param tenantId the tenant ID of the application.

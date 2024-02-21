@@ -14,16 +14,47 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MariaDBLinkedServiceTypeProperties {
     /*
+     * The version of the MariaDB driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can
+     * support connection string and property bag, V2 can only support connection string.
+     */
+    @JsonProperty(value = "driverVersion")
+    private Object driverVersion;
+
+    /*
      * An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
+     * Server name for connection. Type: string.
+     */
+    @JsonProperty(value = "server")
+    private Object server;
+
+    /*
+     * The port for the connection. Type: integer.
+     */
+    @JsonProperty(value = "port")
+    private Object port;
+
+    /*
+     * Username for authentication. Type: string.
+     */
+    @JsonProperty(value = "username")
+    private Object username;
+
+    /*
+     * Database name for connection. Type: string.
+     */
+    @JsonProperty(value = "database")
+    private Object database;
+
+    /*
      * The Azure key vault secret reference of password in connection string.
      */
-    @JsonProperty(value = "pwd")
-    private AzureKeyVaultSecretReference pwd;
+    @JsonProperty(value = "password")
+    private AzureKeyVaultSecretReference password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
@@ -36,6 +67,28 @@ public final class MariaDBLinkedServiceTypeProperties {
      * Creates an instance of MariaDBLinkedServiceTypeProperties class.
      */
     public MariaDBLinkedServiceTypeProperties() {
+    }
+
+    /**
+     * Get the driverVersion property: The version of the MariaDB driver. Type: string. V1 or empty for legacy driver,
+     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * 
+     * @return the driverVersion value.
+     */
+    public Object driverVersion() {
+        return this.driverVersion;
+    }
+
+    /**
+     * Set the driverVersion property: The version of the MariaDB driver. Type: string. V1 or empty for legacy driver,
+     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * 
+     * @param driverVersion the driverVersion value to set.
+     * @return the MariaDBLinkedServiceTypeProperties object itself.
+     */
+    public MariaDBLinkedServiceTypeProperties withDriverVersion(Object driverVersion) {
+        this.driverVersion = driverVersion;
+        return this;
     }
 
     /**
@@ -61,22 +114,102 @@ public final class MariaDBLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the pwd property: The Azure key vault secret reference of password in connection string.
+     * Get the server property: Server name for connection. Type: string.
      * 
-     * @return the pwd value.
+     * @return the server value.
      */
-    public AzureKeyVaultSecretReference pwd() {
-        return this.pwd;
+    public Object server() {
+        return this.server;
     }
 
     /**
-     * Set the pwd property: The Azure key vault secret reference of password in connection string.
+     * Set the server property: Server name for connection. Type: string.
      * 
-     * @param pwd the pwd value to set.
+     * @param server the server value to set.
      * @return the MariaDBLinkedServiceTypeProperties object itself.
      */
-    public MariaDBLinkedServiceTypeProperties withPwd(AzureKeyVaultSecretReference pwd) {
-        this.pwd = pwd;
+    public MariaDBLinkedServiceTypeProperties withServer(Object server) {
+        this.server = server;
+        return this;
+    }
+
+    /**
+     * Get the port property: The port for the connection. Type: integer.
+     * 
+     * @return the port value.
+     */
+    public Object port() {
+        return this.port;
+    }
+
+    /**
+     * Set the port property: The port for the connection. Type: integer.
+     * 
+     * @param port the port value to set.
+     * @return the MariaDBLinkedServiceTypeProperties object itself.
+     */
+    public MariaDBLinkedServiceTypeProperties withPort(Object port) {
+        this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the username property: Username for authentication. Type: string.
+     * 
+     * @return the username value.
+     */
+    public Object username() {
+        return this.username;
+    }
+
+    /**
+     * Set the username property: Username for authentication. Type: string.
+     * 
+     * @param username the username value to set.
+     * @return the MariaDBLinkedServiceTypeProperties object itself.
+     */
+    public MariaDBLinkedServiceTypeProperties withUsername(Object username) {
+        this.username = username;
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string.
+     * 
+     * @return the database value.
+     */
+    public Object database() {
+        return this.database;
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string.
+     * 
+     * @param database the database value to set.
+     * @return the MariaDBLinkedServiceTypeProperties object itself.
+     */
+    public MariaDBLinkedServiceTypeProperties withDatabase(Object database) {
+        this.database = database;
+        return this;
+    }
+
+    /**
+     * Get the password property: The Azure key vault secret reference of password in connection string.
+     * 
+     * @return the password value.
+     */
+    public AzureKeyVaultSecretReference password() {
+        return this.password;
+    }
+
+    /**
+     * Set the password property: The Azure key vault secret reference of password in connection string.
+     * 
+     * @param password the password value to set.
+     * @return the MariaDBLinkedServiceTypeProperties object itself.
+     */
+    public MariaDBLinkedServiceTypeProperties withPassword(AzureKeyVaultSecretReference password) {
+        this.password = password;
         return this;
     }
 
@@ -108,8 +241,8 @@ public final class MariaDBLinkedServiceTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (pwd() != null) {
-            pwd().validate();
+        if (password() != null) {
+            password().validate();
         }
     }
 }

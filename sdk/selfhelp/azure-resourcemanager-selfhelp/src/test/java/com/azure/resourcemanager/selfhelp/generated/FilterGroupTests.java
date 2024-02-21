@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class FilterGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FilterGroup model =
-            BinaryData
-                .fromString(
-                    "{\"filter\":[{\"name\":\"idyjrrfbyaosvexc\",\"values\":\"npc\",\"operator\":\"ocohslkevleg\"},{\"name\":\"fbuhfmvfaxkffe\",\"values\":\"th\",\"operator\":\"m\"}]}")
-                .toObject(FilterGroup.class);
+        FilterGroup model = BinaryData.fromString(
+            "{\"filter\":[{\"name\":\"idyjrrfbyaosvexc\",\"values\":\"npc\",\"operator\":\"ocohslkevleg\"},{\"name\":\"fbuhfmvfaxkffe\",\"values\":\"th\",\"operator\":\"m\"}]}")
+            .toObject(FilterGroup.class);
         Assertions.assertEquals("idyjrrfbyaosvexc", model.filter().get(0).name());
         Assertions.assertEquals("npc", model.filter().get(0).values());
         Assertions.assertEquals("ocohslkevleg", model.filter().get(0).operator());
@@ -25,13 +23,9 @@ public final class FilterGroupTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FilterGroup model =
-            new FilterGroup()
-                .withFilter(
-                    Arrays
-                        .asList(
-                            new Filter().withName("idyjrrfbyaosvexc").withValues("npc").withOperator("ocohslkevleg"),
-                            new Filter().withName("fbuhfmvfaxkffe").withValues("th").withOperator("m")));
+        FilterGroup model = new FilterGroup().withFilter(
+            Arrays.asList(new Filter().withName("idyjrrfbyaosvexc").withValues("npc").withOperator("ocohslkevleg"),
+                new Filter().withName("fbuhfmvfaxkffe").withValues("th").withOperator("m")));
         model = BinaryData.fromObject(model).toObject(FilterGroup.class);
         Assertions.assertEquals("idyjrrfbyaosvexc", model.filter().get(0).name());
         Assertions.assertEquals("npc", model.filter().get(0).values());

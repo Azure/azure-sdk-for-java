@@ -101,6 +101,26 @@
     { "com.fasterxml.jackson.module:jackson-module-parameter-names": "2.15.0" },
     { "com.fasterxml.jackson.module:jackson-module-scala_2.12": "2.15.0" }
   ],
+  "jackson_2.16":
+  [
+    { "com.fasterxml.jackson.core:jackson-annotations": "2.16.0" },
+    { "com.fasterxml.jackson.core:jackson-annotations": "2.16.0" },
+    { "com.fasterxml.jackson.core:jackson-core": "2.16.0" },
+    { "com.fasterxml.jackson.core:jackson-databind": "2.16.0" },
+    { "com.fasterxml.jackson.dataformat:jackson-dataformat-avro": "2.16.0" },
+    { "com.fasterxml.jackson.dataformat:jackson-dataformat-xml": "2.16.0" },
+    { "com.fasterxml.jackson.datatype:jackson-datatype-jdk8": "2.16.0" },
+    { "com.fasterxml.jackson.datatype:jackson-datatype-jsr310": "2.16.0" },
+    { "com.fasterxml.jackson.module:jackson-module-parameter-names": "2.16.0" },
+    { "com.fasterxml.jackson.module:jackson-module-scala_2.12": "2.16.0" }
+  ],
+  "reactor_2023":
+  [
+    { "io.projectreactor.netty:reactor-netty": "1.1.0" },
+    { "io.projectreactor.netty:reactor-netty-http": "1.1.0" },
+    { "io.projectreactor:reactor-core": "3.6.0" },
+    { "io.projectreactor:reactor-test": "3.6.0" }
+  ],
   "reactor_2022":
   [
     { "io.projectreactor.netty:reactor-netty": "1.1.0" },

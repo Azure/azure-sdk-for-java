@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Restore payload for Single File Snapshot Restore. */
+/**
+ * Restore payload for Single File Snapshot Restore.
+ */
 @Fluent
 public final class SnapshotRestoreFiles {
     /*
@@ -24,13 +26,15 @@ public final class SnapshotRestoreFiles {
     @JsonProperty(value = "destinationPath")
     private String destinationPath;
 
-    /** Creates an instance of SnapshotRestoreFiles class. */
+    /**
+     * Creates an instance of SnapshotRestoreFiles class.
+     */
     public SnapshotRestoreFiles() {
     }
 
     /**
      * Get the filePaths property: List of files to be restored.
-     *
+     * 
      * @return the filePaths value.
      */
     public List<String> filePaths() {
@@ -39,7 +43,7 @@ public final class SnapshotRestoreFiles {
 
     /**
      * Set the filePaths property: List of files to be restored.
-     *
+     * 
      * @param filePaths the filePaths value to set.
      * @return the SnapshotRestoreFiles object itself.
      */
@@ -50,7 +54,7 @@ public final class SnapshotRestoreFiles {
 
     /**
      * Get the destinationPath property: Destination folder where the files will be restored.
-     *
+     * 
      * @return the destinationPath value.
      */
     public String destinationPath() {
@@ -59,7 +63,7 @@ public final class SnapshotRestoreFiles {
 
     /**
      * Set the destinationPath property: Destination folder where the files will be restored.
-     *
+     * 
      * @param destinationPath the destinationPath value to set.
      * @return the SnapshotRestoreFiles object itself.
      */
@@ -70,14 +74,13 @@ public final class SnapshotRestoreFiles {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filePaths() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property filePaths in model SnapshotRestoreFiles"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property filePaths in model SnapshotRestoreFiles"));
         }
     }
 

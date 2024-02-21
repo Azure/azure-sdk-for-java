@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Used for establishing the purchase context of any 3rd Party artifact through MarketPlace. */
+/**
+ * Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
+ */
 @Fluent
 public final class PurchasePlan {
     /*
@@ -30,13 +32,15 @@ public final class PurchasePlan {
     @JsonProperty(value = "product", required = true)
     private String product;
 
-    /** Creates an instance of PurchasePlan class. */
+    /**
+     * Creates an instance of PurchasePlan class.
+     */
     public PurchasePlan() {
     }
 
     /**
      * Get the publisher property: The publisher ID.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -45,7 +49,7 @@ public final class PurchasePlan {
 
     /**
      * Set the publisher property: The publisher ID.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the PurchasePlan object itself.
      */
@@ -56,7 +60,7 @@ public final class PurchasePlan {
 
     /**
      * Get the name property: The plan ID.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +69,7 @@ public final class PurchasePlan {
 
     /**
      * Set the name property: The plan ID.
-     *
+     * 
      * @param name the name value to set.
      * @return the PurchasePlan object itself.
      */
@@ -77,7 +81,7 @@ public final class PurchasePlan {
     /**
      * Get the product property: Specifies the product of the image from the marketplace. This is the same value as
      * Offer under the imageReference element.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -87,7 +91,7 @@ public final class PurchasePlan {
     /**
      * Set the product property: Specifies the product of the image from the marketplace. This is the same value as
      * Offer under the imageReference element.
-     *
+     * 
      * @param product the product value to set.
      * @return the PurchasePlan object itself.
      */
@@ -98,24 +102,21 @@ public final class PurchasePlan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (publisher() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property publisher in model PurchasePlan"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property publisher in model PurchasePlan"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model PurchasePlan"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model PurchasePlan"));
         }
         if (product() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property product in model PurchasePlan"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property product in model PurchasePlan"));
         }
     }
 

@@ -8,40 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Tier of an application gateway. */
+/**
+ * Tier of an application gateway.
+ */
 public final class ApplicationGatewayTier extends ExpandableStringEnum<ApplicationGatewayTier> {
     /**
      * Static value Standard for ApplicationGatewayTier.
-     *
-     * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
-     *             See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
-     *             for V1 retirement timeline and start planning your migration to Application Gateway V2 today.
      */
-    @Deprecated
     public static final ApplicationGatewayTier STANDARD = fromString("Standard");
 
     /**
      * Static value WAF for ApplicationGatewayTier.
-     *
-     * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
-     *             See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
-     *             for V1 retirement timeline and start planning your migration to Application Gateway V2 today.
      */
-    @Deprecated
     public static final ApplicationGatewayTier WAF = fromString("WAF");
 
-    /** Static value Standard_v2 for ApplicationGatewayTier. */
+    /**
+     * Static value Standard_v2 for ApplicationGatewayTier.
+     */
     public static final ApplicationGatewayTier STANDARD_V2 = fromString("Standard_v2");
 
-    /** Static value WAF_v2 for ApplicationGatewayTier. */
+    /**
+     * Static value WAF_v2 for ApplicationGatewayTier.
+     */
     public static final ApplicationGatewayTier WAF_V2 = fromString("WAF_v2");
 
-    /** Static value Basic for ApplicationGatewayTier. */
+    /**
+     * Static value Basic for ApplicationGatewayTier.
+     */
     public static final ApplicationGatewayTier BASIC = fromString("Basic");
 
     /**
      * Creates a new instance of ApplicationGatewayTier value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -50,7 +48,7 @@ public final class ApplicationGatewayTier extends ExpandableStringEnum<Applicati
 
     /**
      * Creates or finds a ApplicationGatewayTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewayTier.
      */
@@ -61,7 +59,7 @@ public final class ApplicationGatewayTier extends ExpandableStringEnum<Applicati
 
     /**
      * Gets known ApplicationGatewayTier values.
-     *
+     * 
      * @return known ApplicationGatewayTier values.
      */
     public static Collection<ApplicationGatewayTier> values() {

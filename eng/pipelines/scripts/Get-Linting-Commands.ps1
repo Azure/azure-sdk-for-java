@@ -71,7 +71,7 @@ if ($revapiSourceChanged -or $revapiConfigChanged) {
 
 $spotbugsConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/spotbugs/*").Count -gt 0
 if ($spotbugsConfigChanged) {
-    $lintingGoals += ' spotbugs:check'
+    $lintingGoals += ' spotbugs:check spotbugs:spotbugs'
 }
 
 Write-Host "Using linting goals '${lintingGoals}'"

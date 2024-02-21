@@ -8,12 +8,14 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Snapshot properties. */
+/**
+ * Snapshot properties.
+ */
 @Immutable
 public final class SnapshotProperties {
     /*
      * snapshotId
-     *
+     * 
      * UUID v4 used to identify the Snapshot
      */
     @JsonProperty(value = "snapshotId", access = JsonProperty.Access.WRITE_ONLY)
@@ -21,7 +23,7 @@ public final class SnapshotProperties {
 
     /*
      * name
-     *
+     * 
      * The creation date of the snapshot
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
@@ -33,15 +35,17 @@ public final class SnapshotProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
-    /** Creates an instance of SnapshotProperties class. */
+    /**
+     * Creates an instance of SnapshotProperties class.
+     */
     public SnapshotProperties() {
     }
 
     /**
      * Get the snapshotId property: snapshotId
-     *
-     * <p>UUID v4 used to identify the Snapshot.
-     *
+     * 
+     * UUID v4 used to identify the Snapshot.
+     * 
      * @return the snapshotId value.
      */
     public String snapshotId() {
@@ -50,9 +54,9 @@ public final class SnapshotProperties {
 
     /**
      * Get the created property: name
-     *
-     * <p>The creation date of the snapshot.
-     *
+     * 
+     * The creation date of the snapshot.
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -61,7 +65,7 @@ public final class SnapshotProperties {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -70,7 +74,7 @@ public final class SnapshotProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

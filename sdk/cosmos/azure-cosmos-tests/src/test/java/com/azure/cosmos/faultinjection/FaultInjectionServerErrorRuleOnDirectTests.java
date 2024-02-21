@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -41,6 +42,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -1007,6 +1009,66 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
     }
 
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
+    public void connectionAcquisitionTimeoutAlignConnectionTimeout() throws JsonProcessingException {
+        // validate the acquisitionTimeout will be <= 2 * connectionTimeout
+        String connectionDelayRuleId = "connectionDelay-" + UUID.randomUUID();
+
+        FaultInjectionRule connectionDelayRule =
+            new FaultInjectionRuleBuilder(connectionDelayRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                        .delay(Duration.ofSeconds(3))
+                        .times(1) // for each operation, only apply the rule one time
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .hitLimit(3)
+                .build();
+
+        CosmosAsyncClient client = null;
+
+        try {
+            DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+            directConnectionConfig.setConnectTimeout(Duration.ofSeconds(2));
+
+            client =
+                this.getClientBuilder().directMode(directConnectionConfig).buildAsyncClient();
+            CosmosAsyncContainer containerWithSinglePartition = getSharedSinglePartitionCosmosContainer(client);
+
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(
+                    containerWithSinglePartition,
+                    Arrays.asList(connectionDelayRule))
+                .block();
+
+            // Creating 6 items concurrently, few of them will enter the pendingAcquisition queue
+            // validate none of the channelAcquisition stage take more than 2s
+            List<CosmosDiagnostics> results = new ArrayList<>();
+            Flux.range(1, 6)
+                .flatMap(t -> containerWithSinglePartition.createItem(TestItem.createNewItem()))
+                .doOnNext(response -> results.add(response.getDiagnostics()))
+                .blockLast();
+
+            // assert the rule is applied once for each request
+            for (CosmosDiagnostics cosmosDiagnostics : results) {
+                this.validateTransportTimelineLatency(
+                    RequestTimeline.EventName.CHANNEL_ACQUISITION_STARTED,
+                    2 * 2000,
+                    cosmosDiagnostics);
+            }
+        } finally {
+            connectionDelayRule.disable();
+            safeClose(client);
+        }
+    }
+
     private void validateFaultInjectionRuleApplied(
         CosmosDiagnostics cosmosDiagnostics,
         OperationType operationType,
@@ -1070,6 +1132,33 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 assertThat(storeResult.get("faultInjectionEvaluationResults").toString().contains(faultInjectionNonApplicableReason));
             }
             assertThat(responseStatisticsList.size()).isOne();
+        }
+    }
+
+    private void validateTransportTimelineLatency(
+        RequestTimeline.EventName eventName,
+        double maxLatency,
+        CosmosDiagnostics cosmosDiagnostics) throws JsonProcessingException {
+
+        ObjectNode cosmosDiagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
+        JsonNode responseStatisticsList = cosmosDiagnosticsNode.get("responseStatisticsList");
+        assertThat(responseStatisticsList.isArray()).isTrue();
+        for (int i = 0; i < responseStatisticsList.size(); i++) {
+            JsonNode storeResult = responseStatisticsList.get(i).get("storeResult");
+            JsonNode transportRequestTimeline = storeResult.get("transportRequestTimeline");
+            assertThat(transportRequestTimeline.isArray()).isTrue();
+
+            // loop through the even
+            JsonNode event = null;
+            for (int j = 0; j < transportRequestTimeline.size(); j++) {
+                if (transportRequestTimeline.get(j).get("eventName").asText().equals(eventName.getEventName())) {
+                    event = transportRequestTimeline.get(j);
+                    break;
+                }
+            }
+
+            assertThat(event).isNotNull();
+            assertThat(event.get("durationInMilliSecs").asDouble()).isLessThanOrEqualTo(maxLatency + 500);
         }
     }
 

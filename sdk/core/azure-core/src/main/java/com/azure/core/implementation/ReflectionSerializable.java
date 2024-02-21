@@ -67,11 +67,11 @@ public final class ReflectionSerializable {
 
             Class<?> xmlWriter = Class.forName("com.azure.xml.XmlWriter");
 
-            xmlWriterWriteStartDocument = ReflectionUtils.getMethodInvoker(xmlWriter,
-                xmlWriter.getDeclaredMethod("writeStartDocument"));
+            xmlWriterWriteStartDocument
+                = ReflectionUtils.getMethodInvoker(xmlWriter, xmlWriter.getDeclaredMethod("writeStartDocument"));
 
-            xmlWriterWriteXmlSerializable = ReflectionUtils.getMethodInvoker(xmlWriter,
-                xmlWriter.getDeclaredMethod("writeXml", xmlSerializable));
+            xmlWriterWriteXmlSerializable
+                = ReflectionUtils.getMethodInvoker(xmlWriter, xmlWriter.getDeclaredMethod("writeXml", xmlSerializable));
 
             xmlWriterFlush = ReflectionUtils.getMethodInvoker(xmlWriter, xmlWriter.getDeclaredMethod("flush"));
 
@@ -81,7 +81,7 @@ public final class ReflectionSerializable {
                 LOGGER.log(LogLevel.VERBOSE, () -> "XmlSerializable serialization and deserialization isn't supported. "
                     + "If it is required add a dependency of 'com.azure:azure-xml', or another dependencies which "
                     + "include 'com.azure:azure-xml' as a transitive dependency. If your application runs as expected "
-                    + "this informational message can be ignored.");
+                    + "this informational message can be ignored.", e);
             } else {
                 throw (Error) e;
             }
@@ -145,7 +145,7 @@ public final class ReflectionSerializable {
     private static <T> T serializeJsonSerializableWithReturn(JsonSerializable<?> jsonSerializable,
         Function<AccessibleByteArrayOutputStream, T> returner) throws IOException {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-             JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
             jsonWriter.writeJson(jsonSerializable).flush();
 
             return returner.apply(outputStream);
@@ -173,6 +173,8 @@ public final class ReflectionSerializable {
      * @param json The JSON being deserialized.
      * @return An instance of {@code jsonSerializable} based on the {@code json}.
      * @throws IOException If an error occurs during deserialization.
+     * @throws IllegalStateException If the {@code jsonSerializable} does not have a static {@code fromJson} method
+     * @throws Error If an error occurs during deserialization.
      */
     public static Object deserializeAsJsonSerializable(Class<?> jsonSerializable, byte[] json) throws IOException {
         if (FROM_JSON_CACHE.size() >= 10000) {
@@ -247,11 +249,11 @@ public final class ReflectionSerializable {
     private static <T> T serializeXmlSerializableWithReturn(Object xmlSerializable,
         Function<AccessibleByteArrayOutputStream, T> returner) throws IOException {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-             AutoCloseable xmlWriter
-                 = callXmlInvoker(AutoCloseable.class, () -> XML_WRITER_CREATOR.invokeStatic(outputStream))) {
+            AutoCloseable xmlWriter
+                = callXmlInvoker(AutoCloseable.class, () -> XML_WRITER_CREATOR.invokeStatic(outputStream))) {
             callXmlInvoker(Object.class, () -> XML_WRITER_WRITE_XML_START_DOCUMENT.invokeWithArguments(xmlWriter));
-            callXmlInvoker(Object.class, () -> XML_WRITER_WRITE_XML_SERIALIZABLE.invokeWithArguments(xmlWriter,
-                xmlSerializable));
+            callXmlInvoker(Object.class,
+                () -> XML_WRITER_WRITE_XML_SERIALIZABLE.invokeWithArguments(xmlWriter, xmlSerializable));
             callXmlInvoker(Object.class, () -> XML_WRITER_FLUSH.invokeWithArguments(xmlWriter));
 
             return returner.apply(outputStream);
@@ -272,10 +274,10 @@ public final class ReflectionSerializable {
     public static void serializeXmlSerializableIntoOutputStream(Object xmlSerializable, OutputStream outputStream)
         throws IOException {
         try (AutoCloseable xmlWriter
-                 = callXmlInvoker(AutoCloseable.class, () -> XML_WRITER_CREATOR.invokeStatic(outputStream))) {
+            = callXmlInvoker(AutoCloseable.class, () -> XML_WRITER_CREATOR.invokeStatic(outputStream))) {
             callXmlInvoker(Object.class, () -> XML_WRITER_WRITE_XML_START_DOCUMENT.invokeWithArguments(xmlWriter));
-            callXmlInvoker(Object.class, () -> XML_WRITER_WRITE_XML_SERIALIZABLE.invokeWithArguments(xmlWriter,
-                xmlSerializable));
+            callXmlInvoker(Object.class,
+                () -> XML_WRITER_WRITE_XML_SERIALIZABLE.invokeWithArguments(xmlWriter, xmlSerializable));
             callXmlInvoker(Object.class, () -> XML_WRITER_FLUSH.invokeWithArguments(xmlWriter));
         } catch (IOException ex) {
             throw ex;
@@ -291,6 +293,8 @@ public final class ReflectionSerializable {
      * @param xml The XML being deserialized.
      * @return An instance of {@code xmlSerializable} based on the {@code xml}.
      * @throws IOException If the XmlReader fails to close properly.
+     * @throws IllegalStateException If the {@code xmlSerializable} does not have a static {@code fromXml} method
+     * @throws Error If an error occurs during deserialization.
      */
     public static Object deserializeAsXmlSerializable(Class<?> xmlSerializable, byte[] xml) throws IOException {
         if (!XML_SERIALIZABLE_SUPPORTED) {
@@ -311,9 +315,9 @@ public final class ReflectionSerializable {
         });
 
         try (AutoCloseable xmlReader
-                 = callXmlInvoker(AutoCloseable.class, () -> XML_READER_CREATOR.invokeStatic((Object) xml))) {
+            = callXmlInvoker(AutoCloseable.class, () -> XML_READER_CREATOR.invokeStatic((Object) xml))) {
             return readXml.invokeStatic(xmlReader);
-        }  catch (Throwable e) {
+        } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw (IOException) e;
             } else if (e instanceof Exception) {

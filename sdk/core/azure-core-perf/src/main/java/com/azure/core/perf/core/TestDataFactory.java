@@ -31,10 +31,9 @@ public class TestDataFactory {
         int units = (int) size / 100;
         int remainder = (int) size % 100;
 
-        List<UserData> userDataList = Flux.range(0, units)
-                                              .flatMap(integer -> {
-                                                  return Mono.just(sampleUserData.clone());
-                                              }).collectList().block();
+        List<UserData> userDataList = Flux.range(0, units).flatMap(integer -> {
+            return Mono.just(sampleUserData.clone());
+        }).collectList().block();
 
         if (remainder > 0) {
             UserData userData = new UserData();
@@ -52,9 +51,10 @@ public class TestDataFactory {
         int begin = 97; // letter 'a'
         int end = 122; // letter 'z'
 
-        return ThreadLocalRandom.current().ints(begin, end + 1)
-                   .limit(targetLength)
-                   .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                   .toString();
+        return ThreadLocalRandom.current()
+            .ints(begin, end + 1)
+            .limit(targetLength)
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+            .toString();
     }
 }

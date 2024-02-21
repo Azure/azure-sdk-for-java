@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachineExtensionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachineExtensionsClient.
+ */
 public interface VirtualMachineExtensionsClient {
     /**
      * The operation to create or update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -30,19 +32,16 @@ public interface VirtualMachineExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine Extension along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
-        VirtualMachineExtensionInner extensionParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vmName,
+        String vmExtensionName, VirtualMachineExtensionInner extensionParameters);
 
     /**
      * The operation to create or update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -54,14 +53,12 @@ public interface VirtualMachineExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
+        String resourceGroupName, String vmName, String vmExtensionName,
         VirtualMachineExtensionInner extensionParameters);
 
     /**
      * The operation to create or update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -73,14 +70,12 @@ public interface VirtualMachineExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
+        String resourceGroupName, String vmName, String vmExtensionName,
         VirtualMachineExtensionInner extensionParameters);
 
     /**
      * The operation to create or update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -93,15 +88,12 @@ public interface VirtualMachineExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
-        VirtualMachineExtensionInner extensionParameters,
-        Context context);
+        String resourceGroupName, String vmName, String vmExtensionName,
+        VirtualMachineExtensionInner extensionParameters, Context context);
 
     /**
      * The operation to create or update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -112,15 +104,12 @@ public interface VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineExtensionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
-        VirtualMachineExtensionInner extensionParameters);
+    Mono<VirtualMachineExtensionInner> createOrUpdateAsync(String resourceGroupName, String vmName,
+        String vmExtensionName, VirtualMachineExtensionInner extensionParameters);
 
     /**
      * The operation to create or update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -131,15 +120,12 @@ public interface VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineExtensionInner createOrUpdate(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
+    VirtualMachineExtensionInner createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName,
         VirtualMachineExtensionInner extensionParameters);
 
     /**
      * The operation to create or update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -151,16 +137,12 @@ public interface VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineExtensionInner createOrUpdate(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
-        VirtualMachineExtensionInner extensionParameters,
-        Context context);
+    VirtualMachineExtensionInner createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName,
+        VirtualMachineExtensionInner extensionParameters, Context context);
 
     /**
      * The operation to update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -168,19 +150,16 @@ public interface VirtualMachineExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine Extension along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
-        VirtualMachineExtensionUpdate extensionParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmName,
+        String vmExtensionName, VirtualMachineExtensionUpdate extensionParameters);
 
     /**
      * The operation to update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -192,14 +171,12 @@ public interface VirtualMachineExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginUpdateAsync(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
+        String resourceGroupName, String vmName, String vmExtensionName,
         VirtualMachineExtensionUpdate extensionParameters);
 
     /**
      * The operation to update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -211,14 +188,12 @@ public interface VirtualMachineExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginUpdate(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
+        String resourceGroupName, String vmName, String vmExtensionName,
         VirtualMachineExtensionUpdate extensionParameters);
 
     /**
      * The operation to update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -231,15 +206,12 @@ public interface VirtualMachineExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineExtensionInner>, VirtualMachineExtensionInner> beginUpdate(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
-        VirtualMachineExtensionUpdate extensionParameters,
-        Context context);
+        String resourceGroupName, String vmName, String vmExtensionName,
+        VirtualMachineExtensionUpdate extensionParameters, Context context);
 
     /**
      * The operation to update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -250,15 +222,12 @@ public interface VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineExtensionInner> updateAsync(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
+    Mono<VirtualMachineExtensionInner> updateAsync(String resourceGroupName, String vmName, String vmExtensionName,
         VirtualMachineExtensionUpdate extensionParameters);
 
     /**
      * The operation to update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -269,15 +238,12 @@ public interface VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineExtensionInner update(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
+    VirtualMachineExtensionInner update(String resourceGroupName, String vmName, String vmExtensionName,
         VirtualMachineExtensionUpdate extensionParameters);
 
     /**
      * The operation to update the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -289,16 +255,12 @@ public interface VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineExtensionInner update(
-        String resourceGroupName,
-        String vmName,
-        String vmExtensionName,
-        VirtualMachineExtensionUpdate extensionParameters,
-        Context context);
+    VirtualMachineExtensionInner update(String resourceGroupName, String vmName, String vmExtensionName,
+        VirtualMachineExtensionUpdate extensionParameters, Context context);
 
     /**
      * The operation to delete the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -308,12 +270,12 @@ public interface VirtualMachineExtensionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vmName, String vmExtensionName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmName,
+        String vmExtensionName);
 
     /**
      * The operation to delete the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -323,12 +285,12 @@ public interface VirtualMachineExtensionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vmName, String vmExtensionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmName,
+        String vmExtensionName);
 
     /**
      * The operation to delete the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -342,7 +304,7 @@ public interface VirtualMachineExtensionsClient {
 
     /**
      * The operation to delete the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -353,12 +315,12 @@ public interface VirtualMachineExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmName, String vmExtensionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName, String vmExtensionName,
+        Context context);
 
     /**
      * The operation to delete the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -372,7 +334,7 @@ public interface VirtualMachineExtensionsClient {
 
     /**
      * The operation to delete the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -385,7 +347,7 @@ public interface VirtualMachineExtensionsClient {
 
     /**
      * The operation to delete the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -399,7 +361,7 @@ public interface VirtualMachineExtensionsClient {
 
     /**
      * The operation to get the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -407,16 +369,16 @@ public interface VirtualMachineExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Virtual Machine Extension along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineExtensionInner>> getWithResponseAsync(
-        String resourceGroupName, String vmName, String vmExtensionName, String expand);
+    Mono<Response<VirtualMachineExtensionInner>> getWithResponseAsync(String resourceGroupName, String vmName,
+        String vmExtensionName, String expand);
 
     /**
      * The operation to get the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -430,7 +392,7 @@ public interface VirtualMachineExtensionsClient {
 
     /**
      * The operation to get the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -442,12 +404,12 @@ public interface VirtualMachineExtensionsClient {
      * @return describes a Virtual Machine Extension along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineExtensionInner> getWithResponse(
-        String resourceGroupName, String vmName, String vmExtensionName, String expand, Context context);
+    Response<VirtualMachineExtensionInner> getWithResponse(String resourceGroupName, String vmName,
+        String vmExtensionName, String expand, Context context);
 
     /**
      * The operation to get the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -461,23 +423,23 @@ public interface VirtualMachineExtensionsClient {
 
     /**
      * The operation to get all extensions of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param expand The expand expression to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Extension operation response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the List Extension operation response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineExtensionsListResultInner>> listWithResponseAsync(
-        String resourceGroupName, String vmName, String expand);
+    Mono<Response<VirtualMachineExtensionsListResultInner>> listWithResponseAsync(String resourceGroupName,
+        String vmName, String expand);
 
     /**
      * The operation to get all extensions of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -490,7 +452,7 @@ public interface VirtualMachineExtensionsClient {
 
     /**
      * The operation to get all extensions of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param expand The expand expression to apply on the operation.
@@ -501,12 +463,12 @@ public interface VirtualMachineExtensionsClient {
      * @return the List Extension operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineExtensionsListResultInner> listWithResponse(
-        String resourceGroupName, String vmName, String expand, Context context);
+    Response<VirtualMachineExtensionsListResultInner> listWithResponse(String resourceGroupName, String vmName,
+        String expand, Context context);
 
     /**
      * The operation to get all extensions of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

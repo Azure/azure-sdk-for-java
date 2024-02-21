@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.OperationPropertiesFormatServiceSpecification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of operation properties format. */
+/**
+ * Description of operation properties format.
+ */
 @Fluent
 public final class OperationPropertiesFormat {
     /*
@@ -17,13 +19,15 @@ public final class OperationPropertiesFormat {
     @JsonProperty(value = "serviceSpecification")
     private OperationPropertiesFormatServiceSpecification serviceSpecification;
 
-    /** Creates an instance of OperationPropertiesFormat class. */
+    /**
+     * Creates an instance of OperationPropertiesFormat class.
+     */
     public OperationPropertiesFormat() {
     }
 
     /**
      * Get the serviceSpecification property: Specification of the service.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public OperationPropertiesFormatServiceSpecification serviceSpecification() {
@@ -32,19 +36,19 @@ public final class OperationPropertiesFormat {
 
     /**
      * Set the serviceSpecification property: Specification of the service.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationPropertiesFormat object itself.
      */
-    public OperationPropertiesFormat withServiceSpecification(
-        OperationPropertiesFormatServiceSpecification serviceSpecification) {
+    public OperationPropertiesFormat
+        withServiceSpecification(OperationPropertiesFormatServiceSpecification serviceSpecification) {
         this.serviceSpecification = serviceSpecification;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -25,14 +25,14 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkInterfacesClient. */
-public interface NetworkInterfacesClient
-    extends InnerSupportsGet<NetworkInterfaceInner>,
-        InnerSupportsListing<NetworkInterfaceInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in NetworkInterfacesClient.
+ */
+public interface NetworkInterfacesClient extends InnerSupportsGet<NetworkInterfaceInner>,
+    InnerSupportsListing<NetworkInterfaceInner>, InnerSupportsDelete<Void> {
     /**
      * Gets information about all network interfaces in a role instance in a cloud service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -40,15 +40,15 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all network interfaces in a role instance in a cloud service as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfacesAsync(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName);
+    PagedFlux<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfacesAsync(String resourceGroupName,
+        String cloudServiceName, String roleInstanceName);
 
     /**
      * Gets information about all network interfaces in a role instance in a cloud service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -56,15 +56,15 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all network interfaces in a role instance in a cloud service as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName);
+    PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(String resourceGroupName,
+        String cloudServiceName, String roleInstanceName);
 
     /**
      * Gets information about all network interfaces in a role instance in a cloud service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -73,15 +73,15 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all network interfaces in a role instance in a cloud service as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName, Context context);
+    PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(String resourceGroupName,
+        String cloudServiceName, String roleInstanceName, Context context);
 
     /**
      * Gets all network interfaces in a cloud service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,12 +90,12 @@ public interface NetworkInterfacesClient
      * @return all network interfaces in a cloud service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(
-        String resourceGroupName, String cloudServiceName);
+    PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(String resourceGroupName,
+        String cloudServiceName);
 
     /**
      * Gets all network interfaces in a cloud service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,12 +104,12 @@ public interface NetworkInterfacesClient
      * @return all network interfaces in a cloud service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(
-        String resourceGroupName, String cloudServiceName);
+    PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(String resourceGroupName,
+        String cloudServiceName);
 
     /**
      * Gets all network interfaces in a cloud service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param context The context to associate with this operation.
@@ -119,12 +119,12 @@ public interface NetworkInterfacesClient
      * @return all network interfaces in a cloud service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(
-        String resourceGroupName, String cloudServiceName, Context context);
+    PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(String resourceGroupName,
+        String cloudServiceName, Context context);
 
     /**
      * Get the specified network interface in a cloud service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -134,19 +134,15 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified network interface in a cloud service along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NetworkInterfaceInner>> getCloudServiceNetworkInterfaceWithResponseAsync(
-        String resourceGroupName,
-        String cloudServiceName,
-        String roleInstanceName,
-        String networkInterfaceName,
-        String expand);
+    Mono<Response<NetworkInterfaceInner>> getCloudServiceNetworkInterfaceWithResponseAsync(String resourceGroupName,
+        String cloudServiceName, String roleInstanceName, String networkInterfaceName, String expand);
 
     /**
      * Get the specified network interface in a cloud service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -157,12 +153,12 @@ public interface NetworkInterfacesClient
      * @return the specified network interface in a cloud service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkInterfaceInner> getCloudServiceNetworkInterfaceAsync(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName);
+    Mono<NetworkInterfaceInner> getCloudServiceNetworkInterfaceAsync(String resourceGroupName, String cloudServiceName,
+        String roleInstanceName, String networkInterfaceName);
 
     /**
      * Get the specified network interface in a cloud service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -175,17 +171,12 @@ public interface NetworkInterfacesClient
      * @return the specified network interface in a cloud service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkInterfaceInner> getCloudServiceNetworkInterfaceWithResponse(
-        String resourceGroupName,
-        String cloudServiceName,
-        String roleInstanceName,
-        String networkInterfaceName,
-        String expand,
-        Context context);
+    Response<NetworkInterfaceInner> getCloudServiceNetworkInterfaceWithResponse(String resourceGroupName,
+        String cloudServiceName, String roleInstanceName, String networkInterfaceName, String expand, Context context);
 
     /**
      * Get the specified network interface in a cloud service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -196,12 +187,12 @@ public interface NetworkInterfacesClient
      * @return the specified network interface in a cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceInner getCloudServiceNetworkInterface(
-        String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName);
+    NetworkInterfaceInner getCloudServiceNetworkInterface(String resourceGroupName, String cloudServiceName,
+        String roleInstanceName, String networkInterfaceName);
 
     /**
      * Deletes the specified network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,7 +205,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Deletes the specified network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,7 +218,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Deletes the specified network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,7 +231,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Deletes the specified network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -250,12 +241,12 @@ public interface NetworkInterfacesClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkInterfaceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName,
+        Context context);
 
     /**
      * Deletes the specified network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,7 +259,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Deletes the specified network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,7 +271,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Deletes the specified network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -293,7 +284,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets information about the specified network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param expand Expands referenced resources.
@@ -301,15 +292,15 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified network interface along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NetworkInterfaceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, String expand);
+    Mono<Response<NetworkInterfaceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkInterfaceName, String expand);
 
     /**
      * Gets information about the specified network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -322,7 +313,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets information about the specified network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param expand Expands referenced resources.
@@ -333,12 +324,12 @@ public interface NetworkInterfacesClient
      * @return information about the specified network interface along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkInterfaceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkInterfaceName, String expand, Context context);
+    Response<NetworkInterfaceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkInterfaceName, String expand, Context context);
 
     /**
      * Gets information about the specified network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,23 +342,23 @@ public interface NetworkInterfacesClient
 
     /**
      * Creates or updates a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a network interface in a resource group along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkInterfaceName, NetworkInterfaceInner parameters);
 
     /**
      * Creates or updates a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -382,7 +373,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Creates or updates a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -392,12 +383,12 @@ public interface NetworkInterfacesClient
      * @return the {@link SyncPoller} for polling of a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters);
+    SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String networkInterfaceName, NetworkInterfaceInner parameters);
 
     /**
      * Creates or updates a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -408,12 +399,12 @@ public interface NetworkInterfacesClient
      * @return the {@link SyncPoller} for polling of a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context);
+    SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String networkInterfaceName, NetworkInterfaceInner parameters, Context context);
 
     /**
      * Creates or updates a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -423,12 +414,12 @@ public interface NetworkInterfacesClient
      * @return a network interface in a resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkInterfaceInner> createOrUpdateAsync(
-        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters);
+    Mono<NetworkInterfaceInner> createOrUpdateAsync(String resourceGroupName, String networkInterfaceName,
+        NetworkInterfaceInner parameters);
 
     /**
      * Creates or updates a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -438,12 +429,12 @@ public interface NetworkInterfacesClient
      * @return a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceInner createOrUpdate(
-        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters);
+    NetworkInterfaceInner createOrUpdate(String resourceGroupName, String networkInterfaceName,
+        NetworkInterfaceInner parameters);
 
     /**
      * Creates or updates a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -454,28 +445,28 @@ public interface NetworkInterfacesClient
      * @return a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceInner createOrUpdate(
-        String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context);
+    NetworkInterfaceInner createOrUpdate(String resourceGroupName, String networkInterfaceName,
+        NetworkInterfaceInner parameters, Context context);
 
     /**
      * Updates a network interface tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a network interface in a resource group along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NetworkInterfaceInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, TagsObject parameters);
+    Mono<Response<NetworkInterfaceInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String networkInterfaceName, TagsObject parameters);
 
     /**
      * Updates a network interface tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to update network interface tags.
@@ -485,12 +476,12 @@ public interface NetworkInterfacesClient
      * @return a network interface in a resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkInterfaceInner> updateTagsAsync(
-        String resourceGroupName, String networkInterfaceName, TagsObject parameters);
+    Mono<NetworkInterfaceInner> updateTagsAsync(String resourceGroupName, String networkInterfaceName,
+        TagsObject parameters);
 
     /**
      * Updates a network interface tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to update network interface tags.
@@ -501,12 +492,12 @@ public interface NetworkInterfacesClient
      * @return a network interface in a resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkInterfaceInner> updateTagsWithResponse(
-        String resourceGroupName, String networkInterfaceName, TagsObject parameters, Context context);
+    Response<NetworkInterfaceInner> updateTagsWithResponse(String resourceGroupName, String networkInterfaceName,
+        TagsObject parameters, Context context);
 
     /**
      * Updates a network interface tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to update network interface tags.
@@ -520,7 +511,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets all network interfaces in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network interfaces in a subscription as paginated response with {@link PagedFlux}.
@@ -530,7 +521,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets all network interfaces in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network interfaces in a subscription as paginated response with {@link PagedIterable}.
@@ -540,7 +531,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets all network interfaces in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -552,7 +543,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets all network interfaces in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -564,7 +555,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets all network interfaces in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -576,7 +567,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets all network interfaces in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -589,22 +580,22 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets all route tables applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> getEffectiveRouteTableWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName);
+    Mono<Response<Flux<ByteBuffer>>> getEffectiveRouteTableWithResponseAsync(String resourceGroupName,
+        String networkInterfaceName);
 
     /**
      * Gets all route tables applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -618,7 +609,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets all route tables applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -627,12 +618,12 @@ public interface NetworkInterfacesClient
      * @return the {@link SyncPoller} for polling of all route tables applied to a network interface.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner> beginGetEffectiveRouteTable(
-        String resourceGroupName, String networkInterfaceName);
+    SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
+        beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName);
 
     /**
      * Gets all route tables applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -642,12 +633,12 @@ public interface NetworkInterfacesClient
      * @return the {@link SyncPoller} for polling of all route tables applied to a network interface.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner> beginGetEffectiveRouteTable(
-        String resourceGroupName, String networkInterfaceName, Context context);
+    SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
+        beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName, Context context);
 
     /**
      * Gets all route tables applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -656,12 +647,12 @@ public interface NetworkInterfacesClient
      * @return all route tables applied to a network interface on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<EffectiveRouteListResultInner> getEffectiveRouteTableAsync(
-        String resourceGroupName, String networkInterfaceName);
+    Mono<EffectiveRouteListResultInner> getEffectiveRouteTableAsync(String resourceGroupName,
+        String networkInterfaceName);
 
     /**
      * Gets all route tables applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -674,7 +665,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets all route tables applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -684,27 +675,27 @@ public interface NetworkInterfacesClient
      * @return all route tables applied to a network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EffectiveRouteListResultInner getEffectiveRouteTable(
-        String resourceGroupName, String networkInterfaceName, Context context);
+    EffectiveRouteListResultInner getEffectiveRouteTable(String resourceGroupName, String networkInterfaceName,
+        Context context);
 
     /**
      * Gets all network security groups applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> listEffectiveNetworkSecurityGroupsWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName);
+    Mono<Response<Flux<ByteBuffer>>> listEffectiveNetworkSecurityGroupsWithResponseAsync(String resourceGroupName,
+        String networkInterfaceName);
 
     /**
      * Gets all network security groups applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -718,7 +709,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets all network security groups applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -732,7 +723,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets all network security groups applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -747,7 +738,7 @@ public interface NetworkInterfacesClient
 
     /**
      * Gets all network security groups applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -756,12 +747,12 @@ public interface NetworkInterfacesClient
      * @return all network security groups applied to a network interface on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<EffectiveNetworkSecurityGroupListResultInner> listEffectiveNetworkSecurityGroupsAsync(
-        String resourceGroupName, String networkInterfaceName);
+    Mono<EffectiveNetworkSecurityGroupListResultInner> listEffectiveNetworkSecurityGroupsAsync(String resourceGroupName,
+        String networkInterfaceName);
 
     /**
      * Gets all network security groups applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -770,12 +761,12 @@ public interface NetworkInterfacesClient
      * @return all network security groups applied to a network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EffectiveNetworkSecurityGroupListResultInner listEffectiveNetworkSecurityGroups(
-        String resourceGroupName, String networkInterfaceName);
+    EffectiveNetworkSecurityGroupListResultInner listEffectiveNetworkSecurityGroups(String resourceGroupName,
+        String networkInterfaceName);
 
     /**
      * Gets all network security groups applied to a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -785,12 +776,12 @@ public interface NetworkInterfacesClient
      * @return all network security groups applied to a network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EffectiveNetworkSecurityGroupListResultInner listEffectiveNetworkSecurityGroups(
-        String resourceGroupName, String networkInterfaceName, Context context);
+    EffectiveNetworkSecurityGroupListResultInner listEffectiveNetworkSecurityGroups(String resourceGroupName,
+        String networkInterfaceName, Context context);
 
     /**
      * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -798,15 +789,15 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesAsync(
-        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex);
+    PagedFlux<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesAsync(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex);
 
     /**
      * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -814,15 +805,15 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(
-        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex);
+    PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex);
 
     /**
      * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -831,15 +822,15 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(
-        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, Context context);
+    PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, Context context);
 
     /**
      * Gets all network interfaces in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -848,12 +839,12 @@ public interface NetworkInterfacesClient
      * @return all network interfaces in a virtual machine scale set as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfacesAsync(
-        String resourceGroupName, String virtualMachineScaleSetName);
+    PagedFlux<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfacesAsync(String resourceGroupName,
+        String virtualMachineScaleSetName);
 
     /**
      * Gets all network interfaces in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -862,12 +853,12 @@ public interface NetworkInterfacesClient
      * @return all network interfaces in a virtual machine scale set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfaces(
-        String resourceGroupName, String virtualMachineScaleSetName);
+    PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName,
+        String virtualMachineScaleSetName);
 
     /**
      * Gets all network interfaces in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param context The context to associate with this operation.
@@ -877,12 +868,12 @@ public interface NetworkInterfacesClient
      * @return all network interfaces in a virtual machine scale set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfaces(
-        String resourceGroupName, String virtualMachineScaleSetName, Context context);
+    PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName,
+        String virtualMachineScaleSetName, Context context);
 
     /**
      * Get the specified network interface in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -892,19 +883,16 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified network interface in a virtual machine scale set along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterfaceWithResponseAsync(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName,
-        String expand);
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
+        String networkInterfaceName, String expand);
 
     /**
      * Get the specified network interface in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -915,15 +903,12 @@ public interface NetworkInterfacesClient
      * @return the specified network interface in a virtual machine scale set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceAsync(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName);
+    Mono<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName);
 
     /**
      * Get the specified network interface in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -936,17 +921,13 @@ public interface NetworkInterfacesClient
      * @return the specified network interface in a virtual machine scale set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceWithResponse(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName,
-        String expand,
+    Response<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceWithResponse(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand,
         Context context);
 
     /**
      * Get the specified network interface in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -957,15 +938,12 @@ public interface NetworkInterfacesClient
      * @return the specified network interface in a virtual machine scale set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName);
+    NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName);
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -975,19 +953,16 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified network interface ip configuration in a virtual machine scale set as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<NetworkInterfaceIpConfigurationInner> listVirtualMachineScaleSetIpConfigurationsAsync(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName,
-        String expand);
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
+        String networkInterfaceName, String expand);
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -996,18 +971,16 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified network interface ip configuration in a virtual machine scale set as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<NetworkInterfaceIpConfigurationInner> listVirtualMachineScaleSetIpConfigurationsAsync(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
         String networkInterfaceName);
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -1016,18 +989,16 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified network interface ip configuration in a virtual machine scale set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkInterfaceIpConfigurationInner> listVirtualMachineScaleSetIpConfigurations(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
         String networkInterfaceName);
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -1038,20 +1009,16 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified network interface ip configuration in a virtual machine scale set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkInterfaceIpConfigurationInner> listVirtualMachineScaleSetIpConfigurations(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName,
-        String expand,
-        Context context);
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
+        String networkInterfaceName, String expand, Context context);
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -1061,21 +1028,17 @@ public interface NetworkInterfacesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration in a virtual machine scale set along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the specified network interface ip configuration in a virtual machine scale set along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<NetworkInterfaceIpConfigurationInner>> getVirtualMachineScaleSetIpConfigurationWithResponseAsync(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName,
-        String ipConfigurationName,
-        String expand);
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
+        String networkInterfaceName, String ipConfigurationName, String expand);
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -1085,19 +1048,16 @@ public interface NetworkInterfacesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified network interface ip configuration in a virtual machine scale set on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkInterfaceIpConfigurationInner> getVirtualMachineScaleSetIpConfigurationAsync(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName,
+    Mono<NetworkInterfaceIpConfigurationInner> getVirtualMachineScaleSetIpConfigurationAsync(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName);
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -1108,22 +1068,17 @@ public interface NetworkInterfacesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration in a virtual machine scale set along with {@link
-     *     Response}.
+     * @return the specified network interface ip configuration in a virtual machine scale set along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkInterfaceIpConfigurationInner> getVirtualMachineScaleSetIpConfigurationWithResponse(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName,
-        String ipConfigurationName,
-        String expand,
-        Context context);
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
+        String networkInterfaceName, String ipConfigurationName, String expand, Context context);
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -1135,10 +1090,7 @@ public interface NetworkInterfacesClient
      * @return the specified network interface ip configuration in a virtual machine scale set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceIpConfigurationInner getVirtualMachineScaleSetIpConfiguration(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName,
+    NetworkInterfaceIpConfigurationInner getVirtualMachineScaleSetIpConfiguration(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName);
 }

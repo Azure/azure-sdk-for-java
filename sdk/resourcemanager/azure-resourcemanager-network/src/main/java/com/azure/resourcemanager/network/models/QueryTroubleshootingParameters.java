@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define the resource to query the troubleshooting result. */
+/**
+ * Parameters that define the resource to query the troubleshooting result.
+ */
 @Fluent
 public final class QueryTroubleshootingParameters {
     /*
@@ -17,13 +19,15 @@ public final class QueryTroubleshootingParameters {
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
-    /** Creates an instance of QueryTroubleshootingParameters class. */
+    /**
+     * Creates an instance of QueryTroubleshootingParameters class.
+     */
     public QueryTroubleshootingParameters() {
     }
 
     /**
      * Get the targetResourceId property: The target resource ID to query the troubleshooting result.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -32,7 +36,7 @@ public final class QueryTroubleshootingParameters {
 
     /**
      * Set the targetResourceId property: The target resource ID to query the troubleshooting result.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the QueryTroubleshootingParameters object itself.
      */
@@ -43,15 +47,13 @@ public final class QueryTroubleshootingParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model QueryTroubleshootingParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetResourceId in model QueryTroubleshootingParameters"));
         }
     }
 

@@ -12,13 +12,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * AutoLogon.
  */
 public enum SettingNames {
-    /** Enum value AutoLogon. */
+    /**
+     * Enum value AutoLogon.
+     */
     AUTO_LOGON("AutoLogon"),
 
-    /** Enum value FirstLogonCommands. */
+    /**
+     * Enum value FirstLogonCommands.
+     */
     FIRST_LOGON_COMMANDS("FirstLogonCommands");
 
-    /** The actual serialized value for a SettingNames instance. */
+    /**
+     * The actual serialized value for a SettingNames instance.
+     */
     private final String value;
 
     SettingNames(String value) {
@@ -27,7 +33,7 @@ public enum SettingNames {
 
     /**
      * Parses a serialized value to a SettingNames instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SettingNames object, or null if unable to parse.
      */
@@ -45,7 +51,9 @@ public enum SettingNames {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Open Container Initiative (OCI) artifact. */
+/**
+ * An Open Container Initiative (OCI) artifact.
+ */
 @Fluent
 public final class ServiceOciArtifactEntry {
     /*
@@ -29,8 +31,14 @@ public final class ServiceOciArtifactEntry {
     private String digest;
 
     /**
+     * Creates an instance of ServiceOciArtifactEntry class.
+     */
+    public ServiceOciArtifactEntry() {
+    }
+
+    /**
      * Get the loginServer property: The Azure Container Registry login server.
-     *
+     * 
      * @return the loginServer value.
      */
     public String loginServer() {
@@ -39,7 +47,7 @@ public final class ServiceOciArtifactEntry {
 
     /**
      * Set the loginServer property: The Azure Container Registry login server.
-     *
+     * 
      * @param loginServer the loginServer value to set.
      * @return the ServiceOciArtifactEntry object itself.
      */
@@ -50,7 +58,7 @@ public final class ServiceOciArtifactEntry {
 
     /**
      * Get the imageName property: The artifact name.
-     *
+     * 
      * @return the imageName value.
      */
     public String imageName() {
@@ -59,7 +67,7 @@ public final class ServiceOciArtifactEntry {
 
     /**
      * Set the imageName property: The artifact name.
-     *
+     * 
      * @param imageName the imageName value to set.
      * @return the ServiceOciArtifactEntry object itself.
      */
@@ -70,7 +78,7 @@ public final class ServiceOciArtifactEntry {
 
     /**
      * Get the digest property: The artifact digest.
-     *
+     * 
      * @return the digest value.
      */
     public String digest() {
@@ -79,7 +87,7 @@ public final class ServiceOciArtifactEntry {
 
     /**
      * Set the digest property: The artifact digest.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the ServiceOciArtifactEntry object itself.
      */
@@ -90,7 +98,7 @@ public final class ServiceOciArtifactEntry {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,23 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SolutionMetadataResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SolutionMetadataResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"solutions\":[{\"solutionId\":\"dtocj\",\"solutionType\":\"Diagnostics\",\"description\":\"pmouexhdz\",\"requiredInputs\":[\"qeojnxqbzvddntw\"]},{\"solutionId\":\"eic\",\"solutionType\":\"Diagnostics\",\"description\":\"pzaoqvuhr\",\"requiredInputs\":[\"fcyddg\"]}]},\"id\":\"jthjqkwpyei\",\"name\":\"xmqci\",\"type\":\"q\"}")
-                .toObject(SolutionMetadataResourceInner.class);
+        SolutionMetadataResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"solutions\":[{\"solutionId\":\"dtocj\",\"solutionType\":\"Diagnostics\",\"description\":\"pmouexhdz\",\"requiredInputs\":[\"qeojnxqbzvddntw\"]},{\"solutionId\":\"eic\",\"solutionType\":\"Diagnostics\",\"description\":\"pzaoqvuhr\",\"requiredInputs\":[\"fcyddg\"]}]},\"id\":\"jthjqkwpyei\",\"name\":\"xmqci\",\"type\":\"q\"}")
+            .toObject(SolutionMetadataResourceInner.class);
         Assertions.assertEquals("dtocj", model.solutions().get(0).solutionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionMetadataResourceInner model =
-            new SolutionMetadataResourceInner()
-                .withSolutions(
-                    Arrays
-                        .asList(
-                            new SolutionMetadataProperties().withSolutionId("dtocj"),
-                            new SolutionMetadataProperties().withSolutionId("eic")));
+        SolutionMetadataResourceInner model = new SolutionMetadataResourceInner()
+            .withSolutions(Arrays.asList(new SolutionMetadataProperties().withSolutionId("dtocj"),
+                new SolutionMetadataProperties().withSolutionId("eic")));
         model = BinaryData.fromObject(model).toObject(SolutionMetadataResourceInner.class);
         Assertions.assertEquals("dtocj", model.solutions().get(0).solutionId());
     }

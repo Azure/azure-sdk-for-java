@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RestorableTimeRange model. */
+/**
+ * The RestorableTimeRange model.
+ */
 @Fluent
 public final class RestorableTimeRange {
     /*
@@ -29,13 +31,15 @@ public final class RestorableTimeRange {
     @JsonProperty(value = "objectType")
     private String objectType;
 
-    /** Creates an instance of RestorableTimeRange class. */
+    /**
+     * Creates an instance of RestorableTimeRange class.
+     */
     public RestorableTimeRange() {
     }
 
     /**
      * Get the startTime property: Start time for the available restore range.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -44,7 +48,7 @@ public final class RestorableTimeRange {
 
     /**
      * Set the startTime property: Start time for the available restore range.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the RestorableTimeRange object itself.
      */
@@ -55,7 +59,7 @@ public final class RestorableTimeRange {
 
     /**
      * Get the endTime property: End time for the available restore range.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -64,7 +68,7 @@ public final class RestorableTimeRange {
 
     /**
      * Set the endTime property: End time for the available restore range.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the RestorableTimeRange object itself.
      */
@@ -75,7 +79,7 @@ public final class RestorableTimeRange {
 
     /**
      * Get the objectType property: The objectType property.
-     *
+     * 
      * @return the objectType value.
      */
     public String objectType() {
@@ -84,7 +88,7 @@ public final class RestorableTimeRange {
 
     /**
      * Set the objectType property: The objectType property.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the RestorableTimeRange object itself.
      */
@@ -95,19 +99,17 @@ public final class RestorableTimeRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property startTime in model RestorableTimeRange"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property startTime in model RestorableTimeRange"));
         }
         if (endTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endTime in model RestorableTimeRange"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endTime in model RestorableTimeRange"));
         }
     }
 

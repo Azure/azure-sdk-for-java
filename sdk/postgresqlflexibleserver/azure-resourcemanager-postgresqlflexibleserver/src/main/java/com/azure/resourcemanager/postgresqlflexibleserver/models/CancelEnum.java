@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** To trigger cancel for entire migration we need to send this flag as True. */
+/**
+ * To trigger cancel for entire migration we need to send this flag as True.
+ */
 public final class CancelEnum extends ExpandableStringEnum<CancelEnum> {
-    /** Static value True for CancelEnum. */
+    /**
+     * Static value True for CancelEnum.
+     */
     public static final CancelEnum TRUE = fromString("True");
 
-    /** Static value False for CancelEnum. */
+    /**
+     * Static value False for CancelEnum.
+     */
     public static final CancelEnum FALSE = fromString("False");
 
     /**
      * Creates a new instance of CancelEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class CancelEnum extends ExpandableStringEnum<CancelEnum> {
 
     /**
      * Creates or finds a CancelEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CancelEnum.
      */
@@ -38,7 +44,7 @@ public final class CancelEnum extends ExpandableStringEnum<CancelEnum> {
 
     /**
      * Gets known CancelEnum values.
-     *
+     * 
      * @return known CancelEnum values.
      */
     public static Collection<CancelEnum> values() {

@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-/** Samples for ManagedClusters GetMeshRevisionProfile. */
+/**
+ * Samples for ManagedClusters GetMeshRevisionProfile.
+ */
 public final class ManagedClustersGetMeshRevisionProfileSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/ManagedClustersGet_MeshRevisionProfile.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
+     * ManagedClustersGet_MeshRevisionProfile.json
      */
     /**
      * Sample code: Get a mesh revision profile for a mesh mode.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAMeshRevisionProfileForAMeshMode(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
+        azure.kubernetesClusters().manager().serviceClient().getManagedClusters()
             .getMeshRevisionProfileWithResponse("location1", "istio", com.azure.core.util.Context.NONE);
     }
 }

@@ -95,6 +95,17 @@ public class Instrumentations {
         INSTRUMENTATION_MAP.put("io.opentelemetry.play-ws-2.0", 69);
         INSTRUMENTATION_MAP.put("io.opentelemetry.play-ws-2.1", 70);
         INSTRUMENTATION_MAP.put("io.opentelemetry.vertx-kafka-client-3.5", 71);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.hikaricp-3.0", 72);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.micrometer-1.5", 73);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.kafka-clients-2.6", 74);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.spring-kafka-2.7", 75);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.spring-web-3.1", 76);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.spring-webmvc-5.3", 77);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.spring-webmvc-6.0", 78);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.spring-webflux-5.3", 79);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.runtime-telemetry-java8", 80);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.runtime-telemetry-java17", 81);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.pekko-http-1.0", 82);
     }
 
     // encode BitSet to a long

@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for BackupPolicies Delete. */
+/**
+ * Samples for BackupPolicies Delete.
+ */
 public final class BackupPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-05-01/examples/BackupPolicies_Delete.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/BackupPolicies_Delete.
+     * json
      */
     /**
      * Sample code: Backups_Delete.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void backupsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager
-            .backupPolicies()
-            .delete("resourceGroup", "accountName", "backupPolicyName", com.azure.core.util.Context.NONE);
+        manager.backupPolicies().delete("resourceGroup", "accountName", "backupPolicyName",
+            com.azure.core.util.Context.NONE);
     }
 }

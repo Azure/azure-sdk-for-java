@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SSIS package execution credential. */
+/**
+ * SSIS package execution credential.
+ */
 @Fluent
 public final class SsisExecutionCredential {
     /*
@@ -28,12 +30,15 @@ public final class SsisExecutionCredential {
     @JsonProperty(value = "password", required = true)
     private SecureString password;
 
-    /** Creates an instance of SsisExecutionCredential class. */
-    public SsisExecutionCredential() {}
+    /**
+     * Creates an instance of SsisExecutionCredential class.
+     */
+    public SsisExecutionCredential() {
+    }
 
     /**
      * Get the domain property: Domain for windows authentication.
-     *
+     * 
      * @return the domain value.
      */
     public Object getDomain() {
@@ -42,7 +47,7 @@ public final class SsisExecutionCredential {
 
     /**
      * Set the domain property: Domain for windows authentication.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the SsisExecutionCredential object itself.
      */
@@ -53,7 +58,7 @@ public final class SsisExecutionCredential {
 
     /**
      * Get the userName property: UseName for windows authentication.
-     *
+     * 
      * @return the userName value.
      */
     public Object getUserName() {
@@ -62,7 +67,7 @@ public final class SsisExecutionCredential {
 
     /**
      * Set the userName property: UseName for windows authentication.
-     *
+     * 
      * @param userName the userName value to set.
      * @return the SsisExecutionCredential object itself.
      */
@@ -73,7 +78,7 @@ public final class SsisExecutionCredential {
 
     /**
      * Get the password property: Password for windows authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecureString getPassword() {
@@ -82,7 +87,7 @@ public final class SsisExecutionCredential {
 
     /**
      * Set the password property: Password for windows authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the SsisExecutionCredential object itself.
      */

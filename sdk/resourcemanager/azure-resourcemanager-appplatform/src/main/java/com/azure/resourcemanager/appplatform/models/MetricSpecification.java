@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifications of the Metrics for Azure Monitoring. */
+/**
+ * Specifications of the Metrics for Azure Monitoring.
+ */
 @Fluent
 public final class MetricSpecification {
     /*
@@ -36,15 +38,13 @@ public final class MetricSpecification {
     private String unit;
 
     /*
-     * Name of the metric category that the metric belongs to. A metric can
-     * only belong to a single category.
+     * Name of the metric category that the metric belongs to. A metric can only belong to a single category.
      */
     @JsonProperty(value = "category")
     private String category;
 
     /*
-     * Only provide one value for this field. Valid values: Average, Minimum,
-     * Maximum, Total, Count.
+     * Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
      */
     @JsonProperty(value = "aggregationType")
     private String aggregationType;
@@ -62,8 +62,7 @@ public final class MetricSpecification {
     private List<String> supportedTimeGrainTypes;
 
     /*
-     * Optional. If set to true, then zero will be returned for time duration
-     * where no metric is emitted/published.
+     * Optional. If set to true, then zero will be returned for time duration where no metric is emitted/published.
      */
     @JsonProperty(value = "fillGapWithZero")
     private Boolean fillGapWithZero;
@@ -81,8 +80,14 @@ public final class MetricSpecification {
     private String sourceMdmNamespace;
 
     /**
+     * Creates an instance of MetricSpecification class.
+     */
+    public MetricSpecification() {
+    }
+
+    /**
      * Get the name property: Name of the metric.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -91,7 +96,7 @@ public final class MetricSpecification {
 
     /**
      * Set the name property: Name of the metric.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricSpecification object itself.
      */
@@ -102,7 +107,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayName property: Localized friendly display name of the metric.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -111,7 +116,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayName property: Localized friendly display name of the metric.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetricSpecification object itself.
      */
@@ -122,7 +127,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayDescription property: Localized friendly description of the metric.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -131,7 +136,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayDescription property: Localized friendly description of the metric.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the MetricSpecification object itself.
      */
@@ -142,7 +147,7 @@ public final class MetricSpecification {
 
     /**
      * Get the unit property: Unit that makes sense for the metric.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -151,7 +156,7 @@ public final class MetricSpecification {
 
     /**
      * Set the unit property: Unit that makes sense for the metric.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the MetricSpecification object itself.
      */
@@ -163,7 +168,7 @@ public final class MetricSpecification {
     /**
      * Get the category property: Name of the metric category that the metric belongs to. A metric can only belong to a
      * single category.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -173,7 +178,7 @@ public final class MetricSpecification {
     /**
      * Set the category property: Name of the metric category that the metric belongs to. A metric can only belong to a
      * single category.
-     *
+     * 
      * @param category the category value to set.
      * @return the MetricSpecification object itself.
      */
@@ -183,9 +188,9 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the aggregationType property: Only provide one value for this field. Valid values: Average, Minimum, Maximum,
-     * Total, Count.
-     *
+     * Get the aggregationType property: Only provide one value for this field. Valid values: Average, Minimum,
+     * Maximum, Total, Count.
+     * 
      * @return the aggregationType value.
      */
     public String aggregationType() {
@@ -193,9 +198,9 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the aggregationType property: Only provide one value for this field. Valid values: Average, Minimum, Maximum,
-     * Total, Count.
-     *
+     * Set the aggregationType property: Only provide one value for this field. Valid values: Average, Minimum,
+     * Maximum, Total, Count.
+     * 
      * @param aggregationType the aggregationType value to set.
      * @return the MetricSpecification object itself.
      */
@@ -206,7 +211,7 @@ public final class MetricSpecification {
 
     /**
      * Get the supportedAggregationTypes property: Supported aggregation types.
-     *
+     * 
      * @return the supportedAggregationTypes value.
      */
     public List<String> supportedAggregationTypes() {
@@ -215,7 +220,7 @@ public final class MetricSpecification {
 
     /**
      * Set the supportedAggregationTypes property: Supported aggregation types.
-     *
+     * 
      * @param supportedAggregationTypes the supportedAggregationTypes value to set.
      * @return the MetricSpecification object itself.
      */
@@ -226,7 +231,7 @@ public final class MetricSpecification {
 
     /**
      * Get the supportedTimeGrainTypes property: Supported time grain types.
-     *
+     * 
      * @return the supportedTimeGrainTypes value.
      */
     public List<String> supportedTimeGrainTypes() {
@@ -235,7 +240,7 @@ public final class MetricSpecification {
 
     /**
      * Set the supportedTimeGrainTypes property: Supported time grain types.
-     *
+     * 
      * @param supportedTimeGrainTypes the supportedTimeGrainTypes value to set.
      * @return the MetricSpecification object itself.
      */
@@ -245,9 +250,9 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the fillGapWithZero property: Optional. If set to true, then zero will be returned for time duration where no
-     * metric is emitted/published.
-     *
+     * Get the fillGapWithZero property: Optional. If set to true, then zero will be returned for time duration where
+     * no metric is emitted/published.
+     * 
      * @return the fillGapWithZero value.
      */
     public Boolean fillGapWithZero() {
@@ -255,9 +260,9 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the fillGapWithZero property: Optional. If set to true, then zero will be returned for time duration where no
-     * metric is emitted/published.
-     *
+     * Set the fillGapWithZero property: Optional. If set to true, then zero will be returned for time duration where
+     * no metric is emitted/published.
+     * 
      * @param fillGapWithZero the fillGapWithZero value to set.
      * @return the MetricSpecification object itself.
      */
@@ -268,7 +273,7 @@ public final class MetricSpecification {
 
     /**
      * Get the dimensions property: Dimensions of the metric.
-     *
+     * 
      * @return the dimensions value.
      */
     public List<MetricDimension> dimensions() {
@@ -277,7 +282,7 @@ public final class MetricSpecification {
 
     /**
      * Set the dimensions property: Dimensions of the metric.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the MetricSpecification object itself.
      */
@@ -288,7 +293,7 @@ public final class MetricSpecification {
 
     /**
      * Get the sourceMdmNamespace property: Name of the MDM namespace. Optional.
-     *
+     * 
      * @return the sourceMdmNamespace value.
      */
     public String sourceMdmNamespace() {
@@ -297,7 +302,7 @@ public final class MetricSpecification {
 
     /**
      * Set the sourceMdmNamespace property: Name of the MDM namespace. Optional.
-     *
+     * 
      * @param sourceMdmNamespace the sourceMdmNamespace value to set.
      * @return the MetricSpecification object itself.
      */
@@ -308,7 +313,7 @@ public final class MetricSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

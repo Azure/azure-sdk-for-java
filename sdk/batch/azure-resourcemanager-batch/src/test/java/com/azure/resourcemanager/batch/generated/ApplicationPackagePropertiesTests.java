@@ -10,11 +10,9 @@ import com.azure.resourcemanager.batch.fluent.models.ApplicationPackagePropertie
 public final class ApplicationPackagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationPackageProperties model =
-            BinaryData
-                .fromString(
-                    "{\"state\":\"Pending\",\"format\":\"tyxolniwpwc\",\"storageUrl\":\"jfkgiawxk\",\"storageUrlExpiry\":\"2021-05-21T20:11:19Z\",\"lastActivationTime\":\"2021-02-17T21:17:55Z\"}")
-                .toObject(ApplicationPackageProperties.class);
+        ApplicationPackageProperties model = BinaryData.fromString(
+            "{\"state\":\"Pending\",\"format\":\"tyxolniwpwc\",\"storageUrl\":\"jfkgiawxk\",\"storageUrlExpiry\":\"2021-05-21T20:11:19Z\",\"lastActivationTime\":\"2021-02-17T21:17:55Z\"}")
+            .toObject(ApplicationPackageProperties.class);
     }
 
     @org.junit.jupiter.api.Test

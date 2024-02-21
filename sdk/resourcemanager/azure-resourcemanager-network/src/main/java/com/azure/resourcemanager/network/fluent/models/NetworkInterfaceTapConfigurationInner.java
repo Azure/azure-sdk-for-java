@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Tap configuration in a Network Interface. */
+/**
+ * Tap configuration in a Network Interface.
+ */
 @Fluent
 public final class NetworkInterfaceTapConfigurationInner extends SubResource {
     /*
@@ -36,13 +38,15 @@ public final class NetworkInterfaceTapConfigurationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of NetworkInterfaceTapConfigurationInner class. */
+    /**
+     * Creates an instance of NetworkInterfaceTapConfigurationInner class.
+     */
     public NetworkInterfaceTapConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Virtual Network Tap configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkInterfaceTapConfigurationPropertiesFormatInner innerProperties() {
@@ -52,7 +56,7 @@ public final class NetworkInterfaceTapConfigurationInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +66,7 @@ public final class NetworkInterfaceTapConfigurationInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the NetworkInterfaceTapConfigurationInner object itself.
      */
@@ -73,7 +77,7 @@ public final class NetworkInterfaceTapConfigurationInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -82,14 +86,16 @@ public final class NetworkInterfaceTapConfigurationInner extends SubResource {
 
     /**
      * Get the type property: Sub Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkInterfaceTapConfigurationInner withId(String id) {
         super.withId(id);
@@ -98,7 +104,7 @@ public final class NetworkInterfaceTapConfigurationInner extends SubResource {
 
     /**
      * Get the virtualNetworkTap property: The reference to the Virtual Network Tap resource.
-     *
+     * 
      * @return the virtualNetworkTap value.
      */
     public VirtualNetworkTapInner virtualNetworkTap() {
@@ -107,7 +113,7 @@ public final class NetworkInterfaceTapConfigurationInner extends SubResource {
 
     /**
      * Set the virtualNetworkTap property: The reference to the Virtual Network Tap resource.
-     *
+     * 
      * @param virtualNetworkTap the virtualNetworkTap value to set.
      * @return the NetworkInterfaceTapConfigurationInner object itself.
      */
@@ -121,7 +127,7 @@ public final class NetworkInterfaceTapConfigurationInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the network interface tap configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -130,7 +136,7 @@ public final class NetworkInterfaceTapConfigurationInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

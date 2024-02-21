@@ -107,6 +107,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: core
+    JavadocSafeJavaBuildVersion: '1.21'
     EnableBatchRelease: true
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
@@ -198,8 +199,10 @@ extends:
                 - jackson_2.12
                 - jackson_2.14
                 - jackson_2.15
+                - jackson_2.16
                 - reactor_2020
                 - reactor_2022
+                - reactor_2023
               TestGoals: surefire:test
       - stage: AzureJsonReflectVersionSupport
         displayName: 'azure-json-reflect Version Support'
@@ -225,6 +228,7 @@ extends:
                 - jackson_2.13
                 - jackson_2.14
                 - jackson_2.15
+                - jackson_2.16
               TestGoals: surefire:test
 
     LiveTestStages:

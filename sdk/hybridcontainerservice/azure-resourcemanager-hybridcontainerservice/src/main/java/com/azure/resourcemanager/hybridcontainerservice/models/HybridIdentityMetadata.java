@@ -33,33 +33,18 @@ public interface HybridIdentityMetadata {
     String type();
 
     /**
+     * Gets the properties property: Resource properties.
+     * 
+     * @return the properties value.
+     */
+    HybridIdentityMetadataProperties properties();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the resourceUid property: Unique id of the parent provisioned cluster resource.
-     * 
-     * @return the resourceUid value.
-     */
-    String resourceUid();
-
-    /**
-     * Gets the publicKey property: Onboarding public key for provisioning the Managed identity for the HybridAKS
-     * cluster.
-     * 
-     * @return the publicKey value.
-     */
-    String publicKey();
-
-    /**
-     * Gets the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    ResourceProvisioningState provisioningState();
 
     /**
      * Gets the inner com.azure.resourcemanager.hybridcontainerservice.fluent.models.HybridIdentityMetadataInner object.

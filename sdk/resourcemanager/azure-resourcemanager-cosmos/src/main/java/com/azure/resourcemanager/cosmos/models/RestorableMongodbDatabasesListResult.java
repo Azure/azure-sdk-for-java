@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableMongodbDatabaseG
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the MongoDB database events and their properties. */
+/**
+ * The List operation response, that contains the MongoDB database events and their properties.
+ */
 @Immutable
 public final class RestorableMongodbDatabasesListResult {
     /*
@@ -18,13 +20,15 @@ public final class RestorableMongodbDatabasesListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableMongodbDatabaseGetResultInner> value;
 
-    /** Creates an instance of RestorableMongodbDatabasesListResult class. */
+    /**
+     * Creates an instance of RestorableMongodbDatabasesListResult class.
+     */
     public RestorableMongodbDatabasesListResult() {
     }
 
     /**
      * Get the value property: List of MongoDB database events and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<RestorableMongodbDatabaseGetResultInner> value() {
@@ -33,7 +37,7 @@ public final class RestorableMongodbDatabasesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

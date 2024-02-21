@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Backup policy information. */
+/**
+ * Backup policy information.
+ */
 @Fluent
 public final class BackupPolicyInner extends Resource {
     /*
@@ -34,13 +36,15 @@ public final class BackupPolicyInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of BackupPolicyInner class. */
+    /**
+     * Creates an instance of BackupPolicyInner class.
+     */
     public BackupPolicyInner() {
     }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -49,7 +53,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the innerProperties property: Backup policy Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BackupPolicyProperties innerProperties() {
@@ -58,21 +62,25 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupPolicyInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupPolicyInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -81,7 +89,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the backupPolicyId property: Backup Policy Resource ID.
-     *
+     * 
      * @return the backupPolicyId value.
      */
     public String backupPolicyId() {
@@ -90,7 +98,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -99,7 +107,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the dailyBackupsToKeep property: Daily backups count to keep.
-     *
+     * 
      * @return the dailyBackupsToKeep value.
      */
     public Integer dailyBackupsToKeep() {
@@ -108,7 +116,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Set the dailyBackupsToKeep property: Daily backups count to keep.
-     *
+     * 
      * @param dailyBackupsToKeep the dailyBackupsToKeep value to set.
      * @return the BackupPolicyInner object itself.
      */
@@ -122,7 +130,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the weeklyBackupsToKeep property: Weekly backups count to keep.
-     *
+     * 
      * @return the weeklyBackupsToKeep value.
      */
     public Integer weeklyBackupsToKeep() {
@@ -131,7 +139,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Set the weeklyBackupsToKeep property: Weekly backups count to keep.
-     *
+     * 
      * @param weeklyBackupsToKeep the weeklyBackupsToKeep value to set.
      * @return the BackupPolicyInner object itself.
      */
@@ -145,7 +153,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the monthlyBackupsToKeep property: Monthly backups count to keep.
-     *
+     * 
      * @return the monthlyBackupsToKeep value.
      */
     public Integer monthlyBackupsToKeep() {
@@ -154,7 +162,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Set the monthlyBackupsToKeep property: Monthly backups count to keep.
-     *
+     * 
      * @param monthlyBackupsToKeep the monthlyBackupsToKeep value to set.
      * @return the BackupPolicyInner object itself.
      */
@@ -168,7 +176,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the volumesAssigned property: Volumes using current backup policy.
-     *
+     * 
      * @return the volumesAssigned value.
      */
     public Integer volumesAssigned() {
@@ -177,7 +185,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -186,7 +194,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Set the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the BackupPolicyInner object itself.
      */
@@ -200,7 +208,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the volumeBackups property: A list of volumes assigned to this policy.
-     *
+     * 
      * @return the volumeBackups value.
      */
     public List<VolumeBackups> volumeBackups() {
@@ -209,15 +217,13 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model BackupPolicyInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model BackupPolicyInner"));
         } else {
             innerProperties().validate();
         }

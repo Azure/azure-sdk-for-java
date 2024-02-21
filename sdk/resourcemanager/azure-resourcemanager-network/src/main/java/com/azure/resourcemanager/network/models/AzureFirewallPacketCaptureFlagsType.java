@@ -8,30 +8,44 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The flags type to be captured. */
+/**
+ * The flags type to be captured.
+ */
 public final class AzureFirewallPacketCaptureFlagsType
     extends ExpandableStringEnum<AzureFirewallPacketCaptureFlagsType> {
-    /** Static value fin for AzureFirewallPacketCaptureFlagsType. */
+    /**
+     * Static value fin for AzureFirewallPacketCaptureFlagsType.
+     */
     public static final AzureFirewallPacketCaptureFlagsType FIN = fromString("fin");
 
-    /** Static value syn for AzureFirewallPacketCaptureFlagsType. */
+    /**
+     * Static value syn for AzureFirewallPacketCaptureFlagsType.
+     */
     public static final AzureFirewallPacketCaptureFlagsType SYN = fromString("syn");
 
-    /** Static value rst for AzureFirewallPacketCaptureFlagsType. */
+    /**
+     * Static value rst for AzureFirewallPacketCaptureFlagsType.
+     */
     public static final AzureFirewallPacketCaptureFlagsType RST = fromString("rst");
 
-    /** Static value push for AzureFirewallPacketCaptureFlagsType. */
+    /**
+     * Static value push for AzureFirewallPacketCaptureFlagsType.
+     */
     public static final AzureFirewallPacketCaptureFlagsType PUSH = fromString("push");
 
-    /** Static value ack for AzureFirewallPacketCaptureFlagsType. */
+    /**
+     * Static value ack for AzureFirewallPacketCaptureFlagsType.
+     */
     public static final AzureFirewallPacketCaptureFlagsType ACK = fromString("ack");
 
-    /** Static value urg for AzureFirewallPacketCaptureFlagsType. */
+    /**
+     * Static value urg for AzureFirewallPacketCaptureFlagsType.
+     */
     public static final AzureFirewallPacketCaptureFlagsType URG = fromString("urg");
 
     /**
      * Creates a new instance of AzureFirewallPacketCaptureFlagsType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,7 +54,7 @@ public final class AzureFirewallPacketCaptureFlagsType
 
     /**
      * Creates or finds a AzureFirewallPacketCaptureFlagsType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureFirewallPacketCaptureFlagsType.
      */
@@ -51,7 +65,7 @@ public final class AzureFirewallPacketCaptureFlagsType
 
     /**
      * Gets known AzureFirewallPacketCaptureFlagsType values.
-     *
+     * 
      * @return known AzureFirewallPacketCaptureFlagsType values.
      */
     public static Collection<AzureFirewallPacketCaptureFlagsType> values() {

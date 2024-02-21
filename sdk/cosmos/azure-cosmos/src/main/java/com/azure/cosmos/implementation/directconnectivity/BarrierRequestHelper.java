@@ -120,7 +120,9 @@ public class BarrierRequestHelper {
                 assert false : unknownAuthToken;
                 logger.error(unknownAuthToken);
                 throw Exceptions.propagate(
-                    new InternalServerErrorException(unknownAuthToken + " - " + RMResources.InternalServerError));
+                    new InternalServerErrorException(
+                        com.azure.cosmos.implementation.Exceptions.getInternalServerErrorMessage(unknownAuthToken),
+                        HttpConstants.SubStatusCodes.UNKNOWN_AUTHORIZATION_TOKEN_KIND));
         }
 
         if (!hasAadToken) {

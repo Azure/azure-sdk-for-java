@@ -9,7 +9,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoint
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of a virtual endpoint. */
+/**
+ * The properties of a virtual endpoint.
+ */
 @Fluent
 public final class VirtualEndpointResourceProperties {
     /*
@@ -30,13 +32,15 @@ public final class VirtualEndpointResourceProperties {
     @JsonProperty(value = "virtualEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> virtualEndpoints;
 
-    /** Creates an instance of VirtualEndpointResourceProperties class. */
+    /**
+     * Creates an instance of VirtualEndpointResourceProperties class.
+     */
     public VirtualEndpointResourceProperties() {
     }
 
     /**
      * Get the endpointType property: The endpoint type for the virtual endpoint.
-     *
+     * 
      * @return the endpointType value.
      */
     public VirtualEndpointType endpointType() {
@@ -45,7 +49,7 @@ public final class VirtualEndpointResourceProperties {
 
     /**
      * Set the endpointType property: The endpoint type for the virtual endpoint.
-     *
+     * 
      * @param endpointType the endpointType value to set.
      * @return the VirtualEndpointResourceProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class VirtualEndpointResourceProperties {
 
     /**
      * Get the members property: List of members for a virtual endpoint.
-     *
+     * 
      * @return the members value.
      */
     public List<String> members() {
@@ -65,7 +69,7 @@ public final class VirtualEndpointResourceProperties {
 
     /**
      * Set the members property: List of members for a virtual endpoint.
-     *
+     * 
      * @param members the members value to set.
      * @return the VirtualEndpointResourceProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class VirtualEndpointResourceProperties {
 
     /**
      * Get the virtualEndpoints property: List of virtual endpoints for a server.
-     *
+     * 
      * @return the virtualEndpoints value.
      */
     public List<String> virtualEndpoints() {
@@ -85,7 +89,7 @@ public final class VirtualEndpointResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DedicatedHostGroupInstanceView model. */
+/**
+ * The DedicatedHostGroupInstanceView model.
+ */
 @Fluent
 public final class DedicatedHostGroupInstanceView {
     /*
@@ -17,13 +19,15 @@ public final class DedicatedHostGroupInstanceView {
     @JsonProperty(value = "hosts")
     private List<DedicatedHostInstanceViewWithName> hosts;
 
-    /** Creates an instance of DedicatedHostGroupInstanceView class. */
+    /**
+     * Creates an instance of DedicatedHostGroupInstanceView class.
+     */
     public DedicatedHostGroupInstanceView() {
     }
 
     /**
      * Get the hosts property: List of instance view of the dedicated hosts under the dedicated host group.
-     *
+     * 
      * @return the hosts value.
      */
     public List<DedicatedHostInstanceViewWithName> hosts() {
@@ -32,7 +36,7 @@ public final class DedicatedHostGroupInstanceView {
 
     /**
      * Set the hosts property: List of instance view of the dedicated hosts under the dedicated host group.
-     *
+     * 
      * @param hosts the hosts value to set.
      * @return the DedicatedHostGroupInstanceView object itself.
      */
@@ -43,7 +47,7 @@ public final class DedicatedHostGroupInstanceView {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

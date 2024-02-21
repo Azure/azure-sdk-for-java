@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
@@ -11,11 +12,11 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import reactor.core.publisher.Flux;
 
@@ -29,7 +30,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.UUID;
 import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ResourceLock("LargeBlobTests")
-@EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+@LiveOnly
 public class LargeBlobTests extends BlobTestBase {
 
     private static BlobServiceClient blobServiceClient;
@@ -58,21 +58,21 @@ public class LargeBlobTests extends BlobTestBase {
 
     @BeforeEach
     public void setup() {
-        String containerName = UUID.randomUUID().toString();
+        String containerName = CoreUtils.randomUuid().toString();
         BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(containerName);
         BlobContainerAsyncClient blobContainerAsyncClient =
             blobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
         blobContainerClient.create();
-        String blobName = UUID.randomUUID().toString();
+        String blobName = CoreUtils.randomUuid().toString();
         blobClient = blobContainerClient.getBlobClient(blobName);
         blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void stageRealLargeBlob() {
         InputStream stream = createLargeInputStream(LARGE_BLOCK_SIZE);
-        String blockId = Base64.getEncoder().encodeToString(UUID.randomUUID().toString()
+        String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString()
             .getBytes(StandardCharsets.UTF_8));
 
         blobClient.getBlockBlobClient().stageBlock(blockId, stream, LARGE_BLOCK_SIZE);
@@ -83,7 +83,7 @@ public class LargeBlobTests extends BlobTestBase {
         assertEquals(LARGE_BLOCK_SIZE, blockList.getCommittedBlocks().get(0).getSizeLong());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void uploadRealLargeBlobInSingleUpload() {
         long size = LARGE_BLOCK_SIZE;
@@ -98,7 +98,7 @@ public class LargeBlobTests extends BlobTestBase {
         assertNull(properties.getCommittedBlockCount());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void uploadRealLargeBlobInSingleUploadAsync() {
         long size = LARGE_BLOCK_SIZE;
@@ -112,7 +112,7 @@ public class LargeBlobTests extends BlobTestBase {
         assertNull(properties.getCommittedBlockCount());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void uploadLargeInput() {
         long tailSize = Constants.MB;
@@ -129,7 +129,7 @@ public class LargeBlobTests extends BlobTestBase {
         assertEquals(tailSize, blockList.getCommittedBlocks().get(1).getSizeLong());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void uploadLargeInputSync() {
         long tailSize = Constants.MB;
@@ -147,7 +147,7 @@ public class LargeBlobTests extends BlobTestBase {
         assertEquals(tailSize, blockList.getCommittedBlocks().get(1).getSizeLong());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void uploadLargeInputSyncNoLengthGiven() {
         long tailSize = Constants.MB;
@@ -165,7 +165,7 @@ public class LargeBlobTests extends BlobTestBase {
         assertEquals(tailSize, blockList.getCommittedBlocks().get(1).getSizeLong());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void uploadLargeFile() throws IOException {
         long tailSize = Constants.MB;
@@ -219,7 +219,7 @@ public class LargeBlobTests extends BlobTestBase {
     }
 
     File getRandomLargeFile(long size) throws IOException {
-        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
+        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
         file.deleteOnExit();
         FileOutputStream fos = new FileOutputStream(file);
 

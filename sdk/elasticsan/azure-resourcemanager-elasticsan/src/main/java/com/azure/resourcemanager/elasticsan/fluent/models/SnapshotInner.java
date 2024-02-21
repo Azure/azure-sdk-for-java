@@ -12,7 +12,9 @@ import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SnapshotCreationData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response for Volume Snapshot request. */
+/**
+ * Response for Volume Snapshot request.
+ */
 @Fluent
 public final class SnapshotInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class SnapshotInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SnapshotInner class. */
+    /**
+     * Creates an instance of SnapshotInner class.
+     */
     public SnapshotInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of Volume Snapshot.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SnapshotProperties innerProperties() {
@@ -42,7 +46,7 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Get the creationData property: Data used when creating a volume snapshot.
-     *
+     * 
      * @return the creationData value.
      */
     public SnapshotCreationData creationData() {
@@ -60,7 +64,7 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Set the creationData property: Data used when creating a volume snapshot.
-     *
+     * 
      * @param creationData the creationData value to set.
      * @return the SnapshotInner object itself.
      */
@@ -74,7 +78,7 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -83,7 +87,7 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Get the sourceVolumeSizeGiB property: Size of Source Volume.
-     *
+     * 
      * @return the sourceVolumeSizeGiB value.
      */
     public Long sourceVolumeSizeGiB() {
@@ -92,7 +96,7 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Get the volumeName property: Source Volume Name of a snapshot.
-     *
+     * 
      * @return the volumeName value.
      */
     public String volumeName() {
@@ -101,14 +105,13 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model SnapshotInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model SnapshotInner"));
         } else {
             innerProperties().validate();
         }

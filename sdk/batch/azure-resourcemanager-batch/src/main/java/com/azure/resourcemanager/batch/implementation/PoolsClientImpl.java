@@ -45,17 +45,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoolsClient.
+ */
 public final class PoolsClientImpl implements PoolsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PoolsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final BatchManagementClientImpl client;
 
     /**
      * Initializes an instance of PoolsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PoolsClientImpl(BatchManagementClientImpl client) {
@@ -64,162 +70,121 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
-     * The interface defining all the services for BatchManagementClientPools to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for BatchManagementClientPools to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "BatchManagementClien")
     public interface PoolsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListPoolsResult>> listByBatchAccount(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("maxresults") Integer maxresults,
-            @QueryParam("$select") String select,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ListPoolsResult>> listByBatchAccount(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("$select") String select,
+            @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<PoolsCreateResponse> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PoolInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<PoolsCreateResponse> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") PoolInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<PoolsUpdateResponse> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PoolInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<PoolsUpdateResponse> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") PoolInner parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<PoolsGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<PoolsGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}/disableAutoScale")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}/disableAutoScale")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<PoolsDisableAutoScaleResponse> disableAutoScale(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<PoolsDisableAutoScaleResponse> disableAutoScale(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}/stopResize")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}/stopResize")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<PoolsStopResizeResponse> stopResize(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<PoolsStopResizeResponse> stopResize(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListPoolsResult>> listByBatchAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all of the pools in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
      * @param select Comma separated list of properties that should be returned. e.g. "properties/provisioningState".
-     *     Only top level properties under properties/ are valid for selection.
+     * Only top level properties under properties/ are valid for selection.
      * @param filter OData filter expression. Valid properties for filtering are:
-     *     <p>name properties/allocationState properties/allocationStateTransitionTime properties/creationTime
-     *     properties/provisioningState properties/provisioningStateTransitionTime properties/lastModified
-     *     properties/vmSize properties/interNodeCommunication properties/scaleSettings/autoScale
-     *     properties/scaleSettings/fixedScale.
+     * 
+     * name
+     * properties/allocationState
+     * properties/allocationStateTransitionTime
+     * properties/creationTime
+     * properties/provisioningState
+     * properties/provisioningStateTransitionTime
+     * properties/lastModified
+     * properties/vmSize
+     * properties/interNodeCommunication
+     * properties/scaleSettings/autoScale
+     * properties/scaleSettings/fixedScale.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PoolInner>> listByBatchAccountSinglePageAsync(
-        String resourceGroupName, String accountName, Integer maxresults, String select, String filter) {
+    private Mono<PagedResponse<PoolInner>> listByBatchAccountSinglePageAsync(String resourceGroupName,
+        String accountName, Integer maxresults, String select, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -229,72 +194,53 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByBatchAccount(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            maxresults,
-                            select,
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<PoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByBatchAccount(this.client.getEndpoint(), resourceGroupName,
+                accountName, maxresults, select, filter, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context))
+            .<PagedResponse<PoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the pools in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
      * @param select Comma separated list of properties that should be returned. e.g. "properties/provisioningState".
-     *     Only top level properties under properties/ are valid for selection.
+     * Only top level properties under properties/ are valid for selection.
      * @param filter OData filter expression. Valid properties for filtering are:
-     *     <p>name properties/allocationState properties/allocationStateTransitionTime properties/creationTime
-     *     properties/provisioningState properties/provisioningStateTransitionTime properties/lastModified
-     *     properties/vmSize properties/interNodeCommunication properties/scaleSettings/autoScale
-     *     properties/scaleSettings/fixedScale.
+     * 
+     * name
+     * properties/allocationState
+     * properties/allocationStateTransitionTime
+     * properties/creationTime
+     * properties/provisioningState
+     * properties/provisioningStateTransitionTime
+     * properties/lastModified
+     * properties/vmSize
+     * properties/interNodeCommunication
+     * properties/scaleSettings/autoScale
+     * properties/scaleSettings/fixedScale.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PoolInner>> listByBatchAccountSinglePageAsync(
-        String resourceGroupName,
-        String accountName,
-        Integer maxresults,
-        String select,
-        String filter,
-        Context context) {
+    private Mono<PagedResponse<PoolInner>> listByBatchAccountSinglePageAsync(String resourceGroupName,
+        String accountName, Integer maxresults, String select, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -304,57 +250,47 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByBatchAccount(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                maxresults,
-                select,
-                filter,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByBatchAccount(this.client.getEndpoint(), resourceGroupName, accountName, maxresults, select, filter,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the pools in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
      * @param select Comma separated list of properties that should be returned. e.g. "properties/provisioningState".
-     *     Only top level properties under properties/ are valid for selection.
+     * Only top level properties under properties/ are valid for selection.
      * @param filter OData filter expression. Valid properties for filtering are:
-     *     <p>name properties/allocationState properties/allocationStateTransitionTime properties/creationTime
-     *     properties/provisioningState properties/provisioningStateTransitionTime properties/lastModified
-     *     properties/vmSize properties/interNodeCommunication properties/scaleSettings/autoScale
-     *     properties/scaleSettings/fixedScale.
+     * 
+     * name
+     * properties/allocationState
+     * properties/allocationStateTransitionTime
+     * properties/creationTime
+     * properties/provisioningState
+     * properties/provisioningStateTransitionTime
+     * properties/lastModified
+     * properties/vmSize
+     * properties/interNodeCommunication
+     * properties/scaleSettings/autoScale
+     * properties/scaleSettings/fixedScale.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PoolInner> listByBatchAccountAsync(
-        String resourceGroupName, String accountName, Integer maxresults, String select, String filter) {
+    private PagedFlux<PoolInner> listByBatchAccountAsync(String resourceGroupName, String accountName,
+        Integer maxresults, String select, String filter) {
         return new PagedFlux<>(
             () -> listByBatchAccountSinglePageAsync(resourceGroupName, accountName, maxresults, select, filter),
             nextLink -> listByBatchAccountNextSinglePageAsync(nextLink));
@@ -362,7 +298,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Lists all of the pools in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,17 +318,25 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Lists all of the pools in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
      * @param select Comma separated list of properties that should be returned. e.g. "properties/provisioningState".
-     *     Only top level properties under properties/ are valid for selection.
+     * Only top level properties under properties/ are valid for selection.
      * @param filter OData filter expression. Valid properties for filtering are:
-     *     <p>name properties/allocationState properties/allocationStateTransitionTime properties/creationTime
-     *     properties/provisioningState properties/provisioningStateTransitionTime properties/lastModified
-     *     properties/vmSize properties/interNodeCommunication properties/scaleSettings/autoScale
-     *     properties/scaleSettings/fixedScale.
+     * 
+     * name
+     * properties/allocationState
+     * properties/allocationStateTransitionTime
+     * properties/creationTime
+     * properties/provisioningState
+     * properties/provisioningStateTransitionTime
+     * properties/lastModified
+     * properties/vmSize
+     * properties/interNodeCommunication
+     * properties/scaleSettings/autoScale
+     * properties/scaleSettings/fixedScale.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -400,22 +344,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PoolInner> listByBatchAccountAsync(
-        String resourceGroupName,
-        String accountName,
-        Integer maxresults,
-        String select,
-        String filter,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByBatchAccountSinglePageAsync(resourceGroupName, accountName, maxresults, select, filter, context),
-            nextLink -> listByBatchAccountNextSinglePageAsync(nextLink, context));
+    private PagedFlux<PoolInner> listByBatchAccountAsync(String resourceGroupName, String accountName,
+        Integer maxresults, String select, String filter, Context context) {
+        return new PagedFlux<>(() -> listByBatchAccountSinglePageAsync(resourceGroupName, accountName, maxresults,
+            select, filter, context), nextLink -> listByBatchAccountNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the pools in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -433,17 +370,25 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Lists all of the pools in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
      * @param select Comma separated list of properties that should be returned. e.g. "properties/provisioningState".
-     *     Only top level properties under properties/ are valid for selection.
+     * Only top level properties under properties/ are valid for selection.
      * @param filter OData filter expression. Valid properties for filtering are:
-     *     <p>name properties/allocationState properties/allocationStateTransitionTime properties/creationTime
-     *     properties/provisioningState properties/provisioningStateTransitionTime properties/lastModified
-     *     properties/vmSize properties/interNodeCommunication properties/scaleSettings/autoScale
-     *     properties/scaleSettings/fixedScale.
+     * 
+     * name
+     * properties/allocationState
+     * properties/allocationStateTransitionTime
+     * properties/creationTime
+     * properties/provisioningState
+     * properties/provisioningStateTransitionTime
+     * properties/lastModified
+     * properties/vmSize
+     * properties/interNodeCommunication
+     * properties/scaleSettings/autoScale
+     * properties/scaleSettings/fixedScale.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -451,46 +396,34 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PoolInner> listByBatchAccount(
-        String resourceGroupName,
-        String accountName,
-        Integer maxresults,
-        String select,
-        String filter,
-        Context context) {
+    public PagedIterable<PoolInner> listByBatchAccount(String resourceGroupName, String accountName, Integer maxresults,
+        String select, String filter, Context context) {
         return new PagedIterable<>(
             listByBatchAccountAsync(resourceGroupName, accountName, maxresults, select, filter, context));
     }
 
     /**
      * Creates a new pool inside the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
      * @param parameters Additional parameters for pool creation.
      * @param ifMatch The entity state (ETag) version of the pool to update. A value of "*" can be used to apply the
-     *     operation only if the pool already exists. If omitted, this operation will always be applied.
+     * operation only if the pool already exists. If omitted, this operation will always be applied.
      * @param ifNoneMatch Set to '*' to allow a new pool to be created, but to prevent updating an existing pool. Other
-     *     values will be ignored.
+     * values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about a pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolsCreateResponse> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        PoolInner parameters,
-        String ifMatch,
-        String ifNoneMatch) {
+    private Mono<PoolsCreateResponse> createWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, PoolInner parameters, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -503,10 +436,8 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -515,35 +446,23 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            ifMatch,
-                            ifNoneMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, accountName, poolName,
+                ifMatch, ifNoneMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new pool inside the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
      * @param parameters Additional parameters for pool creation.
      * @param ifMatch The entity state (ETag) version of the pool to update. A value of "*" can be used to apply the
-     *     operation only if the pool already exists. If omitted, this operation will always be applied.
+     * operation only if the pool already exists. If omitted, this operation will always be applied.
      * @param ifNoneMatch Set to '*' to allow a new pool to be created, but to prevent updating an existing pool. Other
-     *     values will be ignored.
+     * values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -551,19 +470,11 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return contains information about a pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolsCreateResponse> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        PoolInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+    private Mono<PoolsCreateResponse> createWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, PoolInner parameters, String ifMatch, String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -576,10 +487,8 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -588,24 +497,13 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                ifMatch,
-                ifNoneMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, accountName, poolName, ifMatch, ifNoneMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates a new pool inside the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -616,8 +514,8 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return contains information about a pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolInner> createAsync(
-        String resourceGroupName, String accountName, String poolName, PoolInner parameters) {
+    private Mono<PoolInner> createAsync(String resourceGroupName, String accountName, String poolName,
+        PoolInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         return createWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch, ifNoneMatch)
@@ -626,15 +524,15 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Creates a new pool inside the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
      * @param parameters Additional parameters for pool creation.
      * @param ifMatch The entity state (ETag) version of the pool to update. A value of "*" can be used to apply the
-     *     operation only if the pool already exists. If omitted, this operation will always be applied.
+     * operation only if the pool already exists. If omitted, this operation will always be applied.
      * @param ifNoneMatch Set to '*' to allow a new pool to be created, but to prevent updating an existing pool. Other
-     *     values will be ignored.
+     * values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -642,22 +540,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return contains information about a pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolsCreateResponse createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        PoolInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
-        return createWithResponseAsync(
-                resourceGroupName, accountName, poolName, parameters, ifMatch, ifNoneMatch, context)
-            .block();
+    public PoolsCreateResponse createWithResponse(String resourceGroupName, String accountName, String poolName,
+        PoolInner parameters, String ifMatch, String ifNoneMatch, Context context) {
+        return createWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch, ifNoneMatch,
+            context).block();
     }
 
     /**
      * Creates a new pool inside the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -671,34 +562,31 @@ public final class PoolsClientImpl implements PoolsClient {
     public PoolInner create(String resourceGroupName, String accountName, String poolName, PoolInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return createWithResponse(
-                resourceGroupName, accountName, poolName, parameters, ifMatch, ifNoneMatch, Context.NONE)
-            .getValue();
+        return createWithResponse(resourceGroupName, accountName, poolName, parameters, ifMatch, ifNoneMatch,
+            Context.NONE).getValue();
     }
 
     /**
      * Updates the properties of an existing pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
      * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
-     *     property not supplied will be unchanged.
+     * property not supplied will be unchanged.
      * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     *     apply the operation unconditionally.
+     * apply the operation unconditionally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about a pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolsUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, PoolInner parameters, String ifMatch) {
+    private Mono<PoolsUpdateResponse> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, PoolInner parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -711,10 +599,8 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -723,33 +609,21 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, accountName, poolName,
+                ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the properties of an existing pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
      * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
-     *     property not supplied will be unchanged.
+     * property not supplied will be unchanged.
      * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     *     apply the operation unconditionally.
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -757,18 +631,11 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return contains information about a pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolsUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        PoolInner parameters,
-        String ifMatch,
-        Context context) {
+    private Mono<PoolsUpdateResponse> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, PoolInner parameters, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -781,10 +648,8 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -793,36 +658,26 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, accountName, poolName, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Updates the properties of an existing pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
      * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
-     *     property not supplied will be unchanged.
+     * property not supplied will be unchanged.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about a pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolInner> updateAsync(
-        String resourceGroupName, String accountName, String poolName, PoolInner parameters) {
+    private Mono<PoolInner> updateAsync(String resourceGroupName, String accountName, String poolName,
+        PoolInner parameters) {
         final String ifMatch = null;
         return updateWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -830,14 +685,14 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Updates the properties of an existing pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
      * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
-     *     property not supplied will be unchanged.
+     * property not supplied will be unchanged.
      * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     *     apply the operation unconditionally.
+     * apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -845,24 +700,19 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return contains information about a pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        PoolInner parameters,
-        String ifMatch,
-        Context context) {
+    public PoolsUpdateResponse updateWithResponse(String resourceGroupName, String accountName, String poolName,
+        PoolInner parameters, String ifMatch, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch, context).block();
     }
 
     /**
      * Updates the properties of an existing pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
      * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
-     *     property not supplied will be unchanged.
+     * property not supplied will be unchanged.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -877,7 +727,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Deletes the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -887,13 +737,11 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -906,31 +754,19 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, accountName, poolName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -941,13 +777,11 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -960,28 +794,18 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, accountName, poolName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -991,18 +815,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String poolName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String poolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName, poolName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1013,19 +835,18 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String poolName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, poolName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, poolName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1035,14 +856,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String poolName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String poolName) {
         return this.beginDeleteAsync(resourceGroupName, accountName, poolName).getSyncPoller();
     }
 
     /**
      * Deletes the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1053,14 +874,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, accountName, poolName, context).getSyncPoller();
     }
 
     /**
      * Deletes the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1071,14 +892,13 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String poolName) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, poolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1090,14 +910,13 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String poolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, poolName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1112,7 +931,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Deletes the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1128,7 +947,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Gets information about the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1140,10 +959,8 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PoolsGetResponse> getWithResponseAsync(String resourceGroupName, String accountName, String poolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1156,31 +973,19 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, accountName, poolName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1191,13 +996,11 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return information about the specified pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolsGetResponse> getWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    private Mono<PoolsGetResponse> getWithResponseAsync(String resourceGroupName, String accountName, String poolName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1210,28 +1013,18 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, accountName, poolName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets information about the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1248,7 +1041,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Gets information about the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1259,14 +1052,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return information about the specified pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolsGetResponse getWithResponse(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    public PoolsGetResponse getWithResponse(String resourceGroupName, String accountName, String poolName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName, context).block();
     }
 
     /**
      * Gets information about the specified pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1282,7 +1075,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Disables automatic scaling for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1292,13 +1085,11 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return contains information about a pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolsDisableAutoScaleResponse> disableAutoScaleWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName) {
+    private Mono<PoolsDisableAutoScaleResponse> disableAutoScaleWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1311,31 +1102,19 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disableAutoScale(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.disableAutoScale(this.client.getEndpoint(), resourceGroupName, accountName,
+                poolName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Disables automatic scaling for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1346,13 +1125,11 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return contains information about a pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolsDisableAutoScaleResponse> disableAutoScaleWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    private Mono<PoolsDisableAutoScaleResponse> disableAutoScaleWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1365,28 +1142,18 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .disableAutoScale(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.disableAutoScale(this.client.getEndpoint(), resourceGroupName, accountName, poolName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Disables automatic scaling for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1403,7 +1170,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Disables automatic scaling for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1414,14 +1181,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return contains information about a pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolsDisableAutoScaleResponse disableAutoScaleWithResponse(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    public PoolsDisableAutoScaleResponse disableAutoScaleWithResponse(String resourceGroupName, String accountName,
+        String poolName, Context context) {
         return disableAutoScaleWithResponseAsync(resourceGroupName, accountName, poolName, context).block();
     }
 
     /**
      * Disables automatic scaling for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1437,13 +1204,13 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Stops an ongoing resize operation on the pool.
-     *
-     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * 
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
      * can also be used to halt the initial sizing of the pool when it is created.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1453,13 +1220,11 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return contains information about a pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolsStopResizeResponse> stopResizeWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName) {
+    private Mono<PoolsStopResizeResponse> stopResizeWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1472,37 +1237,25 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stopResize(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.stopResize(this.client.getEndpoint(), resourceGroupName, accountName,
+                poolName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Stops an ongoing resize operation on the pool.
-     *
-     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * 
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
      * can also be used to halt the initial sizing of the pool when it is created.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1513,13 +1266,11 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return contains information about a pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolsStopResizeResponse> stopResizeWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    private Mono<PoolsStopResizeResponse> stopResizeWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1532,34 +1283,24 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .stopResize(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.stopResize(this.client.getEndpoint(), resourceGroupName, accountName, poolName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Stops an ongoing resize operation on the pool.
-     *
-     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * 
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
      * can also be used to halt the initial sizing of the pool when it is created.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1576,13 +1317,13 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Stops an ongoing resize operation on the pool.
-     *
-     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * 
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
      * can also be used to halt the initial sizing of the pool when it is created.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1593,20 +1334,20 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return contains information about a pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolsStopResizeResponse stopResizeWithResponse(
-        String resourceGroupName, String accountName, String poolName, Context context) {
+    public PoolsStopResizeResponse stopResizeWithResponse(String resourceGroupName, String accountName, String poolName,
+        Context context) {
         return stopResizeWithResponseAsync(resourceGroupName, accountName, poolName, context).block();
     }
 
     /**
      * Stops an ongoing resize operation on the pool.
-     *
-     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * 
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
      * can also be used to halt the initial sizing of the pool when it is created.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
@@ -1622,14 +1363,15 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PoolInner>> listByBatchAccountNextSinglePageAsync(String nextLink) {
@@ -1637,38 +1379,30 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByBatchAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PoolInner>> listByBatchAccountNextSinglePageAsync(String nextLink, Context context) {
@@ -1676,23 +1410,13 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByBatchAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByBatchAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

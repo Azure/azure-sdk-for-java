@@ -18,12 +18,14 @@ import java.util.Collection;
  * toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
  */
 public final class DiskDetachOptionTypes extends ExpandableStringEnum<DiskDetachOptionTypes> {
-    /** Static value ForceDetach for DiskDetachOptionTypes. */
+    /**
+     * Static value ForceDetach for DiskDetachOptionTypes.
+     */
     public static final DiskDetachOptionTypes FORCE_DETACH = fromString("ForceDetach");
 
     /**
      * Creates a new instance of DiskDetachOptionTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +34,7 @@ public final class DiskDetachOptionTypes extends ExpandableStringEnum<DiskDetach
 
     /**
      * Creates or finds a DiskDetachOptionTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiskDetachOptionTypes.
      */
@@ -43,7 +45,7 @@ public final class DiskDetachOptionTypes extends ExpandableStringEnum<DiskDetach
 
     /**
      * Gets known DiskDetachOptionTypes values.
-     *
+     * 
      * @return known DiskDetachOptionTypes values.
      */
     public static Collection<DiskDetachOptionTypes> values() {

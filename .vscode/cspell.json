@@ -50,9 +50,11 @@
     "*.crt",
     "*.yml",
     ".vscode/cspell.json",
+    ".vscode/eclipse-format-azure-sdk-for-java.xml",
     "*.parquet",
     "**/sdk/**/src/main/java/**/implementation/**",
     "**/*-perf/**",
+    "**/*-stress/**",
     "**/*-tests/**",
     "**/*-test-*/**",
     "**/resourcemanager/**",
@@ -251,7 +253,9 @@
     "creds",
     "credscan",
     "curr",
+    "dall",
     "DALL-E",
+    "dall-e",
     "databind",
     "databricks",
     "DAZURE",
@@ -328,6 +332,7 @@
     "logit",
     "logprobs",
     "logz",
+    "LOINC",
     "Lucene",
     "mgmt",
     "mibps",
@@ -373,6 +378,7 @@
     "SBOM",
     "scalastyle",
     "schemaregistryapacheavroserializer",
+    "SERIALVERSIONID",
     "servicebus",
     "sftdl",
     "skus",
@@ -393,6 +399,8 @@
     "unmanaged",
     "unmutated",
     "versionid",
+    "vertx",
+    "Vertx",
     "vmware",
     "vnet",
     "VNET",
@@ -481,6 +489,14 @@
       "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/WeatherAlongRoutePrecipitation.java",
       "words": [
         "Decibles"
+      ]
+    },
+    {
+      "filename": "sdk/healthinsights/**",
+      "words": [
+        "authorid",
+        "encounterid",
+        "docid"
       ]
     },
     {
@@ -695,7 +711,7 @@
       ]
     },
     {
-      "filename": "**/sdk/cosmos/platform-matrix.json",
+      "filename": "**/sdk/cosmos/live-platform-matrix.json",
       "words": [
         "Pfast",
         "Pdirect",
@@ -814,7 +830,8 @@
         "Oleh",
         "Dokuka",
         "Netifi",
-        "Zaugg"
+        "Zaugg",
+        "lrgrwrks"
       ]
     },
     {
@@ -1060,6 +1077,12 @@
         "Dspotbugs",
         "Pdev",
 	"Djava"
+      ]
+    },
+    {
+      "filename": "sdk/vision/azure-ai-vision-imageanalysis/**",
+      "words": [
+        "javac"
       ]
     },
     {

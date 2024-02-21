@@ -9,7 +9,9 @@ import com.azure.resourcemanager.batch.models.PackageState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of an application package. */
+/**
+ * Properties of an application package.
+ */
 @Immutable
 public final class ApplicationPackageProperties {
     /*
@@ -42,13 +44,15 @@ public final class ApplicationPackageProperties {
     @JsonProperty(value = "lastActivationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastActivationTime;
 
-    /** Creates an instance of ApplicationPackageProperties class. */
+    /**
+     * Creates an instance of ApplicationPackageProperties class.
+     */
     public ApplicationPackageProperties() {
     }
 
     /**
      * Get the state property: The current state of the application package.
-     *
+     * 
      * @return the state value.
      */
     public PackageState state() {
@@ -57,7 +61,7 @@ public final class ApplicationPackageProperties {
 
     /**
      * Get the format property: The format of the application package, if the package is active.
-     *
+     * 
      * @return the format value.
      */
     public String format() {
@@ -66,7 +70,7 @@ public final class ApplicationPackageProperties {
 
     /**
      * Get the storageUrl property: The URL for the application package in Azure Storage.
-     *
+     * 
      * @return the storageUrl value.
      */
     public String storageUrl() {
@@ -75,7 +79,7 @@ public final class ApplicationPackageProperties {
 
     /**
      * Get the storageUrlExpiry property: The UTC time at which the Azure Storage URL will expire.
-     *
+     * 
      * @return the storageUrlExpiry value.
      */
     public OffsetDateTime storageUrlExpiry() {
@@ -84,7 +88,7 @@ public final class ApplicationPackageProperties {
 
     /**
      * Get the lastActivationTime property: The time at which the package was last activated, if the package is active.
-     *
+     * 
      * @return the lastActivationTime value.
      */
     public OffsetDateTime lastActivationTime() {
@@ -93,7 +97,7 @@ public final class ApplicationPackageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

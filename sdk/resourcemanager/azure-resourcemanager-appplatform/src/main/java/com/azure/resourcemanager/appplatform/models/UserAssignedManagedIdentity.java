@@ -7,9 +7,11 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The details of the user-assigned managed identity assigned to an App. */
+/**
+ * The details of the user-assigned managed identity assigned to an App.
+ */
 @Immutable
-public class UserAssignedManagedIdentity {
+public final class UserAssignedManagedIdentity {
     /*
      * Principal Id of user-assigned managed identity.
      */
@@ -23,8 +25,14 @@ public class UserAssignedManagedIdentity {
     private String clientId;
 
     /**
+     * Creates an instance of UserAssignedManagedIdentity class.
+     */
+    public UserAssignedManagedIdentity() {
+    }
+
+    /**
      * Get the principalId property: Principal Id of user-assigned managed identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -33,7 +41,7 @@ public class UserAssignedManagedIdentity {
 
     /**
      * Get the clientId property: Client Id of user-assigned managed identity.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -42,7 +50,7 @@ public class UserAssignedManagedIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

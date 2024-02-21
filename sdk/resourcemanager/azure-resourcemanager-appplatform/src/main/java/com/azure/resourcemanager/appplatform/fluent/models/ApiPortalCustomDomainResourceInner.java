@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.ApiPortalCustomDomainProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Custom domain of the API portal. */
+/**
+ * Custom domain of the API portal.
+ */
 @Fluent
 public final class ApiPortalCustomDomainResourceInner extends ProxyResource {
     /*
@@ -26,8 +28,14 @@ public final class ApiPortalCustomDomainResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of ApiPortalCustomDomainResourceInner class.
+     */
+    public ApiPortalCustomDomainResourceInner() {
+    }
+
+    /**
      * Get the properties property: The properties of custom domain for API portal.
-     *
+     * 
      * @return the properties value.
      */
     public ApiPortalCustomDomainProperties properties() {
@@ -36,7 +44,7 @@ public final class ApiPortalCustomDomainResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: The properties of custom domain for API portal.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ApiPortalCustomDomainResourceInner object itself.
      */
@@ -47,7 +55,7 @@ public final class ApiPortalCustomDomainResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +64,7 @@ public final class ApiPortalCustomDomainResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

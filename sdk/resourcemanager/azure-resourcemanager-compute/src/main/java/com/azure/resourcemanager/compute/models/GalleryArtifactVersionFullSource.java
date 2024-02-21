@@ -7,24 +7,35 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The source of the gallery artifact version. */
+/**
+ * The source of the gallery artifact version.
+ */
 @Fluent
 public final class GalleryArtifactVersionFullSource extends GalleryArtifactVersionSource {
     /*
-     * The resource Id of the source Community Gallery Image.  Only required when using Community Gallery Image as a
+     * The resource Id of the source Community Gallery Image. Only required when using Community Gallery Image as a
      * source.
      */
     @JsonProperty(value = "communityGalleryImageId")
     private String communityGalleryImageId;
 
-    /** Creates an instance of GalleryArtifactVersionFullSource class. */
+    /*
+     * The resource Id of the source virtual machine. Only required when capturing a virtual machine to source this
+     * Gallery Image Version.
+     */
+    @JsonProperty(value = "virtualMachineId")
+    private String virtualMachineId;
+
+    /**
+     * Creates an instance of GalleryArtifactVersionFullSource class.
+     */
     public GalleryArtifactVersionFullSource() {
     }
 
     /**
      * Get the communityGalleryImageId property: The resource Id of the source Community Gallery Image. Only required
      * when using Community Gallery Image as a source.
-     *
+     * 
      * @return the communityGalleryImageId value.
      */
     public String communityGalleryImageId() {
@@ -34,7 +45,7 @@ public final class GalleryArtifactVersionFullSource extends GalleryArtifactVersi
     /**
      * Set the communityGalleryImageId property: The resource Id of the source Community Gallery Image. Only required
      * when using Community Gallery Image as a source.
-     *
+     * 
      * @param communityGalleryImageId the communityGalleryImageId value to set.
      * @return the GalleryArtifactVersionFullSource object itself.
      */
@@ -43,7 +54,31 @@ public final class GalleryArtifactVersionFullSource extends GalleryArtifactVersi
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the virtualMachineId property: The resource Id of the source virtual machine. Only required when capturing
+     * a virtual machine to source this Gallery Image Version.
+     * 
+     * @return the virtualMachineId value.
+     */
+    public String virtualMachineId() {
+        return this.virtualMachineId;
+    }
+
+    /**
+     * Set the virtualMachineId property: The resource Id of the source virtual machine. Only required when capturing
+     * a virtual machine to source this Gallery Image Version.
+     * 
+     * @param virtualMachineId the virtualMachineId value to set.
+     * @return the GalleryArtifactVersionFullSource object itself.
+     */
+    public GalleryArtifactVersionFullSource withVirtualMachineId(String virtualMachineId) {
+        this.virtualMachineId = virtualMachineId;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryArtifactVersionFullSource withId(String id) {
         super.withId(id);
@@ -52,7 +87,7 @@ public final class GalleryArtifactVersionFullSource extends GalleryArtifactVersi
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

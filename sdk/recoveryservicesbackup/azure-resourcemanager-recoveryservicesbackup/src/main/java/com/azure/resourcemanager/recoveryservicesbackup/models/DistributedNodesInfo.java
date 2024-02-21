@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is used to represent the various nodes of the distributed container. */
+/**
+ * This is used to represent the various nodes of the distributed container.
+ */
 @Fluent
 public final class DistributedNodesInfo {
     /*
@@ -35,13 +37,15 @@ public final class DistributedNodesInfo {
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
-    /** Creates an instance of DistributedNodesInfo class. */
+    /**
+     * Creates an instance of DistributedNodesInfo class.
+     */
     public DistributedNodesInfo() {
     }
 
     /**
      * Get the nodeName property: Name of the node under a distributed container.
-     *
+     * 
      * @return the nodeName value.
      */
     public String nodeName() {
@@ -50,7 +54,7 @@ public final class DistributedNodesInfo {
 
     /**
      * Set the nodeName property: Name of the node under a distributed container.
-     *
+     * 
      * @param nodeName the nodeName value to set.
      * @return the DistributedNodesInfo object itself.
      */
@@ -60,8 +64,9 @@ public final class DistributedNodesInfo {
     }
 
     /**
-     * Get the status property: Status of this Node. Failed | Succeeded.
-     *
+     * Get the status property: Status of this Node.
+     * Failed | Succeeded.
+     * 
      * @return the status value.
      */
     public String status() {
@@ -69,8 +74,9 @@ public final class DistributedNodesInfo {
     }
 
     /**
-     * Set the status property: Status of this Node. Failed | Succeeded.
-     *
+     * Set the status property: Status of this Node.
+     * Failed | Succeeded.
+     * 
      * @param status the status value to set.
      * @return the DistributedNodesInfo object itself.
      */
@@ -81,7 +87,7 @@ public final class DistributedNodesInfo {
 
     /**
      * Get the errorDetail property: Error Details if the Status is non-success.
-     *
+     * 
      * @return the errorDetail value.
      */
     public ErrorDetail errorDetail() {
@@ -90,7 +96,7 @@ public final class DistributedNodesInfo {
 
     /**
      * Set the errorDetail property: Error Details if the Status is non-success.
-     *
+     * 
      * @param errorDetail the errorDetail value to set.
      * @return the DistributedNodesInfo object itself.
      */
@@ -101,7 +107,7 @@ public final class DistributedNodesInfo {
 
     /**
      * Get the sourceResourceId property: ARM resource id of the node.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -110,7 +116,7 @@ public final class DistributedNodesInfo {
 
     /**
      * Set the sourceResourceId property: ARM resource id of the node.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the DistributedNodesInfo object itself.
      */
@@ -121,7 +127,7 @@ public final class DistributedNodesInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

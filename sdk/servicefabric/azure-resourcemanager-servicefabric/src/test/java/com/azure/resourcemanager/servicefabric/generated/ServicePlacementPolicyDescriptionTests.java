@@ -10,9 +10,8 @@ import com.azure.resourcemanager.servicefabric.models.ServicePlacementPolicyDesc
 public final class ServicePlacementPolicyDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServicePlacementPolicyDescription model =
-            BinaryData
-                .fromString("{\"type\":\"ServicePlacementPolicyDescription\"}")
+        ServicePlacementPolicyDescription model
+            = BinaryData.fromString("{\"type\":\"ServicePlacementPolicyDescription\"}")
                 .toObject(ServicePlacementPolicyDescription.class);
     }
 

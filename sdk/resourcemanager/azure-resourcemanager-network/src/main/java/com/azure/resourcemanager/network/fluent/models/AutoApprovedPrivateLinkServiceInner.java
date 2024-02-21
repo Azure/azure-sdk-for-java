@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The information of an AutoApprovedPrivateLinkService. */
+/**
+ * The information of an AutoApprovedPrivateLinkService.
+ */
 @Fluent
 public final class AutoApprovedPrivateLinkServiceInner {
     /*
@@ -16,13 +18,15 @@ public final class AutoApprovedPrivateLinkServiceInner {
     @JsonProperty(value = "privateLinkService")
     private String privateLinkService;
 
-    /** Creates an instance of AutoApprovedPrivateLinkServiceInner class. */
+    /**
+     * Creates an instance of AutoApprovedPrivateLinkServiceInner class.
+     */
     public AutoApprovedPrivateLinkServiceInner() {
     }
 
     /**
      * Get the privateLinkService property: The id of the private link service resource.
-     *
+     * 
      * @return the privateLinkService value.
      */
     public String privateLinkService() {
@@ -31,7 +35,7 @@ public final class AutoApprovedPrivateLinkServiceInner {
 
     /**
      * Set the privateLinkService property: The id of the private link service resource.
-     *
+     * 
      * @param privateLinkService the privateLinkService value to set.
      * @return the AutoApprovedPrivateLinkServiceInner object itself.
      */
@@ -42,7 +46,7 @@ public final class AutoApprovedPrivateLinkServiceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

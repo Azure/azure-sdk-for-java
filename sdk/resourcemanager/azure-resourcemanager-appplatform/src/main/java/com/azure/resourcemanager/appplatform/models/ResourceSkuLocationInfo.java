@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Locations and availability zones where the SKU is available. */
+/**
+ * Locations and availability zones where the SKU is available.
+ */
 @Fluent
 public final class ResourceSkuLocationInfo {
     /*
@@ -30,8 +32,14 @@ public final class ResourceSkuLocationInfo {
     private List<ResourceSkuZoneDetails> zoneDetails;
 
     /**
+     * Creates an instance of ResourceSkuLocationInfo class.
+     */
+    public ResourceSkuLocationInfo() {
+    }
+
+    /**
      * Get the location property: Gets location of the SKU.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -40,7 +48,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Set the location property: Gets location of the SKU.
-     *
+     * 
      * @param location the location value to set.
      * @return the ResourceSkuLocationInfo object itself.
      */
@@ -51,7 +59,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Get the zones property: Gets list of availability zones where the SKU is supported.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -60,7 +68,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Set the zones property: Gets list of availability zones where the SKU is supported.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ResourceSkuLocationInfo object itself.
      */
@@ -71,7 +79,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Get the zoneDetails property: Gets details of capabilities available to a SKU in specific zones.
-     *
+     * 
      * @return the zoneDetails value.
      */
     public List<ResourceSkuZoneDetails> zoneDetails() {
@@ -80,7 +88,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Set the zoneDetails property: Gets details of capabilities available to a SKU in specific zones.
-     *
+     * 
      * @param zoneDetails the zoneDetails value to set.
      * @return the ResourceSkuLocationInfo object itself.
      */
@@ -91,7 +99,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

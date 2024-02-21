@@ -8,32 +8,32 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Defines the addon status profile.
+ * The status profile of the addons and other kubernetes components.
  */
 @Fluent
 public final class AddonStatusProfile {
     /*
-     * Name of the addon
+     * Name of the addon or component
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Observed phase of the addon on the target cluster. Possible values include: 'pending', 'provisioning',
-     * 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned', 'deleting',
-     * 'failed', 'upgrading'
+     * Observed phase of the addon or component on the provisioned cluster. Possible values include: 'pending',
+     * 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned',
+     * 'deleting', 'failed', 'upgrading'
      */
     @JsonProperty(value = "phase")
     private AddonPhase phase;
 
     /*
-     * Indicates whether the addon is ready
+     * Indicates whether the addon or component is ready
      */
     @JsonProperty(value = "ready")
     private Boolean ready;
 
     /*
-     * Error message while deploying the addon
+     * Observed error message from the addon or component
      */
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
@@ -45,7 +45,7 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Get the name property: Name of the addon.
+     * Get the name property: Name of the addon or component.
      * 
      * @return the name value.
      */
@@ -54,7 +54,7 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Set the name property: Name of the addon.
+     * Set the name property: Name of the addon or component.
      * 
      * @param name the name value to set.
      * @return the AddonStatusProfile object itself.
@@ -65,9 +65,9 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Get the phase property: Observed phase of the addon on the target cluster. Possible values include: 'pending',
-     * 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned',
-     * 'deleting', 'failed', 'upgrading'.
+     * Get the phase property: Observed phase of the addon or component on the provisioned cluster. Possible values
+     * include: 'pending', 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning
+     * {MSICertificateDownloaded}', 'provisioned', 'deleting', 'failed', 'upgrading'.
      * 
      * @return the phase value.
      */
@@ -76,9 +76,9 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Set the phase property: Observed phase of the addon on the target cluster. Possible values include: 'pending',
-     * 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned',
-     * 'deleting', 'failed', 'upgrading'.
+     * Set the phase property: Observed phase of the addon or component on the provisioned cluster. Possible values
+     * include: 'pending', 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning
+     * {MSICertificateDownloaded}', 'provisioned', 'deleting', 'failed', 'upgrading'.
      * 
      * @param phase the phase value to set.
      * @return the AddonStatusProfile object itself.
@@ -89,7 +89,7 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Get the ready property: Indicates whether the addon is ready.
+     * Get the ready property: Indicates whether the addon or component is ready.
      * 
      * @return the ready value.
      */
@@ -98,7 +98,7 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Set the ready property: Indicates whether the addon is ready.
+     * Set the ready property: Indicates whether the addon or component is ready.
      * 
      * @param ready the ready value to set.
      * @return the AddonStatusProfile object itself.
@@ -109,7 +109,7 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Get the errorMessage property: Error message while deploying the addon.
+     * Get the errorMessage property: Observed error message from the addon or component.
      * 
      * @return the errorMessage value.
      */
@@ -118,7 +118,7 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Set the errorMessage property: Error message while deploying the addon.
+     * Set the errorMessage property: Observed error message from the addon or component.
      * 
      * @param errorMessage the errorMessage value to set.
      * @return the AddonStatusProfile object itself.

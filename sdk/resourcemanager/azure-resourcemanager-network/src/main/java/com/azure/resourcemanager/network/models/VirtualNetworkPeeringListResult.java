@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkPeeringInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListSubnets API service call. Retrieves all subnets that belong to a virtual network. */
+/**
+ * Response for ListSubnets API service call. Retrieves all subnets that belong to a virtual network.
+ */
 @Fluent
 public final class VirtualNetworkPeeringListResult {
     /*
@@ -24,13 +26,15 @@ public final class VirtualNetworkPeeringListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VirtualNetworkPeeringListResult class. */
+    /**
+     * Creates an instance of VirtualNetworkPeeringListResult class.
+     */
     public VirtualNetworkPeeringListResult() {
     }
 
     /**
      * Get the value property: The peerings in a virtual network.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualNetworkPeeringInner> value() {
@@ -39,7 +43,7 @@ public final class VirtualNetworkPeeringListResult {
 
     /**
      * Set the value property: The peerings in a virtual network.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualNetworkPeeringListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class VirtualNetworkPeeringListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class VirtualNetworkPeeringListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualNetworkPeeringListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class VirtualNetworkPeeringListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

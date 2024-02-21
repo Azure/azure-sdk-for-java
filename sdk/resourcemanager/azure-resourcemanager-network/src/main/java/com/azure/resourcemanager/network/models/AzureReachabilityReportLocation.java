@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define a geographic location. */
+/**
+ * Parameters that define a geographic location.
+ */
 @Fluent
 public final class AzureReachabilityReportLocation {
     /*
@@ -29,13 +31,15 @@ public final class AzureReachabilityReportLocation {
     @JsonProperty(value = "city")
     private String city;
 
-    /** Creates an instance of AzureReachabilityReportLocation class. */
+    /**
+     * Creates an instance of AzureReachabilityReportLocation class.
+     */
     public AzureReachabilityReportLocation() {
     }
 
     /**
      * Get the country property: The name of the country.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -44,7 +48,7 @@ public final class AzureReachabilityReportLocation {
 
     /**
      * Set the country property: The name of the country.
-     *
+     * 
      * @param country the country value to set.
      * @return the AzureReachabilityReportLocation object itself.
      */
@@ -55,7 +59,7 @@ public final class AzureReachabilityReportLocation {
 
     /**
      * Get the state property: The name of the state.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -64,7 +68,7 @@ public final class AzureReachabilityReportLocation {
 
     /**
      * Set the state property: The name of the state.
-     *
+     * 
      * @param state the state value to set.
      * @return the AzureReachabilityReportLocation object itself.
      */
@@ -75,7 +79,7 @@ public final class AzureReachabilityReportLocation {
 
     /**
      * Get the city property: The name of the city or town.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -84,7 +88,7 @@ public final class AzureReachabilityReportLocation {
 
     /**
      * Set the city property: The name of the city or town.
-     *
+     * 
      * @param city the city value to set.
      * @return the AzureReachabilityReportLocation object itself.
      */
@@ -95,15 +99,13 @@ public final class AzureReachabilityReportLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (country() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property country in model AzureReachabilityReportLocation"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property country in model AzureReachabilityReportLocation"));
         }
     }
 

@@ -10,10 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.BackupDatasourceParameter
 public final class BackupDatasourceParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupDatasourceParameters model =
-            BinaryData
-                .fromString("{\"objectType\":\"BackupDatasourceParameters\"}")
-                .toObject(BackupDatasourceParameters.class);
+        BackupDatasourceParameters model = BinaryData.fromString("{\"objectType\":\"BackupDatasourceParameters\"}")
+            .toObject(BackupDatasourceParameters.class);
     }
 
     @org.junit.jupiter.api.Test

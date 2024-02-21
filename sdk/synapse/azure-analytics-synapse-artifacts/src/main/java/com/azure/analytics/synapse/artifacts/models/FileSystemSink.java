@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity file system sink. */
+/**
+ * A copy activity file system sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileSystemSink")
 @Fluent
@@ -20,12 +22,15 @@ public final class FileSystemSink extends CopySink {
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
 
-    /** Creates an instance of FileSystemSink class. */
-    public FileSystemSink() {}
+    /**
+     * Creates an instance of FileSystemSink class.
+     */
+    public FileSystemSink() {
+    }
 
     /**
      * Get the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * 
      * @return the copyBehavior value.
      */
     public Object getCopyBehavior() {
@@ -34,7 +39,7 @@ public final class FileSystemSink extends CopySink {
 
     /**
      * Set the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * 
      * @param copyBehavior the copyBehavior value to set.
      * @return the FileSystemSink object itself.
      */
@@ -43,35 +48,45 @@ public final class FileSystemSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileSystemSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileSystemSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileSystemSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileSystemSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileSystemSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

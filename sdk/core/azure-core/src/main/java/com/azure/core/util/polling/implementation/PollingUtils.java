@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
  */
 public final class PollingUtils {
     private static final String FORWARD_SLASH = "/";
+
     /**
      * Serialize a response to a {@link BinaryData}. If the response is already a {@link BinaryData}, return as is.
      *
@@ -61,7 +62,7 @@ public final class PollingUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> Mono<T> deserializeResponse(BinaryData binaryData, ObjectSerializer serializer,
-                                                  TypeReference<T> typeReference) {
+        TypeReference<T> typeReference) {
         if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, typeReference.getJavaType())) {
             return (Mono<T>) binaryData.toReplayableBinaryDataAsync();
         } else {
@@ -105,7 +106,7 @@ public final class PollingUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> Mono<T> convertResponse(Object response, ObjectSerializer serializer,
-                                              TypeReference<T> typeReference) {
+        TypeReference<T> typeReference) {
         if (response == null) {
             return Mono.empty();
         } else if (TypeUtil.isTypeOrSubTypeOf(response.getClass(), typeReference.getJavaType())) {
@@ -148,6 +149,7 @@ public final class PollingUtils {
      *
      * @param path a relative path or absolute path.
      * @param endpoint an endpoint to create the absolute path if the path is relative.
+     * @param logger a {@link ClientLogger} to log the exception.
      * @return an absolute path.
      */
     public static String getAbsolutePath(String path, String endpoint, ClientLogger logger) {

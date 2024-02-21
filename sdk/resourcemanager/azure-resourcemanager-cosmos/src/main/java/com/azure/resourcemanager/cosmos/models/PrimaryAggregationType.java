@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The primary aggregation type of the metric. */
+/**
+ * The primary aggregation type of the metric.
+ */
 public final class PrimaryAggregationType extends ExpandableStringEnum<PrimaryAggregationType> {
-    /** Static value None for PrimaryAggregationType. */
+    /**
+     * Static value None for PrimaryAggregationType.
+     */
     public static final PrimaryAggregationType NONE = fromString("None");
 
-    /** Static value Average for PrimaryAggregationType. */
+    /**
+     * Static value Average for PrimaryAggregationType.
+     */
     public static final PrimaryAggregationType AVERAGE = fromString("Average");
 
-    /** Static value Total for PrimaryAggregationType. */
+    /**
+     * Static value Total for PrimaryAggregationType.
+     */
     public static final PrimaryAggregationType TOTAL = fromString("Total");
 
-    /** Static value Minimum for PrimaryAggregationType. */
+    /**
+     * Static value Minimum for PrimaryAggregationType.
+     */
     public static final PrimaryAggregationType MINIMUM = fromString("Minimum");
 
-    /** Static value Maximum for PrimaryAggregationType. */
+    /**
+     * Static value Maximum for PrimaryAggregationType.
+     */
     public static final PrimaryAggregationType MAXIMUM = fromString("Maximum");
 
-    /** Static value Last for PrimaryAggregationType. */
+    /**
+     * Static value Last for PrimaryAggregationType.
+     */
     public static final PrimaryAggregationType LAST = fromString("Last");
 
     /**
      * Creates a new instance of PrimaryAggregationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class PrimaryAggregationType extends ExpandableStringEnum<PrimaryAg
 
     /**
      * Creates or finds a PrimaryAggregationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrimaryAggregationType.
      */
@@ -50,7 +64,7 @@ public final class PrimaryAggregationType extends ExpandableStringEnum<PrimaryAg
 
     /**
      * Gets known PrimaryAggregationType values.
-     *
+     * 
      * @return known PrimaryAggregationType values.
      */
     public static Collection<PrimaryAggregationType> values() {

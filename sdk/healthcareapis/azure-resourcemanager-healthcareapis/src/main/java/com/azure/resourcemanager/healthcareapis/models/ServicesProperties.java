@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of a service instance. */
+/**
+ * The properties of a service instance.
+ */
 @Fluent
 public final class ServicesProperties {
     /*
@@ -48,29 +50,38 @@ public final class ServicesProperties {
     private ServiceExportConfigurationInfo exportConfiguration;
 
     /*
-     * The list of private endpoint connections that are set up for this
-     * resource.
+     * The list of private endpoint connections that are set up for this resource.
      */
     @JsonProperty(value = "privateEndpointConnections")
     private List<PrivateEndpointConnection> privateEndpointConnections;
 
     /*
-     * Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Control permission for data plane traffic coming from public networks while private endpoint is enabled.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * The azure container registry settings used for convert data operation of
-     * the service instance.
+     * The azure container registry settings used for convert data operation of the service instance.
      */
     @JsonProperty(value = "acrConfiguration")
     private ServiceAcrConfigurationInfo acrConfiguration;
 
+    /*
+     * The settings for the import operation of the service instance.
+     */
+    @JsonProperty(value = "importConfiguration")
+    private ServiceImportConfigurationInfo importConfiguration;
+
+    /**
+     * Creates an instance of ServicesProperties class.
+     */
+    public ServicesProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -79,7 +90,7 @@ public final class ServicesProperties {
 
     /**
      * Get the accessPolicies property: The access policies of the service instance.
-     *
+     * 
      * @return the accessPolicies value.
      */
     public List<ServiceAccessPolicyEntry> accessPolicies() {
@@ -88,7 +99,7 @@ public final class ServicesProperties {
 
     /**
      * Set the accessPolicies property: The access policies of the service instance.
-     *
+     * 
      * @param accessPolicies the accessPolicies value to set.
      * @return the ServicesProperties object itself.
      */
@@ -99,7 +110,7 @@ public final class ServicesProperties {
 
     /**
      * Get the cosmosDbConfiguration property: The settings for the Cosmos DB database backing the service.
-     *
+     * 
      * @return the cosmosDbConfiguration value.
      */
     public ServiceCosmosDbConfigurationInfo cosmosDbConfiguration() {
@@ -108,7 +119,7 @@ public final class ServicesProperties {
 
     /**
      * Set the cosmosDbConfiguration property: The settings for the Cosmos DB database backing the service.
-     *
+     * 
      * @param cosmosDbConfiguration the cosmosDbConfiguration value to set.
      * @return the ServicesProperties object itself.
      */
@@ -119,7 +130,7 @@ public final class ServicesProperties {
 
     /**
      * Get the authenticationConfiguration property: The authentication configuration for the service instance.
-     *
+     * 
      * @return the authenticationConfiguration value.
      */
     public ServiceAuthenticationConfigurationInfo authenticationConfiguration() {
@@ -128,19 +139,19 @@ public final class ServicesProperties {
 
     /**
      * Set the authenticationConfiguration property: The authentication configuration for the service instance.
-     *
+     * 
      * @param authenticationConfiguration the authenticationConfiguration value to set.
      * @return the ServicesProperties object itself.
      */
-    public ServicesProperties withAuthenticationConfiguration(
-        ServiceAuthenticationConfigurationInfo authenticationConfiguration) {
+    public ServicesProperties
+        withAuthenticationConfiguration(ServiceAuthenticationConfigurationInfo authenticationConfiguration) {
         this.authenticationConfiguration = authenticationConfiguration;
         return this;
     }
 
     /**
      * Get the corsConfiguration property: The settings for the CORS configuration of the service instance.
-     *
+     * 
      * @return the corsConfiguration value.
      */
     public ServiceCorsConfigurationInfo corsConfiguration() {
@@ -149,7 +160,7 @@ public final class ServicesProperties {
 
     /**
      * Set the corsConfiguration property: The settings for the CORS configuration of the service instance.
-     *
+     * 
      * @param corsConfiguration the corsConfiguration value to set.
      * @return the ServicesProperties object itself.
      */
@@ -160,7 +171,7 @@ public final class ServicesProperties {
 
     /**
      * Get the exportConfiguration property: The settings for the export operation of the service instance.
-     *
+     * 
      * @return the exportConfiguration value.
      */
     public ServiceExportConfigurationInfo exportConfiguration() {
@@ -169,7 +180,7 @@ public final class ServicesProperties {
 
     /**
      * Set the exportConfiguration property: The settings for the export operation of the service instance.
-     *
+     * 
      * @param exportConfiguration the exportConfiguration value to set.
      * @return the ServicesProperties object itself.
      */
@@ -181,7 +192,7 @@ public final class ServicesProperties {
     /**
      * Get the privateEndpointConnections property: The list of private endpoint connections that are set up for this
      * resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnection> privateEndpointConnections() {
@@ -191,20 +202,20 @@ public final class ServicesProperties {
     /**
      * Set the privateEndpointConnections property: The list of private endpoint connections that are set up for this
      * resource.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the ServicesProperties object itself.
      */
-    public ServicesProperties withPrivateEndpointConnections(
-        List<PrivateEndpointConnection> privateEndpointConnections) {
+    public ServicesProperties
+        withPrivateEndpointConnections(List<PrivateEndpointConnection> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
 
     /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
+     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
+     * while private endpoint is enabled.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -212,9 +223,9 @@ public final class ServicesProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
+     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
+     * while private endpoint is enabled.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServicesProperties object itself.
      */
@@ -226,7 +237,7 @@ public final class ServicesProperties {
     /**
      * Get the acrConfiguration property: The azure container registry settings used for convert data operation of the
      * service instance.
-     *
+     * 
      * @return the acrConfiguration value.
      */
     public ServiceAcrConfigurationInfo acrConfiguration() {
@@ -236,7 +247,7 @@ public final class ServicesProperties {
     /**
      * Set the acrConfiguration property: The azure container registry settings used for convert data operation of the
      * service instance.
-     *
+     * 
      * @param acrConfiguration the acrConfiguration value to set.
      * @return the ServicesProperties object itself.
      */
@@ -246,8 +257,28 @@ public final class ServicesProperties {
     }
 
     /**
+     * Get the importConfiguration property: The settings for the import operation of the service instance.
+     * 
+     * @return the importConfiguration value.
+     */
+    public ServiceImportConfigurationInfo importConfiguration() {
+        return this.importConfiguration;
+    }
+
+    /**
+     * Set the importConfiguration property: The settings for the import operation of the service instance.
+     * 
+     * @param importConfiguration the importConfiguration value to set.
+     * @return the ServicesProperties object itself.
+     */
+    public ServicesProperties withImportConfiguration(ServiceImportConfigurationInfo importConfiguration) {
+        this.importConfiguration = importConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -271,6 +302,9 @@ public final class ServicesProperties {
         }
         if (acrConfiguration() != null) {
             acrConfiguration().validate();
+        }
+        if (importConfiguration() != null) {
+            importConfiguration().validate();
         }
     }
 }

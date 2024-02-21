@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class SecuredVMDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecuredVMDetails model =
-            BinaryData
-                .fromString("{\"securedVMOsDiskEncryptionSetId\":\"pubcpzgpxtivhjk\"}")
-                .toObject(SecuredVMDetails.class);
-        Assertions.assertEquals("pubcpzgpxtivhjk", model.securedVmosDiskEncryptionSetId());
+        SecuredVMDetails model
+            = BinaryData.fromString("{\"securedVMOsDiskEncryptionSetId\":\"zvuxm\"}").toObject(SecuredVMDetails.class);
+        Assertions.assertEquals("zvuxm", model.securedVmosDiskEncryptionSetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecuredVMDetails model = new SecuredVMDetails().withSecuredVmosDiskEncryptionSetId("pubcpzgpxtivhjk");
+        SecuredVMDetails model = new SecuredVMDetails().withSecuredVmosDiskEncryptionSetId("zvuxm");
         model = BinaryData.fromObject(model).toObject(SecuredVMDetails.class);
-        Assertions.assertEquals("pubcpzgpxtivhjk", model.securedVmosDiskEncryptionSetId());
+        Assertions.assertEquals("zvuxm", model.securedVmosDiskEncryptionSetId());
     }
 }

@@ -110,7 +110,7 @@ public final class Choice {
      */
     @Generated
     @JsonProperty(value = "content_filter_results")
-    private ContentFilterResults contentFilterResults;
+    private ContentFilterResultsForChoice contentFilterResults;
 
     /**
      * Get the contentFilterResults property: Information about the content filtering category (hate, sexual, violence,
@@ -121,7 +121,7 @@ public final class Choice {
      * @return the contentFilterResults value.
      */
     @Generated
-    public ContentFilterResults getContentFilterResults() {
+    public ContentFilterResultsForChoice getContentFilterResults() {
         return this.contentFilterResults;
     }
 }

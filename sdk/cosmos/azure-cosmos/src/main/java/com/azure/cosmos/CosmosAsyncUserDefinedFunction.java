@@ -136,8 +136,8 @@ public class CosmosAsyncUserDefinedFunction {
         String spanName = "replaceUserDefinedFunction." + container.getId();
         Mono<CosmosUserDefinedFunctionResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
-            .replaceUserDefinedFunction(new UserDefinedFunction(ModelBridgeInternal.toJsonFromJsonSerializable(
-                ModelBridgeInternal.getResource(udfSettings))), null)
+            .replaceUserDefinedFunction(new UserDefinedFunction(
+                ModelBridgeInternal.getResource(udfSettings).getPropertyBag()), null)
             .map(ModelBridgeInternal::createCosmosUserDefinedFunctionResponse)
             .single();
         CosmosAsyncClient client = container.getDatabase().getClient();

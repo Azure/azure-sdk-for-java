@@ -8,19 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Dicom Service patch properties. */
+/**
+ * Dicom Service patch properties.
+ */
 @Fluent
 public final class DicomServicePatchResource extends ResourceTags {
     /*
-     * Setting indicating whether the service has a managed identity associated
-     * with it.
+     * Setting indicating whether the service has a managed identity associated with it.
      */
     @JsonProperty(value = "identity")
     private ServiceManagedIdentityIdentity identity;
 
     /**
+     * Creates an instance of DicomServicePatchResource class.
+     */
+    public DicomServicePatchResource() {
+    }
+
+    /**
      * Get the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @return the identity value.
      */
     public ServiceManagedIdentityIdentity identity() {
@@ -29,7 +36,7 @@ public final class DicomServicePatchResource extends ResourceTags {
 
     /**
      * Set the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the DicomServicePatchResource object itself.
      */
@@ -38,7 +45,9 @@ public final class DicomServicePatchResource extends ResourceTags {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DicomServicePatchResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -47,7 +56,7 @@ public final class DicomServicePatchResource extends ResourceTags {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

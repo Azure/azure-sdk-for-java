@@ -9,7 +9,9 @@ import com.azure.core.management.exception.ManagementError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Troubleshooter step. */
+/**
+ * Troubleshooter step.
+ */
 @Fluent
 public final class Step {
     /*
@@ -84,13 +86,15 @@ public final class Step {
     @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of Step class. */
+    /**
+     * Creates an instance of Step class.
+     */
     public Step() {
     }
 
     /**
      * Get the id property: Unique step id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -99,7 +103,7 @@ public final class Step {
 
     /**
      * Set the id property: Unique step id.
-     *
+     * 
      * @param id the id value to set.
      * @return the Step object itself.
      */
@@ -110,7 +114,7 @@ public final class Step {
 
     /**
      * Get the title property: Step title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -119,7 +123,7 @@ public final class Step {
 
     /**
      * Set the title property: Step title.
-     *
+     * 
      * @param title the title value to set.
      * @return the Step object itself.
      */
@@ -130,7 +134,7 @@ public final class Step {
 
     /**
      * Get the description property: Step description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -139,7 +143,7 @@ public final class Step {
 
     /**
      * Set the description property: Step description.
-     *
+     * 
      * @param description the description value to set.
      * @return the Step object itself.
      */
@@ -150,7 +154,7 @@ public final class Step {
 
     /**
      * Get the guidance property: Get or sets the Step guidance.
-     *
+     * 
      * @return the guidance value.
      */
     public String guidance() {
@@ -159,7 +163,7 @@ public final class Step {
 
     /**
      * Set the guidance property: Get or sets the Step guidance.
-     *
+     * 
      * @param guidance the guidance value to set.
      * @return the Step object itself.
      */
@@ -170,7 +174,7 @@ public final class Step {
 
     /**
      * Get the executionStatus property: Status of Troubleshooter Step execution.
-     *
+     * 
      * @return the executionStatus value.
      */
     public ExecutionStatus executionStatus() {
@@ -179,7 +183,7 @@ public final class Step {
 
     /**
      * Set the executionStatus property: Status of Troubleshooter Step execution.
-     *
+     * 
      * @param executionStatus the executionStatus value to set.
      * @return the Step object itself.
      */
@@ -191,7 +195,7 @@ public final class Step {
     /**
      * Get the executionStatusDescription property: This field has more detailed status description of the execution
      * status.
-     *
+     * 
      * @return the executionStatusDescription value.
      */
     public String executionStatusDescription() {
@@ -201,7 +205,7 @@ public final class Step {
     /**
      * Set the executionStatusDescription property: This field has more detailed status description of the execution
      * status.
-     *
+     * 
      * @param executionStatusDescription the executionStatusDescription value to set.
      * @return the Step object itself.
      */
@@ -212,7 +216,7 @@ public final class Step {
 
     /**
      * Get the type property: Type of Troubleshooting step.
-     *
+     * 
      * @return the type value.
      */
     public Type type() {
@@ -221,7 +225,7 @@ public final class Step {
 
     /**
      * Set the type property: Type of Troubleshooting step.
-     *
+     * 
      * @param type the type value to set.
      * @return the Step object itself.
      */
@@ -232,7 +236,7 @@ public final class Step {
 
     /**
      * Get the isLastStep property: is this last step of the workflow.
-     *
+     * 
      * @return the isLastStep value.
      */
     public Boolean isLastStep() {
@@ -241,7 +245,7 @@ public final class Step {
 
     /**
      * Set the isLastStep property: is this last step of the workflow.
-     *
+     * 
      * @param isLastStep the isLastStep value to set.
      * @return the Step object itself.
      */
@@ -252,7 +256,7 @@ public final class Step {
 
     /**
      * Get the inputs property: The inputs property.
-     *
+     * 
      * @return the inputs value.
      */
     public List<StepInput> inputs() {
@@ -261,7 +265,7 @@ public final class Step {
 
     /**
      * Set the inputs property: The inputs property.
-     *
+     * 
      * @param inputs the inputs value to set.
      * @return the Step object itself.
      */
@@ -272,7 +276,7 @@ public final class Step {
 
     /**
      * Get the automatedCheckResults property: Only for AutomatedStep type.
-     *
+     * 
      * @return the automatedCheckResults value.
      */
     public AutomatedCheckResult automatedCheckResults() {
@@ -281,7 +285,7 @@ public final class Step {
 
     /**
      * Set the automatedCheckResults property: Only for AutomatedStep type.
-     *
+     * 
      * @param automatedCheckResults the automatedCheckResults value to set.
      * @return the Step object itself.
      */
@@ -292,7 +296,7 @@ public final class Step {
 
     /**
      * Get the insights property: The insights property.
-     *
+     * 
      * @return the insights value.
      */
     public List<Insight> insights() {
@@ -301,7 +305,7 @@ public final class Step {
 
     /**
      * Set the insights property: The insights property.
-     *
+     * 
      * @param insights the insights value to set.
      * @return the Step object itself.
      */
@@ -312,7 +316,7 @@ public final class Step {
 
     /**
      * Get the error property: The error detail.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -321,7 +325,7 @@ public final class Step {
 
     /**
      * Set the error property: The error detail.
-     *
+     * 
      * @param error the error value to set.
      * @return the Step object itself.
      */
@@ -332,7 +336,7 @@ public final class Step {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

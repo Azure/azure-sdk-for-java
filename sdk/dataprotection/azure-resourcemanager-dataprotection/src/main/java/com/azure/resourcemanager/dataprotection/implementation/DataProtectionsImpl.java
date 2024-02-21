@@ -21,22 +21,18 @@ public final class DataProtectionsImpl implements DataProtections {
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public DataProtectionsImpl(
-        DataProtectionsClient innerClient,
+    public DataProtectionsImpl(DataProtectionsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<FeatureValidationResponseBase> checkFeatureSupportWithResponse(
-        String location, FeatureValidationRequestBase parameters, Context context) {
-        Response<FeatureValidationResponseBaseInner> inner =
-            this.serviceClient().checkFeatureSupportWithResponse(location, parameters, context);
+    public Response<FeatureValidationResponseBase> checkFeatureSupportWithResponse(String location,
+        FeatureValidationRequestBase parameters, Context context) {
+        Response<FeatureValidationResponseBaseInner> inner
+            = this.serviceClient().checkFeatureSupportWithResponse(location, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FeatureValidationResponseBaseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -12,8 +12,7 @@ public final class FeatureValidationResponseBaseImpl implements FeatureValidatio
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    FeatureValidationResponseBaseImpl(
-        FeatureValidationResponseBaseInner innerObject,
+    FeatureValidationResponseBaseImpl(FeatureValidationResponseBaseInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -8,18 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The action type of a rule. */
+/**
+ * The action type of a rule.
+ */
 public final class FirewallPolicyFilterRuleCollectionActionType
     extends ExpandableStringEnum<FirewallPolicyFilterRuleCollectionActionType> {
-    /** Static value Allow for FirewallPolicyFilterRuleCollectionActionType. */
+    /**
+     * Static value Allow for FirewallPolicyFilterRuleCollectionActionType.
+     */
     public static final FirewallPolicyFilterRuleCollectionActionType ALLOW = fromString("Allow");
 
-    /** Static value Deny for FirewallPolicyFilterRuleCollectionActionType. */
+    /**
+     * Static value Deny for FirewallPolicyFilterRuleCollectionActionType.
+     */
     public static final FirewallPolicyFilterRuleCollectionActionType DENY = fromString("Deny");
 
     /**
      * Creates a new instance of FirewallPolicyFilterRuleCollectionActionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,7 +34,7 @@ public final class FirewallPolicyFilterRuleCollectionActionType
 
     /**
      * Creates or finds a FirewallPolicyFilterRuleCollectionActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FirewallPolicyFilterRuleCollectionActionType.
      */
@@ -39,7 +45,7 @@ public final class FirewallPolicyFilterRuleCollectionActionType
 
     /**
      * Gets known FirewallPolicyFilterRuleCollectionActionType values.
-     *
+     * 
      * @return known FirewallPolicyFilterRuleCollectionActionType values.
      */
     public static Collection<FirewallPolicyFilterRuleCollectionActionType> values() {

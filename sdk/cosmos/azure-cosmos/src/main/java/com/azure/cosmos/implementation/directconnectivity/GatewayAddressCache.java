@@ -442,7 +442,7 @@ public class GatewayAddressCache implements IAddressCache {
                     partitionKeyRangeIds);
         }
 
-        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, clientContext, httpResponseMono, httpRequest);
+        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, clientContext, httpResponseMono);
         return dsrObs.map(
             dsr -> {
                 MetadataDiagnosticsContext metadataDiagnosticsContext =
@@ -825,7 +825,7 @@ public class GatewayAddressCache implements IAddressCache {
                     request.getResponseTimeout()));
         }
 
-        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, this.clientContext, httpResponseMono, httpRequest);
+        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, this.clientContext, httpResponseMono);
 
         return dsrObs.map(
             dsr -> {

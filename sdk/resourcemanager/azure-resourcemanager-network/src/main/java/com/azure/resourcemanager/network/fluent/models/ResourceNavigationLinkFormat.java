@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of ResourceNavigationLink. */
+/**
+ * Properties of ResourceNavigationLink.
+ */
 @Fluent
 public final class ResourceNavigationLinkFormat {
     /*
@@ -29,13 +31,15 @@ public final class ResourceNavigationLinkFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ResourceNavigationLinkFormat class. */
+    /**
+     * Creates an instance of ResourceNavigationLinkFormat class.
+     */
     public ResourceNavigationLinkFormat() {
     }
 
     /**
      * Get the linkedResourceType property: Resource type of the linked resource.
-     *
+     * 
      * @return the linkedResourceType value.
      */
     public String linkedResourceType() {
@@ -44,7 +48,7 @@ public final class ResourceNavigationLinkFormat {
 
     /**
      * Set the linkedResourceType property: Resource type of the linked resource.
-     *
+     * 
      * @param linkedResourceType the linkedResourceType value to set.
      * @return the ResourceNavigationLinkFormat object itself.
      */
@@ -55,7 +59,7 @@ public final class ResourceNavigationLinkFormat {
 
     /**
      * Get the link property: Link to the external resource.
-     *
+     * 
      * @return the link value.
      */
     public String link() {
@@ -64,7 +68,7 @@ public final class ResourceNavigationLinkFormat {
 
     /**
      * Set the link property: Link to the external resource.
-     *
+     * 
      * @param link the link value to set.
      * @return the ResourceNavigationLinkFormat object itself.
      */
@@ -75,7 +79,7 @@ public final class ResourceNavigationLinkFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource navigation link resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -84,7 +88,7 @@ public final class ResourceNavigationLinkFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

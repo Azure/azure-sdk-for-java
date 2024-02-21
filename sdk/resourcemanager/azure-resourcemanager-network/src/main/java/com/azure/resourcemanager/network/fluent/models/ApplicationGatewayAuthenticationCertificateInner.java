@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Authentication certificates of an application gateway. */
+/**
+ * Authentication certificates of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayAuthenticationCertificateInner extends SubResource {
     /*
@@ -36,13 +38,15 @@ public final class ApplicationGatewayAuthenticationCertificateInner extends SubR
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayAuthenticationCertificateInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayAuthenticationCertificateInner class.
+     */
     public ApplicationGatewayAuthenticationCertificateInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway authentication certificate.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayAuthenticationCertificatePropertiesFormat innerProperties() {
@@ -51,7 +55,7 @@ public final class ApplicationGatewayAuthenticationCertificateInner extends SubR
 
     /**
      * Get the name property: Name of the authentication certificate that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +64,7 @@ public final class ApplicationGatewayAuthenticationCertificateInner extends SubR
 
     /**
      * Set the name property: Name of the authentication certificate that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayAuthenticationCertificateInner object itself.
      */
@@ -71,7 +75,7 @@ public final class ApplicationGatewayAuthenticationCertificateInner extends SubR
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -80,14 +84,16 @@ public final class ApplicationGatewayAuthenticationCertificateInner extends SubR
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayAuthenticationCertificateInner withId(String id) {
         super.withId(id);
@@ -96,7 +102,7 @@ public final class ApplicationGatewayAuthenticationCertificateInner extends SubR
 
     /**
      * Get the data property: Certificate public data.
-     *
+     * 
      * @return the data value.
      */
     public String data() {
@@ -105,7 +111,7 @@ public final class ApplicationGatewayAuthenticationCertificateInner extends SubR
 
     /**
      * Set the data property: Certificate public data.
-     *
+     * 
      * @param data the data value to set.
      * @return the ApplicationGatewayAuthenticationCertificateInner object itself.
      */
@@ -119,7 +125,7 @@ public final class ApplicationGatewayAuthenticationCertificateInner extends SubR
 
     /**
      * Get the provisioningState property: The provisioning state of the authentication certificate resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -128,7 +134,7 @@ public final class ApplicationGatewayAuthenticationCertificateInner extends SubR
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

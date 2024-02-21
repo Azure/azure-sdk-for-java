@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The application resource properties for patch operations. */
+/**
+ * The application resource properties for patch operations.
+ */
 @Fluent
 public class ApplicationResourceUpdateProperties {
     /*
@@ -71,13 +73,15 @@ public class ApplicationResourceUpdateProperties {
     @JsonProperty(value = "managedIdentities")
     private List<ApplicationUserAssignedIdentity> managedIdentities;
 
-    /** Creates an instance of ApplicationResourceUpdateProperties class. */
+    /**
+     * Creates an instance of ApplicationResourceUpdateProperties class.
+     */
     public ApplicationResourceUpdateProperties() {
     }
 
     /**
      * Get the typeVersion property: The version of the application type as defined in the application manifest.
-     *
+     * 
      * @return the typeVersion value.
      */
     public String typeVersion() {
@@ -86,7 +90,7 @@ public class ApplicationResourceUpdateProperties {
 
     /**
      * Set the typeVersion property: The version of the application type as defined in the application manifest.
-     *
+     * 
      * @param typeVersion the typeVersion value to set.
      * @return the ApplicationResourceUpdateProperties object itself.
      */
@@ -98,7 +102,7 @@ public class ApplicationResourceUpdateProperties {
     /**
      * Get the parameters property: List of application parameters with overridden values from their default values
      * specified in the application manifest.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -108,7 +112,7 @@ public class ApplicationResourceUpdateProperties {
     /**
      * Set the parameters property: List of application parameters with overridden values from their default values
      * specified in the application manifest.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ApplicationResourceUpdateProperties object itself.
      */
@@ -119,7 +123,7 @@ public class ApplicationResourceUpdateProperties {
 
     /**
      * Get the upgradePolicy property: Describes the policy for a monitored application upgrade.
-     *
+     * 
      * @return the upgradePolicy value.
      */
     public ApplicationUpgradePolicy upgradePolicy() {
@@ -128,7 +132,7 @@ public class ApplicationResourceUpdateProperties {
 
     /**
      * Set the upgradePolicy property: Describes the policy for a monitored application upgrade.
-     *
+     * 
      * @param upgradePolicy the upgradePolicy value to set.
      * @return the ApplicationResourceUpdateProperties object itself.
      */
@@ -142,7 +146,7 @@ public class ApplicationResourceUpdateProperties {
      * application. Note that this does not mean that the services of this application will be placed on all of those
      * nodes. If this property is set to zero, no capacity will be reserved. The value of this property cannot be more
      * than the value of the MaximumNodes property.
-     *
+     * 
      * @return the minimumNodes value.
      */
     public Long minimumNodes() {
@@ -154,7 +158,7 @@ public class ApplicationResourceUpdateProperties {
      * application. Note that this does not mean that the services of this application will be placed on all of those
      * nodes. If this property is set to zero, no capacity will be reserved. The value of this property cannot be more
      * than the value of the MaximumNodes property.
-     *
+     * 
      * @param minimumNodes the minimumNodes value to set.
      * @return the ApplicationResourceUpdateProperties object itself.
      */
@@ -167,7 +171,7 @@ public class ApplicationResourceUpdateProperties {
      * Get the maximumNodes property: The maximum number of nodes where Service Fabric will reserve capacity for this
      * application. Note that this does not mean that the services of this application will be placed on all of those
      * nodes. By default, the value of this property is zero and it means that the services can be placed on any node.
-     *
+     * 
      * @return the maximumNodes value.
      */
     public Long maximumNodes() {
@@ -178,7 +182,7 @@ public class ApplicationResourceUpdateProperties {
      * Set the maximumNodes property: The maximum number of nodes where Service Fabric will reserve capacity for this
      * application. Note that this does not mean that the services of this application will be placed on all of those
      * nodes. By default, the value of this property is zero and it means that the services can be placed on any node.
-     *
+     * 
      * @param maximumNodes the maximumNodes value to set.
      * @return the ApplicationResourceUpdateProperties object itself.
      */
@@ -189,7 +193,7 @@ public class ApplicationResourceUpdateProperties {
 
     /**
      * Get the removeApplicationCapacity property: Remove the current application capacity settings.
-     *
+     * 
      * @return the removeApplicationCapacity value.
      */
     public Boolean removeApplicationCapacity() {
@@ -198,7 +202,7 @@ public class ApplicationResourceUpdateProperties {
 
     /**
      * Set the removeApplicationCapacity property: Remove the current application capacity settings.
-     *
+     * 
      * @param removeApplicationCapacity the removeApplicationCapacity value to set.
      * @return the ApplicationResourceUpdateProperties object itself.
      */
@@ -209,7 +213,7 @@ public class ApplicationResourceUpdateProperties {
 
     /**
      * Get the metrics property: List of application capacity metric description.
-     *
+     * 
      * @return the metrics value.
      */
     public List<ApplicationMetricDescription> metrics() {
@@ -218,7 +222,7 @@ public class ApplicationResourceUpdateProperties {
 
     /**
      * Set the metrics property: List of application capacity metric description.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the ApplicationResourceUpdateProperties object itself.
      */
@@ -230,7 +234,7 @@ public class ApplicationResourceUpdateProperties {
     /**
      * Get the managedIdentities property: List of user assigned identities for the application, each mapped to a
      * friendly name.
-     *
+     * 
      * @return the managedIdentities value.
      */
     public List<ApplicationUserAssignedIdentity> managedIdentities() {
@@ -240,19 +244,19 @@ public class ApplicationResourceUpdateProperties {
     /**
      * Set the managedIdentities property: List of user assigned identities for the application, each mapped to a
      * friendly name.
-     *
+     * 
      * @param managedIdentities the managedIdentities value to set.
      * @return the ApplicationResourceUpdateProperties object itself.
      */
-    public ApplicationResourceUpdateProperties withManagedIdentities(
-        List<ApplicationUserAssignedIdentity> managedIdentities) {
+    public ApplicationResourceUpdateProperties
+        withManagedIdentities(List<ApplicationUserAssignedIdentity> managedIdentities) {
         this.managedIdentities = managedIdentities;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

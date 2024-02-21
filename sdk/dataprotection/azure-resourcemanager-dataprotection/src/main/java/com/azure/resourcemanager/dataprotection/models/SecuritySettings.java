@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Class containing security settings of vault. */
+/**
+ * Class containing security settings of vault.
+ */
 @Fluent
 public final class SecuritySettings {
     /*
@@ -22,13 +24,15 @@ public final class SecuritySettings {
     @JsonProperty(value = "immutabilitySettings")
     private ImmutabilitySettings immutabilitySettings;
 
-    /** Creates an instance of SecuritySettings class. */
+    /**
+     * Creates an instance of SecuritySettings class.
+     */
     public SecuritySettings() {
     }
 
     /**
      * Get the softDeleteSettings property: Soft delete related settings.
-     *
+     * 
      * @return the softDeleteSettings value.
      */
     public SoftDeleteSettings softDeleteSettings() {
@@ -37,7 +41,7 @@ public final class SecuritySettings {
 
     /**
      * Set the softDeleteSettings property: Soft delete related settings.
-     *
+     * 
      * @param softDeleteSettings the softDeleteSettings value to set.
      * @return the SecuritySettings object itself.
      */
@@ -48,7 +52,7 @@ public final class SecuritySettings {
 
     /**
      * Get the immutabilitySettings property: Immutability Settings at vault level.
-     *
+     * 
      * @return the immutabilitySettings value.
      */
     public ImmutabilitySettings immutabilitySettings() {
@@ -57,7 +61,7 @@ public final class SecuritySettings {
 
     /**
      * Set the immutabilitySettings property: Immutability Settings at vault level.
-     *
+     * 
      * @param immutabilitySettings the immutabilitySettings value to set.
      * @return the SecuritySettings object itself.
      */
@@ -68,7 +72,7 @@ public final class SecuritySettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

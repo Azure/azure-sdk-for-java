@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Authentication configuration information. */
+/**
+ * Authentication configuration information.
+ */
 @Immutable
 public final class DicomServiceAuthenticationConfiguration {
     /*
@@ -24,8 +26,14 @@ public final class DicomServiceAuthenticationConfiguration {
     private List<String> audiences;
 
     /**
+     * Creates an instance of DicomServiceAuthenticationConfiguration class.
+     */
+    public DicomServiceAuthenticationConfiguration() {
+    }
+
+    /**
      * Get the authority property: The authority url for the service.
-     *
+     * 
      * @return the authority value.
      */
     public String authority() {
@@ -34,7 +42,7 @@ public final class DicomServiceAuthenticationConfiguration {
 
     /**
      * Get the audiences property: The audiences for the service.
-     *
+     * 
      * @return the audiences value.
      */
     public List<String> audiences() {
@@ -43,7 +51,7 @@ public final class DicomServiceAuthenticationConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to an express route circuit. */
+/**
+ * Reference to an express route circuit.
+ */
 @Fluent
 public final class ExpressRouteCircuitReference {
     /*
@@ -16,13 +18,15 @@ public final class ExpressRouteCircuitReference {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ExpressRouteCircuitReference class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitReference class.
+     */
     public ExpressRouteCircuitReference() {
     }
 
     /**
      * Get the id property: Corresponding Express Route Circuit Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class ExpressRouteCircuitReference {
 
     /**
      * Set the id property: Corresponding Express Route Circuit Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ExpressRouteCircuitReference object itself.
      */
@@ -42,7 +46,7 @@ public final class ExpressRouteCircuitReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

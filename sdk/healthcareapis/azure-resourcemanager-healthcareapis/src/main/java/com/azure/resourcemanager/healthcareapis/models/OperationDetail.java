@@ -6,11 +6,13 @@ package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.resourcemanager.healthcareapis.fluent.models.OperationDetailInner;
 
-/** An immutable client-side representation of OperationDetail. */
+/**
+ * An immutable client-side representation of OperationDetail.
+ */
 public interface OperationDetail {
     /**
      * Gets the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     String name();
@@ -18,21 +20,21 @@ public interface OperationDetail {
     /**
      * Gets the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
      * operations and "false" for ARM/control-plane operations.
-     *
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
      * Gets the display property: Display of the operation.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
      * Gets the origin property: Default value is 'user,system'.
-     *
+     * 
      * @return the origin value.
      */
     String origin();
@@ -40,21 +42,21 @@ public interface OperationDetail {
     /**
      * Gets the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
      * only APIs.
-     *
+     * 
      * @return the actionType value.
      */
     ActionType actionType();
 
     /**
      * Gets the properties property: Properties of the operation.
-     *
+     * 
      * @return the properties value.
      */
     OperationProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.healthcareapis.fluent.models.OperationDetailInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationDetailInner innerModel();

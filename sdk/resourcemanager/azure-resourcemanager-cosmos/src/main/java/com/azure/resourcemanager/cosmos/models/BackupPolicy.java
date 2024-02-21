@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The object representing the policy for taking backups on an account. */
+/**
+ * The object representing the policy for taking backups on an account.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("BackupPolicy")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Periodic", value = PeriodicModeBackupPolicy.class),
-    @JsonSubTypes.Type(name = "Continuous", value = ContinuousModeBackupPolicy.class)
-})
+    @JsonSubTypes.Type(name = "Continuous", value = ContinuousModeBackupPolicy.class) })
 @Fluent
 public class BackupPolicy {
     /*
@@ -29,13 +30,15 @@ public class BackupPolicy {
     @JsonProperty(value = "migrationState")
     private BackupPolicyMigrationState migrationState;
 
-    /** Creates an instance of BackupPolicy class. */
+    /**
+     * Creates an instance of BackupPolicy class.
+     */
     public BackupPolicy() {
     }
 
     /**
      * Get the migrationState property: The object representing the state of the migration between the backup policies.
-     *
+     * 
      * @return the migrationState value.
      */
     public BackupPolicyMigrationState migrationState() {
@@ -44,7 +47,7 @@ public class BackupPolicy {
 
     /**
      * Set the migrationState property: The object representing the state of the migration between the backup policies.
-     *
+     * 
      * @param migrationState the migrationState value to set.
      * @return the BackupPolicy object itself.
      */
@@ -55,7 +58,7 @@ public class BackupPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

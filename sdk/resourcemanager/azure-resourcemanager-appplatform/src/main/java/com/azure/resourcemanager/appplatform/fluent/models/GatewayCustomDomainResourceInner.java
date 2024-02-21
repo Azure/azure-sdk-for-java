@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.GatewayCustomDomainProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Custom domain of the Spring Cloud Gateway. */
+/**
+ * Custom domain of the Spring Cloud Gateway.
+ */
 @Fluent
 public final class GatewayCustomDomainResourceInner extends ProxyResource {
     /*
@@ -26,8 +28,14 @@ public final class GatewayCustomDomainResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of GatewayCustomDomainResourceInner class.
+     */
+    public GatewayCustomDomainResourceInner() {
+    }
+
+    /**
      * Get the properties property: The properties of custom domain for Spring Cloud Gateway.
-     *
+     * 
      * @return the properties value.
      */
     public GatewayCustomDomainProperties properties() {
@@ -36,7 +44,7 @@ public final class GatewayCustomDomainResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: The properties of custom domain for Spring Cloud Gateway.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the GatewayCustomDomainResourceInner object itself.
      */
@@ -47,7 +55,7 @@ public final class GatewayCustomDomainResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +64,7 @@ public final class GatewayCustomDomainResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

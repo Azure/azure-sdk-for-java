@@ -6,20 +6,17 @@ package com.azure.resourcemanager.deviceupdate.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.models.ConnectionDetails;
-import org.junit.jupiter.api.Test;
 
 public final class ConnectionDetailsTests {
-    @Test
-    public void testDeserialize() {
-        ConnectionDetails model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"lcgwxzvlvqh\",\"privateIpAddress\":\"begibtnmxiebwwa\",\"linkIdentifier\":\"ayqcgw\",\"groupId\":\"zjuzgwyz\",\"memberName\":\"txon\"}")
-                .toObject(ConnectionDetails.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ConnectionDetails model = BinaryData.fromString(
+            "{\"id\":\"glsbjjc\",\"privateIpAddress\":\"vxb\",\"linkIdentifier\":\"vudutncor\",\"groupId\":\"lxqtvcofudfl\",\"memberName\":\"gj\"}")
+            .toObject(ConnectionDetails.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ConnectionDetails model = new ConnectionDetails();
         model = BinaryData.fromObject(model).toObject(ConnectionDetails.class);
     }

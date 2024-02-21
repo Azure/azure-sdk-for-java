@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * RetentionTag
- *
- * <p>Retention tag.
+ * 
+ * Retention tag.
  */
 @Fluent
 public final class RetentionTag {
@@ -33,13 +33,15 @@ public final class RetentionTag {
     @JsonProperty(value = "tagName", required = true)
     private String tagName;
 
-    /** Creates an instance of RetentionTag class. */
+    /**
+     * Creates an instance of RetentionTag class.
+     */
     public RetentionTag() {
     }
 
     /**
      * Get the etag property: Retention Tag version.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -48,7 +50,7 @@ public final class RetentionTag {
 
     /**
      * Get the id property: Retention Tag version.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -57,7 +59,7 @@ public final class RetentionTag {
 
     /**
      * Get the tagName property: Retention Tag Name to relate it to retention rule.
-     *
+     * 
      * @return the tagName value.
      */
     public String tagName() {
@@ -66,7 +68,7 @@ public final class RetentionTag {
 
     /**
      * Set the tagName property: Retention Tag Name to relate it to retention rule.
-     *
+     * 
      * @param tagName the tagName value to set.
      * @return the RetentionTag object itself.
      */
@@ -77,14 +79,13 @@ public final class RetentionTag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tagName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tagName in model RetentionTag"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tagName in model RetentionTag"));
         }
     }
 

@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Allowed values are Sum, Avg, Count, Min, Max. Default is Sum. */
+/**
+ * Allowed values are Sum, Avg, Count, Min, Max. Default is Sum.
+ */
 public final class AggregationType extends ExpandableStringEnum<AggregationType> {
-    /** Static value Sum for AggregationType. */
+    /**
+     * Static value Sum for AggregationType.
+     */
     public static final AggregationType SUM = fromString("Sum");
 
-    /** Static value Avg for AggregationType. */
+    /**
+     * Static value Avg for AggregationType.
+     */
     public static final AggregationType AVG = fromString("Avg");
 
-    /** Static value Count for AggregationType. */
+    /**
+     * Static value Count for AggregationType.
+     */
     public static final AggregationType COUNT = fromString("Count");
 
-    /** Static value Min for AggregationType. */
+    /**
+     * Static value Min for AggregationType.
+     */
     public static final AggregationType MIN = fromString("Min");
 
-    /** Static value Max for AggregationType. */
+    /**
+     * Static value Max for AggregationType.
+     */
     public static final AggregationType MAX = fromString("Max");
 
     /**
      * Creates a new instance of AggregationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class AggregationType extends ExpandableStringEnum<AggregationType>
 
     /**
      * Creates or finds a AggregationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AggregationType.
      */
@@ -47,7 +59,7 @@ public final class AggregationType extends ExpandableStringEnum<AggregationType>
 
     /**
      * Gets known AggregationType values.
-     *
+     * 
      * @return known AggregationType values.
      */
     public static Collection<AggregationType> values() {

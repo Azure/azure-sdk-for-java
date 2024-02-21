@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IP Configuration of a VPN Gateway Resource. */
+/**
+ * IP Configuration of a VPN Gateway Resource.
+ */
 @Fluent
 public final class VpnGatewayIpConfiguration {
     /*
@@ -28,13 +30,15 @@ public final class VpnGatewayIpConfiguration {
     @JsonProperty(value = "privateIpAddress")
     private String privateIpAddress;
 
-    /** Creates an instance of VpnGatewayIpConfiguration class. */
+    /**
+     * Creates an instance of VpnGatewayIpConfiguration class.
+     */
     public VpnGatewayIpConfiguration() {
     }
 
     /**
      * Get the id property: The identifier of the IP configuration for a VPN Gateway.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +47,7 @@ public final class VpnGatewayIpConfiguration {
 
     /**
      * Set the id property: The identifier of the IP configuration for a VPN Gateway.
-     *
+     * 
      * @param id the id value to set.
      * @return the VpnGatewayIpConfiguration object itself.
      */
@@ -54,7 +58,7 @@ public final class VpnGatewayIpConfiguration {
 
     /**
      * Get the publicIpAddress property: The public IP address of this IP configuration.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public String publicIpAddress() {
@@ -63,7 +67,7 @@ public final class VpnGatewayIpConfiguration {
 
     /**
      * Set the publicIpAddress property: The public IP address of this IP configuration.
-     *
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the VpnGatewayIpConfiguration object itself.
      */
@@ -74,7 +78,7 @@ public final class VpnGatewayIpConfiguration {
 
     /**
      * Get the privateIpAddress property: The private IP address of this IP configuration.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -83,7 +87,7 @@ public final class VpnGatewayIpConfiguration {
 
     /**
      * Set the privateIpAddress property: The private IP address of this IP configuration.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the VpnGatewayIpConfiguration object itself.
      */
@@ -94,7 +98,7 @@ public final class VpnGatewayIpConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

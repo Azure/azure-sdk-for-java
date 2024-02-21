@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,6 +54,13 @@ public class StoreWriteSettings {
      */
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
+
+    /*
+     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType
+     * array of objects).
+     */
+    @JsonProperty(value = "metadata")
+    private List<MetadataItem> metadata;
 
     /*
      * Connector write settings.
@@ -131,6 +139,28 @@ public class StoreWriteSettings {
     }
 
     /**
+     * Get the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
+     * Expression with resultType array of objects).
+     * 
+     * @return the metadata value.
+     */
+    public List<MetadataItem> metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
+     * Expression with resultType array of objects).
+     * 
+     * @param metadata the metadata value to set.
+     * @return the StoreWriteSettings object itself.
+     */
+    public StoreWriteSettings withMetadata(List<MetadataItem> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: Connector write settings.
      * 
      * @return the additionalProperties value.
@@ -165,5 +195,8 @@ public class StoreWriteSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (metadata() != null) {
+            metadata().forEach(e -> e.validate());
+        }
     }
 }

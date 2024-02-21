@@ -8,22 +8,31 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The location of ftp server dataset. */
+/**
+ * The location of ftp server dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FtpServerLocation")
 @Fluent
 public final class FtpServerLocation extends DatasetLocation {
-    /** Creates an instance of FtpServerLocation class. */
-    public FtpServerLocation() {}
+    /**
+     * Creates an instance of FtpServerLocation class.
+     */
+    public FtpServerLocation() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FtpServerLocation setFolderPath(Object folderPath) {
         super.setFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FtpServerLocation setFileName(Object fileName) {
         super.setFileName(fileName);

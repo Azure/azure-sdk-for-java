@@ -98,10 +98,11 @@ public class FetcherTest {
         ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
                 new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), false, top,
                         ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options),
-                        ImplementationBridgeHelpers
-                            .CosmosQueryRequestOptionsHelper
-                            .getCosmosQueryRequestOptionsAccessor()
-                            .getOperationContext(options),
+                    ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .getImpl(options)
+                        .getOperationContextAndListenerTuple(),
                     ImplementationBridgeHelpers
                         .CosmosQueryRequestOptionsHelper
                         .getCosmosQueryRequestOptionsAccessor()

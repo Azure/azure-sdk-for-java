@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the connection monitor endpoint filter item. */
+/**
+ * Describes the connection monitor endpoint filter item.
+ */
 @Fluent
 public final class ConnectionMonitorEndpointFilterItem {
     /*
@@ -22,13 +24,15 @@ public final class ConnectionMonitorEndpointFilterItem {
     @JsonProperty(value = "address")
     private String address;
 
-    /** Creates an instance of ConnectionMonitorEndpointFilterItem class. */
+    /**
+     * Creates an instance of ConnectionMonitorEndpointFilterItem class.
+     */
     public ConnectionMonitorEndpointFilterItem() {
     }
 
     /**
      * Get the type property: The type of item included in the filter. Currently only 'AgentAddress' is supported.
-     *
+     * 
      * @return the type value.
      */
     public ConnectionMonitorEndpointFilterItemType type() {
@@ -37,7 +41,7 @@ public final class ConnectionMonitorEndpointFilterItem {
 
     /**
      * Set the type property: The type of item included in the filter. Currently only 'AgentAddress' is supported.
-     *
+     * 
      * @param type the type value to set.
      * @return the ConnectionMonitorEndpointFilterItem object itself.
      */
@@ -48,7 +52,7 @@ public final class ConnectionMonitorEndpointFilterItem {
 
     /**
      * Get the address property: The address of the filter item.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -57,7 +61,7 @@ public final class ConnectionMonitorEndpointFilterItem {
 
     /**
      * Set the address property: The address of the filter item.
-     *
+     * 
      * @param address the address value to set.
      * @return the ConnectionMonitorEndpointFilterItem object itself.
      */
@@ -68,7 +72,7 @@ public final class ConnectionMonitorEndpointFilterItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

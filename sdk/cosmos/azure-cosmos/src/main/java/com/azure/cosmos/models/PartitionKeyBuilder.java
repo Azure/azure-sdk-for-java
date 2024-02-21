@@ -116,6 +116,6 @@ public final class PartitionKeyBuilder {
         }
 
         partitionKeyInternal = PartitionKeyInternal.fromObjectArray(valueArray, true);
-        return new PartitionKey(PartitionKeyHelper.getPartitionKeyObjectKey(valueArray), partitionKeyInternal);
+        return new PartitionKey(partitionKeyInternal);
     }
 }

@@ -20,15 +20,17 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AgentPoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AgentPoolsClient.
+ */
 public interface AgentPoolsClient {
     /**
      * Aborts last operation running on agent pool.
-     *
-     * <p>Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state
-     * and eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
+     * 
+     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
+     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -38,16 +40,16 @@ public interface AgentPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(
-        String resourceGroupName, String resourceName, String agentPoolName);
+    Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(String resourceGroupName,
+        String resourceName, String agentPoolName);
 
     /**
      * Aborts last operation running on agent pool.
-     *
-     * <p>Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state
-     * and eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
+     * 
+     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
+     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -57,16 +59,16 @@ public interface AgentPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginAbortLatestOperationAsync(
-        String resourceGroupName, String resourceName, String agentPoolName);
+    PollerFlux<PollResult<Void>, Void> beginAbortLatestOperationAsync(String resourceGroupName, String resourceName,
+        String agentPoolName);
 
     /**
      * Aborts last operation running on agent pool.
-     *
-     * <p>Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state
-     * and eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
+     * 
+     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
+     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -76,16 +78,16 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(
-        String resourceGroupName, String resourceName, String agentPoolName);
+    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(String resourceGroupName, String resourceName,
+        String agentPoolName);
 
     /**
      * Aborts last operation running on agent pool.
-     *
-     * <p>Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state
-     * and eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
+     * 
+     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
+     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -96,16 +98,16 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(
-        String resourceGroupName, String resourceName, String agentPoolName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(String resourceGroupName, String resourceName,
+        String agentPoolName, Context context);
 
     /**
      * Aborts last operation running on agent pool.
-     *
-     * <p>Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state
-     * and eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
+     * 
+     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
+     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -119,11 +121,11 @@ public interface AgentPoolsClient {
 
     /**
      * Aborts last operation running on agent pool.
-     *
-     * <p>Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state
-     * and eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
+     * 
+     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
+     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -136,11 +138,11 @@ public interface AgentPoolsClient {
 
     /**
      * Aborts last operation running on agent pool.
-     *
-     * <p>Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state
-     * and eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
+     * 
+     * Aborts the currently running operation on the agent pool. The Agent Pool will be moved to a Canceling state and
+     * eventually to a Canceled state when cancellation finishes. If the operation completes before cancellation can
      * take place, a 409 error code is returned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -154,7 +156,7 @@ public interface AgentPoolsClient {
 
     /**
      * Gets a list of agent pools in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,7 +169,7 @@ public interface AgentPoolsClient {
 
     /**
      * Gets a list of agent pools in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,7 +182,7 @@ public interface AgentPoolsClient {
 
     /**
      * Gets a list of agent pools in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -194,23 +196,23 @@ public interface AgentPoolsClient {
 
     /**
      * Gets the specified managed cluster agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed cluster agent pool along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified managed cluster agent pool along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AgentPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String agentPoolName);
+    Mono<Response<AgentPoolInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
+        String agentPoolName);
 
     /**
      * Gets the specified managed cluster agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -224,7 +226,7 @@ public interface AgentPoolsClient {
 
     /**
      * Gets the specified managed cluster agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -235,12 +237,12 @@ public interface AgentPoolsClient {
      * @return the specified managed cluster agent pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AgentPoolInner> getWithResponse(
-        String resourceGroupName, String resourceName, String agentPoolName, Context context);
+    Response<AgentPoolInner> getWithResponse(String resourceGroupName, String resourceName, String agentPoolName,
+        Context context);
 
     /**
      * Gets the specified managed cluster agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -254,7 +256,7 @@ public interface AgentPoolsClient {
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -265,12 +267,12 @@ public interface AgentPoolsClient {
      * @return agent Pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolInner parameters);
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -281,12 +283,12 @@ public interface AgentPoolsClient {
      * @return the {@link PollerFlux} for polling of agent Pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters);
+    PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolInner parameters);
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -297,12 +299,12 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of agent Pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters);
+    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolInner parameters);
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -314,16 +316,12 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of agent Pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String agentPoolName,
-        AgentPoolInner parameters,
-        Context context);
+    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolInner parameters, Context context);
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -334,12 +332,12 @@ public interface AgentPoolsClient {
      * @return agent Pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AgentPoolInner> createOrUpdateAsync(
-        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters);
+    Mono<AgentPoolInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolInner parameters);
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -350,12 +348,12 @@ public interface AgentPoolsClient {
      * @return agent Pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentPoolInner createOrUpdate(
-        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters);
+    AgentPoolInner createOrUpdate(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolInner parameters);
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -367,16 +365,12 @@ public interface AgentPoolsClient {
      * @return agent Pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentPoolInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String agentPoolName,
-        AgentPoolInner parameters,
-        Context context);
+    AgentPoolInner createOrUpdate(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolInner parameters, Context context);
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -386,12 +380,12 @@ public interface AgentPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String agentPoolName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String agentPoolName);
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -401,12 +395,12 @@ public interface AgentPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, String agentPoolName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
+        String agentPoolName);
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -420,7 +414,7 @@ public interface AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -431,12 +425,12 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, String agentPoolName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String agentPoolName,
+        Context context);
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -450,7 +444,7 @@ public interface AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -463,7 +457,7 @@ public interface AgentPoolsClient {
 
     /**
      * Deletes an agent pool in the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -477,23 +471,23 @@ public interface AgentPoolsClient {
 
     /**
      * Gets the upgrade profile for an agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile for an agent pool along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the upgrade profile for an agent pool along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AgentPoolUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(
-        String resourceGroupName, String resourceName, String agentPoolName);
+    Mono<Response<AgentPoolUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(String resourceGroupName,
+        String resourceName, String agentPoolName);
 
     /**
      * Gets the upgrade profile for an agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -503,12 +497,12 @@ public interface AgentPoolsClient {
      * @return the upgrade profile for an agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AgentPoolUpgradeProfileInner> getUpgradeProfileAsync(
-        String resourceGroupName, String resourceName, String agentPoolName);
+    Mono<AgentPoolUpgradeProfileInner> getUpgradeProfileAsync(String resourceGroupName, String resourceName,
+        String agentPoolName);
 
     /**
      * Gets the upgrade profile for an agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -519,12 +513,12 @@ public interface AgentPoolsClient {
      * @return the upgrade profile for an agent pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AgentPoolUpgradeProfileInner> getUpgradeProfileWithResponse(
-        String resourceGroupName, String resourceName, String agentPoolName, Context context);
+    Response<AgentPoolUpgradeProfileInner> getUpgradeProfileWithResponse(String resourceGroupName, String resourceName,
+        String agentPoolName, Context context);
 
     /**
      * Gets the upgrade profile for an agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -538,28 +532,28 @@ public interface AgentPoolsClient {
 
     /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.
-     *
-     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
-     * more details about the version lifecycle.
-     *
+     * 
+     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
+     * details about the version lifecycle.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of available versions for an agent pool along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AgentPoolAvailableVersionsInner>> getAvailableAgentPoolVersionsWithResponseAsync(
-        String resourceGroupName, String resourceName);
+    Mono<Response<AgentPoolAvailableVersionsInner>>
+        getAvailableAgentPoolVersionsWithResponseAsync(String resourceGroupName, String resourceName);
 
     /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.
-     *
-     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
-     * more details about the version lifecycle.
-     *
+     * 
+     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
+     * details about the version lifecycle.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -568,15 +562,15 @@ public interface AgentPoolsClient {
      * @return the list of available versions for an agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsAsync(
-        String resourceGroupName, String resourceName);
+    Mono<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsAsync(String resourceGroupName,
+        String resourceName);
 
     /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.
-     *
-     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
-     * more details about the version lifecycle.
-     *
+     * 
+     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
+     * details about the version lifecycle.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -586,15 +580,15 @@ public interface AgentPoolsClient {
      * @return the list of available versions for an agent pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsWithResponse(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.
-     *
-     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
-     * more details about the version lifecycle.
-     *
+     * 
+     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
+     * details about the version lifecycle.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -607,11 +601,11 @@ public interface AgentPoolsClient {
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     *
-     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * 
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -621,16 +615,16 @@ public interface AgentPoolsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> upgradeNodeImageVersionWithResponseAsync(
-        String resourceGroupName, String resourceName, String agentPoolName);
+    Mono<Response<Flux<ByteBuffer>>> upgradeNodeImageVersionWithResponseAsync(String resourceGroupName,
+        String resourceName, String agentPoolName);
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     *
-     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * 
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -640,16 +634,16 @@ public interface AgentPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersionAsync(
-        String resourceGroupName, String resourceName, String agentPoolName);
+    PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersionAsync(String resourceGroupName,
+        String resourceName, String agentPoolName);
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     *
-     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * 
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -659,16 +653,16 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersion(
-        String resourceGroupName, String resourceName, String agentPoolName);
+    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersion(String resourceGroupName,
+        String resourceName, String agentPoolName);
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     *
-     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * 
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -679,16 +673,16 @@ public interface AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersion(
-        String resourceGroupName, String resourceName, String agentPoolName, Context context);
+    SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersion(String resourceGroupName,
+        String resourceName, String agentPoolName, Context context);
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     *
-     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * 
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -698,16 +692,16 @@ public interface AgentPoolsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AgentPoolInner> upgradeNodeImageVersionAsync(
-        String resourceGroupName, String resourceName, String agentPoolName);
+    Mono<AgentPoolInner> upgradeNodeImageVersionAsync(String resourceGroupName, String resourceName,
+        String agentPoolName);
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     *
-     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * 
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -721,11 +715,11 @@ public interface AgentPoolsClient {
 
     /**
      * Upgrades the node image version of an agent pool to the latest.
-     *
-     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * 
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -736,6 +730,6 @@ public interface AgentPoolsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentPoolInner upgradeNodeImageVersion(
-        String resourceGroupName, String resourceName, String agentPoolName, Context context);
+    AgentPoolInner upgradeNodeImageVersion(String resourceGroupName, String resourceName, String agentPoolName,
+        Context context);
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Will contain the properties of the resource (the actual signature overrides). */
+/**
+ * Will contain the properties of the resource (the actual signature overrides).
+ */
 @Fluent
 public final class SignaturesOverridesProperties {
     /*
@@ -19,13 +21,15 @@ public final class SignaturesOverridesProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> signatures;
 
-    /** Creates an instance of SignaturesOverridesProperties class. */
+    /**
+     * Creates an instance of SignaturesOverridesProperties class.
+     */
     public SignaturesOverridesProperties() {
     }
 
     /**
      * Get the signatures property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @return the signatures value.
      */
     public Map<String, String> signatures() {
@@ -34,7 +38,7 @@ public final class SignaturesOverridesProperties {
 
     /**
      * Set the signatures property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @param signatures the signatures value to set.
      * @return the SignaturesOverridesProperties object itself.
      */
@@ -45,7 +49,7 @@ public final class SignaturesOverridesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

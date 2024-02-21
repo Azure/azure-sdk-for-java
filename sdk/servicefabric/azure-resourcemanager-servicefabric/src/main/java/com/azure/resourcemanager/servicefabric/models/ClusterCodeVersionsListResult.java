@@ -7,25 +7,27 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersionsListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of ClusterCodeVersionsListResult. */
+/**
+ * An immutable client-side representation of ClusterCodeVersionsListResult.
+ */
 public interface ClusterCodeVersionsListResult {
     /**
      * Gets the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     List<ClusterCodeVersionsResult> value();
 
     /**
      * Gets the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersionsListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     ClusterCodeVersionsListResultInner innerModel();

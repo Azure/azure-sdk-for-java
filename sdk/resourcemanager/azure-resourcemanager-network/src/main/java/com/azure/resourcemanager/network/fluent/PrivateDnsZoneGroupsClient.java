@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateDnsZoneGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateDnsZoneGroupsClient.
+ */
 public interface PrivateDnsZoneGroupsClient {
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -32,12 +34,12 @@ public interface PrivateDnsZoneGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName);
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -47,12 +49,12 @@ public interface PrivateDnsZoneGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName);
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -62,12 +64,12 @@ public interface PrivateDnsZoneGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName);
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -78,12 +80,12 @@ public interface PrivateDnsZoneGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName, Context context);
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -97,7 +99,7 @@ public interface PrivateDnsZoneGroupsClient {
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -110,7 +112,7 @@ public interface PrivateDnsZoneGroupsClient {
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -124,7 +126,7 @@ public interface PrivateDnsZoneGroupsClient {
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -132,15 +134,15 @@ public interface PrivateDnsZoneGroupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private dns zone group resource by specified private dns zone group name along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateDnsZoneGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName);
+    Mono<Response<PrivateDnsZoneGroupInner>> getWithResponseAsync(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName);
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -148,15 +150,15 @@ public interface PrivateDnsZoneGroupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private dns zone group resource by specified private dns zone group name on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateDnsZoneGroupInner> getAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName);
+    Mono<PrivateDnsZoneGroupInner> getAsync(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName);
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -167,12 +169,12 @@ public interface PrivateDnsZoneGroupsClient {
      * @return the private dns zone group resource by specified private dns zone group name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateDnsZoneGroupInner> getWithResponse(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context);
+    Response<PrivateDnsZoneGroupInner> getWithResponse(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName, Context context);
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -186,7 +188,7 @@ public interface PrivateDnsZoneGroupsClient {
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -197,15 +199,12 @@ public interface PrivateDnsZoneGroupsClient {
      * @return private dns zone group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String privateEndpointName, String privateDnsZoneGroupName, PrivateDnsZoneGroupInner parameters);
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -217,14 +216,12 @@ public interface PrivateDnsZoneGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
+        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName,
         PrivateDnsZoneGroupInner parameters);
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -236,14 +233,12 @@ public interface PrivateDnsZoneGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
+        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName,
         PrivateDnsZoneGroupInner parameters);
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -256,15 +251,12 @@ public interface PrivateDnsZoneGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters,
-        Context context);
+        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName,
+        PrivateDnsZoneGroupInner parameters, Context context);
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -275,15 +267,12 @@ public interface PrivateDnsZoneGroupsClient {
      * @return private dns zone group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateDnsZoneGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters);
+    Mono<PrivateDnsZoneGroupInner> createOrUpdateAsync(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName, PrivateDnsZoneGroupInner parameters);
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -294,15 +283,12 @@ public interface PrivateDnsZoneGroupsClient {
      * @return private dns zone group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateDnsZoneGroupInner createOrUpdate(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters);
+    PrivateDnsZoneGroupInner createOrUpdate(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName, PrivateDnsZoneGroupInner parameters);
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -314,16 +300,12 @@ public interface PrivateDnsZoneGroupsClient {
      * @return private dns zone group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateDnsZoneGroupInner createOrUpdate(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters,
-        Context context);
+    PrivateDnsZoneGroupInner createOrUpdate(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName, PrivateDnsZoneGroupInner parameters, Context context);
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     *
+     * 
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,7 +318,7 @@ public interface PrivateDnsZoneGroupsClient {
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     *
+     * 
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -349,7 +331,7 @@ public interface PrivateDnsZoneGroupsClient {
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     *
+     * 
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.

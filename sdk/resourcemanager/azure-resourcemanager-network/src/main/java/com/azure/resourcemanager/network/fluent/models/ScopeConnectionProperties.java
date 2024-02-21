@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ScopeConnectionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Scope connection. */
+/**
+ * Scope connection.
+ */
 @Fluent
 public final class ScopeConnectionProperties {
     /*
@@ -35,13 +37,15 @@ public final class ScopeConnectionProperties {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of ScopeConnectionProperties class. */
+    /**
+     * Creates an instance of ScopeConnectionProperties class.
+     */
     public ScopeConnectionProperties() {
     }
 
     /**
      * Get the tenantId property: Tenant ID.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -50,7 +54,7 @@ public final class ScopeConnectionProperties {
 
     /**
      * Set the tenantId property: Tenant ID.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ScopeConnectionProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class ScopeConnectionProperties {
 
     /**
      * Get the resourceId property: Resource ID.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -70,7 +74,7 @@ public final class ScopeConnectionProperties {
 
     /**
      * Set the resourceId property: Resource ID.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ScopeConnectionProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class ScopeConnectionProperties {
 
     /**
      * Get the connectionState property: Connection State.
-     *
+     * 
      * @return the connectionState value.
      */
     public ScopeConnectionState connectionState() {
@@ -90,7 +94,7 @@ public final class ScopeConnectionProperties {
 
     /**
      * Get the description property: A description of the scope connection.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -99,7 +103,7 @@ public final class ScopeConnectionProperties {
 
     /**
      * Set the description property: A description of the scope connection.
-     *
+     * 
      * @param description the description value to set.
      * @return the ScopeConnectionProperties object itself.
      */
@@ -110,7 +114,7 @@ public final class ScopeConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

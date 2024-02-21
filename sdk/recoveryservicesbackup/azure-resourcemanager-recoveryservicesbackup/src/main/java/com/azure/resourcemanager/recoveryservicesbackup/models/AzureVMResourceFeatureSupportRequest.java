@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** AzureResource(IaaS VM) Specific feature support request. */
+/**
+ * AzureResource(IaaS VM) Specific feature support request.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "featureType")
 @JsonTypeName("AzureVMResourceBackup")
 @Fluent
@@ -26,13 +28,15 @@ public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRe
     @JsonProperty(value = "vmSku")
     private String vmSku;
 
-    /** Creates an instance of AzureVMResourceFeatureSupportRequest class. */
+    /**
+     * Creates an instance of AzureVMResourceFeatureSupportRequest class.
+     */
     public AzureVMResourceFeatureSupportRequest() {
     }
 
     /**
      * Get the vmSize property: Size of the resource: VM size(A/D series etc) in case of IaasVM.
-     *
+     * 
      * @return the vmSize value.
      */
     public String vmSize() {
@@ -41,7 +45,7 @@ public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRe
 
     /**
      * Set the vmSize property: Size of the resource: VM size(A/D series etc) in case of IaasVM.
-     *
+     * 
      * @param vmSize the vmSize value to set.
      * @return the AzureVMResourceFeatureSupportRequest object itself.
      */
@@ -52,7 +56,7 @@ public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRe
 
     /**
      * Get the vmSku property: SKUs (Premium/Managed etc) in case of IaasVM.
-     *
+     * 
      * @return the vmSku value.
      */
     public String vmSku() {
@@ -61,7 +65,7 @@ public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRe
 
     /**
      * Set the vmSku property: SKUs (Premium/Managed etc) in case of IaasVM.
-     *
+     * 
      * @param vmSku the vmSku value to set.
      * @return the AzureVMResourceFeatureSupportRequest object itself.
      */
@@ -72,7 +76,7 @@ public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

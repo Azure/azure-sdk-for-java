@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is the community gallery image definition identifier. */
+/**
+ * This is the community gallery image definition identifier.
+ */
 @Fluent
 public final class CommunityGalleryImageIdentifier {
     /*
@@ -28,13 +30,15 @@ public final class CommunityGalleryImageIdentifier {
     @JsonProperty(value = "sku")
     private String sku;
 
-    /** Creates an instance of CommunityGalleryImageIdentifier class. */
+    /**
+     * Creates an instance of CommunityGalleryImageIdentifier class.
+     */
     public CommunityGalleryImageIdentifier() {
     }
 
     /**
      * Get the publisher property: The name of the gallery image definition publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -43,7 +47,7 @@ public final class CommunityGalleryImageIdentifier {
 
     /**
      * Set the publisher property: The name of the gallery image definition publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the CommunityGalleryImageIdentifier object itself.
      */
@@ -54,7 +58,7 @@ public final class CommunityGalleryImageIdentifier {
 
     /**
      * Get the offer property: The name of the gallery image definition offer.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -63,7 +67,7 @@ public final class CommunityGalleryImageIdentifier {
 
     /**
      * Set the offer property: The name of the gallery image definition offer.
-     *
+     * 
      * @param offer the offer value to set.
      * @return the CommunityGalleryImageIdentifier object itself.
      */
@@ -74,7 +78,7 @@ public final class CommunityGalleryImageIdentifier {
 
     /**
      * Get the sku property: The name of the gallery image definition SKU.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -83,7 +87,7 @@ public final class CommunityGalleryImageIdentifier {
 
     /**
      * Set the sku property: The name of the gallery image definition SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the CommunityGalleryImageIdentifier object itself.
      */
@@ -94,7 +98,7 @@ public final class CommunityGalleryImageIdentifier {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -30,23 +30,28 @@ import com.azure.resourcemanager.deviceupdate.fluent.models.GroupInformationInne
 import com.azure.resourcemanager.deviceupdate.models.PrivateLinkResourceListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DeviceUpdateImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesClientImpl(DeviceUpdateImpl client) {
-        this.service =
-            RestProxy
-                .create(PrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,64 +61,47 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      */
     @Host("{$host}")
     @ServiceInterface(name = "DeviceUpdatePrivateL")
-    private interface PrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/privateLinkResources")
-        @ExpectedResponses({200})
+    public interface PrivateLinkResourcesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResult>> listByAccount(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PrivateLinkResourceListResult>> listByAccount(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/privateLinkResources/{groupId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/privateLinkResources/{groupId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GroupInformationInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("groupId") String groupId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GroupInformationInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("groupId") String groupId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List all private link resources in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for an Account along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GroupInformationInner>> listByAccountSinglePageAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<GroupInformationInner>> listByAccountSinglePageAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -124,27 +112,16 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAccount(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            accept,
-                            context))
-            .<PagedResponse<GroupInformationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByAccount(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, accept, context))
+            .<PagedResponse<GroupInformationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all private link resources in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -152,22 +129,18 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for an Account along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GroupInformationInner>> listByAccountSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<GroupInformationInner>> listByAccountSinglePageAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -179,23 +152,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAccount(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByAccount(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * List all private link resources in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +175,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List all private link resources in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -220,14 +185,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return the available private link resources for an Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GroupInformationInner> listByAccountAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private PagedFlux<GroupInformationInner> listByAccountAsync(String resourceGroupName, String accountName,
+        Context context) {
         return new PagedFlux<>(() -> listByAccountSinglePageAsync(resourceGroupName, accountName, context));
     }
 
     /**
      * List all private link resources in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,7 +207,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List all private link resources in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -252,14 +217,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return the available private link resources for an Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GroupInformationInner> listByAccount(
-        String resourceGroupName, String accountName, Context context) {
+    public PagedIterable<GroupInformationInner> listByAccount(String resourceGroupName, String accountName,
+        Context context) {
         return new PagedIterable<>(listByAccountAsync(resourceGroupName, accountName, context));
     }
 
     /**
      * Get the specified private link resource associated with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param groupId The group ID of the private link resource.
@@ -267,22 +232,18 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource associated with the device update account along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GroupInformationInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String groupId) {
+    private Mono<Response<GroupInformationInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String groupId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -296,24 +257,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            groupId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, groupId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the specified private link resource associated with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param groupId The group ID of the private link resource.
@@ -322,22 +273,18 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource associated with the device update account along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GroupInformationInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String groupId, Context context) {
+    private Mono<Response<GroupInformationInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String groupId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -351,21 +298,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                groupId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, groupId, accept, context);
     }
 
     /**
      * Get the specified private link resource associated with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param groupId The group ID of the private link resource.
@@ -373,7 +312,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource associated with the device update account on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GroupInformationInner> getAsync(String resourceGroupName, String accountName, String groupId) {
@@ -383,7 +322,26 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the specified private link resource associated with the device update account.
-     *
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param groupId The group ID of the private link resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private link resource associated with the device update account along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GroupInformationInner> getWithResponse(String resourceGroupName, String accountName, String groupId,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, groupId, context).block();
+    }
+
+    /**
+     * Get the specified private link resource associated with the device update account.
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param groupId The group ID of the private link resource.
@@ -394,25 +352,6 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GroupInformationInner get(String resourceGroupName, String accountName, String groupId) {
-        return getAsync(resourceGroupName, accountName, groupId).block();
-    }
-
-    /**
-     * Get the specified private link resource associated with the device update account.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param groupId The group ID of the private link resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource associated with the device update account along with {@link
-     *     Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GroupInformationInner> getWithResponse(
-        String resourceGroupName, String accountName, String groupId, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, groupId, context).block();
+        return getWithResponse(resourceGroupName, accountName, groupId, Context.NONE).getValue();
     }
 }

@@ -12,14 +12,16 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Custom persistent disk resource payload. */
+/**
+ * Custom persistent disk resource payload.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
     defaultImpl = CustomPersistentDiskProperties.class)
 @JsonTypeName("CustomPersistentDiskProperties")
-@JsonSubTypes({@JsonSubTypes.Type(name = "AzureFileVolume", value = AzureFileVolume.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureFileVolume", value = AzureFileVolume.class) })
 @Fluent
 public class CustomPersistentDiskProperties {
     /*
@@ -35,14 +37,26 @@ public class CustomPersistentDiskProperties {
     private Boolean readOnly;
 
     /*
+     * If set to true, it will create and mount a dedicated directory for every individual app instance.
+     */
+    @JsonProperty(value = "enableSubPath")
+    private Boolean enableSubPath;
+
+    /*
      * These are the mount options for a persistent disk.
      */
     @JsonProperty(value = "mountOptions")
     private List<String> mountOptions;
 
     /**
+     * Creates an instance of CustomPersistentDiskProperties class.
+     */
+    public CustomPersistentDiskProperties() {
+    }
+
+    /**
      * Get the mountPath property: The mount path of the persistent disk.
-     *
+     * 
      * @return the mountPath value.
      */
     public String mountPath() {
@@ -51,7 +65,7 @@ public class CustomPersistentDiskProperties {
 
     /**
      * Set the mountPath property: The mount path of the persistent disk.
-     *
+     * 
      * @param mountPath the mountPath value to set.
      * @return the CustomPersistentDiskProperties object itself.
      */
@@ -62,7 +76,7 @@ public class CustomPersistentDiskProperties {
 
     /**
      * Get the readOnly property: Indicates whether the persistent disk is a readOnly one.
-     *
+     * 
      * @return the readOnly value.
      */
     public Boolean readOnly() {
@@ -71,7 +85,7 @@ public class CustomPersistentDiskProperties {
 
     /**
      * Set the readOnly property: Indicates whether the persistent disk is a readOnly one.
-     *
+     * 
      * @param readOnly the readOnly value to set.
      * @return the CustomPersistentDiskProperties object itself.
      */
@@ -81,8 +95,30 @@ public class CustomPersistentDiskProperties {
     }
 
     /**
+     * Get the enableSubPath property: If set to true, it will create and mount a dedicated directory for every
+     * individual app instance.
+     * 
+     * @return the enableSubPath value.
+     */
+    public Boolean enableSubPath() {
+        return this.enableSubPath;
+    }
+
+    /**
+     * Set the enableSubPath property: If set to true, it will create and mount a dedicated directory for every
+     * individual app instance.
+     * 
+     * @param enableSubPath the enableSubPath value to set.
+     * @return the CustomPersistentDiskProperties object itself.
+     */
+    public CustomPersistentDiskProperties withEnableSubPath(Boolean enableSubPath) {
+        this.enableSubPath = enableSubPath;
+        return this;
+    }
+
+    /**
      * Get the mountOptions property: These are the mount options for a persistent disk.
-     *
+     * 
      * @return the mountOptions value.
      */
     public List<String> mountOptions() {
@@ -91,7 +127,7 @@ public class CustomPersistentDiskProperties {
 
     /**
      * Set the mountOptions property: These are the mount options for a persistent disk.
-     *
+     * 
      * @param mountOptions the mountOptions value to set.
      * @return the CustomPersistentDiskProperties object itself.
      */
@@ -102,15 +138,13 @@ public class CustomPersistentDiskProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (mountPath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property mountPath in model CustomPersistentDiskProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property mountPath in model CustomPersistentDiskProperties"));
         }
     }
 

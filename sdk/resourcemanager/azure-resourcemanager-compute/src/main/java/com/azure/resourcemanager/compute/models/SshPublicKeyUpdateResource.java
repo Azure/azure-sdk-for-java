@@ -9,7 +9,9 @@ import com.azure.resourcemanager.compute.fluent.models.SshPublicKeyResourcePrope
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Specifies information about the SSH public key. */
+/**
+ * Specifies information about the SSH public key.
+ */
 @Fluent
 public final class SshPublicKeyUpdateResource extends UpdateResource {
     /*
@@ -18,20 +20,24 @@ public final class SshPublicKeyUpdateResource extends UpdateResource {
     @JsonProperty(value = "properties")
     private SshPublicKeyResourceProperties innerProperties;
 
-    /** Creates an instance of SshPublicKeyUpdateResource class. */
+    /**
+     * Creates an instance of SshPublicKeyUpdateResource class.
+     */
     public SshPublicKeyUpdateResource() {
     }
 
     /**
      * Get the innerProperties property: Properties of the SSH public key.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SshPublicKeyResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SshPublicKeyUpdateResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -41,9 +47,9 @@ public final class SshPublicKeyUpdateResource extends UpdateResource {
     /**
      * Get the publicKey property: SSH public key used to authenticate to a virtual machine through ssh. If this
      * property is not initially provided when the resource is created, the publicKey property will be populated when
-     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to
-     * be at least 2048-bit and in ssh-rsa format.
-     *
+     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs
+     * to be at least 2048-bit and in ssh-rsa format.
+     * 
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -53,9 +59,9 @@ public final class SshPublicKeyUpdateResource extends UpdateResource {
     /**
      * Set the publicKey property: SSH public key used to authenticate to a virtual machine through ssh. If this
      * property is not initially provided when the resource is created, the publicKey property will be populated when
-     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to
-     * be at least 2048-bit and in ssh-rsa format.
-     *
+     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs
+     * to be at least 2048-bit and in ssh-rsa format.
+     * 
      * @param publicKey the publicKey value to set.
      * @return the SshPublicKeyUpdateResource object itself.
      */
@@ -69,7 +75,7 @@ public final class SshPublicKeyUpdateResource extends UpdateResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

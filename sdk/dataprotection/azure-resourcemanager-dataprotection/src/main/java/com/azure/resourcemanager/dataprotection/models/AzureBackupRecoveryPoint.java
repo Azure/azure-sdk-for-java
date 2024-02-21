@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * AzureBackupRecoveryPoint
- *
- * <p>Azure backup recoveryPoint.
+ * 
+ * Azure backup recoveryPoint.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -21,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = AzureBackupRecoveryPoint.class)
 @JsonTypeName("AzureBackupRecoveryPoint")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureBackupDiscreteRecoveryPoint", value = AzureBackupDiscreteRecoveryPoint.class)
-})
+    @JsonSubTypes.Type(name = "AzureBackupDiscreteRecoveryPoint", value = AzureBackupDiscreteRecoveryPoint.class) })
 @Immutable
 public class AzureBackupRecoveryPoint {
-    /** Creates an instance of AzureBackupRecoveryPoint class. */
+    /**
+     * Creates an instance of AzureBackupRecoveryPoint class.
+     */
     public AzureBackupRecoveryPoint() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

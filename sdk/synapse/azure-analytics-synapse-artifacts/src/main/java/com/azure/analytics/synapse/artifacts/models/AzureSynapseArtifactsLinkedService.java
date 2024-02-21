@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Synapse Analytics (Artifacts) linked service. */
+/**
+ * Azure Synapse Analytics (Artifacts) linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureSynapseArtifacts")
 @JsonFlatten
@@ -34,19 +36,23 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
 
     /*
      * The resource ID of the Synapse workspace. The format should be:
-     * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}.
+     * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{
+     * workspaceName}.
      * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.workspaceResourceId")
     private Object workspaceResourceId;
 
-    /** Creates an instance of AzureSynapseArtifactsLinkedService class. */
-    public AzureSynapseArtifactsLinkedService() {}
+    /**
+     * Creates an instance of AzureSynapseArtifactsLinkedService class.
+     */
+    public AzureSynapseArtifactsLinkedService() {
+    }
 
     /**
      * Get the endpoint property: https://&lt;workspacename&gt;.dev.azuresynapse.net, Azure Synapse Analytics workspace
      * URL. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the endpoint value.
      */
     public Object getEndpoint() {
@@ -56,7 +62,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
     /**
      * Set the endpoint property: https://&lt;workspacename&gt;.dev.azuresynapse.net, Azure Synapse Analytics workspace
      * URL. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the AzureSynapseArtifactsLinkedService object itself.
      */
@@ -68,7 +74,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
     /**
      * Get the authentication property: Required to specify MSI, if using system assigned managed identity as
      * authentication method. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the authentication value.
      */
     public Object getAuthentication() {
@@ -78,7 +84,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
     /**
      * Set the authentication property: Required to specify MSI, if using system assigned managed identity as
      * authentication method. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param authentication the authentication value to set.
      * @return the AzureSynapseArtifactsLinkedService object itself.
      */
@@ -91,7 +97,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
      * Get the workspaceResourceId property: The resource ID of the Synapse workspace. The format should be:
      * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the workspaceResourceId value.
      */
     public Object getWorkspaceResourceId() {
@@ -102,7 +108,7 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
      * Set the workspaceResourceId property: The resource ID of the Synapse workspace. The format should be:
      * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param workspaceResourceId the workspaceResourceId value to set.
      * @return the AzureSynapseArtifactsLinkedService object itself.
      */
@@ -111,28 +117,36 @@ public class AzureSynapseArtifactsLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSynapseArtifactsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSynapseArtifactsLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSynapseArtifactsLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSynapseArtifactsLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

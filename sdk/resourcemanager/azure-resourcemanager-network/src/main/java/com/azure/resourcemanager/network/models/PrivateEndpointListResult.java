@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.PrivateEndpointInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the ListPrivateEndpoints API service call. */
+/**
+ * Response for the ListPrivateEndpoints API service call.
+ */
 @Fluent
 public final class PrivateEndpointListResult {
     /*
@@ -24,13 +26,15 @@ public final class PrivateEndpointListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PrivateEndpointListResult class. */
+    /**
+     * Creates an instance of PrivateEndpointListResult class.
+     */
     public PrivateEndpointListResult() {
     }
 
     /**
      * Get the value property: A list of private endpoint resources in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointInner> value() {
@@ -39,7 +43,7 @@ public final class PrivateEndpointListResult {
 
     /**
      * Set the value property: A list of private endpoint resources in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateEndpointListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class PrivateEndpointListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PrivateEndpointListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

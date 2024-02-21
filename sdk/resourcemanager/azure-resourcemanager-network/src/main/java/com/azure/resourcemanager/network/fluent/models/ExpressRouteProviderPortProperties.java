@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of ExpressRouteProviderPort. */
+/**
+ * Properties of ExpressRouteProviderPort.
+ */
 @Fluent
 public final class ExpressRouteProviderPortProperties {
     /*
@@ -58,13 +60,15 @@ public final class ExpressRouteProviderPortProperties {
     @JsonProperty(value = "remainingBandwidthInMbps")
     private Integer remainingBandwidthInMbps;
 
-    /** Creates an instance of ExpressRouteProviderPortProperties class. */
+    /**
+     * Creates an instance of ExpressRouteProviderPortProperties class.
+     */
     public ExpressRouteProviderPortProperties() {
     }
 
     /**
      * Get the portPairDescriptor property: The name of the port pair.
-     *
+     * 
      * @return the portPairDescriptor value.
      */
     public String portPairDescriptor() {
@@ -73,7 +77,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the primaryAzurePort property: The name of the primary port.
-     *
+     * 
      * @return the primaryAzurePort value.
      */
     public String primaryAzurePort() {
@@ -82,7 +86,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the secondaryAzurePort property: The name of the secondary port.
-     *
+     * 
      * @return the secondaryAzurePort value.
      */
     public String secondaryAzurePort() {
@@ -91,7 +95,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the peeringLocation property: The peering location of the port pair.
-     *
+     * 
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -100,7 +104,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Set the peeringLocation property: The peering location of the port pair.
-     *
+     * 
      * @param peeringLocation the peeringLocation value to set.
      * @return the ExpressRouteProviderPortProperties object itself.
      */
@@ -111,7 +115,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the overprovisionFactor property: Overprovisioning factor for the port pair.
-     *
+     * 
      * @return the overprovisionFactor value.
      */
     public Integer overprovisionFactor() {
@@ -120,7 +124,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Set the overprovisionFactor property: Overprovisioning factor for the port pair.
-     *
+     * 
      * @param overprovisionFactor the overprovisionFactor value to set.
      * @return the ExpressRouteProviderPortProperties object itself.
      */
@@ -131,7 +135,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the portBandwidthInMbps property: Bandwidth of the port in Mbps.
-     *
+     * 
      * @return the portBandwidthInMbps value.
      */
     public Integer portBandwidthInMbps() {
@@ -140,7 +144,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Set the portBandwidthInMbps property: Bandwidth of the port in Mbps.
-     *
+     * 
      * @param portBandwidthInMbps the portBandwidthInMbps value to set.
      * @return the ExpressRouteProviderPortProperties object itself.
      */
@@ -151,7 +155,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the usedBandwidthInMbps property: Used Bandwidth of the port in Mbps.
-     *
+     * 
      * @return the usedBandwidthInMbps value.
      */
     public Integer usedBandwidthInMbps() {
@@ -160,7 +164,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Set the usedBandwidthInMbps property: Used Bandwidth of the port in Mbps.
-     *
+     * 
      * @param usedBandwidthInMbps the usedBandwidthInMbps value to set.
      * @return the ExpressRouteProviderPortProperties object itself.
      */
@@ -171,7 +175,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the remainingBandwidthInMbps property: Remaining Bandwidth of the port in Mbps.
-     *
+     * 
      * @return the remainingBandwidthInMbps value.
      */
     public Integer remainingBandwidthInMbps() {
@@ -180,7 +184,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Set the remainingBandwidthInMbps property: Remaining Bandwidth of the port in Mbps.
-     *
+     * 
      * @param remainingBandwidthInMbps the remainingBandwidthInMbps value to set.
      * @return the ExpressRouteProviderPortProperties object itself.
      */
@@ -191,7 +195,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

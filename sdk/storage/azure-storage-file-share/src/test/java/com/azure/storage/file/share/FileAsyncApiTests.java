@@ -9,6 +9,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FileRange;
@@ -33,8 +35,6 @@ import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -185,7 +185,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     /*
      * Tests downloading a file using a default clientThatdoesn't have a HttpClient passed to it.
      */
-//    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isLiveMode")
+//    @LiveOnly
 //    @ParameterizedTest
 //    @ValueSource(longs = {
 //        0, // empty file
@@ -220,7 +220,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     /*
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
-    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @ValueSource(ints = {
         0, // empty file
@@ -605,7 +605,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void uploadRangeFromURLOAuth() {
         ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceClientAsyncSharedKey(new ShareServiceClientBuilder()
@@ -732,8 +732,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
         // TODO: SasToken auth cannot be used until the logging redaction
         String sourceURL = primaryFileAsyncClient.getFileUrl();
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            new ShareFileCopyOptions(), getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, new ShareFileCopyOptions(), null));
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId()))
             .expectComplete().verify(Duration.ofMinutes(1));
     }
@@ -753,9 +753,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
             smbProperties.setFilePermissionKey(filePermissionKey);
         }
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, smbProperties,
-            setFilePermission ? FILE_PERMISSION : null, permissionType, ignoreReadOnly, setArchiveAttribute, null,
-            getPollingDuration(1000), null);
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, smbProperties, setFilePermission ? FILE_PERMISSION : null,
+                permissionType, ignoreReadOnly, setArchiveAttribute, null, null, null));
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
     }
@@ -769,8 +769,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
         // TODO: SasToken auth cannot be used until the logging redaction
         String sourceURL = primaryFileAsyncClient.getFileUrl();
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            new ShareFileCopyOptions(), getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, new ShareFileCopyOptions(), null));
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
     }
@@ -785,8 +785,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
         String sourceURL = primaryFileAsyncClient.getFileUrl();
         String leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block();
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, null, null,
-            false, false, null, getPollingDuration(1000), new ShareRequestConditions().setLeaseId(leaseId));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, null, null, null, false, false, null, null,
+                new ShareRequestConditions().setLeaseId(leaseId)));
         StepVerifier.create(poller).assertNext(it -> {
             assertNotNull(it.getValue().getCopyId());
         }).expectComplete().verify(Duration.ofMinutes(1));
@@ -802,9 +803,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
         String sourceURL = primaryFileAsyncClient.getFileUrl();
         createLeaseClient(primaryFileAsyncClient).acquireLease().block();
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, null, null,
-            false, false, null, getPollingDuration(1000), new ShareRequestConditions()
-                .setLeaseId(testResourceNamer.randomUuid()));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, null, null, null, false, false, null, null,
+                new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid())));
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
     }
@@ -830,8 +831,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setArchiveAttribute(setArchiveAttribute)
             .setPermissionCopyModeType(permissionType);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
 
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
@@ -845,14 +846,14 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setIgnoreReadOnly(true)
             .setArchiveAttribute(true);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
 
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
     @Test
     public void startCopyWithOptionsFilePermission() {
         primaryFileAsyncClient.create(1024).block();
@@ -871,8 +872,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setFilePermission(FILE_PERMISSION)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
 
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
@@ -887,7 +888,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         assertEquals(properties.getNtfsFileAttributes(), smbProperties.getNtfsFileAttributes());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
     @Test
     public void startCopyWithOptionsChangeTime() {
         ShareFileInfo client = primaryFileAsyncClient.create(1024).block();
@@ -901,8 +902,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setFilePermission(FILE_PERMISSION)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
         StepVerifier.create(poller).assertNext(it ->
             assertNotNull(it.getValue().getCopyId())).expectComplete().verify(Duration.ofMinutes(1));
 
@@ -911,7 +912,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 .getFileChangeTime());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
     @Test
     public void startCopyWithOptionsCopySmbFilePropertiesPermissionKey() {
         primaryFileAsyncClient.create(1024).block();
@@ -930,8 +931,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setSmbProperties(smbProperties)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
         StepVerifier.create(poller).assertNext(it ->
             assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
@@ -956,8 +957,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
         ShareFileCopyOptions options = new ShareFileCopyOptions()
             .setDestinationRequestConditions(conditions);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
         StepVerifier.create(poller).assertNext(it ->
             assertNotNull(it.getValue().getCopyId())).expectComplete().verify(Duration.ofMinutes(1));
     }
@@ -973,8 +974,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setDestinationRequestConditions(conditions);
 
         // exception: LeaseNotPresentWithFileOperation
-        assertThrows(ShareStorageException.class, () -> primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000)).blockFirst());
+        assertThrows(ShareStorageException.class, () -> setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null)).blockFirst());
     }
 
     @Test
@@ -984,13 +985,13 @@ public class FileAsyncApiTests extends FileShareTestBase {
         ShareFileCopyOptions options = new ShareFileCopyOptions()
             .setMetadata(testMetadata);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
         StepVerifier.create(poller).assertNext(it ->
             assertNotNull(it.getValue().getCopyId())).expectComplete().verify(Duration.ofMinutes(1));
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
     @Test
     public void startCopyWithOptionsWithOriginalSmbProperties() {
         primaryFileAsyncClient.create(1024).block();
@@ -1014,8 +1015,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setDestinationRequestConditions(conditions)
             .setSmbPropertiesToCopy(list);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
         StepVerifier.create(poller).assertNext(it ->
             assertNotNull(it.getValue().getCopyId())).expectComplete().verify(Duration.ofMinutes(1));
 
@@ -1053,8 +1054,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
             .setSmbPropertiesToCopy(list);
 
-        assertThrows(IllegalArgumentException.class, () -> primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000)));
+        assertThrows(IllegalArgumentException.class, () -> setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null)));
     }
 
     @Disabled("TODO: Need to find a way of mocking pending copy status")
@@ -1357,7 +1358,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         FileShareTestHelper.deleteFileIfExists(testFolder.getPath(), fileName);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#listRangesDiffSupplier")
     public void listRangesDiff(List<FileRange> rangesToUpdate, List<FileRange> rangesToClear,
@@ -1414,7 +1415,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(primaryFileAsyncClient.listHandles(2)).verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20190707ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-07-07")
     @Test
     public void forceCloseHandleMin() {
         primaryFileAsyncClient.create(512).block();
@@ -1431,7 +1432,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyErrorSatisfies(it -> assertInstanceOf(ShareStorageException.class, it));
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20190707ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-07-07")
     @Test
     public void forceCloseAllHandlesMin() {
         primaryFileAsyncClient.create(512).block();
@@ -1535,8 +1536,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
     }
 
     /* Uncomment this test when Client Name is enabled with STG 93.
-    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20240204ServiceVersion")
+    @PlaybackOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-02-04")
     @Test
     public void listHandlesClientName() {
         ShareAsyncClient client = primaryFileServiceAsyncClient.getShareAsyncClient("testing");

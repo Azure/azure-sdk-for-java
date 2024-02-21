@@ -51,7 +51,6 @@ private abstract class CosmosWriterBase(
       cosmosTargetContainerConfig,
       clientCacheItem,
       throughputControlClientCacheItemOpt)
-  SparkUtils.safeOpenConnectionInitCaches(container, log)
 
   private val containerDefinition = container.read().block().getProperties
   private val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition

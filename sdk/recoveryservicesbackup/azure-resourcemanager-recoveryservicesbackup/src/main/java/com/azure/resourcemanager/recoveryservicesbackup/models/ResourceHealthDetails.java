@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Health Details for backup items. */
+/**
+ * Health Details for backup items.
+ */
 @Immutable
 public class ResourceHealthDetails {
     /*
@@ -35,13 +37,15 @@ public class ResourceHealthDetails {
     @JsonProperty(value = "recommendations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> recommendations;
 
-    /** Creates an instance of ResourceHealthDetails class. */
+    /**
+     * Creates an instance of ResourceHealthDetails class.
+     */
     public ResourceHealthDetails() {
     }
 
     /**
      * Get the code property: Health Code.
-     *
+     * 
      * @return the code value.
      */
     public Integer code() {
@@ -50,7 +54,7 @@ public class ResourceHealthDetails {
 
     /**
      * Get the title property: Health Title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -59,7 +63,7 @@ public class ResourceHealthDetails {
 
     /**
      * Get the message property: Health Message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -68,7 +72,7 @@ public class ResourceHealthDetails {
 
     /**
      * Get the recommendations property: Health Recommended Actions.
-     *
+     * 
      * @return the recommendations value.
      */
     public List<String> recommendations() {
@@ -77,7 +81,7 @@ public class ResourceHealthDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

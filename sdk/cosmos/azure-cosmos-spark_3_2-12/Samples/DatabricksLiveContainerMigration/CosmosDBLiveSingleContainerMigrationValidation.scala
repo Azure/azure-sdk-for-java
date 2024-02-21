@@ -44,7 +44,7 @@ val spark = SparkSession
 // COMMAND ----------
 
 var createSourceView = s"""
-CREATE TABLE IF NOT EXISTS cosmosCatalogSrc.${cosmosSourceDatabaseName}.SourceView 
+CREATE TABLE IF NOT EXISTS cosmosCatalogSrc.`${cosmosSourceDatabaseName}`.SourceView 
   (id STRING, _etag STRING)
 USING cosmos.oltp
 TBLPROPERTIES(isCosmosView = 'True')
@@ -56,7 +56,7 @@ OPTIONS (
 """
 
 var selectView = s"""
-SELECT * FROM cosmosCatalogSrc.${cosmosSourceDatabaseName}.SourceView
+SELECT * FROM cosmosCatalogSrc.`${cosmosSourceDatabaseName}`.SourceView
 """
 spark.sql(createSourceView)
 spark.sql(selectView).show
@@ -64,7 +64,7 @@ spark.sql(selectView).show
 // COMMAND ----------
 
 var createSinkView = s"""
-CREATE TABLE IF NOT EXISTS cosmosCatalogTgt.${cosmosTargetDatabaseName}.SinkView 
+CREATE TABLE IF NOT EXISTS cosmosCatalogTgt.`${cosmosTargetDatabaseName}`.SinkView 
   (id STRING, _origin_etag STRING)
 USING cosmos.oltp
 TBLPROPERTIES(isCosmosView = 'True')
@@ -75,7 +75,7 @@ OPTIONS (
   spark.cosmos.read.partitioning.strategy = 'Default');
 """
 var selectSinkView = s"""
-SELECT * FROM cosmosCatalogTgt.${cosmosTargetDatabaseName}.SinkView
+SELECT * FROM cosmosCatalogTgt.`${cosmosTargetDatabaseName}`.SinkView
 """
 spark.sql(createSinkView)
 spark.sql(selectSinkView).show
@@ -84,8 +84,8 @@ spark.sql(selectSinkView).show
 
 var getDocVersionDiff = s"""
 -- anti join shows all documents(versions) in the SourceView not present in SinkView
-SELECT * FROM cosmosCatalogSrc.${cosmosSourceDatabaseName}.SourceView src -- source database
-LEFT ANTI JOIN cosmosCatalogTgt.${cosmosTargetDatabaseName}.SinkView sink -- target database
+SELECT * FROM cosmosCatalogSrc.`${cosmosSourceDatabaseName}`.SourceView src -- source database
+LEFT ANTI JOIN cosmosCatalogTgt.`${cosmosTargetDatabaseName}`.SinkView sink -- target database
 ON src.id = sink.id and src._etag == sink._origin_etag
 """
 spark.sql(getDocVersionDiff).show
@@ -94,8 +94,8 @@ spark.sql(getDocVersionDiff).show
 
 var getCountDiff = s"""
 -- anti join shows count of all documents(versions) in the SourceView not present in SinkView
-SELECT count(*) FROM cosmosCatalogSrc.${cosmosSourceDatabaseName}.SourceView src  -- source database
-LEFT ANTI JOIN cosmosCatalogTgt.${cosmosTargetDatabaseName}.SinkView sink -- target database
+SELECT count(*) FROM cosmosCatalogSrc.`${cosmosSourceDatabaseName}`.SourceView src  -- source database
+LEFT ANTI JOIN cosmosCatalogTgt.`${cosmosTargetDatabaseName}`.SinkView sink -- target database
 ON src.id = sink.id and src._etag == sink._origin_etag
 """
 spark.sql(getCountDiff).show

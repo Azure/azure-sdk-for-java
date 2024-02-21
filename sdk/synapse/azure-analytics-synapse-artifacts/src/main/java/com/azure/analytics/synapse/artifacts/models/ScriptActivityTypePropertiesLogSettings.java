@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log settings of script activity. */
+/**
+ * Log settings of script activity.
+ */
 @Fluent
 public final class ScriptActivityTypePropertiesLogSettings {
     /*
@@ -22,12 +24,15 @@ public final class ScriptActivityTypePropertiesLogSettings {
     @JsonProperty(value = "logLocationSettings")
     private LogLocationSettings logLocationSettings;
 
-    /** Creates an instance of ScriptActivityTypePropertiesLogSettings class. */
-    public ScriptActivityTypePropertiesLogSettings() {}
+    /**
+     * Creates an instance of ScriptActivityTypePropertiesLogSettings class.
+     */
+    public ScriptActivityTypePropertiesLogSettings() {
+    }
 
     /**
      * Get the logDestination property: The destination of logs. Type: string.
-     *
+     * 
      * @return the logDestination value.
      */
     public ScriptActivityLogDestination getLogDestination() {
@@ -36,7 +41,7 @@ public final class ScriptActivityTypePropertiesLogSettings {
 
     /**
      * Set the logDestination property: The destination of logs. Type: string.
-     *
+     * 
      * @param logDestination the logDestination value to set.
      * @return the ScriptActivityTypePropertiesLogSettings object itself.
      */
@@ -47,7 +52,7 @@ public final class ScriptActivityTypePropertiesLogSettings {
 
     /**
      * Get the logLocationSettings property: Log location settings customer needs to provide when enabling log.
-     *
+     * 
      * @return the logLocationSettings value.
      */
     public LogLocationSettings getLogLocationSettings() {
@@ -56,7 +61,7 @@ public final class ScriptActivityTypePropertiesLogSettings {
 
     /**
      * Set the logLocationSettings property: Log location settings customer needs to provide when enabling log.
-     *
+     * 
      * @param logLocationSettings the logLocationSettings value to set.
      * @return the ScriptActivityTypePropertiesLogSettings object itself.
      */

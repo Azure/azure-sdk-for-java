@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Class encapsulating restore as files target parameters. */
+/**
+ * Class encapsulating restore as files target parameters.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("RestoreFilesTargetInfo")
 @Fluent
@@ -21,13 +23,15 @@ public final class RestoreFilesTargetInfo extends RestoreTargetInfoBase {
     @JsonProperty(value = "targetDetails", required = true)
     private TargetDetails targetDetails;
 
-    /** Creates an instance of RestoreFilesTargetInfo class. */
+    /**
+     * Creates an instance of RestoreFilesTargetInfo class.
+     */
     public RestoreFilesTargetInfo() {
     }
 
     /**
      * Get the targetDetails property: Destination of RestoreAsFiles operation, when destination is not a datasource.
-     *
+     * 
      * @return the targetDetails value.
      */
     public TargetDetails targetDetails() {
@@ -36,7 +40,7 @@ public final class RestoreFilesTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Set the targetDetails property: Destination of RestoreAsFiles operation, when destination is not a datasource.
-     *
+     * 
      * @param targetDetails the targetDetails value to set.
      * @return the RestoreFilesTargetInfo object itself.
      */
@@ -45,14 +49,18 @@ public final class RestoreFilesTargetInfo extends RestoreTargetInfoBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestoreFilesTargetInfo withRecoveryOption(RecoveryOption recoveryOption) {
         super.withRecoveryOption(recoveryOption);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestoreFilesTargetInfo withRestoreLocation(String restoreLocation) {
         super.withRestoreLocation(restoreLocation);
@@ -61,17 +69,15 @@ public final class RestoreFilesTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (targetDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetDetails in model RestoreFilesTargetInfo"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetDetails in model RestoreFilesTargetInfo"));
         } else {
             targetDetails().validate();
         }

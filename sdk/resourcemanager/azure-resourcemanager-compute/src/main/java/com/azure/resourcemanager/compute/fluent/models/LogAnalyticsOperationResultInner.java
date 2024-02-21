@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.compute.models.LogAnalyticsOutput;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** LogAnalytics operation status response. */
+/**
+ * LogAnalytics operation status response.
+ */
 @Immutable
 public final class LogAnalyticsOperationResultInner {
     /*
@@ -17,13 +19,15 @@ public final class LogAnalyticsOperationResultInner {
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private LogAnalyticsOutput properties;
 
-    /** Creates an instance of LogAnalyticsOperationResultInner class. */
+    /**
+     * Creates an instance of LogAnalyticsOperationResultInner class.
+     */
     public LogAnalyticsOperationResultInner() {
     }
 
     /**
      * Get the properties property: LogAnalyticsOutput.
-     *
+     * 
      * @return the properties value.
      */
     public LogAnalyticsOutput properties() {
@@ -32,7 +36,7 @@ public final class LogAnalyticsOperationResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

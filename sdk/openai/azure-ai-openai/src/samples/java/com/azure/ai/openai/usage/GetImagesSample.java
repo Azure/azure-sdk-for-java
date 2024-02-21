@@ -5,9 +5,9 @@ package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
+import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
-import com.azure.ai.openai.models.ImageLocation;
-import com.azure.ai.openai.models.ImageResponse;
+import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
@@ -28,14 +28,15 @@ public class GetImagesSample {
             .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildClient();
 
+        String deploymentOrModelName = "dall-e-3";
         ImageGenerationOptions imageGenerationOptions = new ImageGenerationOptions(
             "A drawing of the Seattle skyline in the style of Van Gogh");
-        ImageResponse images = client.getImages(imageGenerationOptions);
+        ImageGenerations images = client.getImageGenerations(deploymentOrModelName, imageGenerationOptions);
 
-        for (ImageLocation imageLocation : images.getData()) {
+        for (ImageGenerationData imageGenerationData : images.getData()) {
             System.out.printf(
                 "Image location URL that provides temporary access to download the generated image is %s.%n",
-                imageLocation.getUrl());
+                    imageGenerationData.getUrl());
         }
     }
 }

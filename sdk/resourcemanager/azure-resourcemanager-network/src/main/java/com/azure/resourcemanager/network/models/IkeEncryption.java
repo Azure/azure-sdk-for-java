@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The IKE encryption algorithm (IKE phase 2). */
+/**
+ * The IKE encryption algorithm (IKE phase 2).
+ */
 public final class IkeEncryption extends ExpandableStringEnum<IkeEncryption> {
-    /** Static value DES for IkeEncryption. */
+    /**
+     * Static value DES for IkeEncryption.
+     */
     public static final IkeEncryption DES = fromString("DES");
 
-    /** Static value DES3 for IkeEncryption. */
+    /**
+     * Static value DES3 for IkeEncryption.
+     */
     public static final IkeEncryption DES3 = fromString("DES3");
 
-    /** Static value AES128 for IkeEncryption. */
+    /**
+     * Static value AES128 for IkeEncryption.
+     */
     public static final IkeEncryption AES128 = fromString("AES128");
 
-    /** Static value AES192 for IkeEncryption. */
+    /**
+     * Static value AES192 for IkeEncryption.
+     */
     public static final IkeEncryption AES192 = fromString("AES192");
 
-    /** Static value AES256 for IkeEncryption. */
+    /**
+     * Static value AES256 for IkeEncryption.
+     */
     public static final IkeEncryption AES256 = fromString("AES256");
 
-    /** Static value GCMAES256 for IkeEncryption. */
+    /**
+     * Static value GCMAES256 for IkeEncryption.
+     */
     public static final IkeEncryption GCMAES256 = fromString("GCMAES256");
 
-    /** Static value GCMAES128 for IkeEncryption. */
+    /**
+     * Static value GCMAES128 for IkeEncryption.
+     */
     public static final IkeEncryption GCMAES128 = fromString("GCMAES128");
 
     /**
      * Creates a new instance of IkeEncryption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class IkeEncryption extends ExpandableStringEnum<IkeEncryption> {
 
     /**
      * Creates or finds a IkeEncryption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IkeEncryption.
      */
@@ -53,7 +69,7 @@ public final class IkeEncryption extends ExpandableStringEnum<IkeEncryption> {
 
     /**
      * Gets known IkeEncryption values.
-     *
+     * 
      * @return known IkeEncryption values.
      */
     public static Collection<IkeEncryption> values() {

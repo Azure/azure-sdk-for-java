@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Define match conditions. */
+/**
+ * Define match conditions.
+ */
 @Fluent
 public final class MatchCondition {
     /*
@@ -42,13 +44,15 @@ public final class MatchCondition {
     @JsonProperty(value = "transforms")
     private List<WebApplicationFirewallTransform> transforms;
 
-    /** Creates an instance of MatchCondition class. */
+    /**
+     * Creates an instance of MatchCondition class.
+     */
     public MatchCondition() {
     }
 
     /**
      * Get the matchVariables property: List of match variables.
-     *
+     * 
      * @return the matchVariables value.
      */
     public List<MatchVariable> matchVariables() {
@@ -57,7 +61,7 @@ public final class MatchCondition {
 
     /**
      * Set the matchVariables property: List of match variables.
-     *
+     * 
      * @param matchVariables the matchVariables value to set.
      * @return the MatchCondition object itself.
      */
@@ -68,7 +72,7 @@ public final class MatchCondition {
 
     /**
      * Get the operator property: The operator to be matched.
-     *
+     * 
      * @return the operator value.
      */
     public WebApplicationFirewallOperator operator() {
@@ -77,7 +81,7 @@ public final class MatchCondition {
 
     /**
      * Set the operator property: The operator to be matched.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the MatchCondition object itself.
      */
@@ -88,7 +92,7 @@ public final class MatchCondition {
 
     /**
      * Get the negationConditon property: Whether this is negate condition or not.
-     *
+     * 
      * @return the negationConditon value.
      */
     public Boolean negationConditon() {
@@ -97,7 +101,7 @@ public final class MatchCondition {
 
     /**
      * Set the negationConditon property: Whether this is negate condition or not.
-     *
+     * 
      * @param negationConditon the negationConditon value to set.
      * @return the MatchCondition object itself.
      */
@@ -108,7 +112,7 @@ public final class MatchCondition {
 
     /**
      * Get the matchValues property: Match value.
-     *
+     * 
      * @return the matchValues value.
      */
     public List<String> matchValues() {
@@ -117,7 +121,7 @@ public final class MatchCondition {
 
     /**
      * Set the matchValues property: Match value.
-     *
+     * 
      * @param matchValues the matchValues value to set.
      * @return the MatchCondition object itself.
      */
@@ -128,7 +132,7 @@ public final class MatchCondition {
 
     /**
      * Get the transforms property: List of transforms.
-     *
+     * 
      * @return the transforms value.
      */
     public List<WebApplicationFirewallTransform> transforms() {
@@ -137,7 +141,7 @@ public final class MatchCondition {
 
     /**
      * Set the transforms property: List of transforms.
-     *
+     * 
      * @param transforms the transforms value to set.
      * @return the MatchCondition object itself.
      */
@@ -148,26 +152,23 @@ public final class MatchCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (matchVariables() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property matchVariables in model MatchCondition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property matchVariables in model MatchCondition"));
         } else {
             matchVariables().forEach(e -> e.validate());
         }
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operator in model MatchCondition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property operator in model MatchCondition"));
         }
         if (matchValues() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property matchValues in model MatchCondition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property matchValues in model MatchCondition"));
         }
     }
 

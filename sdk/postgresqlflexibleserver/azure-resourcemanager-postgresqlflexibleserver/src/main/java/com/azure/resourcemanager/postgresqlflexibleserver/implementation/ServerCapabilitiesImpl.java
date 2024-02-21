@@ -19,8 +19,7 @@ public final class ServerCapabilitiesImpl implements ServerCapabilities {
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public ServerCapabilitiesImpl(
-        ServerCapabilitiesClient innerClient,
+    public ServerCapabilitiesImpl(ServerCapabilitiesClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,13 +27,13 @@ public final class ServerCapabilitiesImpl implements ServerCapabilities {
 
     public PagedIterable<FlexibleServerCapability> list(String resourceGroupName, String serverName) {
         PagedIterable<FlexibleServerCapabilityInner> inner = this.serviceClient().list(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new FlexibleServerCapabilityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FlexibleServerCapabilityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FlexibleServerCapability> list(String resourceGroupName, String serverName, Context context) {
-        PagedIterable<FlexibleServerCapabilityInner> inner =
-            this.serviceClient().list(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new FlexibleServerCapabilityImpl(inner1, this.manager()));
+        PagedIterable<FlexibleServerCapabilityInner> inner
+            = this.serviceClient().list(resourceGroupName, serverName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FlexibleServerCapabilityImpl(inner1, this.manager()));
     }
 
     private ServerCapabilitiesClient serviceClient() {

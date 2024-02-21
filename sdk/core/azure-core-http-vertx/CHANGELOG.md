@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.15 (Unreleased)
+## 1.0.0-beta.16 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.15 (2024-02-02)
+
+### Bugs Fixed
+
+- Removed usage of `Scheduler`, resolving issues with GraalVM. ([#3704](https://github.com/Azure/azure-sdk-for-java/pull/37041)) 
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
 
 ## 1.0.0-beta.14 (2023-11-03)
 

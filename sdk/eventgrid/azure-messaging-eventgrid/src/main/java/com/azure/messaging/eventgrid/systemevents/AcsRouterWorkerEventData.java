@@ -5,23 +5,30 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema of common properties of all Router Worker events. */
+/**
+ * Schema of common properties of all Router Worker events.
+ */
 @Fluent
 public class AcsRouterWorkerEventData extends AcsRouterEventData {
     /*
      * Router Worker events Worker Id
      */
-    @JsonProperty(value = "workerId")
     private String workerId;
 
-    /** Creates an instance of AcsRouterWorkerEventData class. */
-    public AcsRouterWorkerEventData() {}
+    /**
+     * Creates an instance of AcsRouterWorkerEventData class.
+     */
+    public AcsRouterWorkerEventData() {
+    }
 
     /**
      * Get the workerId property: Router Worker events Worker Id.
-     *
+     * 
      * @return the workerId value.
      */
     public String getWorkerId() {
@@ -30,7 +37,7 @@ public class AcsRouterWorkerEventData extends AcsRouterEventData {
 
     /**
      * Set the workerId property: Router Worker events Worker Id.
-     *
+     * 
      * @param workerId the workerId value to set.
      * @return the AcsRouterWorkerEventData object itself.
      */
@@ -39,24 +46,72 @@ public class AcsRouterWorkerEventData extends AcsRouterEventData {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerEventData setChannelId(String channelId) {
         super.setChannelId(channelId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", getJobId());
+        jsonWriter.writeStringField("channelReference", getChannelReference());
+        jsonWriter.writeStringField("channelId", getChannelId());
+        jsonWriter.writeStringField("workerId", this.workerId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRouterWorkerEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterWorkerEventData if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRouterWorkerEventData.
+     */
+    public static AcsRouterWorkerEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterWorkerEventData deserializedAcsRouterWorkerEventData = new AcsRouterWorkerEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerEventData.setJobId(reader.getString());
+                } else if ("channelReference".equals(fieldName)) {
+                    deserializedAcsRouterWorkerEventData.setChannelReference(reader.getString());
+                } else if ("channelId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerEventData.setChannelId(reader.getString());
+                } else if ("workerId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerEventData.workerId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRouterWorkerEventData;
+        });
     }
 }

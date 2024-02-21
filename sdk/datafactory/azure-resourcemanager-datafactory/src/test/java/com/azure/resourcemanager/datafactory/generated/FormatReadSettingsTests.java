@@ -12,8 +12,8 @@ import java.util.Map;
 public final class FormatReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FormatReadSettings model = BinaryData.fromString(
-            "{\"type\":\"FormatReadSettings\",\"\":{\"rxxiaocr\":\"dataduqgji\",\"pugnvhtgwadu\":\"datauhumgw\",\"zxzwinrg\":\"dataokoxqboz\",\"ufkr\":\"datakqobovqlltql\"}}")
+        FormatReadSettings model = BinaryData
+            .fromString("{\"type\":\"FormatReadSettings\",\"\":{\"oebgkx\":\"datady\",\"rvbcgsaaday\":\"datapkl\"}}")
             .toObject(FormatReadSettings.class);
     }
 

@@ -12,20 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureFileShareBackupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureFileShareBackupRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"AzureFileShareBackupRequest\",\"recoveryPointExpiryTimeInUTC\":\"2021-03-28T08:56:43Z\"}")
-                .toObject(AzureFileShareBackupRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-28T08:56:43Z"), model.recoveryPointExpiryTimeInUtc());
+        AzureFileShareBackupRequest model = BinaryData.fromString(
+            "{\"objectType\":\"AzureFileShareBackupRequest\",\"recoveryPointExpiryTimeInUTC\":\"2021-05-24T09:57:26Z\"}")
+            .toObject(AzureFileShareBackupRequest.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T09:57:26Z"), model.recoveryPointExpiryTimeInUtc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileShareBackupRequest model =
-            new AzureFileShareBackupRequest()
-                .withRecoveryPointExpiryTimeInUtc(OffsetDateTime.parse("2021-03-28T08:56:43Z"));
+        AzureFileShareBackupRequest model = new AzureFileShareBackupRequest()
+            .withRecoveryPointExpiryTimeInUtc(OffsetDateTime.parse("2021-05-24T09:57:26Z"));
         model = BinaryData.fromObject(model).toObject(AzureFileShareBackupRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-28T08:56:43Z"), model.recoveryPointExpiryTimeInUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T09:57:26Z"), model.recoveryPointExpiryTimeInUtc());
     }
 }

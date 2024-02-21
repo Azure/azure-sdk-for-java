@@ -18,37 +18,36 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in HubVirtualNetworkConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in HubVirtualNetworkConnectionsClient.
+ */
 public interface HubVirtualNetworkConnectionsClient {
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
      * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     *     connection.
+     * connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return hubVirtualNetworkConnection Resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String connectionName,
-        HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String connectionName, HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters);
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
      * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     *     connection.
+     * connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -56,19 +55,17 @@ public interface HubVirtualNetworkConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String connectionName,
+        String resourceGroupName, String virtualHubName, String connectionName,
         HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters);
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
      * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     *     connection.
+     * connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -76,19 +73,17 @@ public interface HubVirtualNetworkConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String connectionName,
+        String resourceGroupName, String virtualHubName, String connectionName,
         HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters);
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
      * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     *     connection.
+     * connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -97,60 +92,51 @@ public interface HubVirtualNetworkConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String connectionName,
-        HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters,
-        Context context);
+        String resourceGroupName, String virtualHubName, String connectionName,
+        HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters, Context context);
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
      * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     *     connection.
+     * connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hubVirtualNetworkConnection Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<HubVirtualNetworkConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String connectionName,
-        HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters);
+    Mono<HubVirtualNetworkConnectionInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
+        String connectionName, HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters);
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
      * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     *     connection.
+     * connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hubVirtualNetworkConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HubVirtualNetworkConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String connectionName,
-        HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters);
+    HubVirtualNetworkConnectionInner createOrUpdate(String resourceGroupName, String virtualHubName,
+        String connectionName, HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters);
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
      * @param hubVirtualNetworkConnectionParameters Parameters supplied to create or update a hub virtual network
-     *     connection.
+     * connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,16 +144,12 @@ public interface HubVirtualNetworkConnectionsClient {
      * @return hubVirtualNetworkConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HubVirtualNetworkConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String connectionName,
-        HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters,
-        Context context);
+    HubVirtualNetworkConnectionInner createOrUpdate(String resourceGroupName, String virtualHubName,
+        String connectionName, HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters, Context context);
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -177,12 +159,12 @@ public interface HubVirtualNetworkConnectionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String connectionName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String connectionName);
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -192,12 +174,12 @@ public interface HubVirtualNetworkConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualHubName, String connectionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
+        String connectionName);
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -207,12 +189,12 @@ public interface HubVirtualNetworkConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String connectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String connectionName);
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -223,12 +205,12 @@ public interface HubVirtualNetworkConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String connectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String connectionName, Context context);
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -242,7 +224,7 @@ public interface HubVirtualNetworkConnectionsClient {
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -255,7 +237,7 @@ public interface HubVirtualNetworkConnectionsClient {
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -269,23 +251,23 @@ public interface HubVirtualNetworkConnectionsClient {
 
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return hubVirtualNetworkConnection Resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<HubVirtualNetworkConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String connectionName);
+    Mono<Response<HubVirtualNetworkConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        String virtualHubName, String connectionName);
 
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
@@ -295,12 +277,12 @@ public interface HubVirtualNetworkConnectionsClient {
      * @return hubVirtualNetworkConnection Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<HubVirtualNetworkConnectionInner> getAsync(
-        String resourceGroupName, String virtualHubName, String connectionName);
+    Mono<HubVirtualNetworkConnectionInner> getAsync(String resourceGroupName, String virtualHubName,
+        String connectionName);
 
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
@@ -311,12 +293,12 @@ public interface HubVirtualNetworkConnectionsClient {
      * @return hubVirtualNetworkConnection Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HubVirtualNetworkConnectionInner> getWithResponse(
-        String resourceGroupName, String virtualHubName, String connectionName, Context context);
+    Response<HubVirtualNetworkConnectionInner> getWithResponse(String resourceGroupName, String virtualHubName,
+        String connectionName, Context context);
 
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
@@ -330,35 +312,35 @@ public interface HubVirtualNetworkConnectionsClient {
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<HubVirtualNetworkConnectionInner> listAsync(String resourceGroupName, String virtualHubName);
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HubVirtualNetworkConnectionInner> list(String resourceGroupName, String virtualHubName);
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -366,9 +348,9 @@ public interface HubVirtualNetworkConnectionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<HubVirtualNetworkConnectionInner> list(
-        String resourceGroupName, String virtualHubName, Context context);
+    PagedIterable<HubVirtualNetworkConnectionInner> list(String resourceGroupName, String virtualHubName,
+        Context context);
 }

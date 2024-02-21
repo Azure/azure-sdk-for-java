@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservice.models.OSOptionProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OS option profile. */
+/**
+ * The OS option profile.
+ */
 @Fluent
 public final class OSOptionProfileInner {
     /*
@@ -37,13 +39,15 @@ public final class OSOptionProfileInner {
     @JsonProperty(value = "properties", required = true)
     private OSOptionPropertyList innerProperties = new OSOptionPropertyList();
 
-    /** Creates an instance of OSOptionProfileInner class. */
+    /**
+     * Creates an instance of OSOptionProfileInner class.
+     */
     public OSOptionProfileInner() {
     }
 
     /**
      * Get the id property: The ID of the OS option resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -52,7 +56,7 @@ public final class OSOptionProfileInner {
 
     /**
      * Get the name property: The name of the OS option resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class OSOptionProfileInner {
 
     /**
      * Get the type property: The type of the OS option resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -70,7 +74,7 @@ public final class OSOptionProfileInner {
 
     /**
      * Get the innerProperties property: The list of OS options.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OSOptionPropertyList innerProperties() {
@@ -79,7 +83,7 @@ public final class OSOptionProfileInner {
 
     /**
      * Get the osOptionPropertyList property: The list of OS options.
-     *
+     * 
      * @return the osOptionPropertyList value.
      */
     public List<OSOptionProperty> osOptionPropertyList() {
@@ -88,7 +92,7 @@ public final class OSOptionProfileInner {
 
     /**
      * Set the osOptionPropertyList property: The list of OS options.
-     *
+     * 
      * @param osOptionPropertyList the osOptionPropertyList value to set.
      * @return the OSOptionProfileInner object itself.
      */
@@ -102,15 +106,13 @@ public final class OSOptionProfileInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model OSOptionProfileInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model OSOptionProfileInner"));
         } else {
             innerProperties().validate();
         }

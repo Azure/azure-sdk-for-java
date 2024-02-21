@@ -7,28 +7,38 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
-/** RecoveryPoint Tier Information V2. */
+/**
+ * RecoveryPoint Tier Information V2.
+ */
 @Fluent
 public final class RecoveryPointTierInformationV2 extends RecoveryPointTierInformation {
-    /** Creates an instance of RecoveryPointTierInformationV2 class. */
+    /**
+     * Creates an instance of RecoveryPointTierInformationV2 class.
+     */
     public RecoveryPointTierInformationV2() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPointTierInformationV2 withType(RecoveryPointTierType type) {
         super.withType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPointTierInformationV2 withStatus(RecoveryPointTierStatus status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPointTierInformationV2 withExtendedInfo(Map<String, String> extendedInfo) {
         super.withExtendedInfo(extendedInfo);
@@ -37,7 +47,7 @@ public final class RecoveryPointTierInformationV2 extends RecoveryPointTierInfor
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

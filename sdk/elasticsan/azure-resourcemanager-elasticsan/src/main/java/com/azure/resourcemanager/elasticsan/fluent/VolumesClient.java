@@ -16,11 +16,13 @@ import com.azure.resourcemanager.elasticsan.models.VolumeUpdate;
 import com.azure.resourcemanager.elasticsan.models.XMsDeleteSnapshots;
 import com.azure.resourcemanager.elasticsan.models.XMsForceDelete;
 
-/** An instance of this class provides access to all the operations defined in VolumesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VolumesClient.
+ */
 public interface VolumesClient {
     /**
      * Create a Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -32,60 +34,47 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreate(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreate(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, VolumeInner parameters);
+
+    /**
+     * Create a Volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param elasticSanName The name of the ElasticSan.
+     * @param volumeGroupName The name of the VolumeGroup.
+     * @param volumeName The name of the Volume.
+     * @param parameters Volume object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for Volume request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreate(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, VolumeInner parameters, Context context);
+
+    /**
+     * Create a Volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param elasticSanName The name of the ElasticSan.
+     * @param volumeGroupName The name of the VolumeGroup.
+     * @param volumeName The name of the Volume.
+     * @param parameters Volume object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for Volume request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VolumeInner create(String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName,
         VolumeInner parameters);
 
     /**
      * Create a Volume.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param volumeName The name of the Volume.
-     * @param parameters Volume object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Volume request.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreate(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters,
-        Context context);
-
-    /**
-     * Create a Volume.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param volumeName The name of the Volume.
-     * @param parameters Volume object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Volume request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeInner create(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters);
-
-    /**
-     * Create a Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -98,17 +87,12 @@ public interface VolumesClient {
      * @return response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeInner create(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters,
-        Context context);
+    VolumeInner create(String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName,
+        VolumeInner parameters, Context context);
 
     /**
      * Update an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -120,60 +104,47 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, VolumeUpdate parameters);
+
+    /**
+     * Update an Volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param elasticSanName The name of the ElasticSan.
+     * @param volumeGroupName The name of the VolumeGroup.
+     * @param volumeName The name of the Volume.
+     * @param parameters Volume object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for Volume request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, VolumeUpdate parameters, Context context);
+
+    /**
+     * Update an Volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param elasticSanName The name of the ElasticSan.
+     * @param volumeGroupName The name of the VolumeGroup.
+     * @param volumeName The name of the Volume.
+     * @param parameters Volume object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for Volume request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VolumeInner update(String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName,
         VolumeUpdate parameters);
 
     /**
      * Update an Volume.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param volumeName The name of the Volume.
-     * @param parameters Volume object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Volume request.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters,
-        Context context);
-
-    /**
-     * Update an Volume.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param volumeName The name of the Volume.
-     * @param parameters Volume object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Volume request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeInner update(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters);
-
-    /**
-     * Update an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -186,17 +157,12 @@ public interface VolumesClient {
      * @return response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeInner update(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters,
-        Context context);
+    VolumeInner update(String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName,
+        VolumeUpdate parameters, Context context);
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -207,20 +173,20 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName);
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
      * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
-     *     Default value is false.
+     * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
-     *     false. Default value is false.
+     * false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -228,18 +194,13 @@ public interface VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        XMsDeleteSnapshots xMsDeleteSnapshots,
-        XMsForceDelete xMsForceDelete,
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
         Context context);
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -253,33 +214,27 @@ public interface VolumesClient {
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
      * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
-     *     Default value is false.
+     * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
-     *     false. Default value is false.
+     * false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        XMsDeleteSnapshots xMsDeleteSnapshots,
-        XMsForceDelete xMsForceDelete,
-        Context context);
+    void delete(String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete, Context context);
 
     /**
      * Get an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -291,12 +246,12 @@ public interface VolumesClient {
      * @return an Volume along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VolumeInner> getWithResponse(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context);
+    Response<VolumeInner> getWithResponse(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName, Context context);
 
     /**
      * Get an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -311,7 +266,7 @@ public interface VolumesClient {
 
     /**
      * List Volumes in a VolumeGroup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -321,12 +276,12 @@ public interface VolumesClient {
      * @return list of Volumes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VolumeInner> listByVolumeGroup(
-        String resourceGroupName, String elasticSanName, String volumeGroupName);
+    PagedIterable<VolumeInner> listByVolumeGroup(String resourceGroupName, String elasticSanName,
+        String volumeGroupName);
 
     /**
      * List Volumes in a VolumeGroup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -337,6 +292,6 @@ public interface VolumesClient {
      * @return list of Volumes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VolumeInner> listByVolumeGroup(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, Context context);
+    PagedIterable<VolumeInner> listByVolumeGroup(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, Context context);
 }

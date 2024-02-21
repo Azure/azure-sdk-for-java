@@ -8,30 +8,44 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of placement policy for a service fabric service. Following are the possible values. */
+/**
+ * The type of placement policy for a service fabric service. Following are the possible values.
+ */
 public final class ServicePlacementPolicyType extends ExpandableStringEnum<ServicePlacementPolicyType> {
-    /** Static value Invalid for ServicePlacementPolicyType. */
+    /**
+     * Static value Invalid for ServicePlacementPolicyType.
+     */
     public static final ServicePlacementPolicyType INVALID = fromString("Invalid");
 
-    /** Static value InvalidDomain for ServicePlacementPolicyType. */
+    /**
+     * Static value InvalidDomain for ServicePlacementPolicyType.
+     */
     public static final ServicePlacementPolicyType INVALID_DOMAIN = fromString("InvalidDomain");
 
-    /** Static value RequiredDomain for ServicePlacementPolicyType. */
+    /**
+     * Static value RequiredDomain for ServicePlacementPolicyType.
+     */
     public static final ServicePlacementPolicyType REQUIRED_DOMAIN = fromString("RequiredDomain");
 
-    /** Static value PreferredPrimaryDomain for ServicePlacementPolicyType. */
+    /**
+     * Static value PreferredPrimaryDomain for ServicePlacementPolicyType.
+     */
     public static final ServicePlacementPolicyType PREFERRED_PRIMARY_DOMAIN = fromString("PreferredPrimaryDomain");
 
-    /** Static value RequiredDomainDistribution for ServicePlacementPolicyType. */
-    public static final ServicePlacementPolicyType REQUIRED_DOMAIN_DISTRIBUTION =
-        fromString("RequiredDomainDistribution");
+    /**
+     * Static value RequiredDomainDistribution for ServicePlacementPolicyType.
+     */
+    public static final ServicePlacementPolicyType REQUIRED_DOMAIN_DISTRIBUTION
+        = fromString("RequiredDomainDistribution");
 
-    /** Static value NonPartiallyPlaceService for ServicePlacementPolicyType. */
+    /**
+     * Static value NonPartiallyPlaceService for ServicePlacementPolicyType.
+     */
     public static final ServicePlacementPolicyType NON_PARTIALLY_PLACE_SERVICE = fromString("NonPartiallyPlaceService");
 
     /**
      * Creates a new instance of ServicePlacementPolicyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,7 +54,7 @@ public final class ServicePlacementPolicyType extends ExpandableStringEnum<Servi
 
     /**
      * Creates or finds a ServicePlacementPolicyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServicePlacementPolicyType.
      */
@@ -51,7 +65,7 @@ public final class ServicePlacementPolicyType extends ExpandableStringEnum<Servi
 
     /**
      * Gets known ServicePlacementPolicyType values.
-     *
+     * 
      * @return known ServicePlacementPolicyType values.
      */
     public static Collection<ServicePlacementPolicyType> values() {

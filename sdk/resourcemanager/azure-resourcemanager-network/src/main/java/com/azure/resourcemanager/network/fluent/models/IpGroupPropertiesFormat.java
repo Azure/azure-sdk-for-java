@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The IpGroups property information. */
+/**
+ * The IpGroups property information.
+ */
 @Fluent
 public final class IpGroupPropertiesFormat {
     /*
@@ -37,13 +39,15 @@ public final class IpGroupPropertiesFormat {
     @JsonProperty(value = "firewallPolicies", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> firewallPolicies;
 
-    /** Creates an instance of IpGroupPropertiesFormat class. */
+    /**
+     * Creates an instance of IpGroupPropertiesFormat class.
+     */
     public IpGroupPropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the IpGroups resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -52,7 +56,7 @@ public final class IpGroupPropertiesFormat {
 
     /**
      * Get the ipAddresses property: IpAddresses/IpAddressPrefixes in the IpGroups resource.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -61,7 +65,7 @@ public final class IpGroupPropertiesFormat {
 
     /**
      * Set the ipAddresses property: IpAddresses/IpAddressPrefixes in the IpGroups resource.
-     *
+     * 
      * @param ipAddresses the ipAddresses value to set.
      * @return the IpGroupPropertiesFormat object itself.
      */
@@ -72,7 +76,7 @@ public final class IpGroupPropertiesFormat {
 
     /**
      * Get the firewalls property: List of references to Firewall resources that this IpGroups is associated with.
-     *
+     * 
      * @return the firewalls value.
      */
     public List<SubResource> firewalls() {
@@ -82,7 +86,7 @@ public final class IpGroupPropertiesFormat {
     /**
      * Get the firewallPolicies property: List of references to Firewall Policies resources that this IpGroups is
      * associated with.
-     *
+     * 
      * @return the firewallPolicies value.
      */
     public List<SubResource> firewallPolicies() {
@@ -91,7 +95,7 @@ public final class IpGroupPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

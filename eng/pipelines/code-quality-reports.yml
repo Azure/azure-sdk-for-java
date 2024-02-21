@@ -78,7 +78,7 @@ jobs:
         inputs:
           mavenPomFile: ClientFromSourcePom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip=true -Djacoco.skip=true '
+          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip=true -Djacoco.skip=true -Dshade.skip=true'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)

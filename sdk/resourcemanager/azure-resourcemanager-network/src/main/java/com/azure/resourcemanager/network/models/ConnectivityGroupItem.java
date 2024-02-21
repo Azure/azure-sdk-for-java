@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Connectivity group item. */
+/**
+ * Connectivity group item.
+ */
 @Fluent
 public final class ConnectivityGroupItem {
     /*
@@ -35,13 +37,15 @@ public final class ConnectivityGroupItem {
     @JsonProperty(value = "groupConnectivity", required = true)
     private GroupConnectivity groupConnectivity;
 
-    /** Creates an instance of ConnectivityGroupItem class. */
+    /**
+     * Creates an instance of ConnectivityGroupItem class.
+     */
     public ConnectivityGroupItem() {
     }
 
     /**
      * Get the networkGroupId property: Network group Id.
-     *
+     * 
      * @return the networkGroupId value.
      */
     public String networkGroupId() {
@@ -50,7 +54,7 @@ public final class ConnectivityGroupItem {
 
     /**
      * Set the networkGroupId property: Network group Id.
-     *
+     * 
      * @param networkGroupId the networkGroupId value to set.
      * @return the ConnectivityGroupItem object itself.
      */
@@ -61,7 +65,7 @@ public final class ConnectivityGroupItem {
 
     /**
      * Get the useHubGateway property: Flag if need to use hub gateway.
-     *
+     * 
      * @return the useHubGateway value.
      */
     public UseHubGateway useHubGateway() {
@@ -70,7 +74,7 @@ public final class ConnectivityGroupItem {
 
     /**
      * Set the useHubGateway property: Flag if need to use hub gateway.
-     *
+     * 
      * @param useHubGateway the useHubGateway value to set.
      * @return the ConnectivityGroupItem object itself.
      */
@@ -81,7 +85,7 @@ public final class ConnectivityGroupItem {
 
     /**
      * Get the isGlobal property: Flag if global is supported.
-     *
+     * 
      * @return the isGlobal value.
      */
     public IsGlobal isGlobal() {
@@ -90,7 +94,7 @@ public final class ConnectivityGroupItem {
 
     /**
      * Set the isGlobal property: Flag if global is supported.
-     *
+     * 
      * @param isGlobal the isGlobal value to set.
      * @return the ConnectivityGroupItem object itself.
      */
@@ -101,7 +105,7 @@ public final class ConnectivityGroupItem {
 
     /**
      * Get the groupConnectivity property: Group connectivity type.
-     *
+     * 
      * @return the groupConnectivity value.
      */
     public GroupConnectivity groupConnectivity() {
@@ -110,7 +114,7 @@ public final class ConnectivityGroupItem {
 
     /**
      * Set the groupConnectivity property: Group connectivity type.
-     *
+     * 
      * @param groupConnectivity the groupConnectivity value to set.
      * @return the ConnectivityGroupItem object itself.
      */
@@ -121,21 +125,17 @@ public final class ConnectivityGroupItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkGroupId in model ConnectivityGroupItem"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkGroupId in model ConnectivityGroupItem"));
         }
         if (groupConnectivity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groupConnectivity in model ConnectivityGroupItem"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property groupConnectivity in model ConnectivityGroupItem"));
         }
     }
 

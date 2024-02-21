@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that determine how the connectivity check will be performed. */
+/**
+ * Parameters that determine how the connectivity check will be performed.
+ */
 @Fluent
 public final class ConnectivityParameters {
     /*
@@ -41,13 +43,15 @@ public final class ConnectivityParameters {
     @JsonProperty(value = "preferredIPVersion")
     private IpVersion preferredIpVersion;
 
-    /** Creates an instance of ConnectivityParameters class. */
+    /**
+     * Creates an instance of ConnectivityParameters class.
+     */
     public ConnectivityParameters() {
     }
 
     /**
      * Get the source property: The source of the connection.
-     *
+     * 
      * @return the source value.
      */
     public ConnectivitySource source() {
@@ -56,7 +60,7 @@ public final class ConnectivityParameters {
 
     /**
      * Set the source property: The source of the connection.
-     *
+     * 
      * @param source the source value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -67,7 +71,7 @@ public final class ConnectivityParameters {
 
     /**
      * Get the destination property: The destination of connection.
-     *
+     * 
      * @return the destination value.
      */
     public ConnectivityDestination destination() {
@@ -76,7 +80,7 @@ public final class ConnectivityParameters {
 
     /**
      * Set the destination property: The destination of connection.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -87,7 +91,7 @@ public final class ConnectivityParameters {
 
     /**
      * Get the protocol property: Network protocol.
-     *
+     * 
      * @return the protocol value.
      */
     public Protocol protocol() {
@@ -96,7 +100,7 @@ public final class ConnectivityParameters {
 
     /**
      * Set the protocol property: Network protocol.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -107,7 +111,7 @@ public final class ConnectivityParameters {
 
     /**
      * Get the protocolConfiguration property: Configuration of the protocol.
-     *
+     * 
      * @return the protocolConfiguration value.
      */
     public ProtocolConfiguration protocolConfiguration() {
@@ -116,7 +120,7 @@ public final class ConnectivityParameters {
 
     /**
      * Set the protocolConfiguration property: Configuration of the protocol.
-     *
+     * 
      * @param protocolConfiguration the protocolConfiguration value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -127,7 +131,7 @@ public final class ConnectivityParameters {
 
     /**
      * Get the preferredIpVersion property: Preferred IP version of the connection.
-     *
+     * 
      * @return the preferredIpVersion value.
      */
     public IpVersion preferredIpVersion() {
@@ -136,7 +140,7 @@ public final class ConnectivityParameters {
 
     /**
      * Set the preferredIpVersion property: Preferred IP version of the connection.
-     *
+     * 
      * @param preferredIpVersion the preferredIpVersion value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -147,22 +151,19 @@ public final class ConnectivityParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property source in model ConnectivityParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property source in model ConnectivityParameters"));
         } else {
             source().validate();
         }
         if (destination() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destination in model ConnectivityParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property destination in model ConnectivityParameters"));
         } else {
             destination().validate();
         }

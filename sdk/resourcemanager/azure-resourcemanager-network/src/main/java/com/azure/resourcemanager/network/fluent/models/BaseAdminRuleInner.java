@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Network base admin rule. */
+/**
+ * Network base admin rule.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -23,8 +25,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("BaseAdminRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Custom", value = AdminRule.class),
-    @JsonSubTypes.Type(name = "Default", value = DefaultAdminRule.class)
-})
+    @JsonSubTypes.Type(name = "Default", value = DefaultAdminRule.class) })
 @Immutable
 public class BaseAdminRuleInner extends ChildResource {
     /*
@@ -33,13 +34,15 @@ public class BaseAdminRuleInner extends ChildResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of BaseAdminRuleInner class. */
+    /**
+     * Creates an instance of BaseAdminRuleInner class.
+     */
     public BaseAdminRuleInner() {
     }
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,7 +51,7 @@ public class BaseAdminRuleInner extends ChildResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

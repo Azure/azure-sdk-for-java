@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An object that represents a credential set resource for a container registry. */
+/**
+ * An object that represents a credential set resource for a container registry.
+ */
 @Fluent
 public final class CredentialSetInner extends ProxyResource {
     /*
@@ -35,13 +37,15 @@ public final class CredentialSetInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of CredentialSetInner class. */
+    /**
+     * Creates an instance of CredentialSetInner class.
+     */
     public CredentialSetInner() {
     }
 
     /**
      * Get the identity property: Identities associated with the resource. This is used to access the KeyVault secrets.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -50,7 +54,7 @@ public final class CredentialSetInner extends ProxyResource {
 
     /**
      * Set the identity property: Identities associated with the resource. This is used to access the KeyVault secrets.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the CredentialSetInner object itself.
      */
@@ -61,7 +65,7 @@ public final class CredentialSetInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: The properties of the credential set.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CredentialSetProperties innerProperties() {
@@ -70,7 +74,7 @@ public final class CredentialSetInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -79,7 +83,7 @@ public final class CredentialSetInner extends ProxyResource {
 
     /**
      * Get the loginServer property: The credentials are stored for this upstream or login server.
-     *
+     * 
      * @return the loginServer value.
      */
     public String loginServer() {
@@ -88,7 +92,7 @@ public final class CredentialSetInner extends ProxyResource {
 
     /**
      * Set the loginServer property: The credentials are stored for this upstream or login server.
-     *
+     * 
      * @param loginServer the loginServer value to set.
      * @return the CredentialSetInner object itself.
      */
@@ -101,9 +105,9 @@ public final class CredentialSetInner extends ProxyResource {
     }
 
     /**
-     * Get the authCredentials property: List of authentication credentials stored for an upstream. Usually consists of
-     * a primary and an optional secondary credential.
-     *
+     * Get the authCredentials property: List of authentication credentials stored for an upstream.
+     * Usually consists of a primary and an optional secondary credential.
+     * 
      * @return the authCredentials value.
      */
     public List<AuthCredential> authCredentials() {
@@ -111,9 +115,9 @@ public final class CredentialSetInner extends ProxyResource {
     }
 
     /**
-     * Set the authCredentials property: List of authentication credentials stored for an upstream. Usually consists of
-     * a primary and an optional secondary credential.
-     *
+     * Set the authCredentials property: List of authentication credentials stored for an upstream.
+     * Usually consists of a primary and an optional secondary credential.
+     * 
      * @param authCredentials the authCredentials value to set.
      * @return the CredentialSetInner object itself.
      */
@@ -127,7 +131,7 @@ public final class CredentialSetInner extends ProxyResource {
 
     /**
      * Get the creationDate property: The creation date of credential store resource.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -136,7 +140,7 @@ public final class CredentialSetInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -145,7 +149,7 @@ public final class CredentialSetInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

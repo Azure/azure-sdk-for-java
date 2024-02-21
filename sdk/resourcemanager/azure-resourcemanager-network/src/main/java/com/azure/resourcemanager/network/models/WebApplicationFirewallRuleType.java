@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The rule type. */
+/**
+ * The rule type.
+ */
 public final class WebApplicationFirewallRuleType extends ExpandableStringEnum<WebApplicationFirewallRuleType> {
-    /** Static value MatchRule for WebApplicationFirewallRuleType. */
+    /**
+     * Static value MatchRule for WebApplicationFirewallRuleType.
+     */
     public static final WebApplicationFirewallRuleType MATCH_RULE = fromString("MatchRule");
 
-    /** Static value RateLimitRule for WebApplicationFirewallRuleType. */
+    /**
+     * Static value RateLimitRule for WebApplicationFirewallRuleType.
+     */
     public static final WebApplicationFirewallRuleType RATE_LIMIT_RULE = fromString("RateLimitRule");
 
-    /** Static value Invalid for WebApplicationFirewallRuleType. */
+    /**
+     * Static value Invalid for WebApplicationFirewallRuleType.
+     */
     public static final WebApplicationFirewallRuleType INVALID = fromString("Invalid");
 
     /**
      * Creates a new instance of WebApplicationFirewallRuleType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class WebApplicationFirewallRuleType extends ExpandableStringEnum<W
 
     /**
      * Creates or finds a WebApplicationFirewallRuleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WebApplicationFirewallRuleType.
      */
@@ -41,7 +49,7 @@ public final class WebApplicationFirewallRuleType extends ExpandableStringEnum<W
 
     /**
      * Gets known WebApplicationFirewallRuleType values.
-     *
+     * 
      * @return known WebApplicationFirewallRuleType values.
      */
     public static Collection<WebApplicationFirewallRuleType> values() {

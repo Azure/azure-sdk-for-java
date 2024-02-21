@@ -18,14 +18,14 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AvailabilitySetsClient. */
-public interface AvailabilitySetsClient
-    extends InnerSupportsGet<AvailabilitySetInner>,
-        InnerSupportsListing<AvailabilitySetInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in AvailabilitySetsClient.
+ */
+public interface AvailabilitySetsClient extends InnerSupportsGet<AvailabilitySetInner>,
+    InnerSupportsListing<AvailabilitySetInner>, InnerSupportsDelete<Void> {
     /**
      * Create or update an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
@@ -33,15 +33,15 @@ public interface AvailabilitySetsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the availability set that the virtual machine should be assigned to along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AvailabilitySetInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters);
+    Mono<Response<AvailabilitySetInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String availabilitySetName, AvailabilitySetInner parameters);
 
     /**
      * Create or update an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
@@ -49,15 +49,15 @@ public interface AvailabilitySetsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the availability set that the virtual machine should be assigned to on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AvailabilitySetInner> createOrUpdateAsync(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters);
+    Mono<AvailabilitySetInner> createOrUpdateAsync(String resourceGroupName, String availabilitySetName,
+        AvailabilitySetInner parameters);
 
     /**
      * Create or update an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
@@ -66,15 +66,15 @@ public interface AvailabilitySetsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the availability set that the virtual machine should be assigned to along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AvailabilitySetInner> createOrUpdateWithResponse(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters, Context context);
+    Response<AvailabilitySetInner> createOrUpdateWithResponse(String resourceGroupName, String availabilitySetName,
+        AvailabilitySetInner parameters, Context context);
 
     /**
      * Create or update an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
@@ -84,12 +84,12 @@ public interface AvailabilitySetsClient
      * @return specifies information about the availability set that the virtual machine should be assigned to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailabilitySetInner createOrUpdate(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters);
+    AvailabilitySetInner createOrUpdate(String resourceGroupName, String availabilitySetName,
+        AvailabilitySetInner parameters);
 
     /**
      * Update an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
@@ -97,15 +97,15 @@ public interface AvailabilitySetsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the availability set that the virtual machine should be assigned to along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AvailabilitySetInner>> updateWithResponseAsync(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetUpdate parameters);
+    Mono<Response<AvailabilitySetInner>> updateWithResponseAsync(String resourceGroupName, String availabilitySetName,
+        AvailabilitySetUpdate parameters);
 
     /**
      * Update an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
@@ -113,15 +113,15 @@ public interface AvailabilitySetsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the availability set that the virtual machine should be assigned to on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AvailabilitySetInner> updateAsync(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetUpdate parameters);
+    Mono<AvailabilitySetInner> updateAsync(String resourceGroupName, String availabilitySetName,
+        AvailabilitySetUpdate parameters);
 
     /**
      * Update an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
@@ -130,15 +130,15 @@ public interface AvailabilitySetsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the availability set that the virtual machine should be assigned to along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AvailabilitySetInner> updateWithResponse(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetUpdate parameters, Context context);
+    Response<AvailabilitySetInner> updateWithResponse(String resourceGroupName, String availabilitySetName,
+        AvailabilitySetUpdate parameters, Context context);
 
     /**
      * Update an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
@@ -152,7 +152,7 @@ public interface AvailabilitySetsClient
 
     /**
      * Delete an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,7 +165,7 @@ public interface AvailabilitySetsClient
 
     /**
      * Delete an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,7 +178,7 @@ public interface AvailabilitySetsClient
 
     /**
      * Delete an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
@@ -192,7 +192,7 @@ public interface AvailabilitySetsClient
 
     /**
      * Delete an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,36 +204,36 @@ public interface AvailabilitySetsClient
 
     /**
      * Retrieves information about an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the availability set that the virtual machine should be assigned to along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AvailabilitySetInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String availabilitySetName);
+    Mono<Response<AvailabilitySetInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String availabilitySetName);
 
     /**
      * Retrieves information about an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the availability set that the virtual machine should be assigned to on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AvailabilitySetInner> getByResourceGroupAsync(String resourceGroupName, String availabilitySetName);
 
     /**
      * Retrieves information about an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
@@ -241,15 +241,15 @@ public interface AvailabilitySetsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the availability set that the virtual machine should be assigned to along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AvailabilitySetInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String availabilitySetName, Context context);
+    Response<AvailabilitySetInner> getByResourceGroupWithResponse(String resourceGroupName, String availabilitySetName,
+        Context context);
 
     /**
      * Retrieves information about an availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,7 +262,7 @@ public interface AvailabilitySetsClient
 
     /**
      * Lists all availability sets in a subscription.
-     *
+     * 
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -274,7 +274,7 @@ public interface AvailabilitySetsClient
 
     /**
      * Lists all availability sets in a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
@@ -284,7 +284,7 @@ public interface AvailabilitySetsClient
 
     /**
      * Lists all availability sets in a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
@@ -294,7 +294,7 @@ public interface AvailabilitySetsClient
 
     /**
      * Lists all availability sets in a subscription.
-     *
+     * 
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,7 +307,7 @@ public interface AvailabilitySetsClient
 
     /**
      * Lists all availability sets in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -319,7 +319,7 @@ public interface AvailabilitySetsClient
 
     /**
      * Lists all availability sets in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -331,7 +331,7 @@ public interface AvailabilitySetsClient
 
     /**
      * Lists all availability sets in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,7 +345,7 @@ public interface AvailabilitySetsClient
     /**
      * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
      * availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -359,7 +359,7 @@ public interface AvailabilitySetsClient
     /**
      * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
      * availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -373,7 +373,7 @@ public interface AvailabilitySetsClient
     /**
      * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
      * availability set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
@@ -383,6 +383,6 @@ public interface AvailabilitySetsClient
      * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineSizeInner> listAvailableSizes(
-        String resourceGroupName, String availabilitySetName, Context context);
+    PagedIterable<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String availabilitySetName,
+        Context context);
 }

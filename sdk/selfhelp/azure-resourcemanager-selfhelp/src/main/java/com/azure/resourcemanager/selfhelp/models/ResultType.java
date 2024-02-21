@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Result type of the search result. */
+/**
+ * Result type of the search result.
+ */
 public final class ResultType extends ExpandableStringEnum<ResultType> {
-    /** Static value Community for ResultType. */
+    /**
+     * Static value Community for ResultType.
+     */
     public static final ResultType COMMUNITY = fromString("Community");
 
-    /** Static value Documentation for ResultType. */
+    /**
+     * Static value Documentation for ResultType.
+     */
     public static final ResultType DOCUMENTATION = fromString("Documentation");
 
     /**
      * Creates a new instance of ResultType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ResultType extends ExpandableStringEnum<ResultType> {
 
     /**
      * Creates or finds a ResultType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResultType.
      */
@@ -38,7 +44,7 @@ public final class ResultType extends ExpandableStringEnum<ResultType> {
 
     /**
      * Gets known ResultType values.
-     *
+     * 
      * @return known ResultType values.
      */
     public static Collection<ResultType> values() {

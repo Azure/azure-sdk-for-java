@@ -17,115 +17,46 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientDiscoveryResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientDiscoveryResponse model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"qfbow\",\"value\":[{\"display\":{\"description\":\"ktzlcuiywg\",\"operation\":\"wgndrvynhzgpp\",\"provider\":\"cgyncocpecf\",\"resource\":\"mcoo\"},\"name\":\"xlzevgbmqjqabcy\",\"isDataAction\":true,\"origin\":\"kwlzuvccfwnfn\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}]}}},{\"display\":{\"description\":\"l\",\"operation\":\"x\",\"provider\":\"qgtz\",\"resource\":\"pnqbqqwxrjfe\"},\"name\":\"lnwsubisn\",\"isDataAction\":true,\"origin\":\"mngnzscxaqw\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}]}}},{\"display\":{\"description\":\"nqvpkvlrxnje\",\"operation\":\"eipheoflokeyy\",\"provider\":\"nj\",\"resource\":\"lwtgrhpdj\"},\"name\":\"umasxazjpq\",\"isDataAction\":false,\"origin\":\"alhbx\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}]}}},{\"display\":{\"description\":\"v\",\"operation\":\"dgwdslfhot\",\"provider\":\"cynpwlbjnp\",\"resource\":\"cftadeh\"},\"name\":\"ltyfsop\",\"isDataAction\":false,\"origin\":\"esnzwde\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{},{}]}}}]}")
-                .toObject(ClientDiscoveryResponse.class);
-        Assertions.assertEquals("qfbow", model.nextLink());
-        Assertions.assertEquals("ktzlcuiywg", model.value().get(0).display().description());
-        Assertions.assertEquals("wgndrvynhzgpp", model.value().get(0).display().operation());
-        Assertions.assertEquals("cgyncocpecf", model.value().get(0).display().provider());
-        Assertions.assertEquals("mcoo", model.value().get(0).display().resource());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.value().get(0).name());
+        ClientDiscoveryResponse model = BinaryData.fromString(
+            "{\"nextLink\":\"jfeallnwsub\",\"value\":[{\"display\":{\"description\":\"mpmngnzscxaqwoo\",\"operation\":\"cbonqvpk\",\"provider\":\"rxnjeaseipheofl\",\"resource\":\"eyy\"},\"name\":\"nj\",\"isDataAction\":true,\"origin\":\"tgrhpdjpjumas\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{},{}]}}},{\"display\":{\"description\":\"e\",\"operation\":\"alhbx\",\"provider\":\"e\",\"resource\":\"zzvdudgwds\"},\"name\":\"hotwmcynpwlbjnp\",\"isDataAction\":false,\"origin\":\"tadehxnltyfsopp\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}]}}}]}")
+            .toObject(ClientDiscoveryResponse.class);
+        Assertions.assertEquals("jfeallnwsub", model.nextLink());
+        Assertions.assertEquals("mpmngnzscxaqwoo", model.value().get(0).display().description());
+        Assertions.assertEquals("cbonqvpk", model.value().get(0).display().operation());
+        Assertions.assertEquals("rxnjeaseipheofl", model.value().get(0).display().provider());
+        Assertions.assertEquals("eyy", model.value().get(0).display().resource());
+        Assertions.assertEquals("nj", model.value().get(0).name());
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
-        Assertions.assertEquals("kwlzuvccfwnfn", model.value().get(0).origin());
+        Assertions.assertEquals("tgrhpdjpjumas", model.value().get(0).origin());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientDiscoveryResponse model =
-            new ClientDiscoveryResponse()
-                .withNextLink("qfbow")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ClientDiscoveryValueForSingleApiInner()
-                                .withDisplay(
-                                    new ClientDiscoveryDisplay()
-                                        .withDescription("ktzlcuiywg")
-                                        .withOperation("wgndrvynhzgpp")
-                                        .withProvider("cgyncocpecf")
-                                        .withResource("mcoo"))
-                                .withName("xlzevgbmqjqabcy")
-                                .withIsDataAction(true)
-                                .withOrigin("kwlzuvccfwnfn")
-                                .withProperties(
-                                    new ClientDiscoveryForProperties()
-                                        .withServiceSpecification(
-                                            new ClientDiscoveryForServiceSpecification()
-                                                .withLogSpecifications(
-                                                    Arrays
-                                                        .asList(
-                                                            new ClientDiscoveryForLogSpecification(),
-                                                            new ClientDiscoveryForLogSpecification())))),
-                            new ClientDiscoveryValueForSingleApiInner()
-                                .withDisplay(
-                                    new ClientDiscoveryDisplay()
-                                        .withDescription("l")
-                                        .withOperation("x")
-                                        .withProvider("qgtz")
-                                        .withResource("pnqbqqwxrjfe"))
-                                .withName("lnwsubisn")
-                                .withIsDataAction(true)
-                                .withOrigin("mngnzscxaqw")
-                                .withProperties(
-                                    new ClientDiscoveryForProperties()
-                                        .withServiceSpecification(
-                                            new ClientDiscoveryForServiceSpecification()
-                                                .withLogSpecifications(
-                                                    Arrays
-                                                        .asList(
-                                                            new ClientDiscoveryForLogSpecification(),
-                                                            new ClientDiscoveryForLogSpecification())))),
-                            new ClientDiscoveryValueForSingleApiInner()
-                                .withDisplay(
-                                    new ClientDiscoveryDisplay()
-                                        .withDescription("nqvpkvlrxnje")
-                                        .withOperation("eipheoflokeyy")
-                                        .withProvider("nj")
-                                        .withResource("lwtgrhpdj"))
-                                .withName("umasxazjpq")
-                                .withIsDataAction(false)
-                                .withOrigin("alhbx")
-                                .withProperties(
-                                    new ClientDiscoveryForProperties()
-                                        .withServiceSpecification(
-                                            new ClientDiscoveryForServiceSpecification()
-                                                .withLogSpecifications(
-                                                    Arrays
-                                                        .asList(
-                                                            new ClientDiscoveryForLogSpecification(),
-                                                            new ClientDiscoveryForLogSpecification())))),
-                            new ClientDiscoveryValueForSingleApiInner()
-                                .withDisplay(
-                                    new ClientDiscoveryDisplay()
-                                        .withDescription("v")
-                                        .withOperation("dgwdslfhot")
-                                        .withProvider("cynpwlbjnp")
-                                        .withResource("cftadeh"))
-                                .withName("ltyfsop")
-                                .withIsDataAction(false)
-                                .withOrigin("esnzwde")
-                                .withProperties(
-                                    new ClientDiscoveryForProperties()
-                                        .withServiceSpecification(
-                                            new ClientDiscoveryForServiceSpecification()
-                                                .withLogSpecifications(
-                                                    Arrays
-                                                        .asList(
-                                                            new ClientDiscoveryForLogSpecification(),
-                                                            new ClientDiscoveryForLogSpecification(),
-                                                            new ClientDiscoveryForLogSpecification(),
-                                                            new ClientDiscoveryForLogSpecification()))))));
+        ClientDiscoveryResponse model = new ClientDiscoveryResponse().withNextLink("jfeallnwsub")
+            .withValue(Arrays.asList(
+                new ClientDiscoveryValueForSingleApiInner()
+                    .withDisplay(new ClientDiscoveryDisplay().withDescription("mpmngnzscxaqwoo")
+                        .withOperation("cbonqvpk").withProvider("rxnjeaseipheofl").withResource("eyy"))
+                    .withName("nj").withIsDataAction(true).withOrigin("tgrhpdjpjumas").withProperties(
+                        new ClientDiscoveryForProperties().withServiceSpecification(
+                            new ClientDiscoveryForServiceSpecification().withLogSpecifications(Arrays.asList(
+                                new ClientDiscoveryForLogSpecification(), new ClientDiscoveryForLogSpecification(),
+                                new ClientDiscoveryForLogSpecification(), new ClientDiscoveryForLogSpecification())))),
+                new ClientDiscoveryValueForSingleApiInner()
+                    .withDisplay(new ClientDiscoveryDisplay().withDescription("e").withOperation("alhbx")
+                        .withProvider("e").withResource("zzvdudgwds"))
+                    .withName("hotwmcynpwlbjnp").withIsDataAction(false).withOrigin("tadehxnltyfsopp")
+                    .withProperties(new ClientDiscoveryForProperties().withServiceSpecification(
+                        new ClientDiscoveryForServiceSpecification().withLogSpecifications(Arrays.asList(
+                            new ClientDiscoveryForLogSpecification(), new ClientDiscoveryForLogSpecification()))))));
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryResponse.class);
-        Assertions.assertEquals("qfbow", model.nextLink());
-        Assertions.assertEquals("ktzlcuiywg", model.value().get(0).display().description());
-        Assertions.assertEquals("wgndrvynhzgpp", model.value().get(0).display().operation());
-        Assertions.assertEquals("cgyncocpecf", model.value().get(0).display().provider());
-        Assertions.assertEquals("mcoo", model.value().get(0).display().resource());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.value().get(0).name());
+        Assertions.assertEquals("jfeallnwsub", model.nextLink());
+        Assertions.assertEquals("mpmngnzscxaqwoo", model.value().get(0).display().description());
+        Assertions.assertEquals("cbonqvpk", model.value().get(0).display().operation());
+        Assertions.assertEquals("rxnjeaseipheofl", model.value().get(0).display().provider());
+        Assertions.assertEquals("eyy", model.value().get(0).display().resource());
+        Assertions.assertEquals("nj", model.value().get(0).name());
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
-        Assertions.assertEquals("kwlzuvccfwnfn", model.value().get(0).origin());
+        Assertions.assertEquals("tgrhpdjpjumas", model.value().get(0).origin());
     }
 }

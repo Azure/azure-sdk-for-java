@@ -89,27 +89,19 @@ public final class ResourceGuardResourceImpl
     }
 
     public ResourceGuardResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuards()
-                .putWithResponse(resourceGroupName, resourceGuardsName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getResourceGuards()
+            .putWithResponse(resourceGroupName, resourceGuardsName, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public ResourceGuardResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuards()
-                .putWithResponse(resourceGroupName, resourceGuardsName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getResourceGuards()
+            .putWithResponse(resourceGroupName, resourceGuardsName, this.innerModel(), context).getValue();
         return this;
     }
 
-    ResourceGuardResourceImpl(
-        String name, com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
+    ResourceGuardResourceImpl(String name,
+        com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = new ResourceGuardResourceInner();
         this.serviceManager = serviceManager;
         this.resourceGuardsName = name;
@@ -121,27 +113,18 @@ public final class ResourceGuardResourceImpl
     }
 
     public ResourceGuardResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuards()
-                .patchWithResponse(resourceGroupName, resourceGuardsName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getResourceGuards()
+            .patchWithResponse(resourceGroupName, resourceGuardsName, updateParameters, Context.NONE).getValue();
         return this;
     }
 
     public ResourceGuardResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuards()
-                .patchWithResponse(resourceGroupName, resourceGuardsName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getResourceGuards()
+            .patchWithResponse(resourceGroupName, resourceGuardsName, updateParameters, context).getValue();
         return this;
     }
 
-    ResourceGuardResourceImpl(
-        ResourceGuardResourceInner innerObject,
+    ResourceGuardResourceImpl(ResourceGuardResourceInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -150,22 +133,14 @@ public final class ResourceGuardResourceImpl
     }
 
     public ResourceGuardResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuards()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getResourceGuards()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, Context.NONE).getValue();
         return this;
     }
 
     public ResourceGuardResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuards()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getResourceGuards()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, context).getValue();
         return this;
     }
 

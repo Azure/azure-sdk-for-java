@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a data disk. */
+/**
+ * Describes a data disk.
+ */
 @Fluent
 public final class ImageDataDisk extends ImageDisk {
     /*
@@ -18,14 +20,16 @@ public final class ImageDataDisk extends ImageDisk {
     @JsonProperty(value = "lun", required = true)
     private int lun;
 
-    /** Creates an instance of ImageDataDisk class. */
+    /**
+     * Creates an instance of ImageDataDisk class.
+     */
     public ImageDataDisk() {
     }
 
     /**
      * Get the lun property: Specifies the logical unit number of the data disk. This value is used to identify data
      * disks within the VM and therefore must be unique for each data disk attached to a VM.
-     *
+     * 
      * @return the lun value.
      */
     public int lun() {
@@ -35,7 +39,7 @@ public final class ImageDataDisk extends ImageDisk {
     /**
      * Set the lun property: Specifies the logical unit number of the data disk. This value is used to identify data
      * disks within the VM and therefore must be unique for each data disk attached to a VM.
-     *
+     * 
      * @param lun the lun value to set.
      * @return the ImageDataDisk object itself.
      */
@@ -44,49 +48,63 @@ public final class ImageDataDisk extends ImageDisk {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageDataDisk withSnapshot(SubResource snapshot) {
         super.withSnapshot(snapshot);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageDataDisk withManagedDisk(SubResource managedDisk) {
         super.withManagedDisk(managedDisk);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageDataDisk withBlobUri(String blobUri) {
         super.withBlobUri(blobUri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageDataDisk withCaching(CachingTypes caching) {
         super.withCaching(caching);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageDataDisk withDiskSizeGB(Integer diskSizeGB) {
         super.withDiskSizeGB(diskSizeGB);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageDataDisk withStorageAccountType(StorageAccountTypes storageAccountType) {
         super.withStorageAccountType(storageAccountType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageDataDisk withDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
         super.withDiskEncryptionSet(diskEncryptionSet);
@@ -95,7 +113,7 @@ public final class ImageDataDisk extends ImageDisk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

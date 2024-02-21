@@ -13,15 +13,19 @@ import java.util.Collection;
  * supported. "Disabled" stands for zone redundant HA is not supported.
  */
 public final class ZoneRedundantHaSupportedEnum extends ExpandableStringEnum<ZoneRedundantHaSupportedEnum> {
-    /** Static value Enabled for ZoneRedundantHaSupportedEnum. */
+    /**
+     * Static value Enabled for ZoneRedundantHaSupportedEnum.
+     */
     public static final ZoneRedundantHaSupportedEnum ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for ZoneRedundantHaSupportedEnum. */
+    /**
+     * Static value Disabled for ZoneRedundantHaSupportedEnum.
+     */
     public static final ZoneRedundantHaSupportedEnum DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of ZoneRedundantHaSupportedEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class ZoneRedundantHaSupportedEnum extends ExpandableStringEnum<Zon
 
     /**
      * Creates or finds a ZoneRedundantHaSupportedEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ZoneRedundantHaSupportedEnum.
      */
@@ -41,7 +45,7 @@ public final class ZoneRedundantHaSupportedEnum extends ExpandableStringEnum<Zon
 
     /**
      * Gets known ZoneRedundantHaSupportedEnum values.
-     *
+     * 
      * @return known ZoneRedundantHaSupportedEnum values.
      */
     public static Collection<ZoneRedundantHaSupportedEnum> values() {

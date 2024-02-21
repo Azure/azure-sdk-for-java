@@ -5,30 +5,37 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Custom Context of Incoming Call. */
+/**
+ * Custom Context of Incoming Call.
+ */
 @Fluent
-public final class AcsIncomingCallCustomContext {
+public final class AcsIncomingCallCustomContext implements JsonSerializable<AcsIncomingCallCustomContext> {
     /*
      * Sip Headers for incoming call
      */
-    @JsonProperty(value = "sipHeaders")
     private Map<String, String> sipHeaders;
 
     /*
      * Voip Headers for incoming call
      */
-    @JsonProperty(value = "voipHeaders")
     private Map<String, String> voipHeaders;
 
-    /** Creates an instance of AcsIncomingCallCustomContext class. */
-    public AcsIncomingCallCustomContext() {}
+    /**
+     * Creates an instance of AcsIncomingCallCustomContext class.
+     */
+    public AcsIncomingCallCustomContext() {
+    }
 
     /**
      * Get the sipHeaders property: Sip Headers for incoming call.
-     *
+     * 
      * @return the sipHeaders value.
      */
     public Map<String, String> getSipHeaders() {
@@ -37,7 +44,7 @@ public final class AcsIncomingCallCustomContext {
 
     /**
      * Set the sipHeaders property: Sip Headers for incoming call.
-     *
+     * 
      * @param sipHeaders the sipHeaders value to set.
      * @return the AcsIncomingCallCustomContext object itself.
      */
@@ -48,7 +55,7 @@ public final class AcsIncomingCallCustomContext {
 
     /**
      * Get the voipHeaders property: Voip Headers for incoming call.
-     *
+     * 
      * @return the voipHeaders value.
      */
     public Map<String, String> getVoipHeaders() {
@@ -57,12 +64,50 @@ public final class AcsIncomingCallCustomContext {
 
     /**
      * Set the voipHeaders property: Voip Headers for incoming call.
-     *
+     * 
      * @param voipHeaders the voipHeaders value to set.
      * @return the AcsIncomingCallCustomContext object itself.
      */
     public AcsIncomingCallCustomContext setVoipHeaders(Map<String, String> voipHeaders) {
         this.voipHeaders = voipHeaders;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("sipHeaders", this.sipHeaders, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("voipHeaders", this.voipHeaders, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsIncomingCallCustomContext from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsIncomingCallCustomContext if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsIncomingCallCustomContext.
+     */
+    public static AcsIncomingCallCustomContext fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsIncomingCallCustomContext deserializedAcsIncomingCallCustomContext = new AcsIncomingCallCustomContext();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sipHeaders".equals(fieldName)) {
+                    Map<String, String> sipHeaders = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsIncomingCallCustomContext.sipHeaders = sipHeaders;
+                } else if ("voipHeaders".equals(fieldName)) {
+                    Map<String, String> voipHeaders = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsIncomingCallCustomContext.voipHeaders = voipHeaders;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsIncomingCallCustomContext;
+        });
     }
 }

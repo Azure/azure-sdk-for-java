@@ -25,6 +25,7 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
@@ -57,6 +58,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -79,7 +81,6 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -179,7 +180,6 @@ public class ImplementationBridgeHelpers {
 
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
-            PartitionKey toPartitionKey(Object objectKey, PartitionKeyInternal partitionKeyInternal);
         }
     }
 
@@ -260,24 +260,14 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosQueryRequestOptionsAccessor {
-            CosmosQueryRequestOptions clone(
-                CosmosQueryRequestOptions toBeCloned);
-            void setOperationContext(CosmosQueryRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
-            OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions);
-            CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name, String value);
-            Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions);
+            CosmosQueryRequestOptionsBase<?> getImpl(CosmosQueryRequestOptions options);
+            CosmosQueryRequestOptions clone(CosmosQueryRequestOptions toBeCloned);
+            CosmosQueryRequestOptions clone(CosmosQueryRequestOptionsBase<?> toBeCloned);
             boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions disallowQueryPlanRetrieval(CosmosQueryRequestOptions queryRequestOptions);
-            UUID getCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions);
-            CosmosQueryRequestOptions setCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId);
             boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions);
-            <T> Function<JsonNode, T> getItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT);
-            CosmosQueryRequestOptions setItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions, String defaultQueryName);
             RequestOptions toRequestOptions(CosmosQueryRequestOptions queryRequestOptions);
-            CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options);
-            CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptions options);
-            List<String> getExcludeRegions(CosmosQueryRequestOptions options);
             List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker(CosmosQueryRequestOptions options);
             void setCancelledRequestDiagnosticsTracker(
                 CosmosQueryRequestOptions options,
@@ -289,6 +279,41 @@ public class ImplementationBridgeHelpers {
             Integer getMaxItemCount(CosmosQueryRequestOptions options);
 
             String getRequestContinuation(CosmosQueryRequestOptions options);
+        }
+    }
+
+    public static final class CosmosReadManyRequestOptionsHelper {
+        private final static AtomicBoolean cosmosReadManyRequestOptionsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosReadManyRequestOptionsAccessor> accessor = new AtomicReference<>();
+
+        private CosmosReadManyRequestOptionsHelper() {}
+
+        public static void setCosmosReadManyRequestOptionsAccessor(final CosmosReadManyRequestOptionsAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosReadManyRequestOptionsAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosReadManyRequestOptionsAccessor...");
+                cosmosReadManyRequestOptionsClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosReadManyRequestOptionsAccessor getCosmosReadManyRequestOptionsAccessor() {
+            if (!cosmosReadManyRequestOptionsClassLoaded.get()) {
+                logger.debug("Initializing CosmosReadManyRequestOptionsAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosReadManyRequestOptionsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosReadManyRequestOptionsAccessor is not initialized yet!");
+                System.exit(9729); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosReadManyRequestOptionsAccessor {
+            public CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyRequestOptions options);
         }
     }
 
@@ -495,8 +520,8 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosItemResponseBuilderAccessor {
-            <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response,
-                                                               byte[] contentAsByteArray, Class<T> classType,
+            <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosItemResponse<byte[]> response,
+                                                               Class<T> classType,
                                                                ItemDeserializer itemDeserializer);
 
 
@@ -508,7 +533,7 @@ public class ImplementationBridgeHelpers {
 
             byte[] getByteArrayContent(CosmosItemResponse<byte[]> response);
 
-            void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content);
+            void setByteArrayContent(CosmosItemResponse<byte[]> response, Pair<byte[], JsonNode> content);
 
             ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response);
 
@@ -918,7 +943,7 @@ public class ImplementationBridgeHelpers {
             <T> Mono<FeedResponse<T>> readMany(
                 CosmosAsyncContainer cosmosAsyncContainer,
                 List<CosmosItemIdentity> itemIdentityList,
-                CosmosQueryRequestOptions requestOptions,
+                CosmosReadManyRequestOptions requestOptions,
                 Class<T> classType);
 
             <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(

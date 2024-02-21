@@ -42,21 +42,21 @@ public final class SendToGroupOptions {
     }
 
     /**
-     * Gets the noEcho option.
+     * Gets whether the echo is disabled.
      *
      * @return the noEcho option.
      */
-    public boolean isNoEcho() {
+    public boolean isEchoDisabled() {
         return noEcho;
     }
 
     /**
-     * Sets the noEcho option. When true, the client does not receive this message from the group.
+     * Disables the echo. When true, the client does not receive this message from the group.
      *
      * @param noEcho the noEcho option.
      * @return itself.
      */
-    public SendToGroupOptions setNoEcho(boolean noEcho) {
+    public SendToGroupOptions setEchoDisabled(boolean noEcho) {
         this.noEcho = noEcho;
         return this;
     }

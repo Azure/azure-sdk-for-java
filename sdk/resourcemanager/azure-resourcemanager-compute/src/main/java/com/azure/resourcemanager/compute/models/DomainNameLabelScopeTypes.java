@@ -14,21 +14,29 @@ import java.util.Collection;
  * be created.
  */
 public final class DomainNameLabelScopeTypes extends ExpandableStringEnum<DomainNameLabelScopeTypes> {
-    /** Static value TenantReuse for DomainNameLabelScopeTypes. */
+    /**
+     * Static value TenantReuse for DomainNameLabelScopeTypes.
+     */
     public static final DomainNameLabelScopeTypes TENANT_REUSE = fromString("TenantReuse");
 
-    /** Static value SubscriptionReuse for DomainNameLabelScopeTypes. */
+    /**
+     * Static value SubscriptionReuse for DomainNameLabelScopeTypes.
+     */
     public static final DomainNameLabelScopeTypes SUBSCRIPTION_REUSE = fromString("SubscriptionReuse");
 
-    /** Static value ResourceGroupReuse for DomainNameLabelScopeTypes. */
+    /**
+     * Static value ResourceGroupReuse for DomainNameLabelScopeTypes.
+     */
     public static final DomainNameLabelScopeTypes RESOURCE_GROUP_REUSE = fromString("ResourceGroupReuse");
 
-    /** Static value NoReuse for DomainNameLabelScopeTypes. */
+    /**
+     * Static value NoReuse for DomainNameLabelScopeTypes.
+     */
     public static final DomainNameLabelScopeTypes NO_REUSE = fromString("NoReuse");
 
     /**
      * Creates a new instance of DomainNameLabelScopeTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,7 +45,7 @@ public final class DomainNameLabelScopeTypes extends ExpandableStringEnum<Domain
 
     /**
      * Creates or finds a DomainNameLabelScopeTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DomainNameLabelScopeTypes.
      */
@@ -48,7 +56,7 @@ public final class DomainNameLabelScopeTypes extends ExpandableStringEnum<Domain
 
     /**
      * Gets known DomainNameLabelScopeTypes values.
-     *
+     * 
      * @return known DomainNameLabelScopeTypes values.
      */
     public static Collection<DomainNameLabelScopeTypes> values() {

@@ -13,7 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Notebook. */
+/**
+ * Notebook.
+ */
 @Fluent
 public final class Notebook {
     /*
@@ -73,14 +75,18 @@ public final class Notebook {
     /*
      * Notebook.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of Notebook class. */
-    public Notebook() {}
+    /**
+     * Creates an instance of Notebook class.
+     */
+    public Notebook() {
+    }
 
     /**
      * Get the description property: The description of the notebook.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -89,7 +95,7 @@ public final class Notebook {
 
     /**
      * Set the description property: The description of the notebook.
-     *
+     * 
      * @param description the description value to set.
      * @return the Notebook object itself.
      */
@@ -100,7 +106,7 @@ public final class Notebook {
 
     /**
      * Get the bigDataPool property: Big data pool reference.
-     *
+     * 
      * @return the bigDataPool value.
      */
     public BigDataPoolReference getBigDataPool() {
@@ -109,7 +115,7 @@ public final class Notebook {
 
     /**
      * Set the bigDataPool property: Big data pool reference.
-     *
+     * 
      * @param bigDataPool the bigDataPool value to set.
      * @return the Notebook object itself.
      */
@@ -120,7 +126,7 @@ public final class Notebook {
 
     /**
      * Get the targetSparkConfiguration property: The spark configuration of the spark job.
-     *
+     * 
      * @return the targetSparkConfiguration value.
      */
     public SparkConfigurationReference getTargetSparkConfiguration() {
@@ -129,7 +135,7 @@ public final class Notebook {
 
     /**
      * Set the targetSparkConfiguration property: The spark configuration of the spark job.
-     *
+     * 
      * @param targetSparkConfiguration the targetSparkConfiguration value to set.
      * @return the Notebook object itself.
      */
@@ -140,7 +146,7 @@ public final class Notebook {
 
     /**
      * Get the sessionProperties property: Session properties.
-     *
+     * 
      * @return the sessionProperties value.
      */
     public NotebookSessionProperties getSessionProperties() {
@@ -149,7 +155,7 @@ public final class Notebook {
 
     /**
      * Set the sessionProperties property: Session properties.
-     *
+     * 
      * @param sessionProperties the sessionProperties value to set.
      * @return the Notebook object itself.
      */
@@ -160,7 +166,7 @@ public final class Notebook {
 
     /**
      * Get the metadata property: Notebook root-level metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public NotebookMetadata getMetadata() {
@@ -169,7 +175,7 @@ public final class Notebook {
 
     /**
      * Set the metadata property: Notebook root-level metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the Notebook object itself.
      */
@@ -181,7 +187,7 @@ public final class Notebook {
     /**
      * Get the nbformat property: Notebook format (major number). Incremented between backwards incompatible changes to
      * the notebook format.
-     *
+     * 
      * @return the nbformat value.
      */
     public int getNbformat() {
@@ -191,7 +197,7 @@ public final class Notebook {
     /**
      * Set the nbformat property: Notebook format (major number). Incremented between backwards incompatible changes to
      * the notebook format.
-     *
+     * 
      * @param nbformat the nbformat value to set.
      * @return the Notebook object itself.
      */
@@ -203,7 +209,7 @@ public final class Notebook {
     /**
      * Get the nbformatMinor property: Notebook format (minor number). Incremented for backward compatible changes to
      * the notebook format.
-     *
+     * 
      * @return the nbformatMinor value.
      */
     public int getNbformatMinor() {
@@ -213,7 +219,7 @@ public final class Notebook {
     /**
      * Set the nbformatMinor property: Notebook format (minor number). Incremented for backward compatible changes to
      * the notebook format.
-     *
+     * 
      * @param nbformatMinor the nbformatMinor value to set.
      * @return the Notebook object itself.
      */
@@ -224,7 +230,7 @@ public final class Notebook {
 
     /**
      * Get the cells property: Array of cells of the current notebook.
-     *
+     * 
      * @return the cells value.
      */
     public List<NotebookCell> getCells() {
@@ -233,7 +239,7 @@ public final class Notebook {
 
     /**
      * Set the cells property: Array of cells of the current notebook.
-     *
+     * 
      * @param cells the cells value to set.
      * @return the Notebook object itself.
      */
@@ -245,7 +251,7 @@ public final class Notebook {
     /**
      * Get the folder property: The folder that this notebook is in. If not specified, this notebook will appear at the
      * root level.
-     *
+     * 
      * @return the folder value.
      */
     public NotebookFolder getFolder() {
@@ -255,7 +261,7 @@ public final class Notebook {
     /**
      * Set the folder property: The folder that this notebook is in. If not specified, this notebook will appear at the
      * root level.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the Notebook object itself.
      */
@@ -266,7 +272,7 @@ public final class Notebook {
 
     /**
      * Get the additionalProperties property: Notebook.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -276,7 +282,7 @@ public final class Notebook {
 
     /**
      * Set the additionalProperties property: Notebook.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the Notebook object itself.
      */

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Radius Server Settings. */
+/**
+ * Radius Server Settings.
+ */
 @Fluent
 public final class RadiusServer {
     /*
@@ -29,13 +31,15 @@ public final class RadiusServer {
     @JsonProperty(value = "radiusServerSecret")
     private String radiusServerSecret;
 
-    /** Creates an instance of RadiusServer class. */
+    /**
+     * Creates an instance of RadiusServer class.
+     */
     public RadiusServer() {
     }
 
     /**
      * Get the radiusServerAddress property: The address of this radius server.
-     *
+     * 
      * @return the radiusServerAddress value.
      */
     public String radiusServerAddress() {
@@ -44,7 +48,7 @@ public final class RadiusServer {
 
     /**
      * Set the radiusServerAddress property: The address of this radius server.
-     *
+     * 
      * @param radiusServerAddress the radiusServerAddress value to set.
      * @return the RadiusServer object itself.
      */
@@ -55,7 +59,7 @@ public final class RadiusServer {
 
     /**
      * Get the radiusServerScore property: The initial score assigned to this radius server.
-     *
+     * 
      * @return the radiusServerScore value.
      */
     public Long radiusServerScore() {
@@ -64,7 +68,7 @@ public final class RadiusServer {
 
     /**
      * Set the radiusServerScore property: The initial score assigned to this radius server.
-     *
+     * 
      * @param radiusServerScore the radiusServerScore value to set.
      * @return the RadiusServer object itself.
      */
@@ -75,7 +79,7 @@ public final class RadiusServer {
 
     /**
      * Get the radiusServerSecret property: The secret used for this radius server.
-     *
+     * 
      * @return the radiusServerSecret value.
      */
     public String radiusServerSecret() {
@@ -84,7 +88,7 @@ public final class RadiusServer {
 
     /**
      * Set the radiusServerSecret property: The secret used for this radius server.
-     *
+     * 
      * @param radiusServerSecret the radiusServerSecret value to set.
      * @return the RadiusServer object itself.
      */
@@ -95,15 +99,13 @@ public final class RadiusServer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (radiusServerAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property radiusServerAddress in model RadiusServer"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property radiusServerAddress in model RadiusServer"));
         }
     }
 

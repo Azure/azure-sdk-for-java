@@ -7,14 +7,17 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration parameters used for performing automatic OS upgrade. */
+/**
+ * The configuration parameters used for performing automatic OS upgrade.
+ */
 @Fluent
 public final class AutomaticOSUpgradePolicy {
     /*
      * Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a
      * newer version of the OS image becomes available. Default value is false. If this is set to true for Windows
      * based scale sets,
-     * [enableAutomaticUpdates](https://docs.microsoft.com/dotnet/api/microsoft.azure.management.compute.models.windowsconfiguration.enableautomaticupdates?view=azure-dotnet)
+     * [enableAutomaticUpdates](https://docs.microsoft.com/dotnet/api/microsoft.azure.management.compute.models.
+     * windowsconfiguration.enableautomaticupdates?view=azure-dotnet)
      * is automatically set to false and cannot be set to true.
      */
     @JsonProperty(value = "enableAutomaticOSUpgrade")
@@ -33,17 +36,28 @@ public final class AutomaticOSUpgradePolicy {
     @JsonProperty(value = "useRollingUpgradePolicy")
     private Boolean useRollingUpgradePolicy;
 
-    /** Creates an instance of AutomaticOSUpgradePolicy class. */
+    /*
+     * Indicates whether Auto OS Upgrade should undergo deferral. Deferred OS upgrades will send advanced notifications
+     * on a per-VM basis that an OS upgrade from rolling upgrades is incoming, via the IMDS tag
+     * 'Platform.PendingOSUpgrade'. The upgrade then defers until the upgrade is approved via an ApproveRollingUpgrade
+     * call.
+     */
+    @JsonProperty(value = "osRollingUpgradeDeferral")
+    private Boolean osRollingUpgradeDeferral;
+
+    /**
+     * Creates an instance of AutomaticOSUpgradePolicy class.
+     */
     public AutomaticOSUpgradePolicy() {
     }
 
     /**
-     * Get the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
-     * set instances in a rolling fashion when a newer version of the OS image becomes available. Default value is
-     * false. If this is set to true for Windows based scale sets,
+     * Get the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to
+     * scale set instances in a rolling fashion when a newer version of the OS image becomes available. Default value
+     * is false. If this is set to true for Windows based scale sets,
      * [enableAutomaticUpdates](https://docs.microsoft.com/dotnet/api/microsoft.azure.management.compute.models.windowsconfiguration.enableautomaticupdates?view=azure-dotnet)
      * is automatically set to false and cannot be set to true.
-     *
+     * 
      * @return the enableAutomaticOSUpgrade value.
      */
     public Boolean enableAutomaticOSUpgrade() {
@@ -51,12 +65,12 @@ public final class AutomaticOSUpgradePolicy {
     }
 
     /**
-     * Set the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
-     * set instances in a rolling fashion when a newer version of the OS image becomes available. Default value is
-     * false. If this is set to true for Windows based scale sets,
+     * Set the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to
+     * scale set instances in a rolling fashion when a newer version of the OS image becomes available. Default value
+     * is false. If this is set to true for Windows based scale sets,
      * [enableAutomaticUpdates](https://docs.microsoft.com/dotnet/api/microsoft.azure.management.compute.models.windowsconfiguration.enableautomaticupdates?view=azure-dotnet)
      * is automatically set to false and cannot be set to true.
-     *
+     * 
      * @param enableAutomaticOSUpgrade the enableAutomaticOSUpgrade value to set.
      * @return the AutomaticOSUpgradePolicy object itself.
      */
@@ -66,9 +80,9 @@ public final class AutomaticOSUpgradePolicy {
     }
 
     /**
-     * Get the disableAutomaticRollback property: Whether OS image rollback feature should be disabled. Default value is
-     * false.
-     *
+     * Get the disableAutomaticRollback property: Whether OS image rollback feature should be disabled. Default value
+     * is false.
+     * 
      * @return the disableAutomaticRollback value.
      */
     public Boolean disableAutomaticRollback() {
@@ -76,9 +90,9 @@ public final class AutomaticOSUpgradePolicy {
     }
 
     /**
-     * Set the disableAutomaticRollback property: Whether OS image rollback feature should be disabled. Default value is
-     * false.
-     *
+     * Set the disableAutomaticRollback property: Whether OS image rollback feature should be disabled. Default value
+     * is false.
+     * 
      * @param disableAutomaticRollback the disableAutomaticRollback value to set.
      * @return the AutomaticOSUpgradePolicy object itself.
      */
@@ -91,7 +105,7 @@ public final class AutomaticOSUpgradePolicy {
      * Get the useRollingUpgradePolicy property: Indicates whether rolling upgrade policy should be used during Auto OS
      * Upgrade. Default value is false. Auto OS Upgrade will fallback to the default policy if no policy is defined on
      * the VMSS.
-     *
+     * 
      * @return the useRollingUpgradePolicy value.
      */
     public Boolean useRollingUpgradePolicy() {
@@ -102,7 +116,7 @@ public final class AutomaticOSUpgradePolicy {
      * Set the useRollingUpgradePolicy property: Indicates whether rolling upgrade policy should be used during Auto OS
      * Upgrade. Default value is false. Auto OS Upgrade will fallback to the default policy if no policy is defined on
      * the VMSS.
-     *
+     * 
      * @param useRollingUpgradePolicy the useRollingUpgradePolicy value to set.
      * @return the AutomaticOSUpgradePolicy object itself.
      */
@@ -112,8 +126,34 @@ public final class AutomaticOSUpgradePolicy {
     }
 
     /**
+     * Get the osRollingUpgradeDeferral property: Indicates whether Auto OS Upgrade should undergo deferral. Deferred
+     * OS upgrades will send advanced notifications on a per-VM basis that an OS upgrade from rolling upgrades is
+     * incoming, via the IMDS tag 'Platform.PendingOSUpgrade'. The upgrade then defers until the upgrade is approved
+     * via an ApproveRollingUpgrade call.
+     * 
+     * @return the osRollingUpgradeDeferral value.
+     */
+    public Boolean osRollingUpgradeDeferral() {
+        return this.osRollingUpgradeDeferral;
+    }
+
+    /**
+     * Set the osRollingUpgradeDeferral property: Indicates whether Auto OS Upgrade should undergo deferral. Deferred
+     * OS upgrades will send advanced notifications on a per-VM basis that an OS upgrade from rolling upgrades is
+     * incoming, via the IMDS tag 'Platform.PendingOSUpgrade'. The upgrade then defers until the upgrade is approved
+     * via an ApproveRollingUpgrade call.
+     * 
+     * @param osRollingUpgradeDeferral the osRollingUpgradeDeferral value to set.
+     * @return the AutomaticOSUpgradePolicy object itself.
+     */
+    public AutomaticOSUpgradePolicy withOsRollingUpgradeDeferral(Boolean osRollingUpgradeDeferral) {
+        this.osRollingUpgradeDeferral = osRollingUpgradeDeferral;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
