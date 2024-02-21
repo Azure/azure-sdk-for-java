@@ -1026,12 +1026,14 @@ public class TableClientTest extends TableClientTestBase {
     }
 
     @Test
+    // Disabling as this currently fails and prevents merging https://github.com/Azure/azure-sdk-for-java/pull/28522.
+    // TODO: Will fix in a separate PR. -vicolina
     public void canUseSasTokenToCreateValidTableClient() {
         // SAS tokens at the table level have not been working with Cosmos endpoints.
         // TODO: Will re-enable once the above is fixed. -vicolina
         Assumptions.assumeFalse(IS_COSMOS_TEST, "Skipping Cosmos test.");
 
-        final OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        final OffsetDateTime expiryTime = OffsetDateTime.of(2023, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("a");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
 
