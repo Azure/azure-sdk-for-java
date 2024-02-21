@@ -5,10 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The SentimentResponse model. */
@@ -17,6 +14,7 @@ public final class SentimentResponse extends PreBuiltResult {
     /*
      * Sentiment analysis per document.
      */
+    @JsonProperty(value = "documents", required = true)
     private List<SentimentResponseDocumentsItem> documents;
 
     /** Creates an instance of SentimentResponse class. */
@@ -61,52 +59,5 @@ public final class SentimentResponse extends PreBuiltResult {
     public SentimentResponse setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("errors", getErrors(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("modelVersion", getModelVersion());
-        jsonWriter.writeJsonField("statistics", getStatistics());
-        jsonWriter.writeArrayField("documents", this.documents, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SentimentResponse from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SentimentResponse if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SentimentResponse.
-     */
-    public static SentimentResponse fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SentimentResponse deserializedSentimentResponse = new SentimentResponse();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("errors".equals(fieldName)) {
-                            List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
-                            deserializedSentimentResponse.setErrors(errors);
-                        } else if ("modelVersion".equals(fieldName)) {
-                            deserializedSentimentResponse.setModelVersion(reader.getString());
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedSentimentResponse.setStatistics(RequestStatistics.fromJson(reader));
-                        } else if ("documents".equals(fieldName)) {
-                            List<SentimentResponseDocumentsItem> documents =
-                                    reader.readArray(reader1 -> SentimentResponseDocumentsItem.fromJson(reader1));
-                            deserializedSentimentResponse.documents = documents;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedSentimentResponse;
-                });
     }
 }

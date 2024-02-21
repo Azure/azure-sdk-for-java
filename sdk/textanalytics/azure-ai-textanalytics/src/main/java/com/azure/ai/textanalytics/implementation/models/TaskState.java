@@ -5,25 +5,22 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 /** The TaskState model. */
 @Fluent
-public class TaskState implements JsonSerializable<TaskState> {
+public class TaskState {
     /*
      * The lastUpdateDateTime property.
      */
+    @JsonProperty(value = "lastUpdateDateTime", required = true)
     private OffsetDateTime lastUpdateDateTime;
 
     /*
      * The status property.
      */
+    @JsonProperty(value = "status", required = true)
     private State status;
 
     /** Creates an instance of TaskState class. */
@@ -67,45 +64,5 @@ public class TaskState implements JsonSerializable<TaskState> {
     public TaskState setStatus(State status) {
         this.status = status;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("lastUpdateDateTime", Objects.toString(this.lastUpdateDateTime, null));
-        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TaskState from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TaskState if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TaskState.
-     */
-    public static TaskState fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    TaskState deserializedTaskState = new TaskState();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("lastUpdateDateTime".equals(fieldName)) {
-                            deserializedTaskState.lastUpdateDateTime =
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                        } else if ("status".equals(fieldName)) {
-                            deserializedTaskState.status = State.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedTaskState;
-                });
     }
 }

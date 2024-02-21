@@ -5,56 +5,59 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Objects;
 
 /** The JobState model. */
 @Fluent
-public class JobState implements JsonSerializable<JobState> {
+public class JobState {
     /*
      * The displayName property.
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The createdDateTime property.
      */
+    @JsonProperty(value = "createdDateTime", required = true)
     private OffsetDateTime createdDateTime;
 
     /*
      * The expirationDateTime property.
      */
+    @JsonProperty(value = "expirationDateTime")
     private OffsetDateTime expirationDateTime;
 
     /*
      * The jobId property.
      */
+    @JsonProperty(value = "jobId", required = true)
     private String jobId;
 
     /*
      * The lastUpdatedDateTime property.
      */
+    @JsonProperty(value = "lastUpdatedDateTime", required = true)
     private OffsetDateTime lastUpdatedDateTime;
 
     /*
      * The status property.
      */
+    @JsonProperty(value = "status", required = true)
     private State status;
 
     /*
      * The errors property.
      */
+    @JsonProperty(value = "errors")
     private List<Error> errors;
 
     /*
      * The nextLink property.
      */
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /** Creates an instance of JobState class. */
@@ -218,68 +221,5 @@ public class JobState implements JsonSerializable<JobState> {
     public JobState setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("createdDateTime", Objects.toString(this.createdDateTime, null));
-        jsonWriter.writeStringField("jobId", this.jobId);
-        jsonWriter.writeStringField("lastUpdatedDateTime", Objects.toString(this.lastUpdatedDateTime, null));
-        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
-        jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeStringField("expirationDateTime", Objects.toString(this.expirationDateTime, null));
-        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("nextLink", this.nextLink);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of JobState from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of JobState if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the JobState.
-     */
-    public static JobState fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    JobState deserializedJobState = new JobState();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("createdDateTime".equals(fieldName)) {
-                            deserializedJobState.createdDateTime =
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                        } else if ("jobId".equals(fieldName)) {
-                            deserializedJobState.jobId = reader.getString();
-                        } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                            deserializedJobState.lastUpdatedDateTime =
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                        } else if ("status".equals(fieldName)) {
-                            deserializedJobState.status = State.fromString(reader.getString());
-                        } else if ("displayName".equals(fieldName)) {
-                            deserializedJobState.displayName = reader.getString();
-                        } else if ("expirationDateTime".equals(fieldName)) {
-                            deserializedJobState.expirationDateTime =
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                        } else if ("errors".equals(fieldName)) {
-                            List<Error> errors = reader.readArray(reader1 -> Error.fromJson(reader1));
-                            deserializedJobState.errors = errors;
-                        } else if ("nextLink".equals(fieldName)) {
-                            deserializedJobState.nextLink = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedJobState;
-                });
     }
 }
