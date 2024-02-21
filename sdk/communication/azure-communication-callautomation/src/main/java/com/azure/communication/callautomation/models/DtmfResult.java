@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 /** The DtmfResult model. */
 @Fluent
 public final class DtmfResult extends RecognizeResult {
+
     /*
      * The tones property.
      */
@@ -39,9 +40,10 @@ public final class DtmfResult extends RecognizeResult {
     }
 
     /**
-     * Set the tones property: The tones property.
+     * Converts the incoming DtmfTone list to a sequential string
+     * e.g. the list {DtmfTone.TWO, DtmfTone.THREE, DtmfTone.POUND} will convert into "23#"
      *
-     * @return the DtmfResult object itself.
+     * @return string sequence of Dtmf tones
      */
     public String convertToString() {
         if (this.dtmfTones == null) {
