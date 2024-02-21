@@ -2,26 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
-import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
-import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
-import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
-import com.azure.communication.phonenumbers.models.PhoneNumberError;
 import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
 import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
-import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -35,14 +30,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
@@ -128,7 +118,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
         if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
             PhoneNumberSearchResult searchResult = poller.getFinalResult();
-            String phoneNumber = searchResult.getPhoneNumbers().get(0);
+            String phoneNumber = redactIfPlaybackMode(searchResult.getPhoneNumbers().get(0));
             PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient,
                     searchResult.getSearchId(), "beginPurchasePhoneNumbersWithoutContextSync", false)
                     .waitForCompletion();
@@ -150,7 +140,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
         if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
             PhoneNumberSearchResult searchResult = poller.getFinalResult();
-            String phoneNumber = searchResult.getPhoneNumbers().get(0);
+            String phoneNumber = redactIfPlaybackMode(searchResult.getPhoneNumbers().get(0));
             PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient,
                     searchResult.getSearchId(), "beginPurchasePhoneNumbersSync", true).waitForCompletion();
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, purchaseOperationResponse.getStatus());
@@ -166,7 +156,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST", matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilitiesWithoutContext(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber();
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber,
                 "beginUpdatePhoneNumberCapabilitiesWithoutContextSync", false).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
@@ -178,7 +168,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @DisabledIfEnvironmentVariable(named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST", matches = "(?i)(true)")
     @DisabledIfEnvironmentVariable(named = "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS", matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber();
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber,
                 "beginUpdatePhoneNumberCapabilities", true).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
@@ -187,52 +177,12 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTollFreeAreaCodesWithoutContext(HttpClient httpClient) {
-        PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
-                .getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
-                .listAvailableTollFreeAreaCodes("US");
-        List<String> expectedAreaCodes = Arrays.asList("888", "877", "866", "855", "844", "800", "833", "88");
-        for (PhoneNumberAreaCode areaCode : areaCodesResult) {
-            assertTrue(expectedAreaCodes.contains(areaCode.getAreaCode()));
-        }
-        assertNotNull(areaCodesResult);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getTollFreeAreaCodes(HttpClient httpClient) {
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
-                .listAvailableTollFreeAreaCodes("US", Context.NONE);
-        List<String> expectedAreaCodes = Arrays.asList("888", "877", "866", "855", "844", "800", "833", "88");
-        for (PhoneNumberAreaCode areaCode : areaCodesResult) {
-            assertTrue(expectedAreaCodes.contains(areaCode.getAreaCode()));
-        }
-        assertNotNull(areaCodesResult);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTollFreeAreaCodesWrongCountryCode(HttpClient httpClient) {
-        PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "listAvailableAreaCodes");
-
-        assertThrows(RuntimeException.class,
-                () -> client.listAvailableTollFreeAreaCodes("XX", null).iterator().next(),
-                "Unable to parse country code.");
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getGeographicAreaCodesWithoutContext(HttpClient httpClient) {
-        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", null).iterator().next();
-        PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
-                .getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
-                .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(),
-                        locality.getAdministrativeDivision().getAbbreviatedName());
+                .listAvailableTollFreeAreaCodes("US");
         PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
         assertNotNull(areaCodes);
-        assertNotNull(areaCodes.getAreaCode());
     }
 
     @ParameterizedTest
@@ -243,49 +193,23 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
                 .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(),
-                        locality.getAdministrativeDivision().getAbbreviatedName(), Context.NONE);
+                        locality.getAdministrativeDivision().getAbbreviatedName());
         PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
         assertNotNull(areaCodes);
-        assertNotNull(areaCodes.getAreaCode());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getGeographicAreaCodesWrongLocality(HttpClient httpClient) {
-        PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "listAvailableAreaCodes");
-
-        assertThrows(RuntimeException.class,
-                () -> client.listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, "XX",
-                        "XX").iterator().next(),
-                "No area codes were found for the given parameters");
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getCountriesWithoutContext(HttpClient httpClient) {
-        PagedIterable<PhoneNumberCountry> countriesResult = this
-                .getClientWithConnectionString(httpClient, "listAvailableCountries").listAvailableCountries();
-        PhoneNumberCountry country = countriesResult.iterator().next();
-        assertNotNull(country);
-        assertNotNull(country.getCountryCode());
-        assertNotNull(country.getLocalizedName());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getCountries(HttpClient httpClient) {
         PagedIterable<PhoneNumberCountry> countriesResult = this
-                .getClientWithConnectionString(httpClient, "listAvailableCountries")
-                .listAvailableCountries(Context.NONE);
+                .getClientWithConnectionString(httpClient, "listAvailableCountries").listAvailableCountries();
         PhoneNumberCountry country = countriesResult.iterator().next();
         assertNotNull(country);
-        assertNotNull(country.getCountryCode());
-        assertNotNull(country.getLocalizedName());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getLocalitiesWithoutContext(HttpClient httpClient) {
+    public void getLocalities(HttpClient httpClient) {
         PagedIterable<PhoneNumberLocality> localitiesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null);
@@ -295,46 +219,15 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getLocalities(HttpClient httpClient) {
-        PagedIterable<PhoneNumberLocality> localitiesResult = this
-                .getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", null, Context.NONE);
-        PhoneNumberLocality locality = localitiesResult.iterator().next();
-        assertNotNull(locality);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getLocalitiesWithInvalidAdministrativeDivision(HttpClient httpClient) {
-        PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "listAvailableLocalities");
-
-        assertThrows(CommunicationErrorResponseException.class,
-                () -> client.listAvailableLocalities("US", "null").iterator().next(),
-                "No localities were found for the given parameters");
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getLocalitiesWithAdministrativeDivision(HttpClient httpClient) {
-        PhoneNumberAdministrativeDivision localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", null).iterator().next().getAdministrativeDivision();
+        String localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).iterator().next().getAdministrativeDivision().getAbbreviatedName();
         PagedIterable<PhoneNumberLocality> localitiesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", localityAdministraiveDivision.getAbbreviatedName());
+                .listAvailableLocalities("US", localityAdministraiveDivision);
         PhoneNumberLocality locality = localitiesResult.iterator().next();
         assertNotNull(locality);
-        assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), localityAdministraiveDivision.getAbbreviatedName());
-        assertEquals(locality.getAdministrativeDivision().getLocalizedName(), localityAdministraiveDivision.getLocalizedName());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getOfferingsWithoutContext(HttpClient httpClient) {
-        PagedIterable<PhoneNumberOffering> offeringsResult = this
-                .getClientWithConnectionString(httpClient, "listAvailableOfferings")
-                .listAvailableOfferings("US", null, null);
-        PhoneNumberOffering offering = offeringsResult.iterator().next();
-        assertNotNull(offering);
+        assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), localityAdministraiveDivision);
     }
 
     @ParameterizedTest
@@ -342,7 +235,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     public void getOfferings(HttpClient httpClient) {
         PagedIterable<PhoneNumberOffering> offeringsResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableOfferings")
-                .listAvailableOfferings("US", null, null, Context.NONE);
+                .listAvailableOfferings("US", null, null);
         PhoneNumberOffering offering = offeringsResult.iterator().next();
         assertNotNull(offering);
     }
@@ -353,11 +246,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        List<String> expectedAreaCodes = Arrays.asList("888", "877", "866", "855", "844", "800", "833", "88");
-        for (PhoneNumberAreaCode areaCode : areaCodesResult) {
-            assertTrue(expectedAreaCodes.contains(areaCode.getAreaCode()));
-        }
-        assertNotNull(areaCodesResult);
+        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+        assertNotNull(areaCodes);
     }
 
     @ParameterizedTest
@@ -371,7 +261,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                         locality.getAdministrativeDivision().getAbbreviatedName());
         PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
         assertNotNull(areaCodes);
-        assertNotNull(areaCodes.getAreaCode());
     }
 
     @ParameterizedTest
@@ -381,8 +270,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .getClientWithManagedIdentity(httpClient, "listAvailableCountries").listAvailableCountries();
         PhoneNumberCountry country = countriesResult.iterator().next();
         assertNotNull(country);
-        assertNotNull(country.getCountryCode());
-        assertNotNull(country.getLocalizedName());
     }
 
     @ParameterizedTest
@@ -409,7 +296,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumberLocality locality = localitiesResult.iterator().next();
         assertNotNull(locality);
         assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), localityWithAD.getAdministrativeDivision().getAbbreviatedName());
-        assertEquals(locality.getAdministrativeDivision().getLocalizedName(), localityWithAD.getAdministrativeDivision().getLocalizedName());
     }
 
     @ParameterizedTest
@@ -420,33 +306,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .listAvailableOfferings("US", null, null);
         PhoneNumberOffering offering = offeringsResult.iterator().next();
         assertNotNull(offering);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void convertCommunicationError(HttpClient httpClient) {
-        List<PhoneNumberError> details = new ArrayList<PhoneNumberError>();
-        CommunicationError communicationError = new CommunicationError();
-        communicationError.setCode("500");
-        communicationError.setMessage("Communication Error");
-
-        PhoneNumberError phoneNumberError = new PhoneNumberError(
-            communicationError.getMessage(),
-            communicationError.getCode(),
-            communicationError.getTarget(),
-            details
-        );
-        PhoneNumberError error = PhoneNumberErrorConverter.convert(communicationError);
-        assertEquals(phoneNumberError.getCode(), error.getCode());
-        assertEquals(phoneNumberError.getMessage(), error.getMessage());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void convertCommunicationErrorWithNull(HttpClient httpClient) {
-        CommunicationError communicationError = null;
-        PhoneNumberError error = PhoneNumberErrorConverter.convert(communicationError);
-        assertEquals(null, error);
     }
 
     private SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(

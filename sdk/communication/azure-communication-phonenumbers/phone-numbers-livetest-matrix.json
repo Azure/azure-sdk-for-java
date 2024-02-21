@@ -14,15 +14,13 @@
             "macos-11": {
                 "OSVmImage": "macos-11",
                 "Pool": "Azure Pipelines",
-                "JavaTestVersion": "1.21",
+                "JavaTestVersion": "1.11",
                 "AZURE_TEST_HTTP_CLIENTS": "netty",
                 "AZURE_TEST_AGENT": "MACOS_1015_JAVA11"
             }
         },
         "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
-        "SKIP_SIP_ROUTING_LIVE_TESTS": "false",
         "TestFromSource": false,
-        "RunAggregateReports": false,
         "TestGoals": "surefire:test",
         "TestOptions": ""
     },
@@ -34,14 +32,12 @@
                     "Pool": "azsdk-pool-mms-ubuntu-2004-general"
                 }
             },
-            "JavaTestVersion": "1.21",
+            "JavaTestVersion": "1.11",
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": true,
             "TestGoals": "verify",
-            "RunAggregateReports": false,
             "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
             "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
-            "SKIP_SIP_ROUTING_LIVE_TESTS": "false",
             "AZURE_TEST_AGENT": "UBUNTU_2004_JAVA11"
         },
         {
@@ -51,14 +47,12 @@
                     "Pool": "azsdk-pool-mms-win-2022-general"
                 }
             },
-            "JavaTestVersion": "1.21",
-            "RunAggregateReports": true,
+            "JavaTestVersion": "1.11",
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": false,
             "TestGoals": "verify",
             "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
             "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
-            "SKIP_SIP_ROUTING_LIVE_TESTS": "false",
             "AZURE_TEST_AGENT": "WINDOWS_2019_JAVA11"
         }
     ]
