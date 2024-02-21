@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-email</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-email;current} -->
+  <version>1.0.9</version> <!-- {x-version-update;com.azure:azure-communication-email;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Communications SDK for Email</name>
@@ -46,26 +46,23 @@
     <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.45</jacoco.min.branchcoverage>
     <jacoco.skip>true</jacoco.skip>
-    <javaModulesSurefireArgLine>
-      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.46.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.45.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.11</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.2.14</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -78,13 +75,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.23.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.22.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.11.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -96,7 +93,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.18</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.11.17</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -110,10 +107,10 @@
         <configuration>
           <codesnippetGlob>**/src/samples/java/**/*.java</codesnippetGlob>
           <codesnippetRootDirectory>${project.basedir}/src/samples/java</codesnippetRootDirectory>
-          <readmePath>${project.basedir}/README.md</readmePath>
           <sourceGlob>**/src/main/java/**/*.java</sourceGlob>
           <sourceRootDirectory>${project.basedir}/src/main/java</sourceRootDirectory>
           <includeSource>true</includeSource>
+          <readmePath>${project.basedir}/README.md</readmePath>
           <includeReadme>true</includeReadme>
           <maxLineLength>120</maxLineLength>
           <skip>false</skip>
