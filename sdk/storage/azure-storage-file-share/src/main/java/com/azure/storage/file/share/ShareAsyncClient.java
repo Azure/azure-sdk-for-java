@@ -375,8 +375,7 @@ public class ShareAsyncClient {
         enabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
         return azureFileStorageClient.getShares()
             .createWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
-                options.getAccessTier(), enabledProtocol, options.getRootSquash(),
-                options.isSnapshotVirtualDirectoryAccessEnabled(), context)
+                options.getAccessTier(), enabledProtocol, options.getRootSquash(), context)
             .map(this::mapToShareInfoResponse);
     }
 
@@ -934,8 +933,7 @@ public class ShareAsyncClient {
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares().setPropertiesWithResponseAsync(shareName, null,
-            options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
-            options.isSnapshotVirtualDirectoryAccessEnabled(), context)
+            options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(), context)
             .map(this::mapToShareInfoResponse);
     }
 
@@ -2310,8 +2308,7 @@ public class ShareAsyncClient {
             .setAccessTierChangeTime(headers.getXMsAccessTierChangeTime())
             .setAccessTierTransitionState(headers.getXMsAccessTierTransitionState())
             .setProtocols(ModelHelper.parseShareProtocols(headers.getXMsEnabledProtocols()))
-            .setRootSquash(headers.getXMsRootSquash())
-            .setEnableSnapshotVirtualDirectoryAccess(headers.isXMsEnableSnapshotVirtualDirectoryAccess());
+            .setRootSquash(headers.getXMsRootSquash());
 
         return new SimpleResponse<>(response, shareProperties);
     }
