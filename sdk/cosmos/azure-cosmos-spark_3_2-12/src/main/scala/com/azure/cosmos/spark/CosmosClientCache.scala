@@ -277,7 +277,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           builder = builder.directMode(directConfig)
 
           if (cosmosClientConfiguration.proactiveConnectionInitialization.isDefined &&
-            !cosmosClientConfiguration.proactiveConnectionInitialization.get.isBlank) {
+            !cosmosClientConfiguration.proactiveConnectionInitialization.get.isEmpty) {
             val containerIdentities = CosmosAccountConfig.parseProactiveConnectionInitConfigs(
               cosmosClientConfiguration.proactiveConnectionInitialization.get)
 
