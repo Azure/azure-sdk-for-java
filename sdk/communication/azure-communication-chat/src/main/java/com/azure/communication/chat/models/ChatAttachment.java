@@ -5,32 +5,30 @@ package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
 
-/**
- * An attachment in a chat message.
- */
+/** An attachment in a chat message. */
 @Fluent
 public final class ChatAttachment {
-    /**
+    /*
      * Id of the attachment
      */
     private final String id;
 
-    /**
+    /*
      * The type of attachment.
      */
     private final ChatAttachmentType attachmentType;
 
-    /**
+    /*
      * The name of the attachment content.
      */
     private String name;
 
-    /**
+    /*
      * The URL where the attachment can be downloaded
      */
     private String url;
 
-    /**
+    /*
      * The URL where the preview of attachment can be downloaded
      */
     private String previewUrl;
