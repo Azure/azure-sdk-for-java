@@ -1,5 +1,5 @@
 apiVersion: v2
-name: java-datalakestorage
+name: java-storage-datalake
 description: Stress tests for Java File Datalake Storage
 version: 0.1.1
 appVersion: v0.1

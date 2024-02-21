@@ -1,20 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.stress;
+package com.azure.storage.file.datalake.stress;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Context;
 import com.azure.perf.test.core.PerfStressTest;
-import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.stress.utils.TelemetryHelper;
-import com.azure.storage.stress.FaultInjectionProbabilities;
+import com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient;
+import com.azure.storage.file.datalake.DataLakeFileSystemClient;
+import com.azure.storage.file.datalake.DataLakeServiceAsyncClient;
+import com.azure.storage.file.datalake.DataLakeServiceClient;
+import com.azure.storage.file.datalake.DataLakeServiceClientBuilder;
+import com.azure.storage.file.datalake.stress.utils.TelemetryHelper;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
+import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
@@ -22,25 +22,25 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
-    private static final String CONTAINER_NAME = "stress-" + UUID.randomUUID();
+public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
+    private static final String FILE_SYSTEM_NAME = "stress-" + UUID.randomUUID();
     protected final TelemetryHelper telemetryHelper = new TelemetryHelper(this.getClass());
-    private final BlobServiceClient syncClient;
-    private final BlobServiceAsyncClient asyncClient;
-    private final BlobServiceAsyncClient asyncNoFaultClient;
-    private final BlobContainerClient syncContainerClient;
-    private final BlobContainerAsyncClient asyncContainerClient;
-    private final BlobContainerAsyncClient asyncNoFaultContainerClient;
+    private final DataLakeServiceClient syncClient;
+    private final DataLakeServiceAsyncClient asyncClient;
+    private final DataLakeServiceAsyncClient asyncNoFaultClient;
+    private final DataLakeFileSystemClient syncFileSystemClient;
+    private final DataLakeFileSystemAsyncClient asyncFileSystemClient;
+    private final DataLakeFileSystemAsyncClient asyncNoFaultFileSystemClient;
     private Instant startTime;
 
-    public BlobScenarioBase(TOptions options) {
+    public DataLakeScenarioBase(TOptions options) {
         super(options);
 
         String connectionString = options.getConnectionString();
 
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
-        BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilder()
+        DataLakeServiceClientBuilder clientBuilder = new DataLakeServiceClientBuilder()
             .connectionString(connectionString)
             .httpLogOptions(getLogOptions());
 
@@ -53,9 +53,9 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
 
         syncClient = clientBuilder.buildClient();
         asyncClient = clientBuilder.buildAsyncClient();
-        asyncNoFaultContainerClient = asyncNoFaultClient.getBlobContainerAsyncClient(CONTAINER_NAME);
-        syncContainerClient = syncClient.getBlobContainerClient(CONTAINER_NAME);
-        asyncContainerClient = asyncClient.getBlobContainerAsyncClient(CONTAINER_NAME);
+        asyncNoFaultFileSystemClient = asyncNoFaultClient.getFileSystemAsyncClient(FILE_SYSTEM_NAME);
+        syncFileSystemClient = syncClient.getFileSystemClient(FILE_SYSTEM_NAME);
+        asyncFileSystemClient = asyncClient.getFileSystemAsyncClient(FILE_SYSTEM_NAME);
     }
 
     @Override
@@ -63,14 +63,14 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
         startTime = Instant.now();
         telemetryHelper.recordStart(options);
         return super.globalSetupAsync()
-            .then(asyncNoFaultContainerClient.createIfNotExists())
+            .then(asyncNoFaultFileSystemClient.createIfNotExists())
             .then();
     }
 
     @Override
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
-        return asyncNoFaultContainerClient.deleteIfExists()
+        return asyncNoFaultFileSystemClient.deleteIfExists()
             .then(super.globalCleanupAsync());
     }
 
@@ -90,20 +90,20 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     protected abstract void runInternal(Context context) throws Exception;
     protected abstract Mono<Void> runInternalAsync(Context context);
 
-    protected BlobContainerClient getSyncContainerClient() {
-        return syncContainerClient;
+    protected DataLakeFileSystemClient getSyncFileSystemClient() {
+        return syncFileSystemClient;
     }
 
-    protected BlobContainerAsyncClient getAsyncContainerClient() {
-        return asyncContainerClient;
+    protected DataLakeFileSystemAsyncClient getAsyncFileSystemClient() {
+        return asyncFileSystemClient;
     }
 
-    protected BlobContainerAsyncClient getAsyncContainerClientNoFault() {
-        return asyncNoFaultContainerClient;
+    protected DataLakeFileSystemAsyncClient getAsyncFileSystemAsyncClientNoFault() {
+        return asyncNoFaultFileSystemClient;
     }
 
-    protected String generateBlobName() {
-        return "blob-" + UUID.randomUUID();
+    protected String generateFileName() {
+        return "datalake-" + UUID.randomUUID();
     }
 
     private static HttpLogOptions getLogOptions() {

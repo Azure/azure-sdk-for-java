@@ -12,6 +12,8 @@ public class StorageStressOptions extends PerfStressOptions {
     private boolean enableFaultInjection = false;
     @Parameter(names = { "--cs"}, description = "Storage connection string")
     private String connectionString = Configuration.getGlobalConfiguration().get("STORAGE_CONNECTION_STRING");
+    @Parameter(names = { "--requestFaulted" }, description = "Is request faulted")
+    private boolean isRequestFaulted = false;
 
     public boolean isFaultInjectionEnabled() {
         return enableFaultInjection;
@@ -19,5 +21,15 @@ public class StorageStressOptions extends PerfStressOptions {
 
     public String getConnectionString() {
         return connectionString;
+    }
+
+    /**
+     * If fault injection is enabled, this flag will be used to determine if the request should be faulted.
+     * If fault injection is not enabled, this flag will be ignored.
+     * True: The request will be faulted. False: The response will be faulted. Default is false.
+     * @return whether the request is faulted.
+     */
+    public boolean isRequestFaulted() {
+        return isRequestFaulted;
     }
 }
