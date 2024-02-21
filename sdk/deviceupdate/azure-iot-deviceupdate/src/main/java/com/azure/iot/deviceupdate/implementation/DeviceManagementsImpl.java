@@ -35,8 +35,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.PollingStrategyOptions;
-import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
 import java.time.Duration;
@@ -92,26 +90,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/deviceClasses")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeviceClassesSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -125,27 +103,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDeviceClass(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeviceClassSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("deviceClassId") String deviceClassId,
@@ -176,28 +133,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> updateDeviceClassSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") BinaryData deviceClassPatch,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Delete("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
@@ -211,27 +146,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDeviceClass(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Delete("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteDeviceClassSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("deviceClassId") String deviceClassId,
@@ -261,27 +175,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/deviceClasses/{deviceClassId}/installableUpdates")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listInstallableUpdatesForDeviceClassSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/devices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -295,26 +188,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDevices(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/deviceUpdate/{instanceId}/management/devices")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDevicesSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
@@ -343,27 +216,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/deviceUpdate/{instanceId}/management/devices:import")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> importDevicesSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData importType,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/devices/{deviceId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -377,27 +229,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDevice(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceId") String deviceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/deviceUpdate/{instanceId}/management/devices/{deviceId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeviceSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("deviceId") String deviceId,
@@ -428,28 +259,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/devices/{deviceId}/modules/{moduleId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeviceModuleSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("deviceId") String deviceId,
-                @PathParam("moduleId") String moduleId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/updateCompliance")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -463,26 +272,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getUpdateCompliance(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/deviceUpdate/{instanceId}/management/updateCompliance")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getUpdateComplianceSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
@@ -510,26 +299,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/groups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listGroupsSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -543,27 +312,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getGroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getGroupSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
@@ -593,27 +341,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/updateCompliance")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -627,27 +354,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getUpdateComplianceForGroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/updateCompliance")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getUpdateComplianceForGroupSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
@@ -677,27 +383,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/bestUpdates")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listBestUpdatesForGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -719,27 +404,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeploymentsForGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -753,28 +417,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDeployment(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeploymentSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
@@ -807,29 +449,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Put("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrUpdateDeploymentSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData deployment,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
@@ -843,28 +462,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDeployment(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteDeploymentSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
@@ -896,28 +493,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deployments/{deploymentId}/status")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeploymentStatusSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -931,27 +506,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDeviceClassSubgroupsForGroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeviceClassSubgroupsForGroupSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
@@ -982,28 +536,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeviceClassSubgroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
@@ -1017,28 +549,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDeviceClassSubgroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Delete("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteDeviceClassSubgroupSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
@@ -1071,29 +581,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/updateCompliance")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeviceClassSubgroupUpdateComplianceSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/bestUpdates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -1116,28 +603,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/bestUpdates")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getBestUpdatesForDeviceClassSubgroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -1151,28 +616,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDeploymentsForDeviceClassSubgroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeploymentsForDeviceClassSubgroupSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
@@ -1206,30 +649,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeploymentForDeviceClassSubgroupSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Delete(
                 "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}")
         @ExpectedResponses({204})
@@ -1244,30 +663,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDeploymentForDeviceClassSubgroup(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Delete(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteDeploymentForDeviceClassSubgroupSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
@@ -1303,30 +698,6 @@ public final class DeviceManagementsImpl {
                 Context context);
 
         @Post(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}:cancel")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> stopDeploymentSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post(
                 "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}:retry")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -1340,30 +711,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> retryDeployment(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}:retry")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> retryDeploymentSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
@@ -1399,30 +746,6 @@ public final class DeviceManagementsImpl {
                 Context context);
 
         @Get(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}/status")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeviceClassSubgroupDeploymentStatusSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get(
                 "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}/devicestates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -1436,30 +759,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeployment(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("groupId") String groupId,
-                @PathParam("deviceClassId") String deviceClassId,
-                @PathParam("deploymentId") String deploymentId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get(
-                "/deviceUpdate/{instanceId}/management/groups/{groupId}/deviceClassSubgroups/{deviceClassId}/deployments/{deploymentId}/devicestates")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeviceStatesForDeviceClassSubgroupDeploymentSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
@@ -1491,27 +790,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/operations/{operationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getOperationStatusSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("operationId") String operationId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -1532,26 +810,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/operations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listOperationStatusesSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Put("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections/{operationId}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(
@@ -1565,28 +823,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> startLogCollection(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("operationId") String logCollectionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData logCollection,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Put("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections/{operationId}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> startLogCollectionSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("operationId") String logCollectionId,
@@ -1617,27 +853,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections/{operationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getLogCollectionSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("operationId") String logCollectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -1651,26 +866,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLogCollections(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listLogCollectionsSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
@@ -1699,27 +894,6 @@ public final class DeviceManagementsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/logCollections/{operationId}/detailedStatus")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getLogCollectionDetailedStatusSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @PathParam("operationId") String logCollectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/deviceHealth")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -1733,27 +907,6 @@ public final class DeviceManagementsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listHealthOfDevices(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("filter") String filter,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/deviceUpdate/{instanceId}/management/deviceDiagnostics/deviceHealth")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listHealthOfDevicesSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
@@ -1793,45 +946,7 @@ public final class DeviceManagementsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeviceClassesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listInstallableUpdatesForDeviceClassNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listInstallableUpdatesForDeviceClassNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -1869,45 +984,7 @@ public final class DeviceManagementsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDevicesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listGroupsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listGroupsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -1945,45 +1022,7 @@ public final class DeviceManagementsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listBestUpdatesForGroupNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDeploymentsForGroupNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeploymentsForGroupNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -2021,45 +1060,7 @@ public final class DeviceManagementsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeviceClassSubgroupsForGroupNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDeploymentsForDeviceClassSubgroupNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeploymentsForDeviceClassSubgroupNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -2097,45 +1098,7 @@ public final class DeviceManagementsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeviceStatesForDeviceClassSubgroupDeploymentNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listOperationStatusesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listOperationStatusesNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -2173,45 +1136,7 @@ public final class DeviceManagementsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listLogCollectionsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listHealthOfDevicesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listHealthOfDevicesNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -2238,26 +1163,31 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String (Required)
-     *     friendlyName: String (Optional)
-     *     deviceClassProperties (Required): {
-     *         contractModel (Optional): {
-     *             id: String (Required)
-     *             name: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
+     *                 }
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
      *         }
-     *         compatProperties (Required): {
-     *             String: String (Required)
-     *         }
-     *     }
-     *     bestCompatibleUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2271,7 +1201,7 @@ public final class DeviceManagementsImpl {
      *     Update for IoT Hub along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeviceClassesSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listDeviceClassesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -2312,26 +1242,31 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String (Required)
-     *     friendlyName: String (Optional)
-     *     deviceClassProperties (Required): {
-     *         contractModel (Optional): {
-     *             id: String (Required)
-     *             name: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
+     *                 }
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
      *         }
-     *         compatProperties (Required): {
-     *             String: String (Required)
-     *         }
-     *     }
-     *     bestCompatibleUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2375,97 +1310,31 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String (Required)
-     *     friendlyName: String (Optional)
-     *     deviceClassProperties (Required): {
-     *         contractModel (Optional): {
-     *             id: String (Required)
-     *             name: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
+     *                 }
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
      *         }
-     *         compatProperties (Required): {
-     *             String: String (Required)
-     *         }
-     *     }
-     *     bestCompatibleUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all device classes (sets of devices compatible with the same updates based on the model Id and
-     *     compat properties reported in the Device Update PnP interface in IoT Hub) for all devices connected to Device
-     *     Update for IoT Hub along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeviceClassesSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeviceClassesSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Gets a list of all device classes (sets of devices compatible with the same updates based on the model Id and
-     * compat properties reported in the Device Update PnP interface in IoT Hub) for all devices connected to Device
-     * Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device classes returned. You can filter on friendly name.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deviceClassId: String (Required)
-     *     friendlyName: String (Optional)
-     *     deviceClassProperties (Required): {
-     *         contractModel (Optional): {
-     *             id: String (Required)
-     *             name: String (Required)
-     *         }
-     *         compatProperties (Required): {
-     *             String: String (Required)
-     *         }
-     *     }
-     *     bestCompatibleUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2480,14 +1349,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeviceClasses(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listDeviceClassesSinglePage(requestOptions),
-                nextLink -> listDeviceClassesNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listDeviceClassesAsync(requestOptions));
     }
 
     /**
@@ -2584,15 +1446,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceClassWithResponse(String deviceClassId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getDeviceClassSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getDeviceClassWithResponseAsync(deviceClassId, requestOptions).block();
     }
 
     /**
@@ -2709,16 +1563,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateDeviceClassWithResponse(
             String deviceClassId, BinaryData deviceClassPatch, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.updateDeviceClassSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                deviceClassPatch,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return updateDeviceClassWithResponseAsync(deviceClassId, deviceClassPatch, requestOptions).block();
     }
 
     /**
@@ -2769,15 +1614,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDeviceClassWithResponse(String deviceClassId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteDeviceClassSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return deleteDeviceClassWithResponseAsync(deviceClassId, requestOptions).block();
     }
 
     /**
@@ -2787,13 +1624,18 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2807,7 +1649,7 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassSinglePageAsync(
             String deviceClassId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2838,13 +1680,18 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2877,60 +1724,18 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param deviceClassId Device class identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of installable updates for a device class along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listInstallableUpdatesForDeviceClassSinglePage(
-            String deviceClassId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listInstallableUpdatesForDeviceClassSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        deviceClassId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Gets a list of installable updates for a device class.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2945,14 +1750,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listInstallableUpdatesForDeviceClass(
             String deviceClassId, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listInstallableUpdatesForDeviceClassSinglePage(deviceClassId, requestOptions),
-                nextLink -> listInstallableUpdatesForDeviceClassNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listInstallableUpdatesForDeviceClassAsync(deviceClassId, requestOptions));
     }
 
     /**
@@ -2972,37 +1770,42 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     deviceClassId: String (Required)
-     *     groupId: String (Optional)
-     *     lastAttemptedUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
-     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean (Required)
-     *     lastDeploymentId: String (Optional)
-     *     lastInstallResult (Optional): {
-     *         resultCode: int (Required)
-     *         extendedResultCode: int (Required)
-     *         resultDetails: String (Optional)
-     *         stepResults (Optional): [
-     *              (Optional){
-     *                 update (Optional): (recursive schema, see update above)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
      *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
      *                 resultCode: int (Required)
      *                 extendedResultCode: int (Required)
      *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
+     *                     }
+     *                 ]
      *             }
-     *         ]
-     *     }
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3015,7 +1818,7 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDevicesSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listDevicesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -3054,37 +1857,42 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     deviceClassId: String (Required)
-     *     groupId: String (Optional)
-     *     lastAttemptedUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
-     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean (Required)
-     *     lastDeploymentId: String (Optional)
-     *     lastInstallResult (Optional): {
-     *         resultCode: int (Required)
-     *         extendedResultCode: int (Required)
-     *         resultDetails: String (Optional)
-     *         stepResults (Optional): [
-     *              (Optional){
-     *                 update (Optional): (recursive schema, see update above)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
      *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
      *                 resultCode: int (Required)
      *                 extendedResultCode: int (Required)
      *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
+     *                     }
+     *                 ]
      *             }
-     *         ]
-     *     }
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3124,115 +1932,42 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     deviceClassId: String (Required)
-     *     groupId: String (Optional)
-     *     lastAttemptedUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
-     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean (Required)
-     *     lastDeploymentId: String (Optional)
-     *     lastInstallResult (Optional): {
-     *         resultCode: int (Required)
-     *         extendedResultCode: int (Required)
-     *         resultDetails: String (Optional)
-     *         stepResults (Optional): [
-     *              (Optional){
-     *                 update (Optional): (recursive schema, see update above)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
      *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
      *                 resultCode: int (Required)
      *                 extendedResultCode: int (Required)
      *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
+     *                     }
+     *                 ]
      *             }
-     *         ]
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of devices connected to Device Update for IoT Hub along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDevicesSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDevicesSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Gets a list of devices connected to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus. Use DeploymentStatus eq null to query for devices with no deployment status (that have never been deployed to).</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     deviceClassId: String (Required)
-     *     groupId: String (Optional)
-     *     lastAttemptedUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
-     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean (Required)
-     *     lastDeploymentId: String (Optional)
-     *     lastInstallResult (Optional): {
-     *         resultCode: int (Required)
-     *         extendedResultCode: int (Required)
-     *         resultDetails: String (Optional)
-     *         stepResults (Optional): [
-     *              (Optional){
-     *                 update (Optional): (recursive schema, see update above)
-     *                 description: String (Optional)
-     *                 resultCode: int (Required)
-     *                 extendedResultCode: int (Required)
-     *                 resultDetails: String (Optional)
-     *             }
-     *         ]
-     *     }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3246,14 +1981,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDevices(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listDevicesSinglePage(requestOptions),
-                nextLink -> listDevicesNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listDevicesAsync(requestOptions));
     }
 
     /**
@@ -3287,37 +2015,6 @@ public final class DeviceManagementsImpl {
                                 accept,
                                 requestOptions,
                                 context));
-    }
-
-    /**
-     * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
-     * value to check for operation status.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * String(Devices/Modules/All)
-     * }</pre>
-     *
-     * @param importType The types of devices to import.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<Void> importDevicesWithResponse(BinaryData importType, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.importDevicesSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                this.client.getServiceVersion().getVersion(),
-                importType,
-                accept,
-                requestOptions,
-                Context.NONE);
     }
 
     /**
@@ -3376,18 +2073,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportDevices(BinaryData importType, RequestOptions requestOptions) {
-        return SyncPoller.createPoller(
-                Duration.ofSeconds(1),
-                () -> this.importDevicesWithResponse(importType, requestOptions),
-                new SyncDefaultPollingStrategy<>(
-                        new PollingStrategyOptions(this.client.getHttpPipeline())
-                                .setEndpoint("https://{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
-                                .setContext(
-                                        requestOptions != null && requestOptions.getContext() != null
-                                                ? requestOptions.getContext()
-                                                : Context.NONE)),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+        return this.beginImportDevicesAsync(importType, requestOptions).getSyncPoller();
     }
 
     /**
@@ -3507,15 +2193,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceWithResponse(String deviceId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getDeviceSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                deviceId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getDeviceWithResponseAsync(deviceId, requestOptions).block();
     }
 
     /**
@@ -3642,16 +2320,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceModuleWithResponse(
             String deviceId, String moduleId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getDeviceModuleSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                deviceId,
-                moduleId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getDeviceModuleWithResponseAsync(deviceId, moduleId, requestOptions).block();
     }
 
     /**
@@ -3716,14 +2385,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getUpdateComplianceWithResponse(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getUpdateComplianceSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getUpdateComplianceWithResponseAsync(requestOptions).block();
     }
 
     /**
@@ -3743,16 +2405,21 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     groupId: String (Required)
-     *     groupType: String(IoTHubTag/DefaultNoTag) (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
-     *     subgroupsWithUpdatesInProgressCount: Integer (Optional)
-     *     subgroupsWithOnLatestUpdateCount: Integer (Optional)
-     *     deployments (Optional): [
-     *         String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3764,7 +2431,7 @@ public final class DeviceManagementsImpl {
      * @return a list of all device groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listGroupsSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listGroupsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -3803,16 +2470,21 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     groupId: String (Required)
-     *     groupType: String(IoTHubTag/DefaultNoTag) (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
-     *     subgroupsWithUpdatesInProgressCount: Integer (Optional)
-     *     subgroupsWithOnLatestUpdateCount: Integer (Optional)
-     *     deployments (Optional): [
-     *         String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3852,73 +2524,21 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     groupId: String (Required)
-     *     groupType: String(IoTHubTag/DefaultNoTag) (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
-     *     subgroupsWithUpdatesInProgressCount: Integer (Optional)
-     *     subgroupsWithOnLatestUpdateCount: Integer (Optional)
-     *     deployments (Optional): [
-     *         String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
      *     ]
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all device groups along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listGroupsSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listGroupsSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Gets a list of all device groups. The $default group will always be returned first.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by groupId, deviceCount, createdDate, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     groupId: String (Required)
-     *     groupType: String(IoTHubTag/DefaultNoTag) (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
-     *     subgroupsWithUpdatesInProgressCount: Integer (Optional)
-     *     subgroupsWithOnLatestUpdateCount: Integer (Optional)
-     *     deployments (Optional): [
-     *         String (Optional)
-     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3931,14 +2551,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listGroups(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listGroupsSinglePage(requestOptions),
-                nextLink -> listGroupsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listGroupsAsync(requestOptions));
     }
 
     /**
@@ -4014,15 +2627,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGroupWithResponse(String groupId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getGroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getGroupWithResponseAsync(groupId, requestOptions).block();
     }
 
     /**
@@ -4072,15 +2677,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGroupWithResponse(String groupId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteGroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return deleteGroupWithResponseAsync(groupId, requestOptions).block();
     }
 
     /**
@@ -4150,15 +2747,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getUpdateComplianceForGroupWithResponse(String groupId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getUpdateComplianceForGroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getUpdateComplianceForGroupWithResponseAsync(groupId, requestOptions).block();
     }
 
     /**
@@ -4168,18 +2757,23 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     groupId: String (Required)
-     *     deviceClassId: String (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             deviceCount: int (Required)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deviceCount: int (Required)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4193,7 +2787,7 @@ public final class DeviceManagementsImpl {
      *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -4224,18 +2818,23 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     groupId: String (Required)
-     *     deviceClassId: String (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             deviceCount: int (Required)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deviceCount: int (Required)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4267,70 +2866,23 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     groupId: String (Required)
-     *     deviceClassId: String (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             deviceCount: int (Required)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deviceCount: int (Required)
-     * }
-     * }</pre>
-     *
-     * @param groupId Group identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the best available updates for a device group and a count of how many devices need each update along with
-     *     {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listBestUpdatesForGroupSinglePage(String groupId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listBestUpdatesForGroupSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        groupId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the best available updates for a device group and a count of how many devices need each update.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     groupId: String (Required)
-     *     deviceClassId: String (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deviceCount: int (Required)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4345,14 +2897,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listBestUpdatesForGroup(String groupId, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listBestUpdatesForGroupSinglePage(groupId, requestOptions),
-                nextLink -> listBestUpdatesForGroupNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listBestUpdatesForGroupAsync(groupId, requestOptions));
     }
 
     /**
@@ -4372,31 +2917,36 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
+     *                 }
+     *             }
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4410,7 +2960,7 @@ public final class DeviceManagementsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeploymentsForGroupSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listDeploymentsForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -4451,31 +3001,36 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
+     *                 }
+     *             }
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4516,105 +3071,36 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
+     *                 }
+     *             }
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
-     * }
-     * }</pre>
-     *
-     * @param groupId Group identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of deployments for a device group along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeploymentsForGroupSinglePage(String groupId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeploymentsForGroupSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        groupId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Gets a list of deployments for a device group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
-     *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4628,14 +3114,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeploymentsForGroup(String groupId, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listDeploymentsForGroupSinglePage(groupId, requestOptions),
-                nextLink -> listDeploymentsForGroupNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listDeploymentsForGroupAsync(groupId, requestOptions));
     }
 
     /**
@@ -4746,16 +3225,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getDeploymentSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getDeploymentWithResponseAsync(groupId, deploymentId, requestOptions).block();
     }
 
     /**
@@ -4933,17 +3403,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateDeploymentWithResponse(
             String groupId, String deploymentId, BinaryData deployment, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.createOrUpdateDeploymentSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                deployment,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return createOrUpdateDeploymentWithResponseAsync(groupId, deploymentId, deployment, requestOptions).block();
     }
 
     /**
@@ -4990,16 +3450,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDeploymentWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteDeploymentSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return deleteDeploymentWithResponseAsync(groupId, deploymentId, requestOptions).block();
     }
 
     /**
@@ -5124,16 +3575,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentStatusWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getDeploymentStatusSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getDeploymentStatusWithResponseAsync(groupId, deploymentId, requestOptions).block();
     }
 
     /**
@@ -5154,11 +3596,16 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String (Required)
-     *     groupId: String (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     deploymentId: String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -5172,7 +3619,7 @@ public final class DeviceManagementsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeviceClassSubgroupsForGroupSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listDeviceClassSubgroupsForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -5214,11 +3661,16 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String (Required)
-     *     groupId: String (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     deploymentId: String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -5260,67 +3712,16 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String (Required)
-     *     groupId: String (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     deploymentId: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param groupId Group identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the device class subgroups for the group along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeviceClassSubgroupsForGroupSinglePage(
-            String groupId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeviceClassSubgroupsForGroupSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        groupId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the device class subgroups for the group. A device class subgroup is the set of devices within the group that
-     * share the same device class. All devices within the same device class are compatible with the same updates.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value. (i.e. filter=compatProperties/propertyName1 eq 'value1' and compatProperties/propertyName2 eq 'value2')</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deviceClassId: String (Required)
-     *     groupId: String (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     deploymentId: String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -5334,14 +3735,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeviceClassSubgroupsForGroup(String groupId, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listDeviceClassSubgroupsForGroupSinglePage(groupId, requestOptions),
-                nextLink -> listDeviceClassSubgroupsForGroupNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listDeviceClassSubgroupsForGroupAsync(groupId, requestOptions));
     }
 
     /**
@@ -5414,16 +3808,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getDeviceClassSubgroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getDeviceClassSubgroupWithResponseAsync(groupId, deviceClassId, requestOptions).block();
     }
 
     /**
@@ -5478,16 +3863,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteDeviceClassSubgroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return deleteDeviceClassSubgroupWithResponseAsync(groupId, deviceClassId, requestOptions).block();
     }
 
     /**
@@ -5562,16 +3938,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceClassSubgroupUpdateComplianceWithResponse(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getDeviceClassSubgroupUpdateComplianceSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getDeviceClassSubgroupUpdateComplianceWithResponseAsync(groupId, deviceClassId, requestOptions).block();
     }
 
     /**
@@ -5658,16 +4025,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getBestUpdatesForDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getBestUpdatesForDeviceClassSubgroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getBestUpdatesForDeviceClassSubgroupWithResponseAsync(groupId, deviceClassId, requestOptions).block();
     }
 
     /**
@@ -5687,31 +4045,36 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
+     *                 }
+     *             }
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -5726,7 +4089,7 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupSinglePageAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -5768,31 +4131,36 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
+     *                 }
+     *             }
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -5836,108 +4204,36 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
+     *                 }
+     *             }
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
-     * }
-     * }</pre>
-     *
-     * @param groupId Group identifier.
-     * @param deviceClassId Device class identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of deployments for a device class subgroup along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeploymentsForDeviceClassSubgroupSinglePage(
-            String groupId, String deviceClassId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeploymentsForDeviceClassSubgroupSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        groupId,
-                        deviceClassId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Gets a list of deployments for a device class subgroup.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
-     *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -5953,14 +4249,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeploymentsForDeviceClassSubgroup(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listDeploymentsForDeviceClassSubgroupSinglePage(groupId, deviceClassId, requestOptions),
-                nextLink -> listDeploymentsForDeviceClassSubgroupNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listDeploymentsForDeviceClassSubgroupAsync(groupId, deviceClassId, requestOptions));
     }
 
     /**
@@ -6074,17 +4363,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentForDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getDeploymentForDeviceClassSubgroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getDeploymentForDeviceClassSubgroupWithResponseAsync(
+                        groupId, deviceClassId, deploymentId, requestOptions)
+                .block();
     }
 
     /**
@@ -6134,17 +4415,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDeploymentForDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteDeploymentForDeviceClassSubgroupSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return deleteDeploymentForDeviceClassSubgroupWithResponseAsync(
+                        groupId, deviceClassId, deploymentId, requestOptions)
+                .block();
     }
 
     /**
@@ -6258,17 +4531,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> stopDeploymentWithResponse(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.stopDeploymentSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return stopDeploymentWithResponseAsync(groupId, deviceClassId, deploymentId, requestOptions).block();
     }
 
     /**
@@ -6382,17 +4645,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> retryDeploymentWithResponse(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.retryDeploymentSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return retryDeploymentWithResponseAsync(groupId, deviceClassId, deploymentId, requestOptions).block();
     }
 
     /**
@@ -6506,17 +4759,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceClassSubgroupDeploymentStatusWithResponse(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getDeviceClassSubgroupDeploymentStatusSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                groupId,
-                deviceClassId,
-                deploymentId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getDeviceClassSubgroupDeploymentStatusWithResponseAsync(
+                        groupId, deviceClassId, deploymentId, requestOptions)
+                .block();
     }
 
     /**
@@ -6536,11 +4781,16 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     retryCount: int (Required)
-     *     movedOnToNewDeployment: boolean (Required)
-     *     deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -6556,7 +4806,7 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeploymentSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeploymentSinglePageAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -6599,11 +4849,16 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     retryCount: int (Required)
-     *     movedOnToNewDeployment: boolean (Required)
-     *     deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -6651,70 +4906,16 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     retryCount: int (Required)
-     *     movedOnToNewDeployment: boolean (Required)
-     *     deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
-     * }
-     * }</pre>
-     *
-     * @param groupId Group identifier.
-     * @param deviceClassId Device class identifier.
-     * @param deploymentId Deployment identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of devices in a deployment along with their state along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeviceStatesForDeviceClassSubgroupDeploymentSinglePage(
-            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeviceStatesForDeviceClassSubgroupDeploymentSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        groupId,
-                        deviceClassId,
-                        deploymentId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Gets a list of devices in a deployment along with their state. Useful for getting a list of failed devices.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     retryCount: int (Required)
-     *     movedOnToNewDeployment: boolean (Required)
-     *     deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -6732,18 +4933,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeviceStatesForDeviceClassSubgroupDeployment(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
         return new PagedIterable<>(
-                () ->
-                        listDeviceStatesForDeviceClassSubgroupDeploymentSinglePage(
-                                groupId, deviceClassId, deploymentId, requestOptions),
-                nextLink ->
-                        listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePage(
-                                nextLink, requestOptionsForNextPage));
+                listDeviceStatesForDeviceClassSubgroupDeploymentAsync(
+                        groupId, deviceClassId, deploymentId, requestOptions));
     }
 
     /**
@@ -6862,15 +5054,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getOperationStatusSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                operationId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getOperationStatusWithResponseAsync(operationId, requestOptions).block();
     }
 
     /**
@@ -6891,27 +5075,32 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: OffsetDateTime (Optional)
+     *             }
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -6924,7 +5113,7 @@ public final class DeviceManagementsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listOperationStatusesSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listOperationStatusesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -6964,27 +5153,32 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: OffsetDateTime (Optional)
+     *             }
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7025,96 +5219,32 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: OffsetDateTime (Optional)
+     *             }
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all device import operations along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listOperationStatusesSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listOperationStatusesSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get a list of all device import operations. Completed operations are kept for 7 days before auto-deleted.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7127,14 +5257,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listOperationStatuses(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listOperationStatusesSinglePage(requestOptions),
-                nextLink -> listOperationStatusesNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listOperationStatusesAsync(requestOptions));
     }
 
     /**
@@ -7253,16 +5376,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> startLogCollectionWithResponse(
             String logCollectionId, BinaryData logCollection, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.startLogCollectionSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                logCollectionId,
-                this.client.getServiceVersion().getVersion(),
-                logCollection,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return startLogCollectionWithResponseAsync(logCollectionId, logCollection, requestOptions).block();
     }
 
     /**
@@ -7342,15 +5456,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLogCollectionWithResponse(String logCollectionId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getLogCollectionSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                logCollectionId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getLogCollectionWithResponseAsync(logCollectionId, requestOptions).block();
     }
 
     /**
@@ -7360,17 +5466,22 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Optional)
-     *     deviceList (Required): [
+     *     value (Required): [
      *          (Required){
-     *             deviceId: String (Required)
-     *             moduleId: String (Optional)
+     *             operationId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
+     *                 }
+     *             ]
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     description: String (Optional)
-     *     createdDateTime: String (Optional)
-     *     lastActionDateTime: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7383,7 +5494,7 @@ public final class DeviceManagementsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listLogCollectionsSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listLogCollectionsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -7412,17 +5523,22 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Optional)
-     *     deviceList (Required): [
+     *     value (Required): [
      *          (Required){
-     *             deviceId: String (Required)
-     *             moduleId: String (Optional)
+     *             operationId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
+     *                 }
+     *             ]
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     description: String (Optional)
-     *     createdDateTime: String (Optional)
-     *     lastActionDateTime: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7452,65 +5568,22 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Optional)
-     *     deviceList (Required): [
+     *     value (Required): [
      *          (Required){
-     *             deviceId: String (Required)
-     *             moduleId: String (Optional)
+     *             operationId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
+     *                 }
+     *             ]
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     description: String (Optional)
-     *     createdDateTime: String (Optional)
-     *     lastActionDateTime: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all device diagnostics log collections along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listLogCollectionsSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listLogCollectionsSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get all device diagnostics log collections.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     operationId: String (Optional)
-     *     deviceList (Required): [
-     *          (Required){
-     *             deviceId: String (Required)
-     *             moduleId: String (Optional)
-     *         }
-     *     ]
-     *     description: String (Optional)
-     *     createdDateTime: String (Optional)
-     *     lastActionDateTime: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7523,14 +5596,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listLogCollections(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listLogCollectionsSinglePage(requestOptions),
-                nextLink -> listLogCollectionsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listLogCollectionsAsync(requestOptions));
     }
 
     /**
@@ -7618,15 +5684,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLogCollectionDetailedStatusWithResponse(
             String logCollectionId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getLogCollectionDetailedStatusSync(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                logCollectionId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return getLogCollectionDetailedStatusWithResponseAsync(logCollectionId, requestOptions).block();
     }
 
     /**
@@ -7636,16 +5694,21 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     state: String(healthy/unhealthy) (Required)
-     *     digitalTwinModelId: String (Optional)
-     *     healthChecks (Required): [
+     *     value (Required): [
      *          (Required){
-     *             name: String (Optional)
-     *             result: String(success/userError) (Optional)
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
+     *                 }
+     *             ]
      *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7659,7 +5722,7 @@ public final class DeviceManagementsImpl {
      * @return list of device health along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listHealthOfDevicesSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listHealthOfDevicesSinglePageAsync(
             String filter, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -7690,16 +5753,21 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     state: String(healthy/unhealthy) (Required)
-     *     digitalTwinModelId: String (Optional)
-     *     healthChecks (Required): [
+     *     value (Required): [
      *          (Required){
-     *             name: String (Optional)
-     *             result: String(success/userError) (Optional)
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
+     *                 }
+     *             ]
      *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7731,66 +5799,21 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     state: String(healthy/unhealthy) (Required)
-     *     digitalTwinModelId: String (Optional)
-     *     healthChecks (Required): [
+     *     value (Required): [
      *          (Required){
-     *             name: String (Optional)
-     *             result: String(success/userError) (Optional)
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
+     *                 }
+     *             ]
      *         }
      *     ]
-     * }
-     * }</pre>
-     *
-     * @param filter Restricts the set of devices for which device health is returned. You can filter on status, device
-     *     id and module id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of device health along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listHealthOfDevicesSinglePage(String filter, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listHealthOfDevicesSync(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        filter,
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get list of device health.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     state: String(healthy/unhealthy) (Required)
-     *     digitalTwinModelId: String (Optional)
-     *     healthChecks (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             result: String(success/userError) (Optional)
-     *         }
-     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7805,14 +5828,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listHealthOfDevices(String filter, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listHealthOfDevicesSinglePage(filter, requestOptions),
-                nextLink -> listHealthOfDevicesNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(listHealthOfDevicesAsync(filter, requestOptions));
     }
 
     /**
@@ -7822,26 +5838,31 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String (Required)
-     *     friendlyName: String (Optional)
-     *     deviceClassProperties (Required): {
-     *         contractModel (Optional): {
-     *             id: String (Required)
-     *             name: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
+     *                 }
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
      *         }
-     *         compatProperties (Required): {
-     *             String: String (Required)
-     *         }
-     *     }
-     *     bestCompatibleUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7855,7 +5876,7 @@ public final class DeviceManagementsImpl {
      * @return the list of device classes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeviceClassesNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listDeviceClassesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -7880,67 +5901,18 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String (Required)
-     *     friendlyName: String (Optional)
-     *     deviceClassProperties (Required): {
-     *         contractModel (Optional): {
-     *             id: String (Required)
-     *             name: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
      *         }
-     *         compatProperties (Required): {
-     *             String: String (Required)
-     *         }
-     *     }
-     *     bestCompatibleUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of device classes along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeviceClassesNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeviceClassesNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7954,7 +5926,7 @@ public final class DeviceManagementsImpl {
      * @return list of update information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -7979,79 +5951,42 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of update information along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listInstallableUpdatesForDeviceClassNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listInstallableUpdatesForDeviceClassNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     deviceClassId: String (Required)
-     *     groupId: String (Optional)
-     *     lastAttemptedUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
-     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean (Required)
-     *     lastDeploymentId: String (Optional)
-     *     lastInstallResult (Optional): {
-     *         resultCode: int (Required)
-     *         extendedResultCode: int (Required)
-     *         resultDetails: String (Optional)
-     *         stepResults (Optional): [
-     *              (Optional){
-     *                 update (Optional): (recursive schema, see update above)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
      *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
      *                 resultCode: int (Required)
      *                 extendedResultCode: int (Required)
      *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
+     *                     }
+     *                 ]
      *             }
-     *         ]
-     *     }
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8065,7 +6000,7 @@ public final class DeviceManagementsImpl {
      * @return the list of devices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDevicesNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listDevicesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -8090,80 +6025,21 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     deviceClassId: String (Required)
-     *     groupId: String (Optional)
-     *     lastAttemptedUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
+     *             ]
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
-     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean (Required)
-     *     lastDeploymentId: String (Optional)
-     *     lastInstallResult (Optional): {
-     *         resultCode: int (Required)
-     *         extendedResultCode: int (Required)
-     *         resultDetails: String (Optional)
-     *         stepResults (Optional): [
-     *              (Optional){
-     *                 update (Optional): (recursive schema, see update above)
-     *                 description: String (Optional)
-     *                 resultCode: int (Required)
-     *                 extendedResultCode: int (Required)
-     *                 resultDetails: String (Optional)
-     *             }
-     *         ]
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of devices along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDevicesNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDevicesNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     groupId: String (Required)
-     *     groupType: String(IoTHubTag/DefaultNoTag) (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
-     *     subgroupsWithUpdatesInProgressCount: Integer (Optional)
-     *     subgroupsWithOnLatestUpdateCount: Integer (Optional)
-     *     deployments (Optional): [
-     *         String (Optional)
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8177,7 +6053,7 @@ public final class DeviceManagementsImpl {
      * @return the list of groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listGroupsNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listGroupsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -8202,61 +6078,23 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     groupId: String (Required)
-     *     groupType: String(IoTHubTag/DefaultNoTag) (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
-     *     subgroupsWithUpdatesInProgressCount: Integer (Optional)
-     *     subgroupsWithOnLatestUpdateCount: Integer (Optional)
-     *     deployments (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of groups along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listGroupsNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listGroupsNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     groupId: String (Required)
-     *     deviceClassId: String (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             deviceCount: int (Required)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deviceCount: int (Required)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8271,7 +6109,7 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -8296,78 +6134,36 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     groupId: String (Required)
-     *     deviceClassId: String (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
+     *                 }
+     *             }
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deviceCount: int (Required)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of updatable devices for a device class subgroup along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listBestUpdatesForGroupNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listBestUpdatesForGroupNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8381,7 +6177,7 @@ public final class DeviceManagementsImpl {
      * @return the list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeploymentsForGroupNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listDeploymentsForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -8406,71 +6202,16 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of deployments along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeploymentsForGroupNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeploymentsForGroupNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deviceClassId: String (Required)
-     *     groupId: String (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     deploymentId: String (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8485,7 +6226,7 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeviceClassSubgroupsForGroupNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listDeviceClassSubgroupsForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -8510,71 +6251,36 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String (Required)
-     *     groupId: String (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     deploymentId: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of device class subgroups within a group along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeviceClassSubgroupsForGroupNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeviceClassSubgroupsForGroupNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
+     *                 }
+     *             }
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8588,7 +6294,7 @@ public final class DeviceManagementsImpl {
      * @return the list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -8613,71 +6319,16 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of deployments along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeploymentsForDeviceClassSubgroupNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeploymentsForDeviceClassSubgroupNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     retryCount: int (Required)
-     *     movedOnToNewDeployment: boolean (Required)
-     *     deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8692,7 +6343,7 @@ public final class DeviceManagementsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -8717,67 +6368,32 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     retryCount: int (Required)
-     *     movedOnToNewDeployment: boolean (Required)
-     *     deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of deployment device states along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listDeviceStatesForDeviceClassSubgroupDeploymentNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: OffsetDateTime (Optional)
+     *             }
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8792,7 +6408,7 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listOperationStatusesNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listOperationStatusesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -8817,73 +6433,22 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of device operations with server paging support along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listOperationStatusesNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listOperationStatusesNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     operationId: String (Optional)
-     *     deviceList (Required): [
+     *     value (Required): [
      *          (Required){
-     *             deviceId: String (Required)
-     *             moduleId: String (Optional)
+     *             operationId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
+     *                 }
+     *             ]
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     description: String (Optional)
-     *     createdDateTime: String (Optional)
-     *     lastActionDateTime: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8898,7 +6463,7 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listLogCollectionsNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listLogCollectionsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -8923,61 +6488,21 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Optional)
-     *     deviceList (Required): [
+     *     value (Required): [
      *          (Required){
      *             deviceId: String (Required)
      *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
+     *                 }
+     *             ]
      *         }
      *     ]
-     *     description: String (Optional)
-     *     createdDateTime: String (Optional)
-     *     lastActionDateTime: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of log collections with server paging support along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listLogCollectionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listLogCollectionsNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     state: String(healthy/unhealthy) (Required)
-     *     digitalTwinModelId: String (Optional)
-     *     healthChecks (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             result: String(success/userError) (Optional)
-     *         }
-     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8992,7 +6517,7 @@ public final class DeviceManagementsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listHealthOfDevicesNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listHealthOfDevicesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -9008,51 +6533,6 @@ public final class DeviceManagementsImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     state: String(healthy/unhealthy) (Required)
-     *     digitalTwinModelId: String (Optional)
-     *     healthChecks (Required): [
-     *          (Required){
-     *             name: String (Optional)
-     *             result: String(success/userError) (Optional)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return array of Device Health, with server paging support along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listHealthOfDevicesNextSinglePage(
-            String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listHealthOfDevicesNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {
