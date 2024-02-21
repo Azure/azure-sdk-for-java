@@ -66,16 +66,6 @@ public final class ParticipantsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/rooms/{roomId}/participants")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<ParticipantsCollection> listSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("roomId") String roomId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Patch("/rooms/{roomId}/participants")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
@@ -87,30 +77,10 @@ public final class ParticipantsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Patch("/rooms/{roomId}/participants")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<Object> updateSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("roomId") String roomId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") String updateParticipantsRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ParticipantsCollection>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<ParticipantsCollection> listNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -214,16 +184,7 @@ public final class ParticipantsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoomParticipant> listSinglePage(String roomId) {
-        final String accept = "application/json";
-        Response<ParticipantsCollection> res =
-                service.listSync(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return listSinglePageAsync(roomId).block();
     }
 
     /**
@@ -238,16 +199,7 @@ public final class ParticipantsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoomParticipant> listSinglePage(String roomId, Context context) {
-        final String accept = "application/json";
-        Response<ParticipantsCollection> res =
-                service.listSync(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return listSinglePageAsync(roomId, context).block();
     }
 
     /**
@@ -261,8 +213,7 @@ public final class ParticipantsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoomParticipant> list(String roomId) {
-        return new PagedIterable<>(
-                () -> listSinglePage(roomId, Context.NONE), nextLink -> listNextSinglePage(nextLink));
+        return new PagedIterable<>(listAsync(roomId));
     }
 
     /**
@@ -277,8 +228,7 @@ public final class ParticipantsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoomParticipant> list(String roomId, Context context) {
-        return new PagedIterable<>(
-                () -> listSinglePage(roomId, context), nextLink -> listNextSinglePage(nextLink, context));
+        return new PagedIterable<>(listAsync(roomId, context));
     }
 
     /**
@@ -375,14 +325,7 @@ public final class ParticipantsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> updateWithResponse(String roomId, String updateParticipantsRequest, Context context) {
-        final String accept = "application/json";
-        return service.updateSync(
-                this.client.getEndpoint(),
-                roomId,
-                this.client.getApiVersion(),
-                updateParticipantsRequest,
-                accept,
-                context);
+        return updateWithResponseAsync(roomId, updateParticipantsRequest, context).block();
     }
 
     /**
@@ -465,16 +408,7 @@ public final class ParticipantsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoomParticipant> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ParticipantsCollection> res =
-                service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return listNextSinglePageAsync(nextLink).block();
     }
 
     /**
@@ -490,15 +424,6 @@ public final class ParticipantsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoomParticipant> listNextSinglePage(String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<ParticipantsCollection> res =
-                service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return listNextSinglePageAsync(nextLink, context).block();
     }
 }
