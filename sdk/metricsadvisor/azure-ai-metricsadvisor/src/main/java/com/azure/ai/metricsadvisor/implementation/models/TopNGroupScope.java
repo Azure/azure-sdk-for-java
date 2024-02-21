@@ -5,43 +5,37 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TopNGroupScope model.
- */
+/** The TopNGroupScope model. */
 @Fluent
-public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
+public final class TopNGroupScope {
     /*
      * top N, value range : [1, +∞)
      */
+    @JsonProperty(value = "top", required = true)
     private int top;
 
     /*
      * point count used to look back, value range : [1, +∞)
      */
+    @JsonProperty(value = "period", required = true)
     private int period;
 
     /*
      * min count should be in top N, value range : [1, +∞)
-     * 
+     *
      * should be less than or equal to period
      */
+    @JsonProperty(value = "minTopCount", required = true)
     private int minTopCount;
 
-    /**
-     * Creates an instance of TopNGroupScope class.
-     */
-    public TopNGroupScope() {
-    }
+    /** Creates an instance of TopNGroupScope class. */
+    public TopNGroupScope() {}
 
     /**
      * Get the top property: top N, value range : [1, +∞).
-     * 
+     *
      * @return the top value.
      */
     public int getTop() {
@@ -50,7 +44,7 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
 
     /**
      * Set the top property: top N, value range : [1, +∞).
-     * 
+     *
      * @param top the top value to set.
      * @return the TopNGroupScope object itself.
      */
@@ -61,7 +55,7 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
 
     /**
      * Get the period property: point count used to look back, value range : [1, +∞).
-     * 
+     *
      * @return the period value.
      */
     public int getPeriod() {
@@ -70,7 +64,7 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
 
     /**
      * Set the period property: point count used to look back, value range : [1, +∞).
-     * 
+     *
      * @param period the period value to set.
      * @return the TopNGroupScope object itself.
      */
@@ -81,9 +75,9 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
 
     /**
      * Get the minTopCount property: min count should be in top N, value range : [1, +∞)
-     * 
-     * should be less than or equal to period.
-     * 
+     *
+     * <p>should be less than or equal to period.
+     *
      * @return the minTopCount value.
      */
     public int getMinTopCount() {
@@ -92,54 +86,14 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
 
     /**
      * Set the minTopCount property: min count should be in top N, value range : [1, +∞)
-     * 
-     * should be less than or equal to period.
-     * 
+     *
+     * <p>should be less than or equal to period.
+     *
      * @param minTopCount the minTopCount value to set.
      * @return the TopNGroupScope object itself.
      */
     public TopNGroupScope setMinTopCount(int minTopCount) {
         this.minTopCount = minTopCount;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("top", this.top);
-        jsonWriter.writeIntField("period", this.period);
-        jsonWriter.writeIntField("minTopCount", this.minTopCount);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TopNGroupScope from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TopNGroupScope if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TopNGroupScope.
-     */
-    public static TopNGroupScope fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            TopNGroupScope deserializedTopNGroupScope = new TopNGroupScope();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("top".equals(fieldName)) {
-                    deserializedTopNGroupScope.top = reader.getInt();
-                } else if ("period".equals(fieldName)) {
-                    deserializedTopNGroupScope.period = reader.getInt();
-                } else if ("minTopCount".equals(fieldName)) {
-                    deserializedTopNGroupScope.minTopCount = reader.getInt();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedTopNGroupScope;
-        });
     }
 }
