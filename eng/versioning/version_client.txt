@@ -111,7 +111,7 @@ com.azure:azure-cosmos-encryption;2.8.0;2.9.0-beta.1
 com.azure:azure-cosmos-test;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure.cosmos.kafka:azure-cosmos-kafka-connect;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-data-appconfiguration;1.5.1;1.6.0-beta.1
+com.azure:azure-data-appconfiguration;1.5.1;1.5.2
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.4.2;1.5.0-beta.1
 com.azure:azure-data-schemaregistry-apacheavro;1.1.13;1.2.0-beta.2
