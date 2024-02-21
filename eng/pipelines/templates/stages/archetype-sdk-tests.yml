@@ -111,6 +111,14 @@ parameters:
   type: boolean
   default: false
 
+${{ if eq(parameters.CalledFromClient, false) }}:
+  resources:
+    repositories:
+      - repository: 1ESPipelineTemplates
+        type: git
+        name: 1ESPipelineTemplates/1ESPipelineTemplates
+        ref: refs/tags/release
+
 stages:
 - ${{ each cloud in parameters.CloudConfig }}:
   - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
