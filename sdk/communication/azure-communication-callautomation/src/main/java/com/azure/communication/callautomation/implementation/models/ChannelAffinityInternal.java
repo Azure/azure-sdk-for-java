@@ -11,19 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ChannelAffinityInternal {
     /*
-     * Channel number to which bitstream from a particular participant will be
-     * written.
+     * Channel number to which bitstream from a particular participant will be written.
      */
     @JsonProperty(value = "channel")
     private Integer channel;
 
     /*
-     * The identifier for the participant whose bitstream will be written to
-     * the channel
+     * The identifier for the participant whose bitstream will be written to the channel
      * represented by the channel number.
      */
     @JsonProperty(value = "participant", required = true)
     private CommunicationIdentifierModel participant;
+
+    /** Creates an instance of ChannelAffinityInternal class. */
+    public ChannelAffinityInternal() {}
 
     /**
      * Get the channel property: Channel number to which bitstream from a particular participant will be written.
