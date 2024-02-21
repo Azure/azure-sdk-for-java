@@ -64,228 +64,39 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
+import java.util.OptionalLong;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.CoreUtils.getResultWithTimeout;
-import static com.azure.data.tables.implementation.TableUtils.callIterableWithOptionalTimeout;
-import static com.azure.data.tables.implementation.TableUtils.callWithOptionalTimeout;
-import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
 import static com.azure.data.tables.implementation.TableUtils.mapThrowableToTableServiceException;
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
 /**
  * Provides a synchronous service client for accessing a table in the Azure Tables service.
  *
- * <h2>Overview</h2>
- *
  * <p>The client encapsulates the URL for the table within the Tables service endpoint, the name of the table, and the
- * credentials for accessing the storage or CosmosDB table API account. It provides synchronous methods to create and delete the
+ * credentials for accessing the storage or CosmosDB table API account. It provides methods to create and delete the
  * table itself, as well as methods to create, upsert, update, delete, list, and get entities within the table. These
  * methods invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
- * <h2>Getting Started</h2>
+ * <p>Instances of this client are obtained by calling the {@link TableClientBuilder#buildClient()} method on a
+ * {@link TableClientBuilder} object.</p>
  *
- * <p>Authenticating and building instances of this client are handled by {@link TableClientBuilder}.
- * This sample shows how to authenticate and build a TableClient instance using the {@link TableClientBuilder} and
- * a connection string.</p>
- *
- * <!-- src_embed com.azure.data.tables.tableClient.connectionstring.instantiation -->
+ * <p><strong>Samples to construct a sync client</strong></p>
+ * <!-- src_embed com.azure.data.tables.tableClient.instantiation -->
  * <pre>
  * TableClient tableClient = new TableClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;connectionstring&quot;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;myaccount.core.windows.net&#47;&quot;&#41;
+ *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
  *     .tableName&#40;&quot;myTable&quot;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.data.tables.tableClient.connectionstring.instantiation -->
- *
- * <p>For more information on building and authenticating, see the {@link TableClientBuilder} documentation.</p>
- *
- * <p>The following code samples provide examples of common operations preformed with this client.</p>
- *
- * <hr/>
- *
- * <h3>Create a {@link TableEntity}</h3>
- *
- * <p>The {@link #createEntity(TableEntity) createEntity} method can be used to create a table entity within a table in your Azure Storage or Azure Cosmos account.</p>
- *
- * <p>The sample below creates a {@link TableEntity} with a partition key of "partitionKey" and a row key of "rowKey".</p>
- *
- * <!-- src_embed com.azure.data.tables.tableClient.createEntity#TableEntity -->
- * <pre>
- * TableEntity tableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
- *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
- *
- * tableClient.createEntity&#40;tableEntity&#41;;
- *
- * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was created.&quot;, &quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.tableClient.createEntity#TableEntity -->
- *
- * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableAsyncClient the asynchronous client}. </em>
- *
- * <hr/>
- *
- * <h3>Retrieve a {@link TableEntity}</h3>
- *
- * <p>The {@link #getEntity(String, String) getEntity} method can be used to retrieve a table entity within a table in your Azure Storage or Azure Cosmos account.</p>
- *
- * <p>The sample below retrieves a {@link TableEntity} with a partition key of "partitionKey" and a row key of "rowKey".</p>
- *
- * <!-- src_embed com.azure.data.tables.tableClient.getEntity#String-String -->
- * <pre>
- * TableEntity tableEntity = tableClient.getEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
- *
- * System.out.printf&#40;&quot;Retrieved entity with partition key '%s' and row key '%s'.&quot;, tableEntity.getPartitionKey&#40;&#41;,
- *     tableEntity.getRowKey&#40;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.tableClient.getEntity#String-String -->
- *
- * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableAsyncClient the asynchronous client}. </em>
- *
- * <hr/>
- *
- * <h3>Update a {@link TableEntity}</h3>
- *
- * <p>The {@link #updateEntity(TableEntity) updateEntity} method can be used to update a table entity within a table in your Azure Storage or Azure Cosmos account.</p>
- *
- * <p>The sample below updates a {@link TableEntity} with a partition key of "partitionKey" and a row key of "rowKey", adding a new property with a key of "Property" and a value of "Value".</p>
- *
- * <!-- src_embed com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
- * <pre>
- *
- * TableEntity myTableEntity = new TableEntity&#40;&quot;paritionKey&quot;, &quot;rowKey&quot;&#41;
- *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
- *
- * tableClient.updateEntity&#40;myTableEntity, TableEntityUpdateMode.REPLACE&#41;;
- *
- * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was updated&#47;created.&quot;, &quot;partitionKey&quot;,
- *     &quot;rowKey&quot;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
- *
- * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableAsyncClient the asynchronous client}. </em>
- *
- * <hr/>
- *
- * <h3>List {@link TableEntity TableEntities}</h3>
- *
- * <p>The {@link #listEntities() listEntities} method can be used to list the entities within a table in your Azure Storage or Azure Cosmos account.</p>
- *
- * <p>The following sample lists all {@link TableEntity TableEntities} within the table without filtering out any entities.</p>
- *
- * <!-- src_embed com.azure.data.tables.tableClient.listEntities -->
- * <pre>
- * PagedIterable&lt;TableEntity&gt; tableEntities = tableClient.listEntities&#40;&#41;;
- *
- * tableEntities.forEach&#40;tableEntity -&gt;
- *     System.out.printf&#40;&quot;Retrieved entity with partition key '%s' and row key '%s'.%n&quot;,
- *         tableEntity.getPartitionKey&#40;&#41;, tableEntity.getRowKey&#40;&#41;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.tableClient.listEntities -->
- *
- * <strong>List {@link TableEntity TableEntities} with filtering and selecting</strong>
- *
- * <p>The following sample lists {@link TableEntity TableEntities} within the table, filtering out any entities that do not have a partition key of "partitionKey" and a row key of "rowKey"
- *  and only selects the "name", "lastname", and "age" properties.</p>
- *
- * <!-- src_embed com.azure.data.tables.tableClient.listEntities#ListEntitiesOptions-Duration-Context -->
- * <pre>
- * List&lt;String&gt; propertiesToSelect = new ArrayList&lt;&gt;&#40;&#41;;
- * propertiesToSelect.add&#40;&quot;name&quot;&#41;;
- * propertiesToSelect.add&#40;&quot;lastname&quot;&#41;;
- * propertiesToSelect.add&#40;&quot;age&quot;&#41;;
- *
- * ListEntitiesOptions listEntitiesOptions = new ListEntitiesOptions&#40;&#41;
- *     .setTop&#40;15&#41;
- *     .setFilter&#40;&quot;PartitionKey eq 'MyPartitionKey' and RowKey eq 'MyRowKey'&quot;&#41;
- *     .setSelect&#40;propertiesToSelect&#41;;
- *
- * PagedIterable&lt;TableEntity&gt; myTableEntities = tableClient.listEntities&#40;listEntitiesOptions,
- *     Duration.ofSeconds&#40;5&#41;, null&#41;;
- *
- * myTableEntities.forEach&#40;tableEntity -&gt; &#123;
- *     System.out.printf&#40;&quot;Retrieved entity with partition key '%s', row key '%s' and properties:%n&quot;,
- *         tableEntity.getPartitionKey&#40;&#41;, tableEntity.getRowKey&#40;&#41;&#41;;
- *
- *     tableEntity.getProperties&#40;&#41;.forEach&#40;&#40;key, value&#41; -&gt;
- *         System.out.printf&#40;&quot;Name: '%s'. Value: '%s'.%n&quot;, key, value&#41;&#41;;
- * &#125;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.tableClient.listEntities#ListEntitiesOptions-Duration-Context -->
- *
- * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableAsyncClient the asynchronous client}. </em>
- *
- * <hr/>
- *
- * <h3>Delete a {@link TableEntity}</h3>
- *
- * <p>The {@link #deleteEntity(String, String) deleteEntity} method can be used to delete a table entity within a table in your Azure Storage or Azure Cosmos account.</p>
- *
- * <p>The sample below deletes a {@link TableEntity} with a partition key of "partitionKey" and a row key of "rowKey".</p>
- *
- * <!-- src_embed com.azure.data.tables.tableClient.deleteEntity#String-String -->
- * <pre>
- * tableClient.deleteEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
- *
- * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was deleted.&quot;, &quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.tableClient.deleteEntity#String-String -->
- *
- * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableAsyncClient the asynchronous client}. </em>
- *
- * <hr/>
- *
- * <h3>Submit a transactional batch</h3>
- *
- * <p>The {@link #submitTransaction(List) submitTransaction} method can be used to submit a transactional batch of actions to perform on the table in your Azure Storage or Azure Cosmos account.</p>
- *
- * <p>The following sample shows how to prepare and submit a transactional batch with multiple actions.</p>
- *
- * <!-- src_embed com.azure.data.tables.tableClient.submitTransaction#List -->
- * <pre>
- * List&lt;TableTransactionAction&gt; transactionActions = new ArrayList&lt;&gt;&#40;&#41;;
- *
- * String partitionKey = &quot;markers&quot;;
- * String firstEntityRowKey = &quot;m001&quot;;
- * String secondEntityRowKey = &quot;m002&quot;;
- *
- * TableEntity firstEntity = new TableEntity&#40;partitionKey, firstEntityRowKey&#41;
- *     .addProperty&#40;&quot;Type&quot;, &quot;Dry&quot;&#41;
- *     .addProperty&#40;&quot;Color&quot;, &quot;Red&quot;&#41;;
- *
- * transactionActions.add&#40;new TableTransactionAction&#40;TableTransactionActionType.CREATE, firstEntity&#41;&#41;;
- *
- * System.out.printf&#40;&quot;Added create action for entity with partition key '%s', and row key '%s'.%n&quot;, partitionKey,
- *     firstEntityRowKey&#41;;
- *
- * TableEntity secondEntity = new TableEntity&#40;partitionKey, secondEntityRowKey&#41;
- *     .addProperty&#40;&quot;Type&quot;, &quot;Wet&quot;&#41;
- *     .addProperty&#40;&quot;Color&quot;, &quot;Blue&quot;&#41;;
- *
- * transactionActions.add&#40;new TableTransactionAction&#40;TableTransactionActionType.CREATE, secondEntity&#41;&#41;;
- *
- * System.out.printf&#40;&quot;Added create action for entity with partition key '%s', and row key '%s'.%n&quot;, partitionKey,
- *     secondEntityRowKey&#41;;
- *
- * TableTransactionResult tableTransactionResult = tableClient.submitTransaction&#40;transactionActions&#41;;
- *
- * System.out.print&#40;&quot;Submitted transaction. The ordered response status codes for the actions are:&quot;&#41;;
- *
- * tableTransactionResult.getTransactionActionResponses&#40;&#41;.forEach&#40;tableTransactionActionResponse -&gt;
- *     System.out.printf&#40;&quot;%n%d&quot;, tableTransactionActionResponse.getStatusCode&#40;&#41;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.tableClient.submitTransaction#List -->
- *
- * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableAsyncClient the asynchronous client}. </em>
+ * <!-- end com.azure.data.tables.tableClient.instantiation -->
  *
  * @see TableClientBuilder
- * @see TableEntity
- * @see com.azure.data.tables
  */
 @ServiceClient(builder = TableClientBuilder.class)
 public final class TableClient {
@@ -469,12 +280,21 @@ public final class TableClient {
     public Response<TableItem> createTableWithResponse(Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
         final TableProperties properties = new TableProperties().setTableName(tableName);
-        Supplier<Response<TableItem>> callable = () ->
-            new SimpleResponse<>(tablesImplementation.getTables().createWithResponse(properties, null,
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<Response<TableItem>> callable = () ->
+            new SimpleResponse<>(tablesImplementation.getTables().createWithResponse(properties,
+            null,
             ResponseFormat.RETURN_NO_CONTENT, null, contextValue),
                 TableItemAccessHelper.createItem(new TableResponseProperties().setTableName(tableName)));
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        try {
+            Response<TableItem> response = timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+            return response;
+        } catch (Exception ex) {
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
+        }
     }
 
     /**
@@ -522,16 +342,18 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
 
-        Supplier<Response<Void>> callable = () -> new SimpleResponse<>(tablesImplementation.getTables()
-            .deleteWithResponse(tableName, null, contextValue), null);
+        Callable<Response<Void>> callable = () ->
+            new SimpleResponse<>(tablesImplementation.getTables().deleteWithResponse(
+            tableName, null, contextValue),
+            null);
 
         try {
-            return hasTimeout(timeout)
-                ? getResultWithTimeout(THREAD_POOL.submit(callable::get), timeout) : callable.get();
-        } catch (InterruptedException | ExecutionException | TimeoutException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
-        } catch (RuntimeException ex) {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception ex) {
             Throwable except = mapThrowableToTableServiceException(ex);
             return swallow404Exception(except);
         }
@@ -539,7 +361,8 @@ public final class TableClient {
 
     private Response<Void> swallow404Exception(Throwable ex) {
         if (ex instanceof TableServiceException
-            && ((TableServiceException) ex).getResponse().getStatusCode() == 404) {
+            &&
+            ((TableServiceException) ex).getResponse().getStatusCode() == 404) {
             return new SimpleResponse<>(
                 ((TableServiceException) ex).getResponse().getRequest(),
                 ((TableServiceException) ex).getResponse().getStatusCode(),
@@ -558,12 +381,15 @@ public final class TableClient {
      * {@link TableEntity entity}.</p>
      * <!-- src_embed com.azure.data.tables.tableClient.createEntity#TableEntity -->
      * <pre>
-     * TableEntity tableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity tableEntity = new TableEntity&#40;partitionKey, rowKey&#41;
      *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
      *
      * tableClient.createEntity&#40;tableEntity&#41;;
      *
-     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was created.&quot;, &quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
+     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was created.&quot;, partitionKey, rowKey&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableClient.createEntity#TableEntity -->
      *
@@ -586,15 +412,17 @@ public final class TableClient {
      * {@link Response HTTP response} and the created {@link TableEntity entity}.</p>
      * <!-- src_embed com.azure.data.tables.tableClient.createEntityWithResponse#TableEntity-Duration-Context -->
      * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
      *
-     * TableEntity myTableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
+     * TableEntity myTableEntity = new TableEntity&#40;myPartitionKey, myRowKey&#41;
      *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
      *
      * Response&lt;Void&gt; response = tableClient.createEntityWithResponse&#40;myTableEntity, Duration.ofSeconds&#40;5&#41;,
      *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response successful with status code: %d. Table entity with partition key '%s' and row key&quot;
-     *     + &quot; '%s' was created.&quot;, response.getStatusCode&#40;&#41;, &quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
+     *     + &quot; '%s' was created.&quot;, response.getStatusCode&#40;&#41;, myPartitionKey, myRowKey&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableClient.createEntityWithResponse#TableEntity-Duration-Context -->
      *
@@ -612,20 +440,27 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createEntityWithResponse(TableEntity entity, Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
 
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
         }
 
         EntityHelper.setPropertiesFromGetters(entity, logger);
-        Supplier<Response<Void>> callable = () -> {
+        Callable<Response<Void>> callable = () -> {
             Response<Map<String, Object>> response = tablesImplementation.getTables().insertEntityWithResponse(
                 tableName, null, null, ResponseFormat.RETURN_NO_CONTENT,
                 entity.getProperties(), null, contextValue);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         };
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception ex) {
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
+        }
     }
 
     /**
@@ -637,13 +472,16 @@ public final class TableClient {
      * {@link TableEntity entity}.</p>
      * <!-- src_embed com.azure.data.tables.tableClient.upsertEntity#TableEntity -->
      * <pre>
-     * TableEntity tableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity tableEntity = new TableEntity&#40;partitionKey, rowKey&#41;
      *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
      *
      * tableClient.upsertEntity&#40;tableEntity&#41;;
      *
-     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was updated&#47;created.&quot;, &quot;partitionKey&quot;,
-     *     &quot;rowKey&quot;&#41;;
+     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was updated&#47;created.&quot;, partitionKey,
+     *     rowKey&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableClient.upsertEntity#TableEntity -->
      *
@@ -674,14 +512,17 @@ public final class TableClient {
      * details of the {@link Response HTTP response} and the upserted {@link TableEntity entity}.</p>
      * <!-- src_embed com.azure.data.tables.tableClient.upsertEntityWithResponse#TableEntity-TableEntityUpdateMode-Duration-Context -->
      * <pre>
-     * TableEntity myTableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity myTableEntity = new TableEntity&#40;myPartitionKey, myRowKey&#41;
      *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
      *
      * Response&lt;Void&gt; response = tableClient.upsertEntityWithResponse&#40;myTableEntity, TableEntityUpdateMode.REPLACE,
      *     Duration.ofSeconds&#40;5&#41;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response successful with status code: %d. Table entity with partition key '%s' and row key&quot;
-     *     + &quot; '%s' was updated&#47;created.&quot;, response.getStatusCode&#40;&#41;, &quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
+     *     + &quot; '%s' was updated&#47;created.&quot;, response.getStatusCode&#40;&#41;, partitionKey, rowKey&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableClient.upsertEntityWithResponse#TableEntity-TableEntityUpdateMode-Duration-Context -->
      *
@@ -700,6 +541,7 @@ public final class TableClient {
     public Response<Void> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                    Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
 
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
@@ -710,7 +552,7 @@ public final class TableClient {
 
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
-        Supplier<Response<Void>> callable = () -> {
+        Callable<Response<Void>> callable = () -> {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return tablesImplementation.getTables().updateEntityWithResponse(
                     tableName, partitionKey, rowKey, null, null, null,
@@ -722,7 +564,13 @@ public final class TableClient {
             }
         };
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception ex) {
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
+        }
     }
 
     /**
@@ -734,13 +582,16 @@ public final class TableClient {
      * {@link TableEntity entity}.</p>
      * <!-- src_embed com.azure.data.tables.tableClient.updateEntity#TableEntity -->
      * <pre>
-     * TableEntity tableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity tableEntity = new TableEntity&#40;partitionKey, rowKey&#41;
      *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
      *
      * tableClient.updateEntity&#40;tableEntity&#41;;
      *
-     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was updated&#47;created.&quot;, &quot;partitionKey&quot;,
-     *     &quot;rowKey&quot;&#41;;
+     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was updated&#47;created.&quot;, partitionKey,
+     *     rowKey&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableClient.updateEntity#TableEntity -->
      *
@@ -770,14 +621,16 @@ public final class TableClient {
      * {@link TableEntityUpdateMode update mode}. Prints out the details of the updated {@link TableEntity entity}.</p>
      * <!-- src_embed com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
      * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
      *
-     * TableEntity myTableEntity = new TableEntity&#40;&quot;paritionKey&quot;, &quot;rowKey&quot;&#41;
+     * TableEntity myTableEntity = new TableEntity&#40;myPartitionKey, myRowKey&#41;
      *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
      *
      * tableClient.updateEntity&#40;myTableEntity, TableEntityUpdateMode.REPLACE&#41;;
      *
-     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was updated&#47;created.&quot;, &quot;partitionKey&quot;,
-     *     &quot;rowKey&quot;&#41;;
+     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was updated&#47;created.&quot;, partitionKey,
+     *     rowKey&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
      *
@@ -810,14 +663,17 @@ public final class TableClient {
      * {@link Response HTTP response} updated {@link TableEntity entity}.</p>
      * <!-- src_embed com.azure.data.tables.tableClient.updateEntityWithResponse#TableEntity-TableEntityUpdateMode-boolean-Duration-Context -->
      * <pre>
-     * TableEntity someTableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
+     * String somePartitionKey = &quot;partitionKey&quot;;
+     * String someRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity someTableEntity = new TableEntity&#40;somePartitionKey, someRowKey&#41;
      *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
      *
      * Response&lt;Void&gt; response = tableClient.updateEntityWithResponse&#40;someTableEntity, TableEntityUpdateMode.REPLACE,
      *     true, Duration.ofSeconds&#40;5&#41;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response successful with status code: %d. Table entity with partition key '%s' and row key&quot;
-     *     + &quot; '%s' was updated.&quot;, response.getStatusCode&#40;&#41;, &quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
+     *     + &quot; '%s' was updated.&quot;, response.getStatusCode&#40;&#41;, partitionKey, rowKey&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableClient.updateEntityWithResponse#TableEntity-TableEntityUpdateMode-boolean-Duration-Context -->
      *
@@ -841,6 +697,7 @@ public final class TableClient {
     public Response<Void> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                    boolean ifUnchanged, Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
 
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
@@ -852,7 +709,7 @@ public final class TableClient {
 
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
-        Supplier<Response<Void>> callable = () -> {
+        Callable<Response<Void>> callable = () -> {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return tablesImplementation.getTables()
                     .updateEntityWithResponse(tableName, partitionKey, rowKey, null, null, eTag,
@@ -864,7 +721,13 @@ public final class TableClient {
             }
         };
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception ex) {
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
+        }
     }
 
     /**
@@ -875,9 +738,12 @@ public final class TableClient {
      * {@code rowKey}.</p>
      * <!-- src_embed com.azure.data.tables.tableClient.deleteEntity#String-String -->
      * <pre>
-     * tableClient.deleteEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
      *
-     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was deleted.&quot;, &quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
+     * tableClient.deleteEntity&#40;partitionKey, rowKey&#41;;
+     *
+     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was deleted.&quot;, partitionKey, rowKey&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableClient.deleteEntity#String-String -->
      *
@@ -902,12 +768,15 @@ public final class TableClient {
      * {@link TableEntity entity}.</p>
      * <!-- src_embed com.azure.data.tables.tableClient.deleteEntity#TableEntity -->
      * <pre>
-     * TableEntity myTableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity myTableEntity = new TableEntity&#40;myPartitionKey, myRowKey&#41;
      *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
      *
      * tableClient.deleteEntity&#40;myTableEntity&#41;;
      *
-     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was created.&quot;, &quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
+     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was created.&quot;, partitionKey, rowKey&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableClient.deleteEntity#TableEntity -->
      *
@@ -928,14 +797,17 @@ public final class TableClient {
      * {@link Response HTTP response} and the deleted {@link TableEntity entity}.</p>
      * <!-- src_embed com.azure.data.tables.tableClient.deleteEntityWithResponse#TableEntity-Duration-Context -->
      * <pre>
-     * TableEntity someTableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
+     * String somePartitionKey = &quot;partitionKey&quot;;
+     * String someRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity someTableEntity = new TableEntity&#40;somePartitionKey, someRowKey&#41;
      *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
      *
      * Response&lt;Void&gt; response = tableClient.deleteEntityWithResponse&#40;someTableEntity, true, Duration.ofSeconds&#40;5&#41;,
      *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response successful with status code: %d. Table entity with partition key '%s' and row key&quot;
-     *     + &quot; '%s' was deleted.&quot;, response.getStatusCode&#40;&#41;, &quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
+     *     + &quot; '%s' was deleted.&quot;, response.getStatusCode&#40;&#41;, somePartitionKey, someRowKey&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableClient.deleteEntityWithResponse#TableEntity-Duration-Context -->
      *
@@ -962,6 +834,7 @@ public final class TableClient {
     private Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, boolean ifUnchanged,
                                             Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
 
         String finalETag = ifUnchanged ? eTag : "*";
 
@@ -969,17 +842,17 @@ public final class TableClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null"));
         }
 
-        Supplier<Response<Void>> callable = () -> tablesImplementation.getTables().deleteEntityWithResponse(
-            tableName, TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), finalETag,
-            null, null, null, contextValue);
+        Callable<Response<Void>> callable = () -> tablesImplementation.getTables().deleteEntityWithResponse(
+            tableName, TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), finalETag, null,
+            null, null, contextValue);
 
         try {
-            return hasTimeout(timeout)
-                ? getResultWithTimeout(THREAD_POOL.submit(callable::get), timeout) : callable.get();
-        } catch (InterruptedException | ExecutionException | TimeoutException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
-        } catch (RuntimeException ex) {
-            return swallow404Exception(mapThrowableToTableServiceException(ex));
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception ex) {
+            Throwable except = mapThrowableToTableServiceException(ex);
+            return swallow404Exception(except);
         }
     }
 
@@ -1032,7 +905,7 @@ public final class TableClient {
      *     .setSelect&#40;propertiesToSelect&#41;;
      *
      * PagedIterable&lt;TableEntity&gt; myTableEntities = tableClient.listEntities&#40;listEntitiesOptions,
-     *     Duration.ofSeconds&#40;5&#41;, null&#41;;
+     *     Duration.ofSeconds&#40;5&#41;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
      * myTableEntities.forEach&#40;tableEntity -&gt; &#123;
      *     System.out.printf&#40;&quot;Retrieved entity with partition key '%s', row key '%s' and properties:%n&quot;,
@@ -1057,12 +930,19 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options, Duration timeout, Context context) {
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
 
-        Supplier<PagedIterable<TableEntity>> callable = () -> new PagedIterable<>(
+        Callable<PagedIterable<TableEntity>> callable = () -> new PagedIterable<>(
             () -> listEntitiesFirstPage(context, options, TableEntity.class),
             token -> listEntitiesNextPage(token, context, options, TableEntity.class));
 
-        return callIterableWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception ex) {
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
+        }
     }
 
     private <T extends TableEntity> PagedResponse<T> listEntitiesFirstPage(Context context,
@@ -1136,7 +1016,10 @@ public final class TableClient {
      * {@link TableEntity entity}.</p>
      * <!-- src_embed com.azure.data.tables.tableClient.getEntity#String-String -->
      * <pre>
-     * TableEntity tableEntity = tableClient.getEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity tableEntity = tableClient.getEntity&#40;partitionKey, rowKey&#41;;
      *
      * System.out.printf&#40;&quot;Retrieved entity with partition key '%s' and row key '%s'.&quot;, tableEntity.getPartitionKey&#40;&#41;,
      *     tableEntity.getRowKey&#40;&#41;&#41;;
@@ -1166,12 +1049,15 @@ public final class TableClient {
      * retrieved {@link TableEntity entity}.</p>
      * <!-- src_embed com.azure.data.tables.tableClient.getEntityWithResponse#String-String-ListEntitiesOptions-Duration-Context -->
      * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
      * List&lt;String&gt; propertiesToSelect = new ArrayList&lt;&gt;&#40;&#41;;
      * propertiesToSelect.add&#40;&quot;name&quot;&#41;;
      * propertiesToSelect.add&#40;&quot;lastname&quot;&#41;;
      * propertiesToSelect.add&#40;&quot;age&quot;&#41;;
      *
-     * Response&lt;TableEntity&gt; response = tableClient.getEntityWithResponse&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;, propertiesToSelect,
+     * Response&lt;TableEntity&gt; response = tableClient.getEntityWithResponse&#40;myPartitionKey, myRowKey, propertiesToSelect,
      *     Duration.ofSeconds&#40;5&#41;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
      * TableEntity myTableEntity = response.getValue&#40;&#41;;
@@ -1202,6 +1088,7 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, List<String> select,
                                                        Duration timeout, Context context) {
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Context contextValue = TableUtils.setContext(context, true);
 
         QueryOptions queryOptions = new QueryOptions()
@@ -1216,11 +1103,11 @@ public final class TableClient {
                 new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
         }
 
-        Supplier<Response<TableEntity>> callable = () -> {
+        Callable<Response<TableEntity>> callable = () -> {
             ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>> response =
                 tablesImplementation.getTables().queryEntityWithPartitionAndRowKeyWithResponse(
-                tableName, TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), null,
-                    null, queryOptions, contextValue);
+                tableName, TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), null, null,
+                queryOptions, contextValue);
 
             final Map<String, Object> matchingEntity = response.getValue();
 
@@ -1235,7 +1122,14 @@ public final class TableClient {
                 EntityHelper.convertToSubclass(entity, TableEntity.class, logger));
         };
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception ex) {
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
+        }
     }
 
     /**
@@ -1303,18 +1197,27 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Context contextValue = TableUtils.setContext(context, true);
 
-        Supplier<Response<TableAccessPolicies>> callable = () -> {
+        Callable<Response<TableAccessPolicies>> callable = () -> {
             ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>> response =
-                tablesImplementation.getTables().getAccessPolicyWithResponse(tableName, null, null, contextValue);
+                tablesImplementation.getTables().getAccessPolicyWithResponse(
+                    tableName, null, null, contextValue
+            );
             return new SimpleResponse<>(response,
                 new TableAccessPolicies(response.getValue() == null ? null : response.getValue().stream()
                     .map(TableUtils::toTableSignedIdentifier)
                     .collect(Collectors.toList())));
         };
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception ex) {
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
+        }
     }
 
 
@@ -1399,6 +1302,7 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                         Duration timeout, Context context) {
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Context contextValue = TableUtils.setContext(context, true);
         List<SignedIdentifier> signedIdentifiers = null;
 
@@ -1431,14 +1335,20 @@ public final class TableClient {
         }
 
         List<SignedIdentifier> finalSignedIdentifiers = signedIdentifiers;
-        Supplier<Response<Void>> callable = () -> {
+        Callable<Response<Void>> callable = () -> {
             ResponseBase<TablesSetAccessPolicyHeaders, Void> response = tablesImplementation.getTables()
                 .setAccessPolicyWithResponse(tableName, null, null,
                     finalSignedIdentifiers, contextValue);
             return new SimpleResponse<>(response, response.getValue());
         };
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception ex) {
+            throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
+        }
     }
 
 
@@ -1624,6 +1534,7 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableTransactionResult> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Duration timeout, Context context) {
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Context contextValue = TableUtils.setContext(context, true);
 
         if (transactionActions.isEmpty()) {
@@ -1670,7 +1581,7 @@ public final class TableClient {
             }
         }
 
-        Supplier<Response<TableTransactionResult>> callable = () -> {
+        Callable<Response<TableTransactionResult>> callable = () -> {
             BiConsumer<TransactionalBatchRequestBody, RequestActionPair> accumulator = (body, pair) ->
                 body.addChangeOperation(new TransactionalBatchSubRequest(pair.getAction(), pair.getRequest()));
             BiConsumer<TransactionalBatchRequestBody, TransactionalBatchRequestBody> combiner = (body1, body2) ->
@@ -1690,11 +1601,11 @@ public final class TableClient {
         };
 
         try {
-            return hasTimeout(timeout)
-                ? getResultWithTimeout(THREAD_POOL.submit(callable::get), timeout) : callable.get();
-        } catch (InterruptedException | ExecutionException | TimeoutException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
-        } catch (RuntimeException ex) {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception ex) {
+
             throw logger.logExceptionAsError((RuntimeException) TableUtils.interpretException(ex));
         }
     }

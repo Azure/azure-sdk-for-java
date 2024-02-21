@@ -4,7 +4,6 @@ package com.azure.data.tables.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -21,6 +20,7 @@ import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.implementation.models.TableServiceErrorOdataError;
 import com.azure.data.tables.implementation.models.TableServiceErrorOdataErrorMessage;
 import com.azure.data.tables.implementation.models.TableServiceStats;
+import com.azure.data.tables.models.TableServiceProperties;
 import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableServiceCorsRule;
 import com.azure.data.tables.models.TableServiceError;
@@ -29,11 +29,11 @@ import com.azure.data.tables.models.TableServiceGeoReplication;
 import com.azure.data.tables.models.TableServiceGeoReplicationStatus;
 import com.azure.data.tables.models.TableServiceLogging;
 import com.azure.data.tables.models.TableServiceMetrics;
-import com.azure.data.tables.models.TableServiceProperties;
 import com.azure.data.tables.models.TableServiceRetentionPolicy;
 import com.azure.data.tables.models.TableServiceStatistics;
 import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionFailedException;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -43,17 +43,17 @@ import java.net.URLEncoder;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
+import java.util.OptionalLong;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.core.util.FluxUtil.monoError;
+
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * A class containing utility methods for the Azure Tables library.
@@ -63,7 +63,7 @@ public final class TableUtils {
     private static final String DELIMITER_CONTINUATION_TOKEN = ";";
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     private static final String TABLES_TRACING_NAMESPACE_VALUE = "Microsoft.Tables";
-    private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 5;
+    private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECINDS = 5;
 
     private TableUtils() {
         throw new UnsupportedOperationException("Cannot instantiate TablesUtils");
@@ -213,8 +213,8 @@ public final class TableUtils {
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
-    public static boolean hasTimeout(Duration timeout) {
-        return timeout != null && !timeout.isZero() && !timeout.isNegative();
+    public static OptionalLong setTimeout(Duration timeout) {
+        return timeout != null ? OptionalLong.of(timeout.toMillis()) : OptionalLong.empty();
     }
 
     /**
@@ -365,8 +365,27 @@ public final class TableUtils {
     }
 
     public static ExecutorService getThreadPoolWithShutdownHook() {
-        return CoreUtils.addShutdownHookSafely(Executors.newCachedThreadPool(),
-            Duration.ofSeconds(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS));
+        ExecutorService threadPool = Executors.newCachedThreadPool();
+        registerShutdownHook(threadPool);
+        return threadPool;
+    }
+
+    static Thread registerShutdownHook(ExecutorService threadPool) {
+        long halfTimeout = TimeUnit.SECONDS.toNanos(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECINDS) / 2;
+        Thread hook = new Thread(() -> {
+            try {
+                threadPool.shutdown();
+                if (!threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS)) {
+                    threadPool.shutdownNow();
+                    threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                threadPool.shutdown();
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(hook);
+        return hook;
     }
 
     public static TableServiceProperties toTableServiceProperties(
@@ -574,7 +593,7 @@ public final class TableUtils {
             TableTransactionFailedException failedException = (TableTransactionFailedException) cause;
             return failedException;
         } else {
-            return (Exception) mapThrowableToTableServiceException(exception);
+            return (RuntimeException) mapThrowableToTableServiceException(exception);
         }
     }
 
@@ -591,56 +610,5 @@ public final class TableUtils {
             keys[1] = null;
         }
         return keys;
-    }
-
-    public static Context skip409Logging(Context context) {
-        return context.addData("skip409logging", true);
-    }
-
-    public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) {
-        return callWithOptionalTimeout(callable, threadPool, timeout, logger, false);
-    }
-
-    public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger, boolean skip409Logging) {
-        try {
-            return callHandler(callable, threadPool, timeout, logger);
-        } catch (Throwable thrown) {
-            Throwable exception = mapThrowableToTableServiceException(thrown);
-            if (exception instanceof TableServiceException) {
-                TableServiceException e = (TableServiceException) exception;
-                if (skip409Logging && e.getResponse() != null && e.getResponse().getStatusCode() == 409) {
-                    // return empty response
-                    HttpResponse resp = ((TableServiceException) exception).getResponse();
-                    return new SimpleResponse<>(resp.getRequest(), resp.getStatusCode(), resp.getHeaders(), null);
-                }
-            }
-
-            throw logger.logExceptionAsError((RuntimeException) exception);
-        }
-    }
-
-    public static <T> PagedIterable<T> callIterableWithOptionalTimeout(Supplier<PagedIterable<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) {
-        try {
-            return callHandler(callable, threadPool, timeout, logger);
-        } catch (Exception thrown) {
-            Throwable exception = mapThrowableToTableServiceException(thrown);
-            throw logger.logExceptionAsError((RuntimeException) exception);
-        }
-    }
-
-    private static <T> T callHandler(Supplier<T> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) throws Exception {
-        try {
-            return hasTimeout(timeout)
-                ? getResultWithTimeout(threadPool.submit(callable::get), timeout)
-                : callable.get();
-        } catch (ExecutionException | InterruptedException | TimeoutException ex) {
-
-            if (ex instanceof ExecutionException) {
-                Throwable cause = ex.getCause();
-                throw (Exception) mapThrowableToTableServiceException(cause);
-            } else {
-                throw logger.logExceptionAsError(new RuntimeException(ex));
-            }
-        }
     }
 }

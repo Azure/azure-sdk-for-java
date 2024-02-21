@@ -36,14 +36,6 @@ public final class TableServiceLogging {
      */
     private TableServiceRetentionPolicy retentionPolicy;
 
-    // empty constructor necessary due to Javadoc warnings
-    /**
-     * Creates a {@link TableServiceLogging}.
-     */
-    public TableServiceLogging() {
-
-    }
-
     /**
      * Get the version of Analytics to configure.
      *
