@@ -7,6 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AnalyzeTextsSubmitJobHeaders model. */
 @Fluent
@@ -14,6 +15,7 @@ public final class AnalyzeTextsSubmitJobHeaders {
     /*
      * The Operation-Location property.
      */
+    @JsonProperty(value = "Operation-Location")
     private String operationLocation;
 
     private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
