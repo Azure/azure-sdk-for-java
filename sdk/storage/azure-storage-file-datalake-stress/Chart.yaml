@@ -1,6 +1,6 @@
 apiVersion: v2
-name: java-storage-blob
-description: Stress tests for Java Blob Storage
+name: java-storage-datalake
+description: Stress tests for Java File Datalake Storage
 version: 0.1.1
 appVersion: v0.1
 annotations:

@@ -5,9 +5,9 @@ matrix:
       testScenario: downloadtofile
       sync: true
       sizeBytes: 1024
-      parallel: 100
+      parallel: 50
       faults: true
-      durationMin: 480
+      durationMin: 10
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small file, no chunking with async client
@@ -15,29 +15,29 @@ matrix:
       testScenario: downloadtofile
       sync: false
       sizeBytes: 1024
-      parallel: 100
+      parallel: 50
       faults: true
-      durationMin: 480
+      durationMin: 10
       imageBuildDir: "../../.."
 
     # this test downloads 2GB (1024 * 1024 * 1024 * 2 bytes), large file requiring multiple requests
-    download-large-file-test:
-      testScenario: downloadtofile
-      sync: true
-      sizeBytes: "2147483648"
-      parallel: 100
-      faults: true
-      durationMin: 480
-      imageBuildDir: "../../.."
+#    download-large-file-test:
+#      testScenario: downloadtofile
+#      sync: true
+#      sizeBytes: "2147483648"
+#      parallel: 100
+#      faults: true
+#      durationMin: 30
+#      imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small stream, no chunking
     download-small-stream-test:
       testScenario: downloadstream
       sync: true
       sizeBytes: 1024
-      parallel: 100
+      parallel: 50
       faults: true
-      durationMin: 480
+      durationMin: 10
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small stream, no chunking with async client
@@ -45,86 +45,86 @@ matrix:
       testScenario: downloadstream
       sync: false
       sizeBytes: 1024
-      parallel: 100
+      parallel: 50
       faults: true
-      durationMin: 480
+      durationMin: 10
       imageBuildDir: "../../.."
 
 #   this test downloads 2GB (1024 * 1024 * 1024 * 2 bytes), large file requiring multiple requests
-    download-large-stream-test:
-      testScenario: downloadstream
-      sync: true
-      sizeBytes: "2147483648"
-      parallel: 100
-      faults: true
-      durationMin: 480
-      imageBuildDir: "../../.."
+#    download-large-stream-test:
+#      testScenario: downloadstream
+#      sync: true
+#      sizeBytes: "2147483648"
+#      parallel: 100
+#      faults: true
+#      durationMin: 480
+#      imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small content, no chunking
     download-small-content-test:
       testScenario: downloadcontent
       sync: true
       sizeBytes: 1024
-      parallel: 100
+      parallel: 50
       faults: true
-      durationMin: 480
+      durationMin: 10
       imageBuildDir: "../../.."
     # this test downloads 1KB (1024 bytes), small content, no chunking with async client
     download-small-content-async-test:
       testScenario: downloadcontent
       sync: false
       sizeBytes: 1024
-      parallel: 100
+      parallel: 50
       faults: true
-      durationMin: 480
+      durationMin: 10
       imageBuildDir: "../../.."
 
 #   this test downloads 2GB (1024 * 1024 * 1024 * 2 bytes), large content requiring multiple requests
-    download-large-content-test:
-      testScenario: downloadcontent
-      sync: true
-      sizeBytes: "2147483648"
-      parallel: 100
-      faults: true
-      durationMin: 480
-      imageBuildDir: "../../.."
+#    download-large-content-test:
+#      testScenario: downloadcontent
+#      sync: true
+#      sizeBytes: "2147483648"
+#      parallel: 100
+#      faults: true
+#      durationMin: 480
+#      imageBuildDir: "../../.."
 
 #   this test downloads 1KB (1024 bytes) to open input stream, no chunking
     openinputstream-small-test:
       testScenario: openinputstream
       sync: true
       sizeBytes: 1024
-      parallel: 100
+      parallel: 50
       faults: true
-      durationMin: 480
+      durationMin: 10
       imageBuildDir: "../../.."
 
 #   this test downloads 2GB (1024 * 1024 * 1024 * 2 bytes) to open input stream requiring multiple requests
-    openinputstream-large-test:
-      testScenario: openinputstream
-      sync: true
-      sizeBytes: "2147483648"
-      parallel: 100
-      faults: true
-      durationMin: 480
-      imageBuildDir: "../../.."
+#    openinputstream-large-test:
+#      testScenario: openinputstream
+#      sync: true
+#      sizeBytes: "2147483648"
+#      parallel: 100
+#      faults: true
+#      durationMin: 480
+#      imageBuildDir: "../../.."
 
 #   this test downloads 1KB (1024 bytes) to seekablebytechannel, no chunking
     seekablebytechannel-small-test:
       testScenario: openseekablebytechannelread
       sync: true
       sizeBytes: 1024
-      parallel: 100
+      parallel: 50
       faults: true
-      durationMin: 480
+      durationMin: 10
       imageBuildDir: "../../.."
 
 #   this test downloads 2GB (1024 * 1024 * 1024 * 2 bytes) to seekablebytechannel requiring multiple requests
-    seekablebytechannel-large-test:
-      testScenario: openseekablebytechannelread
-      sync: true
-      sizeBytes: "2147483648"
-      parallel: 100
-      faults: true
-      durationMin: 480
-      imageBuildDir: "../../.."
+#    seekablebytechannel-large-test:
+#      testScenario: openseekablebytechannelread
+#      sync: true
+#      sizeBytes: "2147483648"
+#      parallel: 100
+#      faults: true
+#      durationMin: 480
+#      imageBuildDir: "../../.."

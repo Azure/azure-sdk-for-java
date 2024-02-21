@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.stress.utils;
+package com.azure.storage.file.datalake.stress.utils;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -138,7 +138,7 @@ public class TelemetryHelper {
         Instant start = Instant.now();
         Span span = tracer.spanBuilder("run").startSpan();
         try (Scope s = span.makeCurrent()) {
-            com.azure.core.util.Context ctx = new com.azure.core.util.Context(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current());
+            com.azure.core.util.Context ctx = new com.azure.core.util.Context(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, Context.current());
             oneRun.run(ctx);
             trackSuccess(start, span);
         } catch (Throwable e) {
@@ -161,11 +161,11 @@ public class TelemetryHelper {
             Instant start = Instant.now();
             Span span = tracer.spanBuilder("runAsync").startSpan();
             try (Scope s = span.makeCurrent()) {
-                com.azure.core.util.Context ctx = new com.azure.core.util.Context(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current());
+                com.azure.core.util.Context ctx = new com.azure.core.util.Context(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, Context.current());
                 return runAsync.apply(ctx).doOnError(e -> trackFailure(start, e, span))
                     .doOnCancel(() -> trackCancellation(start, span))
                     .doOnSuccess(v -> trackSuccess(start, span))
-                    .contextWrite(reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
+                    .contextWrite(reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, Context.current()));
             }
         });
     }
@@ -177,8 +177,8 @@ public class TelemetryHelper {
             .log("run ended");
 
         runDuration.record(getDuration(start), commonAttributes);
-        successfulRuns.incrementAndGet();
         span.end();
+        successfulRuns.incrementAndGet();
         logger.info("track success");
     }
 
@@ -221,23 +221,22 @@ public class TelemetryHelper {
      * @param options test parameters
      */
     public void recordStart(StorageStressOptions options) {
-        String storageBlobPackageVersion = "storagePackageVersion";
+        String storageDataLakePackageVersion = "storagePackageVersion";
         try {
-            Class<?> storageBlobBusPackage = Class.forName("com.azure.storage.blob.BlobServiceClientBuilder");
-            storageBlobPackageVersion = storageBlobBusPackage.getPackage().getImplementationVersion();
-
-            if (storageBlobPackageVersion == null) {
-                storageBlobPackageVersion = "null";
+            Class<?> storageDatalakePackage = Class.forName("com.azure.storage.file.datalake.DataLakeServiceClientBuilder");
+            storageDataLakePackageVersion = storageDatalakePackage.getPackage().getImplementationVersion();
+            if (storageDataLakePackageVersion == null) {
+                storageDataLakePackageVersion = "null";
             }
         } catch (ClassNotFoundException e) {
-            logger.warning("could not find BlobServiceClientBuilder class", e);
+            logger.warning("could not find DataLakeServiceClientBuilder class", e);
         }
 
         Span before = startSampledInSpan("before run");
         before.setAttribute(AttributeKey.longKey("durationSec"), options.getDuration());
         before.setAttribute(AttributeKey.stringKey("scenarioName"), scenarioName);
         before.setAttribute(AttributeKey.longKey("concurrency"), options.getParallel());
-        before.setAttribute(AttributeKey.stringKey("storagePackageVersion"), storageBlobPackageVersion);
+        before.setAttribute(AttributeKey.stringKey("storagePackageVersion"), storageDataLakePackageVersion);
         before.setAttribute(AttributeKey.booleanKey("sync"), options.isSync());
         before.setAttribute(AttributeKey.longKey("payloadSize"), options.getSize());
         before.setAttribute(AttributeKey.stringKey("hostname"), System.getenv().get("HOSTNAME"));
@@ -247,14 +246,13 @@ public class TelemetryHelper {
         before.setAttribute(AttributeKey.stringKey("jreVendor"), System.getProperty("java.vendor"));
         before.end();
 
-        // be  sure to remove logging afterwards
         logger.atInfo()
             .addKeyValue("duration", options.getDuration())
             //.addKeyValue("blobName", options.getBlobName())
             .addKeyValue("payloadSize", options.getSize())
             .addKeyValue("concurrency", options.getParallel())
             .addKeyValue("faultInjection", options.isFaultInjectionEnabled())
-            .addKeyValue("storagePackageVersion", storageBlobPackageVersion)
+            .addKeyValue("storagePackageVersion", storageDataLakePackageVersion)
             .addKeyValue("sync", options.isSync())
             .addKeyValue("scenarioName", scenarioName)
             //.addKeyValue("connectionStringProvided", !CoreUtils.isNullOrEmpty(options.getConnectionString()))
@@ -273,7 +271,6 @@ public class TelemetryHelper {
         after.setAttribute(AttributeKey.longKey("durationMs"), Instant.now().toEpochMilli() - startTime.toEpochMilli());
         after.end();
 
-        // be sure to remove logging afterwards
         logger.atInfo()
             .addKeyValue("scenarioName", scenarioName)
             .addKeyValue("succeeded", successfulRuns.get())

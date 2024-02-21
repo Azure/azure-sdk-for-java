@@ -24,5 +24,6 @@
         <module>microsoft-azure-storage-perf</module>
     <module>azure-storage-blob-stress</module>
     <module>azure-storage-stress</module>
+    <module>azure-storage-file-datalake-stress</module>
   </modules>
 </project>
