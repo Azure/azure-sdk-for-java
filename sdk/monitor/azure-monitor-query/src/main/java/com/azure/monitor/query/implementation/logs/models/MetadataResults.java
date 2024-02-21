@@ -10,8 +10,8 @@ import java.util.List;
 
 /**
  * A metadata response.
- * 
- * The metadata response for the app, including available tables, etc.
+ *
+ * <p>The metadata response for the app, including available tables, etc.
  */
 @Fluent
 public final class MetadataResults {
@@ -75,15 +75,12 @@ public final class MetadataResults {
     @JsonProperty(value = "permissions")
     private List<MetadataPermissions> permissions;
 
-    /**
-     * Creates an instance of MetadataResults class.
-     */
-    public MetadataResults() {
-    }
+    /** Creates an instance of MetadataResults class. */
+    public MetadataResults() {}
 
     /**
      * Get the categories property: The list of categories that are referenced in this metadata response.
-     * 
+     *
      * @return the categories value.
      */
     public List<MetadataCategory> getCategories() {
@@ -92,7 +89,7 @@ public final class MetadataResults {
 
     /**
      * Set the categories property: The list of categories that are referenced in this metadata response.
-     * 
+     *
      * @param categories the categories value to set.
      * @return the MetadataResults object itself.
      */
@@ -103,7 +100,7 @@ public final class MetadataResults {
 
     /**
      * Get the resourceTypes property: The list of resource types that are referenced in this metadata response.
-     * 
+     *
      * @return the resourceTypes value.
      */
     public List<MetadataResourceType> getResourceTypes() {
@@ -112,7 +109,7 @@ public final class MetadataResults {
 
     /**
      * Set the resourceTypes property: The list of resource types that are referenced in this metadata response.
-     * 
+     *
      * @param resourceTypes the resourceTypes value to set.
      * @return the MetadataResults object itself.
      */
@@ -123,7 +120,7 @@ public final class MetadataResults {
 
     /**
      * Get the solutions property: The list of Log Analytics solutions installed on the workspace.
-     * 
+     *
      * @return the solutions value.
      */
     public List<MetadataSolution> getSolutions() {
@@ -132,7 +129,7 @@ public final class MetadataResults {
 
     /**
      * Set the solutions property: The list of Log Analytics solutions installed on the workspace.
-     * 
+     *
      * @param solutions the solutions value to set.
      * @return the MetadataResults object itself.
      */
@@ -143,7 +140,7 @@ public final class MetadataResults {
 
     /**
      * Get the tables property: The list of tables and columns that comprise the schema of the workspace.
-     * 
+     *
      * @return the tables value.
      */
     public List<MetadataTable> getTables() {
@@ -152,7 +149,7 @@ public final class MetadataResults {
 
     /**
      * Set the tables property: The list of tables and columns that comprise the schema of the workspace.
-     * 
+     *
      * @param tables the tables value to set.
      * @return the MetadataResults object itself.
      */
@@ -163,7 +160,7 @@ public final class MetadataResults {
 
     /**
      * Get the functions property: The list of functions stored on the workspace, or introduced by solutions etc.
-     * 
+     *
      * @return the functions value.
      */
     public List<MetadataFunction> getFunctions() {
@@ -172,7 +169,7 @@ public final class MetadataResults {
 
     /**
      * Set the functions property: The list of functions stored on the workspace, or introduced by solutions etc.
-     * 
+     *
      * @param functions the functions value to set.
      * @return the MetadataResults object itself.
      */
@@ -182,9 +179,9 @@ public final class MetadataResults {
     }
 
     /**
-     * Get the queries property: The list of saved queries stored on the workspace, or introduced by solutions,
-     * resource types, etc.
-     * 
+     * Get the queries property: The list of saved queries stored on the workspace, or introduced by solutions, resource
+     * types, etc.
+     *
      * @return the queries value.
      */
     public List<MetadataQuery> getQueries() {
@@ -192,9 +189,9 @@ public final class MetadataResults {
     }
 
     /**
-     * Set the queries property: The list of saved queries stored on the workspace, or introduced by solutions,
-     * resource types, etc.
-     * 
+     * Set the queries property: The list of saved queries stored on the workspace, or introduced by solutions, resource
+     * types, etc.
+     *
      * @param queries the queries value to set.
      * @return the MetadataResults object itself.
      */
@@ -206,7 +203,7 @@ public final class MetadataResults {
     /**
      * Get the applications property: The list of Application Insights apps that were referenced in the metadata
      * request.
-     * 
+     *
      * @return the applications value.
      */
     public List<MetadataApplication> getApplications() {
@@ -216,7 +213,7 @@ public final class MetadataResults {
     /**
      * Set the applications property: The list of Application Insights apps that were referenced in the metadata
      * request.
-     * 
+     *
      * @param applications the applications value to set.
      * @return the MetadataResults object itself.
      */
@@ -227,7 +224,7 @@ public final class MetadataResults {
 
     /**
      * Get the workspaces property: The list of Log Analytics workspaces that were referenced in the metadata request.
-     * 
+     *
      * @return the workspaces value.
      */
     public List<MetadataWorkspace> getWorkspaces() {
@@ -236,7 +233,7 @@ public final class MetadataResults {
 
     /**
      * Set the workspaces property: The list of Log Analytics workspaces that were referenced in the metadata request.
-     * 
+     *
      * @param workspaces the workspaces value to set.
      * @return the MetadataResults object itself.
      */
@@ -247,7 +244,7 @@ public final class MetadataResults {
 
     /**
      * Get the resources property: The list of Azure resources that were referenced in the metadata request.
-     * 
+     *
      * @return the resources value.
      */
     public List<Object> getResources() {
@@ -256,7 +253,7 @@ public final class MetadataResults {
 
     /**
      * Set the resources property: The list of Azure resources that were referenced in the metadata request.
-     * 
+     *
      * @param resources the resources value to set.
      * @return the MetadataResults object itself.
      */
@@ -267,7 +264,7 @@ public final class MetadataResults {
 
     /**
      * Get the permissions property: The list of permission rules that affected the metadata request.
-     * 
+     *
      * @return the permissions value.
      */
     public List<MetadataPermissions> getPermissions() {
@@ -276,12 +273,47 @@ public final class MetadataResults {
 
     /**
      * Set the permissions property: The list of permission rules that affected the metadata request.
-     * 
+     *
      * @param permissions the permissions value to set.
      * @return the MetadataResults object itself.
      */
     public MetadataResults setPermissions(List<MetadataPermissions> permissions) {
         this.permissions = permissions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getCategories() != null) {
+            getCategories().forEach(e -> e.validate());
+        }
+        if (getResourceTypes() != null) {
+            getResourceTypes().forEach(e -> e.validate());
+        }
+        if (getSolutions() != null) {
+            getSolutions().forEach(e -> e.validate());
+        }
+        if (getTables() != null) {
+            getTables().forEach(e -> e.validate());
+        }
+        if (getFunctions() != null) {
+            getFunctions().forEach(e -> e.validate());
+        }
+        if (getQueries() != null) {
+            getQueries().forEach(e -> e.validate());
+        }
+        if (getApplications() != null) {
+            getApplications().forEach(e -> e.validate());
+        }
+        if (getWorkspaces() != null) {
+            getWorkspaces().forEach(e -> e.validate());
+        }
+        if (getPermissions() != null) {
+            getPermissions().forEach(e -> e.validate());
+        }
     }
 }

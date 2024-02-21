@@ -21,7 +21,6 @@ import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.LogsTableRow;
 import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricValue;
-import com.azure.monitor.query.models.MetricsBatchQueryResult;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 import com.azure.monitor.query.models.QueryTimeInterval;
@@ -72,33 +71,17 @@ public class ReadmeSamples {
         // END: readme-sample-createMetricsQueryAsyncClient
     }
 
-    public void createMetricsBatchClients() {
-        // BEGIN: readme-sample-createMetricsBatchQueryClient
-        MetricsBatchQueryClient metricsBatchQueryClient = new MetricsBatchQueryClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("{endpoint}")
-            .buildClient();
-        // END: readme-sample-createMetricsBatchQueryClient
-
-        // BEGIN: readme-sample-createMetricsBatchQueryAsyncClient
-        MetricsBatchQueryAsyncClient metricsBatchQueryAsyncClient = new MetricsBatchQueryClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("{endpoint}")
-            .buildAsyncClient();
-        // END: readme-sample-createMetricsBatchQueryAsyncClient
-    }
-
     /**
      * Sample to query logs using a single Kusto query.
      */
     public void queryLogs() {
         // BEGIN: readme-sample-logsquery
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
 
         LogsQueryResult queryResults = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
-            new QueryTimeInterval(Duration.ofDays(2)));
+                new QueryTimeInterval(Duration.ofDays(2)));
 
         for (LogsTableRow row : queryResults.getTable().getRows()) {
             System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
@@ -148,11 +131,11 @@ public class ReadmeSamples {
     public void queryLogsAsModel() {
         // BEGIN: readme-sample-logsquerycustommodel
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
 
         List<CustomLogModel> customLogModels = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
-            new QueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
+                new QueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
 
         for (CustomLogModel customLogModel : customLogModels) {
             System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
@@ -166,8 +149,8 @@ public class ReadmeSamples {
     public void queryBatch() {
         // BEGIN: readme-sample-batchlogsquery
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
 
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
         String query1 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
@@ -175,7 +158,7 @@ public class ReadmeSamples {
         String query3 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
 
         LogsBatchQueryResultCollection batchResults = logsQueryClient
-            .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         LogsBatchQueryResult query1Result = batchResults.getResult(query1);
         for (LogsTableRow row : query1Result.getTable().getRows()) {
@@ -209,7 +192,7 @@ public class ReadmeSamples {
             .setServerTimeout(Duration.ofMinutes(10));
 
         Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}",
-            "{kusto-query}", new QueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
+                "{kusto-query}", new QueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
         // END: readme-sample-logsquerytimeout
     }
 
@@ -219,13 +202,13 @@ public class ReadmeSamples {
     public void getLogsQueryFromMultipleWorkspaces() {
         // BEGIN: readme-sample-logsquerymultipleworkspaces
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
 
         Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}", "{kusto-query}",
-            new QueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
-                .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
-            Context.NONE);
+                new QueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
+                        .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
+                Context.NONE);
         LogsQueryResult result = response.getValue();
         // END: readme-sample-logsquerymultipleworkspaces
     }
@@ -237,11 +220,11 @@ public class ReadmeSamples {
     public void getMetrics() {
         // BEGIN: readme-sample-metricsquery
         MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
 
         MetricsQueryResult metricsQueryResult = metricsQueryClient.queryResource("{resource-uri}",
-            Arrays.asList("SuccessfulCalls", "TotalCalls"));
+                Arrays.asList("SuccessfulCalls", "TotalCalls"));
 
         for (MetricResult metric : metricsQueryResult.getMetrics()) {
             System.out.println("Metric name " + metric.getMetricName());
@@ -293,14 +276,14 @@ public class ReadmeSamples {
 
         // BEGIN: readme-sample-enablehttplogging
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-            .credential(credential)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildClient();
+                .credential(credential)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
         // or
         MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
-            .credential(credential)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildClient();
+                .credential(credential)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
         // END: readme-sample-enablehttplogging
     }
 
@@ -312,9 +295,9 @@ public class ReadmeSamples {
 
         // BEGIN: readme-sample-responsetimeout
         LogsQueryClient client = new LogsQueryClientBuilder()
-            .credential(credential)
-            .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
-            .buildClient();
+                .credential(credential)
+                .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
+                .buildClient();
         // END: readme-sample-responsetimeout
     }
 
@@ -325,11 +308,11 @@ public class ReadmeSamples {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         // BEGIN: readme-sample-servertimeout
         LogsQueryClient client = new LogsQueryClientBuilder()
-            .credential(credential)
-            .buildClient();
+                .credential(credential)
+                .buildClient();
 
         client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
-            new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
+                new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
         // END: readme-sample-servertimeout
     }
 
@@ -340,12 +323,12 @@ public class ReadmeSamples {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         LogsQueryClient client = new LogsQueryClientBuilder()
-            .credential(credential)
-            .buildClient();
+                .credential(credential)
+                .buildClient();
 
         // BEGIN: readme-sample-allowpartialerrors
         client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
-            new LogsQueryOptions().setAllowPartialErrors(true), Context.NONE);
+                new LogsQueryOptions().setAllowPartialErrors(true), Context.NONE);
         // END: readme-sample-allowpartialerrors
     }
 
@@ -357,28 +340,27 @@ public class ReadmeSamples {
 
         // BEGIN: readme-sample-okhttpresponsetimeout
         LogsQueryClient client = new LogsQueryClientBuilder()
-            .credential(credential)
-            .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
-            .buildClient();
+                .credential(credential)
+                .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
+                .buildClient();
         // END: readme-sample-okhttpresponsetimeout
     }
 
     /**
      * Sample to show how to request for query execution statistics and consume the response.
-     *
      * @throws IOException if parsing the statistics JSON fails.
      */
     public void includeStatistics() throws IOException {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         // BEGIN: readme-sample-includestatistics
         LogsQueryClient client = new LogsQueryClientBuilder()
-            .credential(credential)
-            .buildClient();
+                .credential(credential)
+                .buildClient();
 
         LogsQueryOptions options = new LogsQueryOptions()
-            .setIncludeStatistics(true);
+                .setIncludeStatistics(true);
         Response<LogsQueryResult> response = client.queryWorkspaceWithResponse("{workspace-id}",
-            "AzureActivity | top 10 by TimeGenerated", QueryTimeInterval.LAST_1_HOUR, options, Context.NONE);
+                "AzureActivity | top 10 by TimeGenerated", QueryTimeInterval.LAST_1_HOUR, options, Context.NONE);
         LogsQueryResult result = response.getValue();
         BinaryData statistics = result.getStatistics();
 
@@ -391,25 +373,24 @@ public class ReadmeSamples {
 
     /**
      * Sample to show how to request for visualization data and consume the response.
-     *
      * @throws IOException if parsing the visualization JSON fails.
      */
     public void includeVisualization() throws IOException {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         // BEGIN: readme-sample-includevisualization
         LogsQueryClient client = new LogsQueryClientBuilder()
-            .credential(credential)
-            .buildClient();
+                .credential(credential)
+                .buildClient();
 
         String visualizationQuery = "StormEvents"
-            + "| summarize event_count = count() by State"
-            + "| where event_count > 10"
-            + "| project State, event_count"
-            + "| render columnchart";
+                + "| summarize event_count = count() by State"
+                + "| where event_count > 10"
+                + "| project State, event_count"
+                + "| render columnchart";
         LogsQueryOptions options = new LogsQueryOptions()
-            .setIncludeVisualization(true);
+                .setIncludeVisualization(true);
         Response<LogsQueryResult> response = client.queryWorkspaceWithResponse("{workspace-id}", visualizationQuery,
-            QueryTimeInterval.LAST_7_DAYS, options, Context.NONE);
+                QueryTimeInterval.LAST_7_DAYS, options, Context.NONE);
         LogsQueryResult result = response.getValue();
         BinaryData visualization = result.getVisualization();
 
@@ -441,41 +422,5 @@ public class ReadmeSamples {
             .endpoint("https://management.chinacloudapi.cn")
             .buildClient();
         // END: readme-sample-createMetricsQueryClientWithSovereignCloud
-    }
-
-    /**
-     * Sample to demonstrate querying Azure Monitor for metrics.
-     */
-    public void getMetricsBatch() {
-        // BEGIN: readme-sample-metricsquerybatch
-        MetricsBatchQueryClient metricsBatchQueryClient = new MetricsBatchQueryClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("{endpoint}")
-            .buildClient();
-
-        MetricsBatchQueryResult metricsBatchQueryResult = metricsBatchQueryClient.queryBatch(
-            Arrays.asList("{resourceId1}", "{resourceId2}"),
-            Arrays.asList("{metric1}", "{metric2}"),
-            "{metricNamespace}");
-
-        for (MetricsQueryResult metricsQueryResult : metricsBatchQueryResult.getMetricsQueryResults()) {
-            // Each MetricsQueryResult corresponds to one of the resourceIds in the batch request.
-            List<MetricResult> metrics = metricsQueryResult.getMetrics();
-            metrics.forEach(metric -> {
-                System.out.println(metric.getMetricName());
-                System.out.println(metric.getId());
-                System.out.println(metric.getResourceType());
-                System.out.println(metric.getUnit());
-                System.out.println(metric.getTimeSeries().size());
-                System.out.println(metric.getTimeSeries().get(0).getValues().size());
-                metric.getTimeSeries()
-                    .stream()
-                    .flatMap(ts -> ts.getValues().stream())
-                    .forEach(mv -> System.out.println(mv.getTimeStamp().toString()
-                        + "; Count = " + mv.getCount()
-                        + "; Average = " + mv.getAverage()));
-            });
-        }
-        // END: readme-sample-metricsquerybatch
     }
 }
