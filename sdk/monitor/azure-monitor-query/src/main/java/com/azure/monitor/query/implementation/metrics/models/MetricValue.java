@@ -9,43 +9,41 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * Represents a metric value.
- */
+/** Represents a metric value. */
 @Fluent
 public final class MetricValue {
     /*
-     * The timestamp for the metric value in ISO 8601 format.
+     * the timestamp for the metric value in ISO 8601 format.
      */
     @JsonProperty(value = "timeStamp", required = true)
     private OffsetDateTime timeStamp;
 
     /*
-     * The average value in the time range.
+     * the average value in the time range.
      */
     @JsonProperty(value = "average")
     private Double average;
 
     /*
-     * The least value in the time range.
+     * the least value in the time range.
      */
     @JsonProperty(value = "minimum")
     private Double minimum;
 
     /*
-     * The greatest value in the time range.
+     * the greatest value in the time range.
      */
     @JsonProperty(value = "maximum")
     private Double maximum;
 
     /*
-     * The sum of all of the values in the time range.
+     * the sum of all of the values in the time range.
      */
     @JsonProperty(value = "total")
     private Double total;
 
     /*
-     * The number of samples in the time range. Can be used to determine the number of values that contributed to the
+     * the number of samples in the time range. Can be used to determine the number of values that contributed to the
      * average value.
      */
     @JsonProperty(value = "count")
@@ -53,7 +51,7 @@ public final class MetricValue {
 
     /**
      * Creates an instance of MetricValue class.
-     * 
+     *
      * @param timeStamp the timeStamp value to set.
      */
     @JsonCreator
@@ -62,8 +60,8 @@ public final class MetricValue {
     }
 
     /**
-     * Get the timeStamp property: The timestamp for the metric value in ISO 8601 format.
-     * 
+     * Get the timeStamp property: the timestamp for the metric value in ISO 8601 format.
+     *
      * @return the timeStamp value.
      */
     public OffsetDateTime getTimeStamp() {
@@ -71,8 +69,8 @@ public final class MetricValue {
     }
 
     /**
-     * Get the average property: The average value in the time range.
-     * 
+     * Get the average property: the average value in the time range.
+     *
      * @return the average value.
      */
     public Double getAverage() {
@@ -80,8 +78,8 @@ public final class MetricValue {
     }
 
     /**
-     * Set the average property: The average value in the time range.
-     * 
+     * Set the average property: the average value in the time range.
+     *
      * @param average the average value to set.
      * @return the MetricValue object itself.
      */
@@ -91,8 +89,8 @@ public final class MetricValue {
     }
 
     /**
-     * Get the minimum property: The least value in the time range.
-     * 
+     * Get the minimum property: the least value in the time range.
+     *
      * @return the minimum value.
      */
     public Double getMinimum() {
@@ -100,8 +98,8 @@ public final class MetricValue {
     }
 
     /**
-     * Set the minimum property: The least value in the time range.
-     * 
+     * Set the minimum property: the least value in the time range.
+     *
      * @param minimum the minimum value to set.
      * @return the MetricValue object itself.
      */
@@ -111,8 +109,8 @@ public final class MetricValue {
     }
 
     /**
-     * Get the maximum property: The greatest value in the time range.
-     * 
+     * Get the maximum property: the greatest value in the time range.
+     *
      * @return the maximum value.
      */
     public Double getMaximum() {
@@ -120,8 +118,8 @@ public final class MetricValue {
     }
 
     /**
-     * Set the maximum property: The greatest value in the time range.
-     * 
+     * Set the maximum property: the greatest value in the time range.
+     *
      * @param maximum the maximum value to set.
      * @return the MetricValue object itself.
      */
@@ -131,8 +129,8 @@ public final class MetricValue {
     }
 
     /**
-     * Get the total property: The sum of all of the values in the time range.
-     * 
+     * Get the total property: the sum of all of the values in the time range.
+     *
      * @return the total value.
      */
     public Double getTotal() {
@@ -140,8 +138,8 @@ public final class MetricValue {
     }
 
     /**
-     * Set the total property: The sum of all of the values in the time range.
-     * 
+     * Set the total property: the sum of all of the values in the time range.
+     *
      * @param total the total value to set.
      * @return the MetricValue object itself.
      */
@@ -151,9 +149,9 @@ public final class MetricValue {
     }
 
     /**
-     * Get the count property: The number of samples in the time range. Can be used to determine the number of values
+     * Get the count property: the number of samples in the time range. Can be used to determine the number of values
      * that contributed to the average value.
-     * 
+     *
      * @return the count value.
      */
     public Double getCount() {
@@ -161,14 +159,25 @@ public final class MetricValue {
     }
 
     /**
-     * Set the count property: The number of samples in the time range. Can be used to determine the number of values
+     * Set the count property: the number of samples in the time range. Can be used to determine the number of values
      * that contributed to the average value.
-     * 
+     *
      * @param count the count value to set.
      * @return the MetricValue object itself.
      */
     public MetricValue setCount(Double count) {
         this.count = count;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getTimeStamp() == null) {
+            throw new IllegalArgumentException("Missing required property timeStamp in model MetricValue");
+        }
     }
 }
