@@ -1024,7 +1024,7 @@ public class CryptographyClient {
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte -->
      * <pre>
-     * byte[] data = new byte[100];
+     * byte[] data = new byte[32];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;data&#41;;
      *
      * SignResult signResult = cryptographyClient.sign&#40;SignatureAlgorithm.ES256, data&#41;;
@@ -1065,7 +1065,7 @@ public class CryptographyClient {
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-Context -->
      * <pre>
-     * byte[] plainTextData = new byte[100];
+     * byte[] plainTextData = new byte[32];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;plainTextData&#41;;
      *
      * SignResult signingResult = cryptographyClient.sign&#40;SignatureAlgorithm.ES256, plainTextData&#41;;
@@ -1117,7 +1117,7 @@ public class CryptographyClient {
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte -->
      * <pre>
-     * byte[] myData = new byte[100];
+     * byte[] myData = new byte[32];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;myData&#41;;
      *
      * &#47;&#47; A signature can be obtained from the SignResult returned by the CryptographyClient.sign&#40;&#41; operation.
@@ -1161,7 +1161,7 @@ public class CryptographyClient {
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte-Context -->
      * <pre>
-     * byte[] dataToVerify = new byte[100];
+     * byte[] dataToVerify = new byte[32];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;dataToVerify&#41;;
      *
      * &#47;&#47; A signature can be obtained from the SignResult returned by the CryptographyClient.sign&#40;&#41; operation.
