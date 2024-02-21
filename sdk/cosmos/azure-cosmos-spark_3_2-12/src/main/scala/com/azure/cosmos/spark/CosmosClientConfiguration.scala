@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.models.CosmosContainerIdentity
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
@@ -14,6 +15,8 @@ private[spark] case class CosmosClientConfiguration (
                                                       customApplicationNameSuffix: Option[String],
                                                       applicationName: String,
                                                       useGatewayMode: Boolean,
+                                                      proactiveConnectionInitialization: Option[String],
+                                                      proactiveConnectionInitializationDurationInSeconds: Int,
                                                       httpConnectionPoolSize: Int,
                                                       useEventualConsistency: Boolean,
                                                       enableClientTelemetry: Boolean,
@@ -67,6 +70,8 @@ private[spark] object CosmosClientConfiguration {
       customApplicationNameSuffix,
       applicationName,
       cosmosAccountConfig.useGatewayMode,
+      cosmosAccountConfig.proactiveConnectionInitialization,
+      cosmosAccountConfig.proactiveConnectionInitializationDurationInSeconds,
       cosmosAccountConfig.httpConnectionPoolSize,
       useEventualConsistency,
       enableClientTelemetry = diagnosticsConfig.isClientTelemetryEnabled,
