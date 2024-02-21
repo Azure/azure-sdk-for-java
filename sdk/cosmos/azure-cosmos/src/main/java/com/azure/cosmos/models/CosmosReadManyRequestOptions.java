@@ -29,7 +29,7 @@ public final class CosmosReadManyRequestOptions {
     }
 
     /**
-     * Instantiates a new query request options.
+     * Instantiates a new read many request options.
      *
      * @param options the options
      */
