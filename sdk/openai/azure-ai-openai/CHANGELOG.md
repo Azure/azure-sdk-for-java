@@ -3,11 +3,12 @@
 ## 1.0.0-beta.7 (Unreleased)
 
 ### Features Added
+
 - Text-to-speech using OpenAI TTS models is now supported. See [OpenAI's API reference](https://platform.openai.com/docs/api-reference/audio/createSpeech) 
   or the [Azure OpenAI quickstart](https://learn.microsoft.com/en-us/azure/ai-services/openai/text-to-speech-quickstart)
-  for detailed overview and background information. The new method `getAudioSpeech` exposes this capability on `OpenAIClient`.
-  Text-to-speech converts text into lifelike spoken audio in a chosen voice, together with other optional configurations. 
-  This method works for both Azure OpenAI and non-Azure `api.openai.com` client configurations.
+  for detailed overview and background information. The new method `generateSpeechFromText` exposes this capability on 
+  `OpenAIClient`. Text-to-speech converts text into lifelike spoken audio in a chosen voice, together with other optional
+  configurations. This method works for both Azure OpenAI and non-Azure `api.openai.com` client configurations.
 
 ### Breaking Changes
 
@@ -20,13 +21,14 @@
 - Renamed "AzureCognitiveSearch" to "AzureSearch":
   - `AzureCognitiveSearchChatExtensionConfiguration` is now `AzureSearchChatExtensionConfiguration`.
   - `AzureCognitiveSearchIndexFieldMappingOptions` is now `AzureSearchIndexFieldMappingOptions`.
+  - `AzureCognitiveSearchQueryType` is now `AzureSearchQueryType`.
 - Replaced `String` property `name` by `ChatCompletionsFunctionToolSelection` property `function` in `ChatCompletionsNamedFunctionToolSelection`
-- Check the project README for updated code snippets.
 
 ### Bugs Fixed
 
 ### Other Changes
-- Made the `getContent` method in `ChatRequestUserMessage` class public.
+
+- Made the `getContent` a public method in `ChatRequestUserMessage` class. ([#38805](https://github.com/Azure/azure-sdk-for-java/pull/38805))
 - Added a new property `logprobs` in `ChatChoice` class to support log probabilities for this chat choice.
 - Added new properties `logprobs` and `topLogprobs` in `ChatCompletionsOptions` class to support log probabilities for chat completions.
 - Added a new property `inputType` in `EmbeddingsOptions` class to support embeddings for different input types 

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A representation of the request options that control the behavior of a text-to-speech operation.
  */
 @Fluent
-public final class AudioSpeechOptions {
+public final class SpeechGenerationOptions {
 
     /*
      * The text to generate audio for. The maximum length is 4096 characters.
@@ -26,14 +26,14 @@ public final class AudioSpeechOptions {
      */
     @Generated
     @JsonProperty(value = "voice")
-    private AudioSpeechVoice voice;
+    private SpeechVoice voice;
 
     /*
      * The audio output format for the spoken text. By default, the MP3 format will be used.
      */
     @Generated
     @JsonProperty(value = "response_format")
-    private AudioSpeechOutputFormat responseFormat;
+    private SpeechGenerationResponseFormat responseFormat;
 
     /*
      * The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0, with 1.0 the default
@@ -44,15 +44,15 @@ public final class AudioSpeechOptions {
     private Double speed;
 
     /**
-     * Creates an instance of AudioSpeechOptions class.
+     * Creates an instance of SpeechGenerationOptions class.
      *
      * @param input the input value to set.
      * @param voice the voice value to set.
      */
     @Generated
     @JsonCreator
-    public AudioSpeechOptions(@JsonProperty(value = "input") String input,
-        @JsonProperty(value = "voice") AudioSpeechVoice voice) {
+    public SpeechGenerationOptions(@JsonProperty(value = "input") String input,
+        @JsonProperty(value = "voice") SpeechVoice voice) {
         this.input = input;
         this.voice = voice;
     }
@@ -73,7 +73,7 @@ public final class AudioSpeechOptions {
      * @return the voice value.
      */
     @Generated
-    public AudioSpeechVoice getVoice() {
+    public SpeechVoice getVoice() {
         return this.voice;
     }
 
@@ -84,7 +84,7 @@ public final class AudioSpeechOptions {
      * @return the responseFormat value.
      */
     @Generated
-    public AudioSpeechOutputFormat getResponseFormat() {
+    public SpeechGenerationResponseFormat getResponseFormat() {
         return this.responseFormat;
     }
 
@@ -93,10 +93,10 @@ public final class AudioSpeechOptions {
      * used.
      *
      * @param responseFormat the responseFormat value to set.
-     * @return the AudioSpeechOptions object itself.
+     * @return the SpeechGenerationOptions object itself.
      */
     @Generated
-    public AudioSpeechOptions setResponseFormat(AudioSpeechOutputFormat responseFormat) {
+    public SpeechGenerationOptions setResponseFormat(SpeechGenerationResponseFormat responseFormat) {
         this.responseFormat = responseFormat;
         return this;
     }
@@ -117,10 +117,10 @@ public final class AudioSpeechOptions {
      * with 1.0 the default and higher values corresponding to faster speech.
      *
      * @param speed the speed value to set.
-     * @return the AudioSpeechOptions object itself.
+     * @return the SpeechGenerationOptions object itself.
      */
     @Generated
-    public AudioSpeechOptions setSpeed(Double speed) {
+    public SpeechGenerationOptions setSpeed(Double speed) {
         this.speed = speed;
         return this;
     }

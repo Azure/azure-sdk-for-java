@@ -11,73 +11,73 @@ import java.util.Collection;
 /**
  * The available voices for text-to-speech.
  */
-public final class AudioSpeechVoice extends ExpandableStringEnum<AudioSpeechVoice> {
+public final class SpeechVoice extends ExpandableStringEnum<SpeechVoice> {
 
     /**
      * The Alloy voice.
      */
     @Generated
-    public static final AudioSpeechVoice ALLOY = fromString("alloy");
+    public static final SpeechVoice ALLOY = fromString("alloy");
 
     /**
      * The Echo voice.
      */
     @Generated
-    public static final AudioSpeechVoice ECHO = fromString("echo");
+    public static final SpeechVoice ECHO = fromString("echo");
 
     /**
      * The Fable voice.
      */
     @Generated
-    public static final AudioSpeechVoice FABLE = fromString("fable");
+    public static final SpeechVoice FABLE = fromString("fable");
 
     /**
      * The Onyx voice.
      */
     @Generated
-    public static final AudioSpeechVoice ONYX = fromString("onyx");
+    public static final SpeechVoice ONYX = fromString("onyx");
 
     /**
      * The Nova voice.
      */
     @Generated
-    public static final AudioSpeechVoice NOVA = fromString("nova");
+    public static final SpeechVoice NOVA = fromString("nova");
 
     /**
      * The Shimmer voice.
      */
     @Generated
-    public static final AudioSpeechVoice SHIMMER = fromString("shimmer");
+    public static final SpeechVoice SHIMMER = fromString("shimmer");
 
     /**
-     * Creates a new instance of AudioSpeechVoice value.
+     * Creates a new instance of SpeechVoice value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public AudioSpeechVoice() {
+    public SpeechVoice() {
     }
 
     /**
-     * Creates or finds a AudioSpeechVoice from its string representation.
+     * Creates or finds a SpeechVoice from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding AudioSpeechVoice.
+     * @return the corresponding SpeechVoice.
      */
     @Generated
     @JsonCreator
-    public static AudioSpeechVoice fromString(String name) {
-        return fromString(name, AudioSpeechVoice.class);
+    public static SpeechVoice fromString(String name) {
+        return fromString(name, SpeechVoice.class);
     }
 
     /**
-     * Gets known AudioSpeechVoice values.
+     * Gets known SpeechVoice values.
      *
-     * @return known AudioSpeechVoice values.
+     * @return known SpeechVoice values.
      */
     @Generated
-    public static Collection<AudioSpeechVoice> values() {
-        return values(AudioSpeechVoice.class);
+    public static Collection<SpeechVoice> values() {
+        return values(SpeechVoice.class);
     }
 }
