@@ -9,17 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * The CreateChatThreadOptions model.
- */
+/** The CreateChatThreadOptions model. */
 @Fluent
 public final class CreateChatThreadOptions {
-    /**
+    /*
      * The chat thread topic.
      */
     private final String topic;
 
-    /**
+    /*
      * Members to be added to the chat thread.
      */
     private List<ChatParticipant> participants = new ArrayList<>();
