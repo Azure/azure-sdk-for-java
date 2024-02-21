@@ -46,7 +46,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     /**
      * Instantiates a new query request options.
      */
-    protected CosmosQueryRequestOptionsBase() {
+    CosmosQueryRequestOptionsBase() {
 
         this.thresholds = null;
         this.queryMetricsEnabled = true;
@@ -57,7 +57,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @param options the options
      */
-    protected CosmosQueryRequestOptionsBase(CosmosQueryRequestOptionsBase<?> options) {
+    CosmosQueryRequestOptionsBase(CosmosQueryRequestOptionsBase<?> options) {
         this.consistencyLevel = options.consistencyLevel;
         this.sessionToken = options.sessionToken;
         this.responseContinuationTokenLimitInKb = options.responseContinuationTokenLimitInKb;
