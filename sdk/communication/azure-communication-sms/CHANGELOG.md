@@ -1,15 +1,5 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.1.20 (2023-12-04)
 
 ### Other Changes
@@ -18,6 +8,7 @@
 
 - Upgraded `azure-communication-common` from `1.2.14` to version `1.2.15`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
 
 ## 1.1.19 (2023-11-20)
 
@@ -28,6 +19,7 @@
 - Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
 - Upgraded `azure-communication-common` from `1.2.13` to version `1.2.14`.
 
+
 ## 1.1.18 (2023-10-20)
 
 ### Other Changes
@@ -36,6 +28,7 @@
 
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
 - Upgraded `azure-communication-common` from `1.2.12` to version `1.2.13`.
+
 
 ## 1.1.17 (2023-09-22)
 
@@ -46,6 +39,7 @@
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 - Upgraded `azure-communication-common` from `1.2.11` to version `1.2.12`.
 
+
 ## 1.1.16 (2023-08-18)
 
 ### Other Changes
@@ -53,6 +47,8 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-communication-common` from `1.2.10` to version `1.2.11`.
+
 
 ## 1.1.15 (2023-07-25)
 
@@ -72,6 +68,7 @@
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 - Upgraded `azure-communication-common` from `1.2.8` to version `1.2.9`.
 
+
 ## 1.1.13 (2023-05-23)
 
 ### Other Changes
@@ -81,6 +78,7 @@
 - Upgraded `azure-communication-common` from `1.2.6` to version `1.2.8`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
 
+
 ## 1.1.12 (2023-04-21)
 
 ### Other Changes
@@ -88,6 +86,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
 
 ## 1.1.11 (2023-03-15)
 

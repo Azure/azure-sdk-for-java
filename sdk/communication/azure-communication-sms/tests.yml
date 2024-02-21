@@ -5,16 +5,3 @@ stages:
     parameters:
       PackageName: azure-communication-sms
       SafeName: azurecommunicationsms
-      Clouds: 'Public,Int'
-      CloudConfig:
-        Public:
-          SubscriptionConfigurations:
-            - $(sub-config-azure-cloud-test-resources)
-            - $(sub-config-communication-services-cloud-test-resources-common)
-            - $(sub-config-communication-services-cloud-test-resources-java)
-            - $(sub-config-communication-services-sms-cloud-test-resources)
-        Int:
-          SubscriptionConfigurations:
-            - $(sub-config-communication-int-test-resources-common)
-            - $(sub-config-communication-int-test-resources-java)
-            - $(sub-config-communication-sms-int-test-resources)
