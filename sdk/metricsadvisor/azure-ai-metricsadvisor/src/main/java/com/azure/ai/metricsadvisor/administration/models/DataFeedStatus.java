@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.administration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -12,6 +13,15 @@ import java.util.Collection;
  * Defines values for DataFeedStatus.
  */
 public final class DataFeedStatus extends ExpandableStringEnum<DataFeedStatus> {
+
+    /**
+     * Constructs a DataFeedStatus object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataFeedStatus() {
+    }
+
     /**
      * Static value Active for DataFeedStatus.
      */
@@ -23,28 +33,19 @@ public final class DataFeedStatus extends ExpandableStringEnum<DataFeedStatus> {
     public static final DataFeedStatus PAUSED = fromString("Paused");
 
     /**
-     * Constructs a DataFeedStatus object.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public DataFeedStatus() {
-    }
-
-    /**
      * Creates or finds a DataFeedStatus from its string representation.
      *
      * @param name a name to look for.
      *
      * @return the corresponding DataFeedStatus.
      */
+    @JsonCreator
     public static DataFeedStatus fromString(String name) {
         return fromString(name, DataFeedStatus.class);
     }
 
     /**
      * Returns known DataFeedStatus values.
-     *
      * @return known DataFeedStatus values.
      */
     public static Collection<DataFeedStatus> values() {

@@ -5,64 +5,61 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
-/**
- * The AnomalyDetectionConfiguration model.
- */
+/** The AnomalyDetectionConfiguration model. */
 @Fluent
-public final class AnomalyDetectionConfiguration implements JsonSerializable<AnomalyDetectionConfiguration> {
+public final class AnomalyDetectionConfiguration {
     /*
      * anomaly detection configuration unique id
      */
+    @JsonProperty(value = "anomalyDetectionConfigurationId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID anomalyDetectionConfigurationId;
 
     /*
      * anomaly detection configuration name
      */
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * anomaly detection configuration description
      */
+    @JsonProperty(value = "description")
     private String description;
 
     /*
      * metric unique id
      */
+    @JsonProperty(value = "metricId", required = true)
     private UUID metricId;
 
     /*
      * The wholeMetricConfiguration property.
      */
+    @JsonProperty(value = "wholeMetricConfiguration", required = true)
     private WholeMetricConfiguration wholeMetricConfiguration;
 
     /*
      * detection configuration for series group
      */
+    @JsonProperty(value = "dimensionGroupOverrideConfigurations")
     private List<DimensionGroupConfiguration> dimensionGroupOverrideConfigurations;
 
     /*
      * detection configuration for specific series
      */
+    @JsonProperty(value = "seriesOverrideConfigurations")
     private List<SeriesConfiguration> seriesOverrideConfigurations;
 
-    /**
-     * Creates an instance of AnomalyDetectionConfiguration class.
-     */
-    public AnomalyDetectionConfiguration() {
-    }
+    /** Creates an instance of AnomalyDetectionConfiguration class. */
+    public AnomalyDetectionConfiguration() {}
 
     /**
      * Get the anomalyDetectionConfigurationId property: anomaly detection configuration unique id.
-     * 
+     *
      * @return the anomalyDetectionConfigurationId value.
      */
     public UUID getAnomalyDetectionConfigurationId() {
@@ -71,7 +68,7 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
 
     /**
      * Get the name property: anomaly detection configuration name.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -80,7 +77,7 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
 
     /**
      * Set the name property: anomaly detection configuration name.
-     * 
+     *
      * @param name the name value to set.
      * @return the AnomalyDetectionConfiguration object itself.
      */
@@ -91,7 +88,7 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
 
     /**
      * Get the description property: anomaly detection configuration description.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -100,7 +97,7 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
 
     /**
      * Set the description property: anomaly detection configuration description.
-     * 
+     *
      * @param description the description value to set.
      * @return the AnomalyDetectionConfiguration object itself.
      */
@@ -111,7 +108,7 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
 
     /**
      * Get the metricId property: metric unique id.
-     * 
+     *
      * @return the metricId value.
      */
     public UUID getMetricId() {
@@ -120,7 +117,7 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
 
     /**
      * Set the metricId property: metric unique id.
-     * 
+     *
      * @param metricId the metricId value to set.
      * @return the AnomalyDetectionConfiguration object itself.
      */
@@ -131,7 +128,7 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
 
     /**
      * Get the wholeMetricConfiguration property: The wholeMetricConfiguration property.
-     * 
+     *
      * @return the wholeMetricConfiguration value.
      */
     public WholeMetricConfiguration getWholeMetricConfiguration() {
@@ -140,19 +137,19 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
 
     /**
      * Set the wholeMetricConfiguration property: The wholeMetricConfiguration property.
-     * 
+     *
      * @param wholeMetricConfiguration the wholeMetricConfiguration value to set.
      * @return the AnomalyDetectionConfiguration object itself.
      */
-    public AnomalyDetectionConfiguration
-        setWholeMetricConfiguration(WholeMetricConfiguration wholeMetricConfiguration) {
+    public AnomalyDetectionConfiguration setWholeMetricConfiguration(
+            WholeMetricConfiguration wholeMetricConfiguration) {
         this.wholeMetricConfiguration = wholeMetricConfiguration;
         return this;
     }
 
     /**
      * Get the dimensionGroupOverrideConfigurations property: detection configuration for series group.
-     * 
+     *
      * @return the dimensionGroupOverrideConfigurations value.
      */
     public List<DimensionGroupConfiguration> getDimensionGroupOverrideConfigurations() {
@@ -161,19 +158,19 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
 
     /**
      * Set the dimensionGroupOverrideConfigurations property: detection configuration for series group.
-     * 
+     *
      * @param dimensionGroupOverrideConfigurations the dimensionGroupOverrideConfigurations value to set.
      * @return the AnomalyDetectionConfiguration object itself.
      */
     public AnomalyDetectionConfiguration setDimensionGroupOverrideConfigurations(
-        List<DimensionGroupConfiguration> dimensionGroupOverrideConfigurations) {
+            List<DimensionGroupConfiguration> dimensionGroupOverrideConfigurations) {
         this.dimensionGroupOverrideConfigurations = dimensionGroupOverrideConfigurations;
         return this;
     }
 
     /**
      * Get the seriesOverrideConfigurations property: detection configuration for specific series.
-     * 
+     *
      * @return the seriesOverrideConfigurations value.
      */
     public List<SeriesConfiguration> getSeriesOverrideConfigurations() {
@@ -182,76 +179,13 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
 
     /**
      * Set the seriesOverrideConfigurations property: detection configuration for specific series.
-     * 
+     *
      * @param seriesOverrideConfigurations the seriesOverrideConfigurations value to set.
      * @return the AnomalyDetectionConfiguration object itself.
      */
-    public AnomalyDetectionConfiguration
-        setSeriesOverrideConfigurations(List<SeriesConfiguration> seriesOverrideConfigurations) {
+    public AnomalyDetectionConfiguration setSeriesOverrideConfigurations(
+            List<SeriesConfiguration> seriesOverrideConfigurations) {
         this.seriesOverrideConfigurations = seriesOverrideConfigurations;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("metricId", Objects.toString(this.metricId, null));
-        jsonWriter.writeJsonField("wholeMetricConfiguration", this.wholeMetricConfiguration);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeArrayField("dimensionGroupOverrideConfigurations", this.dimensionGroupOverrideConfigurations,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("seriesOverrideConfigurations", this.seriesOverrideConfigurations,
-            (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnomalyDetectionConfiguration from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnomalyDetectionConfiguration if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AnomalyDetectionConfiguration.
-     */
-    public static AnomalyDetectionConfiguration fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AnomalyDetectionConfiguration deserializedAnomalyDetectionConfiguration
-                = new AnomalyDetectionConfiguration();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("name".equals(fieldName)) {
-                    deserializedAnomalyDetectionConfiguration.name = reader.getString();
-                } else if ("metricId".equals(fieldName)) {
-                    deserializedAnomalyDetectionConfiguration.metricId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("wholeMetricConfiguration".equals(fieldName)) {
-                    deserializedAnomalyDetectionConfiguration.wholeMetricConfiguration
-                        = WholeMetricConfiguration.fromJson(reader);
-                } else if ("anomalyDetectionConfigurationId".equals(fieldName)) {
-                    deserializedAnomalyDetectionConfiguration.anomalyDetectionConfigurationId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("description".equals(fieldName)) {
-                    deserializedAnomalyDetectionConfiguration.description = reader.getString();
-                } else if ("dimensionGroupOverrideConfigurations".equals(fieldName)) {
-                    List<DimensionGroupConfiguration> dimensionGroupOverrideConfigurations
-                        = reader.readArray(reader1 -> DimensionGroupConfiguration.fromJson(reader1));
-                    deserializedAnomalyDetectionConfiguration.dimensionGroupOverrideConfigurations
-                        = dimensionGroupOverrideConfigurations;
-                } else if ("seriesOverrideConfigurations".equals(fieldName)) {
-                    List<SeriesConfiguration> seriesOverrideConfigurations
-                        = reader.readArray(reader1 -> SeriesConfiguration.fromJson(reader1));
-                    deserializedAnomalyDetectionConfiguration.seriesOverrideConfigurations
-                        = seriesOverrideConfigurations;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAnomalyDetectionConfiguration;
-        });
     }
 }
