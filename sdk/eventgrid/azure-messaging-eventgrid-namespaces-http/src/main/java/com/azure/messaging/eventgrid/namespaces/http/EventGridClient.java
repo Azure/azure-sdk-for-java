@@ -104,9 +104,8 @@ public final class EventGridClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the result of the Publish operation along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> publishCloudEventWithResponse(String topicName, BinaryData event,
+    public Response<BinaryData> publishCloudEventWithResponse(String topicName, BinaryData event,
         RequestOptions requestOptions) {
         return this.serviceClient.publishCloudEventWithResponse(topicName, event, requestOptions);
     }
@@ -152,9 +151,8 @@ public final class EventGridClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the result of the Publish operation along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> publishCloudEventsWithResponse(String topicName, BinaryData events,
+    public Response<BinaryData> publishCloudEventsWithResponse(String topicName, BinaryData events,
         RequestOptions requestOptions) {
         return this.serviceClient.publishCloudEventsWithResponse(topicName, events, requestOptions);
     }
@@ -227,9 +225,8 @@ public final class EventGridClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return details of the Receive operation response along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> receiveCloudEventsWithResponse(String topicName, String eventSubscriptionName,
+    public Response<BinaryData> receiveCloudEventsWithResponse(String topicName, String eventSubscriptionName,
         RequestOptions requestOptions) {
         return this.serviceClient.receiveCloudEventsWithResponse(topicName, eventSubscriptionName, requestOptions);
     }

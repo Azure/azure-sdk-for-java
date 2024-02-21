@@ -104,9 +104,8 @@ public final class EventGridAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the result of the Publish operation along with {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> publishCloudEventWithResponse(String topicName, BinaryData event,
+    public Mono<Response<BinaryData>> publishCloudEventWithResponse(String topicName, BinaryData event,
         RequestOptions requestOptions) {
         return this.serviceClient.publishCloudEventWithResponseAsync(topicName, event, requestOptions);
     }
@@ -152,9 +151,8 @@ public final class EventGridAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the result of the Publish operation along with {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> publishCloudEventsWithResponse(String topicName, BinaryData events,
+    public Mono<Response<BinaryData>> publishCloudEventsWithResponse(String topicName, BinaryData events,
         RequestOptions requestOptions) {
         return this.serviceClient.publishCloudEventsWithResponseAsync(topicName, events, requestOptions);
     }
@@ -228,9 +226,8 @@ public final class EventGridAsyncClient {
      * @return details of the Receive operation response along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> receiveCloudEventsWithResponse(String topicName, String eventSubscriptionName,
+    public Mono<Response<BinaryData>> receiveCloudEventsWithResponse(String topicName, String eventSubscriptionName,
         RequestOptions requestOptions) {
         return this.serviceClient.receiveCloudEventsWithResponseAsync(topicName, eventSubscriptionName, requestOptions);
     }
