@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.CosmosContainerIdentity
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
