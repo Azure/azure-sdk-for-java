@@ -9,7 +9,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-developer-loadtesting</artifactId>
-  <version>1.0.10</version> <!-- {x-version-update;com.azure:azure-developer-loadtesting;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-developer-loadtesting;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Load Testing</name>

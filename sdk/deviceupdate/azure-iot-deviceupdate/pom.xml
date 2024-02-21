@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-iot-deviceupdate</artifactId>
-  <version>1.0.15</version> <!-- {x-version-update;com.azure:azure-iot-deviceupdate;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-iot-deviceupdate;current} -->
   <name>Microsoft Device Update for IoT Hub client library for Java</name>
   <description>This package contains Microsoft Device Update for IoT Hub client library.</description>
 

@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-rooms</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.8</version> <!-- {x-version-update;com.azure:azure-communication-rooms;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-rooms;current} -->
   <name>Microsoft Azure library for ACS Room Service</name>
   <description>
     This package contains clients and data structures used to create, update, get, delete the Azure Communication Room Service.
@@ -70,7 +70,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-identity</artifactId>
-      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;dependency} -->
+      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-communication-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
