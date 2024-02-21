@@ -55,7 +55,7 @@ public final class CosmosReadManyRequestOptions {
      * request but will not guarantee session consistency (read-your-own-write) anymore
      *
      * @param consistencyLevel the consistency level.
-     * @return the CosmosItemRequestOptions.
+     * @return the CosmosReadManyRequestOptions.
      */
     public CosmosReadManyRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.actualRequestOptions.setConsistencyLevel(consistencyLevel);
