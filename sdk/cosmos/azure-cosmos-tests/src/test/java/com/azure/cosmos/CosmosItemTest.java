@@ -51,7 +51,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.nio.charset.StandardCharsets;
-import java.rmi.ConnectIOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -925,14 +924,10 @@ public class CosmosItemTest extends TestSuiteBase {
 
         UUID correlationId = UUID.randomUUID();
         ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsBaseHelper
-            .getCosmosQueryRequestOptionsBaseAccessor()
-            .setCorrelationActivityId(
-                ImplementationBridgeHelpers
-                    .CosmosQueryRequestOptionsHelper
-                    .getCosmosQueryRequestOptionsAccessor()
-                    .getImpl(cosmosQueryRequestOptions),
-                correlationId);
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .getImpl(cosmosQueryRequestOptions)
+            .setCorrelationActivityId(correlationId);
 
         CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
             container.queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class);

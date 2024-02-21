@@ -37,12 +37,6 @@ public class Paginator {
         .CosmosQueryRequestOptionsHelper
         .getCosmosQueryRequestOptionsAccessor();
 
-    private static final ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsBaseHelper
-        .CosmosQueryRequestOptionsBaseAccessor qryOptBaseAccessor = ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsBaseHelper
-        .getCosmosQueryRequestOptionsBaseAccessor();
-
     public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
@@ -57,7 +51,7 @@ public class Paginator {
             top,
             maxPageSize,
             getPreFetchCount(cosmosQueryRequestOptions, top, maxPageSize),
-            qryOptBaseAccessor.getOperationContext(qryOptAccessor.getImpl(cosmosQueryRequestOptions)),
+            qryOptAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
             qryOptAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions));
     }
 
