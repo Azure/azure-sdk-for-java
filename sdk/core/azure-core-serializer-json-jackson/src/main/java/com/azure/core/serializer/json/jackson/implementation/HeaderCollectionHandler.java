@@ -45,7 +45,7 @@ final class HeaderCollectionHandler {
         values.put(headerName.substring(prefixLength), headerValue);
     }
 
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings({ "deprecation", "removal" })
     void injectValuesIntoDeclaringField(Object deserializedHeaders, ClientLogger logger) {
         /*
          * First check if the deserialized headers type has a public setter.
@@ -84,8 +84,8 @@ final class HeaderCollectionHandler {
         final String clazzSimpleName = clazz.getSimpleName();
         final String fieldName = declaringField.getName();
 
-        ReflectiveInvoker
-            setterReflectiveInvoker = getFromCache(declaringField, clazz, clazzSimpleName, fieldName, logger);
+        ReflectiveInvoker setterReflectiveInvoker
+            = getFromCache(declaringField, clazz, clazzSimpleName, fieldName, logger);
 
         if (setterReflectiveInvoker == NO_SETTER_REFLECTIVE_INVOKER) {
             return false;
@@ -93,14 +93,13 @@ final class HeaderCollectionHandler {
 
         try {
             setterReflectiveInvoker.invokeWithArguments(deserializedHeaders, values);
-            logger.log(LogLevel.VERBOSE, () ->
-                "Set header collection " + fieldName + " on class " + clazzSimpleName + " using reflection.");
+            logger.log(LogLevel.VERBOSE,
+                () -> "Set header collection " + fieldName + " on class " + clazzSimpleName + " using reflection.");
 
             return true;
         } catch (Exception ex) {
-            logger.log(LogLevel.VERBOSE, () ->
-                "Failed to set header " + fieldName + " collection on class " + clazzSimpleName + " using reflection.",
-                ex);
+            logger.log(LogLevel.VERBOSE, () -> "Failed to set header " + fieldName + " collection on class "
+                + clazzSimpleName + " using reflection.", ex);
             return false;
         }
     }
@@ -109,8 +108,8 @@ final class HeaderCollectionHandler {
         return "set" + fieldName.substring(0, 1).toUpperCase(Locale.ROOT) + fieldName.substring(1);
     }
 
-    private static ReflectiveInvoker getFromCache(Field key, Class<?> clazz, String clazzSimpleName,
-        String fieldName, ClientLogger logger) {
+    private static ReflectiveInvoker getFromCache(Field key, Class<?> clazz, String clazzSimpleName, String fieldName,
+        ClientLogger logger) {
         if (FIELD_TO_SETTER_INVOKER_CACHE.size() >= CACHE_SIZE_LIMIT) {
             FIELD_TO_SETTER_INVOKER_CACHE.clear();
         }
@@ -119,17 +118,18 @@ final class HeaderCollectionHandler {
             String setterName = getPotentialSetterName(fieldName);
 
             try {
-                ReflectiveInvoker reflectiveInvoker = ReflectionUtils.getMethodInvoker(clazz, clazz.getDeclaredMethod(setterName,
-                    Map.class));
+                ReflectiveInvoker reflectiveInvoker
+                    = ReflectionUtils.getMethodInvoker(clazz, clazz.getDeclaredMethod(setterName, Map.class));
 
-                logger.log(LogLevel.VERBOSE, () ->
-                    "Using invoker for setter " + setterName + " on class " + clazzSimpleName + ".");
+                logger.log(LogLevel.VERBOSE,
+                    () -> "Using invoker for setter " + setterName + " on class " + clazzSimpleName + ".");
 
                 return reflectiveInvoker;
             } catch (Exception ex) {
-                logger.log(LogLevel.VERBOSE, () ->
-                    "Failed to retrieve invoker for setter " + setterName + " on class " + clazzSimpleName
-                    + ". Will attempt to make field accessible. Please consider adding public setter.", ex);
+                logger.log(LogLevel.VERBOSE,
+                    () -> "Failed to retrieve invoker for setter " + setterName + " on class " + clazzSimpleName
+                        + ". Will attempt to make field accessible. Please consider adding public setter.",
+                    ex);
             }
 
             // In a previous implementation compute returned null here in an attempt to indicate that there is no setter

@@ -12,8 +12,7 @@ import java.io.Serializable;
  * 
  * @since 2.9
  */
-public class Separators implements Serializable
-{
+public class Separators implements Serializable {
     private static final long serialVersionUID = 1;
 
     private final char objectFieldValueSeparator;
@@ -28,26 +27,28 @@ public class Separators implements Serializable
         this(':', ',', ',');
     }
 
-    public Separators(char objectFieldValueSeparator,
-            char objectEntrySeparator, char arrayValueSeparator) {
+    public Separators(char objectFieldValueSeparator, char objectEntrySeparator, char arrayValueSeparator) {
         this.objectFieldValueSeparator = objectFieldValueSeparator;
         this.objectEntrySeparator = objectEntrySeparator;
         this.arrayValueSeparator = arrayValueSeparator;
     }
-    
+
     public Separators withObjectFieldValueSeparator(char sep) {
-        return (objectFieldValueSeparator == sep) ? this
-                : new Separators(sep, objectEntrySeparator, arrayValueSeparator);
+        return (objectFieldValueSeparator == sep)
+            ? this
+            : new Separators(sep, objectEntrySeparator, arrayValueSeparator);
     }
 
     public Separators withObjectEntrySeparator(char sep) {
-        return (objectEntrySeparator == sep) ? this
-                : new Separators(objectFieldValueSeparator, sep, arrayValueSeparator);
+        return (objectEntrySeparator == sep)
+            ? this
+            : new Separators(objectFieldValueSeparator, sep, arrayValueSeparator);
     }
 
     public Separators withArrayValueSeparator(char sep) {
-        return (arrayValueSeparator == sep) ? this
-                : new Separators(objectFieldValueSeparator, objectEntrySeparator, sep);
+        return (arrayValueSeparator == sep)
+            ? this
+            : new Separators(objectFieldValueSeparator, objectEntrySeparator, sep);
     }
 
     public char getObjectFieldValueSeparator() {

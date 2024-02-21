@@ -70,8 +70,8 @@ public abstract class TestBase implements BeforeEachCallback {
     private static boolean enableTestProxy;
 
     private static final Duration PLAYBACK_POLL_INTERVAL = Duration.ofMillis(1);
-    private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST = Configuration.getGlobalConfiguration()
-        .get(AZURE_TEST_HTTP_CLIENTS);
+    private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST
+        = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS);
     private static final boolean DEFAULT_TO_NETTY = CoreUtils.isNullOrEmpty(CONFIGURED_HTTP_CLIENTS_TO_TEST);
     private static final List<String> CONFIGURED_HTTP_CLIENTS;
 
@@ -161,13 +161,11 @@ public abstract class TestBase implements BeforeEachCallback {
         }
 
         String testName = getTestName(testInfo.getTestMethod(), testInfo.getDisplayName(), testInfo.getTestClass());
-        Path testClassPath = Paths.get(toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class")));
-        this.testContextManager =
-            new TestContextManager(testInfo.getTestMethod().get(),
-                localTestMode,
-                isTestProxyEnabled(),
-                testInfo.getTestClass().get().getAnnotation(RecordWithoutRequestBody.class) != null,
-                testClassPath);
+        Path testClassPath = Paths.get(
+            toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class")));
+        this.testContextManager
+            = new TestContextManager(testInfo.getTestMethod().get(), localTestMode, isTestProxyEnabled(),
+                testInfo.getTestClass().get().getAnnotation(RecordWithoutRequestBody.class) != null, testClassPath);
         testContextManager.setTestIteration(testIterationContext.getTestIteration());
         ThreadDumper.addRunningTest(testName);
         logger.info("Test Mode: {}, Name: {}", localTestMode, testName);
@@ -187,8 +185,7 @@ public abstract class TestBase implements BeforeEachCallback {
         if (isTestProxyEnabled()) {
             interceptorManager.setHttpClient(getTestProxyHttpClient());
             // The supplier/consumer are used to retrieve/store variables over the wire.
-            testResourceNamer = new TestResourceNamer(testContextManager,
-                interceptorManager.getProxyVariableConsumer(),
+            testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getProxyVariableConsumer(),
                 interceptorManager.getProxyVariableSupplier());
             if (localTestMode == TestMode.PLAYBACK && !testContextManager.doNotRecordTest()) {
                 // We create the playback client here, so that it is available for returning recorded variables
@@ -288,8 +285,8 @@ public abstract class TestBase implements BeforeEachCallback {
 
         List<HttpClient> httpClientsToTest = new ArrayList<>();
         for (HttpClientProvider httpClientProvider : ServiceLoader.load(HttpClientProvider.class)) {
-            if (includeHttpClientOrHttpClientProvider(httpClientProvider.getClass().getSimpleName()
-                .toLowerCase(Locale.ROOT))) {
+            if (includeHttpClientOrHttpClientProvider(
+                httpClientProvider.getClass().getSimpleName().toLowerCase(Locale.ROOT))) {
                 httpClientsToTest.add(httpClientProvider.createInstance());
             }
         }

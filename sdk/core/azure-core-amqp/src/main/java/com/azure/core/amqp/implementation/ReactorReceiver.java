@@ -73,8 +73,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     private final AutoCloseable trackPrefetchSeqNoSubscription;
 
     protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-                              ReceiveLinkHandlerWrapper handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
-                              AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
+        ReceiveLinkHandlerWrapper handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+        AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
@@ -92,99 +92,87 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
         this.isV2 = handler.isV2();
         if (!this.isV2) {
-            // Delivered messages are not published on another scheduler because we want the settlement method that happens
+            // Delivered messages are not published on another scheduler because we want the settlement method that
+            // happens
             // in decodeDelivery to take place and since proton-j is not thread safe, it could end up with hundreds of
             // backed up deliveries waiting to be settled. (Which, consequently, ends up in a FAIL_OVERFLOW error from
             // the handler.
-            this.messagesProcessor = this.handler.getDeliveredMessagesV1()
-                .flatMap(delivery -> {
-                    return Mono.create(sink -> {
-                        try {
-                            this.dispatcher.invoke(() -> {
-                                if (isDisposed()) {
-                                    sink.error(new IllegalStateException(
-                                        "Cannot decode delivery when ReactorReceiver instance is closed."));
-                                    return;
+            this.messagesProcessor = this.handler.getDeliveredMessagesV1().flatMap(delivery -> {
+                return Mono.create(sink -> {
+                    try {
+                        this.dispatcher.invoke(() -> {
+                            if (isDisposed()) {
+                                sink.error(new IllegalStateException(
+                                    "Cannot decode delivery when ReactorReceiver instance is closed."));
+                                return;
+                            }
+
+                            final Message message = decodeDelivery(delivery);
+                            if (metricsProvider.isPrefetchedSequenceNumberEnabled()) {
+                                Long seqNo = getSequenceNumber(message);
+                                if (seqNo != null) {
+                                    lastSequenceNumber.set(seqNo);
                                 }
+                            }
 
-                                final Message message = decodeDelivery(delivery);
-                                if (metricsProvider.isPrefetchedSequenceNumberEnabled()) {
-                                    Long seqNo = getSequenceNumber(message);
-                                    if (seqNo != null) {
-                                        lastSequenceNumber.set(seqNo);
-                                    }
-                                }
+                            final int creditsLeft = receiver.getRemoteCredit();
 
-                                final int creditsLeft = receiver.getRemoteCredit();
-
-                                if (creditsLeft > 0) {
-                                    sink.success(message);
-                                    return;
-                                }
-
-                                final Supplier<Integer> supplier = creditSupplier.get();
-                                final Integer credits = supplier.get();
-
-                                if (credits != null && credits > 0) {
-                                    logger.atVerbose()
-                                        .addKeyValue("credits", credits)
-                                        .log("Adding credits.");
-                                    receiver.flow(credits);
-                                }
-
-                                metricsProvider.recordAddCredits(credits == null ? 0 : credits);
+                            if (creditsLeft > 0) {
                                 sink.success(message);
-                            });
-                        } catch (IOException | RejectedExecutionException e) {
-                            sink.error(e);
-                        }
-                    });
-                }, 1);
+                                return;
+                            }
+
+                            final Supplier<Integer> supplier = creditSupplier.get();
+                            final Integer credits = supplier.get();
+
+                            if (credits != null && credits > 0) {
+                                logger.atVerbose().addKeyValue("credits", credits).log("Adding credits.");
+                                receiver.flow(credits);
+                            }
+
+                            metricsProvider.recordAddCredits(credits == null ? 0 : credits);
+                            sink.success(message);
+                        });
+                    } catch (IOException | RejectedExecutionException e) {
+                        sink.error(e);
+                    }
+                });
+            }, 1);
         } else {
             if (metricsProvider.isPrefetchedSequenceNumberEnabled()) {
                 // Meters are not expected to be enabled dynamically so checking once at Receiver construction time
                 // is sufficient.
-                this.messagesProcessor = this.handler.getDeliveredMessagesV2()
-                    .map(message -> {
-                        final Long seqNo = getSequenceNumber(message);
-                        if (seqNo != null) {
-                            lastSequenceNumber.set(seqNo);
-                        }
-                        return message;
-                    });
+                this.messagesProcessor = this.handler.getDeliveredMessagesV2().map(message -> {
+                    final Long seqNo = getSequenceNumber(message);
+                    if (seqNo != null) {
+                        lastSequenceNumber.set(seqNo);
+                    }
+                    return message;
+                });
             } else {
                 this.messagesProcessor = this.handler.getDeliveredMessagesV2();
             }
         }
 
         this.retryOptions = retryOptions;
-        this.endpointStates = this.handler.getEndpointStates()
-            .map(state -> {
-                logger.atVerbose()
-                    .log("State {}", state);
-                return AmqpEndpointStateUtil.getConnectionState(state);
-            })
-            .doOnError(error -> {
-                final String message = isDisposed.getAndSet(true)
-                    ? "This was already disposed. Dropping error."
-                    : "Freeing resources due to error.";
+        this.endpointStates = this.handler.getEndpointStates().map(state -> {
+            logger.atVerbose().log("State {}", state);
+            return AmqpEndpointStateUtil.getConnectionState(state);
+        }).doOnError(error -> {
+            final String message = isDisposed.getAndSet(true)
+                ? "This was already disposed. Dropping error."
+                : "Freeing resources due to error.";
 
-                logger.atInfo()
-                    .log(message);
+            logger.atInfo().log(message);
 
-                completeClose();
-            })
-            .doOnComplete(() -> {
-                final String message = isDisposed.getAndSet(true)
-                    ? "This was already disposed."
-                    : "Freeing resources.";
+            completeClose();
+        }).doOnComplete(() -> {
+            final String message = isDisposed.getAndSet(true) ? "This was already disposed." : "Freeing resources.";
 
-                logger.atVerbose()
-                    .log(message);
+            logger.atVerbose().log(message);
 
-                completeClose();
-            })
-            .cache(1);
+            completeClose();
+        }).cache(1);
 
         //@formatter:off
         this.subscriptions = Disposables.composite(
@@ -219,9 +207,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates
-            .distinctUntilChanged()
-            .takeUntilOther(terminateEndpointStates.asMono());
+        return endpointStates.distinctUntilChanged().takeUntilOther(terminateEndpointStates.asMono());
     }
 
     @Override
@@ -253,9 +239,10 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                     sink.success();
                 });
             } catch (IOException e) {
-                sink.error(new UncheckedIOException(String.format(
-                    "connectionId[%s] linkName[%s] Unable to schedule work to add more credits.",
-                    handler.getConnectionId(), getLinkName()), e));
+                sink.error(new UncheckedIOException(
+                    String.format("connectionId[%s] linkName[%s] Unable to schedule work to add more credits.",
+                        handler.getConnectionId(), getLinkName()),
+                    e));
             } catch (RejectedExecutionException e) {
                 sink.error(e);
             }
@@ -367,18 +354,15 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
             return getIsClosedMono();
         }
 
-        addErrorCondition(logger.atVerbose(), errorCondition)
-            .log("Setting error condition and disposing. {}", message);
+        addErrorCondition(logger.atVerbose(), errorCondition).log("Setting error condition and disposing. {}", message);
 
-        return beginClose(errorCondition)
-            .flatMap(localCloseScheduled -> {
-                if (localCloseScheduled) {
-                    return timeoutRemoteCloseAck();
-                } else {
-                    return Mono.empty();
-                }
-            })
-            .publishOn(Schedulers.boundedElastic());
+        return beginClose(errorCondition).flatMap(localCloseScheduled -> {
+            if (localCloseScheduled) {
+                return timeoutRemoteCloseAck();
+            } else {
+                return Mono.empty();
+            }
+        }).publishOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -394,11 +378,13 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         assert !isV2;
         // Note: The 'onHandlerClose' was introduced as a temporary internal method (in the March-2023 release)
         // in the v1 stack - https://github.com/Azure/azure-sdk-for-java/pull/33593.
-        // The purpose of 'onHandlerClose' was to allow 'ServiceBusReactorReceiver' to close 'ReceiverUnsettledDeliveries'.
+        // The purpose of 'onHandlerClose' was to allow 'ServiceBusReactorReceiver' to close
+        // 'ReceiverUnsettledDeliveries'.
         // In the v2 stack, the 'ReceiverUnsettledDeliveries' is abstracted in 'ReceiverLinkHandler2', which means
         // once we're entirely on v2 (i.e., when v1-v2 side-by-side support is no longer needed), we'll remove
         // 'onHandlerClose' method.
-        // TODO: anuchan: Once entirely on v2, Remove onHandlerClose, make ReceiverUnsettledDeliveries amqp-core package private.
+        // TODO: anuchan: Once entirely on v2, Remove onHandlerClose, make ReceiverUnsettledDeliveries amqp-core package
+        // private.
     }
 
     /**
@@ -434,7 +420,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 completeClose();
             } catch (RejectedExecutionException e) {
                 // Not logging error here again because we have to log the exception when we throw it.
-                logger.info("RejectedExecutionException when scheduling on ReactorDispatcher. Manually invoking and completing close.");
+                logger.info(
+                    "RejectedExecutionException when scheduling on ReactorDispatcher. Manually invoking and completing close.");
 
                 localClose.run();
                 terminateEndpointState();
@@ -453,17 +440,15 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
      * a {@link Mono} that registers remote-close ack timeout based close cleanup.
      */
     private Mono<Void> timeoutRemoteCloseAck() {
-        return isClosedMono.asMono()
-            .timeout(retryOptions.getTryTimeout())
-            .onErrorResume(error -> {
-                if (error instanceof TimeoutException) {
-                    logger.info("Timeout waiting for RemoteClose. Manually terminating EndpointStates and completing close.");
-                    terminateEndpointState();
-                    completeClose();
-                }
-                return Mono.empty();
-            })
-            .subscribeOn(Schedulers.boundedElastic());
+        return isClosedMono.asMono().timeout(retryOptions.getTryTimeout()).onErrorResume(error -> {
+            if (error instanceof TimeoutException) {
+                logger
+                    .info("Timeout waiting for RemoteClose. Manually terminating EndpointStates and completing close.");
+                terminateEndpointState();
+                completeClose();
+            }
+            return Mono.empty();
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -498,8 +483,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         }
 
         isClosedMono.emitEmpty((signalType, result) -> {
-            addSignalTypeAndResult(logger.atWarning(), signalType, result)
-                .log("Unable to emit shutdown signal.");
+            addSignalTypeAndResult(logger.atWarning(), signalType, result).log("Unable to emit shutdown signal.");
             return false;
         });
 
@@ -533,7 +517,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         } else if (seqNo instanceof Long) {
             return (Long) seqNo;
         } else if (seqNo != null) {
-            logger.verbose("Received message has unexpected `x-opt-sequence-number` annotation value - `{}`. Ignoring it.", seqNo);
+            logger.verbose(
+                "Received message has unexpected `x-opt-sequence-number` annotation value - `{}`. Ignoring it.", seqNo);
         }
 
         return null;

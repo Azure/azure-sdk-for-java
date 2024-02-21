@@ -57,8 +57,8 @@ class TransientIOErrorsRetryingIteratorITest
     ImplementationBridgeHelpers
       .CosmosQueryRequestOptionsHelper
       .getCosmosQueryRequestOptionsAccessor
+      .getImpl(queryOptions)
       .setItemFactoryMethod(
-        queryOptions,
         jsonNode => {
           val row = cosmosRowConverter.fromObjectNodeToRow(
             ItemsTable.defaultSchemaForInferenceDisabled,
@@ -183,8 +183,8 @@ class TransientIOErrorsRetryingIteratorITest
     ImplementationBridgeHelpers
       .CosmosQueryRequestOptionsHelper
       .getCosmosQueryRequestOptionsAccessor
+      .getImpl(queryOptions)
       .setItemFactoryMethod(
-        queryOptions,
         jsonNode => {
           val row = cosmosRowConverter.fromObjectNodeToRow(
             ItemsTable.defaultSchemaForInferenceDisabled,

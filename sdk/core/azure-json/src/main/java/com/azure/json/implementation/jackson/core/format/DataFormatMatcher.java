@@ -11,8 +11,7 @@ import com.azure.json.implementation.jackson.core.io.MergedStream;
  * Result object constructed by {@link DataFormatDetector} when requested
  * to detect format of given input data.
  */
-public class DataFormatMatcher
-{
+public class DataFormatMatcher {
     protected final InputStream _originalStream;
 
     /**
@@ -24,7 +23,7 @@ public class DataFormatMatcher
      * Pointer to the first byte in buffer available for reading
      */
     protected final int _bufferedStart;
-    
+
     /**
      * Number of bytes available in buffer.
      */
@@ -39,11 +38,9 @@ public class DataFormatMatcher
      * Strength of match with {@link #_match}
      */
     protected final MatchStrength _matchStrength;
-    
-    protected DataFormatMatcher(InputStream in, byte[] buffered,
-            int bufferedStart, int bufferedLength,
-            JsonFactory match, MatchStrength strength)
-    {
+
+    protected DataFormatMatcher(InputStream in, byte[] buffered, int bufferedStart, int bufferedLength,
+        JsonFactory match, MatchStrength strength) {
         _originalStream = in;
         _bufferedData = buffered;
         _bufferedStart = bufferedStart;
@@ -52,17 +49,16 @@ public class DataFormatMatcher
         _matchStrength = strength;
 
         // can't have negative offset or length
-        if ((bufferedStart | bufferedLength) < 0
-                || (bufferedStart + bufferedLength) > buffered.length) {
+        if ((bufferedStart | bufferedLength) < 0 || (bufferedStart + bufferedLength) > buffered.length) {
             throw new IllegalArgumentException(String.format("Illegal start/length (%d/%d) wrt input array of %d bytes",
-                    bufferedStart, bufferedLength, buffered.length));
+                bufferedStart, bufferedLength, buffered.length));
         }
     }
 
     /*
-    /**********************************************************
-    /* Public API, simple accessors
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, simple accessors
+     * /**********************************************************
      */
 
     /**
@@ -71,7 +67,9 @@ public class DataFormatMatcher
      *
      * @return Whether format has a match
      */
-    public boolean hasMatch() { return _match != null; }
+    public boolean hasMatch() {
+        return _match != null;
+    }
 
     /**
      * Method for accessing strength of the match, if any; if no match,
@@ -88,7 +86,9 @@ public class DataFormatMatcher
      *
      * @return Relevant {@link JsonFactory} to indicate matched format
      */
-    public JsonFactory getMatch() { return _match; }
+    public JsonFactory getMatch() {
+        return _match;
+    }
 
     /**
      * Accessor for getting brief textual name of matched format if any (null
@@ -102,13 +102,13 @@ public class DataFormatMatcher
     public String getMatchedFormatName() {
         return hasMatch() ? getMatch().getFormatName() : null;
     }
-    
+
     /*
-    /**********************************************************
-    /* Public API, factory methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, factory methods
+     * /**********************************************************
      */
-    
+
     // Convenience method for trying to construct a {@link JsonParser} for
     // parsing content which is assumed to be in detected data format.
     // If no match was found, returns null.
@@ -121,7 +121,7 @@ public class DataFormatMatcher
         }
         return _match.createParser(getDataStream());
     }
-    
+
     /**
      * Method to use for accessing input for which format detection has been done.
      * This <b>must</b> be used instead of using stream passed to detector

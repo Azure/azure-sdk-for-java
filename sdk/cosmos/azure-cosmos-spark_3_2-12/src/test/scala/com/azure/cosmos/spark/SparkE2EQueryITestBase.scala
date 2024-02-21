@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
 import com.azure.cosmos.models.{CosmosContainerProperties, CosmosItemRequestOptions, PartitionKey, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -95,6 +96,25 @@ abstract class SparkE2EQueryITestBase
 
     // address resolution requests can but don't have to happen - they are optional
     // assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = true)
+  }
+
+  "cosmos client" can "be retrieved from cache" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+    )
+    val clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+      .getCosmosClientFromCache(cfg)
+      .getClient
+      .asInstanceOf[CosmosAsyncClient]
+    val dbResponse = clientFromCache.getDatabase(cosmosDatabase).read().block()
+
+    dbResponse.getProperties.getId shouldEqual cosmosDatabase
+    clientFromCache.close()
   }
 
   private def insertDummyValue() : Unit = {

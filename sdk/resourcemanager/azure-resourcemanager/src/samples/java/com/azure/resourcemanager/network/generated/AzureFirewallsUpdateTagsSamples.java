@@ -14,7 +14,7 @@ import java.util.Map;
 public final class AzureFirewallsUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/AzureFirewallUpdateTags.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/AzureFirewallUpdateTags.json
      */
     /**
      * Sample code: Update Azure Firewall Tags.
