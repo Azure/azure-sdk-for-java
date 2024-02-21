@@ -6,11 +6,9 @@ package com.azure.ai.documentintelligence.implementation;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceServiceVersion;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
-import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
-import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -718,7 +716,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentModelBuildOperationDetails, DocumentModelDetails>
+    public PollerFlux<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails>
         beginBuildDocumentModelWithModelAsync(BinaryData buildRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.buildDocumentModelWithResponseAsync(buildRequest, requestOptions),
@@ -728,7 +726,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelBuildOperationDetails.class),
-            TypeReference.createInstance(DocumentModelDetails.class));
+            TypeReference.createInstance(DocumentModelBuildOperationDetails.class));
     }
 
     /**
@@ -764,7 +762,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails>
+    public SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails>
         beginBuildDocumentModelWithModel(BinaryData buildRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.buildDocumentModelWithResponse(buildRequest, requestOptions),
@@ -774,7 +772,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelBuildOperationDetails.class),
-            TypeReference.createInstance(DocumentModelDetails.class));
+            TypeReference.createInstance(DocumentModelBuildOperationDetails.class));
     }
 
     /**
@@ -959,7 +957,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentModelComposeOperationDetails, DocumentModelDetails>
+    public PollerFlux<DocumentModelComposeOperationDetails, DocumentModelComposeOperationDetails>
         beginComposeModelWithModelAsync(BinaryData composeRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.composeModelWithResponseAsync(composeRequest, requestOptions),
@@ -969,7 +967,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelComposeOperationDetails.class),
-            TypeReference.createInstance(DocumentModelDetails.class));
+            TypeReference.createInstance(DocumentModelComposeOperationDetails.class));
     }
 
     /**
@@ -1001,7 +999,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelDetails>
+    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelComposeOperationDetails>
         beginComposeModelWithModel(BinaryData composeRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.composeModelWithResponse(composeRequest, requestOptions),
@@ -1011,7 +1009,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelComposeOperationDetails.class),
-            TypeReference.createInstance(DocumentModelDetails.class));
+            TypeReference.createInstance(DocumentModelComposeOperationDetails.class));
     }
 
     /**
@@ -1274,7 +1272,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentModelCopyToOperationDetails, DocumentModelDetails>
+    public PollerFlux<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails>
         beginCopyModelToWithModelAsync(String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.copyModelToWithResponseAsync(modelId, copyToRequest, requestOptions),
@@ -1284,7 +1282,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelCopyToOperationDetails.class),
-            TypeReference.createInstance(DocumentModelDetails.class));
+            TypeReference.createInstance(DocumentModelCopyToOperationDetails.class));
     }
 
     /**
@@ -1313,7 +1311,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails>
+    public SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails>
         beginCopyModelToWithModel(String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.copyModelToWithResponse(modelId, copyToRequest, requestOptions),
@@ -1323,7 +1321,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelCopyToOperationDetails.class),
-            TypeReference.createInstance(DocumentModelDetails.class));
+            TypeReference.createInstance(DocumentModelCopyToOperationDetails.class));
     }
 
     /**
@@ -1356,7 +1354,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
-     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean) (Required)
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
@@ -1370,6 +1368,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -1418,7 +1431,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
-     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean) (Required)
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
@@ -1432,6 +1445,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -1480,7 +1508,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
-     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean) (Required)
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
@@ -1494,6 +1522,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -1545,7 +1588,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
-     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean) (Required)
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
@@ -1559,6 +1602,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -1608,7 +1666,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
-     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean) (Required)
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
@@ -1622,6 +1680,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -1671,7 +1744,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
-     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean) (Required)
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
@@ -1685,6 +1758,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -1815,7 +1903,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * <pre>{@code
      * {
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -1863,7 +1951,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * <pre>{@code
      * {
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -1911,7 +1999,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * <pre>{@code
      * {
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -1962,7 +2050,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * <pre>{@code
      * {
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -2011,7 +2099,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * <pre>{@code
      * {
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -2060,7 +2148,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * <pre>{@code
      * {
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -2110,6 +2198,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2151,6 +2240,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2191,6 +2281,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2237,6 +2328,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2283,6 +2375,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2308,7 +2401,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails>
+    public PollerFlux<DocumentClassifierBuildOperationDetails, DocumentClassifierBuildOperationDetails>
         beginBuildClassifierWithModelAsync(BinaryData buildRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.buildClassifierWithResponseAsync(buildRequest, requestOptions),
@@ -2318,7 +2411,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class),
-            TypeReference.createInstance(DocumentClassifierDetails.class));
+            TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class));
     }
 
     /**
@@ -2330,6 +2423,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2355,7 +2449,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails>
+    public SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierBuildOperationDetails>
         beginBuildClassifierWithModel(BinaryData buildRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.buildClassifierWithResponse(buildRequest, requestOptions),
@@ -2365,7 +2459,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class),
-            TypeReference.createInstance(DocumentClassifierDetails.class));
+            TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class));
     }
 
     /**
@@ -2380,6 +2474,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     createdDateTime: OffsetDateTime (Required)
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Required)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2393,6 +2488,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -2425,6 +2535,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     createdDateTime: OffsetDateTime (Required)
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Required)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2438,6 +2549,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -2468,6 +2594,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     createdDateTime: OffsetDateTime (Required)
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Required)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2481,6 +2608,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -2514,6 +2656,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     createdDateTime: OffsetDateTime (Required)
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Required)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2527,6 +2670,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -2558,6 +2716,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     createdDateTime: OffsetDateTime (Required)
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Required)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2571,6 +2730,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -2602,6 +2776,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     createdDateTime: OffsetDateTime (Required)
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Required)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2615,6 +2790,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -2700,7 +2890,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
-     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean) (Required)
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
@@ -2714,6 +2904,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -2769,7 +2974,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
-     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean) (Required)
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
@@ -2783,6 +2988,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -2813,7 +3033,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * <pre>{@code
      * {
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -2868,7 +3088,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * <pre>{@code
      * {
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -2924,6 +3144,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     createdDateTime: OffsetDateTime (Required)
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Required)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2937,6 +3158,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
@@ -2974,6 +3210,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     createdDateTime: OffsetDateTime (Required)
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Required)
+     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -2987,6 +3224,21 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *             }
      *         }
      *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
      * }
      * }</pre>
      * 
