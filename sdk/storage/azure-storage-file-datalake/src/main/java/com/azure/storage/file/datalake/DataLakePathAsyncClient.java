@@ -127,7 +127,7 @@ public class DataLakePathAsyncClient {
         CpkInfo customerProvidedKey, boolean isTokenCredentialAuthenticated) {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
-        this.pathName = pathName;
+        this.pathName = Utility.urlDecode(pathName);
         this.pathResourceType = pathResourceType;
         this.blockBlobAsyncClient = blockBlobAsyncClient;
         this.sasToken = sasToken;
@@ -430,7 +430,7 @@ public class DataLakePathAsyncClient {
      * String umask = &quot;umask&quot;;
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
-     * String leaseId = CoreUtils.randomUuid&#40;&#41;.toString&#40;&#41;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
      * Integer duration = 15;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
@@ -1653,7 +1653,6 @@ public class DataLakePathAsyncClient {
         DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
         String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);
-        //String renameSource = "/" + this.fileSystemName + "/" + pathName;
 
         String signature = null;
         if (this.sasToken != null) {
@@ -1714,7 +1713,6 @@ public class DataLakePathAsyncClient {
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
             .endpoint(newBlobEndpoint)
-            .blobName(destinationPath)
             .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()));
     }
 
