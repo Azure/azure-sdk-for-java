@@ -109,15 +109,15 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         return attempt(httpRequest, next, 0, null);
     }
 
-    private HttpResponse<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
+    private HttpResponse attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
                                  final int tryCount, final List<Throwable> suppressed) {
         httpRequest.getMetadata().setRetryCount(tryCount + 1);
 
-        HttpResponse<?> httpResponse;
+        HttpResponse httpResponse;
 
         try {
             httpResponse = next.clone().process();
@@ -172,7 +172,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse<?> response, int tryCount) {
+    private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse response, int tryCount) {
         return tryCount < retryStrategy.getMaxRetries() && retryStrategy.shouldRetry(response);
     }
 
@@ -221,7 +221,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying.
      */
-    static Duration determineDelayDuration(HttpResponse<?> response, int tryCount, RetryStrategy retryStrategy,
+    static Duration determineDelayDuration(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
                                            HeaderName retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (retryAfterHeader == null) {

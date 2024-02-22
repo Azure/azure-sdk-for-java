@@ -3,9 +3,12 @@
 
 package com.generic.core.implementation.http.rest;
 
+import com.generic.core.http.MockHttpResponse;
+import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.implementation.http.SimpleResponse;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
@@ -49,14 +52,14 @@ class ResponseConstructorsCacheBenchmarkTestData {
     }
 
     // 1. final VoidResponse               (Ctr_args: 3)
-    static final class VoidResponse extends HttpResponse<Void> {
+    static final class VoidResponse extends SimpleResponse<Void> {
         VoidResponse(HttpRequest request, int statusCode, Headers headers, Void value) {
             super(request, statusCode, headers, value);
         }
     }
 
     // 2. SimpleResponse<Foo> Type         (Ctr_args: 4)
-    static final class FooSimpleResponse extends HttpResponse<Foo> {
+    static final class FooSimpleResponse extends SimpleResponse<Foo> {
         FooSimpleResponse(HttpRequest request, int statusCode, Headers headers, Foo value) {
             super(request, statusCode, headers, value);
         }
@@ -83,13 +86,13 @@ class ResponseConstructorsCacheBenchmarkTestData {
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);
     private static final byte[] STREAM_BYTE_ARRAY = new byte[1];
     // MOCK RESPONSES
-    private static final HttpResponse<Void> VOID_RESPONSE = new HttpResponse<>(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final HttpResponse VOID_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, null);
-    private static final HttpResponse<byte[]> FOO_RESPONSE = new HttpResponse<>(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final HttpResponse FOO_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, FOO_BYTE_ARRAY);
-    private static final HttpResponse<byte[]> STREAM_RESPONSE = new HttpResponse<>(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final HttpResponse STREAM_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, STREAM_BYTE_ARRAY);
-    private static final HttpResponse<byte[]> FOO_CUSTOM_HEADER_RESPONSE = new HttpResponse<>(HTTP_REQUEST,
+    private static final HttpResponse FOO_CUSTOM_HEADER_RESPONSE = new MockHttpResponse(HTTP_REQUEST,
         RESPONSE_STATUS_CODE, RESPONSE_CUSTOM_HEADERS, FOO_BYTE_ARRAY);
 
     // ARRAY HOLDING TEST DATA
@@ -129,7 +132,7 @@ class ResponseConstructorsCacheBenchmarkTestData {
         private final HttpResponseDecoder.HttpDecodedResponse decodedResponse;
         private final Object bodyAsObject;
 
-        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, HttpResponse<?> httpResponse,
+        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, HttpResponse httpResponse,
               Object bodyAsObject) {
 
             this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();

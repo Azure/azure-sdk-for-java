@@ -18,6 +18,7 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.implementation.TypeUtil;
+import com.generic.core.implementation.http.SimpleResponse;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.implementation.util.DateTimeRfc1123;
@@ -742,15 +743,15 @@ public class SwaggerMethodParserTests {
         return TypeUtil.createParameterizedType(Response.class, genericType);
     }
 
-    private static final class VoidResponse extends HttpResponse<Void> {
+    private static final class VoidResponse extends SimpleResponse<Void> {
         VoidResponse(Response<?> response, Void value) {
-            super(response.getRequest(), response.getStatusCode(), value);
+            super(response, value);
         }
     }
 
-    private static final class StringResponse extends HttpResponse<String> {
+    private static final class StringResponse extends SimpleResponse<String> {
         StringResponse(Response<?> response, String value) {
-            super(response.getRequest(), response.getStatusCode(), value);
+            super(response, value);
         }
     }
 

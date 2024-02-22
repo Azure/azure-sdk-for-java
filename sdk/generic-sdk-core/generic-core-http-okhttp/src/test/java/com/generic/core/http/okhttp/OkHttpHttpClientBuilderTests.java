@@ -127,7 +127,6 @@ public class OkHttpHttpClientBuilderTests {
                 .proceed(chain.request().newBuilder().addHeader("Cookie", "test=success").build()))
             .build();
         HttpClient client = new OkHttpHttpClientBuilder(existingClient).build();
-        @SuppressWarnings("rawtypes")
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl));
 
         assertEquals(200, response.getStatusCode());
@@ -152,7 +151,6 @@ public class OkHttpHttpClientBuilderTests {
         HttpClient client = new OkHttpHttpClientBuilder()
             .addNetworkInterceptor(testInterceptor)
             .build();
-        @SuppressWarnings("rawtypes")
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl));
 
         assertEquals(200, response.getStatusCode());
@@ -180,7 +178,6 @@ public class OkHttpHttpClientBuilderTests {
             .addNetworkInterceptor(badCookieSetter)
             .networkInterceptors(Collections.singletonList(goodCookieSetter))
             .build();
-        @SuppressWarnings("rawtypes")
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl));
 
         assertEquals(200, response.getStatusCode());
@@ -210,7 +207,6 @@ public class OkHttpHttpClientBuilderTests {
             .addNetworkInterceptor(validatorInterceptor)
             .connectionTimeout(Duration.ofSeconds(3600))
             .build();
-        @SuppressWarnings("rawtypes")
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
         assertEquals(200, response.getStatusCode());
@@ -222,7 +218,6 @@ public class OkHttpHttpClientBuilderTests {
         HttpClient client = new OkHttpHttpClientBuilder()
             .followRedirects(true)
             .build();
-        @SuppressWarnings("rawtypes")
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl));
 
         assertEquals(200, response.getStatusCode());
@@ -233,7 +228,6 @@ public class OkHttpHttpClientBuilderTests {
         HttpClient client = new OkHttpHttpClientBuilder()
             .followRedirects(false)
             .build();
-        @SuppressWarnings("rawtypes")
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl));
 
         assertEquals(307, response.getStatusCode());
@@ -242,7 +236,6 @@ public class OkHttpHttpClientBuilderTests {
     @Test
     public void buildWithFollowRedirectDefault() {
         HttpClient client = new OkHttpHttpClientBuilder().build();
-        @SuppressWarnings("rawtypes")
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl));
 
         assertEquals(307, response.getStatusCode());
@@ -263,7 +256,6 @@ public class OkHttpHttpClientBuilderTests {
             .addNetworkInterceptor(validatorInterceptor)
             .readTimeout(Duration.ofSeconds(3600))
             .build();
-        @SuppressWarnings("rawtypes")
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
         assertEquals(200, response.getStatusCode());
@@ -283,7 +275,6 @@ public class OkHttpHttpClientBuilderTests {
             .addNetworkInterceptor(validatorInterceptor)
             .callTimeout(Duration.ofSeconds(3600))
             .build();
-        @SuppressWarnings("rawtypes")
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
         assertEquals(200, response.getStatusCode());
@@ -314,7 +305,6 @@ public class OkHttpHttpClientBuilderTests {
         HttpClient client = new OkHttpHttpClientBuilder()
             .addNetworkInterceptor(validatorInterceptor)
             .build();
-        @SuppressWarnings("rawtypes")
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
         assertEquals(200, response.getStatusCode());
@@ -329,7 +319,6 @@ public class OkHttpHttpClientBuilderTests {
         HttpClient client = new OkHttpHttpClientBuilder()
             .connectionPool(connectionPool)
             .build();
-        @SuppressWarnings("rawtypes")
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
         assertEquals(200, response.getStatusCode());

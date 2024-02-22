@@ -96,7 +96,7 @@ public abstract class RestProxyBase {
     public Response<?> createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
                                       Object bodyAsObject) {
         final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
-        final HttpResponse<?> httpResponse = response.getSourceResponse();
+        final HttpResponse httpResponse = response.getSourceResponse();
         final HttpRequest request = httpResponse.getRequest();
         final int statusCode = httpResponse.getStatusCode();
         final Headers headers = httpResponse.getHeaders();
@@ -106,8 +106,8 @@ public abstract class RestProxyBase {
         //
         // If the type is the Response interface from generic-core we can simply return a new instance of HttpResponse.
         if (clazz.equals(Response.class)) {
-            // For Response return a new instance of HttpResponse cast to the class.
-            return clazz.cast(new HttpResponse<>(request, statusCode, headers, bodyAsObject));
+            // For Response return a new instance of SimpleResponse cast to the class.
+            return clazz.cast(Response.create(request, statusCode, headers, bodyAsObject));
         }
 
         // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response subtype.
@@ -245,7 +245,7 @@ public abstract class RestProxyBase {
      * @return The {@link HttpResponseException} created from the provided details.
      */
     public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
-                                                                       HttpResponse<?> httpResponse,
+                                                                       HttpResponse httpResponse,
                                                                        byte[] responseContent,
                                                                        Object responseDecodedContent) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")

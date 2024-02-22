@@ -110,10 +110,9 @@ public class OkHttpHttpClientTests {
         HttpClient client = new OkHttpHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
 
-        assertThrows(UncheckedIOException.class, () -> client.send(request).getBody().toBytes());
+        assertThrows(UncheckedIOException.class, () -> client.send(request).getValue().toBytes());
     }
 
-    @SuppressWarnings("rawtypes")
     @Test
     public void testConcurrentRequests() throws InterruptedException {
         int numRequests = 100; // 100 = 1GB of data read
@@ -125,7 +124,7 @@ public class OkHttpHttpClientTests {
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
                 try (HttpResponse response = doRequest(client, "/long")) {
-                    byte[] body = response.getBody().toBytes();
+                    byte[] body = response.getValue().toBytes();
                     TestUtils.assertArraysEqual(LONG_BODY, body);
 
                     return null;
@@ -150,7 +149,6 @@ public class OkHttpHttpClientTests {
         Headers headers = new Headers().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        @SuppressWarnings("rawtypes")
         HttpResponse response = client.send(
             new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers));
 
@@ -189,12 +187,11 @@ public class OkHttpHttpClientTests {
 
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new OkHttpHttpClientBuilder().build();
-        byte[] bytes = doRequest(client, path).getBody().toBytes();
+        byte[] bytes = doRequest(client, path).getValue().toBytes();
 
         assertArrayEquals(expectedBody, bytes);
     }
 
-    @SuppressWarnings("rawtypes")
     private static HttpResponse doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
 

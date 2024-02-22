@@ -53,7 +53,7 @@ public class RestProxyResponseConstructionBenchmark {
      */
     @Benchmark
     public void directConstruction(Blackhole blackhole) {
-        blackhole.consume(new HttpResponse<>(REQUEST, 200, HEADERS, "value"));
+        blackhole.consume(Response.create(REQUEST, 200, HEADERS, "value"));
     }
 
     /**

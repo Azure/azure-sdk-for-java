@@ -107,7 +107,7 @@ public class ClientLoggerJavaDocCodeSnippets {
         }
         // END: com.generic.core.util.logging.clientlogger.atError#deffered-value
 
-        Response<Void> response = new HttpResponse<>(null, 200, null, null);
+        Response<?> response = Response.create(null, 200, null, null);
         // BEGIN: com.generic.core.util.logging.clientlogger.atLevel
         ClientLogger.LogLevel level = response.getStatusCode() == 200
             ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;

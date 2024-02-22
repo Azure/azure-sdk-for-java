@@ -54,7 +54,7 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy())
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public HttpResponse<?> send(HttpRequest request) {
+                public HttpResponse send(HttpRequest request) {
                     int count = attemptCount.getAndIncrement();
 
                     if (count == 0) {
@@ -69,7 +69,7 @@ public class RetryPolicyTests {
             })
             .build();
 
-        try (HttpResponse<?> response = sendRequest(pipeline)) {
+        try (HttpResponse response = sendRequest(pipeline)) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -83,7 +83,7 @@ public class RetryPolicyTests {
             .httpClient(new NoOpHttpClient() {
 
                 @Override
-                public HttpResponse<?> send(HttpRequest request) {
+                public HttpResponse send(HttpRequest request) {
                     int count = attemptCount.getAndIncrement();
 
                     if (count == 0) {
@@ -95,7 +95,7 @@ public class RetryPolicyTests {
             })
             .build();
 
-        try (HttpResponse<?> response = sendRequest(pipeline)) {
+        try (HttpResponse response = sendRequest(pipeline)) {
             assertEquals(returnCode, response.getStatusCode());
         }
     }
@@ -107,7 +107,7 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy())
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public HttpResponse<?> send(HttpRequest request) {
+                public HttpResponse send(HttpRequest request) {
                     int count = attemptCount.getAndIncrement();
 
                     if (count == 0) {
@@ -123,7 +123,7 @@ public class RetryPolicyTests {
             })
             .build();
 
-        try (HttpResponse<?> response = sendRequest(pipeline)) {
+        try (HttpResponse response = sendRequest(pipeline)) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -138,13 +138,13 @@ public class RetryPolicyTests {
             .httpClient(new NoOpHttpClient() {
 
                 @Override
-                public HttpResponse<?> send(HttpRequest request) {
+                public HttpResponse send(HttpRequest request) {
                     return new MockHttpResponse(request, statusCodes[attempt.getAndIncrement()]);
                 }
             })
             .build();
 
-        try (HttpResponse<?> response = sendRequest(pipeline)) {
+        try (HttpResponse response = sendRequest(pipeline)) {
             assertEquals(expectedStatusCode, response.getStatusCode());
         }
     }
@@ -157,7 +157,7 @@ public class RetryPolicyTests {
                 int count = -1;
 
                 @Override
-                public HttpResponse<?> send(HttpRequest request) {
+                public HttpResponse send(HttpRequest request) {
                     Assertions.assertTrue(count++ < maxRetries);
 
                     return new MockHttpResponse(request, 500);
@@ -166,7 +166,7 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(new FixedDelay(maxRetries, Duration.ofMillis(1))))
             .build();
 
-        try (HttpResponse<?> response = sendRequest(pipeline)) {
+        try (HttpResponse response = sendRequest(pipeline)) {
             assertEquals(500, response.getStatusCode());
         }
     }
@@ -191,7 +191,7 @@ public class RetryPolicyTests {
                 }
 
                 @Override
-                public HttpResponse<?> send(HttpRequest request) {
+                public HttpResponse send(HttpRequest request) {
                     beforeSendingRequest();
 
                     return new MockHttpResponse(request, 500);
@@ -200,7 +200,7 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(new FixedDelay(maxRetries, Duration.ofMillis(delayMillis))))
             .build();
 
-        try (HttpResponse<?> response = sendRequest(pipeline)) {
+        try (HttpResponse response = sendRequest(pipeline)) {
             assertEquals(500, response.getStatusCode());
         }
     }
@@ -232,7 +232,7 @@ public class RetryPolicyTests {
                 }
 
                 @Override
-                public HttpResponse<?> send(HttpRequest request) {
+                public HttpResponse send(HttpRequest request) {
                     beforeSendingRequest();
 
                     return new MockHttpResponse(request, 503);
@@ -241,7 +241,7 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(exponentialBackoff))
             .build();
 
-        try (HttpResponse<?> response = sendRequest(pipeline)) {
+        try (HttpResponse response = sendRequest(pipeline)) {
             assertEquals(503, response.getStatusCode());
         }
     }
@@ -249,7 +249,7 @@ public class RetryPolicyTests {
     @Test
     public void retryConsumesBody() {
         AtomicInteger closeCalls = new AtomicInteger();
-        HttpResponse<?> closeTrackingHttpResponse = new MockHttpResponse(null, 503, new Headers()) {
+        HttpResponse closeTrackingHttpResponse = new MockHttpResponse(null, 503, new Headers()) {
             @Override
             public void close() {
                 closeCalls.incrementAndGet();
@@ -262,7 +262,7 @@ public class RetryPolicyTests {
             .httpClient(new NoOpHttpClient() {
 
                 @Override
-                public HttpResponse<?> send(HttpRequest request) {
+                public HttpResponse send(HttpRequest request) {
                     return closeTrackingHttpResponse;
                 }
             })
@@ -280,7 +280,7 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))))
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public HttpResponse<Void> send(HttpRequest request) {
+                public HttpResponse send(HttpRequest request) {
                     throw new UncheckedIOException(new IOException("Attempt " + count.incrementAndGet()));
                 }
             })
@@ -355,7 +355,7 @@ public class RetryPolicyTests {
         };
     }
 
-    static HttpResponse<?> sendRequest(HttpPipeline pipeline) {
+    static HttpResponse sendRequest(HttpPipeline pipeline) {
         return pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"));
     }
 
@@ -372,7 +372,7 @@ public class RetryPolicyTests {
             }
 
             @Override
-            public boolean shouldRetry(HttpResponse<?> httpResponse) {
+            public boolean shouldRetry(HttpResponse httpResponse) {
                 return Arrays.stream(retriableErrorCodes)
                     .anyMatch(retriableErrorCode -> httpResponse.getStatusCode() == retriableErrorCode);
             }

@@ -6,12 +6,11 @@ import com.generic.core.models.Headers;
 
 import java.io.Closeable;
 
-public class HttpResponse<T> implements Response<T>, Closeable {
-    protected final T value;
-    protected final Headers headers;
-    protected final HttpRequest request;
-    protected final int statusCode;
-    protected BinaryData bodyBinaryData = null;
+public class HttpResponse implements Response<BinaryData>, Closeable {
+    private final BinaryData value;
+    private final Headers headers;
+    private final HttpRequest request;
+    private final int statusCode;
 
     /**
      * Creates a {@link HttpResponse}.
@@ -20,7 +19,7 @@ public class HttpResponse<T> implements Response<T>, Closeable {
      * @param statusCode The status code of the HTTP response.
      * @param value The deserialized value of the HTTP response.
      */
-    public HttpResponse(HttpRequest request, int statusCode, T value) {
+    public HttpResponse(HttpRequest request, int statusCode, BinaryData value) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = request == null ? null : request.getHeaders();
@@ -35,7 +34,7 @@ public class HttpResponse<T> implements Response<T>, Closeable {
      * @param headers The headers of the HTTP response.
      * @param value The deserialized value of the HTTP response.
      */
-    public HttpResponse(HttpRequest request, int statusCode, Headers headers, T value) {
+    public HttpResponse(HttpRequest request, int statusCode, Headers headers, BinaryData value) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
@@ -49,7 +48,7 @@ public class HttpResponse<T> implements Response<T>, Closeable {
      */
     public int getStatusCode() {
         return this.statusCode;
-    };
+    }
 
     /**
      * Gets the headers from the HTTP response.
@@ -58,7 +57,7 @@ public class HttpResponse<T> implements Response<T>, Closeable {
      */
     public Headers getHeaders() {
         return this.headers;
-    };
+    }
 
     /**
      * Gets the HTTP request which resulted in this response.
@@ -70,28 +69,12 @@ public class HttpResponse<T> implements Response<T>, Closeable {
     }
 
     /**
-     * Gets the deserialized value of the HTTP response.
+     * Gets the value of the HTTP response.
      *
-     * @return The deserialized value of the HTTP response.
+     * @return The value of the HTTP response.
      */
-    public T getValue() {
+    public BinaryData getValue() {
         return value;
-    };
-
-    /**
-     * Gets the {@link BinaryData} that represents the body of the response.
-     *
-     * <p>Subclasses should override this method.</p>
-     *
-     * @return The {@link BinaryData} response body.
-     */
-    public BinaryData getBody() {
-        // We shouldn't create multiple binary data instances for a single stream.
-        if (bodyBinaryData == null && value != null) {
-            bodyBinaryData = BinaryData.fromObject(value);
-        }
-
-        return bodyBinaryData;
     }
 
     /**

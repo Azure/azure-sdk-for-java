@@ -47,7 +47,7 @@ public class RestProxyImpl extends RestProxyBase {
      *
      * @return A {@link HttpResponse} that emits HttpResponse asynchronously.
      */
-    HttpResponse<?> send(HttpRequest request) {
+    HttpResponse send(HttpRequest request) {
         return httpPipeline.send(request);
     }
 
@@ -67,8 +67,7 @@ public class RestProxyImpl extends RestProxyBase {
             request.setBody(RestProxyUtils.validateLength(request));
         }
 
-        final HttpResponse<?> response = send(request);
-        //noinspection unchecked
+        final HttpResponse response = send(request);
         decodedResponse = this.decoder.decode(response, methodParser);
 
         int statusCode = decodedResponse.getSourceResponse().getStatusCode();
@@ -104,7 +103,7 @@ public class RestProxyImpl extends RestProxyBase {
         }
 
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
-        BinaryData responseData = decodedResponse.getSourceResponse().getBody();
+        BinaryData responseData = decodedResponse.getSourceResponse().getValue();
         byte[] responseBytes = responseData == null ? null : responseData.toBytes();
         if (responseBytes == null || responseBytes.length == 0) {
             // No body, create exception empty content string no exception body object.
@@ -155,7 +154,7 @@ public class RestProxyImpl extends RestProxyBase {
             result = (responseStatusCode / 100) == 2;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // byte[]
-            BinaryData binaryData = response.getSourceResponse().getBody();
+            BinaryData binaryData = response.getSourceResponse().getValue();
             byte[] responseBodyBytes = binaryData != null ? binaryData.toBytes() : null;
             if (returnValueWireType == Base64Url.class) {
                 // Base64Url
@@ -163,7 +162,7 @@ public class RestProxyImpl extends RestProxyBase {
             }
             result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
-            result = response.getSourceResponse().getBody().toStream();
+            result = response.getSourceResponse().getValue().toStream();
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // BinaryData
             //
@@ -171,7 +170,7 @@ public class RestProxyImpl extends RestProxyBase {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            result = response.getSourceResponse().getBody();
+            result = response.getSourceResponse().getValue();
         } else {
             // Object or Page<T>
             result = response.getDecodedBody(null);

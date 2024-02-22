@@ -6,6 +6,7 @@ package com.generic.core.http;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
+import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 import com.generic.core.util.serializer.ObjectSerializer;
 
@@ -13,12 +14,8 @@ import java.io.ByteArrayOutputStream;
 
 import static com.generic.core.util.TestUtils.cloneByteArray;
 
-public class MockHttpResponse extends HttpResponse<byte[]> {
+public class MockHttpResponse extends HttpResponse {
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
-
-    private final int statusCode;
-
-    private final Headers headers;
 
     /**
      * Creates a HTTP response associated with a {@code request}, returns the {@code statusCode}, and has an empty
@@ -64,10 +61,7 @@ public class MockHttpResponse extends HttpResponse<byte[]> {
      * @param bodyBytes Contents of the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, Headers headers, byte[] bodyBytes) {
-        super(request, statusCode, cloneByteArray(bodyBytes));
-
-        this.statusCode = statusCode;
-        this.headers = headers;
+        super(request, statusCode, headers, bodyBytes == null ? null : BinaryData.fromBytes(cloneByteArray(bodyBytes)));
     }
 
     /**
@@ -101,15 +95,5 @@ public class MockHttpResponse extends HttpResponse<byte[]> {
         SERIALIZER.serializeToStream(stream, serializable);
 
         return stream.toByteArray();
-    }
-
-    @Override
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    @Override
-    public Headers getHeaders() {
-        return this.headers;
     }
 }

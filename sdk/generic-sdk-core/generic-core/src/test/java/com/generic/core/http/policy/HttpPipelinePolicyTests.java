@@ -106,7 +106,7 @@ public class HttpPipelinePolicyTests {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();
@@ -117,7 +117,7 @@ public class HttpPipelinePolicyTests {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();

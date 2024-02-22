@@ -96,10 +96,10 @@ public class DefaultHttpClientTest {
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
-        try (HttpResponse<?> response = doRequest(client, "/error")) {
+        try (HttpResponse response = doRequest(client, "/error")) {
             assertEquals(500, response.getStatusCode());
 
-            String responseBodyAsString = response.getBody().toString();
+            String responseBodyAsString = response.getValue().toString();
 
             assertTrue(responseBodyAsString.contains("error"));
         }
@@ -115,8 +115,8 @@ public class DefaultHttpClientTest {
 
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (HttpResponse<?> response = doRequest(client, "/error")) {
-                    byte[] body = response.getBody().toBytes();
+                try (HttpResponse response = doRequest(client, "/error")) {
+                    byte[] body = response.getValue().toBytes();
 
                     assertArraysEqual(LONG_BODY, body);
 
@@ -144,7 +144,7 @@ public class DefaultHttpClientTest {
             .set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        try (HttpResponse<?> response =
+        try (HttpResponse response =
                  client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH))
                      .setHeaders(headers))) {
             assertEquals(200, response.getStatusCode());
@@ -167,8 +167,8 @@ public class DefaultHttpClientTest {
     public void testBufferedResponse() {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
-        try (HttpResponse<?> response = getResponse(client, "/short", Context.NONE)) {
-            assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
+        try (HttpResponse response = getResponse(client, "/short", Context.NONE)) {
+            assertArrayEquals(SHORT_BODY, response.getValue().toBytes());
         }
     }
 
@@ -176,8 +176,8 @@ public class DefaultHttpClientTest {
     public void testEmptyBufferResponse() {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
-        try (HttpResponse<?> response = getResponse(client, "/empty", Context.NONE)) {
-            assertEquals(0L, response.getBody().getLength());
+        try (HttpResponse response = getResponse(client, "/empty", Context.NONE)) {
+            assertEquals(0L, response.getValue().getLength());
         }
     }
 
@@ -191,12 +191,12 @@ public class DefaultHttpClientTest {
             .setBody(contentChunk);
 
         //noinspection RedundantExplicitVariableType
-        try (HttpResponse<?> response = client.send(request)) {
-            assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
+        try (HttpResponse response = client.send(request)) {
+            assertArrayEquals(SHORT_BODY, response.getValue().toBytes());
         }
     }
 
-    private static HttpResponse<?> getResponse(HttpClient client, String path, Context context) {
+    private static HttpResponse getResponse(HttpClient client, String path, Context context) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
 
         request.getMetadata().setContext(context);
@@ -225,12 +225,12 @@ public class DefaultHttpClientTest {
 
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new DefaultHttpClientBuilder().build();
-        byte[] response = doRequest(client, path).getBody().toBytes();
+        byte[] response = doRequest(client, path).getValue().toBytes();
 
         assertArrayEquals(expectedBody, response);
     }
 
-    private static HttpResponse<?> doRequest(HttpClient client, String path) {
+    private static HttpResponse doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
 
         return client.send(request);

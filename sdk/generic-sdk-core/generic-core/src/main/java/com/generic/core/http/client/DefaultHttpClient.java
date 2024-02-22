@@ -60,7 +60,7 @@ class DefaultHttpClient implements HttpClient {
      * @return The HttpResponse object
      */
     @Override
-    public HttpResponse<?> send(HttpRequest httpRequest) {
+    public HttpResponse send(HttpRequest httpRequest) {
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
             return sendPatchViaSocket(httpRequest);
         }
@@ -79,7 +79,7 @@ class DefaultHttpClient implements HttpClient {
      *
      * @return The HttpResponse object
      */
-    private HttpResponse<?> sendPatchViaSocket(HttpRequest httpRequest) {
+    private HttpResponse sendPatchViaSocket(HttpRequest httpRequest) {
         try {
             return SocketClient.sendPatchRequest(httpRequest);
         } catch (IOException e) {
@@ -195,7 +195,7 @@ class DefaultHttpClient implements HttpClient {
      *
      * @return A HttpResponse object
      */
-    private HttpResponse<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
+    private HttpResponse receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
         try {
             int responseCode = connection.getResponseCode();
 
@@ -220,7 +220,7 @@ class DefaultHttpClient implements HttpClient {
                 }
             }
 
-            return new HttpResponse<>(httpRequest, responseCode, responseHeaders,
+            return new HttpResponse(httpRequest, responseCode, responseHeaders,
                 BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
@@ -243,7 +243,7 @@ class DefaultHttpClient implements HttpClient {
          * @throws ProtocolException If the protocol is not HTTP or HTTPS
          * @throws IOException If an I/O error occurs
          */
-        public static HttpResponse<?> sendPatchRequest(HttpRequest httpRequest) throws IOException {
+        public static HttpResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
             final URL requestUrl = httpRequest.getUrl();
             final String protocol = requestUrl.getProtocol();
             final String host = requestUrl.getHost();
@@ -276,7 +276,7 @@ class DefaultHttpClient implements HttpClient {
          * @return an instance of HttpUrlConnectionResponse
          */
         @SuppressWarnings("deprecation")
-        private static HttpResponse<?> doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
+        private static HttpResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
             httpRequest.setHeader(HeaderName.HOST, httpRequest.getUrl().getHost());
 
             if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HeaderName.CONNECTION))) {
@@ -289,7 +289,7 @@ class DefaultHttpClient implements HttpClient {
 
                 buildAndSend(httpRequest, out);
 
-                HttpResponse<?> response = buildResponse(httpRequest, in);
+                HttpResponse response = buildResponse(httpRequest, in);
                 Header locationHeader = response.getHeaders().get(HeaderName.LOCATION);
                 String redirectLocation = (locationHeader == null) ? null : locationHeader.getValue();
 
@@ -350,7 +350,7 @@ class DefaultHttpClient implements HttpClient {
          * @return an instance of HttpUrlConnectionResponse
          * @throws IOException If an I/O error occurs
          */
-        private static HttpResponse<?> buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
+        private static HttpResponse buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
             String statusLine = reader.readLine();
             int dotIndex = statusLine.indexOf('.');
             int statusCode = Integer.parseInt(statusLine.substring(dotIndex + 3, dotIndex + 6));
@@ -373,7 +373,7 @@ class DefaultHttpClient implements HttpClient {
 
             BinaryData body = BinaryData.fromByteBuffer(ByteBuffer.wrap(bodyString.toString().getBytes()));
 
-            return new HttpResponse<>(httpRequest, statusCode, headers, body);
+            return new HttpResponse(httpRequest, statusCode, headers, body);
         }
     }
 }

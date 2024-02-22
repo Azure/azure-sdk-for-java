@@ -11,7 +11,7 @@ import okhttp3.ResponseBody;
 /**
  * Default HTTP response for OkHttp.
  */
-public final class OkHttpResponse extends OkHttpResponseBase<BinaryData> {
+public final class OkHttpResponse extends OkHttpResponseBase {
     // Previously, this was 4096, but it is being changed to 8192 as that more closely aligns to what Netty uses as a
     // default and will reduce the number of small allocations we'll need to make.
     private static final int BYTE_BUFFER_CHUNK_SIZE = 8192;
@@ -19,7 +19,8 @@ public final class OkHttpResponse extends OkHttpResponseBase<BinaryData> {
     private final ResponseBody responseBody;
 
     public OkHttpResponse(Response response, HttpRequest request, boolean eagerlyConvertHeaders) {
-        super(response, request, eagerlyConvertHeaders);
+        super(response, request, eagerlyConvertHeaders,
+            response.body() == null ? null : BinaryData.fromStream(response.body().byteStream()));
 
         // innerResponse.body() getter will not return null for server returned responses.
         // It can be null:
@@ -27,20 +28,6 @@ public final class OkHttpResponse extends OkHttpResponseBase<BinaryData> {
         // [b]. for the cases described here
         // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
         this.responseBody = response.body();
-    }
-
-    @Override
-    public BinaryData getValue() {
-        return getBody();
-    }
-
-    @Override
-    public BinaryData getBody() {
-        if (bodyBinaryData == null) {
-            bodyBinaryData = BinaryData.fromStream(this.responseBody.byteStream());
-        }
-
-        return bodyBinaryData;
     }
 
     @Override
