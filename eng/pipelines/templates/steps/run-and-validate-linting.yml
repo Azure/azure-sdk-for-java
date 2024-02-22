@@ -2,6 +2,9 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
+  - name: JavadocSafeJavaBuildVersion
+    type: string
+    default: $(JavadocSafeJavaBuildVersion)
   - name: AdditionalLintingOptions
     type: string
     default: ''
@@ -87,7 +90,7 @@ steps:
       options: '$(DefaultOptions) --no-transfer-progress ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
       mavenOptions: '$(MemoryOptions)'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: ${{ parameters.JavaBuildVersion }}
+      jdkVersionOption: ${{ parameters.JavadocSafeJavaBuildVersion }} # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete. See: https://github.com/Azure/azure-sdk-for-java/issues/38267.
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       ${{ if ne(parameters.SDKType, 'client') }}:

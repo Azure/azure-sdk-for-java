@@ -11,7 +11,9 @@ import com.azure.resourcemanager.monitor.models.CategoryType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The diagnostic settings category resource. */
+/**
+ * The diagnostic settings category resource.
+ */
 @Immutable
 public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DiagnosticSettingsCategoryResourceInner class. */
+    /**
+     * Creates an instance of DiagnosticSettingsCategoryResourceInner class.
+     */
     public DiagnosticSettingsCategoryResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a Diagnostic Settings Category.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiagnosticSettingsCategory innerProperties() {
@@ -41,7 +45,7 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,7 +54,7 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
 
     /**
      * Get the categoryType property: The type of the diagnostic settings category.
-     *
+     * 
      * @return the categoryType value.
      */
     public CategoryType categoryType() {
@@ -59,7 +63,7 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
 
     /**
      * Set the categoryType property: The type of the diagnostic settings category.
-     *
+     * 
      * @param categoryType the categoryType value to set.
      * @return the DiagnosticSettingsCategoryResourceInner object itself.
      */
@@ -73,7 +77,7 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
 
     /**
      * Get the categoryGroups property: the collection of what category groups are supported.
-     *
+     * 
      * @return the categoryGroups value.
      */
     public List<String> categoryGroups() {
@@ -82,7 +86,7 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
 
     /**
      * Set the categoryGroups property: the collection of what category groups are supported.
-     *
+     * 
      * @param categoryGroups the categoryGroups value to set.
      * @return the DiagnosticSettingsCategoryResourceInner object itself.
      */
@@ -96,7 +100,7 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

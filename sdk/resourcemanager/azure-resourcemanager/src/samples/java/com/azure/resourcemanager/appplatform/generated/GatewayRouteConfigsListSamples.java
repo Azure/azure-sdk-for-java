@@ -4,24 +4,21 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for GatewayRouteConfigs List. */
+/**
+ * Samples for GatewayRouteConfigs List.
+ */
 public final class GatewayRouteConfigsListSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/GatewayRouteConfigs_List.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/
+     * GatewayRouteConfigs_List.json
      */
     /**
      * Sample code: GatewayRouteConfigs_List.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gatewayRouteConfigsList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .springServices()
-            .manager()
-            .serviceClient()
-            .getGatewayRouteConfigs()
-            .list("myResourceGroup", "myservice", "default", Context.NONE);
+        azure.springServices().manager().serviceClient().getGatewayRouteConfigs().list("myResourceGroup", "myservice",
+            "default", com.azure.core.util.Context.NONE);
     }
 }

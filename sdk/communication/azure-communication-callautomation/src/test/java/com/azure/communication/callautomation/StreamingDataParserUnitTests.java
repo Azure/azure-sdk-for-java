@@ -251,7 +251,6 @@ public class StreamingDataParserUnitTests {
 
         assertNotNull(transcription.getParticipant());
         assertEquals("abc12345", transcription.getParticipant().getRawId());
-        System.out.println(transcription.getResultStatus().toString());
         assertEquals(ResultStatus.FINAL, transcription.getResultStatus());
     }
 

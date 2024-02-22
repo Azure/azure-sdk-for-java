@@ -13,25 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class TieringPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TieringPolicy model =
-            BinaryData
-                .fromString("{\"tieringMode\":\"DoNotTier\",\"duration\":568921197,\"durationType\":\"Weeks\"}")
-                .toObject(TieringPolicy.class);
-        Assertions.assertEquals(TieringMode.DO_NOT_TIER, model.tieringMode());
-        Assertions.assertEquals(568921197, model.duration());
-        Assertions.assertEquals(RetentionDurationType.WEEKS, model.durationType());
+        TieringPolicy model = BinaryData
+            .fromString("{\"tieringMode\":\"TierRecommended\",\"duration\":997568890,\"durationType\":\"Invalid\"}")
+            .toObject(TieringPolicy.class);
+        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringMode());
+        Assertions.assertEquals(997568890, model.duration());
+        Assertions.assertEquals(RetentionDurationType.INVALID, model.durationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TieringPolicy model =
-            new TieringPolicy()
-                .withTieringMode(TieringMode.DO_NOT_TIER)
-                .withDuration(568921197)
-                .withDurationType(RetentionDurationType.WEEKS);
+        TieringPolicy model = new TieringPolicy().withTieringMode(TieringMode.TIER_RECOMMENDED).withDuration(997568890)
+            .withDurationType(RetentionDurationType.INVALID);
         model = BinaryData.fromObject(model).toObject(TieringPolicy.class);
-        Assertions.assertEquals(TieringMode.DO_NOT_TIER, model.tieringMode());
-        Assertions.assertEquals(568921197, model.duration());
-        Assertions.assertEquals(RetentionDurationType.WEEKS, model.durationType());
+        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringMode());
+        Assertions.assertEquals(997568890, model.duration());
+        Assertions.assertEquals(RetentionDurationType.INVALID, model.durationType());
     }
 }

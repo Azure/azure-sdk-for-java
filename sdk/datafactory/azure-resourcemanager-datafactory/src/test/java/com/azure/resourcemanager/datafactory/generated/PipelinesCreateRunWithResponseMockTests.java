@@ -32,7 +32,7 @@ public final class PipelinesCreateRunWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"runId\":\"mebwcuf\"}";
+        String responseStr = "{\"runId\":\"rc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,12 +49,12 @@ public final class PipelinesCreateRunWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CreateRunResponse response = manager.pipelines().createRunWithResponse("eofjoqjmlzlki", "jssfwojfng",
-            "hzrjsbwdsit", "pashvjrin", false, "tgaduslnrqykn", false, mapOf("idyansnunvgqtvg", "datacxya", "vrdsv",
-                "dataperbnbsd", "mnmxspz", "datajgtqqrmi", "paw", "datairvzbmhmkoxsavzn"),
-            com.azure.core.util.Context.NONE).getValue();
+        CreateRunResponse response = manager.pipelines()
+            .createRunWithResponse("xivktdvwmefjpo", "llyvbvx", "rltrztrloyrjvr", "yr", true, "frsyckqwefmqht", true,
+                mapOf("hlnbawffrzgeobz", "datavfncp", "grojpnxz", "dataxzraihl"), com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("mebwcuf", response.runId());
+        Assertions.assertEquals("rc", response.runId());
     }
 
     // Use "Map.of" if available

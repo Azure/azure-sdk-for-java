@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The ChangeThresholdCondition model.
@@ -160,7 +159,8 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
         jsonWriter.writeDoubleField("changePercentage", this.changePercentage);
         jsonWriter.writeIntField("shiftPoint", this.shiftPoint);
         jsonWriter.writeBooleanField("withinRange", this.withinRange);
-        jsonWriter.writeStringField("anomalyDetectorDirection", Objects.toString(this.anomalyDetectorDirection, null));
+        jsonWriter.writeStringField("anomalyDetectorDirection",
+            this.anomalyDetectorDirection == null ? null : this.anomalyDetectorDirection.toString());
         jsonWriter.writeJsonField("suppressCondition", this.suppressCondition);
         return jsonWriter.writeEndObject();
     }

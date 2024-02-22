@@ -46,7 +46,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -55,7 +55,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Set the kubernetesVersion property: The Kubernetes version (major.minor.patch).
-     *
+     * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
      */
@@ -66,7 +66,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Get the name property: The Agent Pool name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -75,7 +75,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Set the name property: The Agent Pool name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
      */
@@ -86,7 +86,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * 
      * @return the osType value.
      */
     public OSType osType() {
@@ -95,7 +95,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
      */
@@ -106,7 +106,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Get the upgrades property: List of orchestrator types and versions available for upgrade.
-     *
+     * 
      * @return the upgrades value.
      */
     public List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades() {
@@ -115,7 +115,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Set the upgrades property: List of orchestrator types and versions available for upgrade.
-     *
+     * 
      * @param upgrades the upgrades value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
      */
@@ -126,7 +126,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

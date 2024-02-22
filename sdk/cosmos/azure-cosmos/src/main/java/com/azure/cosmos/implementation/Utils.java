@@ -13,6 +13,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -36,7 +37,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
@@ -556,16 +556,11 @@ public class Utils {
         }
     }
 
-    public static <T> T parse(byte[] item, Class<T> itemClassType, ItemDeserializer itemDeserializer) {
-        if (Utils.isEmpty(item)) {
-            return null;
-        }
+    public static <T> T parse(JsonNode jsonNode, Class<T> itemClassType, ItemDeserializer itemDeserializer) {
+        ItemDeserializer effectiveDeserializer = itemDeserializer == null ?
+                new ItemDeserializer.JsonDeserializer() : itemDeserializer;
 
-        if (itemDeserializer == null) {
-            return Utils.parse(item, itemClassType);
-        }
-
-        return itemDeserializer.parseFrom(itemClassType, item);
+        return effectiveDeserializer.convert(itemClassType, jsonNode);
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {

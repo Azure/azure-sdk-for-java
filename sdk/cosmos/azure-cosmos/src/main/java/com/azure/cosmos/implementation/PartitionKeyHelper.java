@@ -47,7 +47,7 @@ public class PartitionKeyHelper {
                             return ImplementationBridgeHelpers
                                 .PartitionKeyHelper
                                 .getPartitionKeyAccessor()
-                                .toPartitionKey(value, PartitionKeyInternal.fromObjectArray(Collections.singletonList(value), false));
+                                .toPartitionKey(PartitionKeyInternal.fromObjectArray(Collections.singletonList(value), false));
                         }
                     }
                     break;
@@ -62,9 +62,7 @@ public class PartitionKeyHelper {
                     return ImplementationBridgeHelpers
                         .PartitionKeyHelper
                         .getPartitionKeyAccessor()
-                        .toPartitionKey(
-                            getPartitionKeyObjectKey(partitionKeyValues),
-                            PartitionKeyInternal.fromObjectArray(partitionKeyValues, false));
+                        .toPartitionKey(PartitionKeyInternal.fromObjectArray(partitionKeyValues, false));
 
                 default:
                     throw new IllegalArgumentException("Unrecognized Partition kind: " + partitionKeyDefinition.getKind());
@@ -72,21 +70,5 @@ public class PartitionKeyHelper {
         }
 
         return null;
-    }
-
-    public static String getPartitionKeyObjectKey(Object[] values) {
-        StringBuilder backendValues = new StringBuilder();
-        if (values.length == 1) {
-            backendValues.append((String) values[0]);
-        } else {
-            for (int i = 0; i < values.length; i++) {
-                backendValues.append((String) values[i]);
-                if (i < values.length-1) {
-                    backendValues.append("=");
-                }
-            }
-        }
-
-        return backendValues.toString();
     }
 }

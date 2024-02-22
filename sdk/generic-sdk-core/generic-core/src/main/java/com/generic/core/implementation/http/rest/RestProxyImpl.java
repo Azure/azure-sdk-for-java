@@ -28,6 +28,7 @@ import java.util.function.Consumer;
 import static com.generic.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
 
 public class RestProxyImpl extends RestProxyBase {
+
     /**
      * Create a RestProxy.
      *

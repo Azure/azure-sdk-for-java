@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Information about the restriction where the SKU cannot be used. */
+/**
+ * Information about the restriction where the SKU cannot be used.
+ */
 @Fluent
 public final class ResourceSkuRestrictionInfo {
     /*
@@ -24,8 +26,14 @@ public final class ResourceSkuRestrictionInfo {
     private List<String> zones;
 
     /**
+     * Creates an instance of ResourceSkuRestrictionInfo class.
+     */
+    public ResourceSkuRestrictionInfo() {
+    }
+
+    /**
      * Get the locations property: Gets locations where the SKU is restricted.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -34,7 +42,7 @@ public final class ResourceSkuRestrictionInfo {
 
     /**
      * Set the locations property: Gets locations where the SKU is restricted.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the ResourceSkuRestrictionInfo object itself.
      */
@@ -45,7 +53,7 @@ public final class ResourceSkuRestrictionInfo {
 
     /**
      * Get the zones property: Gets list of availability zones where the SKU is restricted.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -54,7 +62,7 @@ public final class ResourceSkuRestrictionInfo {
 
     /**
      * Set the zones property: Gets list of availability zones where the SKU is restricted.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ResourceSkuRestrictionInfo object itself.
      */
@@ -65,7 +73,7 @@ public final class ResourceSkuRestrictionInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

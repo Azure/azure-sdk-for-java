@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Certificate resource payload. */
+/**
+ * Certificate resource payload.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,8 +22,7 @@ import java.util.List;
 @JsonTypeName("CertificateProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "KeyVaultCertificate", value = KeyVaultCertificateProperties.class),
-    @JsonSubTypes.Type(name = "ContentCertificate", value = ContentCertificateProperties.class)
-})
+    @JsonSubTypes.Type(name = "ContentCertificate", value = ContentCertificateProperties.class) })
 @Immutable
 public class CertificateProperties {
     /*
@@ -73,8 +74,14 @@ public class CertificateProperties {
     private CertificateResourceProvisioningState provisioningState;
 
     /**
+     * Creates an instance of CertificateProperties class.
+     */
+    public CertificateProperties() {
+    }
+
+    /**
      * Get the thumbprint property: The thumbprint of certificate.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -83,7 +90,7 @@ public class CertificateProperties {
 
     /**
      * Get the issuer property: The issuer of certificate.
-     *
+     * 
      * @return the issuer value.
      */
     public String issuer() {
@@ -92,7 +99,7 @@ public class CertificateProperties {
 
     /**
      * Get the issuedDate property: The issue date of certificate.
-     *
+     * 
      * @return the issuedDate value.
      */
     public String issuedDate() {
@@ -101,7 +108,7 @@ public class CertificateProperties {
 
     /**
      * Get the expirationDate property: The expiration date of certificate.
-     *
+     * 
      * @return the expirationDate value.
      */
     public String expirationDate() {
@@ -110,7 +117,7 @@ public class CertificateProperties {
 
     /**
      * Get the activateDate property: The activate date of certificate.
-     *
+     * 
      * @return the activateDate value.
      */
     public String activateDate() {
@@ -119,7 +126,7 @@ public class CertificateProperties {
 
     /**
      * Get the subjectName property: The subject name of certificate.
-     *
+     * 
      * @return the subjectName value.
      */
     public String subjectName() {
@@ -128,7 +135,7 @@ public class CertificateProperties {
 
     /**
      * Get the dnsNames property: The domain list of certificate.
-     *
+     * 
      * @return the dnsNames value.
      */
     public List<String> dnsNames() {
@@ -137,7 +144,7 @@ public class CertificateProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the Certificate.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CertificateResourceProvisioningState provisioningState() {
@@ -146,7 +153,7 @@ public class CertificateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

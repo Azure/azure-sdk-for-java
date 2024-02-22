@@ -24,7 +24,7 @@ public final class KubernetesSupportPlan extends ExpandableStringEnum<Kubernetes
 
     /**
      * Creates a new instance of KubernetesSupportPlan value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +33,7 @@ public final class KubernetesSupportPlan extends ExpandableStringEnum<Kubernetes
 
     /**
      * Creates or finds a KubernetesSupportPlan from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KubernetesSupportPlan.
      */
@@ -44,7 +44,7 @@ public final class KubernetesSupportPlan extends ExpandableStringEnum<Kubernetes
 
     /**
      * Gets known KubernetesSupportPlan values.
-     *
+     * 
      * @return known KubernetesSupportPlan values.
      */
     public static Collection<KubernetesSupportPlan> values() {

@@ -26,7 +26,7 @@ public final class ResourceReference {
 
     /**
      * Get the id property: The fully qualified Azure resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -35,7 +35,7 @@ public final class ResourceReference {
 
     /**
      * Set the id property: The fully qualified Azure resource id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ResourceReference object itself.
      */
@@ -46,7 +46,7 @@ public final class ResourceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

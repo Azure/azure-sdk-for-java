@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Credential of the image registry. */
+/**
+ * Credential of the image registry.
+ */
 @Fluent
 public final class ImageRegistryCredential {
     /*
@@ -23,8 +25,14 @@ public final class ImageRegistryCredential {
     private String password;
 
     /**
+     * Creates an instance of ImageRegistryCredential class.
+     */
+    public ImageRegistryCredential() {
+    }
+
+    /**
      * Get the username property: The username of the image registry credential.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -33,7 +41,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Set the username property: The username of the image registry credential.
-     *
+     * 
      * @param username the username value to set.
      * @return the ImageRegistryCredential object itself.
      */
@@ -44,7 +52,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Get the password property: The password of the image registry credential.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -53,7 +61,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Set the password property: The password of the image registry credential.
-     *
+     * 
      * @param password the password value to set.
      * @return the ImageRegistryCredential object itself.
      */
@@ -64,7 +72,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

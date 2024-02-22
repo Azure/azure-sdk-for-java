@@ -212,12 +212,13 @@ public class ClientTelemetry {
         return this.clientMetricsEnabled;
     }
 
-    public void init() {
-        loadAzureVmMetaData();
-
-        if (this.isClientTelemetryEnabled()) {
-            sendClientTelemetry().subscribe();
-        }
+    public Mono<?> init() {
+        return loadAzureVmMetaData()
+            .doOnTerminate(() -> {
+                if (this.isClientTelemetryEnabled()) {
+                    sendClientTelemetry().subscribe();
+                }
+            });
     }
 
     public void close() {
@@ -355,12 +356,12 @@ public class ClientTelemetry {
             "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
     }
 
-    private void loadAzureVmMetaData() {
+    private Mono<?> loadAzureVmMetaData() {
         AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
 
         if (metadataSnapshot != null) {
             this.populateAzureVmMetaData(metadataSnapshot);
-            return;
+            return Mono.empty();
         }
 
         URI targetEndpoint = null;
@@ -368,7 +369,7 @@ public class ClientTelemetry {
             targetEndpoint = new URI(IMDSConfig.AZURE_VM_METADATA);
         } catch (URISyntaxException ex) {
             logger.info("Unable to parse azure vm metadata url");
-            return;
+            return Mono.empty();
         }
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Metadata", "true");
@@ -376,7 +377,7 @@ public class ClientTelemetry {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(),
             httpHeaders);
         Mono<HttpResponse> httpResponseMono = this.metadataHttpClient.send(httpRequest);
-        httpResponseMono
+        Mono<?> mono = httpResponseMono
             .flatMap(response -> response.bodyAsString()).map(metadataJson -> parse(metadataJson,
                 AzureVMMetadata.class)).doOnSuccess(metadata -> {
                 azureVmMetaDataSingleton.compareAndSet(null, metadata);
@@ -385,7 +386,9 @@ public class ClientTelemetry {
                 logger.info("Client is not on azure vm");
                 logger.debug("Unable to get azure vm metadata", throwable);
                 return Mono.empty();
-            }).subscribe();
+            });
+
+        return mono;
     }
 
     private static <T> T parse(String itemResponseBodyAsString, Class<T> itemClassType) {

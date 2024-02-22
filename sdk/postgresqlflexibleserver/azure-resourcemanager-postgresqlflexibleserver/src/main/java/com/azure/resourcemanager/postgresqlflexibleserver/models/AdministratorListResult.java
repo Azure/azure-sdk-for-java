@@ -9,7 +9,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ActiveDi
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of active directory administrators. */
+/**
+ * A list of active directory administrators.
+ */
 @Fluent
 public final class AdministratorListResult {
     /*
@@ -24,13 +26,15 @@ public final class AdministratorListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AdministratorListResult class. */
+    /**
+     * Creates an instance of AdministratorListResult class.
+     */
     public AdministratorListResult() {
     }
 
     /**
      * Get the value property: The list of active directory administrators.
-     *
+     * 
      * @return the value value.
      */
     public List<ActiveDirectoryAdministratorInner> value() {
@@ -39,7 +43,7 @@ public final class AdministratorListResult {
 
     /**
      * Set the value property: The list of active directory administrators.
-     *
+     * 
      * @param value the value value to set.
      * @return the AdministratorListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class AdministratorListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of active directory.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class AdministratorListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of active directory.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AdministratorListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class AdministratorListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

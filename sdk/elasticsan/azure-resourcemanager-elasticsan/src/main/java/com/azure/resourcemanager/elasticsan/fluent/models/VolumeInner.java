@@ -14,7 +14,9 @@ import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response for Volume request. */
+/**
+ * Response for Volume request.
+ */
 @Fluent
 public final class VolumeInner extends ProxyResource {
     /*
@@ -29,13 +31,15 @@ public final class VolumeInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of VolumeInner class. */
+    /**
+     * Creates an instance of VolumeInner class.
+     */
     public VolumeInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of Volume.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VolumeProperties innerProperties() {
@@ -44,7 +48,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -53,7 +57,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Get the volumeId property: Unique Id of the volume in GUID format.
-     *
+     * 
      * @return the volumeId value.
      */
     public String volumeId() {
@@ -62,7 +66,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Get the creationData property: State of the operation on the resource.
-     *
+     * 
      * @return the creationData value.
      */
     public SourceCreationData creationData() {
@@ -71,7 +75,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Set the creationData property: State of the operation on the resource.
-     *
+     * 
      * @param creationData the creationData value to set.
      * @return the VolumeInner object itself.
      */
@@ -85,7 +89,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Get the sizeGiB property: Volume size.
-     *
+     * 
      * @return the sizeGiB value.
      */
     public long sizeGiB() {
@@ -94,7 +98,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Set the sizeGiB property: Volume size.
-     *
+     * 
      * @param sizeGiB the sizeGiB value to set.
      * @return the VolumeInner object itself.
      */
@@ -108,7 +112,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Get the storageTarget property: Storage target information.
-     *
+     * 
      * @return the storageTarget value.
      */
     public IscsiTargetInfo storageTarget() {
@@ -117,7 +121,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Get the managedBy property: Parent resource information.
-     *
+     * 
      * @return the managedBy value.
      */
     public ManagedByInfo managedBy() {
@@ -126,7 +130,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Set the managedBy property: Parent resource information.
-     *
+     * 
      * @param managedBy the managedBy value to set.
      * @return the VolumeInner object itself.
      */
@@ -140,7 +144,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -149,14 +153,13 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model VolumeInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model VolumeInner"));
         } else {
             innerProperties().validate();
         }

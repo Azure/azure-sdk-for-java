@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Microsoft Fabric LakeHouse Files write settings.
@@ -45,6 +46,15 @@ public final class LakeHouseWriteSettings extends StoreWriteSettings {
     @Override
     public LakeHouseWriteSettings withCopyBehavior(Object copyBehavior) {
         super.withCopyBehavior(copyBehavior);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LakeHouseWriteSettings withMetadata(List<MetadataItem> metadata) {
+        super.withMetadata(metadata);
         return this;
     }
 

@@ -179,8 +179,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             return;
         }
 
-        final int attemptsMade = retryAttempts.incrementAndGet();
-        final int tryCount = attemptsMade - 1;
+        final int attemptsMade = retryAttempts.getAndIncrement();
         final int attempts;
         final Duration retryInterval;
 
@@ -219,18 +218,18 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             }
 
             logger.atInfo()
-                .addKeyValue(TRY_COUNT_KEY, tryCount)
+                .addKeyValue(TRY_COUNT_KEY, attemptsMade)
                 .addKeyValue(INTERVAL_KEY, retryInterval.toMillis())
                 .log("Transient error occurred. Retrying.", throwable);
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
                 if (isDisposed()) {
                     logger.atInfo()
-                        .addKeyValue(TRY_COUNT_KEY, tryCount)
+                        .addKeyValue(TRY_COUNT_KEY, attemptsMade)
                         .log("Not requesting from upstream. Processor is disposed.");
                 } else {
                     logger.atInfo()
-                        .addKeyValue(TRY_COUNT_KEY, tryCount)
+                        .addKeyValue(TRY_COUNT_KEY, attemptsMade)
                         .log("Requesting from upstream.");
 
                     requestUpstream();
@@ -239,7 +238,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             });
         } else {
             logger.atWarning()
-                .addKeyValue(TRY_COUNT_KEY, tryCount)
+                .addKeyValue(TRY_COUNT_KEY, attemptsMade)
                 .log("Retry attempts exhausted or exception was not retriable.", throwable);
 
             lastError = throwable;

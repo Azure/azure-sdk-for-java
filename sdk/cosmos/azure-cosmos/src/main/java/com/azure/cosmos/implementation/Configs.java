@@ -6,7 +6,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.SslContextOption;
 import io.netty.handler.ssl.SslProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +54,10 @@ public class Configs {
     public static final int DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE = 1000;
     public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE = "COSMOS.DEFAULT_HTTP_CONNECTION_POOL_SIZE";
     public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_DEFAULT_HTTP_CONNECTION_POOL_SIZE";
+
+    public static final boolean DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT = false;
+    public static final String DEFAULT_E2E_FOR_NON_POINT_DISABLED = "COSMOS.E2E_FOR_NON_POINT_DISABLED";
+    public static final String DEFAULT_E2E_FOR_NON_POINT_DISABLED_VARIABLE = "COSMOS_E2E_FOR_NON_POINT_DISABLED";
 
     public static final int DEFAULT_HTTP_MAX_REQUEST_TIMEOUT = 60;
     public static final String HTTP_MAX_REQUEST_TIMEOUT = "COSMOS.HTTP_MAX_REQUEST_TIMEOUT";
@@ -313,6 +316,20 @@ public class Configs {
         }
 
         return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
+    }
+
+    public static boolean isDefaultE2ETimeoutDisabledForNonPointOperations() {
+        String valueFromSystemProperty = System.getProperty(DEFAULT_E2E_FOR_NON_POINT_DISABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.valueOf(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(DEFAULT_E2E_FOR_NON_POINT_DISABLED_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Boolean.valueOf(valueFromEnvVariable);
+        }
+
+        return DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT;
     }
 
     public static int getMaxHttpRequestTimeout() {

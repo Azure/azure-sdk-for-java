@@ -57,7 +57,7 @@ public final class ManagedClusterPodIdentity {
 
     /**
      * Get the name property: The name of the pod identity.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -66,7 +66,7 @@ public final class ManagedClusterPodIdentity {
 
     /**
      * Set the name property: The name of the pod identity.
-     *
+     * 
      * @param name the name value to set.
      * @return the ManagedClusterPodIdentity object itself.
      */
@@ -77,7 +77,7 @@ public final class ManagedClusterPodIdentity {
 
     /**
      * Get the namespace property: The namespace of the pod identity.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -86,7 +86,7 @@ public final class ManagedClusterPodIdentity {
 
     /**
      * Set the namespace property: The namespace of the pod identity.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the ManagedClusterPodIdentity object itself.
      */
@@ -97,7 +97,7 @@ public final class ManagedClusterPodIdentity {
 
     /**
      * Get the bindingSelector property: The binding selector to use for the AzureIdentityBinding resource.
-     *
+     * 
      * @return the bindingSelector value.
      */
     public String bindingSelector() {
@@ -106,7 +106,7 @@ public final class ManagedClusterPodIdentity {
 
     /**
      * Set the bindingSelector property: The binding selector to use for the AzureIdentityBinding resource.
-     *
+     * 
      * @param bindingSelector the bindingSelector value to set.
      * @return the ManagedClusterPodIdentity object itself.
      */
@@ -117,7 +117,7 @@ public final class ManagedClusterPodIdentity {
 
     /**
      * Get the identity property: The user assigned identity details.
-     *
+     * 
      * @return the identity value.
      */
     public UserAssignedIdentity identity() {
@@ -126,7 +126,7 @@ public final class ManagedClusterPodIdentity {
 
     /**
      * Set the identity property: The user assigned identity details.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ManagedClusterPodIdentity object itself.
      */
@@ -137,7 +137,7 @@ public final class ManagedClusterPodIdentity {
 
     /**
      * Get the provisioningState property: The current provisioning state of the pod identity.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ManagedClusterPodIdentityProvisioningState provisioningState() {
@@ -146,7 +146,7 @@ public final class ManagedClusterPodIdentity {
 
     /**
      * Get the provisioningInfo property: The provisioningInfo property.
-     *
+     * 
      * @return the provisioningInfo value.
      */
     public ManagedClusterPodIdentityProvisioningInfo provisioningInfo() {
@@ -155,7 +155,7 @@ public final class ManagedClusterPodIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

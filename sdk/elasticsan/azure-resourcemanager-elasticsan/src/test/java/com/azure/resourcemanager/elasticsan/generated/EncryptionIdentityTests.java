@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class EncryptionIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EncryptionIdentity model =
-            BinaryData.fromString("{\"userAssignedIdentity\":\"zoqftiyqzrnkcqvy\"}").toObject(EncryptionIdentity.class);
+        EncryptionIdentity model = BinaryData.fromString("{\"userAssignedIdentity\":\"zoqftiyqzrnkcqvy\"}")
+            .toObject(EncryptionIdentity.class);
         Assertions.assertEquals("zoqftiyqzrnkcqvy", model.encryptionUserAssignedIdentity());
     }
 

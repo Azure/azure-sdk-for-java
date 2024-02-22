@@ -43,6 +43,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -471,8 +473,9 @@ class ReactorConnectionTest {
     /**
      * Verifies that if the connection cannot be created within the timeout period, it errors.
      */
-    @Test
-    void createCBSNodeTimeoutException() throws IOException {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    void createCBSNodeTimeoutException(boolean isV2) throws IOException {
         when(reactor.process()).then(invocation -> {
             TimeUnit.SECONDS.sleep(10);
             return true;
@@ -513,7 +516,7 @@ class ReactorConnectionTest {
         // Act and Assert
         final ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, connectionOptions,
             reactorProvider, handlerProvider, linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.FIRST, true);
+            ReceiverSettleMode.FIRST, isV2);
 
         StepVerifier.create(connectionBad.getClaimsBasedSecurityNode())
             .expectErrorSatisfies(error -> {
@@ -529,6 +532,15 @@ class ReactorConnectionTest {
                 assertEquals(FULLY_QUALIFIED_NAMESPACE, amqpException.getContext().getNamespace());
             })
             .verify(VERIFY_TIMEOUT);
+
+        if (!isV2) {
+            StepVerifier.create(handler.getEndpointStates().collectList())
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof AmqpException);
+                    assertTrue(((AmqpException) error).isTransient());
+                })
+                .verify(VERIFY_TIMEOUT);
+        }
     }
 
     /**

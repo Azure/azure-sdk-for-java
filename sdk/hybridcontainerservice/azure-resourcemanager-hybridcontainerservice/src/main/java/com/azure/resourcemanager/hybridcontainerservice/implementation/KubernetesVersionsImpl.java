@@ -27,13 +27,13 @@ public final class KubernetesVersionsImpl implements KubernetesVersions {
 
     public PagedIterable<KubernetesVersionProfile> list(String customLocationResourceUri) {
         PagedIterable<KubernetesVersionProfileInner> inner = this.serviceClient().list(customLocationResourceUri);
-        return Utils.mapPage(inner, inner1 -> new KubernetesVersionProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new KubernetesVersionProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<KubernetesVersionProfile> list(String customLocationResourceUri, Context context) {
         PagedIterable<KubernetesVersionProfileInner> inner
             = this.serviceClient().list(customLocationResourceUri, context);
-        return Utils.mapPage(inner, inner1 -> new KubernetesVersionProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new KubernetesVersionProfileImpl(inner1, this.manager()));
     }
 
     private KubernetesVersionsClient serviceClient() {

@@ -13,15 +13,19 @@ import java.util.Collection;
  * "Disabled" stands for fast provisioning is not supported.
  */
 public final class FastProvisioningSupportedEnum extends ExpandableStringEnum<FastProvisioningSupportedEnum> {
-    /** Static value Enabled for FastProvisioningSupportedEnum. */
+    /**
+     * Static value Enabled for FastProvisioningSupportedEnum.
+     */
     public static final FastProvisioningSupportedEnum ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for FastProvisioningSupportedEnum. */
+    /**
+     * Static value Disabled for FastProvisioningSupportedEnum.
+     */
     public static final FastProvisioningSupportedEnum DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of FastProvisioningSupportedEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class FastProvisioningSupportedEnum extends ExpandableStringEnum<Fa
 
     /**
      * Creates or finds a FastProvisioningSupportedEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FastProvisioningSupportedEnum.
      */
@@ -41,7 +45,7 @@ public final class FastProvisioningSupportedEnum extends ExpandableStringEnum<Fa
 
     /**
      * Gets known FastProvisioningSupportedEnum values.
-     *
+     * 
      * @return known FastProvisioningSupportedEnum values.
      */
     public static Collection<FastProvisioningSupportedEnum> values() {

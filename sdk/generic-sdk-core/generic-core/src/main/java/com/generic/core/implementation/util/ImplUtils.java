@@ -3,10 +3,10 @@
 
 package com.generic.core.implementation.util;
 
+import com.generic.core.http.models.RetryOptions;
 import com.generic.core.http.policy.RetryPolicy;
-import com.generic.core.implementation.http.policy.ExponentialBackoff;
+import com.generic.core.implementation.http.policy.ExponentialBackoffDelay;
 import com.generic.core.implementation.http.policy.FixedDelay;
-import com.generic.core.implementation.http.policy.RetryStrategy;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
@@ -376,21 +376,30 @@ public final class ImplUtils {
     }
 
     /**
-     * Converts the {@link RetryPolicy.RetryOptions} into a {@link RetryStrategy} so it can be more easily consumed.
+     * Converts the {@link RetryOptions} into a {@link RetryPolicy.RetryStrategy} so it can be more easily consumed.
      *
      * @param retryOptions The retry options.
      * @return The retry strategy based on the retry options.
+     * @throws NullPointerException If {@code retryOptions} is null.
+     * @throws IllegalArgumentException If {@code retryOptions} doesn't define any retry strategy options.
      */
-    public static RetryStrategy getRetryStrategyFromOptions(RetryPolicy.RetryOptions retryOptions) {
+    public static RetryPolicy.RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
 
-        if (retryOptions.getExponentialBackoffOptions() != null) {
-            return new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
-        } else if (retryOptions.getFixedDelayOptions() != null) {
-            return new FixedDelay(retryOptions.getFixedDelayOptions());
+        if (retryOptions.getBaseDelay() != null && retryOptions.getMaxDelay() != null) {
+            if (retryOptions.getShouldRetryCondition() != null) {
+                return new ExponentialBackoffDelay(retryOptions.getBaseDelay(), retryOptions.getMaxDelay(),
+                    retryOptions.getShouldRetryCondition());
+            }
+            return new ExponentialBackoffDelay(retryOptions.getBaseDelay(), retryOptions.getMaxDelay());
+        } else if (retryOptions.getFixedDelay() != null) {
+            if (retryOptions.getShouldRetryCondition() != null) {
+                return new FixedDelay(retryOptions.getFixedDelay(), retryOptions.getShouldRetryCondition());
+            }
+            return new FixedDelay(retryOptions.getFixedDelay());
         } else {
             // This should never happen.
-            throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
+            throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy");
         }
     }
 

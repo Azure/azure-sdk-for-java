@@ -8,8 +8,7 @@ import com.generic.core.util.ClientLogger;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Objects;
 
 /**
  * This class represents a generic Java type, retaining information about generics.
@@ -35,11 +34,9 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @param <T> The type being represented.
  */
-public abstract class TypeReference<T> {
+public class TypeReference<T> {
     private static final ClientLogger LOGGER = new ClientLogger(TypeReference.class);
     private static final String MISSING_TYPE = "Type constructed without type information.";
-
-    private static final Map<Class<?>, TypeReference<?>> CACHE = new ConcurrentHashMap<>();
 
     private final Type javaType;
     private final Class<T> clazz;
@@ -77,6 +74,16 @@ public abstract class TypeReference<T> {
     }
 
     /**
+     * Returns the {@link Class} representing instance of the {@link TypeReference} created.
+     *
+     * @return The {@link Class} representing instance of the {@link TypeReference} created using the
+     * {@link TypeReference#createInstance(Class)}, otherwise returns {@code null}.
+     */
+    public Class<T> getJavaClass() {
+        return this.clazz;
+    }
+
+    /**
      * Creates and instance of {@link TypeReference} which maintains the generic {@code T} of the passed {@link Class}.
      * <p>
      * This method will cache the instance of {@link TypeReference} using the passed {@link Class} as the key. This is
@@ -87,24 +94,30 @@ public abstract class TypeReference<T> {
      * @param <T> The generic type.
      *
      * @return Either the cached or new instance of {@link TypeReference}.
+     * @throws NullPointerException If {@code clazz} is {@code null}.
      */
-    @SuppressWarnings("unchecked")
     public static <T> TypeReference<T> createInstance(Class<T> clazz) {
-        /*
-         * When computing the TypeReference if the key is absent ignore the parameter from the compute function. The
-         * compute function wildcards to T type which causes the type system to breakdown.
-         */
-        return (TypeReference<T>) CACHE.computeIfAbsent(clazz, c -> new TypeReference<T>(clazz) {
-        });
+        Objects.requireNonNull(clazz, "'clazz' cannot be null.");
+
+        return new TypeReference<>(clazz);
     }
 
-    /**
-     * Returns the {@link Class} representing instance of the {@link TypeReference} created.
-     *
-     * @return The {@link Class} representing instance of the {@link TypeReference} created using the
-     * {@link TypeReference#createInstance(Class)}, otherwise returns {@code null}.
-     */
-    public Class<T> getJavaClass() {
-        return this.clazz;
+    @Override
+    public int hashCode() {
+        return Objects.hash(clazz, javaType);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof TypeReference)) {
+            return false;
+        }
+
+        TypeReference<?> other = (TypeReference<?>) obj;
+        return Objects.equals(clazz, other.clazz) && Objects.equals(javaType, other.javaType);
     }
 }

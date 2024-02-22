@@ -3,7 +3,10 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpResponse;
+
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * The configuration for retries.
@@ -11,6 +14,8 @@ import java.util.Objects;
 public class RetryOptions {
     private final ExponentialBackoffOptions exponentialBackoffOptions;
     private final FixedDelayOptions fixedDelayOptions;
+
+    private Predicate<RequestRetryCondition> shouldRetryCondition;
 
     /**
      * Creates a new instance that uses {@link ExponentialBackoffOptions}.
@@ -50,5 +55,32 @@ public class RetryOptions {
      */
     public FixedDelayOptions getFixedDelayOptions() {
         return fixedDelayOptions;
+    }
+
+    /**
+     * Gets the predicate that determines if a retry should be attempted.
+     * <p>
+     * If null, the default behavior is to retry HTTP responses with status codes 408, 429, and any 500 status code that
+     * isn't 501 or 505. And to retry any {@link Exception}.
+     *
+     * @return The predicate that determines if a retry should be attempted.
+     */
+    public Predicate<RequestRetryCondition> getShouldRetryCondition() {
+        return shouldRetryCondition;
+    }
+
+    /**
+     * Sets the predicate that determines if a retry should be attempted.
+     * <p>
+     * If null, the default behavior is to retry HTTP responses with status codes 408, 429, and any 500 status code that
+     * isn't 501 or 505. And to retry any {@link Exception}.
+     *
+     * @param shouldRetryCondition The predicate that determines if a retry should be attempted for the given
+     * {@link HttpResponse}.
+     * @return The updated {@link RetryOptions} object.
+     */
+    public RetryOptions setShouldRetryCondition(Predicate<RequestRetryCondition> shouldRetryCondition) {
+        this.shouldRetryCondition = shouldRetryCondition;
+        return this;
     }
 }

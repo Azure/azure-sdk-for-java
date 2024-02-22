@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.implementation.util.HttpHeadersAccessHelper;
 import com.azure.core.util.CoreUtils;
 
 import java.util.Collections;
@@ -20,6 +21,10 @@ import java.util.stream.Stream;
 public class HttpHeaders implements Iterable<HttpHeader> {
     // This map is a case-insensitive key (i.e. lower-cased), but the returned HttpHeader key will be as-provided to us
     private final Map<String, HttpHeader> headers;
+
+    static {
+        HttpHeadersAccessHelper.setAccessor(headers -> headers.headers);
+    }
 
     /**
      * Create an empty HttpHeaders instance.

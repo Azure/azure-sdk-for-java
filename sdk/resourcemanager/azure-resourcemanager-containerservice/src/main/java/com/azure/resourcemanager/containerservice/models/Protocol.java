@@ -24,7 +24,7 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
 
     /**
      * Creates a new instance of Protocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +33,7 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
 
     /**
      * Creates or finds a Protocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Protocol.
      */
@@ -44,7 +44,7 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
 
     /**
      * Gets known Protocol values.
-     *
+     * 
      * @return known Protocol values.
      */
     public static Collection<Protocol> values() {

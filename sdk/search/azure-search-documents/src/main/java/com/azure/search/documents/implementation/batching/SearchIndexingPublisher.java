@@ -135,7 +135,6 @@ public final class SearchIndexingPublisher<T> {
             try {
                 processingSemaphore.acquire();
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
 
@@ -161,7 +160,7 @@ public final class SearchIndexingPublisher<T> {
             Future<?> future = EXECUTOR.submit(() -> flushLoopHelper(isClosed, context, batchActions));
 
             try {
-                future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
+                CoreUtils.getResultWithTimeout(future, timeout);
             } catch (ExecutionException e) {
                 Throwable realCause = e.getCause();
                 if (realCause instanceof Error) {
@@ -171,11 +170,10 @@ public final class SearchIndexingPublisher<T> {
                 } else {
                     throw LOGGER.logExceptionAsError(new RuntimeException(realCause));
                 }
-            } catch (InterruptedException | TimeoutException e) {
-                if (e instanceof TimeoutException) {
-                    future.cancel(true);
-                    documentManager.reinsertCancelledActions(batchActions.get());
-                }
+            } catch (InterruptedException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            } catch (TimeoutException e) {
+                documentManager.reinsertCancelledActions(batchActions.get());
 
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
@@ -365,7 +363,6 @@ public final class SearchIndexingPublisher<T> {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException ignored) {
-            Thread.currentThread().interrupt();
         }
     }
 

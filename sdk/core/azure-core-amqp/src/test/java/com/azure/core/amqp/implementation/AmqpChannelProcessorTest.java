@@ -4,73 +4,45 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
-import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link AmqpChannelProcessor}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 class AmqpChannelProcessorTest {
     private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(30);
     private final TestObject connection1 = new TestObject();
     private final TestObject connection2 = new TestObject();
     private final TestObject connection3 = new TestObject();
-
-    @Mock
-    private AmqpRetryPolicy retryPolicy;
-    private AmqpChannelProcessor<TestObject> channelProcessor;
-    private AutoCloseable mocksCloseable;
-
-    private VirtualTimeScheduler virtualTimeScheduler;
-
-    @BeforeEach
-    void setup() {
-        mocksCloseable = MockitoAnnotations.openMocks(this);
-        virtualTimeScheduler = VirtualTimeScheduler.create();
-        channelProcessor = new AmqpChannelProcessor<>("namespace-test", TestObject::getStates, retryPolicy, new HashMap<>());
-    }
-
-    @AfterEach
-    void teardown() throws Exception {
-        // Tear down any inline mocks to avoid memory leaks.
-        // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
-        Mockito.framework().clearInlineMock(this);
-        virtualTimeScheduler.dispose();
-        if (mocksCloseable != null) {
-            mocksCloseable.close();
-        }
-    }
 
     /**
      * Verifies that we can get a new connection. This new connection is only emitted when the endpoint state is
@@ -80,7 +52,8 @@ class AmqpChannelProcessorTest {
     void createsNewConnection() {
         // Arrange
         final TestPublisher<TestObject> publisher = TestPublisher.createCold();
-        final AmqpChannelProcessor<TestObject> processor = publisher.flux().subscribeWith(channelProcessor);
+        final AmqpChannelProcessor<TestObject> processor = publisher.flux()
+            .subscribeWith(createChannelProcessor());
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -100,8 +73,8 @@ class AmqpChannelProcessorTest {
     void sameConnectionReturned() {
         // Arrange
         final TestPublisher<TestObject> publisher = TestPublisher.createCold();
-        final AmqpChannelProcessor<TestObject> processor = publisher.next(connection1)
-            .flux().subscribeWith(channelProcessor);
+        final AmqpChannelProcessor<TestObject> processor = publisher.next(connection1).flux()
+            .subscribeWith(createChannelProcessor());
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -123,8 +96,8 @@ class AmqpChannelProcessorTest {
     void newConnectionOnClose() {
         // Arrange
         final TestPublisher<TestObject> publisher = TestPublisher.createCold();
-        final AmqpChannelProcessor<TestObject> processor = publisher.next(connection1)
-            .flux().subscribeWith(channelProcessor);
+        final AmqpChannelProcessor<TestObject> processor = publisher.next(connection1).flux()
+            .subscribeWith(createChannelProcessor());
 
         // Act & Assert
         // Verify that we get the first connection.
@@ -181,17 +154,40 @@ class AmqpChannelProcessorTest {
      */
     @MethodSource
     @ParameterizedTest
-    @Disabled("Disable test until fixed. https://github.com/Azure/azure-sdk-for-java/issues/29239")
     void newConnectionOnRetriableError(Throwable exception) {
         // Arrange
         final TestPublisher<TestObject> publisher = TestPublisher.createCold();
         publisher.next(connection1);
         publisher.next(connection2);
-        final AmqpChannelProcessor<TestObject> processor = publisher.flux().subscribeWith(channelProcessor);
-        final long request = 1;
 
-        when(retryPolicy.calculateRetryDelay(exception, 1)).thenReturn(Duration.ofSeconds(1));
-        when(retryPolicy.getMaxRetries()).thenReturn(3);
+        AmqpRetryPolicy retryPolicy = new AmqpRetryPolicy(new AmqpRetryOptions()) {
+            @Override
+            protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
+                ThreadLocalRandom random) {
+                return null;
+            }
+
+            @Override
+            public Duration calculateRetryDelay(Throwable lastException, int retryCount) {
+                // Check if either the lastException or the cause for the lastException is the same instance as the
+                // exception. Both the lastException and its cause needs to be checked as RejectedExecutionException and
+                // IllegalStateException are wrapped in an AmqpException.
+                // If the retryCount is 0, then we return a delay of 1ms.
+                // Otherwise, an exception is thrown to include a stack trace and to clearly indicate we reached a state
+                // that wasn't expected. Previously, this was returning a delay longer than StepVerifer's timeout which
+                // failed the test but didn't provide a clear indication of why it failed (specifically why or what
+                // caused an additional retry).
+                if ((lastException == exception || lastException.getCause() == exception) && retryCount == 0) {
+                    return Duration.ofMillis(1);
+                } else {
+                    throw new RuntimeException("Unexpected call to calculateRetryDelay", lastException);
+                }
+            }
+        };
+
+        final AmqpChannelProcessor<TestObject> processor = publisher.flux()
+            .subscribeWith(createChannelProcessor(retryPolicy));
+        final long request = 1;
 
         // Act & Assert
         // Verify that we get the first connection.
@@ -234,13 +230,21 @@ class AmqpChannelProcessorTest {
     void nonRetriableError(Throwable exception) {
         // Arrange
         final TestPublisher<TestObject> publisher = TestPublisher.createCold();
-        final AmqpChannelProcessor<TestObject> processor = publisher.next(connection1).flux()
-            .subscribeWith(channelProcessor);
+        AmqpRetryPolicy retryPolicy = new AmqpRetryPolicy(new AmqpRetryOptions()) {
+            @Override
+            protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
+                ThreadLocalRandom random) {
+                return null;
+            }
 
-        /*
-         * Beginning in Mockito 3.4.0+ the default value for duration changed from null to Duration.ZERO
-         */
-        when(retryPolicy.calculateRetryDelay(any(), anyInt())).thenReturn(null);
+            @Override
+            public Duration calculateRetryDelay(Throwable lastException, int retryCount) {
+                return null;
+            }
+        };
+
+        final AmqpChannelProcessor<TestObject> processor = publisher.next(connection1).flux()
+            .subscribeWith(createChannelProcessor(retryPolicy));
 
         // Act & Assert
         // Verify that we get the first connection.
@@ -269,13 +273,31 @@ class AmqpChannelProcessorTest {
     @Test
     void noSubscribers() {
         // Arrange
-        final Subscription subscription = mock(Subscription.class);
+        Map<Long, AtomicInteger> requests = new ConcurrentHashMap<>();
+        final Subscription subscription = new Subscription() {
+            @Override
+            public void request(long n) {
+                requests.compute(n, (key, value) -> {
+                    if (value == null) {
+                        return new AtomicInteger(1);
+                    } else {
+                        value.incrementAndGet();
+                        return value;
+                    }
+                });
+            }
+
+            @Override
+            public void cancel() {
+
+            }
+        };
 
         // Act
-        channelProcessor.onSubscribe(subscription);
+        createChannelProcessor().onSubscribe(subscription);
 
         // Assert
-        verify(subscription).request(eq(1L));
+        assertEquals(1, requests.get(1L).get());
     }
 
     /**
@@ -286,6 +308,7 @@ class AmqpChannelProcessorTest {
     void errorsWhenResubscribingOnTerminated() {
         // Arrange
         final TestPublisher<TestObject> publisher = TestPublisher.createCold();
+        final AmqpChannelProcessor<TestObject> channelProcessor = createChannelProcessor();
         final AmqpChannelProcessor<TestObject> processor = publisher.next(connection1).flux()
             .subscribeWith(channelProcessor);
 
@@ -308,10 +331,21 @@ class AmqpChannelProcessorTest {
     }
 
     @Test
-    void requiresNonNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> channelProcessor.onNext(null));
+    void requiresNonNullNext() {
+        Assertions.assertThrows(NullPointerException.class, () -> createChannelProcessor().onNext(null));
+    }
 
-        Assertions.assertThrows(NullPointerException.class, () -> channelProcessor.onError(null));
+    @Test
+    void requiresNonNullError() {
+        Assertions.assertThrows(NullPointerException.class, () -> createChannelProcessor().onError(null));
+    }
+
+    private static AmqpChannelProcessor<TestObject> createChannelProcessor() {
+        return createChannelProcessor(new FixedAmqpRetryPolicy(new AmqpRetryOptions()));
+    }
+
+    private static AmqpChannelProcessor<TestObject> createChannelProcessor(AmqpRetryPolicy retryPolicy) {
+        return new AmqpChannelProcessor<>("namespace-test", TestObject::getStates, retryPolicy, new HashMap<>());
     }
 
     static final class TestObject {

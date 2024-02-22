@@ -17,8 +17,7 @@ public final class ActiveDirectoryAdministratorImpl
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    ActiveDirectoryAdministratorImpl(
-        ActiveDirectoryAdministratorInner innerObject,
+    ActiveDirectoryAdministratorImpl(ActiveDirectoryAdministratorInner innerObject,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -79,25 +78,19 @@ public final class ActiveDirectoryAdministratorImpl
     }
 
     public ActiveDirectoryAdministrator create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdministrators()
-                .create(resourceGroupName, serverName, objectId, createParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getAdministrators().create(resourceGroupName, serverName,
+            objectId, createParameters, Context.NONE);
         return this;
     }
 
     public ActiveDirectoryAdministrator create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdministrators()
-                .create(resourceGroupName, serverName, objectId, createParameters, context);
+        this.innerObject = serviceManager.serviceClient().getAdministrators().create(resourceGroupName, serverName,
+            objectId, createParameters, context);
         return this;
     }
 
-    ActiveDirectoryAdministratorImpl(
-        String name, com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+    ActiveDirectoryAdministratorImpl(String name,
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = new ActiveDirectoryAdministratorInner();
         this.serviceManager = serviceManager;
         this.objectId = name;
@@ -105,22 +98,14 @@ public final class ActiveDirectoryAdministratorImpl
     }
 
     public ActiveDirectoryAdministrator refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdministrators()
-                .getWithResponse(resourceGroupName, serverName, objectId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAdministrators()
+            .getWithResponse(resourceGroupName, serverName, objectId, Context.NONE).getValue();
         return this;
     }
 
     public ActiveDirectoryAdministrator refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdministrators()
-                .getWithResponse(resourceGroupName, serverName, objectId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAdministrators()
+            .getWithResponse(resourceGroupName, serverName, objectId, context).getValue();
         return this;
     }
 

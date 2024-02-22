@@ -616,7 +616,7 @@ public class IndexingTests extends SearchTestBase {
         SearchDocument actualBook1 = client.getDocument(isbn1, SearchDocument.class);
         assertEquals(utcTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actualBook1.get("PublishDate"));
 
-        // Azure Cognitive Search normalizes to UTC, so we compare instants
+        // Azure AI Search normalizes to UTC, so we compare instants
         SearchDocument actualBook2 = client.getDocument(isbn2, SearchDocument.class);
         assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC)
             .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actualBook2.get("PublishDate"));
@@ -648,7 +648,7 @@ public class IndexingTests extends SearchTestBase {
             (expected, actual) -> assertEquals(utcTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
                 actual.get("PublishDate")));
 
-        // Azure Cognitive Search normalizes to UTC, so we compare instants
+        // Azure AI Search normalizes to UTC, so we compare instants
         getAndValidateDocumentAsync(asyncClient, isbn2, SearchDocument.class, book2,
             (expected, actual) -> assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC)
                 .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actual.get("PublishDate")));
@@ -677,7 +677,7 @@ public class IndexingTests extends SearchTestBase {
         Book actualBook1 = client.getDocument(isbn1, Book.class);
         assertEquals(books.get(0).publishDate(), actualBook1.publishDate());
 
-        // Azure Cognitive Search normalizes to UTC, so we compare instants
+        // Azure AI Search normalizes to UTC, so we compare instants
         Book actualBook2 = client.getDocument(isbn2, Book.class);
         assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC),
             actualBook2.publishDate().withOffsetSameInstant(ZoneOffset.UTC));
@@ -706,7 +706,7 @@ public class IndexingTests extends SearchTestBase {
         getAndValidateDocumentAsync(asyncClient, isbn1, Book.class, null,
             (expected, actual) -> assertEquals(books.get(0).publishDate(), actual.publishDate()));
 
-        // Azure Cognitive Search normalizes to UTC, so we compare instants
+        // Azure AI Search normalizes to UTC, so we compare instants
         getAndValidateDocumentAsync(asyncClient, isbn2, Book.class, null,
             (expected, actual) -> assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC),
                 actual.publishDate().withOffsetSameInstant(ZoneOffset.UTC)));

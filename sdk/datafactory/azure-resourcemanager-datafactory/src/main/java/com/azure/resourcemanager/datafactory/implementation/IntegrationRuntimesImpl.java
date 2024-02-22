@@ -43,14 +43,16 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     public PagedIterable<IntegrationRuntimeResource> listByFactory(String resourceGroupName, String factoryName) {
         PagedIterable<IntegrationRuntimeResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName);
-        return Utils.mapPage(inner, inner1 -> new IntegrationRuntimeResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IntegrationRuntimeResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IntegrationRuntimeResource> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
         PagedIterable<IntegrationRuntimeResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
-        return Utils.mapPage(inner, inner1 -> new IntegrationRuntimeResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IntegrationRuntimeResourceImpl(inner1, this.manager()));
     }
 
     public Response<IntegrationRuntimeResource> getWithResponse(String resourceGroupName, String factoryName,
@@ -315,17 +317,17 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     }
 
     public IntegrationRuntimeResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String integrationRuntimeName = Utils.getValueFromIdByName(id, "integrationRuntimes");
+        String integrationRuntimeName = ResourceManagerUtils.getValueFromIdByName(id, "integrationRuntimes");
         if (integrationRuntimeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'integrationRuntimes'.", id)));
@@ -337,17 +339,17 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     }
 
     public Response<IntegrationRuntimeResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String integrationRuntimeName = Utils.getValueFromIdByName(id, "integrationRuntimes");
+        String integrationRuntimeName = ResourceManagerUtils.getValueFromIdByName(id, "integrationRuntimes");
         if (integrationRuntimeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'integrationRuntimes'.", id)));
@@ -356,17 +358,17 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String integrationRuntimeName = Utils.getValueFromIdByName(id, "integrationRuntimes");
+        String integrationRuntimeName = ResourceManagerUtils.getValueFromIdByName(id, "integrationRuntimes");
         if (integrationRuntimeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'integrationRuntimes'.", id)));
@@ -375,17 +377,17 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String integrationRuntimeName = Utils.getValueFromIdByName(id, "integrationRuntimes");
+        String integrationRuntimeName = ResourceManagerUtils.getValueFromIdByName(id, "integrationRuntimes");
         if (integrationRuntimeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'integrationRuntimes'.", id)));

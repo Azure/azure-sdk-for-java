@@ -3,56 +3,50 @@
 
 package com.generic.core.implementation.http.policy;
 
+import com.generic.core.http.policy.RequestRetryCondition;
 import com.generic.core.http.policy.RetryPolicy;
-import com.generic.core.util.ClientLogger;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
- * A fixed-delay implementation of {@link RetryStrategy} that has a fixed delay duration between each retry attempt.
+ * A fixed-delay implementation of {@link RetryPolicy.RetryStrategy} that has a fixed delay duration between each retry attempt.
  */
-public class FixedDelay implements RetryStrategy {
-    private static final ClientLogger LOGGER = new ClientLogger(FixedDelay.class);
-
-    private final int maxRetries;
+public class FixedDelay implements RetryPolicy.RetryStrategy {
     private final Duration delay;
+    private final Predicate<RequestRetryCondition> shouldRetryCondition;
 
     /**
      * Creates an instance of {@link FixedDelay}.
      *
-     * @param maxRetries The max number of retry attempts that can be made.
      * @param delay The fixed delay duration between retry attempts.
-     * @throws IllegalArgumentException If {@code maxRetries} is negative.
      * @throws NullPointerException If {@code delay} is {@code null}.
      */
-    public FixedDelay(int maxRetries, Duration delay) {
-        if (maxRetries < 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
-        }
-        this.maxRetries = maxRetries;
-        this.delay = Objects.requireNonNull(delay, "'delay' cannot be null.");
+    public FixedDelay(Duration delay) {
+        this(delay, null);
     }
 
     /**
      * Creates an instance of {@link FixedDelay}.
      *
-     * @param fixedDelayOptions The {@link RetryPolicy.FixedDelayOptions}.
+     * @param delay The fixed delay duration between retry attempts.
+     * @throws NullPointerException If {@code delay} is {@code null}.
      */
-    public FixedDelay(RetryPolicy.FixedDelayOptions fixedDelayOptions) {
-        this(
-            Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getMaxRetries(),
-            Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getDelay()
-        );
-    }
-
-    @Override
-    public int getMaxRetries() {
-        return maxRetries;
+    public FixedDelay(Duration delay, Predicate<RequestRetryCondition> shouldRetryCondition) {
+        this.delay = Objects.requireNonNull(delay, "'delay' cannot be null.");
+        this.shouldRetryCondition = shouldRetryCondition;
     }
 
     @Override
     public Duration calculateRetryDelay(int retryAttempts) {
         return delay;
+    }
+
+    @Override
+    public boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
+        return shouldRetryCondition == null
+            ? RetryPolicy.RetryStrategy.super.shouldRetryCondition(requestRetryCondition)
+            : shouldRetryCondition.test(requestRetryCondition);
     }
 }

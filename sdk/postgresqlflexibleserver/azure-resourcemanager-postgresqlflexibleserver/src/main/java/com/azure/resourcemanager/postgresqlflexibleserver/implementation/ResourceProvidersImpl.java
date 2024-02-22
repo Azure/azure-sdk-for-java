@@ -20,44 +20,30 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<MigrationNameAvailabilityResource> checkMigrationNameAvailabilityWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationNameAvailabilityResourceInner parameters,
+    public Response<MigrationNameAvailabilityResource> checkMigrationNameAvailabilityWithResponse(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, MigrationNameAvailabilityResourceInner parameters,
         Context context) {
-        Response<MigrationNameAvailabilityResourceInner> inner =
-            this
-                .serviceClient()
-                .checkMigrationNameAvailabilityWithResponse(
-                    subscriptionId, resourceGroupName, targetDbServerName, parameters, context);
+        Response<MigrationNameAvailabilityResourceInner> inner
+            = this.serviceClient().checkMigrationNameAvailabilityWithResponse(subscriptionId, resourceGroupName,
+                targetDbServerName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MigrationNameAvailabilityResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public MigrationNameAvailabilityResource checkMigrationNameAvailability(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationNameAvailabilityResourceInner parameters) {
-        MigrationNameAvailabilityResourceInner inner =
-            this
-                .serviceClient()
-                .checkMigrationNameAvailability(subscriptionId, resourceGroupName, targetDbServerName, parameters);
+    public MigrationNameAvailabilityResource checkMigrationNameAvailability(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, MigrationNameAvailabilityResourceInner parameters) {
+        MigrationNameAvailabilityResourceInner inner = this.serviceClient()
+            .checkMigrationNameAvailability(subscriptionId, resourceGroupName, targetDbServerName, parameters);
         if (inner != null) {
             return new MigrationNameAvailabilityResourceImpl(inner, this.manager());
         } else {

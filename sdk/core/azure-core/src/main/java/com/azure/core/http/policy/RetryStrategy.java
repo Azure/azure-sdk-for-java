@@ -59,4 +59,24 @@ public interface RetryStrategy {
     default boolean shouldRetryException(Throwable throwable) {
         return throwable instanceof Exception;
     }
+
+    /**
+     * This method is consulted to determine if a retry attempt should be made for the given
+     * {@link RequestRetryCondition}.
+     * <p>
+     * By default, if the {@link RequestRetryCondition} contains a non-null {@link HttpResponse}, then the
+     * {@link #shouldRetry(HttpResponse)} method is called, otherwise the {@link #shouldRetryException(Throwable)}
+     * method is called.
+     *
+     * @param requestRetryCondition The {@link RequestRetryCondition} containing information that can be used to
+     * determine if the request should be retried.
+     * @return Whether a retry should be attempted.
+     */
+    default boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
+        if (requestRetryCondition.getResponse() != null) {
+            return shouldRetry(requestRetryCondition.getResponse());
+        } else {
+            return shouldRetryException(requestRetryCondition.getThrowable());
+        }
+    }
 }

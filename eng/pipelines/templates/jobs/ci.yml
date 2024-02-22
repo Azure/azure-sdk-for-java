@@ -52,6 +52,12 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
+  - name: JavadocSafeJavaBuildVersion
+    type: string
+    default: $(JavadocSafeJavaBuildVersion)
+  - name: IgnoreVerifyTypeSpecCodeGenerationError
+    type: boolean
+    default: false
 
 jobs:
   - job: 'Build'
@@ -159,14 +165,14 @@ jobs:
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - task: Maven@3
-        displayName: 'Build and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
+        displayName: 'Build and Package, JDK Version: ${{ parameters.JavadocSafeJavaBuildVersion }}'
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
           options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
+          jdkVersionOption: ${{ parameters.JavadocSafeJavaBuildVersion }} # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete.
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -335,6 +341,7 @@ jobs:
 
       - task: PowerShell@2
         displayName: Verify TypeSpec Code Generation
+        continueOnError: ${{ eq(parameters.IgnoreVerifyTypeSpecCodeGenerationError, 'true') }}
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
@@ -344,6 +351,7 @@ jobs:
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
           JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
+          JavadocSafeJavaBuildVersion: ${{ parameters.JavadocSafeJavaBuildVersion }}
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
           RunLinting: true

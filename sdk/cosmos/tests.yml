@@ -16,9 +16,11 @@ stages:
       Clouds: 'Cosmos_Public_Integration'
       MatrixConfigs:
         - Name: Cosmos_live_test
-          Path: sdk/cosmos/platform-matrix.json
+          Path: sdk/cosmos/live-platform-matrix.json
           Selection: all
           GenerateVMJobs: true
+      MatrixReplace:
+        - .*Version=1.21/1.17
       ServiceDirectory: cosmos
       Artifacts:
         - name: azure-cosmos

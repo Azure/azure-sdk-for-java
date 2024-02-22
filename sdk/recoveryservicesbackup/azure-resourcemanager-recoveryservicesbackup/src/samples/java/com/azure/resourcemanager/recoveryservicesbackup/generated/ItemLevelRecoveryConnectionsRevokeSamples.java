@@ -4,27 +4,24 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
-/** Samples for ItemLevelRecoveryConnections Revoke. */
+/**
+ * Samples for ItemLevelRecoveryConnections Revoke.
+ */
 public final class ItemLevelRecoveryConnectionsRevokeSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/AzureIaasVm/Revoke_Ilr.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
+     * AzureIaasVm/Revoke_Ilr.json
      */
     /**
      * Sample code: Revoke Instant Item Level Recovery for Azure Vm.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void revokeInstantItemLevelRecoveryForAzureVm(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .itemLevelRecoveryConnections()
-            .revokeWithResponse(
-                "PySDKBackupTestRsVault",
-                "PythonSDKBackupTestRg",
-                "Azure",
-                "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
-                "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
-                "1",
-                com.azure.core.util.Context.NONE);
+        manager.itemLevelRecoveryConnections().revokeWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg",
+            "Azure", "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
+            "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "1", com.azure.core.util.Context.NONE);
     }
 }

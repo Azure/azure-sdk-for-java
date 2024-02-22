@@ -475,34 +475,34 @@ public final class SystemEventNames {
     public static final String COMMUNICATION_USER_DISCONNECTED = "Microsoft.Communication.UserDisconnected";
 
     /**
-     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiCreated event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APICreated event.
      */
-    public static final String API_MANAGEMENT_API_CREATED = "Microsoft.ApiManagement.ApiCreated";
+    public static final String API_MANAGEMENT_API_CREATED = "Microsoft.ApiManagement.APICreated";
 
     /**
-     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiDeleted event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIDeleted event.
      */
-    public static final String API_MANAGEMENT_API_DELETED = "Microsoft.ApiManagement.ApiDeleted";
+    public static final String API_MANAGEMENT_API_DELETED = "Microsoft.ApiManagement.APIDeleted";
 
     /**
-     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiReleaseCreated event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIReleaseCreated event.
      */
-    public static final String API_MANAGEMENT_API_RELEASE_CREATED = "Microsoft.ApiManagement.ApiReleaseCreated";
+    public static final String API_MANAGEMENT_API_RELEASE_CREATED = "Microsoft.ApiManagement.APIReleaseCreated";
 
     /**
-     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiReleaseDeleted event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIReleaseDeleted event.
      */
-    public static final String API_MANAGEMENT_API_RELEASE_DELETED = "Microsoft.ApiManagement.ApiReleaseDeleted";
+    public static final String API_MANAGEMENT_API_RELEASE_DELETED = "Microsoft.ApiManagement.APIReleaseDeleted";
 
     /**
-     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiReleaseUpdated event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIReleaseUpdated event.
      */
-    public static final String API_MANAGEMENT_API_RELEASE_UPDATED = "Microsoft.ApiManagement.ApiReleaseUpdated";
+    public static final String API_MANAGEMENT_API_RELEASE_UPDATED = "Microsoft.ApiManagement.APIReleaseUpdated";
 
     /**
-     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiUpdated event.
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIUpdated event.
      */
-    public static final String API_MANAGEMENT_API_UPDATED = "Microsoft.ApiManagement.ApiUpdated";
+    public static final String API_MANAGEMENT_API_UPDATED = "Microsoft.ApiManagement.APIUpdated";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayAPIAdded event.

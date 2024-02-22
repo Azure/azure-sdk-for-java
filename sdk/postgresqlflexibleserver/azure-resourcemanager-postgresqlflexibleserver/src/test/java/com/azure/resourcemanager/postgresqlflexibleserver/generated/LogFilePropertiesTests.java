@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LogFilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogFileProperties model =
-            BinaryData
-                .fromString(
-                    "{\"createdTime\":\"2021-06-21T18:35:02Z\",\"lastModifiedTime\":\"2021-06-21T01:18:29Z\",\"sizeInKb\":8981770461637201272,\"type\":\"dgzxulucvpamrsr\",\"url\":\"zvxurisjnhny\"}")
-                .toObject(LogFileProperties.class);
+        LogFileProperties model = BinaryData.fromString(
+            "{\"createdTime\":\"2021-06-21T18:35:02Z\",\"lastModifiedTime\":\"2021-06-21T01:18:29Z\",\"sizeInKb\":8981770461637201272,\"type\":\"dgzxulucvpamrsr\",\"url\":\"zvxurisjnhny\"}")
+            .toObject(LogFileProperties.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T18:35:02Z"), model.createdTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T01:18:29Z"), model.lastModifiedTime());
         Assertions.assertEquals(8981770461637201272L, model.sizeInKb());
@@ -26,13 +24,9 @@ public final class LogFilePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogFileProperties model =
-            new LogFileProperties()
-                .withCreatedTime(OffsetDateTime.parse("2021-06-21T18:35:02Z"))
-                .withLastModifiedTime(OffsetDateTime.parse("2021-06-21T01:18:29Z"))
-                .withSizeInKb(8981770461637201272L)
-                .withType("dgzxulucvpamrsr")
-                .withUrl("zvxurisjnhny");
+        LogFileProperties model = new LogFileProperties().withCreatedTime(OffsetDateTime.parse("2021-06-21T18:35:02Z"))
+            .withLastModifiedTime(OffsetDateTime.parse("2021-06-21T01:18:29Z")).withSizeInKb(8981770461637201272L)
+            .withType("dgzxulucvpamrsr").withUrl("zvxurisjnhny");
         model = BinaryData.fromObject(model).toObject(LogFileProperties.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T18:35:02Z"), model.createdTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T01:18:29Z"), model.lastModifiedTime());

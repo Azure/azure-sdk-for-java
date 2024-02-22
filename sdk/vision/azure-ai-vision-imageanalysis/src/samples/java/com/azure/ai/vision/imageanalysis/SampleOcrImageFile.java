@@ -19,13 +19,6 @@
 //     - A confidence score in the range [0, 1], with higher values indicating greater confidences in
 //       the recognition of the word. 
 //
-// USAGE:
-//     Compile the sample:
-//         mvn clean dependency:copy-dependencies
-//         javac SampleOcrImageFile.java -cp target\dependency\*
-//     Run the sample:
-//         java -cp ".;target\dependency\*" SampleOcrImageFile
-//
 //     Set these two environment variables before running the sample:
 //     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
 //                          where `your-resource-name` is your unique Azure Computer Vision resource name.

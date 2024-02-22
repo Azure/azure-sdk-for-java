@@ -17,13 +17,6 @@
 //     For more information on a particular visual feature, and optional setting associated with it,
 //     have a look at the sample in this folder dedicated to that visual feature.
 //
-// USAGE:
-//     Compile the sample:
-//         mvn clean dependency:copy-dependencies
-//         javac SampleAnalyzeAllImageFile.java -cp target\dependency\*
-//     Run the sample:
-//         java -cp ".;target\dependency\*" SampleAnalyzeAllImageFile
-//
 //     Set these two environment variables before running the sample:
 //     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
 //                          where `your-resource-name` is your unique Azure Computer Vision resource name.

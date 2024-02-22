@@ -173,18 +173,3 @@ directive:
     transform: >
       $.required.push("@odata.type");
 ```
-
-### Fixup ApiManagement comments
-
-```yaml
-directive:
-    from: swagger-document
-    where: $.definitions
-    transform: >
-        for (const definition in $) {
-            if (definition.startsWith("ApiManagement")) {
-              $[definition]["description"] = $[definition]["description"].replace("ApiManagement.API", "ApiManagement.Api");
-
-            }
-        }
-```

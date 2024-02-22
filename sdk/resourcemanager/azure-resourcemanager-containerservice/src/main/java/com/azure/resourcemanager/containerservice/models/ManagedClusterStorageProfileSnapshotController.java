@@ -26,7 +26,7 @@ public final class ManagedClusterStorageProfileSnapshotController {
 
     /**
      * Get the enabled property: Whether to enable Snapshot Controller. The default value is true.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -35,7 +35,7 @@ public final class ManagedClusterStorageProfileSnapshotController {
 
     /**
      * Set the enabled property: Whether to enable Snapshot Controller. The default value is true.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterStorageProfileSnapshotController object itself.
      */
@@ -46,7 +46,7 @@ public final class ManagedClusterStorageProfileSnapshotController {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

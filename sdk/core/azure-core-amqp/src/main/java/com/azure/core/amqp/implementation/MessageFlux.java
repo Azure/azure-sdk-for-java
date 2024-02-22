@@ -616,10 +616,10 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * </ul>
          * 2. If retry is enabled (i.e., NULL_RETRY_POLICY is not set) and there is 'non-retriable or retry exhaust'
          * error, then set an error signal for the drain-loop to terminate the operator.
-         * <br/>
+         * <br>
          * 3. If retry is disabled (i.e., NULL_RETRY_POLICY is set), then set an error signal (if first receiver error-ed)
          * or completion signal (if first receiver completed) for the drain-loop to terminate the operator.
-         * <p></p>
+         *
          * @param error the error that leads to error-ed termination of the last mediator or {@code null}
          *              if terminated with completion.
          * @param downstream the downstream.

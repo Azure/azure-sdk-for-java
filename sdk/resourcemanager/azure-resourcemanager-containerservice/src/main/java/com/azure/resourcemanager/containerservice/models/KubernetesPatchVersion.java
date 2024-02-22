@@ -27,7 +27,7 @@ public final class KubernetesPatchVersion {
 
     /**
      * Get the upgrades property: Possible upgrade path for given patch version.
-     *
+     * 
      * @return the upgrades value.
      */
     public List<String> upgrades() {
@@ -36,7 +36,7 @@ public final class KubernetesPatchVersion {
 
     /**
      * Set the upgrades property: Possible upgrade path for given patch version.
-     *
+     * 
      * @param upgrades the upgrades value to set.
      * @return the KubernetesPatchVersion object itself.
      */
@@ -47,7 +47,7 @@ public final class KubernetesPatchVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

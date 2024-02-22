@@ -49,6 +49,13 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
     private String clientCertificatePassword;
 
     /**
+     * Constructs an instance of OnBehalfOfCredentialBuilder.
+     */
+    public OnBehalfOfCredentialBuilder() {
+        super();
+    }
+
+    /**
      * Sets the client secret for the authentication.
      * @param clientSecret the secret value of the Microsoft Entra application.
      * @return An updated instance of this builder.

@@ -149,6 +149,8 @@
     "sdk/eventhubs/azure-messaging-eventhubs/**",
     "sdk/eventhubs/azure-messaging-eventhubs-stress/Dockerfile",
     "sdk/eventgrid/azure-messaging-eventgrid/**",
+    "sdk/generic-sdk-core/generic-core/**",
+    "sdk/generic-sdk-core/generic-core-http-okhttp/**",
     "sdk/cosmos/azure-cosmos/**",
     "sdk/cosmos/azure-cosmos-test/**",
     "sdk/identity/azure-identity/**",
@@ -334,6 +336,7 @@
     "logit",
     "logprobs",
     "logz",
+    "LOINC",
     "Lucene",
     "mgmt",
     "mibps",
@@ -488,6 +491,14 @@
       "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/WeatherAlongRoutePrecipitation.java",
       "words": [
         "Decibles"
+      ]
+    },
+    {
+      "filename": "sdk/healthinsights/**",
+      "words": [
+        "authorid",
+        "encounterid",
+        "docid"
       ]
     },
     {
@@ -702,7 +713,7 @@
       ]
     },
     {
-      "filename": "**/sdk/cosmos/platform-matrix.json",
+      "filename": "**/sdk/cosmos/live-platform-matrix.json",
       "words": [
         "Pfast",
         "Pdirect",

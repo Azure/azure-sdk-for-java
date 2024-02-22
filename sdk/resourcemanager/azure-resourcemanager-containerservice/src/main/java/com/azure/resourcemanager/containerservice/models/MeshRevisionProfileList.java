@@ -34,7 +34,7 @@ public final class MeshRevisionProfileList {
 
     /**
      * Get the value property: Array of service mesh add-on revision profiles for all supported mesh modes.
-     *
+     * 
      * @return the value value.
      */
     public List<MeshRevisionProfileInner> value() {
@@ -43,7 +43,7 @@ public final class MeshRevisionProfileList {
 
     /**
      * Set the value property: Array of service mesh add-on revision profiles for all supported mesh modes.
-     *
+     * 
      * @param value the value value to set.
      * @return the MeshRevisionProfileList object itself.
      */
@@ -54,7 +54,7 @@ public final class MeshRevisionProfileList {
 
     /**
      * Get the nextLink property: The URL to get the next set of mesh revision profile.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +63,7 @@ public final class MeshRevisionProfileList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

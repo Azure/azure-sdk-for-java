@@ -33,7 +33,7 @@ public final class GlobalParametersListByFactoryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"l\":{\"type\":\"Array\",\"value\":\"datahrs\"}},\"name\":\"wfpq\",\"type\":\"sxyugid\",\"etag\":\"sjivdtrtkqqdqxsl\",\"id\":\"tt\"}]}";
+            = "{\"value\":[{\"properties\":{\"qeadkvldrcxvoltj\":{\"type\":\"Array\",\"value\":\"datadokv\"},\"eghsq\":{\"type\":\"Bool\",\"value\":\"dataolnqkdtvtpwrmmya\"}},\"name\":\"nyphewcevpmtpqdf\",\"type\":\"sojexd\",\"etag\":\"lvcgarsvqu\",\"id\":\"rkoqdqjhhtxnocix\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,10 +50,11 @@ public final class GlobalParametersListByFactoryMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<GlobalParameterResource> response
-            = manager.globalParameters().listByFactory("ucrynsqxyowwr", "xe", com.azure.core.util.Context.NONE);
+        PagedIterable<GlobalParameterResource> response = manager.globalParameters().listByFactory("qlwtdijejyxrrmno",
+            "jwlhulvyz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tt", response.iterator().next().id());
-        Assertions.assertEquals(GlobalParameterType.ARRAY, response.iterator().next().properties().get("l").type());
+        Assertions.assertEquals("rkoqdqjhhtxnocix", response.iterator().next().id());
+        Assertions.assertEquals(GlobalParameterType.ARRAY,
+            response.iterator().next().properties().get("qeadkvldrcxvoltj").type());
     }
 }

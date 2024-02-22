@@ -8,6 +8,9 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 
+/**
+ * Default HTTP response.
+ */
 class DefaultHttpClientResponse extends HttpResponse {
     private final int statusCode;
     private final Headers headers;

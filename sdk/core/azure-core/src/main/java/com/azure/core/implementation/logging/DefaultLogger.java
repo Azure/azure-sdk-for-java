@@ -403,7 +403,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         bytes[4] = '-';
 
         // MM-
-        zeroPad(now.getDayOfMonth(), bytes, 5);
+        zeroPad(now.getMonthValue(), bytes, 5);
         bytes[7] = '-';
 
         // dd

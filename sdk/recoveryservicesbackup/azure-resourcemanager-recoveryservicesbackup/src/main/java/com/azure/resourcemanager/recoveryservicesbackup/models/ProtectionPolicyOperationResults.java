@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ProtectionPolicyOperationResults. */
+/**
+ * Resource collection API of ProtectionPolicyOperationResults.
+ */
 public interface ProtectionPolicyOperationResults {
     /**
      * Provides the result of an operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's result needs to be fetched.
@@ -22,12 +24,12 @@ public interface ProtectionPolicyOperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base class for backup policy along with {@link Response}.
      */
-    Response<ProtectionPolicyResource> getWithResponse(
-        String vaultName, String resourceGroupName, String policyName, String operationId, Context context);
+    Response<ProtectionPolicyResource> getWithResponse(String vaultName, String resourceGroupName, String policyName,
+        String operationId, Context context);
 
     /**
      * Provides the result of an operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's result needs to be fetched.

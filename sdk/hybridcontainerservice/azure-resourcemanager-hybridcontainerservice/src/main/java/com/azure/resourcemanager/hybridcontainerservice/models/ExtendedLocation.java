@@ -8,18 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Extended Location definition.
+ * Extended location pointing to the underlying infrastructure.
  */
 @Fluent
 public final class ExtendedLocation {
     /*
-     * The extended location type.
+     * The extended location type. Allowed value: 'CustomLocation'
      */
     @JsonProperty(value = "type")
     private ExtendedLocationTypes type;
 
     /*
-     * The extended location name.
+     * ARM Id of the extended location.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -31,7 +31,7 @@ public final class ExtendedLocation {
     }
 
     /**
-     * Get the type property: The extended location type.
+     * Get the type property: The extended location type. Allowed value: 'CustomLocation'.
      * 
      * @return the type value.
      */
@@ -40,7 +40,7 @@ public final class ExtendedLocation {
     }
 
     /**
-     * Set the type property: The extended location type.
+     * Set the type property: The extended location type. Allowed value: 'CustomLocation'.
      * 
      * @param type the type value to set.
      * @return the ExtendedLocation object itself.
@@ -51,7 +51,7 @@ public final class ExtendedLocation {
     }
 
     /**
-     * Get the name property: The extended location name.
+     * Get the name property: ARM Id of the extended location.
      * 
      * @return the name value.
      */
@@ -60,7 +60,7 @@ public final class ExtendedLocation {
     }
 
     /**
-     * Set the name property: The extended location name.
+     * Set the name property: ARM Id of the extended location.
      * 
      * @param name the name value to set.
      * @return the ExtendedLocation object itself.

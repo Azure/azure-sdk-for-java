@@ -41,7 +41,7 @@ public final class ManagedClusterAddonProfile {
 
     /**
      * Get the enabled property: Whether the add-on is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -50,7 +50,7 @@ public final class ManagedClusterAddonProfile {
 
     /**
      * Set the enabled property: Whether the add-on is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterAddonProfile object itself.
      */
@@ -61,7 +61,7 @@ public final class ManagedClusterAddonProfile {
 
     /**
      * Get the config property: Key-value pairs for configuring an add-on.
-     *
+     * 
      * @return the config value.
      */
     public Map<String, String> config() {
@@ -70,7 +70,7 @@ public final class ManagedClusterAddonProfile {
 
     /**
      * Set the config property: Key-value pairs for configuring an add-on.
-     *
+     * 
      * @param config the config value to set.
      * @return the ManagedClusterAddonProfile object itself.
      */
@@ -81,7 +81,7 @@ public final class ManagedClusterAddonProfile {
 
     /**
      * Get the identity property: Information of user assigned identity used by this add-on.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedClusterAddonProfileIdentity identity() {
@@ -90,7 +90,7 @@ public final class ManagedClusterAddonProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

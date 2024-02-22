@@ -90,7 +90,7 @@ public final class ImageAnalysisOptions {
      * 
      * @return The gender neutral caption selection
      */
-    public Boolean getGenderNeutralCaption() {
+    public Boolean isGenderNeutralCaption() {
         return this.genderNeutralCaption;
     }
 

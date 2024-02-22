@@ -5,6 +5,8 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
+import com.azure.cosmos.models.PriorityLevel;
 
 public class ChangeFeedProcessorLatestVersionChangesCodeSnippet {
     public void changeFeedProcessorBuilderCodeSnippet() {
@@ -55,5 +57,41 @@ public class ChangeFeedProcessorLatestVersionChangesCodeSnippet {
             })
             // END: com.azure.cosmos.latestVersionChanges.handleChanges
             .buildChangeFeedProcessor();
+    }
+
+    public void changeFeedProcessorLatestVersionWithThroughputControlCodeSnippet() {
+        String hostName = "test-host-name";
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase("testDb");
+        CosmosAsyncContainer feedContainer = cosmosAsyncDatabase.getContainer("feedContainer");
+        CosmosAsyncContainer leaseContainer = cosmosAsyncDatabase.getContainer("leaseContainer");
+
+        // BEGIN: com.azure.cosmos.latestVersionChanges.withThroughputControl
+        ThroughputControlGroupConfig throughputControlGroupConfig =
+                new ThroughputControlGroupConfigBuilder()
+                        .groupName("cfp")
+                        .targetThroughput(300)
+                        .priorityLevel(PriorityLevel.LOW)
+                        .build();
+        ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .feedContainer(feedContainer)
+                .leaseContainer(leaseContainer)
+                .handleLatestVersionChanges(changeFeedProcessorItems -> {
+                    for (ChangeFeedProcessorItem item : changeFeedProcessorItems) {
+                        // Implementation for handling and processing of each change feed item goes here
+                    }
+                })
+                .options(
+                        new ChangeFeedProcessorOptions()
+                                .setFeedPollThroughputControlConfig(throughputControlGroupConfig)
+                )
+                .buildChangeFeedProcessor();
+        // END: com.azure.cosmos.latestVersionChanges.withThroughputControl
     }
 }

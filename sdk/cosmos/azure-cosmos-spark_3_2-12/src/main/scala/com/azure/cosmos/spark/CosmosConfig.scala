@@ -7,7 +7,7 @@ import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings}
-import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange}
+import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange, PartitionKeyDefinition}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.CosmosAuthType.CosmosAuthType
@@ -75,6 +75,8 @@ private[spark] object CosmosConfigNames {
   val ReadPartitioningStrategy = "spark.cosmos.read.partitioning.strategy"
   val ReadPartitioningTargetedCount = "spark.cosmos.partitioning.targetedCount"
   val ReadPartitioningFeedRangeFilter = "spark.cosmos.partitioning.feedRangeFilter"
+  val ReadRuntimeFilteringEnabled = "spark.cosmos.read.runtimeFiltering.enabled"
+  val ReadManyFilteringEnabled = "spark.cosmos.read.readManyFiltering.enabled"
   val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
   val DiagnosticsMode = "spark.cosmos.diagnostics"
   val ClientTelemetryEnabled = "spark.cosmos.clientTelemetry.enabled"
@@ -163,6 +165,8 @@ private[spark] object CosmosConfigNames {
     ReadPartitioningStrategy,
     ReadPartitioningTargetedCount,
     ReadPartitioningFeedRangeFilter,
+    ReadRuntimeFilteringEnabled,
+    ReadManyFilteringEnabled,
     ViewsRepositoryPath,
     DiagnosticsMode,
     ClientTelemetryEnabled,
@@ -326,10 +330,10 @@ private case class CosmosAccountConfig(endpoint: String,
                                        subscriptionId: Option[String],
                                        tenantId: Option[String],
                                        resourceGroupName: Option[String],
-                                       azureEnvironment: AzureEnvironment)
+                                       azureEnvironmentEndpoints: java.util.Map[String, String])
 
 private object CosmosAccountConfig {
-  private val DefaultAzureEnvironmentType = AzureEnvironmentType.Azure
+  private val DefaultAzureEnvironmentEndpoints = AzureEnvironmentType.Azure
 
   private val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
     mandatory = true,
@@ -432,16 +436,16 @@ private object CosmosAccountConfig {
       parseFromStringFunction = resourceGroupName => resourceGroupName,
       helpMessage = "The resource group of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
-  private val AzureEnvironmentTypeEnum = CosmosConfigEntry[AzureEnvironment](key = CosmosConfigNames.AzureEnvironment,
-      defaultValue = Option.apply(AzureEnvironment.AZURE),
+  private val AzureEnvironmentTypeEnum = CosmosConfigEntry[java.util.Map[String, String]](key = CosmosConfigNames.AzureEnvironment,
+      defaultValue = Option.apply(AzureEnvironment.AZURE.getEndpoints),
       mandatory = false,
       parseFromStringFunction = azureEnvironmentTypeAsString => {
           val azureEnvironmentType = CosmosConfigEntry.parseEnumeration(azureEnvironmentTypeAsString, AzureEnvironmentType)
           azureEnvironmentType match {
-              case AzureEnvironmentType.Azure => AzureEnvironment.AZURE
-              case AzureEnvironmentType.AzureChina => AzureEnvironment.AZURE_CHINA
-              case AzureEnvironmentType.AzureGermany => AzureEnvironment.AZURE_GERMANY
-              case AzureEnvironmentType.AzureUsGovernment => AzureEnvironment.AZURE_US_GOVERNMENT
+              case AzureEnvironmentType.Azure => AzureEnvironment.AZURE.getEndpoints
+              case AzureEnvironmentType.AzureChina => AzureEnvironment.AZURE_CHINA.getEndpoints
+              case AzureEnvironmentType.AzureGermany => AzureEnvironment.AZURE_GERMANY.getEndpoints
+              case AzureEnvironmentType.AzureUsGovernment => AzureEnvironment.AZURE_US_GOVERNMENT.getEndpoints
               case _ => throw new IllegalArgumentException(s"Azure environment type ${azureEnvironmentType} is not supported")
           }
       },
@@ -601,7 +605,9 @@ private case class CosmosReadConfig(forceEventualConsistency: Boolean,
                                     prefetchBufferSize: Int,
                                     dedicatedGatewayRequestOptions: DedicatedGatewayRequestOptions,
                                     customQuery: Option[CosmosParameterizedQuery],
-                                    throughputControlConfig: Option[CosmosThroughputControlConfig] = None)
+                                    throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
+                                    runtimeFilteringEnabled: Boolean,
+                                    readManyFilteringConfig: CosmosReadManyFilteringConfig)
 
 private object SchemaConversionModes extends Enumeration {
   type SchemaConversionMode = Value
@@ -672,6 +678,14 @@ private object CosmosReadConfig {
       "entry."
   )
 
+  private val ReadRuntimeFilteringEnabled = CosmosConfigEntry[Boolean](
+    key = CosmosConfigNames.ReadRuntimeFilteringEnabled,
+    mandatory = false,
+    defaultValue = Some(true),
+    parseFromStringFunction = readRuntimeFilteringEnabled => readRuntimeFilteringEnabled.toBoolean,
+    helpMessage = " Indicates whether dynamic partition pruning filters will be pushed down when applicable."
+  )
+
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
     val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
@@ -690,6 +704,8 @@ private object CosmosReadConfig {
     }
 
     val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
+    val runtimeFilteringEnabled = CosmosConfigEntry.parse(cfg, ReadRuntimeFilteringEnabled)
+    val readManyFilteringConfig = CosmosReadManyFilteringConfig.parseCosmosReadManyFilterConfig(cfg)
 
     CosmosReadConfig(
       forceEventualConsistency.get,
@@ -708,7 +724,9 @@ private object CosmosReadConfig {
       ),
       dedicatedGatewayRequestOptions,
       customQuery,
-      throughputControlConfigOpt)
+      throughputControlConfigOpt,
+      runtimeFilteringEnabled.get,
+      readManyFilteringConfig)
   }
 }
 
@@ -1271,6 +1289,43 @@ private object CosmosContainerConfig {
     val containerOpt = containerName.getOrElse(CosmosConfigEntry.parse(cfg, containerNameSupplier).get)
 
     CosmosContainerConfig(databaseOpt, containerOpt)
+  }
+}
+
+protected case class CosmosReadManyFilteringConfig(readManyFilteringEnabled: Boolean,
+                                                   readManyFilterProperty: String)
+
+private object CosmosReadManyFilteringConfig {
+  // For now,we use a hardcoded name, if there are requirements to make it more dynamic, can open it to be configurable
+  private val defaultReadManyFilterProperty = CosmosConstants.Properties.ItemIdentity
+
+  private val readManyFilteringEnabled = CosmosConfigEntry[Boolean](
+    key = CosmosConfigNames.ReadManyFilteringEnabled,
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = readManyFilteringEnabled => readManyFilteringEnabled.toBoolean,
+    helpMessage = "Indicates whether use readMany instead of query when applicable. " +
+      "When enabled, if there is a filter based on the readMany filtering property, readMany will be used internally. " +
+      "For containers with `id` being the partitionKey, the readManyFiltering property will be `id`, else it will be `_itemIdentity`. " +
+      "And can use udf `GetCosmosItemIdentityValue` to compute the `_itemIdentity` column. " +
+      "GetCosmosItemIdentityValue(id, pk) or GetCosmosItemIdentityValue(id, array(pk1, pk2, pk3)) for containers with subpartitions. ")
+
+  def parseCosmosReadManyFilterConfig(cfg: Map[String, String]): CosmosReadManyFilteringConfig = {
+    val cosmosReadManyFilteringEnabled = CosmosConfigEntry.parse(cfg, readManyFilteringEnabled)
+    CosmosReadManyFilteringConfig(cosmosReadManyFilteringEnabled.get, defaultReadManyFilterProperty)
+  }
+
+  def getEffectiveReadManyFilteringConfig(
+                                           readManyFilteringConfig: CosmosReadManyFilteringConfig,
+                                           partitionKeyDefinition: PartitionKeyDefinition): CosmosReadManyFilteringConfig = {
+
+    if (partitionKeyDefinition.getPaths.size() == 1
+      && partitionKeyDefinition.getPaths.get(0).equals(s"/${CosmosConstants.Properties.Id}")) {
+      // id is the partition key as well, switch to use id as the readMany filtering property
+      CosmosReadManyFilteringConfig(readManyFilteringConfig.readManyFilteringEnabled, CosmosConstants.Properties.Id)
+    } else {
+      readManyFilteringConfig
+    }
   }
 }
 

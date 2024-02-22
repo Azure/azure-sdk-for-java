@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Regenerate test key request payload. */
+/**
+ * Regenerate test key request payload.
+ */
 @Fluent
 public final class RegenerateTestKeyRequestPayload {
     /*
@@ -18,8 +20,14 @@ public final class RegenerateTestKeyRequestPayload {
     private TestKeyType keyType;
 
     /**
+     * Creates an instance of RegenerateTestKeyRequestPayload class.
+     */
+    public RegenerateTestKeyRequestPayload() {
+    }
+
+    /**
      * Get the keyType property: Type of the test key.
-     *
+     * 
      * @return the keyType value.
      */
     public TestKeyType keyType() {
@@ -28,7 +36,7 @@ public final class RegenerateTestKeyRequestPayload {
 
     /**
      * Set the keyType property: Type of the test key.
-     *
+     * 
      * @param keyType the keyType value to set.
      * @return the RegenerateTestKeyRequestPayload object itself.
      */
@@ -39,15 +47,13 @@ public final class RegenerateTestKeyRequestPayload {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyType in model RegenerateTestKeyRequestPayload"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyType in model RegenerateTestKeyRequestPayload"));
         }
     }
 

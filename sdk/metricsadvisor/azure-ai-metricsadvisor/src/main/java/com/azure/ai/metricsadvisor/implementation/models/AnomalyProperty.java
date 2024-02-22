@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The AnomalyProperty model.
@@ -98,7 +97,8 @@ public final class AnomalyProperty implements JsonSerializable<AnomalyProperty> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("anomalySeverity", Objects.toString(this.anomalySeverity, null));
+        jsonWriter.writeStringField("anomalySeverity",
+            this.anomalySeverity == null ? null : this.anomalySeverity.toString());
         return jsonWriter.writeEndObject();
     }
 
