@@ -1,41 +1,12 @@
 trigger: none
 
-parameters:
-  - name: runOnlyPPE
-    displayName: "Run only the PPE stage"
-    type: boolean
-    default: false
-
 stages:
-    - template: /sdk/communication/communication-tests-template.yml
-      parameters:
-          PackageName: azure-communication-phonenumbers
-          SafeName: azurecommunicationphonenumbers
-          ${{ if eq(parameters.runOnlyPPE, true) }}:
-            Clouds: 'PPE'
-          ${{ if eq(parameters.runOnlyPPE, false) }}:
-            Clouds: 'Public,PPE,Int'
-          CloudConfig:
-            Public:
-              SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
-                - $(sub-config-communication-services-cloud-test-resources-common)
-                - $(sub-config-communication-services-cloud-test-resources-java)
-            Int:
-              SubscriptionConfigurations:
-                - $(sub-config-communication-int-test-resources-common)
-                - $(sub-config-communication-int-test-resources-java)
-
-              MatrixReplace:
-                - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
-            PPE:
-              SubscriptionConfigurations:
-                - $(sub-config-communication-ppe-test-resources-common)
-                - $(sub-config-communication-ppe-test-resources-java)
-              MatrixReplace:
-                - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true  
-          MatrixConfigs:
-          - Name: PhoneNumbers_java_livetest_matrix
-            Path: sdk/communication/azure-communication-phonenumbers/phone-numbers-livetest-matrix.json
-            Selection: sparse
-            GenerateVMJobs: true
+  - template: /sdk/communication/communication-tests-template.yml
+    parameters:
+      PackageName: azure-communication-phonenumbers
+      SafeName: azurecommunicationphonenumbers
+      MatrixConfigs:
+        - Name: PhoneNumbers_java_livetest_matrix
+          Path: sdk/communication/azure-communication-phonenumbers/phone-numbers-livetest-matrix.json
+          Selection: sparse
+          GenerateVMJobs: true
