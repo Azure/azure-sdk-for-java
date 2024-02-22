@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Replication provider specific settings. */
+/**
+ * Replication provider specific settings.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "HyperVVirtualMachine", value = HyperVVirtualMachineDetails.class),
     @JsonSubTypes.Type(name = "ReplicationGroupDetails", value = ReplicationGroupDetails.class),
-    @JsonSubTypes.Type(name = "VMwareVirtualMachine", value = VMwareVirtualMachineDetails.class)
-})
+    @JsonSubTypes.Type(name = "VMwareVirtualMachine", value = VMwareVirtualMachineDetails.class) })
 @Immutable
 public class ConfigurationSettings {
-    /** Creates an instance of ConfigurationSettings class. */
+    /**
+     * Creates an instance of ConfigurationSettings class.
+     */
     public ConfigurationSettings() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

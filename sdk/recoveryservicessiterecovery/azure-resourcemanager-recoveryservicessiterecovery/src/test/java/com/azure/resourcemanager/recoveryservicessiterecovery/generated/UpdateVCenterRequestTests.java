@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateVCenterRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateVCenterRequest model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"friendlyName\":\"ytnrzvuljraae\",\"ipAddress\":\"nok\",\"processServerId\":\"ukkjqnvbroyla\",\"port\":\"ulcdisdosf\",\"runAsAccountId\":\"jsvg\"}}")
-                .toObject(UpdateVCenterRequest.class);
+        UpdateVCenterRequest model = BinaryData.fromString(
+            "{\"properties\":{\"friendlyName\":\"ytnrzvuljraae\",\"ipAddress\":\"nok\",\"processServerId\":\"ukkjqnvbroyla\",\"port\":\"ulcdisdosf\",\"runAsAccountId\":\"jsvg\"}}")
+            .toObject(UpdateVCenterRequest.class);
         Assertions.assertEquals("ytnrzvuljraae", model.properties().friendlyName());
         Assertions.assertEquals("nok", model.properties().ipAddress());
         Assertions.assertEquals("ukkjqnvbroyla", model.properties().processServerId());
@@ -26,15 +24,9 @@ public final class UpdateVCenterRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateVCenterRequest model =
-            new UpdateVCenterRequest()
-                .withProperties(
-                    new UpdateVCenterRequestProperties()
-                        .withFriendlyName("ytnrzvuljraae")
-                        .withIpAddress("nok")
-                        .withProcessServerId("ukkjqnvbroyla")
-                        .withPort("ulcdisdosf")
-                        .withRunAsAccountId("jsvg"));
+        UpdateVCenterRequest model = new UpdateVCenterRequest()
+            .withProperties(new UpdateVCenterRequestProperties().withFriendlyName("ytnrzvuljraae").withIpAddress("nok")
+                .withProcessServerId("ukkjqnvbroyla").withPort("ulcdisdosf").withRunAsAccountId("jsvg"));
         model = BinaryData.fromObject(model).toObject(UpdateVCenterRequest.class);
         Assertions.assertEquals("ytnrzvuljraae", model.properties().friendlyName());
         Assertions.assertEquals("nok", model.properties().ipAddress());

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Existing storage account input. */
+/**
+ * Existing storage account input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
 @JsonTypeName("Existing")
 @Fluent
@@ -21,13 +23,15 @@ public final class ExistingProtectionProfile extends ProtectionProfileCustomDeta
     @JsonProperty(value = "protectionProfileId", required = true)
     private String protectionProfileId;
 
-    /** Creates an instance of ExistingProtectionProfile class. */
+    /**
+     * Creates an instance of ExistingProtectionProfile class.
+     */
     public ExistingProtectionProfile() {
     }
 
     /**
      * Get the protectionProfileId property: The protection profile Arm Id. Throw error, if resource does not exists.
-     *
+     * 
      * @return the protectionProfileId value.
      */
     public String protectionProfileId() {
@@ -36,7 +40,7 @@ public final class ExistingProtectionProfile extends ProtectionProfileCustomDeta
 
     /**
      * Set the protectionProfileId property: The protection profile Arm Id. Throw error, if resource does not exists.
-     *
+     * 
      * @param protectionProfileId the protectionProfileId value to set.
      * @return the ExistingProtectionProfile object itself.
      */
@@ -47,17 +51,15 @@ public final class ExistingProtectionProfile extends ProtectionProfileCustomDeta
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (protectionProfileId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protectionProfileId in model ExistingProtectionProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property protectionProfileId in model ExistingProtectionProfile"));
         }
     }
 

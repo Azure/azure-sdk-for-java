@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Query parameter to enumerate jobs. */
+/**
+ * Query parameter to enumerate jobs.
+ */
 @Fluent
 public final class JobQueryParameter {
     /*
@@ -58,13 +60,15 @@ public final class JobQueryParameter {
     @JsonProperty(value = "timezoneOffset")
     private Double timezoneOffset;
 
-    /** Creates an instance of JobQueryParameter class. */
+    /**
+     * Creates an instance of JobQueryParameter class.
+     */
     public JobQueryParameter() {
     }
 
     /**
      * Get the startTime property: Date time to get jobs from.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -73,7 +77,7 @@ public final class JobQueryParameter {
 
     /**
      * Set the startTime property: Date time to get jobs from.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the JobQueryParameter object itself.
      */
@@ -84,7 +88,7 @@ public final class JobQueryParameter {
 
     /**
      * Get the endTime property: Date time to get jobs upto.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -93,7 +97,7 @@ public final class JobQueryParameter {
 
     /**
      * Set the endTime property: Date time to get jobs upto.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the JobQueryParameter object itself.
      */
@@ -104,7 +108,7 @@ public final class JobQueryParameter {
 
     /**
      * Get the fabricId property: The Id of the fabric to search jobs under.
-     *
+     * 
      * @return the fabricId value.
      */
     public String fabricId() {
@@ -113,7 +117,7 @@ public final class JobQueryParameter {
 
     /**
      * Set the fabricId property: The Id of the fabric to search jobs under.
-     *
+     * 
      * @param fabricId the fabricId value to set.
      * @return the JobQueryParameter object itself.
      */
@@ -124,7 +128,7 @@ public final class JobQueryParameter {
 
     /**
      * Get the affectedObjectTypes property: The type of objects.
-     *
+     * 
      * @return the affectedObjectTypes value.
      */
     public String affectedObjectTypes() {
@@ -133,7 +137,7 @@ public final class JobQueryParameter {
 
     /**
      * Set the affectedObjectTypes property: The type of objects.
-     *
+     * 
      * @param affectedObjectTypes the affectedObjectTypes value to set.
      * @return the JobQueryParameter object itself.
      */
@@ -144,7 +148,7 @@ public final class JobQueryParameter {
 
     /**
      * Get the jobStatus property: The states of the job to be filtered can be in.
-     *
+     * 
      * @return the jobStatus value.
      */
     public String jobStatus() {
@@ -153,7 +157,7 @@ public final class JobQueryParameter {
 
     /**
      * Set the jobStatus property: The states of the job to be filtered can be in.
-     *
+     * 
      * @param jobStatus the jobStatus value to set.
      * @return the JobQueryParameter object itself.
      */
@@ -164,7 +168,7 @@ public final class JobQueryParameter {
 
     /**
      * Get the jobOutputType property: The output type of the jobs.
-     *
+     * 
      * @return the jobOutputType value.
      */
     public ExportJobOutputSerializationType jobOutputType() {
@@ -173,7 +177,7 @@ public final class JobQueryParameter {
 
     /**
      * Set the jobOutputType property: The output type of the jobs.
-     *
+     * 
      * @param jobOutputType the jobOutputType value to set.
      * @return the JobQueryParameter object itself.
      */
@@ -184,7 +188,7 @@ public final class JobQueryParameter {
 
     /**
      * Get the jobName property: The job Name.
-     *
+     * 
      * @return the jobName value.
      */
     public String jobName() {
@@ -193,7 +197,7 @@ public final class JobQueryParameter {
 
     /**
      * Set the jobName property: The job Name.
-     *
+     * 
      * @param jobName the jobName value to set.
      * @return the JobQueryParameter object itself.
      */
@@ -204,7 +208,7 @@ public final class JobQueryParameter {
 
     /**
      * Get the timezoneOffset property: The timezone offset for the location of the request (in minutes).
-     *
+     * 
      * @return the timezoneOffset value.
      */
     public Double timezoneOffset() {
@@ -213,7 +217,7 @@ public final class JobQueryParameter {
 
     /**
      * Set the timezoneOffset property: The timezone offset for the location of the request (in minutes).
-     *
+     * 
      * @param timezoneOffset the timezoneOffset value to set.
      * @return the JobQueryParameter object itself.
      */
@@ -224,7 +228,7 @@ public final class JobQueryParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

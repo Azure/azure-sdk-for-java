@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RetentionVolumeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RetentionVolume model =
-            BinaryData
-                .fromString(
-                    "{\"volumeName\":\"pqsdoc\",\"capacityInBytes\":3488715345246036434,\"freeSpaceInBytes\":3180098480061688390,\"thresholdPercentage\":1205622455}")
-                .toObject(RetentionVolume.class);
+        RetentionVolume model = BinaryData.fromString(
+            "{\"volumeName\":\"pqsdoc\",\"capacityInBytes\":3488715345246036434,\"freeSpaceInBytes\":3180098480061688390,\"thresholdPercentage\":1205622455}")
+            .toObject(RetentionVolume.class);
         Assertions.assertEquals("pqsdoc", model.volumeName());
         Assertions.assertEquals(3488715345246036434L, model.capacityInBytes());
         Assertions.assertEquals(3180098480061688390L, model.freeSpaceInBytes());
@@ -24,12 +22,8 @@ public final class RetentionVolumeTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RetentionVolume model =
-            new RetentionVolume()
-                .withVolumeName("pqsdoc")
-                .withCapacityInBytes(3488715345246036434L)
-                .withFreeSpaceInBytes(3180098480061688390L)
-                .withThresholdPercentage(1205622455);
+        RetentionVolume model = new RetentionVolume().withVolumeName("pqsdoc").withCapacityInBytes(3488715345246036434L)
+            .withFreeSpaceInBytes(3180098480061688390L).withThresholdPercentage(1205622455);
         model = BinaryData.fromObject(model).toObject(RetentionVolume.class);
         Assertions.assertEquals("pqsdoc", model.volumeName());
         Assertions.assertEquals(3488715345246036434L, model.capacityInBytes());

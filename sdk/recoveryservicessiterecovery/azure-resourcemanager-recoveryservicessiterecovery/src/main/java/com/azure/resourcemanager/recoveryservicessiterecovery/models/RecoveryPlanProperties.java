@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Recovery plan properties. */
+/**
+ * Recovery plan properties.
+ */
 @Fluent
 public final class RecoveryPlanProperties {
     /*
@@ -108,13 +110,15 @@ public final class RecoveryPlanProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private List<RecoveryPlanProviderSpecificDetails> providerSpecificDetails;
 
-    /** Creates an instance of RecoveryPlanProperties class. */
+    /**
+     * Creates an instance of RecoveryPlanProperties class.
+     */
     public RecoveryPlanProperties() {
     }
 
     /**
      * Get the friendlyName property: The friendly name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -123,7 +127,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the friendlyName property: The friendly name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -134,7 +138,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the primaryFabricId property: The primary fabric Id.
-     *
+     * 
      * @return the primaryFabricId value.
      */
     public String primaryFabricId() {
@@ -143,7 +147,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the primaryFabricId property: The primary fabric Id.
-     *
+     * 
      * @param primaryFabricId the primaryFabricId value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -154,7 +158,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the primaryFabricFriendlyName property: The primary fabric friendly name.
-     *
+     * 
      * @return the primaryFabricFriendlyName value.
      */
     public String primaryFabricFriendlyName() {
@@ -163,7 +167,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the primaryFabricFriendlyName property: The primary fabric friendly name.
-     *
+     * 
      * @param primaryFabricFriendlyName the primaryFabricFriendlyName value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -174,7 +178,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the recoveryFabricId property: The recovery fabric Id.
-     *
+     * 
      * @return the recoveryFabricId value.
      */
     public String recoveryFabricId() {
@@ -183,7 +187,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the recoveryFabricId property: The recovery fabric Id.
-     *
+     * 
      * @param recoveryFabricId the recoveryFabricId value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -194,7 +198,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the recoveryFabricFriendlyName property: The recovery fabric friendly name.
-     *
+     * 
      * @return the recoveryFabricFriendlyName value.
      */
     public String recoveryFabricFriendlyName() {
@@ -203,7 +207,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the recoveryFabricFriendlyName property: The recovery fabric friendly name.
-     *
+     * 
      * @param recoveryFabricFriendlyName the recoveryFabricFriendlyName value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -214,7 +218,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the failoverDeploymentModel property: The failover deployment model.
-     *
+     * 
      * @return the failoverDeploymentModel value.
      */
     public String failoverDeploymentModel() {
@@ -223,7 +227,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the failoverDeploymentModel property: The failover deployment model.
-     *
+     * 
      * @param failoverDeploymentModel the failoverDeploymentModel value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -234,7 +238,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the replicationProviders property: The list of replication providers.
-     *
+     * 
      * @return the replicationProviders value.
      */
     public List<String> replicationProviders() {
@@ -243,7 +247,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the replicationProviders property: The list of replication providers.
-     *
+     * 
      * @param replicationProviders the replicationProviders value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -254,7 +258,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the allowedOperations property: The list of allowed operations.
-     *
+     * 
      * @return the allowedOperations value.
      */
     public List<String> allowedOperations() {
@@ -263,7 +267,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the allowedOperations property: The list of allowed operations.
-     *
+     * 
      * @param allowedOperations the allowedOperations value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -274,7 +278,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the lastPlannedFailoverTime property: The start time of the last planned failover.
-     *
+     * 
      * @return the lastPlannedFailoverTime value.
      */
     public OffsetDateTime lastPlannedFailoverTime() {
@@ -283,7 +287,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the lastPlannedFailoverTime property: The start time of the last planned failover.
-     *
+     * 
      * @param lastPlannedFailoverTime the lastPlannedFailoverTime value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -294,7 +298,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the lastUnplannedFailoverTime property: The start time of the last unplanned failover.
-     *
+     * 
      * @return the lastUnplannedFailoverTime value.
      */
     public OffsetDateTime lastUnplannedFailoverTime() {
@@ -303,7 +307,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the lastUnplannedFailoverTime property: The start time of the last unplanned failover.
-     *
+     * 
      * @param lastUnplannedFailoverTime the lastUnplannedFailoverTime value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -314,7 +318,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the lastTestFailoverTime property: The start time of the last test failover.
-     *
+     * 
      * @return the lastTestFailoverTime value.
      */
     public OffsetDateTime lastTestFailoverTime() {
@@ -323,7 +327,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the lastTestFailoverTime property: The start time of the last test failover.
-     *
+     * 
      * @param lastTestFailoverTime the lastTestFailoverTime value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -334,7 +338,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the currentScenario property: The current scenario details.
-     *
+     * 
      * @return the currentScenario value.
      */
     public CurrentScenarioDetails currentScenario() {
@@ -343,7 +347,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the currentScenario property: The current scenario details.
-     *
+     * 
      * @param currentScenario the currentScenario value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -354,7 +358,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the currentScenarioStatus property: The recovery plan status.
-     *
+     * 
      * @return the currentScenarioStatus value.
      */
     public String currentScenarioStatus() {
@@ -363,7 +367,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the currentScenarioStatus property: The recovery plan status.
-     *
+     * 
      * @param currentScenarioStatus the currentScenarioStatus value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -374,7 +378,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the currentScenarioStatusDescription property: The recovery plan status description.
-     *
+     * 
      * @return the currentScenarioStatusDescription value.
      */
     public String currentScenarioStatusDescription() {
@@ -383,7 +387,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the currentScenarioStatusDescription property: The recovery plan status description.
-     *
+     * 
      * @param currentScenarioStatusDescription the currentScenarioStatusDescription value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -394,7 +398,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the groups property: The recovery plan groups.
-     *
+     * 
      * @return the groups value.
      */
     public List<RecoveryPlanGroup> groups() {
@@ -403,7 +407,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the groups property: The recovery plan groups.
-     *
+     * 
      * @param groups the groups value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -414,7 +418,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the providerSpecificDetails property: The provider id and provider specific details.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public List<RecoveryPlanProviderSpecificDetails> providerSpecificDetails() {
@@ -423,19 +427,19 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider id and provider specific details.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the RecoveryPlanProperties object itself.
      */
-    public RecoveryPlanProperties withProviderSpecificDetails(
-        List<RecoveryPlanProviderSpecificDetails> providerSpecificDetails) {
+    public RecoveryPlanProperties
+        withProviderSpecificDetails(List<RecoveryPlanProviderSpecificDetails> providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

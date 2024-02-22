@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** VMwareCbt provider specific container mapping details. */
+/**
+ * VMwareCbt provider specific container mapping details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareCbt")
 @Fluent
@@ -67,13 +69,15 @@ public final class VMwareCbtProtectionContainerMappingDetails
     @JsonProperty(value = "excludedSkus")
     private List<String> excludedSkus;
 
-    /** Creates an instance of VMwareCbtProtectionContainerMappingDetails class. */
+    /**
+     * Creates an instance of VMwareCbtProtectionContainerMappingDetails class.
+     */
     public VMwareCbtProtectionContainerMappingDetails() {
     }
 
     /**
      * Get the keyVaultId property: The target key vault ARM Id.
-     *
+     * 
      * @return the keyVaultId value.
      */
     public String keyVaultId() {
@@ -82,7 +86,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the keyVaultUri property: The target key vault URI.
-     *
+     * 
      * @return the keyVaultUri value.
      */
     public String keyVaultUri() {
@@ -91,7 +95,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the storageAccountId property: The storage account ARM Id.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -100,7 +104,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the storageAccountSasSecretName property: The secret name of the storage account.
-     *
+     * 
      * @return the storageAccountSasSecretName value.
      */
     public String storageAccountSasSecretName() {
@@ -109,7 +113,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the serviceBusConnectionStringSecretName property: The secret name of the service bus connection string.
-     *
+     * 
      * @return the serviceBusConnectionStringSecretName value.
      */
     public String serviceBusConnectionStringSecretName() {
@@ -118,7 +122,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the targetLocation property: The target location.
-     *
+     * 
      * @return the targetLocation value.
      */
     public String targetLocation() {
@@ -127,7 +131,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the roleSizeToNicCountMap property: The role size to NIC count map.
-     *
+     * 
      * @return the roleSizeToNicCountMap value.
      */
     public Map<String, Integer> roleSizeToNicCountMap() {
@@ -136,7 +140,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the excludedSkus property: The SKUs to be excluded.
-     *
+     * 
      * @return the excludedSkus value.
      */
     public List<String> excludedSkus() {
@@ -145,7 +149,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Set the excludedSkus property: The SKUs to be excluded.
-     *
+     * 
      * @param excludedSkus the excludedSkus value to set.
      * @return the VMwareCbtProtectionContainerMappingDetails object itself.
      */
@@ -156,7 +160,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

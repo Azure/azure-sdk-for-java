@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The encryption type of the VM. */
+/**
+ * The encryption type of the VM.
+ */
 public final class VmEncryptionType extends ExpandableStringEnum<VmEncryptionType> {
-    /** Static value NotEncrypted for VmEncryptionType. */
+    /**
+     * Static value NotEncrypted for VmEncryptionType.
+     */
     public static final VmEncryptionType NOT_ENCRYPTED = fromString("NotEncrypted");
 
-    /** Static value OnePassEncrypted for VmEncryptionType. */
+    /**
+     * Static value OnePassEncrypted for VmEncryptionType.
+     */
     public static final VmEncryptionType ONE_PASS_ENCRYPTED = fromString("OnePassEncrypted");
 
-    /** Static value TwoPassEncrypted for VmEncryptionType. */
+    /**
+     * Static value TwoPassEncrypted for VmEncryptionType.
+     */
     public static final VmEncryptionType TWO_PASS_ENCRYPTED = fromString("TwoPassEncrypted");
 
     /**
      * Creates a new instance of VmEncryptionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class VmEncryptionType extends ExpandableStringEnum<VmEncryptionTyp
 
     /**
      * Creates or finds a VmEncryptionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VmEncryptionType.
      */
@@ -41,7 +49,7 @@ public final class VmEncryptionType extends ExpandableStringEnum<VmEncryptionTyp
 
     /**
      * Gets known VmEncryptionType values.
-     *
+     * 
      * @return known VmEncryptionType values.
      */
     public static Collection<VmEncryptionType> values() {

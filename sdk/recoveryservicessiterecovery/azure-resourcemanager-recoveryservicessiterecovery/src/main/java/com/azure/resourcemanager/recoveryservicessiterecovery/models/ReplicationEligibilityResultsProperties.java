@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties model for replication eligibility results API. */
+/**
+ * Properties model for replication eligibility results API.
+ */
 @Fluent
 public final class ReplicationEligibilityResultsProperties {
     /*
@@ -23,13 +25,15 @@ public final class ReplicationEligibilityResultsProperties {
     @JsonProperty(value = "errors")
     private List<ReplicationEligibilityResultsErrorInfo> errors;
 
-    /** Creates an instance of ReplicationEligibilityResultsProperties class. */
+    /**
+     * Creates an instance of ReplicationEligibilityResultsProperties class.
+     */
     public ReplicationEligibilityResultsProperties() {
     }
 
     /**
      * Get the clientRequestId property: The client request Id.
-     *
+     * 
      * @return the clientRequestId value.
      */
     public String clientRequestId() {
@@ -38,7 +42,7 @@ public final class ReplicationEligibilityResultsProperties {
 
     /**
      * Get the errors property: The error details.
-     *
+     * 
      * @return the errors value.
      */
     public List<ReplicationEligibilityResultsErrorInfo> errors() {
@@ -47,7 +51,7 @@ public final class ReplicationEligibilityResultsProperties {
 
     /**
      * Set the errors property: The error details.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the ReplicationEligibilityResultsProperties object itself.
      */
@@ -58,7 +62,7 @@ public final class ReplicationEligibilityResultsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
