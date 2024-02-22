@@ -12,21 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPlanInMageAzureV2FailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanInMageAzureV2FailoverInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageAzureV2\",\"recoveryPointType\":\"LatestApplicationConsistent\",\"useMultiVmSyncPoint\":\"bzakp\"}")
-                .toObject(RecoveryPlanInMageAzureV2FailoverInput.class);
+        RecoveryPlanInMageAzureV2FailoverInput model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageAzureV2\",\"recoveryPointType\":\"LatestApplicationConsistent\",\"useMultiVmSyncPoint\":\"bzakp\"}")
+            .toObject(RecoveryPlanInMageAzureV2FailoverInput.class);
         Assertions.assertEquals(InMageV2RpRecoveryPointType.LATEST_APPLICATION_CONSISTENT, model.recoveryPointType());
         Assertions.assertEquals("bzakp", model.useMultiVmSyncPoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanInMageAzureV2FailoverInput model =
-            new RecoveryPlanInMageAzureV2FailoverInput()
-                .withRecoveryPointType(InMageV2RpRecoveryPointType.LATEST_APPLICATION_CONSISTENT)
-                .withUseMultiVmSyncPoint("bzakp");
+        RecoveryPlanInMageAzureV2FailoverInput model = new RecoveryPlanInMageAzureV2FailoverInput()
+            .withRecoveryPointType(InMageV2RpRecoveryPointType.LATEST_APPLICATION_CONSISTENT)
+            .withUseMultiVmSyncPoint("bzakp");
         model = BinaryData.fromObject(model).toObject(RecoveryPlanInMageAzureV2FailoverInput.class);
         Assertions.assertEquals(InMageV2RpRecoveryPointType.LATEST_APPLICATION_CONSISTENT, model.recoveryPointType());
         Assertions.assertEquals("bzakp", model.useMultiVmSyncPoint());

@@ -48,12 +48,8 @@ import java.util.stream.Collectors;
  * This is meant to be internally used only by our sdk.
  */
 class DocumentProducer<T> {
-
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptionsAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
-
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.CosmosQueryRequestOptionsBaseAccessor qryOptionsBaseAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.getCosmosQueryRequestOptionsBaseAccessor();
 
     private static final Logger logger = LoggerFactory.getLogger(DocumentProducer.class);
     private int retries;
@@ -201,7 +197,7 @@ class DocumentProducer<T> {
                         top,
                         pageSize,
                         Paginator.getPreFetchCount(cosmosQueryRequestOptions, top, pageSize),
-                        qryOptionsBaseAccessor.getOperationContext(qryOptionsAccessor.getImpl(cosmosQueryRequestOptions)),
+                        qryOptionsAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
                         qryOptionsAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions)
                 )
                 .map(rsp -> {

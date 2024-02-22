@@ -103,6 +103,9 @@ public class CosmosAsyncContainer {
     private static final ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor itemResponseAccessor =
         ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
 
+    private static final ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper.CosmosReadManyRequestOptionsAccessor readManyOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper.getCosmosReadManyRequestOptionsAccessor();
+
     private final CosmosAsyncDatabase database;
     private final String id;
     private final String link;
@@ -1460,7 +1463,7 @@ public class CosmosAsyncContainer {
 
         CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
             ? new CosmosQueryRequestOptions()
-            : queryOptionsAccessor.clone(requestOptions);
+            : queryOptionsAccessor.clone(readManyOptionsAccessor.getImpl(requestOptions));
         queryRequestOptions.setMaxDegreeOfParallelism(-1);
         queryRequestOptions.setQueryName("readMany");
 
@@ -2771,6 +2774,15 @@ public class CosmosAsyncContainer {
                 @Override
                 public Mono<List<FeedRange>> getFeedRanges(CosmosAsyncContainer cosmosAsyncContainer, boolean forceRefresh) {
                     return cosmosAsyncContainer.getFeedRanges(forceRefresh);
+                }
+
+                @Override
+                public Mono<List<FeedRangeEpkImpl>> trySplitFeedRange(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    FeedRange feedRange,
+                    int targetedCountAfterSplit) {
+
+                    return cosmosAsyncContainer.trySplitFeedRange(feedRange, targetedCountAfterSplit);
                 }
             });
     }

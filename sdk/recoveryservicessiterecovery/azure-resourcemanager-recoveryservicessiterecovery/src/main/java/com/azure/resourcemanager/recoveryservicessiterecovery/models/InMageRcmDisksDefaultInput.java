@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** InMageRcm disk input. */
+/**
+ * InMageRcm disk input.
+ */
 @Fluent
 public final class InMageRcmDisksDefaultInput {
     /*
@@ -29,13 +31,15 @@ public final class InMageRcmDisksDefaultInput {
     @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
-    /** Creates an instance of InMageRcmDisksDefaultInput class. */
+    /**
+     * Creates an instance of InMageRcmDisksDefaultInput class.
+     */
     public InMageRcmDisksDefaultInput() {
     }
 
     /**
      * Get the logStorageAccountId property: The log storage account ARM Id.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -44,7 +48,7 @@ public final class InMageRcmDisksDefaultInput {
 
     /**
      * Set the logStorageAccountId property: The log storage account ARM Id.
-     *
+     * 
      * @param logStorageAccountId the logStorageAccountId value to set.
      * @return the InMageRcmDisksDefaultInput object itself.
      */
@@ -55,7 +59,7 @@ public final class InMageRcmDisksDefaultInput {
 
     /**
      * Get the diskType property: The disk type.
-     *
+     * 
      * @return the diskType value.
      */
     public DiskAccountType diskType() {
@@ -64,7 +68,7 @@ public final class InMageRcmDisksDefaultInput {
 
     /**
      * Set the diskType property: The disk type.
-     *
+     * 
      * @param diskType the diskType value to set.
      * @return the InMageRcmDisksDefaultInput object itself.
      */
@@ -75,7 +79,7 @@ public final class InMageRcmDisksDefaultInput {
 
     /**
      * Get the diskEncryptionSetId property: The DiskEncryptionSet ARM Id.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -84,7 +88,7 @@ public final class InMageRcmDisksDefaultInput {
 
     /**
      * Set the diskEncryptionSetId property: The DiskEncryptionSet ARM Id.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the InMageRcmDisksDefaultInput object itself.
      */
@@ -95,21 +99,17 @@ public final class InMageRcmDisksDefaultInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (logStorageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property logStorageAccountId in model InMageRcmDisksDefaultInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property logStorageAccountId in model InMageRcmDisksDefaultInput"));
         }
         if (diskType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property diskType in model InMageRcmDisksDefaultInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property diskType in model InMageRcmDisksDefaultInput"));
         }
     }
 

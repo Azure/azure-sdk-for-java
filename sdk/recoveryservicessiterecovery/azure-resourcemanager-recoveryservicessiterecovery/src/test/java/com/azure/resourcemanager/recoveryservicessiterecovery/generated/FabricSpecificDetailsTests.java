@@ -10,8 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.FabricSpeci
 public final class FabricSpecificDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FabricSpecificDetails model =
-            BinaryData.fromString("{\"instanceType\":\"FabricSpecificDetails\"}").toObject(FabricSpecificDetails.class);
+        FabricSpecificDetails model = BinaryData.fromString("{\"instanceType\":\"FabricSpecificDetails\"}")
+            .toObject(FabricSpecificDetails.class);
     }
 
     @org.junit.jupiter.api.Test

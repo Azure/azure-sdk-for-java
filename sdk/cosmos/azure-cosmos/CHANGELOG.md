@@ -1,16 +1,12 @@
 ## Release History
 
-### 4.56.0-beta.1 (Unreleased)
+### 4.56.0 (2024-02-20)
 
 #### Features Added
 * Added overloads for `CosmosAsyncContainer.readMany` and `CosmosContainr.readMany` accepting request options via `CosmosReadManyRequestOptions` to allow specifying excluded regions, diagnostics thresholds and end-to-end timeout etc. - See [PR 38821](https://github.com/Azure/azure-sdk-for-java/pull/38821)
 
-#### Breaking Changes
-
 #### Bugs Fixed
 * Fixed an issue in QuorumReader when quorum could not be selected even though 1 secondary and Primary are reachable and in sync. - See [PR 38832](https://github.com/Azure/azure-sdk-for-java/pull/38832)
-
-#### Other Changes
 
 ### 4.55.1 (2024-02-13)
 

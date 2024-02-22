@@ -748,9 +748,10 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         Function<JsonNode, String> factoryMethod = (objectNode) -> objectNode.get("id").asText();
         CosmosReadManyRequestOptions queryRequestOptions = new CosmosReadManyRequestOptions();
         ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsBaseHelper
-                .getCosmosQueryRequestOptionsBaseAccessor()
-                .setItemFactoryMethod(queryRequestOptions, factoryMethod);
+                .CosmosReadManyRequestOptionsHelper
+                .getCosmosReadManyRequestOptionsAccessor()
+                .getImpl(queryRequestOptions)
+                .setItemFactoryMethod(factoryMethod);
 
         FeedResponse<String> documentFeedResponse =
                 ImplementationBridgeHelpers

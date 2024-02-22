@@ -10,8 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.Configurati
 public final class ConfigurationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationSettings model =
-            BinaryData.fromString("{\"instanceType\":\"ConfigurationSettings\"}").toObject(ConfigurationSettings.class);
+        ConfigurationSettings model = BinaryData.fromString("{\"instanceType\":\"ConfigurationSettings\"}")
+            .toObject(ConfigurationSettings.class);
     }
 
     @org.junit.jupiter.api.Test
