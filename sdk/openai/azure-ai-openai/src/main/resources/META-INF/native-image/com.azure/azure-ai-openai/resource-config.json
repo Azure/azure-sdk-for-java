@@ -1,0 +1,10 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "\\Qazure-ai-openai.properties\\E"
+      }
+    ]
+  },
+  "bundles": []
+}
